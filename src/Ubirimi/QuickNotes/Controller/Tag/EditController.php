@@ -41,7 +41,7 @@
         }
     }
 
-    $menuSelectedCategory = 'notebooks';
+    $menuSelectedCategory = 'tags';
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_QUICK_NOTES_NAME . ' / Notebook: ' . $tag['name'] . ' / Update';
 
     require_once __DIR__ . '/../../Resources/views/Tag/Edit.php';
