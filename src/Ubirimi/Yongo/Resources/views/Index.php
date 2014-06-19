@@ -46,21 +46,21 @@
                     </ul>
 
                     <div style="max-height: 700px; overflow: auto;">
-                        <?php
-                            echo '<div style="border: 1px solid #d6d6d6; border-top: none;">';
-                            if ($issues) {
+                        <div style="border: 1px solid #d6d6d6; border-top: none;">
+                            <?php
+                                if ($issues) {
 
-                                $renderParameters = array('issues' => $issues, 'render_checkbox' => false, 'show_header' => true);
-                                $renderColumns = array('code', 'summary', 'priority');
-                                $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns);
-                                if (!$issuesRendered) {
+                                    $renderParameters = array('issues' => $issues, 'render_checkbox' => false, 'show_header' => true);
+                                    $renderColumns = array('code', 'summary', 'priority');
+                                    $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns);
+                                    if (!$issuesRendered) {
+                                        echo '<div style="padding: 8px;">There are no unresolved issues assigned to you.</div>';
+                                    }
+                                } else {
                                     echo '<div style="padding: 8px;">There are no unresolved issues assigned to you.</div>';
                                 }
-                            } else {
-                                echo '<div style="padding: 8px;">There are no unresolved issues assigned to you.</div>';
-                            }
-                            echo '</div>';
-                        ?>
+                            ?>
+                        </div>
                     </div>
                 </td>
                 <td width="2%"></td>
@@ -92,7 +92,7 @@
                             <?php require_once __DIR__ . '/charts/ViewUnresolvedOthers.php' ?>
                         </div>
                     </div>
-                    
+
                     <br />
                     <?php if (User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS)): ?>
                         <ul class="nav nav-tabs" style="padding: 0px;">
