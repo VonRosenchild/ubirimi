@@ -148,9 +148,10 @@ class User {
         }
     }
 
-    public static function updateById($userId, $first_name, $last_name, $email, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
+    public static function updateById($userId, $first_name, $last_name, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
         $query = 'UPDATE user SET ' .
-                 'first_name = ?, last_name = ?, email = ?, client_administrator_flag = ?, customer_service_desk_flag = ?, date_updated = ? ';
+                 'first_name = ?, last_name = ?, email = ?, username = ?, client_administrator_flag = ?, customer_service_desk_flag = ?, date_updated = ? ';
+
         if ($issuesPerPage)
             $query .= ', issues_per_page = ? ';
 
@@ -159,9 +160,9 @@ class User {
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             if ($issuesPerPage)
-                $stmt->bind_param("sssiisii", $first_name, $last_name, $email, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $issuesPerPage, $userId);
+                $stmt->bind_param("ssssiisii", $first_name, $last_name, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $issuesPerPage, $userId);
             else
-                $stmt->bind_param("sssiisi", $first_name, $last_name, $email, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $userId);
+                $stmt->bind_param("ssssiisi", $first_name, $last_name, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $userId);
 
             $stmt->execute();
         }
@@ -332,18 +333,28 @@ class User {
         }
     }
 
-    public static function getByUsernameAndClientId($username, $clientId, $resultColumn = null) {
+    public static function getByUsernameAndClientId($username, $clientId, $resultColumn = null, $userId = null) {
         $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, svn_administrator_flag, client_administrator_flag, avatar_picture, issues_display_columns ' .
                  'FROM user ' .
                  "WHERE LOWER(username) = ? " .
-                 "and client_id = ? and customer_service_desk_flag = 0 " .
-                 "LIMIT 1";
+                 "and client_id = ? and customer_service_desk_flag = 0 ";
+
+        if ($userId) {
+            $query .= 'and user.id != ? ';
+        }
+
+        $query .= "LIMIT 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
             $username = mb_strtolower($username);
-            $stmt->bind_param("si", $username, $clientId);
+            if ($userId) {
+                $stmt->bind_param("sii", $username, $clientId, $userId);
+            } else {
+                $stmt->bind_param("si", $username, $clientId);
+            }
+
             $stmt->execute();
             $result = $stmt->get_result();
 

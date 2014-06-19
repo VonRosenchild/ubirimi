@@ -47,6 +47,19 @@
                         </td>
                     </tr>
                     <tr>
+                        <td valign="top">Username <span class="mandatory">*</td>
+                        <td>
+                            <input class="inputText" type="text" name="username" value="<?php echo $username ?>"/>
+                            <?php if ($errors['empty_username']): ?>
+                                <div class="error">The username can not be empty.</div>
+                            <?php elseif ($errors['invalid_username']): ?>
+                                <div class="error">The username is not valid.</div>
+                            <?php elseif ($errors['duplicate_username']): ?>
+                                <div class="error">The username is not unique.</div>
+                            <?php endif ?>
+                        </td>
+                    </tr>
+                    <tr>
                         <td id="sectDetails" class="sectionDetail" colspan="2"><span class="sectionDetailTitleNoPicture headerPageTextSmall">Permissions</span></td>
                     </tr>
                     <tr>

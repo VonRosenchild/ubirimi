@@ -21,9 +21,13 @@
     $email = $user['email'];
     $firstName = $user['first_name'];
     $lastName = $user['last_name'];
+    $username = $user['username'];
 
     $errors = array('empty_email' => false,
                     'email_not_valid' => false,
+                    'empty_username' => false,
+                    'invalid_username' => false,
+                    'duplicate_username' => false,
                     'empty_first_name' => false,
                     'empty_last_name' => false,
                     'email_already_exists' => false,
@@ -34,6 +38,7 @@
         $email = Util::cleanRegularInputField($_POST['email']);
         $firstName = Util::cleanRegularInputField($_POST['first_name']);
         $lastName = Util::cleanRegularInputField($_POST['last_name']);
+        $username = Util::cleanRegularInputField($_POST['username']);
 
         $clientAdministrators = Client::getAdministrators($clientId, $userId);
 
@@ -69,10 +74,22 @@
         if (empty($lastName))
             $errors['empty_last_name'] = true;
 
+        if (empty($username))
+            $errors['empty_username'] = true;
+
+        if (!Util::validateUsername($username))
+            $errors['invalid_username'] = true;
+        else {
+            $existingUser = User::getByUsernameAndClientId($username, $clientId, null, $userId);
+
+            if ($existingUser)
+                $errors['duplicate_username'] = true;
+        }
+
         if (Util::hasNoErrors($errors)) {
 
             $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-            User::updateById($userId, $firstName, $lastName, $email, null, $clientAdministratorFlag, $customerServiceDeskFlag, $currentDate);
+            User::updateById($userId, $firstName, $lastName, $email, $username, null, $clientAdministratorFlag, $customerServiceDeskFlag, $currentDate);
             $userUpdated = User::getById($userId);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'UPDATE User ' . $userUpdated['username'], $currentDate);

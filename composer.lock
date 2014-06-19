@@ -554,16 +554,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "8c3626a4acd2daee0e6d93af9c5dbc42960d477e"
+                "reference": "4bd5484d456e6263acc6429fabea7e2fbc74fffc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/8c3626a4acd2daee0e6d93af9c5dbc42960d477e",
-                "reference": "8c3626a4acd2daee0e6d93af9c5dbc42960d477e",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/4bd5484d456e6263acc6429fabea7e2fbc74fffc",
+                "reference": "4bd5484d456e6263acc6429fabea7e2fbc74fffc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.3",
+                "psr/log": "~1.0"
             },
             "require-dev": {
                 "symfony/http-foundation": "~2.1",
@@ -602,7 +603,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-26 15:36:48"
+            "time": "2014-06-16 11:52:56"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -665,17 +666,17 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.4.5",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Component/Filesystem",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Filesystem.git",
-                "reference": "a3af8294bcce4a7c1b2892363b0c9d8109affad4"
+                "reference": "98e831eac836a0a5911626ce82684155f21d0e4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/a3af8294bcce4a7c1b2892363b0c9d8109affad4",
-                "reference": "a3af8294bcce4a7c1b2892363b0c9d8109affad4",
+                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/98e831eac836a0a5911626ce82684155f21d0e4d",
+                "reference": "98e831eac836a0a5911626ce82684155f21d0e4d",
                 "shasum": ""
             },
             "require": {
@@ -684,7 +685,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -710,7 +711,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-16 10:34:31"
+            "time": "2014-04-16 10:36:21"
         },
         {
             "name": "symfony/http-foundation",
@@ -774,19 +775,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "cd30e784de0304fe381cfa7e8f7d005eab934ed5"
+                "reference": "565dc6789d8e93a3fd1778ccafd7293c35fb4293"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/cd30e784de0304fe381cfa7e8f7d005eab934ed5",
-                "reference": "cd30e784de0304fe381cfa7e8f7d005eab934ed5",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/565dc6789d8e93a3fd1778ccafd7293c35fb4293",
+                "reference": "565dc6789d8e93a3fd1778ccafd7293c35fb4293",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "psr/log": "~1.0",
                 "symfony/debug": "~2.5",
-                "symfony/event-dispatcher": "~2.1",
+                "symfony/event-dispatcher": "~2.5",
                 "symfony/http-foundation": "~2.4"
             },
             "require-dev": {
@@ -838,7 +839,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-28 23:33:40"
+            "time": "2014-06-12 17:00:29"
         },
         {
             "name": "symfony/routing",
@@ -915,12 +916,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "d151f00d4fae107ea0d70ade6b0d2d3e81f45ecd"
+                "reference": "b01d366060f33e18fd98b0008c41a01b0d25c95c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/d151f00d4fae107ea0d70ade6b0d2d3e81f45ecd",
-                "reference": "d151f00d4fae107ea0d70ade6b0d2d3e81f45ecd",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/b01d366060f33e18fd98b0008c41a01b0d25c95c",
+                "reference": "b01d366060f33e18fd98b0008c41a01b0d25c95c",
                 "shasum": ""
             },
             "require": {
@@ -955,7 +956,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-23 14:36:49"
+            "time": "2014-06-04 06:43:44"
         },
         {
             "name": "tecnick.com/tcpdf",
