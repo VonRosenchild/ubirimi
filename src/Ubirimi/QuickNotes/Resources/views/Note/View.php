@@ -56,7 +56,6 @@
         </table>
 
         <div id="modalDeleteNote"></div>
-        <div id="modalCreateNotebook"></div>
         <?php require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_footer.php' ?>
         <input type="hidden" value="<?php echo $notebookId ?>" id="notebook_id" />
         <?php if (isset($noteId)): ?>

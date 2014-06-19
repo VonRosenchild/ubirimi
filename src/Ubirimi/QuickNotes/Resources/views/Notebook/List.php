@@ -60,7 +60,6 @@
 </div>
 
 <div id="modalDeleteNotebook"></div>
-<div id="modalCreateNotebook"></div>
 
 <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>
