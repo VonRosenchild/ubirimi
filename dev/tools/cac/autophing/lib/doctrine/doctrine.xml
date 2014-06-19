@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="doctrine" basedir=".">
+    <property file="${phing.dir.doctrine}/doctrine.properties" />
+
+    <target name="doctrine-generate-proxies"  description="Generate the doctrine proxy files">
+        <mkdir dir="${doctrine.orm.proxy.dir}" />
+        <exec passthru="${passthru}" command="${doctrine.cli} orm:generate-proxies" />
+    </target>
+
+    <target name="doctrine-schema-update">
+        <exec passthru="${passthru}" executable="${doctrine.cli}" dir="${doctrine.cli.config.dir}">
+            <arg value="orm:schema-tool:update" />
+            <arg value="--force" />
+        </exec>
+    </target>
+
+</project>

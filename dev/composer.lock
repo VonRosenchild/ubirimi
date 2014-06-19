@@ -1,0 +1,111 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "f6d57a97a90d910b0979fcc02f5b6698",
+    "packages": [
+        {
+            "name": "cac/autophing",
+            "version": "v1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CrazyAwesomeCompany/autophing.git",
+                "reference": "ba3d57de10a41ec66e001917574f00da28b1e3fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CrazyAwesomeCompany/autophing/zipball/ba3d57de10a41ec66e001917574f00da28b1e3fa",
+                "reference": "ba3d57de10a41ec66e001917574f00da28b1e3fa",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nick de Groot",
+                    "email": "nick@crazyawesomecompany.com",
+                    "homepage": "http://www.crazyawesomecompany.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Predefined Phing targets",
+            "homepage": "http://www.crazyawesomecompany.com",
+            "keywords": [
+                "phing"
+            ],
+            "time": "2013-12-26 08:43:56"
+        },
+        {
+            "name": "phing/phing",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phingofficial/phing.git",
+                "reference": "bd2689790c620ac745b3ad29765c641a0dd5d007"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/bd2689790c620ac745b3ad29765c641a0dd5d007",
+                "reference": "bd2689790c620ac745b3ad29765c641a0dd5d007",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "bin": [
+                "bin/phing"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "classes/phing/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "classes"
+            ],
+            "license": [
+                "LGPL3"
+            ],
+            "authors": [
+                {
+                    "name": "Michiel Rook",
+                    "email": "mrook@php.net"
+                },
+                {
+                    "name": "Phing Community",
+                    "homepage": "http://www.phing.info/trac/wiki/Development/Contributors"
+                }
+            ],
+            "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
+            "homepage": "http://www.phing.info/",
+            "keywords": [
+                "build",
+                "task",
+                "tool"
+            ],
+            "time": "2014-02-13 13:17:59"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

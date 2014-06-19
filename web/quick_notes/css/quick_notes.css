@@ -1,0 +1,42 @@
+#tags {
+    float: left;
+    padding: 5px;
+}
+
+#tags span.tag {
+    cursor: pointer;
+    display: block;
+    float: left;
+    color: #fff;
+    background: #689;
+    padding: 5px;
+    padding-right: 10px;
+    margin: 4px;
+}
+
+#tags span.tag:hover {
+    opacity: 0.7;
+}
+
+#tags span.tag:after {
+    content: "x";
+    border: 1px solid;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 2px;
+    margin: 3px 0 0 5px;
+}
+
+#tags input {
+    background: #EEEEEE;
+    border: 0;
+    margin: 4px;
+    height: 22px;
+    padding: 7px;
+    width: auto;
+}
+
+.contentNote:hover {
+    background-color: #DDDDDD;
+    cursor: pointer;
+}

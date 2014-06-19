@@ -1,0 +1,186 @@
+hdList:
+  path: /helpdesk/all
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\ListController' }
+
+hdViewQueue:
+  path: /helpdesk/queues/{id}/{queue_id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Queue\ViewController', queue_id: null }
+  requirements:
+    id:  \d+
+
+hdAddQueue:
+  path: /helpdesk/queue/add/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Queue\AddController' }
+  requirements:
+    id:  \d+
+
+hdDeleteQueue:
+  path: /helpdesk/queue/delete
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Queue\DeleteController' }
+  requirements:
+    id:  \d+
+
+hdDeleteQueueDialog:
+  path: /helpdesk/queue/dialog/delete/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Queue\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+hdEditQueue:
+  path: /helpdesk/queue/edit/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Queue\EditController' }
+  requirements:
+    id:  \d+
+
+hdSetDisplayColumns:
+  path: /helpdesk/queue/set-display-issues-columns
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Queue\UpdateDisplayColumnsController' }
+
+hdViewSLA:
+  path: /helpdesk/sla/{id}/{sla_id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\ViewController' }
+  requirements:
+    id:  \d+
+    sla_id: \-?\d+
+
+hdEditSLA:
+  path: /helpdesk/sla/edit/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\EditController' }
+  requirements:
+    id:  \d+
+
+hdCustomerPortal:
+  path: /helpdesk/customer-portal/administration/home/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\Administration\SettingsController' }
+  requirements:
+    id:  \d+
+
+hdAutocompleteSLAGoal:
+  path: /helpdesk/goal/autocomplete
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\AutocompleteGoalController' }
+
+hdAddSLAGoal:
+  path: /helpdesk/sla/render-new-goal
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\RenderAddGoalController' }
+
+hdAddSLA:
+  path: /helpdesk/sla/add/{project_id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\AddController' }
+  requirements:
+    project_id:  \d+
+
+hdDeleteSLA:
+  path: /helpdesk/sla/delete
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\DeleteController' }
+
+hdDeleteSLADialog:
+  path: /helpdesk/sla/dialog/delete/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+hdAdminIndex:
+  path: /helpdesk/administration
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\IndexController' }
+
+hdAdminAddCustomer:
+  path: /helpdesk/administration/customers/add
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Customer\AddController' }
+
+hdAdminListCustomer:
+  path: /helpdesk/administration/customers
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Customer\ListController' }
+
+hdAdminListOrganization:
+  path: /helpdesk/administration/organizations
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Organization\ListController' }
+
+hdAdminAddOrganization:
+  path: /helpdesk/administration/organizations/add
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Organization\AddController' }
+
+hdAdminEditOrganization:
+  path: /helpdesk/administration/organizations/edit/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Organization\EditController' }
+  requirements:
+    id:  \d+
+
+hdAdminEditCustomer:
+  path: /helpdesk/administration/customers/edit/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Customer\EditController' }
+  requirements:
+    id:  \d+
+
+hdCustomerPortalAbout:
+  path: /helpdesk/customer-portal/about
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\AboutController' }
+
+hdCustomerPortalIndex:
+  path: /helpdesk/customer-portal
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\IndexController' }
+
+hdCustomerPortalSignIn:
+  path: /helpdesk/customer-portal/sign-in
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\SignInController' }
+
+hdCustomerPortalSignUp:
+  path: /helpdesk/customer-portal/sign-up
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\SignUpController' }
+
+hdCustomerPortalSignOut:
+  path: /helpdesk/customer-portal/sign-out
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\SignOutController' }
+
+hdCustomerPortalDashboard:
+  path: /helpdesk/customer-portal/dashboard
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\DashboardController' }
+
+hdCustomerPortalListIssue:
+  path: /helpdesk/customer-portal/tickets
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\ListIssueController' }
+
+hdCustomerPortalListProject:
+  path: /helpdesk/customer-portal/project/all
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\ListProjectController' }
+
+hdCustomerPortalViewIssue:
+  path: /helpdesk/customer-portal/ticket/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\ViewIssueController' }
+  requirements:
+    id:  \d+
+
+hdCustomerPortalViewProjectSummary:
+  path: /helpdesk/customer-portal/project/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\ViewProjectSummaryController' }
+  requirements:
+    id:  \d+
+
+hdCustomerPortalViewProjectIssuesSummary:
+  path: /helpdesk/customer-portal/project/issues/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\ViewProjectIssuesSummaryController' }
+  requirements:
+    id:  \d+
+
+hdCustomerPortalViewUserProfile:
+  path: /helpdesk/customer-portal/profile/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\CustomerPortal\ViewUserProfileController' }
+  requirements:
+    id:  \d+
+
+hdSlaCalendars:
+  path: /helpdesk/sla/calendars
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\ListController' }
+
+hdSlaCalendarsAdd:
+  path: /helpdesk/sla/calendars/add
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\AddController' }
+
+hdDeleteOrganizationDialog:
+  path: /helpdesk/administration/organizations/dialog/delete/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Organization\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+hdDeleteOrganization:
+  path: /helpdesk/administration/organizations/delete
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Organization\DeleteController' }

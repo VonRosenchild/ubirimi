@@ -1,0 +1,143 @@
+generalHomeMenu:
+  path: /menu/home-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\HomeController' }
+
+generalProjectsMenu:
+  path: /menu/projects-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\ProjectsController' }
+
+generalIssusMenu:
+  path: /menu/issues-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\IssuesController' }
+
+generalReportsMenu:
+  path: /menu/filters-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\FiltersController' }
+
+generalAgileMenu:
+  path: /menu/agile-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\AgileController' }
+
+generalHelpDeskMenu:
+  path: /menu/helpdesk-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\HelpDeskController' }
+
+generalDocumentatorMenu:
+  path: /menu/documentator-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\DocumentatorController' }
+
+generalSVNMenu:
+  path: /menu/svn-menu
+  defaults: { _controller: '\Ubirimi\General\Controller\Menu\SVNController' }
+
+generalHome:
+  path: /general-settings/home
+  defaults: { _controller: '\Ubirimi\General\Controller\IndexController' }
+
+generalLog:
+  path: /general-settings/logs/{from}/{to}
+  defaults: { _controller: '\Ubirimi\General\Controller\LogController' }
+
+generalUsers:
+  path: /general-settings/users
+  defaults: { _controller: '\Ubirimi\General\Controller\ListUserController' }
+
+generalViewGeneral:
+  path: /general-settings/view-general
+  defaults: { _controller: '\Ubirimi\General\Controller\ViewGeneralController' }
+
+generalViewSMTPSettings:
+  path: /general-settings/smtp-settings
+  defaults: { _controller: '\Ubirimi\General\Controller\ViewSMTPSettingsController' }
+
+generalEditSettings:
+  path: /general-settings/edit-general
+  defaults: { _controller: '\Ubirimi\General\Controller\EditSettingsController' }
+
+generalMailQueue:
+  path: /general-settings/main-queue
+  defaults: { _controller: '\Ubirimi\General\Controller\MailQueueController' }
+
+generalEditUser:
+  path: /general-settings/users/edit/{id}
+  defaults: { _controller: '\Ubirimi\General\Controller\User\EditController' }
+  requirements:
+    id:  \d+
+
+generalAddUser:
+  path: /general-settings/users/add
+  defaults: { _controller: '\Ubirimi\General\Controller\User\AddController' }
+
+generalDeleteUserConfirm:
+  path: /general-settings/delete-user-confirm/{user_id}
+  defaults: { _controller: '\Ubirimi\General\Controller\User\DeleteConfirmController' }
+  requirements:
+    user_id:  \d+
+
+generalDeleteUser:
+  path: /general-settings/delete-user
+  defaults: { _controller: '\Ubirimi\General\Controller\User\DeleteController' }
+
+generalUserUpdatePreferencesConfirm:
+  path: /user/update-preferences-dialog/{id}
+  defaults: { _controller: '\Ubirimi\General\Controller\User\UpdatePreferencesConfirmController' }
+
+generalUserUpdatePreferences:
+  path: /user/update-preferences
+  defaults: { _controller: '\Ubirimi\General\Controller\User\UpdatePreferencesController' }
+
+generalChnagePasswordConfirm:
+  path: /general/user/change-password-dialog/{user_id}
+  defaults: { _controller: '\Ubirimi\General\Controller\User\ChangePasswordConfirmController' }
+
+generalChangePassword:
+  path: /general/user/change-password
+  defaults: { _controller: '\Ubirimi\General\Controller\User\ChangePasswordController' }
+
+generalAbout:
+  path: /ubirimi/about
+  defaults: { _controller: '\Ubirimi\General\Controller\AboutController' }
+
+generalSMTPDeleteConfirm:
+  path: /general-settings/delete-smtp-server-confirm/{id}
+  defaults: { _controller: '\Ubirimi\General\Controller\SMTP\DeleteConfirmController' }
+
+generalSMTPDelete:
+  path: /general-settings/delete-smtp-server
+  defaults: { _controller: '\Ubirimi\General\Controller\SMTP\DeleteController' }
+
+generalSMTPAdd:
+  path: /general-settings/smtp-settings/add
+  defaults: { _controller: '\Ubirimi\General\Controller\SMTP\AddController' }
+
+generalSMTPEdit:
+  path: /general-settings/smtp-settings/edit/{id}
+  defaults: { _controller: '\Ubirimi\General\Controller\SMTP\EditController' }
+
+generalFeedbackConfirm:
+  path: /send-feedback-dialog
+  defaults: { _controller: '\Ubirimi\General\Controller\FeedbackConfirmController' }
+
+generalFeedback:
+  path: /send-feedback
+  defaults: { _controller: '\Ubirimi\General\Controller\FeedbackController' }
+
+generalKeyboardShortcuts:
+  path: /keyboard-shortcuts-dialog
+  defaults: { _controller: '\Ubirimi\General\Controller\KeyboardShortcutsController' }
+
+generalRefreshTimezone:
+  path: /general-settings/refresh-timezone
+  defaults: { _controller: '\Ubirimi\General\Controller\RefreshTimezoneController' }
+
+generalAccessDenied:
+  path: /general-settings/bad-link-access-denied
+  defaults: { _controller: '\Ubirimi\General\Controller\AccessDeniedController' }
+
+generalManageApplications:
+  path: /general-settings/applications/manage
+  defaults: { _controller: '\Ubirimi\General\Controller\ManageApplicationsController' }
+
+generalManageAppList:
+  path: /general-settings/update-app-list
+  defaults: { _controller: '\Ubirimi\General\Controller\ManageAppListController' }

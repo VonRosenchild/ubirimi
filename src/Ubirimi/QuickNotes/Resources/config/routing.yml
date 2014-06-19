@@ -1,0 +1,115 @@
+qnHome:
+  path: /quick-notes/home
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\HomeController' }
+
+qnNotebookAddDialog:
+  path: /quick-notes/notebook/add/dialog
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Notebook\AddDialogController' }
+
+qnTagAddDialog:
+  path: /quick-notes/tag/add/dialog
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\AddDialogController' }
+
+qnTagAdd:
+  path: /quick-notes/tag/add
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\AddController' }
+
+qnNotebookAdd:
+  path: /quick-notes/notebook/add
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Notebook\AddController' }
+
+qnNoteAdd:
+  path: /quick-notes/note/add
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\AddController' }
+
+qnNoteEdit:
+  path: /quick-notes/note/edit
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\EditController' }
+
+qnNoteView:
+  path: /quick-notes/note/{notebook_id}/{note_id}
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\ViewController' }
+  requirements:
+    notbook_id:  \d+
+    note_id:  \-?\d+
+
+qnNoteViewByTag:
+  path: /quick-notes/tag/{tag_id}/{note_id}
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\ViewByTagController' }
+  requirements:
+    tag_id:  \d+
+    note_id:  \d+
+
+qnNoteDeleteDialog:
+  path: /quick-notes/note/delete/dialog/{id}
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+qnNoteDelete:
+  path: /quick-notes/note/delete
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\DeleteController' }
+
+qnNoteAll:
+  path: /quick-notes/note/all
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\ViewAllController' }
+
+qnTagAll:
+  path: /quick-notes/tag/all
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\ListController' }
+
+qnNoteAddTag:
+  path: /quick-notes/note/add/tag
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\NoteAddController' }
+
+qnNoteMove:
+  path: /quick-notes/note/move
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\MoveController' }
+
+qnMyNotebooks:
+  path: /quick-notes/my-notebooks
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Notebook\ListController' }
+
+qnNotebookEdit:
+  path: /quick-notes/notebook/edit/{id}
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Notebook\EditController' }
+  requirements:
+    id:  \d+
+
+qnTagEdit:
+  path: /quick-notes/tag/edit/{id}
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\EditController' }
+  requirements:
+    id:  \d+
+
+qnNotebookDeleteDialog:
+  path: /quick-notes/dialog/notebook/delete/{id}
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Notebook\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+qnTagDeleteDialog:
+  path: /quick-notes/tag/delete/dialog/{id}
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+qnTagDelete:
+  path: /quick-notes/tag/delete
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\DeleteController' }
+
+qnNotebookDelete:
+  path: /quick-notes/notebook/delete
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Notebook\DeleteController' }
+
+qnTagForNoteRefresh:
+  path: /quick-notes/tag/refresh
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\RefreshTagsController' }
+
+qnTagDeleteByNote:
+  path: /quick-notes/tag/delete-by-note
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Tag\DeleteByNoteController' }
+
+qnNoteUpdateTitle:
+  path: /quick-notes/note/update/name
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\UpdateTitleController' }

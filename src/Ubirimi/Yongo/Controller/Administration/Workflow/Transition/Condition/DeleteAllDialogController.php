@@ -1,0 +1,1 @@
+Are you sure you want to delete all the conditions associated with this transition?

@@ -1,0 +1,19 @@
+netSingin:
+  path:     /
+  defaults: { _controller: '\Ubirimi\FrontendNET\Controller\SigninController' }
+
+netSingout:
+  path:     /sign-out
+  defaults: { _controller: '\Ubirimi\FrontendNET\Controller\SignoutController' }
+
+netSignup:
+  path:     /sign-up
+  defaults: { _controller: '\Ubirimi\FrontendNET\Controller\SignupController' }
+
+netRecoverPassword:
+  path:     /recover-password
+  defaults: { _controller: '\Ubirimi\FrontendNET\Controller\PasswordRecoverController' }
+
+netRecoverPassword:
+  path:     /recover-password/do
+  defaults: { _controller: '\Ubirimi\FrontendNET\Controller\PasswordRecoverDoController' }

@@ -1,0 +1,40 @@
+{
+    "name": "Ubirimi/ubirimi",
+    "description": "productivity tools",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Flavius Nopcea",
+            "email": "flavius.nopcea@ubirimi.com"
+        },
+        {
+            "name": "Francisc Nopcea",
+            "email": "francisc.nopcea@ubirimi.com"
+        }
+    ],
+
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "require": {
+        "symfony/event-dispatcher": "2.6.*@dev",
+        "symfony/http-foundation": "2.6.*@dev",
+        "symfony/http-kernel": "2.5.*@dev",
+        "symfony/routing": "2.6.*@dev",
+        "symfony/config": "2.6.*@dev",
+        "symfony/yaml": "2.6.*@dev",
+        "symfony/debug": "2.6.*@dev",
+
+        "pimple/pimple": "1.1",
+        "guzzle/guzzle": "3.7.*",
+        "guzzle/silex-provider": "v1.0.0",
+
+        "cogpowered/finediff": "0.0.*",
+        "saltybeagle/savant3": "dev-master",
+        "paymill/paymill": "v3.0.0",
+        "sabre/vobject": "3.1.2",
+        "swiftmailer/swiftmailer": "v5.0.2",
+        "tecnick.com/tcpdf": "6.0.025",
+        "nyholm/zebra-image": "1.0.1"
+    }
+}

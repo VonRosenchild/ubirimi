@@ -1,0 +1,118 @@
+addCalendar:
+  path: /calendar/add
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\AddController' }
+
+listCalendar:
+  path: /calendar/calendars
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\ListController' }
+
+viewCalendar:
+  path: /calendar/view/{ids}/{month}/{year}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\ViewController' }
+
+sharedCalendars:
+  path: /calendar/shared-with-me-calendars
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\ListSharedWithMeController' }
+
+importCalendar:
+  path: /calendar/import
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\ImportController' }
+
+shareConfirmCalendar:
+  path: /calendar/dialog/share/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\ConfirmShareController' }
+  requirements:
+    id:  \d+
+
+shareCalendar:
+  path: /calendar/share
+  path: /calendar/share
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\ShareController' }
+
+viewEvent:
+  path: /calendar/event/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\ViewController' }
+  requirements:
+    id:  \d+
+
+editEvent:
+  path: /calendar/edit/event/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\EditController' }
+  requirements:
+    id:  \d+
+
+searchEvent:
+  path: /calendar/search
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\SearchController' }
+
+settingsCallendar:
+  path: /calendar/settings/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\SettingsController' }
+  requirements:
+    id:  \d+
+
+editCalendar:
+  path: /calendar/edit/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\EditController' }
+  requirements:
+    id:  \d+
+
+deleteCalendarConfirm:
+  path: /calendar/dialog/delete/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+deleteRecurringEventConfirm:
+  path: /calendar/event/delete/dialog/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\DeleteRecurringConfirmController' }
+  requirements:
+    id:  \d+
+
+deleteCalendar:
+  path: /calendar/delete
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\DeleteController' }
+
+deleteReminderCalendar:
+  path: /calendar/reminder-calendar/delete
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\DeleteReminderController' }
+
+deleteEventConfirm:
+  path: /calendar/event/dialog/delete/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+deleteEvent:
+  path: /calendar/event/delete
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\DeleteController' }
+
+addEventConfirm:
+  path: /calendar/dialog/add-event/{day}/{month}/{year}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\AddConfirmController' }
+  requirements:
+    day:  \d+
+    month:  \d+
+    year:  \d+
+
+addEvent:
+  path: /calendar/add-event
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\AddController' }
+
+addEventGuestConfirm:
+  path: /calendar/event/dialog/add-guests/{id}
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\AddGuestConfirmController' }
+  requirements:
+    id:  \d+
+
+addEventGuest:
+  path: /calendar/event/add-guests
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\AddGuestController' }
+
+addEventReminderConfirm:
+  path: /calendar/render-new-reminder
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\AddReminderConfirmController' }
+
+deleteEventReminder:
+  path: /calendar/reminder/delete
+  defaults: { _controller: '\Ubirimi\Calendar\Controller\Event\DeleteReminderController' }

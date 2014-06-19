@@ -1,0 +1,17 @@
+<?php
+
+    use Ubirimi\Repository\Documentador\Entity;
+    use Ubirimi\Repository\Log;
+    use Ubirimi\SystemProduct;
+    use Ubirimi\Util;
+
+    Util::checkUserIsLoggedInAndRedirect();
+
+    $pageId = $_POST['id'];
+    $entity = Entity::getById($pageId);
+
+    Entity::restoreById($pageId);
+
+    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+
+    Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'RESTORE Documentador entity ' . $entity['name'], $currentDate);

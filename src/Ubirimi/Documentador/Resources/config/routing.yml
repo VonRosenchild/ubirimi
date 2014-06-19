@@ -1,0 +1,367 @@
+docSpaces:
+  path: /documentador/dashboard/{type}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\DashboardController' }
+
+docAllUserSpaces:
+  path: /documentador/spaces
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\UserSpacesController' }
+
+docPages:
+  path: /documentador/pages/{space_id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\ListPagesController' }
+  requirements:
+    space_id:  \d+
+
+docViewPage:
+  path: /documentador/page/view/{id}/{rev_id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\ViewController', rev_id: null }
+  requirements:
+    id:  \d+
+
+docAddPageConfirm:
+  path: /documentador/new-page-dialog/{space_id}/{entity_id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\AddConfirmController', entity_id: null }
+  requirements:
+    space_id:  \d+
+
+docAddPage:
+  path: /documentador/spaces/add-page/{space_id}/{entity_id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\AddController', entity_id: null }
+  requirements:
+    space_id:  \d+
+
+docDeletePageConfirm:
+  path: /documentador/page/confirm-remove
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\DeleteConfirmController' }
+
+docaDeletePage:
+  path: /documentador/page/remove
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\DeleteController' }
+
+docEditPage:
+  path: /documentador/page/edit/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\EditController' }
+  requirements:
+    id:  \d+
+
+docUserProfile:
+  path: /documentador/user/profile/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\User\ViewController' }
+  requirements:
+    id:  \d+
+
+docUserFavourites:
+  path: /documentador/user/favourites/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\User\FavouritesController' }
+  requirements:
+    id:  \d+
+
+docUserActivity:
+  path: /documentador/user/activity/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\User\ActivityController' }
+  requirements:
+    id:  \d+
+
+docAdminIndex:
+  path: /documentador/administration
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\IndexController' }
+
+docAdminSpaceToolsOverView:
+  path: /documentador/administration/space-tools/overview/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\SpaceTools\OverviewController' }
+  requirements:
+    id:  \d+
+
+docAdminSpaceToolsOverPermission:
+  path: /documentador/administration/space-tools/permissions/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\SpaceTools\PermissionController' }
+  requirements:
+    id:  \d+
+
+docAdminSpaceToolsOverContentTrash:
+  path: /documentador/administration/space-tools/content/trash/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\SpaceTools\ContentTrashController' }
+  requirements:
+    id:  \d+
+
+docAdminSpaceToolsEidtPermissions:
+  path: /documentador/administration/space-tools/edit-permissions/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\SpaceTools\EditPermissionController' }
+  requirements:
+    id:  \d+
+
+docAdminSpaces:
+  path: /documentador/administration/spaces
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\ListController' }
+
+docAdminEditSpace:
+  path: /documentador/administration/space/edit/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\EditController' }
+  requirements:
+    id:  \d+
+
+docAdminListGroup:
+  path: /documentador/administration/groups
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Group\ListController' }
+
+docAdminAddGroup:
+  path: /documentador/administration/groups/add
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Group\AddController' }
+
+docAdminEditGroup:
+  path: /documentador/administration/group/edit/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Group\EditController' }
+  requirements:
+    id:  \d+
+
+docAdminGroupAssignUsersConfirm:
+  path: /documentador/administration/group/dialog-assign-users/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Group\AssignUsersConfirmController' }
+  requirements:
+    id:  \d+
+
+docAdminGroupAssignUsers:
+  path: /documentador/administration/group/assign-users
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Group\AssignUsersController' }
+
+docAdminGroupDeleteConfirm:
+  path: /documentador/administration/group/delete-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Group\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+docAdminGroupDelete:
+  path: /documentador/administration/group/delete
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Group\DeleteController' }
+  requirements:
+    id:  \d+
+
+docAdminAddSpace:
+  path: /documentador/administration/spaces/add
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\AddController' }
+
+docAdminViewGlobalPermissions:
+  path: /documentador/administration/global-permissions
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\GlobalPermissions\ViewController' }
+
+docAdminEditGlobalPermissions:
+  path: /documentador/administration/edit-global-permissions
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\GlobalPermissions\EditController' }
+
+docAdminListUsers:
+  path: /documentador/administration/users
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\ListUsersController' }
+
+docAddComment:
+  path: /documentador/add-comment
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Comment\AddController' }
+
+docShowComment:
+  path: /documentador/render-page-comments
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Comment\ShowController' }
+
+docDeleteCommentConfirm:
+  path: /documentador/comment/dialog-delete/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Comment\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+docDeleteComment:
+  path: /documentador/comment/delete
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Comment\DeleteController' }
+
+docDeleteSpaceConfirm:
+  path: /documentador/space/confirm-delete
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\DeleteConfirmController' }
+
+docDeleteSpace:
+  path: /documentador/space/delete
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\DeleteController' }
+
+docSearch:
+  path: /documentador/search
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\SearchController' }
+
+docPageAttachments:
+  path: /documentador/page/attachments/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\Attachment\ViewController', id: null }
+  requirements:
+    id:  \d+
+
+docEntityUploadAttachment:
+  path: /documentador/entity/upload-attachment/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\UploadAttachmentController' }
+  requirements:
+    id:  \d+
+
+docPageGetAttachmentData:
+  path: /documentador/page/get-attachment-data
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\Attachment\GetDataController' }
+
+docPageDeleteAttachmentConfirm:
+  path: /documentador/dialog/delete-attachment/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\Attachment\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+docPageDeleteAttachment:
+  path: /documentador/delete-attachment
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\Attachment\DeleteController' }
+
+docPageHistory:
+  path: /documentador/page/history/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\HistoryController' }
+  requirements:
+    id:  \d+
+
+docSpaceDoFavourite:
+  path: /documentador/space/add-favourites
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\DoFavouriteControler' }
+
+docSpaceFindPage:
+  path: /documentador/page/find
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\FindPageController' }
+
+docSpaceGetAll:
+  path: /documentador/space/get-all
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\GetAllController' }
+
+docSpaceGetTopPages:
+  path: /documentador/space/get-top-pages
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\GetTopPagesController' }
+
+docSpaceRemoveFavourites:
+  path: /documentador/space/remove-favourites
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\RemoveFavouritesController' }
+
+docEntityResumeEdit:
+  path: /documentador/entity/resume-edit/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\EntityResumeEditController' }
+  requirements:
+    id:  \d+
+
+docEntityCancelEdit:
+  path: /documentador/page/edit/cancel/{space_id}/{entity_id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\EntityEditCancelController' }
+  requirements:
+    space_id:  \d+
+    entity_id:  \d+
+
+docEntityExportPDF:
+  path: /documentador/page/export-pdf/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\EntityExportPdfController' }
+  requirements:
+    id:  \d+
+
+docEntityUploadFile:
+  path: /documentador/entity/upload/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\UploadController' }
+  requirements:
+    id:  \d+
+
+docAdminPurge:
+  path: /documentador/administration/page/purge
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\PurgeController' }
+
+docAdminRestore:
+  path: /documentador/administration/page/restore
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\RestoreController' }
+
+docAdminPurgeAll:
+  path: /documentador/administration/space/purge-all
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\PurgeAllController' }
+
+docAdminDialogPurge:
+  path: /documentador/administration/page/purge-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\PurgeDialogController' }
+  requirements:
+    id:  \d+
+
+docAdminDialogPurgeAll:
+  path: /documentador/administration/space/purge-all-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\PurgeAllDialogController' }
+  requirements:
+    id:  \d+
+
+docAdminDialogRestore:
+  path: /documentador/administration/page/restore-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Administration\Space\RestoreDialogController' }
+  requirements:
+    id:  \d+
+
+docEditorGetEntityImages:
+  path: /documentador/editor/get-entity-images
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Editor\GetEntityImagesController' }
+  requirements:
+    id:  \d+
+
+docPageDetailsDialog:
+  path: /documentador/page/confirm-page-details/{type}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\General\PageDialogController' }
+
+docPageUpdateParent:
+  path: /documentador/update-entity-parent
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\UpdateParentController' }
+
+docPageRestoreRevision:
+  path: /documentador/page/restore-revision
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\RestoreRevisionController' }
+
+docPageRemoveRevision:
+  path: /documentador/page/remove-revision
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\RemoveRevisionController' }
+
+docPageRemoveRevision:
+  path: /documentador/remove-page-favourite
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\RemoveFavouriteController' }
+
+docFileGetData:
+  path: /documentador/page/get-file-data
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\GetFileDataController' }
+
+docDeleteSnapshot:
+  path: /documentador/entity/delete-snapshot
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\DeleteSnapshotController' }
+
+docDeleteFile:
+  path: /documentador/delete-file
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\DeleteFileController' }
+
+docAddSnapshot:
+  path: /documentador/entity/add-snapshot
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\AddSnapshotController' }
+
+docAddFavourite:
+  path: /documentador/make-page-favourite
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\AddFavouriteController' }
+
+docAddFilelist:
+  path: /documentador/page/add-filelist
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\AddEntityController' }
+
+docEditorUploadImage:
+  path: /documentador/editor/upload-image
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Editor\UploadImageController' }
+
+docGetChildPages:
+  path: /documentador/get-child-pages
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\GetChildPagesController' }
+
+docDeleteFileDialog:
+  path: /documentador/dialog/delete-file/{id}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\DeleteFileDialogController' }
+  requirements:
+    id:  \d+
+
+docRestoreRevisionDialog:
+  path: /documentador/page/confirm-restore-revision/{rev_nr}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\RestoreRevisionDialogController' }
+  requirements:
+    rev_nr:  \d+
+
+docDeleteRevisionDialog:
+  path: /documentador/page/confirm-remove-revision/{entity_id}/{rev_nr}
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\DeleteRevisionDialogController' }
+  requirements:
+    entity_id:  \d+
+    rev_nr:  \d+

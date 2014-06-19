@@ -1,0 +1,22 @@
+repositoryList:
+  path: /svn-hosting/repositories
+  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\ListUserController' }
+
+repositorySummary:
+  path: /svn-hosting/repository/{id}
+  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\ViewSummaryController' }
+  requirements:
+    id:  \d+
+
+repositoryUsers:
+  path: /svn-hosting/repository/users/{id}
+  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\ViewUserSummaryController' }
+  requirements:
+    id:  \d+
+
+repositoryMySettings:
+  path: /svn-hosting/repository/my-settings/{id}
+  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\ViewUserSettingsController' }
+  requirements:
+    id:  \d+
+

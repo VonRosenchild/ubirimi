@@ -1,0 +1,156 @@
+agileBoardPlan:
+  path: /agile/board/plan/{id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\PlanController' }
+  requirements:
+    id:  \d+
+
+agileBoardWork:
+  path: /agile/board/work/{id}/{board_id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\WorkController' }
+  requirements:
+    board_id:  \d+
+
+agileBoardReport:
+  path: /agile/board/report/{id}/{board_id}/{chart}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\ReportController' }
+  requirements:
+    board_id:  \d+
+
+agileIssueData:
+  path: /agile/render-issue
+  defaults: { _controller: '\Ubirimi\Agile\Controller\IssueDataController' }
+
+agileAddSprintConfirmController:
+  path: /agile/add-sprint-dialog/{board_id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\AddConfirmController' }
+  requirements:
+    board_id:  \d+
+
+agileConfirmSprintCompleteController:
+  path: /agile/complete-sprint-confirm/{id}/{board_id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\CompleteConfirmController' }
+  requirements:
+    id:  \d+
+    board_id:  \d+
+
+agileSprintCompleteController:
+  path: /agile/complete-sprint
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\CompleteController' }
+
+agileAddSprintController:
+  path: /agile/add-sprint
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\AddController' }
+
+agileAddToSprint:
+  path: /agile/add-issue-to-sprint
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\AddIssueController' }
+
+agileSprintMoveToBacklog:
+  path: /agile/move-to-backlog
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\MoveToBacklogController' }
+
+agileSprintDeletePlannedConfirm:
+  path: /agile/delete-sprint-dialog
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\DeleteConfirmController' }
+
+agileSprintDelete:
+  path: /agile/delete-sprint
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\DeleteController' }
+
+agileStartSprintConfirmController:
+  path: /agile/start-sprint-dialog/{id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\SstartConfirmController' }
+  requirements:
+    id:  \d+
+
+agileStartSprintController:
+  path: /agile/start-sprint
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\StartController' }
+
+agileBoardList:
+  path: /agile/boards
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\ListController' }
+
+agileBoardAdd:
+  path: /agile/board/add
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\AddController' }
+
+agileBoardEdit:
+  path: /agile/board/edit/{id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\EditController' }
+  requirements:
+    id:  \d+
+
+agileBoardDeleteConfirm:
+  path: /agile/delete-board-dialog
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\DeleteConfirmController' }
+
+agileBoardDelete:
+  path: /agile/delete-board
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\DeleteController' }
+
+agileBoardConfigureDataFilter:
+  path: /agile/configure-board/{id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\EditDataFilterController' }
+  requirements:
+    id:  \d+
+
+agileBoardConfigureDataColumn:
+  path: /agile/edit-board-columns/{id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\EditDataColumnController' }
+  requirements:
+    id:  \d+
+
+agileBoardConfigureSwimlane:
+  path: /agile/board-swimlane/{id}
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\EditSwimlaneController' }
+  requirements:
+    id:  \d+
+
+agileBoardAddColumnConfirm:
+  path: /agile/board-add-column-dialog
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\Column\AddConfirmController' }
+
+agileBoardAddColumn:
+  path: /agile/board-add-column
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\Column\AddController' }
+
+agileBoardDeleteColumnConfirm:
+  path: /agile/board-delete-column-dialog
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\Column\DeleteConfirmController' }
+
+agileBoardDeleteColumn:
+  path: /agile/board-delete-column
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\Column\DeleteController' }
+
+agileBoardUpdateColumnPosition:
+  path: /agile/update-column-position
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\Column\UpdatePositionController' }
+
+agileBoardUpdateColumnData:
+  path: /agile/update-column-data
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\Column\UpdateColumnController' }
+
+agileBoardUpdateSwimlaneStrategy:
+  path: /agile/update-swimlane-strategy
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Board\UpdateSwimlaneStrategyController' }
+
+agileCompleteParentIssueDialog:
+  path: /agile/complete-parent-issue-dialog
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\CompleteParentIssueDialogController' }
+
+agileCheckIssueCompletedSubtasks:
+  path: /agile/check-issue-parent-completed-subtasks
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\CheckIssueCompletedSubtasksController' }
+
+agileGetStepForWorkflowAndStatus:
+  path: /agile/get-step-by-workflow-status
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Transition\GetStepByWorkflowAndStatusController' }
+
+agileGetOutTransitionsForIssue:
+  path: /agile/get-transitions-for-issue
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Transition\GetOutTransitionsController' }
+
+agileGetOutTransitionsBySteps:
+  path: /agile/get-transition-by-step-from-to
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Transition\GetOutTransitionsByStepsController' }

@@ -1,0 +1,1338 @@
+adminIndex:
+  path: /yongo/administration
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IndexController' }
+
+adminViewProject:
+  path: /yongo/administration/project/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ViewSummaryController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectIssueTypeScheme:
+  path: /yongo/administration/project/issue-types/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ViewIssueTypeSchemeController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectWorkflowScheme:
+  path: /yongo/administration/project/workflows/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Workflow\ViewWorkflowSchemeController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectIssueTypeScreenScheme:
+  path: /yongo/administration/project/screens/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\IssueTypeScreenScheme\ViewController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectFieldConfiguration:
+  path: /yongo/administration/project/fields/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\IssueTypeFieldConfiguration\ViewController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectPeople:
+  path: /yongo/administration/project/people/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ListRoleController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectPermissionScheme:
+  path: /yongo/administration/project/permissions/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\PermissionScheme\ViewPermissionSchemeController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectIssueSecurityScheme:
+  path: /yongo/administration/project/issue-security/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ViewIssueSecuritySchemeController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectNotificationScheme:
+  path: /yongo/administration/project/notifications/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\NotificationScheme\ViewController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectVersions:
+  path: /yongo/administration/project/versions/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ListVersionController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectComponents:
+  path: /yongo/administration/project/components/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Component\ListController' }
+  requirements:
+    id:  \d+
+
+#########################################################################
+#                      Issue Security Schemes                           #
+#########################################################################
+
+adminAssociateIssueSecuritySchemeStep1:
+  path: /yongo/administration/project/associate-issue-security-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\AssociateStep1Controller' }
+  requirements:
+    id:  \d+
+
+adminAssociateIssueSecuritySchemeStep2:
+  path: /yongo/administration/project/associate-issue-security-level/{id}/{scheme_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\AssociateStep2Controller' }
+  requirements:
+    id:  \d+
+    scheme_id: \d+
+
+adminListIssueSchemeLevel:
+  path: /yongo/administration/issue-security-scheme-levels/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\ListLevelController' }
+  requirements:
+    id:  \d+
+
+adminAddIssueSchemeLevel:
+  path: /yongo/administration/issue-security-scheme/level/add/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\AddLevelController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueSchemeLevelConfirm:
+  path: /yongo/administration/issue/delete-issue-security-scheme-level-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\DeleteLevelConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueSchemeLevel:
+  path: /yongo/administration/issue/delete-issue-security-scheme-level
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\DeleteLevelController' }
+
+adminEditIssueSchemeLevel:
+  path: /yongo/administration/issue-security-scheme-level/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\EditLevelController' }
+  requirements:
+    id:  \d+
+
+adminAddIssueSchemeLevelData:
+  path: /yongo/administration/issue-security-scheme/level-data/add/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\AddLevelDataController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueSchemeDataConfirm:
+  path: /yongo/administration/security-scheme/delete-data-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\DeleteLevelDataConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueSchemeData:
+  path: /yongo/administration/security-scheme/delete-data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\DeleteLevelDataController' }
+
+adminDeleteIssueScheme:
+  path: /yongo/administration/issue/delete-issue-security-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\DeleteController' }
+
+adminEditIssueScheme:
+  path: /yongo/administration/issue-security-scheme/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueSchemeDialog:
+  path: //yongo/administration/issue/delete-issue-security-scheme-confirm/{id}/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\DeleteDialogController' }
+  requirements:
+    id:  \d+
+    delete_possible:  \d+
+
+adminIssueSchemeDoLevelDefault:
+  path: /yongo/administration/do-security-level-default/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\DoLevelDefaultController' }
+  requirements:
+    id:  \d+
+
+adminListIssueScheme:
+  path: /yongo/administration/issue-security-schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\ListController' }
+
+adminAssIssueScheme:
+  path: /yongo/administration/issue-security-scheme/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme\AddController' }
+
+adminProjectList:
+  path: /yongo/administration/projects
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ListController' }
+
+adminProjectListCategory:
+  path: /yongo/administration/project/categories
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Category\ListController' }
+
+adminAddProject:
+  path: /yongo/administration/project/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\AddController' }
+
+adminEditProject:
+  path: /yongo/administration/project/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteProject:
+  path: /yongo/administration/delete-project
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\DeleteController' }
+
+adminAddProjectCategory:
+  path: /yongo/administration/project/category/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Category\AddController' }
+
+adminEditProjectCategory:
+  path: /yongo/administration/project/category/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Category\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteProjectCategoryConfirm:
+  path: /yongo/administration/project/delete-project-category-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Category\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteProjectCategory:
+  path: /yongo/administration/project/delete-project-category
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Category\DeleteController' }
+
+adminAddProjectComponent:
+  path: /yongo/administration/project/component/add/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Component\AddController' }
+  requirements:
+    id:  \d+
+
+adminEditProjectComponent:
+  path: /yongo/administration/project/component/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Component\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteProjectComponentConfirm:
+  path: /yongo/administration/project/dialog-delete-component/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Component\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteProjectComponent:
+  path: /yongo/administration/project/delete-component
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Component\DeleteController' }
+
+adminAddProjectSubcomponent:
+  path: /yongo/administration/project/subcomponent/add/{project_id}/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Component\AddSubcomponentController' }
+  requirements:
+    project_id:  \d+
+    id:  \d+
+
+adminAddProjectVersion:
+  path: /yongo/administration/project/version/add/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Version\AddController' }
+  requirements:
+    id:  \d+
+
+adminEditProjectVersion:
+  path: /yongo/administration/project/version/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Version\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteProjectVersionConfirm:
+  path: /yongo/administration/project/dialog-delete-version/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Version\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteProjectVersion:
+  path: /yongo/administration/project/delete-version
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Version\DeleteController' }
+
+adminEditPermissionScheme:
+  path: /yongo/administration/permission-scheme/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\EditController' }
+  requirements:
+    id:  \d+
+
+adminAddDataPermissionScheme:
+  path: /yongo/administration/permission-scheme/add-data/{perm_scheme_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\AddDataController' }
+  requirements:
+    id:  \d+
+
+adminDeleteDataPermissionSchemeConfirm:
+  path: /yongo/administration/permission-scheme/delete-data-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\DeleteDataConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteDatPermissionScheme:
+  path: /yongo/administration/permission-scheme/delete-data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\DeleteDataController' }
+
+adminListPermissionScheme:
+  path: /yongo/administration/permission-schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\ListController' }
+
+adminAddPermissionScheme:
+  path: /yongo/administration/permission-scheme/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\AddController' }
+
+adminEditPermissionSchemeMetadata:
+  path: /yongo/administration/permission-scheme/edit-metadata/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\EditMetadataController' }
+  requirements:
+    id:  \d+
+
+adminCopyPermissionScheme:
+  path: /yongo/administration/permission-scheme/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\CopyController' }
+  requirements:
+    id:  \d+
+
+adminDeletePermissionSchemeConfirm:
+  path: /yongo/administration/permission-scheme/delete-confirm/{id}/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+    delete_possible:  \d+
+
+adminDeletePermissionScheme:
+  path: /yongo/administration/permission-scheme/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\PermissionScheme\DeleteController' }
+
+adminListGroup:
+  path: /yongo/administration/groups
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\ListController' }
+
+adminAddGroup:
+  path: /yongo/administration/group/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\AddController' }
+
+adminEditGroup:
+  path: /yongo/administration/group/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteGroupConfirm:
+  path: /yongo/administration/group/delete-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteGroup:
+  path: /yongo/administration/group/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\DeleteController' }
+
+adminGroupAssignUsersConfirm:
+  path: /yongo/administration/group-assign-users-confirm/{group_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\AssignUsersConfirmController' }
+  requirements:
+    group_id:  \d+
+
+adminGroupAssignUsers:
+  path: /yongo/administration/group-assign-users
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\AssignUsersController' }
+
+adminListUser:
+  path: /yongo/administration/users/{group_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\ListController', group_id: null }
+
+adminListUserProjectRole:
+  path: /yongo/administration/user/project-roles/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\ListProjectRoleController' }
+  requirements:
+    id:  \d+
+
+adminEditUserProjectRole:
+  path: /yongo/administration/user/project-roles/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\EditProjectRoleController' }
+  requirements:
+    id:  \d+
+
+adminUserAssignGroupsConfirm:
+  path: /general/user/assign-groups-dialog/{user_id}/{product_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\AssignGroupsConfirmController' }
+  requirements:
+    user_id:  \d+
+    product_id:  \d+
+
+adminUserAssignGroup:
+  path: /general/user/assign-groups
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\AssignGroupsController' }
+
+adminUserPreference:
+  path: /yongo/administration/user-preference
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\ViewPreferenceController' }
+
+adminEditUserPreference:
+  path: /yongo/administration/user-preference/edit
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\EditPreferenceController' }
+
+adminListRole:
+  path: /yongo/administration/roles
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\ListController' }
+
+adminAddRole:
+  path: /yongo/administration/role/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AddController' }
+
+adminEditRole:
+  path: /yongo/administration/role/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteRoleConfirm:
+  path: /yongo/administration/delete-role-confirm/{perm_role_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\DeleteConfirmController' }
+  requirements:
+    perm_role_id:  \d+
+
+adminDeleteRole:
+  path: /yongo/administration/delete-role
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\DeleteController' }
+
+adminRoleAssignUsersConfirm:
+  path: /yongo/administration/role/assign-users-dialog/{role_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignUsersConfirmController' }
+  requirements:
+    role_id:  \d+
+
+adminRoleAssignUsers:
+  path: /yongo/administration/role/assign-users
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignDefaultUsersController' }
+
+adminRoleAssignGroupsConfirm:
+  path: /yongo/administration/role/assign-groups-dialog/{role_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignGroupsConfirmController' }
+  requirements:
+    role_id:  \d+
+
+adminRoleAssignGroups:
+  path: /yongo/administration/role/assign-groups
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignDefaultGroupsController' }
+
+adminGlobalPermission:
+  path: /yongo/administration/global-permissions
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\GlobalPermission\ListController' }
+
+adminAddGlobalPermission:
+  path: /yongo/administration/global-permission/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\GlobalPermission\AddController' }
+
+adminDeleteGlobalPermission:
+  path: /yongo/administration/global-permission/delete/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\GlobalPermission\DeleteDataController' }
+  requirements:
+    id:  \d+
+
+adminViewGeneralConfig:
+  path: /yongo/administration/general-configuration
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\GeneralConfiguration\ViewController' }
+
+adminEditGeneralConfig:
+  path: /yongo/administration/general-configuration/edit
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\GeneralConfiguration\EditController' }
+
+adminIssueFeaturesViewTimeTracking:
+  path: /yongo/administration/issue-features/time-tracking
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\TimeTracking\ViewController' }
+
+adminIssueFeaturesEditTimeTracking:
+  path: /yongo/administration/time-tracking/edit
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\TimeTracking\EditController' }
+
+adminIssueFeaturesDeactivateTimeTracking:
+  path: /yongo/administration/toggle-time-tracking
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\TimeTracking\ToggleController' }
+
+adminIssueFeaturesViewLinking:
+  path: /yongo/administration/issue-features/linking
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Link\ListController' }
+
+adminIssueFeaturesAddLinkType:
+  path: /yongo/administration/link-type/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Link\AddController' }
+
+adminIssueFeaturesEditLinkType:
+  path: /yongo/administration/link-type/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Link\EditController' }
+  requirements:
+    id:  \d+
+
+adminIssueFeaturesDeleteLinkTypeConfirm:
+  path: /yongo/administration/issue/delete-link-type-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Link\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminIssueFeaturesDeleteLinkType:
+  path: /yongo/administration/issue/delete-link-type
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Link\DeleteController' }
+
+adminIssueFeaturesToggleLinkType:
+  path: /yongo/administration/toggle-issue-linking
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Link\ToggleController' }
+
+adminListIssuePriority:
+  path: /yongo/administration/issue/priorities
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Priority\ListController' }
+
+adminAddIssuePriority:
+  path: /yongo/administration/issue/priority/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Priority\AddController' }
+
+adminEditIssuePriority:
+  path: /yongo/administration/issue/priority/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Priority\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssuePriorityConfirm:
+  path: /yongo/administration/issue/delete-priority-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Priority\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssuePriority:
+  path: /yongo/administration/issue/delete-priority
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Priority\DeleteController' }
+
+adminListIssueResolution:
+  path: /yongo/administration/issue/resolutions
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Resolution\ListController' }
+
+adminAddIssueResolution:
+  path: /yongo/administration/issue/resolution/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Resolution\AddController' }
+
+adminEditIssueResolution:
+  path: /yongo/administration/issue/resolution/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Resolution\EditController' }
+
+adminDeleteIssueResolutionConfirm:
+  path: /yongo/administration/issue/delete-resolution-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Resolution\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueResolution:
+  path: /yongo/administration/issue/delete-resolution
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Resolution\DeleteController' }
+
+adminListIssueStatus:
+  path: /yongo/administration/issue/statuses
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Status\ListController' }
+
+adminAddIssueStatus:
+  path: /yongo/administration/issue/status/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Status\AddController' }
+
+adminEditIssueStatus:
+  path: /yongo/administration/issue/status/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Status\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueStatusConfirm:
+  path: /yongo/administration/issue/delete-status-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Status\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueStatus:
+  path: /yongo/administration/issue/delete-status
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Status\DeleteController' }
+
+adminDeleteNotPossibleIssueStatus:
+  path: /yongo/administration/issue/delete-status-not-possible
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Status\DeleteNotPossibleController' }
+
+adminListIssueType:
+  path: /yongo/administration/issue-types
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Type\ListController' }
+
+adminAddIssueType:
+  path: /yongo/administration/issue/add-type
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Type\AddController' }
+
+adminEditIssueType:
+  path: /yongo/administration/issue/edit-type/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Type\EditController' }
+
+adminDeleteIssueTypeConfirm:
+  path: /yongo/administration/issue/delete-type-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Type\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteIssueType:
+  path: /yongo/administration/issue/delete-type
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Type\DeleteController' }
+
+adminListSubtaskIssueType:
+  path: /yongo/administration/issue-sub-tasks
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Issue\Type\ListSubtaskController' }
+
+adminListField:
+  path: /yongo/administration/custom-fields
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ListController' }
+
+adminAddField:
+  path: /yongo/administration/custom-field/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\AddController' }
+
+adminAddFieldData:
+  path: /yongo/administration/custom-field/add-data/{type}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\AddDataController' }
+
+adminEditScreenField:
+  path: /yongo/administration/custom-field/edit-field-screen/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\EditScreenController' }
+  requirements:
+    id:  \d+
+
+adminEditFieldMetadata:
+  path: /yongo/administration/custom-field/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\EditMetadataController' }
+  requirements:
+    id:  \d+
+
+adminDeleteConfirm:
+  path: /yongo/administration/custom-field/delete-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteField:
+  path: /yongo/administration/custom-field/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\DeleteController' }
+
+adminListFieldConfiguration:
+  path: /yongo/administration/field-configurations
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\ListController' }
+
+adminAddFieldConfiguration:
+  path: /yongo/administration/field-configuration/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\AddController' }
+
+adminEditMetadataFieldConfiguration:
+  path: /yongo/administration/field-configuration/metadata/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\EditMetadataController' }
+  requirements:
+    id:  \d+
+
+adminEditFieldConfiguration:
+  path: /yongo/administration/field-configuration/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\EditController' }
+  requirements:
+    id:  \d+
+
+adminCopyFieldConfiguration:
+  path: /yongo/administration/field-configuration/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\CopyController' }
+  requirements:
+    id:  \d+
+
+adminDeleteConfirmFieldConfiguration:
+  path: /yongo/administration/field-configuration/delete-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteFieldConfiguration:
+  path: /yongo/administration/field-configuration/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\DeleteController' }
+
+adminEditDataFieldConfiguration:
+  path: /yongo/administration/field-configuration/edit-data/{field_configuration_id}/{field_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\EditDataController' }
+  requirements:
+    field_configuration_id:  \d+
+    field_id:  \d+
+
+adminEditFieldConfigMetadata:
+  path: /yongo/administration/field-configuration/edit-metadata/{field_configuration_id}/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\EditConfigController' }
+  requirements:
+    field_configuration_id:  \d+
+    field_id:  \d+
+
+adminEditScreenFieldConfiguration:
+  path: /yongo/administration/field-configuration/edit-screen/{field_configuration_id}/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\EditScreenController' }
+  requirements:
+    field_configuration_id:  \d+
+    field_id:  \d+
+
+adminListConfigSchemeFieldConfiguration:
+  path: /yongo/administration/field-configurations/schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\ListController' }
+
+adminEditMetadataConfigSchemeFieldConfiguration:
+  path: /yongo/administration/field-configuration/scheme-metadata/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\EditMetadataController' }
+  requirements:
+    id:  \d+
+
+adminCopyConfigSchemeFieldConfiguration:
+  path: /yongo/administration/field-configuration/scheme/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\CopyController' }
+  requirements:
+    id:  \d+
+
+adminDeleteConfigSchemeFieldConfigurationConfirm:
+  path: /yongo/administration/field-configuration/delete-scheme-confirm/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\DeleteConfirmController' }
+  requirements:
+    id:  \d
+
+adminDeleteConfigSchemeFieldConfiguration:
+  path: /yongo/administration/field-configuration/delete-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\DeleteController' }
+
+adminEditConfigSchemeFieldConfiguration:
+  path: /yongo/administration/field-configuration/scheme/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\EditController' }
+  requirements:
+    id:  \d+
+
+adminEditDataConfigSchemeFieldConfiguration:
+  path: /yongo/administration/field-configuration/scheme-data/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\EditDataController' }
+  requirements:
+    id:  \d+
+
+adminAddFieldConfiguationScheme:
+  path: /yongo/administration/field-configuration/add-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme\AddController' }
+
+adminListWorkflow:
+  path: /yongo/administration/workflows
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\ListController' }
+
+adminAddWorkflow:
+  path: /yongo/administration/workflow/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\AddController' }
+
+adminEditMetadataWorkflow:
+  path: /yongo/administration/workflow/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\EditMetadataController' }
+  requirements:
+    id:  \d+
+
+adminCopyWorkflow:
+  path: /yongo/administration/workflow/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\CopyController' }
+  requirements:
+    id:  \d+
+
+adminDesignWorkflow:
+  path: /yongo/administration/workflow/design/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\DesignController' }
+  requirements:
+    id:  \d+
+
+adminSaveWorkflow:
+  path: /yongo/administration/workflow/save
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\SaveController' }
+
+adminGetProjectWorkflow:
+  path: /yongo/administration/ajax/workflow/get-project-workflow
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\GetController' }
+
+adminViewAsTextWorkflow:
+  path: /yongo/administration/workflow/view-as-text/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\ViewAsTextController' }
+  requirements:
+    id:  \d+
+
+adminDeleteWorkflowConfirm:
+  path: /yongo/administration/workflow/delete-confirm/{id}/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+    delete_possible:  \d
+
+adminDeleteWorkflow:
+  path: /yongo/administration/workflow/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\DeleteController' }
+
+adminAddStepWorkflow:
+  path: /yongo/administration/workflow/add-step/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\AddController' }
+  requirements:
+    id:  \d+
+
+adminEditStepWorklow:
+  path: /yongo/administration/workflow/edit-step/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\EditController' }
+  requirements:
+    id:  \d+
+
+adminViewStepWorkflow:
+  path: /yongo/administration/workflow/view-step/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\ViewController' }
+  requirements:
+    id:  \d+
+
+adminDeleteStepWorkflowConfirm:
+  path: yongo/administration/workflow/delete-step-confirm/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteConfirmController' }
+  requirements:
+    delete_possible:  \d+
+
+adminDeleteStepWorkflow:
+  path: /yongo/administration/workflow/delete-step
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteController' }
+
+adminAddTransitionStepWorkflow:
+  path: /yongo/administration/workflow/add-transition/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\AddTransitionController' }
+  requirements:
+    id:  \d+
+
+adminDeleteTransitionsStepWorkflow:
+  path: /yongo/administration/workflow/delete-transitions/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteTransitionsController' }
+  requirements:
+    id:  \d+
+
+adminDeleteOutgoingTransitionStepWorkflowConfirm:
+  path: /yongo/administration/workflow/delete-outgoing-transitions-confirm/{step_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteOutgoingTransitionConfirmController' }
+  requirements:
+    step_id:  \d+
+
+adminDeleteOutgoingTransitionStepWorkflow:
+  path: /yongo/administration/workflow/delete-outgoing-transitions
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteOutgoingTransitionsController' }
+
+adminViewStepPropertiesWorkflow:
+  path: /yongo/administration/workflow/view-step-properties/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property\ListController' }
+  requirements:
+    id:  \d+
+
+adminAddSetpPropertyWorkflow:
+  path: /yongo/administration/workflow/add-step-property/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property\AddController' }
+  requirements:
+    id:  \d+
+
+adminEditStepPropertyWorkflow:
+  path: /yongo/administration/workflow/edit-step-property/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteStepPropertyWorkflowConfirm:
+  path: /yongo/administration/workflow/delete-set-property-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+
+adminDeleteStepPropertyWorkflow:
+  path: /yongo/administration/workflow/delete-set-property
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property\DeleteController' }
+
+adminStepBrowserWorkflow:
+  path: /yongo/administration/workflow/step-browser/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\ViewBrowserController' }
+  requirements:
+    id:  \d+
+
+adminViewTransitionWorkflow:
+  path: /yongo/administration/workflow/view-transition/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\ViewTransitionController' }
+  requirements:
+    id:  \d+
+
+adminDeleteWorkflowTransition:
+  path: /yongo/administration/ajax/workflow/delete-transition
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\DeleteController' }
+
+adminSaveTransitionData:
+  path: /yongo/administration/ajax/workflow/save-transition-data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\SaveDataController' }
+
+adminDeleteTransitionConditions:
+  path: /yongo/administration/workflow/all-condition-delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition\DeleteAllController' }
+
+adminAddConditionString:
+  path: /yongo/administration/workflow/add-condition-string
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition\AddStringController' }
+
+adminDeleteTransitionConditionsDialog:
+  path: /yongo/administration/workflow/all-condition-delete-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition\DeleteAllDialogController' }
+  requirements:
+    id:  \d+
+
+adminAddWorkflowCondition:
+  path: /yongo/administration/workflow/add-condition/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition\AddController' }
+  requirements:
+    id:  \d+
+
+adminAddWorkflowConditionData:
+  path: /yongo/administration/workflow/add-condition-data/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition\AddDataController' }
+  requirements:
+    id:  \d+
+
+adminViewWorkflowCondition:
+  path: /yongo/administration/workflow/transition-conditions/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition\ListController' }
+  requirements:
+    id:  \d+
+
+adminUpdateTransitionData:
+  path: /yongo/administration/ajax/workflow/update-transition-data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\UpdateController' }
+
+adminDeleteWorkflowAllTransitions:
+  path: /yongo/administration/workflow/delete-transitions/{transition_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\DeleteAllController' }
+  requirements:
+    transition_id:  \d+
+
+adminViewWorlflowTransitionBrowser:
+  path: /yongo/administration/workflow/transition-browser/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\ViewBrowserController' }
+  requirements:
+    id:  \d+
+
+adminEditWorkflowTransition:
+  path: /yongo/administration/workflow/edit-transition/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeletetWorkflowTransitionDialog:
+  path: /yongo/administration/workflow/delete-transition-confirm/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+adminTransitionScreenDialog:
+  path: /yongo/administration/ajax/workflow/render-transition-screen/{id_from}/{id_to}/{workflow_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\TransitionScreenController' }
+  requirements:
+    id_from:  \d+
+    id_to:  \d+
+    workflow_id:  \d+
+
+adminDeletePostFunction:
+  path: /yongo/administration/workflow/delete-post-function-data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\DeleteController' }
+
+adminSavePostFunction:
+  path: /yongo/administration/ajax/workflow/save-transition-post-function
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\SaveController' }
+
+adminListPostFunction:
+  path: /yongo/administration/workflow/transition-post-functions/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\ListController' }
+  requirements:
+    id:  \d+
+
+adminAddPostFunctionData:
+  path: /yongo/administration/workflow/transition-add-post-function-data/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\AddDataController' }
+  requirements:
+    id:  \d+
+
+adminAddPostFunction:
+  path: /yongo/administration/workflow/transition-add-post-function/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\AddController' }
+  requirements:
+    id:  \d+
+
+adminEditPostFunctionData:
+  path: /yongo/administration/workflow/edit-post-function-data/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeletePostFunctionDialog:
+  path: /yongo/administration/workflow/delete-post-function-data-confirm/{deletable}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\DeleteDialogController' }
+  requirements:
+    deletable:  \d+
+
+adminViewPostFunctionContent:
+  path: /yongo/administration/ajax/workflow/render-post-function
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\ViewContentController' }
+
+adminViewPostFunctionContentByParams:
+  path: /yongo/administration/ajax/workflow/render-transition-post-function/{id_from}/{id_to}/{workflow_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction\ViewContentByParamsController' }
+  requirements:
+    id_from:  \d+
+    id_to:  \d+
+    workflow_id:  \d+
+
+adminAddScreen:
+  path: /yongo/administration/screen/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\AddController' }
+
+adminAddScreenScheme:
+  path: /yongo/administration/screen/add-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\AddController' }
+
+adminDeleteScreen:
+  path: /yongo/administration/screen/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\DeleteController' }
+
+adminDeleteScreenField:
+  path: /yongo/administration/screen/delete-scheme-field
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\DeleteFieldController' }
+
+adminDeleteScreenScheme:
+  path: /yongo/administration/screen/delete-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\DeleteController' }
+
+adminDeleteIssueTypeScreenScheme:
+  path: /yongo/administration/screen/delete-scheme-issue-type
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\DeleteController' }
+
+adminAddIssueTypeScreenScheme:
+  path: /yongo/administration/screen/add-scheme-issue-type
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\AddController' }
+
+adminListScreens:
+  path: /yongo/administration/screens
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\ListController' }
+
+adminListScreenSchemes:
+  path: /yongo/administration/screens/schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\ListController' }
+
+adminListIssueTypeScreenSchemes:
+  path: /yongo/administration/screens/issue-types
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\ListController' }
+
+adminConfigureScreen:
+  path: /yongo/administration/screen/configure/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\ConfigureController' }
+  requirements:
+    id:  \d+
+
+adminCopyScreen:
+  path: /yongo/administration/screen/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\CopyController' }
+  requirements:
+    id:  \d+
+
+adminCopyScreenScheme:
+  path: /yongo/administration/screen/copy-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\CopyController' }
+  requirements:
+    id:  \d+
+
+adminEditScreen:
+  path: /yongo/administration/screen/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\EditController' }
+  requirements:
+    id:  \d+
+
+adminConfigureScreenScheme:
+  path: /yongo/administration/screen/configure-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\ConfigureController' }
+  requirements:
+    id:  \d+
+
+adminConfigureIssueTypeScreenScheme:
+  path: /yongo/administration/screen/configure-scheme-issue-type/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\ConfigureController' }
+  requirements:
+    id:  \d+
+
+adminEditIssueTypeScreenSchemeData:
+  path: /yongo/administration/screen/edit-scheme-issue-type-data/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\EditDataController' }
+  requirements:
+    id:  \d+
+
+adminEditScreenSchemeData:
+  path: /yongo/administration/screen/edit-scheme-data/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\EditDataController' }
+  requirements:
+    id:  \d+
+
+adminEditIssueTypeScreenScheme:
+  path: /yongo/administration/screen/edit-scheme-issue-type/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\EditController' }
+  requirements:
+    id:  \d+
+
+adminEditScheme:
+  path: /yongo/administration/screen/edit-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteScreenDialog:
+  path: /yongo/administration/screen/delete-confirm/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\DeleteDialogController' }
+  requirements:
+    delete_possible:  \d+
+
+adminDeleteScreenFieldDialog:
+  path: /yongo/administration/screen/delete-scheme-field-confirm/{field_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\DeleteFieldDialogController' }
+  requirements:
+    field_id:  \d+
+
+adminDeleteScreenSchemeDialog:
+  path: /yongo/administration/screen/delete-scheme-confirm/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\Scheme\DeleteDialogController' }
+  requirements:
+    delete_possible:  \d+
+
+adminDeleteIssueTypeScreenSchemeDialog:
+  path: /yongo/administration/screen/delete-scheme-issue-type-confirm/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\DeleteDialogController' }
+  requirements:
+    delete_possible:  \d+
+
+adminSelectProjectPermissionScheme:
+  path: /yongo/administration/project/permissions/select-project-permission-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\PermissionScheme\SelectSchemeController' }
+  requirements:
+    id:  \d+
+
+adminSelectProjectNotificationScheme:
+  path: /yongo/administration/project/notifications/select-project-notification-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\NotificationScheme\SelectSchemeController' }
+  requirements:
+    id:  \d+
+
+adminSelectProjectWorkflowScheme:
+  path: /yongo/administration/project/workflows/select-project-workflow-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Workflow\SelectSchemeController' }
+  requirements:
+    id:  \d+
+
+adminSelectProjectIssueTypeFieldConfigurationScheme:
+  path: /yongo/administration/project/select-issue-type-field-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\IssueTypeFieldConfiguration\SelectSchemeController' }
+  requirements:
+    id:  \d+
+
+adminSelectProjectIssueTypeScreencheme:
+  path: /yongo/administration/project/select-issue-type-screen-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\IssueTypeScreenScheme\SelectSchemeController' }
+  requirements:
+    id:  \d+
+
+adminAssignGroupsToRoleDialog:
+  path: /yongo/administration/project/assign-groups-dialog/{project_id}/{role_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignGroupsDialogController' }
+  requirements:
+    project_id:  \d+
+    role_id:  \d+
+
+adminAssignUsersToRoleDialog:
+  path: /yongo/administration/project/assign-roles-dialog/{project_id}/{role_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignUsersDialogController' }
+  requirements:
+    project_id:  \d+
+    role_id:  \d+
+
+adminAssignGroupsToPermissionRole:
+  path: /yongo/administration/project/assign-groups
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignGroupsController' }
+
+adminAssignUsersToPermissionRole:
+  path: /yongo/administration/project/assign-roles
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Role\AssignUsersController' }
+
+adminAddEvent:
+  path: /yongo/administration/add-event
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Event\AddController' }
+
+adminDeleteEvent:
+  path: /yongo/administration/event/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Event\DeleteController' }
+
+adminListEvent:
+  path: /yongo/administration/events
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Event\ListController' }
+
+adminEditEvent:
+  path: /yongo/administration/edit-event/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Event\EditController' }
+  requirements:
+    id:  \d+
+
+adminDeleteEventDialog:
+  path: /yongo/administration/event/delete-confirm/{id}/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Event\DeleteDialogController' }
+  requirements:
+    id:  \d+
+    delete_possible:  \d+
+
+adminEditAttachmentConfiguration:
+  path: /yongo/administration/edit-attachment-configuration
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Attachment\EditConfigurationController' }
+
+adminViewAttachmentConfiguration:
+  path: /yongo/administration/attachment-configuration
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Attachment\ViewConfigurationController' }
+
+adminAddIssueTypeScheme:
+  path: /yongo/administration/issue/add-type-scheme/{type}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IssueTypeScheme\AddController' }
+
+adminDeleteIssueTypeScheme:
+  path: /yongo/administration/issue-type-scheme/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IssueTypeScheme\DeleteController' }
+
+adminViewIssueTypeScheme:
+  path: /yongo/administration/issue-type-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IssueTypeScheme\ViewController' }
+  requirements:
+    id:  \d+
+
+adminEditIssueTypeScheme:
+  path: /yongo/administration/issue/edit-type-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IssueTypeScheme\EditController' }
+  requirements:
+    id:  \d+
+
+adminListIssueTypeScheme:
+  path: /yongo/administration/issue-type-schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IssueTypeScheme\ListController' }
+
+adminCopyIssueTypeSchemeDialog:
+  path: /yongo/administration/issue-type-scheme/delete-confirm/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IssueTypeScheme\DeleteDialogController' }
+  requirements:
+    delete_possible:  \d+
+
+adminDeleteWorkflowIssueTypeSchemeDialog:
+  path: /yongo/administration/workflows/delete-issue-type-scheme-dialog/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\IssueTypeScheme\DeleteDialogController' }
+  requirements:
+    delete_possible:  \d+
+
+adminDeleteWorkflowIssueTypeScheme:
+  path: /yongo/administration/workflows/delete-issue-type-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\IssueTypeScheme\DeleteController' }
+
+adminListWorkflowIssueTypeScheme:
+  path: /yongo/administration/workflows/issue-type-schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\IssueTypeScheme\ListController' }
+
+adminAddWorkflowScheme:
+  path: /yongo/administration/workflows/add-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Scheme\AddController' }
+
+adminDeleteWorkflowScheme:
+  path: /yongo/administration/workflows/delete-scheme
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Scheme\DeleteController' }
+
+adminEditWorkflowScheme:
+  path: /yongo/administration/workflows/edit-scheme/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Scheme\ConfigureController' }
+  requirements:
+    id:  \d+
+
+adminDeleteWorkflowSchemeDialog:
+  path: /yongo/administration/workflows/delete-scheme-confirm/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Scheme\DeleteDialogController' }
+  requirements:
+    delete_possible:  \d+
+
+adminListWorkflowScheme:
+  path: /yongo/administration/workflows/schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Scheme\ListController' }
+
+adminListNotificationScheme:
+  path: /yongo/administration/notification-schemes
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\ListController' }
+
+adminAddNotificationScheme:
+  path: /yongo/administration/notification-scheme/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\AddController' }
+
+adminEditNotificationScheme:
+  path: /yongo/administration/notification-scheme/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\EditDataController' }
+  requirements:
+    id:  \d+
+
+adminCopyNotificationScheme:
+  path: /yongo/administration/notification-scheme/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\CopyController' }
+  requirements:
+    id:  \d+
+
+adminDeleteNotificationScheme:
+  path: /yongo/administration/notification-scheme/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\DeleteController' }
+
+adminDeleteNotificationSchemeData:
+  path: /yongo/administration/notification-scheme/delete-data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\DeleteDataController' }
+
+adminDeleteNotificationSchemeDialog:
+  path: /yongo/administration/notification-scheme/delete-confirm/{id}/{delete_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\DeleteDialogController' }
+  requirements:
+    id:  \d+
+    delete_possile:  \d+
+
+adminDeleteNotificationSchemeDataDialog:
+  path: /yongo/administration/notification-scheme/delete-data-confirm/{notification_scheme_data_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\DeleteDataDialogController' }
+  requirements:
+    notification_scheme_data_id:  \d+
+
+adminAddNotificationSchemeData:
+  path: /yongo/administration/notification-scheme/add-data/{not_scheme_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\AddDataController' }
+  requirements:
+    not_scheme_id:  \d+
+
+adminEditNotificationSchemeMetadata:
+  path: /yongo/administration/notification-scheme/edit-metadata/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\NotificationScheme\EditController' }
+  requirements:
+    id:  \d+
+
+adminCopyIssueTypeScheme:
+  path: /yongo/administration/issue-type-scheme/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\IssueTypeScheme\CopyController' }
+  requirements:
+    id:  \d+
+
+adminCopyIssueTypeScreenScheme:
+  path: /yongo/administration/screen/scheme-issue-type/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme\CopyController' }
+  requirements:
+    id:  \d+
+
+adminCopyWorkflowScheme:
+  path: /yongo/administration/workflows/scheme/copy/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Scheme\CopyController' }
+  requirements:
+    id:  \d+
+
+adminUserListFilters:
+  path: /yongo/administration/filter/users
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\User\FilterController' }
+
+adminGroupsListFilters:
+  path: /yongo/administration/filter/groups
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Group\FilterController' }

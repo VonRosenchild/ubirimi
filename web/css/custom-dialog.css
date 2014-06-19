@@ -1,0 +1,38 @@
+/* dialog */
+.ubirimi-dialog.ui-dialog {
+    -moz-box-shadow:    3px 3px 3px 0 #333333;
+    -webkit-box-shadow: 3px 3px 3px 0 #333333;
+    box-shadow:         3px 3px 3px 0 #333333;
+    border: none;
+    padding: 0;
+    font-size: 13px;
+    position: fixed;
+}
+
+/* ascunde butonul */
+.ubirimi-dialog.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close {
+    display: none;
+}
+
+/* titlul */
+.ubirimi-dialog.ui-dialog .ui-dialog-titlebar {
+    background-image: none;
+    font-size: 14px;
+    border: none;
+    background-color: #EEEEEE;
+}
+
+/* customizare titlu */
+.ubirimi-dialog.alert-dialog.ui-dialog .ui-dialog-titlebar {
+    background-color: red;
+}
+
+.ubirimi-dialog.alert-dialog.ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+    color: #ffffff;
+}
+
+/* overlay */
+.ui-widget-overlay {
+    background: #000000 none;
+    opacity: 0.7;
+}

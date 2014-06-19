@@ -1,0 +1,18 @@
+.slaCondition {
+    background-color: #EEEEEE;
+    margin-bottom: 4px;
+    border: solid 1px #cccccc;
+    padding-left: 3px;
+}
+
+.slaNegative {
+    background-color: rgba(255, 0, 0, 0.59);
+    padding: 2px;
+    font-weight: bold;
+}
+
+.slaPositive {
+    padding: 2px;
+    background-color: darkseagreen;
+    font-weight: bold;
+}

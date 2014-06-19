@@ -1,0 +1,431 @@
+dashboard:
+  path: /yongo/my-dashboard
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\IndexController' }
+
+listProject:
+  path: /yongo/project/all
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ListController' }
+
+viewProjectSummary:
+  path: /yongo/project/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewSummaryController' }
+  requirements:
+    id:  \d+
+
+listProjectVersion:
+  path: /yongo/project/versions/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ListVersionController' }
+  requirements:
+    id:  \d+
+
+listProjectComponent:
+  path: /yongo/project/components/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ListComponentController' }
+  requirements:
+    id:  \d+
+
+viewProjectCalendar:
+  path: /yongo/project/calendar/{id}/{month}/{year}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewCalendarController' }
+  requirements:
+    id:  \d+
+    month: \d+
+    year: \d+
+
+viewProjectIssueSummary:
+  path: /yongo/project/issues/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewIssueSummaryController' }
+
+viewProjectComponentSummary:
+  path: /yongo/project/component/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewComponentSummaryController' }
+  requirements:
+    id:  \d+
+
+viewProjectComponentIssue:
+  path: /yongo/project/component/issues/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewComponentIssuesController' }
+  requirements:
+    id:  \d+
+
+viewProjectVersionSummary:
+  path: /yongo/project/version/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewVersionSummaryController' }
+  requirements:
+    id:  \d+
+
+viewProjectVersionIssues:
+  path: /yongo/project/version/issues/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewVersionIssuesController' }
+  requirements:
+    id:  \d+
+
+viewUserSummary:
+  path: /yongo/user/profile/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\User\ViewSummaryController' }
+  requirements:
+    id:  \d+
+
+uploadUserProfilePicture:
+  path: /yongo/user/upload-profile-picture
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\User\UploadProfilePictureController' }
+
+searchIssue:
+  path: /yongo/issue/search
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\SearchController' }
+
+searchIssuePrint:
+  path: /yongo/issue/printable-list
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\SearchListPrintableController' }
+
+viewIssuePrintContent:
+  path: /yongo/issue/printable-list-full-content
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\SearchListPrintableContentController' }
+
+viewIssue:
+  path: /yongo/issue/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ViewController' }
+  requirements:
+    id:  \d+
+
+deleteIssue:
+  path: /yongo/issue/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\DeleteController' }
+
+printIssue:
+  path: /yongo/issue/print/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\PrintController' }
+  requirements:
+    id:  \d+
+
+listAllFilters:
+  path: /yongo/filter/all
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\ListFilterController' }
+
+bulkChangeChoose:
+  path: /yongo/issue/bulk-choose
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Bulk\ChooseIssueController' }
+
+bulkChangeOperation:
+  path: /yongo/issue/bulk-operation
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Bulk\ChooseOperationController' }
+
+bulkOperationDetails:
+  path: /yongo/issue/bulk-operation-details
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Bulk\OperationDetailsController' }
+
+bulkOperationConfirmation:
+  path: /yongo/issue/bulk-change-confirmation
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Bulk\OperationConfirmationController' }
+
+issueMoveStep1:
+  path: /yongo/issue/move/project/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Move\MoveStep1Controller' }
+  requirements:
+    id:  \d+
+
+issueMoveStep1Subtask:
+  path: /yongo/issue/move/subtask-issue-type/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Move\MoveStep1SubtaskController' }
+  requirements:
+    id:  \d+
+
+issueMoveStep2:
+  path: /yongo/issue/move/status/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Move\MoveStep2Controller' }
+  requirements:
+    id:  \d+
+
+issueMoveStep3:
+  path: /yongo/issue/move/fields/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Move\MoveStep3Controller' }
+  requirements:
+    id:  \d+
+
+issueMoveStep4:
+  path: /yongo/issue/move/confirmation/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Move\MoveStep4Controller' }
+  requirements:
+    id:  \d+
+
+issueTimeTracking:
+  path: /yongo/issue/render-time-tracking-status
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\TimeTrackingController' }
+
+getProjectIssueTypes:
+  path: /yongo/project/get-issue-types
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Move\GetProjectIssueTypesController' }
+
+reportDeleteConfirm:
+  path: /yongo/report/delete-dialog/{id}/{possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\DeleteConfirmController' }
+  requirements:
+    id:  \d+
+    possible: \d+
+
+reportDelete:
+  path: /yongo/report/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\DeleteController' }
+
+reportSaveConfirm:
+  path: /yongo/issue-search/save-filter-dialog/{filter_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\SaveConfirmController' }
+  requirements:
+    filter_id:  \-?\d+
+
+reportSave:
+  path: /yongo/issue-search/save-filter
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\SaveController' }
+
+reportProjectData:
+  path: /yongo/project/get-project-data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\ProjectsDataController' }
+
+viewProjectPredefinedFilters:
+  path: /yongo/project/filters/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewPredefinedFiltersController' }
+  requirements:
+    id:  \d+
+
+editIssueDialog:
+  path: /yongo/issue/update-dialog/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\EditDialogController' }
+  requirements:
+    id:  \d+
+
+editIssue:
+  path: /yongo/issue/update
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\EditController' }
+
+assignIssueDialog:
+  path: /yongo/issue/assign-dialog/{issue_id}/{project_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\AssignDialogController' }
+  requirements:
+    id:  \d+
+
+assignIssue:
+  path: /yongo/issue/assign
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\AssignController' }
+
+shareIssueDialog:
+  path: /yongo/issue/share-dialog/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ShareDialogController' }
+  requirements:
+    id:  \d+
+
+shareIssue:
+  path: /yongo/issue/share
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ShareController' }
+  requirements:
+    id:  \d+
+
+saveIssue:
+  path: /yongo/issue/save
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\SaveController' }
+
+addIssueDialog:
+  path: /yongo/render-create-issue/{can_create}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\AddDialogController' }
+  requirements:
+    can_create:  \d+
+
+addIssueCommentDialog:
+  path: /yongo/issue/comment-dialog/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Comment\AddDialogController' }
+  requirements:
+    id:  \d+
+
+editCommentDialog:
+  path: /yongo/issue/comment/render-edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Comment\EditDialogController' }
+  requirements:
+    id:  \d+
+
+editComment:
+  path: /yongo/issue/comment/update
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Comment\EditController' }
+
+viewProjectActivityStrem:
+  path: /yongo/project/activity-stream
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewActivityStreamController' }
+
+viewChartCreatedVsResolved:
+  path: /yongo/chart/get/created-vs-resolved
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Chart\ViewCreatedVsResolvedController' }
+
+viewChartUnresolvedOthers:
+  path: /yongo/chart/get/unresolved-others
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Chart\ViewUnresolvedOthersController' }
+
+viewChartTwoDimensionalFilter:
+  path: /yongo/chart/get/two-dimensional-filter
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Chart\ViewTwoDimensionalFilterController' }
+
+viewIssueComments:
+  path: /yongo/comment-list
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Comment\ViewController' }
+
+addIssueComment:
+  path: /yongo/comment/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Comment\AddController' }
+
+deleteIssueComment:
+  path: /yongo/comment/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Comment\DeleteController' }
+
+saveIssueTransitionNoScreen:
+  path: /yongo/issue/save-issue-transition-quick
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\SaveIssueTransitionNoScreenController' }
+
+saveIssueTransition:
+  path: /yongo/issue/save-issue-transition
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\SaveIssueTransitionController' }
+
+assignToMe:
+  path: /yongo/issue/assign-to-me
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\AssignToMeController' }
+
+clearScreenData:
+  path: /yongo/issue/cleanup
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ClearScreenDataController' }
+
+deleteAttachment:
+  path: /yongo/delete-attachement
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Attachment\DeleteController' }
+
+addDialogAttachment:
+  path: /yongo/issue/attach-dialog/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Attachment\AddDialogController' }
+  requirements:
+    id:  \d+
+
+saveAttachment:
+  path: /yongo/issue/save-attachement
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Attachment\SaveController' }
+
+uploadTransitionAttachment:
+  path: /yongo/upload-attachement
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Attachment\UploadTransitionAttachmentController' }
+
+issueDuplicate:
+  path: /yongo/issue/duplicate
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\DuplicateController' }
+
+quickSearch:
+  path: /yongo/issue/quick-search
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\QuickSearchController' }
+
+validateTimeSpent:
+  path: /yongo/issue/validate-time-spent
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ValidateTimeSpentController' }
+
+setDisplayColumns:
+  path: /yongo/user/set-display-issues-columns
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\SetDisplayColumnsController' }
+
+issueSearchMenu:
+  path: /yongo/issue/get-search-menu
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ViewIssueSearchMenuController' }
+
+entityHistory:
+  path: /yongo/show-history
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ViewEntityHistoryController' }
+
+editFieldListDialog:
+  path: /yongo/issue/render-update-field-list
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ViewEditFieldsController' }
+
+issueCreateViewFieldListDialog:
+  path: /yongo/issue/render-field-list
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\ViewCreateFieldListController' }
+
+issueDuplicateDialog:
+  path: /yongo/issue/duplicate-dialog/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\DuplicateDialogController' }
+  requirements:
+    id:  \d+
+
+transitionDialog:
+  path: /agile/render-transition-issue/{id}/{project_id}/{step_id_from}/{step_id_to}/{issue_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\TransitionDialogController' }
+  requirements:
+    id:  \d+
+    project_id:  \d+
+    step_id_from:  \d+
+    step_id_to:  \d+
+    issue_id:  \d+
+
+viewCreateSubtask:
+  path: /yongo/issue/add-subtask-dialog/{issue_id}/{project_id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\AddSubtaskDialogController' }
+  requirements:
+    issue_id:  \d+
+    project_id:  \d+
+
+viewLinkDialog:
+  path: /yongo/issue/link-dialog/{project_id}/{issue_id}/{link_possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Link\ViewDialogController' }
+  requirements:
+    project_id:  \d+
+    issue_id:  \d+
+    link_possible:  \d+
+
+linkIssue:
+  path: /yongo/issue/link
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Link\LinkController' }
+
+deleteLinkDialog:
+  path: /yongo/issue/delete-link-dialog
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Link\DeleteDialogController' }
+
+deleteLink:
+  path: /yongo/issue/delete-link
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Link\DeleteController' }
+
+logWork:
+  path: /yongo/issue/log-work
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\LogWork\LogController' }
+
+editLogWork:
+  path: /yongo/issue/edit-log-work
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\LogWork\EditController' }
+
+deleteLogWork:
+  path: /yongo/issue/delete-log-work
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\LogWork\DeleteController' }
+
+addLogDialog:
+  path: /yongo/issue/log-work-dialog/{remaining}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\LogWork\AddDialogController' }
+
+deleteLogDialog:
+  path: /yongo/issue/log-work-delete-dialog/{work_log_id}/{remaining}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\LogWork\DeleteDialogController' }
+  requirements:
+    work_log_id:  \d+
+
+editLogDialog:
+  path: /yongo/issue/log-work-edit-dialog/{work_log_id}/{remaining}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\LogWork\EditDialogController' }
+  requirements:
+    work_log_id:  \d+
+
+logView:
+  path: /yongo/issue-work-log
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\LogWork\ViewController' }
+
+toggleIssueWatcher:
+  path: /issue/watchers/toggle
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Watcher\ToggleController' }
+
+addIssueWatcherDialog:
+  path: /issue/watchers/dialog/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Watcher\AddDialogController' }
+
+removeIssueWatcher:
+  path: /issue/watchers/remove
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Watcher\DeleteController' }
+
+addIssueWatcher:
+  path: /issue/watchers/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Watcher\AddController' }
