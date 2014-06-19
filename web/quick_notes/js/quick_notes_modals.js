@@ -4,7 +4,6 @@ $('document').ready(function () {
         event.preventDefault();
 
         $('#contentMenuNotebooks').hide();
-        $('#menuNotebooks').css('background-color', '#eeeeee');
         var options = {
             title: 'Create Notebook',
             buttons: [
