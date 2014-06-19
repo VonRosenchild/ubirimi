@@ -45,7 +45,7 @@
                         <li class="active"><a href="#" title="Issues assigned to me">Assigned to Me (Unresolved)</a></li>
                     </ul>
 
-                    <div>
+                    <div style="max-height: 700px; overflow: auto;">
                         <?php
                             echo '<div style="border: 1px solid #d6d6d6; border-top: none;">';
                             if ($issues) {
@@ -65,22 +65,21 @@
                 </td>
                 <td width="2%"></td>
                 <td width="49%" valign="top">
-                    <ul class="nav nav-tabs" style="padding: 0px;">
-                        <li class="active"><a href="#" title="2 Dimensional Filter Statistics">2 Dimensional Filter Statistics</a></li>
-                    </ul>
                     <div>
-                        <?php
-                            echo '<div style="border: 1px solid #d6d6d6; border-top: none;">';
-
-                            if (count($projectIdsNames)) {
-                                echo '<div style="padding: 4px">';
-                                require_once __DIR__ . '/charts/ViewTwoDimensionalFilter.php';
-                                echo '</div>';
-                            } else {
-                                echo '<div style="padding: 8px;">There are no projects to display information for.</div>';
-                            }
-                            echo '</div>';
-                        ?>
+                        <ul class="nav nav-tabs" style="padding: 0px;">
+                            <li class="active"><a href="#" title="2 Dimensional Filter Statistics">2 Dimensional Filter Statistics</a></li>
+                        </ul>
+                        <div style="max-height: 500px; overflow: auto;">
+                            <div style="border: 1px solid #d6d6d6; border-top: none;">
+                                <?php if (count($projectIdsNames)): ?>
+                                    <div style="padding: 4px">
+                                        <?php require_once __DIR__ . '/charts/ViewTwoDimensionalFilter.php'; ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div style="padding: 8px;">There are no projects to display information for.</div>
+                                <?php endif ?>
+                            </div>
+                        </div>
                     </div>
                     <br />
 
@@ -88,9 +87,12 @@
                         <li class="active"><a href="#" title="Unresolved Issues">Unresolved Issues (Others)</a></li>
                     </ul>
 
-                    <div style="border: 1px solid #d6d6d6; border-top: none;">
-                        <?php require_once __DIR__ . '/charts/ViewUnresolvedOthers.php' ?>
+                    <div style="max-height: 500px; overflow: auto;">
+                        <div style="border: 1px solid #d6d6d6; border-top: none;">
+                            <?php require_once __DIR__ . '/charts/ViewUnresolvedOthers.php' ?>
+                        </div>
                     </div>
+                    
                     <br />
                     <?php if (User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS)): ?>
                         <ul class="nav nav-tabs" style="padding: 0px;">
