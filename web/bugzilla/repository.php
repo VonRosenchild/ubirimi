@@ -19,6 +19,8 @@ use Ubirimi\Calendar\Repository\CalendarReminderType;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
 use Ubirimi\Repository\User\User as UserRepository;
+use Ubirimi\SystemProduct;
+use Ubirimi\Repository\SMTPServer;
 
 function getProducts($connection)
 {
@@ -67,6 +69,34 @@ function getUsers($connection)
     $query = 'SELECT *
                 FROM profiles
                 ORDER BY userid DESC';
+
+    $stmt = $connection->prepare($query);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getBugs($connection)
+{
+    $query = 'SELECT *
+                FROM bugs
+                ORDER BY bug_id DESC';
+
+    $stmt = $connection->prepare($query);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getPriorities($connection)
+{
+    $query = 'SELECT *
+                FROM priority
+                ORDER BY id ASC';
 
     $stmt = $connection->prepare($query);
     $stmt->execute();
@@ -158,7 +188,41 @@ function installMovidiusClient($clientData, $valentinData)
     $columns = 'code#summary#priority#status#created#type#updated#reporter#assignee';
     User::updateDisplayColumns($userId, $columns);
 
-    Client::install($clientId);
+    $clientData = Client::getById($clientId);
+    $userData = Client::getUsers($clientId);
+    $user = $userData->fetch_array(MYSQLI_ASSOC);
+    $userId = $user['id'];
+
+    $clientCreatedDate = $clientData['date_created'];
+
+    Client::installYongoProduct($clientId, $userId, $clientCreatedDate);
+    Client::installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
+    Client::installCalendarProduct($clientId, $userId, $clientCreatedDate);
+
+    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
+    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
+    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
+    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
+    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
+
+    SMTPServer::add(
+        $clientId,
+        'Ubirimi Mail Server',
+        'The default Ubirimi mail server',
+        'notification@ubirimi.com',
+        'UBR',
+        SMTPServer::PROTOCOL_SECURE_SMTP,
+        'smtp.gmail.com',
+        587,
+        10000,
+        1,
+        'notification@ubirimi.com',
+        'cristinasinaomi1',
+        1,
+        $clientCreatedDate
+    );
+
+    Client::setInstalledFlag($clientId, 1);
 
     return array($clientId, $userId);
 }
@@ -211,4 +275,9 @@ function installUser($data)
     }
 
     return $userId;
+}
+
+function saveIssue($data)
+{
+
 }

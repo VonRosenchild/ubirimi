@@ -25,9 +25,23 @@
         if (!$priorityExists && !$emptyPriorityName) {
             $iconName = 'generic.png';
             $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-            IssueSettings::create('issue_priority', $clientId, $name, $description, $iconName, $color, $currentDate);
+            IssueSettings::create(
+                'issue_priority',
+                $clientId,
+                $name,
+                $description,
+                $iconName,
+                $color,
+                $currentDate
+            );
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Issue Priority ' . $name, $currentDate);
+            Log::add(
+                $clientId,
+                SystemProduct::SYS_PRODUCT_YONGO,
+                $loggedInUserId,
+                'ADD Yongo Issue Priority ' . $name,
+                $currentDate
+            );
 
             header('Location: /yongo/administration/issue/priorities');
         }

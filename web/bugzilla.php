@@ -9,6 +9,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/bootstrap_cli.php';
 require_once __DIR__. '/bugzilla/repository.php';
 require_once __DIR__. '/bugzilla/connection.php';
+require_once __DIR__ . '/bugzilla/bug_convertor.php';
 
 /*
  * 1. install client record
@@ -16,7 +17,13 @@ require_once __DIR__. '/bugzilla/connection.php';
  * 3. install components per project
  * 4. install versions per project
  * 5. install users
- * 6. install bugs with the customs fields
+ * 6. install bugs
+ *      - install bugzilla priority
+ *      - install bugzilla resolutions
+ *      - install bugzilla statuses
+ *      - install bugzilla severity
+ *      - install bugzilla workflow
+ *      - install bugs
  */
 
 try {
@@ -94,7 +101,12 @@ try {
     /* install users -- end */
 
     /* install bugs -- start */
+    installPriorities($connectionBugzilla, $clientId);
 
+//    $movidiusBugs = getBugs($connectionBugzilla);
+//    foreach ($movidiusBugs as $bug) {
+//
+//    }
     /* install bugs -- end */
 
     UbirimiContainer::get()['db.connection']->commit();
