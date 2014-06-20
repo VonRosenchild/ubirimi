@@ -93,6 +93,10 @@ try {
     }
     /* install users -- end */
 
+    /* install bugs -- start */
+
+    /* install bugs -- end */
+
     UbirimiContainer::get()['db.connection']->commit();
 } catch (Exception $e) {
     UbirimiContainer::get()['db.connection']->rollback();
