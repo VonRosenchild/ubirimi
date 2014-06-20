@@ -1,7 +1,3 @@
-qnHome:
-  path: /quick-notes/home
-  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\HomeController' }
-
 qnNotebookAddDialog:
   path: /quick-notes/notebook/add/dialog
   defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Notebook\AddDialogController' }
