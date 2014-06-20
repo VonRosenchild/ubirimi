@@ -362,6 +362,11 @@ class Client {
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
+    public static function createBugzillatIssuePriorities($clientId, $currentDate)
+    {
+        
+    }
+
     public static function createDefaultIssueStatuses($clientId, $currentDate) {
         $query = "INSERT INTO issue_status(client_id, name, description, date_created) VALUES " .
             "(" . $clientId . ", 'Open', 'The issue is open and ready for the assignee to start work on it.', '" . $currentDate . "'), (" . $clientId . ", 'Resolved', 'A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed.', '" . $currentDate . "'), " .
@@ -1449,6 +1454,100 @@ class Client {
         } while (UbirimiContainer::get()['db.connection']->next_result());
     }
 
+    public static function installBugzillaYongoProduct($clientId, $userId, $clientCreatedDate)
+    {
+        // set default YONGO Product Settings
+        Client::createDefaultYongoSettings($clientId);
+
+        // add default issue priorities, statuses, resolutions
+        Client::createBugzillatIssuePriorities($clientId, $clientCreatedDate);
+        Client::createDefaultIssueStatuses($clientId, $clientCreatedDate);
+        Client::createDefaultIssueResolutions($clientId, $clientCreatedDate);
+
+        // create default Screens
+        Client::createDefaultScreens($clientId, $clientCreatedDate);
+
+        $screenSchemeId = Client::createDefaultScreenScheme($clientId, $clientCreatedDate);
+        Client::createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
+
+        // create default issue types
+        Client::createDefaultIssueTypes($clientId, $clientCreatedDate);
+        $issueTypeSchemeId = Client::createDefaultIssueTypeScheme($clientId, 'project', $clientCreatedDate);
+        Client::createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
+
+        // create default workflow issue type scheme
+        $workflowIssueTypeSchemeId = Client::createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
+        Client::createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+
+        // create default issue type screen scheme
+        $issueTypeScreenSchemeId = Client::createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
+        Client::createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
+
+        // create default events
+        Client::createDefaultEvents($clientId, $clientCreatedDate);
+
+        // create default workflow
+        $workflowId = Client::createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+        Client::createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
+
+        // create default workflow scheme
+        $workflowSchemeId = Client::createDefaultWorkflowScheme($clientId, $clientCreatedDate);
+        Client::createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
+
+        // create Default Fields
+        Client::createDefaultFields($clientId, $clientCreatedDate);
+
+        // create default link issue options
+        Client::createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
+
+        // create default field configurations
+        $fieldConfigurationId = Client::createDefaultFieldConfiguration($clientId, $clientCreatedDate);
+        Client::createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
+        $issueTypeFieldConfigurationId = Client::createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
+        Client::createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
+
+        Client::createDefaultScreenData($clientId, $clientCreatedDate);
+
+        // create default permission roles
+        PermissionRole::addDefaultPermissionRoles($clientId, $clientCreatedDate);
+
+        // create default group names
+        Group::addDefaultYongoGroups($clientId, $clientCreatedDate);
+
+        $roleAdministrators = PermissionRole::getByName($clientId, 'Administrators');
+
+        $roleDevelopers = PermissionRole::getByName($clientId, 'Developers');
+        $roleUsers = PermissionRole::getByName($clientId, 'Users');
+
+        $groupAdministrators = Group::getByName($clientId, 'Administrators');
+
+        $groupDevelopers = Group::getByName($clientId, 'Developers');
+        $groupUsers = Group::getByName($clientId, 'Users');
+
+        PermissionRole::addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
+        PermissionRole::addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
+
+        PermissionRole::addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
+
+        // add in Administrators group the current user
+        Group::addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
+
+        Group::addData($groupDevelopers['id'], array($userId), $clientCreatedDate);
+        Group::addData($groupUsers['id'], array($userId), $clientCreatedDate);
+
+        // create default permission scheme
+        $permissionSchemeId = Client::createDefaultPermissionScheme($clientId, $clientCreatedDate);
+
+        PermissionScheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
+
+        // create default notification scheme
+        $notificationSchemeId = Client::createDefaultNotificationScheme($clientId, $clientCreatedDate);
+        NotificationScheme::addDefaultNotifications($clientId, $notificationSchemeId);
+
+        // add global permission
+        Client::addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
+    }
+
     public static function installYongoProduct($clientId, $userId, $clientCreatedDate) {
 
         // set default YONGO Product Settings
@@ -1642,20 +1741,22 @@ class Client {
         Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
         Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
 
-        SMTPServer::add($clientId,
-                        'Ubirimi Mail Server',
-                        'The default Ubirimi mail server',
-                        'notification@ubirimi.com',
-                        'UBR',
-                        SMTPServer::PROTOCOL_SECURE_SMTP,
-                        'smtp.gmail.com',
-                        587,
-                        10000,
-                        1,
-                        'notification@ubirimi.com',
-                        'cristinasinaomi1',
-                        1,
-                        $clientCreatedDate);
+        SMTPServer::add(
+            $clientId,
+            'Ubirimi Mail Server',
+            'The default Ubirimi mail server',
+            'notification@ubirimi.com',
+            'UBR',
+            SMTPServer::PROTOCOL_SECURE_SMTP,
+            'smtp.gmail.com',
+            587,
+            10000,
+            1,
+            'notification@ubirimi.com',
+            'cristinasinaomi1',
+            1,
+            $clientCreatedDate
+        );
 
         Client::setInstalledFlag($clientId, 1);
     }
