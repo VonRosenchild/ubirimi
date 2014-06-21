@@ -1,18 +1,30 @@
 <?php
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Calendar\Controller;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
-    $menuSelectedCategory = 'calendars';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $calendarsSharedWithMe = Calendar::getSharedWithUserId($loggedInUserId);
+class ListSharedWithMeController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $month = date('n');
-    $year = date('Y');
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
+        $menuSelectedCategory = 'calendars';
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / Calendars Shared With Me';
+        $calendarsSharedWithMe = Calendar::getSharedWithUserId($session->get('user/id'));
 
-    require_once __DIR__ . '/../Resources/views/ListSharedWithMe.php';
+        $month = date('n');
+        $year = date('Y');
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / Calendars Shared With Me';
+
+        return $this->render(__DIR__ . '/../Resources/views/ListSharedWithMe.php', get_defined_vars());
+    }
+}

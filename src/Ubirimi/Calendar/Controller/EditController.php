@@ -1,47 +1,65 @@
 <?php
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Calendar\Controller;
 
-    $calendarId = $_GET['id'];
-    $calendar = Calendar::getById($calendarId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    if ($calendar['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $calendarExists = false;
+        $calendarId = $request->get('id');
+        $calendar = Calendar::getById($calendarId);
 
-    if (isset($_POST['edit_calendar'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $color = Util::cleanRegularInputField($_POST['color']);
-
-        if (empty($name))
-            $emptyName = true;
-
-        // check for duplication
-
-        $calendarDuplicate = Calendar::getByName($loggedInUserId, mb_strtolower($name), $calendarId);
-        if ($calendarDuplicate) {
-            $calendarExists = true;
+        if ($calendar['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        if (!$calendarExists && !$emptyName) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-            Calendar::updateById($calendarId, $name, $description, $color, $date);
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $loggedInUserId, 'UPDATE EVENTS calendar ' . $name, $date);
+        $emptyName = false;
+        $calendarExists = false;
 
-            header('Location: /calendar/calendars');
+        if ($request->request->has('edit_calendar')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $color = Util::cleanRegularInputField($request->request->get('color'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            // check for duplication
+
+            $calendarDuplicate = Calendar::getByName($session->get('user/id'), mb_strtolower($name), $calendarId);
+            if ($calendarDuplicate) {
+                $calendarExists = true;
+            }
+            if (!$calendarExists && !$emptyName) {
+                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                Calendar::updateById($calendarId, $name, $description, $color, $date);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_CALENDAR,
+                    $session->get('user/id'),
+                    'UPDATE EVENTS calendar ' . $name,
+                    $date
+                );
+
+                return new RedirectResponse('/calendar/calendars');
+            }
         }
+
+        $menuSelectedCategory = 'calendar';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / Calendar: ' . $calendar['name'] . ' / Update';
+
+        return $this->render(__DIR__ . '/../Resources/views/Edit.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'calendar';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / Calendar: ' . $calendar['name'] . ' / Update';
-
-    require_once __DIR__ . '/../Resources/views/Edit.php';
+}

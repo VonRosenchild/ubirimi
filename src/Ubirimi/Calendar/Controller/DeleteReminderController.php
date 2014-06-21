@@ -1,9 +1,24 @@
 <?php
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Calendar\Controller;
 
-    $reminderId = $_POST['id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    Calendar::deleteReminderById($reminderId);
+class DeleteReminder extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $reminderId = $request->request->get('id');
+
+        Calendar::deleteReminderById($reminderId);
+
+        return new Response('');
+    }
+}
