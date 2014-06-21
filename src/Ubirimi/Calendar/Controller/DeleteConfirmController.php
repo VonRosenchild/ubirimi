@@ -1,15 +1,23 @@
 <?php
 
-    use Ubirimi\Calendar\Repository\Calendar;
+namespace Ubirimi\Calendar\Controller;
 
-    $calendarId = $_GET['id'];
-    $calendar = Calendar::getById($calendarId);
-    $defaultCalendar = false;
-    if (1 == $calendar['default_flag']) {
-        $defaultCalendar = true;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\UbirimiController;
+
+class DeleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        $calendarId = $request->get('id');
+        $calendar = Calendar::getById($calendarId);
+        $defaultCalendar = false;
+        if (1 == $calendar['default_flag']) {
+            $defaultCalendar = true;
+        }
+
+        return $this->render(__DIR__ . '/../Resources/views/DeleteConfirm.php', get_defined_vars());
     }
-?>
-<div>Are you sure you want to delete this calendar?</div>
-<?php if ($defaultCalendar): ?>
-    <div>This is your primary calendar. This operation can not be undone.</div>
-<?php endif ?>
+}

@@ -1,28 +1,51 @@
 <?php
-    use Ubirimi\Calendar\Event\CalendarEvent;
-    use Ubirimi\Calendar\Event\CalendarEvents;
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Event\LogEvent;
-    use Ubirimi\Event\UbirimiEvents;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Calendar\Controller;
 
-    $calendarId = $_POST['id'];
-    $noteContent = $_POST['note'];
-    $userIds = $_POST['user_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Event\CalendarEvent;
+use Ubirimi\Calendar\Event\CalendarEvents;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Event\LogEvent;
+use Ubirimi\Event\UbirimiEvents;
+use Ubirimi\Repository\User\User;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-    Calendar::shareWithUsers($calendarId, $userIds, $currentDate);
+class ShareController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $userThatShares = User::getById($loggedInUserId);
-    $calendar = Calendar::getById($calendarId);
+        $calendarId = $request->request->get('id');
+        $noteContent = $request->request->get('note');
+        $userIds = $request->request->get('user_id');
 
-    $calendarEvent = new CalendarEvent($calendar, array('userThatShares' => $userThatShares, 'usersToShareWith' => $userIds, 'noteContent' => $noteContent));
-    $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Share Calendar ' . $calendar['name']);
+        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        Calendar::shareWithUsers($calendarId, $userIds, $currentDate);
 
-    UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
-    UbirimiContainer::get()['dispatcher']->dispatch(CalendarEvents::CALENDAR_SHARE, $calendarEvent);
+        $userThatShares = User::getById($session->get('user/id'));
+        $calendar = Calendar::getById($calendarId);
+
+        $calendarEvent = new CalendarEvent(
+            $calendar,
+            array(
+                'userThatShares' => $userThatShares,
+                'usersToShareWith' => $userIds,
+                'noteContent' => $noteContent
+            )
+        );
+
+        $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Share Calendar ' . $calendar['name']);
+
+        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
+        UbirimiContainer::get()['dispatcher']->dispatch(CalendarEvents::CALENDAR_SHARE, $calendarEvent);
+
+        return new Response('');
+    }
+}

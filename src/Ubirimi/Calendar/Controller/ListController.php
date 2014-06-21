@@ -1,17 +1,30 @@
 <?php
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Calendar\Controller;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
-    $menuSelectedCategory = 'calendars';
-    $calendars = Calendar::getByUserId($loggedInUserId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $month = date('n');
-    $year = date('Y');
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / My Calendar';
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
+        $menuSelectedCategory = 'calendars';
+        $calendars = Calendar::getByUserId($session->get('user/id'));
 
-    require_once __DIR__ . '/../Resources/views/List.php';
+        $month = date('n');
+        $year = date('Y');
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / My Calendar';
+
+        return $this->render(__DIR__ . '/../Resources/views/List.php', get_defined_vars());
+    }
+}

@@ -1,46 +1,64 @@
 <?php
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Calendar\Controller;
 
-    $calendarId = $_GET['id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $calendar = Calendar::getById($calendarId);
+class SettingsController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $defaultReminders = Calendar::getReminders($calendarId);
-    if ($calendar['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+        $calendarId = $request->get('id');
 
-    if (isset($_POST['edit_calendar_settings'])) {
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-        Calendar::deleteReminders($calendarId);
+        $calendar = Calendar::getById($calendarId);
 
-        // reminder information
-        foreach ($_POST as $key => $value) {
-            if (strpos($key, 'reminder_type_') !== false) {
-                $indexReminder = str_replace('reminder_type_', '', $key);
-                $reminderType = Util::cleanRegularInputField($_POST[$key]);
-                $reminderValue = $_POST['value_reminder_' . $indexReminder];
-                $reminderPeriod = $_POST['reminder_period_' . $indexReminder];
-
-                // add the reminder
-                if (is_numeric($reminderValue)) {
-                    Calendar::addReminder($calendarId, $reminderType, $reminderPeriod, $reminderValue);
-                }
-            }
+        $defaultReminders = Calendar::getReminders($calendarId);
+        if ($calendar['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $loggedInUserId, 'UPDATE Calendar Default Reminders ' . $calendar['name'], $date);
+        if ($request->request->has('edit_calendar_settings')) {
+            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            Calendar::deleteReminders($calendarId);
 
-        header('Location: /calendar/calendars');
+            // reminder information
+            foreach ($request->request as $key => $value) {
+                if (strpos($key, 'reminder_type_') !== false) {
+                    $indexReminder = str_replace('reminder_type_', '', $key);
+                    $reminderType = Util::cleanRegularInputField($request->request->get($key));
+                    $reminderValue = $request->request->get('value_reminder_' . $indexReminder);
+                    $reminderPeriod = $request->request->get('reminder_period_' . $indexReminder);
+
+                    // add the reminder
+                    if (is_numeric($reminderValue)) {
+                        Calendar::addReminder($calendarId, $reminderType, $reminderPeriod, $reminderValue);
+                    }
+                }
+            }
+
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_CALENDAR,
+                $session->get('user/id'),
+                'UPDATE Calendar Default Reminders ' . $calendar['name'],
+                $date
+            );
+
+            return new RedirectResponse('/calendar/calendars');
+        }
+
+        $menuSelectedCategory = 'calendar';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / Calendar: ' . $calendar['name'] . ' / Settings';
+
+        return $this->render(__DIR__ . '/../Resources/views/Settings.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'calendar';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / Calendar: ' . $calendar['name'] . ' / Settings';
-
-    require_once __DIR__ . '/../Resources/views/Settings.php';
+}
