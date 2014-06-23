@@ -400,6 +400,7 @@ function createIssue() {
         modal: true,
         draggable: false,
         width: "auto",
+        height: $(window).height() - 137,
         stack: true,
         position: 'center',
         autoOpen: false,
