@@ -6,7 +6,7 @@
     $sysOperationId = SystemOperation::OPERATION_CREATE;
 ?>
 <?php if ($canCreateIssue): ?>
-    <div style="padding-left: 0px; margin-right: 0px; max-height: 600px; min-height: 300px;">
+    <div style="padding-left: 0px; margin-right: 0px; min-height: 300px;">
         <div id="errosMandatoryFieldsNotPresentOnScreen"></div>
         <div id="messageIssueCreatedDialog" class="messageGreen" style="padding: 8px; display: none"></div>
         <table border="0" cellpadding="2" cellspacing="0" id="tableFieldList" class="modal-table">

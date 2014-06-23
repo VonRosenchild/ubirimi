@@ -2,7 +2,7 @@
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 ?>
 <body>
-    <div style="padding-left: 0px; margin-right: 0px; max-height: 600px;">
+    <div style="padding-left: 0px; margin-right: 0px;">
         <div>
             <div id="errosMandatoryFieldsNotPresentOnScreen"></div>
             <?php require_once __DIR__ . '/ViewEditDialog.php' ?>
