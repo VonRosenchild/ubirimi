@@ -314,8 +314,15 @@ function editIssue(issueId) {
                     });
             }
         }
+
+        $('#modalEditIssue').css('max-height', $(window).height() - 140);
     });
 }
+
+$(window).on('resize', function(){
+    $('#modalCreateIssue').css('max-height', $(window).height() - 160);
+    $('#modalEditIssue').css('max-height', $(window).height() - 160);
+});
 
 function createIssue() {
 
@@ -371,6 +378,7 @@ function createIssue() {
                 }
 
                 $('#modalCreateIssue').find('input').eq(0).focus();
+                $('#modalCreateIssue').css('max-height', $(window).height() - 140);
             }
         });
     }
@@ -400,7 +408,6 @@ function createIssue() {
         modal: true,
         draggable: false,
         width: "auto",
-        height: $(window).height() - 137,
         stack: true,
         position: 'center',
         autoOpen: false,
