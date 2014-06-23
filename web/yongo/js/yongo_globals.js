@@ -1,3 +1,10 @@
+// resize the create/edit modals as the users resizes the browser window
+
+$(window).on('resize', function(){
+    $('#modalCreateIssue').css('max-height', $(window).height() - 160);
+    $('#modalEditIssue').css('max-height', $(window).height() - 160);
+});
+
 function createSubtask(issueId, projectId, onSuccess) {
 
     var options = {
@@ -318,11 +325,6 @@ function editIssue(issueId) {
         $('#modalEditIssue').css('max-height', $(window).height() - 140);
     });
 }
-
-$(window).on('resize', function(){
-    $('#modalCreateIssue').css('max-height', $(window).height() - 160);
-    $('#modalEditIssue').css('max-height', $(window).height() - 160);
-});
 
 function createIssue() {
 
