@@ -1,61 +1,93 @@
 <?php
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\Calendar\Repository\CalendarEvent;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Calendar\Controller\Event;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Calendar\Repository\CalendarEvent;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $eventId = $_GET['id'];
-    $sourcePageLink = $_GET['source'];
-    $event = CalendarEvent::getById($eventId, 'array');
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $eventReminders = CalendarEvent::getReminders($eventId);
-    if ($event['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
-    $calendars = Calendar::getByUserId($loggedInUserId, 'array');
-    $menuSelectedCategory = 'calendars';
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
 
-    if (isset($_POST['edit_event'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $location = Util::cleanRegularInputField($_POST['location']);
-        $calendarId = Util::cleanRegularInputField($_POST['calendar']);
-        $dateFrom = Util::cleanRegularInputField($_POST['date_from']);
-        $dateTo = Util::cleanRegularInputField($_POST['date_to']);
-        $color = Util::cleanRegularInputField($_POST['color']);
+        $eventId = $request->get('id');
+        $sourcePageLink = $request->get('source');
+        $event = CalendarEvent::getById($eventId, 'array');
 
-        $dateFrom .= ':00';
-        $dateTo .= ':00';
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-        CalendarEvent::updateById($eventId, $calendarId, $name, $description, $location, $dateFrom, $dateTo, $color, $date);
-        CalendarEvent::deleteReminders($eventId);
+        $eventReminders = CalendarEvent::getReminders($eventId);
+        if ($event['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
+        $calendars = Calendar::getByUserId($session->get('client/id'), 'array');
+        $menuSelectedCategory = 'calendars';
 
-        // reminder information
-        foreach ($_POST as $key => $value) {
-            if (strpos($key, 'reminder_type_') !== false) {
-                $indexReminder = str_replace('reminder_type_', '', $key);
-                $reminderType = Util::cleanRegularInputField($_POST[$key]);
-                $reminderValue = $_POST['value_reminder_' . $indexReminder];
-                $reminderPeriod = $_POST['reminder_period_' . $indexReminder];
+        if ($request->request->has('edit_event')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $location = Util::cleanRegularInputField($request->request->get('location'));
+            $calendarId = Util::cleanRegularInputField($request->request->get('calendar'));
+            $dateFrom = Util::cleanRegularInputField($request->request->get('date_from'));
+            $dateTo = Util::cleanRegularInputField($request->request->get('date_to'));
+            $color = Util::cleanRegularInputField($request->request->get('color'));
 
-                // add the reminder
-                if (is_numeric($reminderValue)) {
-                    CalendarEvent::addReminder($eventId, $reminderType, $reminderPeriod, $reminderValue);
+            $dateFrom .= ':00';
+            $dateTo .= ':00';
+            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            CalendarEvent::updateById(
+                $eventId,
+                $calendarId,
+                $name,
+                $description,
+                $location,
+                $dateFrom,
+                $dateTo,
+                $color,
+                $date
+            );
+            CalendarEvent::deleteReminders($eventId);
+
+            // reminder information
+            foreach ($request->request as $key => $value) {
+                if (strpos($key, 'reminder_type_') !== false) {
+                    $indexReminder = str_replace('reminder_type_', '', $key);
+                    $reminderType = Util::cleanRegularInputField($request->request->get($key));
+                    $reminderValue = $request->request->get('value_reminder_' . $indexReminder);
+                    $reminderPeriod = $request->request->get('reminder_period_' . $indexReminder);
+
+                    // add the reminder
+                    if (is_numeric($reminderValue)) {
+                        CalendarEvent::addReminder($eventId, $reminderType, $reminderPeriod, $reminderValue);
+                    }
                 }
             }
+
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_CALENDAR,
+                $session->get('user/id'),
+                'UPDATE EVENTS event ' . $name,
+                $date
+            );
+
+            return new RedirectResponse($sourcePageLink);
         }
 
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $loggedInUserId, 'UPDATE EVENTS event ' . $name, $date);
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
+            . SystemProduct::SYS_PRODUCT_CALENDAR_NAME
+            . ' / Event: '
+            . $event['name']
+            . ' / Update';
 
-        header('Location: ' . $sourcePageLink);
+        return $this->render(__DIR__ . '/../../Resources/views/event/Edit.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / Event: ' . $event['name'] . ' / Update';
-
-    require_once __DIR__ . '/../../Resources/views/event/Edit.php';
+}
