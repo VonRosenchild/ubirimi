@@ -1,7 +1,10 @@
 <table>
     <tr>
-        <td align="right">Name</td>
-        <td><input type="text" class="inputText" id="notebook_name" /></td>
+        <td valign="top" align="right">Name</td>
+        <td>
+            <input type="text" class="inputText" id="notebook_name" />
+            <div id="errorNotebookName" class="error"></div>
+        </td>
     </tr>
     <tr>
         <td valign="top" align="right">Description</td>

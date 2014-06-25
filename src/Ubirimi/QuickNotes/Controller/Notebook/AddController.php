@@ -27,5 +27,3 @@
 
         Log::add($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $loggedInUserId, 'ADD QUICK NOTES notebook ' . $name, $currentDate);
     }
-
-
