@@ -4,12 +4,19 @@ $('document').ready(function () {
         event.preventDefault();
 
         $('#contentMenuNotebooks').hide();
+
         var options = {
             title: 'Create Notebook',
             buttons: [
                 {
                     text: "Create Notebook",
                     click: function () {
+                        var notebookName = $('#notebook_name').val().trim();
+
+                        if (notebookName == '') {
+                            $('#errorNotebookName').html('The notebook name can not be empty');
+                            return;
+                        }
                         $.ajax({
                             type: "POST",
                             url: '/quick-notes/notebook/add',
