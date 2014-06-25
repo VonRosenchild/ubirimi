@@ -63,6 +63,37 @@ $('document').ready(function () {
                                 }
 
                                 repeatData += '#' + $('#add_event_repeat_start_date').val();
+                            } else if (2 == repeatType) {
+                                repeatData += '2';
+                                repeatData += '#' + $('#add_event_repeat_every').val();
+                                if ($('#add_event_repeat_end_date_never').is(':checked')) {
+                                    repeatData += '#n';
+                                } else if ($('#add_event_repeat_end_date_after_occurrences').is(':checked')) {
+                                    repeatData += '#a' + $('#add_event_repeat_after').val();
+                                } else if ($('#add_event_repeat_end_date_on').is(':checked')) {
+                                    repeatData += '#o' + $('#add_event_repeat_end_date_on').val();
+                                }
+
+                                repeatData += '#' + $('#add_event_repeat_start_date').val();
+                                repeatData += '#';
+                                var dayValue = $('#week_on_0').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+                                var dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+                                var dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+                                var dayValue = $('#week_on_2').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+                                var dayValue = $('#week_on_3').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+                                var dayValue = $('#week_on_4').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+                                var dayValue = $('#week_on_5').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+                                var dayValue = $('#week_on_6').prop('checked') ? 1 : 0;
+                                repeatData += dayValue;
+
+                                return;
                             }
                             $.ajax({
                                 type: "POST",

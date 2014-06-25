@@ -53,13 +53,13 @@
             <tr>
                 <td>Repeat on</td>
                 <td>
-                    <input type="checkbox" value="1" id="week_on_sunday" /> S
-                    <input type="checkbox" value="1" id="week_on_sunday" /> M
-                    <input type="checkbox" value="1" id="week_on_sunday" /> T
-                    <input type="checkbox" value="1" id="week_on_sunday" /> W
-                    <input type="checkbox" value="1" id="week_on_sunday" /> T
-                    <input type="checkbox" value="1" id="week_on_sunday" /> F
-                    <input type="checkbox" value="1" id="week_on_sunday" /> S
+                    <input type="checkbox" value="1" id="week_on_0" /> S
+                    <input type="checkbox" value="1" id="week_on_1" /> M
+                    <input type="checkbox" value="1" id="week_on_2" /> T
+                    <input type="checkbox" value="1" id="week_on_3" /> W
+                    <input type="checkbox" value="1" id="week_on_4" /> T
+                    <input type="checkbox" value="1" id="week_on_5" /> F
+                    <input type="checkbox" value="1" id="week_on_6" /> S
                 </td>
             </tr>
             <tr>
