@@ -70,13 +70,20 @@ class CalendarEvent {
             $stmt->execute();
 
             $eventId = UbirimiContainer::get()['db.connection']->insert_id;
+            // update the cal_event_link_id
+            $query = "update cal_event set cal_event_link_id = ? where id = ? limit 1";
+            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+
+                $stmt->bind_param("ii", $eventId, $eventId);
+                $stmt->execute();
+            }
 
             for ($k = 0; $k < count($repeatDates); $k++) {
-                $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, name, description, location, date_from, " .
-                    "date_to, color, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
+                    "date_to, color, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiisssssss", $calendarId, $userCreatedId, $eventId, $name, $description, $location, $repeatDates[$k][0], $repeatDates[$k][1], $color, $currentDate);
+                    $stmt->bind_param("iiiisssssss", $calendarId, $userCreatedId, $eventId, $calEventRepeatId, $name, $description, $location, $repeatDates[$k][0], $repeatDates[$k][1], $color, $currentDate);
                     $stmt->execute();
                 }
             }

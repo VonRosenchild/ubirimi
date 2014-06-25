@@ -80,7 +80,7 @@ $('document').ready(function () {
                                 success: function (response) {
                                     $("#modalAddEvent").dialog('destroy');
                                     $("#modalAddEvent").empty();
-                                    location.reload();
+//                                    location.reload();
                                 }
                             });
                         }
