@@ -239,7 +239,7 @@ class User {
             'left join help_organization on help_organization.id = help_organization_user.help_organization_id ' .
             "WHERE user.client_id = ? " .
             'and customer_service_desk_flag = ' . $helpDeskFlag . ' ' .
-            "order by id asc";
+            "order by user.first_name, user.last_name asc";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $clientId);
