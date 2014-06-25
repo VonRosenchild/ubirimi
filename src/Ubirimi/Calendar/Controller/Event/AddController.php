@@ -30,6 +30,8 @@ class AddController extends UbirimiController
         if (!empty($name)) {
             $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
 
+            ini_set('memory_limit', '1024M');
+
             $eventId = CalendarEvent::add(
                 $calendarId,
                 $session->get('user/id'),

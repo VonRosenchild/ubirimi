@@ -114,6 +114,9 @@ $('document').ready(function () {
         if (1 == repeatType) {
             $('#add_event_repeat_daily_content').show();
         }
+        if (2 == repeatType) {
+            $('#add_event_repeat_weekly_content').show();
+        }
     });
 
     $(document).on('click', "[id^='event_delete_']", function (event) {

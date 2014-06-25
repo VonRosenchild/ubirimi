@@ -50,8 +50,9 @@
             <select id="add_event_repeat_type" class="inputTextCombo">
                 <option value="-1">Does not repeat</option>
                 <option value="1">Daily</option>
+                <option value="2">Weekly</option>
             </select>
         </td>
     </tr>
-    <?php require_once __DIR__ . '/AddRepeatDaily.php' ?>
+    <?php require_once __DIR__ . '/AddRepeatSettings.php' ?>
 </table>

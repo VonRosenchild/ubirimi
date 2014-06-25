@@ -31,14 +31,16 @@ class CalendarEvent {
                 if ('n' == $endData[0]) {
                     $dateTemporary = date_create($repeatStartDate);
                     date_add($dateTemporary, date_interval_create_from_date_string('30 years'));
+
                     $repeatEndDate = date_format($dateTemporary, 'Y-m-d');
+                    $repeatEndDateTemporary = date_create($repeatStartDate);
 
-                    $repeatEndDateTemporary = $repeatStartDate;
-                    while ($repeatEndDateTemporary <= $repeatEndDate) {
-                        $repeatEndDateTemporary = date('Y-m-d', strtotime("+" . intval($repeatEvery) . ' days', strtotime($repeatEndDateTemporary)));
-                        $repeatDates[] = array($repeatEndDateTemporary, date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDateTemporary))));
+                    while (date_format($repeatEndDateTemporary, 'Y-m-d') <= $repeatEndDate) {
+
+                        date_add($repeatEndDateTemporary, date_interval_create_from_date_string(intval($repeatEvery) . ' days'));
+                        $offsetEndDate = date_add($repeatEndDateTemporary, date_interval_create_from_date_string($daysBetween . ' days'));
+                        $repeatDates[] = array(date_format($repeatEndDateTemporary, 'Y-m-d'), date_format($offsetEndDate, 'Y-m-d'));
                     }
-
                 } else if ('a' == $endData[0]) {
 
                     $pos = 1;
@@ -78,14 +80,18 @@ class CalendarEvent {
                 $stmt->execute();
             }
 
+            $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
+                                           "date_to, color, date_created) VALUES ";
+            $separator = '';
             for ($k = 0; $k < count($repeatDates); $k++) {
-                $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
-                    "date_to, color, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiiisssssss", $calendarId, $userCreatedId, $eventId, $calEventRepeatId, $name, $description, $location, $repeatDates[$k][0], $repeatDates[$k][1], $color, $currentDate);
-                    $stmt->execute();
-                }
+                $queryValues = $separator . "(%d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+                $query .= sprintf($queryValues, $calendarId, $userCreatedId, $eventId, $calEventRepeatId, $name, $description, $location, $repeatDates[$k][0], $repeatDates[$k][1], $color, $currentDate);
+                $separator = ',';
+            }
+
+            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+                $stmt->execute();
             }
 
             return $eventId;
