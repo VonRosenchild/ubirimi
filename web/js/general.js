@@ -195,13 +195,6 @@ $('document').ready(function () {
         });
     });
 
-    $(document).on('mouseenter mouseleave', ".table > tbody > tr", function (event) {
-//
-//        if (event.type == 'mouseenter') {
-//            $(this).css('cursor', 'pointer');
-//        }
-    });
-
     $("#content_list tr").on('mouseenter mouseleave',
         function (event) {
             if (event.type == 'mouseenter') {
@@ -402,7 +395,8 @@ $('document').ready(function () {
         $('#btnDeleteLinkType').attr('class', classCSS + ' ' + classCSSDelete);
     }
 
-    $(".table tr").click(function () {
+    $(document).on('click', '.table tr', function (event) {
+
         if (!$(this).attr('id')) {
             return;
         }
