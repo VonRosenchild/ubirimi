@@ -607,7 +607,6 @@ $('document').ready(function () {
                 $('#contentMenuProjects').css('z-index', '500');
                 $('#contentMenuProjects').css('padding', '4px');
                 $('#contentMenuProjects').css('position', 'absolute');
-                $('#contentMenuProjects').css('width', '200px');
                 $('#contentMenuProjects').css('background-color', '#ffffff');
                 $('#contentMenuProjects').css('box-shadow', '3px 3px 5px rgba(0, 0, 0, 0.5)');
                 $('#contentMenuProjects').show();
