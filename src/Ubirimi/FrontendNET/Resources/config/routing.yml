@@ -30,7 +30,7 @@ netRecoverPassword:
     domain: ubirimi_net.lan|ubirimi.net
     subdomain: .*
 
-netRecoverPassword:
+netRecoverPasswordDO:
   path:     /recover-password/do
   host:     "{subdomain}.{domain}"
   defaults: { _controller: '\Ubirimi\FrontendNET\Controller\PasswordRecoverDoController' }
