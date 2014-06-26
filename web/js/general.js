@@ -406,6 +406,7 @@ $('document').ready(function () {
         if (!$("#el_check_" + id).length) {
             return;
         }
+
         if ($('#contextList').val() == 'agile') {
             var checked = $("#el_check_" + id).attr('checked');
             if (checked == 'checked')
