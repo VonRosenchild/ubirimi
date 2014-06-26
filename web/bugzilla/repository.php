@@ -21,6 +21,7 @@ use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
 use Ubirimi\Repository\User\User as UserRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\Repository\SMTPServer;
+use Ubirimi\Container\UbirimiContainer;
 
 function getProducts($connection)
 {
@@ -80,8 +81,9 @@ function getUsers($connection)
 
 function getBugs($connection)
 {
-    $query = 'SELECT *
+    $query = 'SELECT bugs.*, bugs_fulltext.short_desc
                 FROM bugs
+                LEFT JOIN bugs_fulltext ON bugs.bug_id = bugs_fulltext.bug_id
                 ORDER BY bug_id DESC';
 
     $stmt = $connection->prepare($query);
@@ -121,6 +123,17 @@ function getYongoProjectFromMovidusProject($movidiuProjects, $productId)
     foreach ($movidiuProjects as $movidiusProject) {
         if ($productId == $movidiusProject['id']) {
             return $movidiusProject['yongo_project_id'];
+        }
+    }
+
+    return null;
+}
+
+function getYongoUserFromMovidiusUsers($movidiusUsers, $userId)
+{
+    foreach ($movidiusUsers as $movidiusUser) {
+        if ($userId == $movidiusUser['userid']) {
+            return $movidiusUser['yongo_user_id'];
         }
     }
 
@@ -225,6 +238,45 @@ function installMovidiusClient($clientData, $valentinData)
     Client::setInstalledFlag($clientId, 1);
 
     return array($clientId, $userId);
+}
+
+function dropAllTables()
+{
+    $query = 'DROP TABLE `agile_board`, `agile_board_column`, `agile_board_column_status`, `agile_board_project`,
+    `agile_board_sprint`, `agile_board_sprint_issue`, `cal_calendar`, `cal_calendar_default_reminder`,
+    `cal_calendar_share`, `cal_event`, `cal_event_reminder`, `cal_event_reminder_period`, `cal_event_reminder_type`,
+    `cal_event_repeat`, `cal_event_repeat_cycle`, `cal_event_share`, `client`, `client_documentator_settings`,
+    `client_product`, `client_settings`, `client_smtp_settings`, `client_yongo_settings`, `documentator_entity`,
+    `documentator_entity_attachment`, `documentator_entity_attachment_revision`, `documentator_entity_comment`,
+    `documentator_entity_file`, `documentator_entity_file_revision`, `documentator_entity_revision`,
+    `documentator_entity_snapshot`, `documentator_entity_type`, `documentator_space`, `documentator_space_permission`,
+    `documentator_space_permission_anonymous`, `documentator_user_entity_favourite`, `documentator_user_space_favourite`,
+    `event`, `field`, `field_configuration`, `field_configuration_data`, `field_issue_type_data`, `field_project_data`,
+    `filter`, `general_invoice`, `general_log`, `general_mail_queue`, `general_payment`, `general_task_queue`,
+    `group`, `group_data`, `help_customer`, `help_filter`, `help_organization`, `help_organization_user`,
+    `help_reset_password`, `help_sla`, `help_sla_goal`, `issue_attachment`, `issue_comment`, `issue_component`,
+    `issue_custom_field_data`, `issue_history`, `issue_link`, `issue_link_type`, `issue_priority`, `issue_resolution`,
+    `issue_security_scheme`, `issue_security_scheme_level`, `issue_security_scheme_level_data`, `issue_status`,
+    `issue_type`, `issue_type_field_configuration`, `issue_type_field_configuration_data`, `issue_type_scheme`,
+    `issue_type_scheme_data`, `issue_type_screen_scheme`, `issue_type_screen_scheme_data`, `issue_version`,
+    `issue_work_log`, `newsletter`, `notification_scheme`, `notification_scheme_data`, `permission_role`,
+     `permission_role_data`, `permission_scheme`, `permission_scheme_data`, `project`, `project_category`,
+     `project_component`, `project_role_data`, `project_version`, `screen`, `screen_data`, `screen_scheme`,
+     `screen_scheme_data`, `server_settings`, `svn_repository`, `svn_repository_user`, `sys_condition`, `sys_country`,
+     `sys_field_type`, `sys_operation`, `sys_permission`, `sys_permission_category`, `sys_permission_global`,
+     `sys_permission_global_data`, `sys_product`, `sys_product_release`, `sys_workflow_post_function`,
+     `sys_workflow_step_property`, `user`, `workflow`, `workflow_condition_data`, `workflow_data`,
+     `workflow_position`, `workflow_post_function_data`, `workflow_scheme`, `workflow_scheme_data`,
+     `workflow_step`, `workflow_step_property`, `yongo_issue`, `yongo_issue_sla`, `yongo_issue_watch`;';
+
+    UbirimiContainer::get()['db.connection']->query($query);
+}
+
+function insertMovidiusDatabase()
+{
+    $query = file_get_contents(__DIR__ . '/Movidius.sql');
+
+    UbirimiContainer::get()['db.connection']->query($query);
 }
 
 function installUser($data)

@@ -64,13 +64,13 @@
                     $htmlOutput .= '<input ' . $requiredHTML . ' id="field_type_summary" class="inputTextLarge" style="width: 100%;" type="text" value="" name="' . $field['field_code'] . '" />';
                     break;
 
-                case Field::FIELD_PRIORITY_CODE:
-                    $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_priority" name="' . $field['field_code'] . '" class="inputTextCombo">';
-                    while ($priority = $issuePriorities->fetch_array(MYSQLI_ASSOC)) {
-                        $htmlOutput .= '<option value="' . $priority['id'] . '">' . $priority['name'] . '</option>';
-                    }
-                    $htmlOutput .= '</select>';
-                    break;
+//                case Field::FIELD_PRIORITY_CODE:
+//                    $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_priority" name="' . $field['field_code'] . '" class="inputTextCombo">';
+//                    while ($priority = $issuePriorities->fetch_array(MYSQLI_ASSOC)) {
+//                        $htmlOutput .= '<option value="' . $priority['id'] . '">' . $priority['name'] . '</option>';
+//                    }
+//                    $htmlOutput .= '</select>';
+//                    break;
 
                 case Field::FIELD_ASSIGNEE_CODE:
                     $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');

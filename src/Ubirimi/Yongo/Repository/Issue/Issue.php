@@ -752,10 +752,27 @@ class Issue {
         if (is_numeric($time_tracking_original_estimate))
             $time_tracking_original_estimate .=  $systemTimeTrackingDefaultUnit;
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiiisssssiissi", $project['id'], $issueSystemFields['resolution'], $issueSystemFields['priority'], $StatusId, $issueSystemFields['type'], $issueSystemFields['assignee'],
-                                              $issueSystemFields['reporter'], $issueNumber, $issueSystemFields['summary'], $issueSystemFields['description'],
-                                              $issueSystemFields['environment'], $currentDate, $issueSystemFields['due_date'], $parentIssueId, $securityLevel,
-                                              $time_tracking_remaining_estimate, $time_tracking_original_estimate, $issueSystemFields['helpdesk_flag']);
+            $stmt->bind_param(
+                "iiiiiiiisssssiissi",
+                $project['id'],
+                $issueSystemFields['resolution'],
+                $issueSystemFields['priority'],
+                $StatusId,
+                $issueSystemFields['type'],
+                $issueSystemFields['assignee'],
+                $issueSystemFields['reporter'],
+                $issueNumber,
+                $issueSystemFields['summary'],
+                $issueSystemFields['description'],
+                $issueSystemFields['environment'],
+                $currentDate,
+                $issueSystemFields['due_date'],
+                $parentIssueId, $securityLevel,
+                $time_tracking_remaining_estimate,
+                $time_tracking_original_estimate,
+                $issueSystemFields['helpdesk_flag']
+            );
+
             $stmt->execute();
             return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
         }

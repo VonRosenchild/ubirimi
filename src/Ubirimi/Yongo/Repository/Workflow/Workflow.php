@@ -253,6 +253,7 @@ class Workflow {
             "where workflow_step.workflow_id = " . $workflowId . ' ' .
                 "and workflow_step.initial_step_flag = 1 " .
             "limit 1 ";
+
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->execute();
             $result = $stmt->get_result();

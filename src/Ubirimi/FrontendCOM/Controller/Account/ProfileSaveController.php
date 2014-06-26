@@ -64,7 +64,9 @@ class ProfileSaveController extends UbirimiController
                 $address2,
                 $city,
                 $district,
-                $contactEmail);
+                $contactEmail,
+                $country
+            );
 
             $session->set('profile_updated', true);
             $clientData = Client::getById($session->get('client/id'));
