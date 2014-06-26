@@ -1511,7 +1511,7 @@ $('document').ready(function () {
     function restoreFieldsData(fields, fieldsData) {
         for (var i = 0; i < fields.length; i++) {
             var elementId = fields[i].getAttribute('id');
-            if (!$('#' + elementId).is('span') && elementId != 'field_type_attachment') {
+            if (!$('#' + elementId).is('span') && elementId != 'field_type_attachment' && elementId != 'field_type_assignee') {
                 $('#' + elementId).val(fieldsData[elementId]);
             }
         }
