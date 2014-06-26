@@ -795,7 +795,7 @@ class Project {
             $projectsSQL = '(' . $projectIdArray . ')';
 
         // 1. user in permission scheme
-        $query = 'SELECT user.id as user_id, user.first_name, user.last_name ' .
+        $query = '(SELECT user.id as user_id, user.first_name, user.last_name ' .
             'from project ' .
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
@@ -803,12 +803,12 @@ class Project {
             'where project.id IN ' . $projectsSQL . ' and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'permission_scheme_data.user_id is not null and ' .
-                'user.id is not null ' .
+                'user.id is not null) ' .
 
             // 2. group in permission scheme
 
             'UNION DISTINCT ' .
-            'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            '(SELECT user.id as user_id, user.first_name, user.last_name ' .
             'from project ' .
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
@@ -818,12 +818,12 @@ class Project {
             'where project.id  IN ' . $projectsSQL . ' and ' .
                 'permission_scheme_data.group_id is not null and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
-                'user.id is not null ' .
+                'user.id is not null) ' .
 
             // 3. permission role in permission scheme - user
 
             'UNION DISTINCT ' .
-            'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            '(SELECT user.id as user_id, user.first_name, user.last_name ' .
             'from project ' .
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
@@ -833,12 +833,12 @@ class Project {
                 'project_role_data.user_id is not null and ' .
                 'project_role_data.project_id IN ' . $projectsSQL . ' and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
-                'user.id is not null ' .
+                'user.id is not null) ' .
 
             // 4. permission role in permission scheme - group
 
             'UNION DISTINCT ' .
-            'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            '(SELECT user.id as user_id, user.first_name, user.last_name ' .
             'from project ' .
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
@@ -850,7 +850,9 @@ class Project {
                 'project_role_data.group_id is not null and ' .
                 'project_role_data.project_id IN ' . $projectsSQL . ' and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
-                'user.id is not null';
+                'user.id is not null)' .
+
+            "order by user.first_name, user.last_name";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("iiii", $permissionId, $permissionId, $permissionId, $permissionId);
