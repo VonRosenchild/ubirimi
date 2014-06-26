@@ -28,7 +28,7 @@
                         <img class="projectIcon" id="project_icon" src="/img/project.png" height="20px" />
                     </td>
                     <td valign="middle">
-                        <a href="/yongo/administration/project/<?php echo $projects[$i]['id'] ?>"><?php echo $projects[$i]['name']; ?></a>
+                        <a href="/yongo/<?php if ($administrationView) echo 'administration/' ?>project/<?php echo $projects[$i]['id'] ?>"><?php echo $projects[$i]['name']; ?></a>
                     </td>
                     <td><?php echo $projects[$i]['code']; ?></td>
                     <td><?php echo $projects[$i]['description']; ?></td>

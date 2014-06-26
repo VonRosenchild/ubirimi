@@ -24,6 +24,7 @@ class ListController extends UbirimiController
             $loggedInUserId = null;
             $clientSettings = Client::getSettings($clientId);
         }
+
         $projects = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
         $menuSelectedCategory = 'project';

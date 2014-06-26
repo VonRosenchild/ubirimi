@@ -14,6 +14,6 @@ netRecoverPassword:
   path:     /recover-password
   defaults: { _controller: '\Ubirimi\FrontendNET\Controller\PasswordRecoverController' }
 
-netRecoverPassword:
+netRecoverPasswordDO:
   path:     /recover-password/do
   defaults: { _controller: '\Ubirimi\FrontendNET\Controller\PasswordRecoverDoController' }

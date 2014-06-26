@@ -1,9 +1,8 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../_header.php';
+    $administrationView = false;
 ?>
 <body>
 
