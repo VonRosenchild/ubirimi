@@ -851,8 +851,9 @@ class Project {
                 'project_role_data.project_id IN ' . $projectsSQL . ' and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'user.id is not null)' .
+            'order by first_name, last_name';
 
-            "order by user.first_name, user.last_name";
+
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("iiii", $permissionId, $permissionId, $permissionId, $permissionId);
