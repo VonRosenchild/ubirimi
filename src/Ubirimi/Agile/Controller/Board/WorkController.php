@@ -1,39 +1,54 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Agile\Repository\AgileSprint;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Board;
 
-    $menuSelectedCategory = 'agile';
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $sprintId = $_GET['id'];
-    $boardId = $_GET['board_id'];
-    $onlyMyIssuesFlag = isset($_GET['only_my']) ? 1 : 0;
-    $board = AgileBoard::getById($boardId);
+class WorkController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($board['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+        $menuSelectedCategory = 'agile';
 
-    $swimlaneStrategy = $board['swimlane_strategy'];
+        $sprintId = $request->get('id');
+        $boardId = $request->get('board_id');
+        $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
+        $board = AgileBoard::getById($boardId);
 
-    if ($sprintId == -1) {
-        $sprint = null;
-    } else {
-        $sprint = AgileSprint::getById($sprintId);
-        $sprintBoardId = $sprint['agile_board_id'];
-        if ($sprintBoardId != $boardId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+        if ($board['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $swimlaneStrategy = $board['swimlane_strategy'];
+
+        if ($sprintId == -1) {
+            $sprint = null;
+        } else {
+            $sprint = AgileSprint::getById($sprintId);
+            $sprintBoardId = $sprint['agile_board_id'];
+            if ($sprintBoardId != $boardId) {
+                return new RedirectResponse('/general-settings/bad-link-access-denied');
+            }
+        }
+
+        $columns = AgileBoard::getColumns($boardId, 'array');
+        $lastCompletedSprint = AgileSprint::getLastCompleted($boardId);
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
+            . SystemProduct::SYS_PRODUCT_CHEETAH_NAME
+            . ' / Board: '
+            . $board['name']
+            . ' / Work View';
+
+        return $this->render(__DIR__ . '/../../Resources/views/board/Work.php', get_defined_vars());
     }
-
-    $columns = AgileBoard::getColumns($boardId, 'array');
-    $lastCompletedSprint = AgileSprint::getLastCompleted($boardId);
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Board: ' . $board['name'] . ' / Work View';
-
-    require_once __DIR__ . '/../../Resources/views/board/Work.php';
+}

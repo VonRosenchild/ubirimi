@@ -1,10 +1,25 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Board;
 
-    $boardId = $_POST['id'];
-    $strategy = $_POST['strategy'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Util;
+use Ubirimi\UbirimiController;
 
-    AgileBoard::updateSwimlaneStrategy($boardId, $strategy);
+class UpdateSwimlaneStrategyController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $boardId = $request->request->get('id');
+        $strategy = $request->request->get('strategy');
+
+        AgileBoard::updateSwimlaneStrategy($boardId, $strategy);
+
+        return new Response('');
+    }
+}

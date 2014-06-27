@@ -1,13 +1,25 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Board;
 
-    $menuSelectedCategory = 'agile';
-    $boards = AgileBoard::getByClientId($clientId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Boards';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    require_once __DIR__ . '/../../Resources/views/board/List.php';
+        $menuSelectedCategory = 'agile';
+        $boards = AgileBoard::getByClientId($session->get('client/id'));
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Boards';
+
+        return $this->render(__DIR__ . '/../../Resources/views/board/List.php', get_defined_vars());
+    }
+}

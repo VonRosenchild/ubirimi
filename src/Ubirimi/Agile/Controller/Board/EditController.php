@@ -1,46 +1,64 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Board;
 
-    $menuSelectedCategory = 'agile';
-    $projects = Project::getByClientId($clientId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    $boardId = $_GET['id'];
-    $board = AgileBoard::getById($boardId);
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($board['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+        $menuSelectedCategory = 'agile';
+        $projects = Project::getByClientId($session->get('client/id'));
 
-    $emptyName = false;
-    $boardName = $board['name'];
-    $boardDescription = $board['description'];
+        $boardId = $request->get('id');
+        $board = AgileBoard::getById($boardId);
 
-    if (isset($_POST['confirm_new_board'])) {
-        $boardName = Util::cleanRegularInputField($_POST['name']);
-        $boardDescription = Util::cleanRegularInputField($_POST['description']);
-
-        if (empty($boardName))
-            $emptyName = true;
-
-        if (!$emptyName) {
-
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-
-            AgileBoard::updateMetadata($clientId, $boardId, $boardName, $boardDescription, $date);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $loggedInUserId, 'UPDATE Cheetah Agile Board ' . $boardName, $date);
-
-            header('Location: /agile/boards');
+        if ($board['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $emptyName = false;
+        $boardName = $board['name'];
+        $boardDescription = $board['description'];
+
+        if ($request->request->has('confirm_new_board')) {
+            $boardName = Util::cleanRegularInputField($request->request->get('name'));
+            $boardDescription = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($boardName))
+                $emptyName = true;
+
+            if (!$emptyName) {
+
+                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+
+                AgileBoard::updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_CHEETAH,
+                    $session->get('user/id'),
+                    'UPDATE Cheetah Agile Board ' . $boardName,
+                    $date
+                );
+
+                return new RedirectResponse('/agile/boards');
+            }
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Update Board';
+
+        return $this->render(__DIR__ . '/../../Resources/views/board/Edit.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Update Board';
-
-    require_once __DIR__ . '/../../Resources/views/board/Edit.php';
+}

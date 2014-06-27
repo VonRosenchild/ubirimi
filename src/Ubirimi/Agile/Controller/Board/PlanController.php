@@ -1,36 +1,52 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Agile\Repository\AgileSprint;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Board;
 
-    $menuSelectedCategory = 'agile';
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $boardId = $_GET['id'];
-    $searchQuery = isset($_GET['q']) ? $_GET['q'] : null;
-    $onlyMyIssuesFlag = isset($_GET['only_my']) ? 1 : 0;
+class PlanController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $session->set('last_selected_board_id', $boardId);
-    $board = AgileBoard::getById($boardId);
+        $menuSelectedCategory = 'agile';
 
-    if ($board['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+        $boardId = $request->get('id');
+        $searchQuery = $request->get('q');
+        $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
+
+        $session->set('last_selected_board_id', $boardId);
+        $board = AgileBoard::getById($boardId);
+
+        if ($board['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
+
+        $sprintsNotStarted = AgileSprint::getNotStarted($boardId);
+
+        $boardProjects = AgileBoard::getProjects($boardId, 'array');
+        $currentStartedSprint = AgileSprint::getStarted($boardId);
+        $lastCompletedSprint = AgileSprint::getLastCompleted($boardId);
+
+        $lastColumn = AgileBoard::getLastColumn($boardId);
+        $completeStatuses = AgileBoard::getColumnStatuses($lastColumn['id'], 'array', 'id');
+
+        $columns = array('type', 'code', 'summary', 'priority');
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
+            . SystemProduct::SYS_PRODUCT_CHEETAH_NAME
+            . ' / Board: '
+            . $board['name']
+            . ' / Plan View';
+
+        return $this->render(__DIR__ . '/../../Resources/views/board/Plan.php', get_defined_vars());
     }
-
-    $sprintsNotStarted = AgileSprint::getNotStarted($boardId);
-
-    $boardProjects = AgileBoard::getProjects($boardId, 'array');
-    $currentStartedSprint = AgileSprint::getStarted($boardId);
-    $lastCompletedSprint = AgileSprint::getLastCompleted($boardId);
-
-    $lastColumn = AgileBoard::getLastColumn($boardId);
-    $completeStatuses = AgileBoard::getColumnStatuses($lastColumn['id'], 'array', 'id');
-
-    $columns = array('type', 'code', 'summary', 'priority');
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Board: ' . $board['name'] . ' / Plan View';
-
-    require_once __DIR__ . '/../../Resources/views/board/Plan.php';
+}
