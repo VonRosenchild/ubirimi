@@ -1,46 +1,77 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueFilter;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Board;
 
-    $menuSelectedCategory = 'agile';
-    $projects = Client::getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Permission\Permission;
 
-    $noProjectSelected = false;
-    $emptyName = false;
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['confirm_new_board'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $projectsInBoard = isset($_POST['project']) ? $_POST['project'] : null;
+        $menuSelectedCategory = 'agile';
+        $projects = Client::getProjectsByPermission(
+            $session->get('client/id'),
+            $session->get('user/id'),
+            Permission::PERM_BROWSE_PROJECTS
+        );
 
-        if (!$projectsInBoard)
-            $noProjectSelected = true;
+        $noProjectSelected = false;
+        $emptyName = false;
 
-        if (empty($name))
-            $emptyName = true;
+        if ($request->request->has('confirm_new_board')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $projectsInBoard = $request->request->get('project');
 
-        if (!$emptyName && !$noProjectSelected) {
-            $definitionData = 'project=' . implode('|', $projectsInBoard);
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-            $filterId = IssueFilter::save($loggedInUserId, 'Filter for ' . $name, 'Filter created automatically for agile board ' . $name, $definitionData, $date);
-            $board = new AgileBoard($clientId, $filterId, $name, $description, $projectsInBoard);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
-            $boardId = $board->save($loggedInUserId, $currentDate);
-            $board->addDefaultColumnData($clientId, $boardId);
+            if (!$projectsInBoard)
+                $noProjectSelected = true;
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $loggedInUserId, 'ADD Cheetah Agile Board ' . $name, $date);
+            if (empty($name))
+                $emptyName = true;
 
-            header('Location: /agile/boards');
+            if (!$emptyName && !$noProjectSelected) {
+                $definitionData = 'project=' . implode('|', $projectsInBoard);
+                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+
+                $filterId = IssueFilter::save(
+                    $session->get('user/id'),
+                    'Filter for ' . $name,
+                    'Filter created automatically for agile board ' . $name,
+                    $definitionData,
+                    $date
+                );
+
+                $board = new AgileBoard($session->get('client/id'), $filterId, $name, $description, $projectsInBoard);
+                $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $boardId = $board->save($session->get('user/id'), $currentDate);
+                $board->addDefaultColumnData($session->get('client/id'), $boardId);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_CHEETAH,
+                    $session->get('user/id'),
+                    'ADD Cheetah Agile Board ' . $name,
+                    $date
+                );
+
+                return new RedirectResponse('/agile/boards');
+            }
         }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Create Board';
+
+        return $this->render(__DIR__ . '/../../Resources/views/board/Add.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Create Board';
-
-    require_once __DIR__ . '/../../Resources/views/board/Add.php';
+}
