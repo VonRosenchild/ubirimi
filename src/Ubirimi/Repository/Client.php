@@ -323,33 +323,12 @@ class Client {
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createBugzillaIssueTypes($clientId, $currentDate) {
-        $query = "INSERT INTO issue_type(client_id, name, description, sub_task_flag, icon_name, date_created) VALUES " .
-            "(" . $clientId . ", 'Bug', 'A problem which impairs or prevents the functions of the product.', 0, 'bug.png', '" . $currentDate . "');";
-
-        UbirimiContainer::get()['db.connection']->query($query);
-    }
-
     public  static function createDefaultIssueTypeScheme($clientId, $type, $currentDate) {
         $query = "INSERT INTO issue_type_scheme(client_id, name, description, type, date_created) VALUES (?, ?, ?, ?, ?)";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $name = 'Default Issue Type Scheme';
             $description = 'Default Issue Type Scheme';
-            $stmt->bind_param("issss", $clientId, $name, $description, $type, $currentDate);
-
-            $stmt->execute();
-        }
-
-        return UbirimiContainer::get()['db.connection']->insert_id;
-    }
-
-    public  static function createMovidiusIssueTypeScheme($clientId, $type, $currentDate) {
-        $query = "INSERT INTO issue_type_scheme(client_id, name, description, type, date_created) VALUES (?, ?, ?, ?, ?)";
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Movidius Issue Type Scheme';
-            $description = 'Movidius Issue Type Scheme';
             $stmt->bind_param("issss", $clientId, $name, $description, $type, $currentDate);
 
             $stmt->execute();
@@ -383,17 +362,6 @@ class Client {
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createBugzillatIssuePriorities($clientId, $currentDate)
-    {
-        $query = "INSERT INTO issue_priority(client_id, name, icon_name, color, description, date_created) VALUES " .
-            "(" . $clientId . ", 'P4 (on customer request)', 'minor.png', '#006600', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'P3 (before final delivery)', 'major.png', '#009900', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'P2 (urgent)', 'critical.png', '#FF0000', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'P1 (today, ASAP)', 'blocker.png', '#CC0000', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'P5 (nice to have)', 'trivial.png', '#003300', '', '" . $currentDate . "');";
-        UbirimiContainer::get()['db.connection']->query($query);
-    }
-
     public static function createDefaultIssueStatuses($clientId, $currentDate) {
         $query = "INSERT INTO issue_status(client_id, name, description, date_created) VALUES " .
             "(" . $clientId . ", 'Open', 'The issue is open and ready for the assignee to start work on it.', '" . $currentDate . "'), " .
@@ -404,40 +372,11 @@ class Client {
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createBuzgillaIssueStatuses($clientId, $currentDate) {
-        $query = "INSERT INTO issue_status(client_id, name, description, date_created) VALUES " .
-            "(" . $clientId . ", 'UNCONFIRMED', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'NEW', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'ASSIGNED', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'REOPENED', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'RESOLVED', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'VERIFIED', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'CLOSED', '', '" . $currentDate . "');";
-
-        UbirimiContainer::get()['db.connection']->query($query);
-    }
-
-
     public static function createDefaultIssueResolutions($clientId, $currentDate) {
         $query = "INSERT INTO issue_resolution(client_id, name, description, date_created) VALUES " .
             "(" . $clientId . ", 'Fixed', 'A fix for this issue is checked into the tree and tested.', '" . $currentDate . "'), (" . $clientId . ", 'Cannot Reproduce', 'All attempts at reproducing this issue failed, or not enough information was available to reproduce the issue. Reading the code produces no clues as to why this behavior would occur. If more information appears later, please reopen the issue.', '" . $currentDate . "'), " .
             "(" . $clientId . ", 'Won\'t Fix', 'The problem described is an issue which will never be fixed.', '" . $currentDate . "'), (" . $clientId . " , 'Duplicate', 'The problem is a duplicate of an existing issue.', '" . $currentDate . "'), " .
             "(" . $clientId . ", 'No Change Required', 'The problems does not require a change.', '" . $currentDate . "')";
-        UbirimiContainer::get()['db.connection']->query($query);
-    }
-
-    public static function createBugzillaIssueResolutions($clientId, $currentDate) {
-        $query = "INSERT INTO issue_resolution(client_id, name, description, date_created) VALUES " .
-            "(" . $clientId . ", 'NO RESOLUTION', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'FIXED', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'INVALID', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'WON\'T FIX', '', '" . $currentDate . "'), " .
-            "(" . $clientId . " , 'LATER', '', '" . $currentDate . "'), " .
-            "(" . $clientId . " , 'REMIND', '', '" . $currentDate . "'), " .
-            "(" . $clientId . " , 'DUPLICATE', '', '" . $currentDate . "'), " .
-            "(" . $clientId . " , 'WORKSFORME', '', '" . $currentDate . "'), " .
-            "(" . $clientId . " , 'MOVED', '', '" . $currentDate . "'), " .
-            "(" . $clientId . ", 'Waiting Verification', '', '" . $currentDate . "')";
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
@@ -1512,100 +1451,6 @@ class Client {
         } while (UbirimiContainer::get()['db.connection']->next_result());
     }
 
-    public static function installBugzillaYongoProduct($clientId, $userId, $clientCreatedDate)
-    {
-        // set default YONGO Product Settings
-        Client::createDefaultYongoSettings($clientId);
-
-        // add default issue priorities, statuses, resolutions
-        Client::createBugzillatIssuePriorities($clientId, $clientCreatedDate);
-        Client::createBuzgillaIssueStatuses($clientId, $clientCreatedDate);
-        Client::createBugzillaIssueResolutions($clientId, $clientCreatedDate);
-
-        // create default Screens
-        Client::createDefaultScreens($clientId, $clientCreatedDate);
-
-        $screenSchemeId = Client::createDefaultScreenScheme($clientId, $clientCreatedDate);
-        Client::createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
-
-        // create default issue types
-        Client::createBugzillaIssueTypes($clientId, $clientCreatedDate);
-        $issueTypeSchemeId = Client::createMovidiusIssueTypeScheme($clientId, 'project', $clientCreatedDate);
-        Client::createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
-
-        // create default workflow issue type scheme
-        $workflowIssueTypeSchemeId = Client::createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
-        Client::createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
-
-        // create default issue type screen scheme
-        $issueTypeScreenSchemeId = Client::createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
-        Client::createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
-
-        // create default events
-        Client::createDefaultEvents($clientId, $clientCreatedDate);
-
-        // create default workflow
-        $workflowId = Client::createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
-        Client::createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
-
-        // create default workflow scheme
-        $workflowSchemeId = Client::createDefaultWorkflowScheme($clientId, $clientCreatedDate);
-        Client::createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
-
-        // create Default Fields
-        Client::createDefaultFields($clientId, $clientCreatedDate);
-
-        // create default link issue options
-        Client::createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
-
-        // create default field configurations
-        $fieldConfigurationId = Client::createDefaultFieldConfiguration($clientId, $clientCreatedDate);
-        Client::createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
-        $issueTypeFieldConfigurationId = Client::createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
-        Client::createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
-
-        Client::createDefaultScreenData($clientId, $clientCreatedDate);
-
-        // create default permission roles
-        PermissionRole::addDefaultPermissionRoles($clientId, $clientCreatedDate);
-
-        // create default group names
-        Group::addDefaultYongoGroups($clientId, $clientCreatedDate);
-
-        $roleAdministrators = PermissionRole::getByName($clientId, 'Administrators');
-
-        $roleDevelopers = PermissionRole::getByName($clientId, 'Developers');
-        $roleUsers = PermissionRole::getByName($clientId, 'Users');
-
-        $groupAdministrators = Group::getByName($clientId, 'Administrators');
-
-        $groupDevelopers = Group::getByName($clientId, 'Developers');
-        $groupUsers = Group::getByName($clientId, 'Users');
-
-        PermissionRole::addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
-        PermissionRole::addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
-
-        PermissionRole::addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
-
-        // add in Administrators group the current user
-        Group::addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
-
-        Group::addData($groupDevelopers['id'], array($userId), $clientCreatedDate);
-        Group::addData($groupUsers['id'], array($userId), $clientCreatedDate);
-
-        // create default permission scheme
-        $permissionSchemeId = Client::createDefaultPermissionScheme($clientId, $clientCreatedDate);
-
-        PermissionScheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
-
-        // create default notification scheme
-        $notificationSchemeId = Client::createDefaultNotificationScheme($clientId, $clientCreatedDate);
-        NotificationScheme::addDefaultNotifications($clientId, $notificationSchemeId);
-
-        // add global permission
-        Client::addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
-    }
-
     public static function installYongoProduct($clientId, $userId, $clientCreatedDate) {
 
         // set default YONGO Product Settings
@@ -1778,45 +1623,6 @@ class Client {
             else
                 return null;
         }
-    }
-
-    public static function installMovidius($clientId)
-    {
-        $clientData = Client::getById($clientId);
-        $userData = Client::getUsers($clientId);
-        $user = $userData->fetch_array(MYSQLI_ASSOC);
-        $userId = $user['id'];
-
-        $clientCreatedDate = $clientData['date_created'];
-
-        Client::installBugzillaYongoProduct($clientId, $userId, $clientCreatedDate);
-        Client::installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
-        Client::installCalendarProduct($clientId, $userId, $clientCreatedDate);
-
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
-
-        SMTPServer::add(
-            $clientId,
-            'Ubirimi Mail Server',
-            'The default Ubirimi mail server',
-            'notification@ubirimi.com',
-            'UBR',
-            SMTPServer::PROTOCOL_SECURE_SMTP,
-            'smtp.gmail.com',
-            587,
-            10000,
-            1,
-            'notification@ubirimi.com',
-            'cristinasinaomi1',
-            1,
-            $clientCreatedDate
-        );
-
-        Client::setInstalledFlag($clientId, 1);
     }
 
     public static function install($clientId) {

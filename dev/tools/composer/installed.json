@@ -55,20 +55,20 @@
     },
     {
         "name": "cac/autophing",
-        "version": "v1.3",
-        "version_normalized": "1.3.0.0",
+        "version": "v1.4.0",
+        "version_normalized": "1.4.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/CrazyAwesomeCompany/autophing.git",
-            "reference": "ba3d57de10a41ec66e001917574f00da28b1e3fa"
+            "reference": "b85af6db871b71fd75487b414e673731e94cfe5f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/CrazyAwesomeCompany/autophing/zipball/ba3d57de10a41ec66e001917574f00da28b1e3fa",
-            "reference": "ba3d57de10a41ec66e001917574f00da28b1e3fa",
+            "url": "https://api.github.com/repos/CrazyAwesomeCompany/autophing/zipball/b85af6db871b71fd75487b414e673731e94cfe5f",
+            "reference": "b85af6db871b71fd75487b414e673731e94cfe5f",
             "shasum": ""
         },
-        "time": "2013-12-26 08:43:56",
+        "time": "2014-06-22 18:53:39",
         "type": "library",
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/",

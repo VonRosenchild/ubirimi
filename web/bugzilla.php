@@ -5,6 +5,8 @@ use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\Client;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/bootstrap_cli.php';
@@ -41,8 +43,8 @@ try {
 
     UbirimiContainer::get()['db.connection']->autocommit(false);
 
-    dropAllTables();
-    insertMovidiusDatabase();
+//    dropAllTables();
+//    insertMovidiusDatabase();
 
     /* delete old clients -- start */
 //    foreach (Client::getAll() as $client) {
@@ -50,15 +52,14 @@ try {
 //    }
     /* delete old clients -- end */
 
-    /* install client record Movidius -- start */
-//    $data = installMovidiusClient($clientData, $valentinData);
-
-    $clientId = $data[0];
-    $valiId = $data[1];
+    $clientId = 1959;
+    $valiId = 1959;
     /* install client record Movidius -- end */
 
     /* install products into projects -- start */
     $movidiusProjects = getProducts($connectionBugzilla);
+    $ubirimiProjects = Project::getByClientId($clientId);
+
 //    foreach ($movidiusProjects as &$product) {
 //        $projectId = installProject($clientId, $valiId, $product['name'], $product['description']);
 //        $product['yongo_project_id'] = $projectId;
@@ -85,7 +86,9 @@ try {
     /* install versions per project -- end */
 
     /* install users -- start */
-//    $movidiusUsers = getUsers($connectionBugzilla);
+    $movidiusUsers = getUsers($connectionBugzilla);
+    $ubirimiUsers = User::getByClientId($clientId);
+
 //    foreach ($movidiusUsers as &$movidiusUser) {
 //        $firstName = substr($movidiusUser['realname'], 0, strpos($movidiusUser['realname'], ' '));
 //        $lastName = substr($movidiusUser['realname'], strpos($movidiusUser['realname'], ' ') + 1);
@@ -106,30 +109,52 @@ try {
 //    }
 //    /* install users -- end */
 //
-//    /* install bugs -- start */
-//    $movidiusBugs = getBugs($connectionBugzilla);
-//    foreach ($movidiusBugs as $bug) {
-//        Issue::add(
-//            array(
-//                'id' => getYongoProjectFromMovidusProject($movidiusProjects, $bug['product_id'])
-//            ),
-//            $bug['creation_ts'],
-//            array(
-//                'reporter' => getYongoUserFromMovidiusUsers($movidiusUsers, $bug['reporter']),
-//                'resolution' => null,
-//                'priority' => 1,
-//                'type' => 1,
-//                'assignee' => getYongoUserFromMovidiusUsers($movidiusUsers, $bug['assigned_to']),
-//                'summary' => $bug['short_desc'],
-//                'description' => '',
-//                'environment' => null,
-//                'due_date' => $bug['deadline']
-//            ),
-//            1,
-//            null,
-//            null
-//        );
-//    }
+
+    $ubirimiStatuses = getUbirimiStatuses($clientId);
+    $ubirimiPriorities = getUbirimiPriorities($clientId);
+
+    /* install bugs -- start */
+    $movidiusBugs = getBugs($connectionBugzilla);
+    foreach ($movidiusBugs as $bug) {
+//        if (16005 == $bug['bug_id']) {
+            $issue = Issue::addBugzilla(
+                array(
+                    'id' => getYongoProjectFromMovidusProject($movidiusProjects, $ubirimiProjects, $bug['product_id'])
+                ),
+                $bug['creation_ts'],
+                array(
+                    'reporter' => getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $bug['reporter']),
+                    'resolution' => null,
+                    'priority' => getYongoPriorityFromMovidiusPriority($ubirimiPriorities, $bug['priority']),
+                    'type' => 15721, //BUG
+                    'assignee' => getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $bug['assigned_to']),
+                    'summary' => $bug['short_desc'],
+                    'description' => '',
+                    'environment' => null,
+                    'due_date' => $bug['deadline']
+                ),
+                1,
+                null,
+                null,
+                getYongoStatusId($ubirimiStatuses, $bug['bug_status'])
+            );
+
+            $comments = getComments($connectionBugzilla, $bug['bug_id']);
+
+            foreach ($comments as $comment) {
+                $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
+
+                if (null !== $userId) {
+                    IssueComment::add(
+                        $issue[0],
+                        $userId,
+                        $comment['thetext'],
+                        $comment['bug_when']
+                    );
+                }
+            }
+//        }
+    }
     /* install bugs -- end */
 
     UbirimiContainer::get()['db.connection']->commit();

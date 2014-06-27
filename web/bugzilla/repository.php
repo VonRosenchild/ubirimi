@@ -23,6 +23,45 @@ use Ubirimi\SystemProduct;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Container\UbirimiContainer;
 
+function getUbirimiStatuses($clientId)
+{
+    $query = 'SELECT *
+                FROM issue_status
+                where client_id = ' . $clientId;
+
+    $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getUbirimiPriorities($clientId)
+{
+    $query = 'SELECT *
+                FROM issue_priority
+                where client_id = ' . $clientId;
+
+    $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function getYongoStatusId($ubirimiStatuses, $status)
+{
+    foreach ($ubirimiStatuses as $ubirimiStatus) {
+        if ($status == $ubirimiStatus['name']) {
+            return $ubirimiStatus['id'];
+        }
+    }
+
+    return null;
+}
+
 function getProducts($connection)
 {
     $query = 'SELECT *
@@ -94,6 +133,21 @@ function getBugs($connection)
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
+function getComments($connection, $bugId)
+{
+    $query = "SELECT longdescs.*
+                FROM longdescs
+                WHERE bug_id = " . $bugId . "
+                ORDER BY bug_when ASC";
+
+    $stmt = $connection->prepare($query);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
 function getPriorities($connection)
 {
     $query = 'SELECT *
@@ -118,22 +172,41 @@ function installVersion($projectId, $name, $description = null)
     Project::addVersion($projectId, $name, $description, Util::getCurrentDateTime());
 }
 
-function getYongoProjectFromMovidusProject($movidiuProjects, $productId)
+function getYongoProjectFromMovidusProject($movidiuProjects, $ubirimiProjects, $productId)
 {
     foreach ($movidiuProjects as $movidiusProject) {
         if ($productId == $movidiusProject['id']) {
-            return $movidiusProject['yongo_project_id'];
+            foreach ($ubirimiProjects as $ubirimiProject) {
+                if ($ubirimiProject['name'] == $movidiusProject['name']) {
+                    return $ubirimiProject['id'];
+                }
+            }
         }
     }
 
     return null;
 }
 
-function getYongoUserFromMovidiusUsers($movidiusUsers, $userId)
+function getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $userId)
 {
     foreach ($movidiusUsers as $movidiusUser) {
         if ($userId == $movidiusUser['userid']) {
-            return $movidiusUser['yongo_user_id'];
+            foreach ($ubirimiUsers as $ubirimiUser) {
+                if ($ubirimiUser['email'] == $movidiusUser['login_name']) {
+                    return $ubirimiUser['id'];
+                }
+            }
+        }
+    }
+
+    return null;
+}
+
+function getYongoPriorityFromMovidiusPriority($ubirimiPriorities, $priority)
+{
+    foreach ($ubirimiPriorities as $prio) {
+        if ($priority == $prio['name']) {
+            return $prio['id'];
         }
     }
 
@@ -175,108 +248,22 @@ function installProject($clientId, $leadId, $name, $description)
     return $projectId;
 }
 
-function installMovidiusClient($clientData, $valentinData)
-{
-    $clientId = Client::create(
-        $clientData['companyName'],
-        $clientData['companyDomain'],
-        $clientData['baseURL'],
-        $clientData['companyEmail'],
-        Client::INSTANCE_TYPE_ON_DEMAND,
-        Util::getCurrentDateTime()
-    );
-
-    // create the user
-    $userId = User::createAdministratorUser(
-        $valentinData['firstName'],
-        $valentinData['lastName'],
-        $valentinData['username'],
-        $valentinData['password'],
-        $valentinData['email'],
-        $clientId,
-        20, 1, 1,
-        Util::getCurrentDateTime()
-    );
-
-    $columns = 'code#summary#priority#status#created#type#updated#reporter#assignee';
-    User::updateDisplayColumns($userId, $columns);
-
-    $clientData = Client::getById($clientId);
-    $userData = Client::getUsers($clientId);
-    $user = $userData->fetch_array(MYSQLI_ASSOC);
-    $userId = $user['id'];
-
-    $clientCreatedDate = $clientData['date_created'];
-
-    Client::installYongoProduct($clientId, $userId, $clientCreatedDate);
-    Client::installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
-    Client::installCalendarProduct($clientId, $userId, $clientCreatedDate);
-
-    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
-    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
-    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
-    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
-    Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
-
-    SMTPServer::add(
-        $clientId,
-        'Ubirimi Mail Server',
-        'The default Ubirimi mail server',
-        'notification@ubirimi.com',
-        'UBR',
-        SMTPServer::PROTOCOL_SECURE_SMTP,
-        'smtp.gmail.com',
-        587,
-        10000,
-        1,
-        'notification@ubirimi.com',
-        'cristinasinaomi1',
-        1,
-        $clientCreatedDate
-    );
-
-    Client::setInstalledFlag($clientId, 1);
-
-    return array($clientId, $userId);
-}
-
 function dropAllTables()
 {
-    $query = 'DROP TABLE `agile_board`, `agile_board_column`, `agile_board_column_status`, `agile_board_project`,
-    `agile_board_sprint`, `agile_board_sprint_issue`, `cal_calendar`, `cal_calendar_default_reminder`,
-    `cal_calendar_share`, `cal_event`, `cal_event_reminder`, `cal_event_reminder_period`, `cal_event_reminder_type`,
-    `cal_event_repeat`, `cal_event_repeat_cycle`, `cal_event_share`, `client`, `client_documentator_settings`,
-    `client_product`, `client_settings`, `client_smtp_settings`, `client_yongo_settings`, `documentator_entity`,
-    `documentator_entity_attachment`, `documentator_entity_attachment_revision`, `documentator_entity_comment`,
-    `documentator_entity_file`, `documentator_entity_file_revision`, `documentator_entity_revision`,
-    `documentator_entity_snapshot`, `documentator_entity_type`, `documentator_space`, `documentator_space_permission`,
-    `documentator_space_permission_anonymous`, `documentator_user_entity_favourite`, `documentator_user_space_favourite`,
-    `event`, `field`, `field_configuration`, `field_configuration_data`, `field_issue_type_data`, `field_project_data`,
-    `filter`, `general_invoice`, `general_log`, `general_mail_queue`, `general_payment`, `general_task_queue`,
-    `group`, `group_data`, `help_customer`, `help_filter`, `help_organization`, `help_organization_user`,
-    `help_reset_password`, `help_sla`, `help_sla_goal`, `issue_attachment`, `issue_comment`, `issue_component`,
-    `issue_custom_field_data`, `issue_history`, `issue_link`, `issue_link_type`, `issue_priority`, `issue_resolution`,
-    `issue_security_scheme`, `issue_security_scheme_level`, `issue_security_scheme_level_data`, `issue_status`,
-    `issue_type`, `issue_type_field_configuration`, `issue_type_field_configuration_data`, `issue_type_scheme`,
-    `issue_type_scheme_data`, `issue_type_screen_scheme`, `issue_type_screen_scheme_data`, `issue_version`,
-    `issue_work_log`, `newsletter`, `notification_scheme`, `notification_scheme_data`, `permission_role`,
-     `permission_role_data`, `permission_scheme`, `permission_scheme_data`, `project`, `project_category`,
-     `project_component`, `project_role_data`, `project_version`, `screen`, `screen_data`, `screen_scheme`,
-     `screen_scheme_data`, `server_settings`, `svn_repository`, `svn_repository_user`, `sys_condition`, `sys_country`,
-     `sys_field_type`, `sys_operation`, `sys_permission`, `sys_permission_category`, `sys_permission_global`,
-     `sys_permission_global_data`, `sys_product`, `sys_product_release`, `sys_workflow_post_function`,
-     `sys_workflow_step_property`, `user`, `workflow`, `workflow_condition_data`, `workflow_data`,
-     `workflow_position`, `workflow_post_function_data`, `workflow_scheme`, `workflow_scheme_data`,
-     `workflow_step`, `workflow_step_property`, `yongo_issue`, `yongo_issue_sla`, `yongo_issue_watch`;';
+    $comm1 = "mysqldump -u root -p12wqasxz -h '127.0.0.1' --no-data yongo | grep ^DROP > drop.sql";
+    $comm2 = "mysql -u root -p12wqasxz -h '127.0.0.1' yongo < drop.sql";
+    $comm3 = "rm drop.sql";
 
-    UbirimiContainer::get()['db.connection']->query($query);
+    shell_exec($comm1);
+    shell_exec($comm2);
+    shell_exec($comm3);
 }
 
 function insertMovidiusDatabase()
 {
-    $query = file_get_contents(__DIR__ . '/Movidius.sql');
+    $command = "mysql -uroot -p12wqasxz -h '127.0.0.1' -D yongo < ./bugzilla/Movidius.sql";
 
-    UbirimiContainer::get()['db.connection']->query($query);
+    shell_exec($command);
 }
 
 function installUser($data)
