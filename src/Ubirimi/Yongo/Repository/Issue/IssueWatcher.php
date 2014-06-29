@@ -40,4 +40,13 @@ class IssueWatcher {
             $stmt->execute();
         }
     }
+
+    public static function deleteByIssueId($issueId) {
+        $query = "delete from yongo_issue_watch where yongo_issue_id = ?";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $issueId);
+            $stmt->execute();
+        }
+    }
 }

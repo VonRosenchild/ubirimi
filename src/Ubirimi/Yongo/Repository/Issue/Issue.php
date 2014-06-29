@@ -1487,7 +1487,7 @@ class Issue {
     }
 
     public static function addSLAData($issueId, $slaId, $offset) {
-        $query = "insert into yongo_issue_sla(yongo_issue_id, help_sla_id, value) values (?, ?, ?)";
+        $query = "insert into yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) values (?, ?, ?)";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("iii", $issueId, $slaId, $offset);
@@ -1505,11 +1505,16 @@ class Issue {
 
             // check issue against the slas
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
+
                 while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
                     $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
+
                     if ($slaData[0]) {
-                        Issue::addSLAData($issue['id'], $SLA['id'], $slaData[0]);
+                        Issue::updateSLAValueOnly($issue['id'], $SLA['id'], $slaData[0]);
                     }
+                }
+                if ($issues) {
+                    $issues->data_seek(0);
                 }
             }
         }
@@ -1904,5 +1909,26 @@ class Issue {
         }
 
         return $searchParameters;
+    }
+
+    public static function deleteSLADataByIssueIdAndSLAId($issueID, $SLAId) {
+        $query = "delete from yongo_issue_sla where yongo_issue_id = ? and help_sla_id = ?";
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueID, $SLAId);
+        $stmt->execute();
+    }
+
+    public static function deleteSLADataByIssueId($issueID) {
+        $query = "delete from yongo_issue_sla where yongo_issue_id = ?";
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $issueID);
+        $stmt->execute();
+    }
+
+    public static function updateSLAValueOnly($issueId, $SLAId, $value) {
+        $query = "update yongo_issue_sla set `value` = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $value, $issueId, $SLAId);
+        $stmt->execute();
     }
 }

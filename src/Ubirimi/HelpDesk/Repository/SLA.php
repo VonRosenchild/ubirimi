@@ -128,6 +128,7 @@ class SLA {
         $stmt->bind_param("i", $Id);
         $stmt->execute();
         $stmt->close();
+
         $query = "delete from yongo_issue_sla where help_sla_id = ?";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $Id);
@@ -324,7 +325,9 @@ class SLA {
             $goalId = $goalData['id'];
             $goalValue = $goalData['value'];
 
-            $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
+            if ($goalValue) {
+                $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
+            }
             $startConditionDate = $issueSLAData['started_date'];
         } else if ($issueSLAData['started_flag'] && $issueSLAData['stopped_flag']) {
 

@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "2c9a6af72a782f3cd5968a0d6de25060",
+    "hash": "d2577e3ee6deef6c1731728ca0c5d70f",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -916,12 +917,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "b01d366060f33e18fd98b0008c41a01b0d25c95c"
+                "reference": "a0e90f173c33a57bfbb5561793d25864182239ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/b01d366060f33e18fd98b0008c41a01b0d25c95c",
-                "reference": "b01d366060f33e18fd98b0008c41a01b0d25c95c",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/a0e90f173c33a57bfbb5561793d25864182239ad",
+                "reference": "a0e90f173c33a57bfbb5561793d25864182239ad",
                 "shasum": ""
             },
             "require": {
@@ -956,7 +957,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-04 06:43:44"
+            "time": "2014-06-20 17:41:51"
         },
         {
             "name": "tecnick.com/tcpdf",
