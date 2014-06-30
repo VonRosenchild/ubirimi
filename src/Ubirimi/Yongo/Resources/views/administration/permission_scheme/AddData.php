@@ -31,7 +31,7 @@
                 <tr>
                     <td width="100px" valign="top">Permissions</td>
                     <td width="200">
-                        <select class="inputTextCombo" name="permission" size="10">
+                        <select class="inputTextCombo" name="permission[]" size="10" multiple="multiple">
                             <?php while ($permission = $permissions->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($permission['id'] == $permissionId) echo 'selected="selected"' ?> value="<?php echo $permission['id'] ?>"><?php echo $permission['name'] ?></option>
                             <?php endwhile ?>

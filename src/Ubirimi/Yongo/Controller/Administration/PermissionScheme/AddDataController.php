@@ -22,7 +22,8 @@
 
     if (isset($_POST['confirm_new_data'])) {
 
-        $sysPermissionId = $_POST['permission'];
+        $sysPermissionIds = $_POST['permission'];
+        
         $permissionType = ($_POST['type']) ? $_POST['type'] : null;
 
         $user = $_POST['user'];
@@ -34,7 +35,7 @@
 
             // check for duplicate information
             $duplication = false;
-            $dataPermission = PermissionScheme::getDataByPermissionSchemeIdAndPermissionId($permissionSchemeId, $sysPermissionId);
+            $dataPermission = PermissionScheme::getDataByPermissionSchemeIdAndPermissionId($permissionSchemeId, $sysPermissionIds);
             if ($dataPermission) {
 
                 while ($data = $dataPermission->fetch_array(MYSQLI_ASSOC)) {
@@ -60,9 +61,11 @@
             }
 
             if (!$duplication) {
-                PermissionScheme::addData($permissionSchemeId, $sysPermissionId, $permissionType, $role, $group, $user, $currentDate);
+                for ($i = 0; $i < count($sysPermissionIds); $i++) {
+                    PermissionScheme::addData($permissionSchemeId, $sysPermissionIds[$i], $permissionType, $role, $group, $user, $currentDate);
 
-                Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Permission Scheme Data', $currentDate);
+                    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Permission Scheme Data', $currentDate);
+                }
             }
         }
 
