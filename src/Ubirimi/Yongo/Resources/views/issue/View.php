@@ -50,6 +50,16 @@ use Ubirimi\Util;
                                     <?php require __DIR__ . '/_timeTrackingInformation.php' ?>
                                 <?php endif ?>
                             </div>
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td id="sectExtraInformation" class="sectionDetail">
+                                        <span class="sectionDetailTitle headerPageText">Extra Information</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div id="extra_information">
+                                <?php require __DIR__ . '/_extraInformation.php' ?>
+                            </div>
                         <?php endif ?>
                     </td>
                 </tr>

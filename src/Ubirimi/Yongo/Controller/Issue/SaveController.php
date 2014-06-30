@@ -87,6 +87,8 @@ class SaveController extends UbirimiController
         if ($session->get("selected_product_id") == SystemProduct::SYS_PRODUCT_HELP_DESK) {
             $issueSystemFieldsData['helpdesk_flag'] = 1;
         }
+        $issueSystemFieldsData['user_reported_ip'] = Util::getClientIP();
+
         $issueReturnValues = Issue::add($project,
             $currentDate,
             $issueSystemFieldsData,

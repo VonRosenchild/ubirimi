@@ -41,7 +41,7 @@ class Issue {
             'issue_resolution.name as resolution_name, issue_main_table.resolution_id as resolution, issue_main_table.parent_id, issue_main_table.security_scheme_level_id as security_level, ' .
             'issue_security_scheme_level.name as security_level_name, ' .
             'issue_main_table.user_assigned_id as issue_assignee, ' .
-            'issue_main_table.original_estimate, issue_main_table.remaining_estimate, ';
+            'issue_main_table.original_estimate, issue_main_table.remaining_estimate, issue_main_table.user_reported_ip, ';
 
         if (isset($parameters['sprint'])) {
 
@@ -785,8 +785,9 @@ class Issue {
         $StatusId = $statusData['linked_issue_status_id'];
 
         $query = "INSERT INTO yongo_issue(project_id, resolution_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .
-                                   "summary, description, environment, date_created, date_due, parent_id, security_scheme_level_id, original_estimate, remaining_estimate, helpdesk_flag) " .
-                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                   "summary, description, environment, date_created, date_due, parent_id, security_scheme_level_id, " .
+                                   "original_estimate, remaining_estimate, helpdesk_flag, user_reported_ip) " .
+                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if (!array_key_exists('reporter', $issueSystemFields) || $issueSystemFields['reporter'] == null) {
             $issueSystemFields['reporter'] = $loggedInUserId;
@@ -823,11 +824,13 @@ class Issue {
             $time_tracking_remaining_estimate .=  $systemTimeTrackingDefaultUnit;
         }
 
-        if (is_numeric($time_tracking_original_estimate))
+        if (is_numeric($time_tracking_original_estimate)) {
             $time_tracking_original_estimate .=  $systemTimeTrackingDefaultUnit;
+        }
+
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param(
-                "iiiiiiiisssssiissi",
+                "iiiiiiiisssssiissis",
                 $project['id'],
                 $issueSystemFields['resolution'],
                 $issueSystemFields['priority'],
@@ -845,7 +848,8 @@ class Issue {
                 $securityLevel,
                 $time_tracking_remaining_estimate,
                 $time_tracking_original_estimate,
-                $issueSystemFields['helpdesk_flag']
+                $issueSystemFields['helpdesk_flag'],
+                $issueSystemFields['user_reported_ip']
             );
 
             $stmt->execute();
