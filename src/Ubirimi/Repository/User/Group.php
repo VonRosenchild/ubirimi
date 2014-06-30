@@ -154,7 +154,8 @@ class Group {
         $query = 'select group_data.id, group_data.user_id, user.first_name, user.last_name ' .
             'from group_data ' .
             'left join user on user.id = group_data.user_id ' .
-            'where group_data.group_id = ?';
+            'where group_data.group_id = ? ' .
+            'order by user.first_name, user.last_name';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $groupId);

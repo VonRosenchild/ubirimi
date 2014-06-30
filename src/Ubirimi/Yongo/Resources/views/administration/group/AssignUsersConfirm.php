@@ -25,7 +25,7 @@
         <td>
             <select name="assigned_users" size="10" id="assigned_users" class="inputTextCombo">
                 <?php while ($groupUsers && $user = $groupUsers->fetch_array(MYSQLI_ASSOC)): ?>
-                <option value="<?php echo $user['user_id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                    <option value="<?php echo $user['user_id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
                 <?php endwhile ?>
             </select>
         </td>
