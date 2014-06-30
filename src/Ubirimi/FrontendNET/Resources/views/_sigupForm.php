@@ -66,4 +66,14 @@
                 <div class="HPFieldLabel14Red">The last name can not be empty.</div>
             <?php endif ?>
         </fieldset>
+
+        <fieldset>
+            <label>Country <span class="mandatory">*</label>
+            <select name="country">
+                <?php while ($country = $countries->fetch_array(MYSQLI_ASSOC)): ?>
+                    <option value="<?php echo $country['id'] ?>"><?php echo $country['name'] ?></option>
+                <?php endwhile ?>
+            </select>
+
+        </fieldset>
     </div>

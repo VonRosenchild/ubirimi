@@ -3713,8 +3713,8 @@ $('document').ready(function () {
                             data: {
                                 id: userId,
                                 issues_per_page: $('#user_issues_per_page').val(),
-                                notify_own_changes: $('#user_notify_own_changes').val()
-
+                                notify_own_changes: $('#user_notify_own_changes').val(),
+                                country_id: $('#user_country').val()
                             },
                             success: function (response) {
                                 $("#modalChangePreferences").dialog('destroy');

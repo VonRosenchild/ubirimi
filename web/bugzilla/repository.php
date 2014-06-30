@@ -286,7 +286,7 @@ function installUser($data)
         $data['password'] = null;
     }
 
-    $result = UserRepository::add($data['clientId'], $data['firstName'], $data['lastName'], $data['email'], $data['username'], $data['password'], $issuesPerPage, $data['customer_service_desk_flag'], $currentDate);
+    $result = UserRepository::add($data['clientId'], $data['firstName'], $data['lastName'], $data['email'], $data['username'], $data['password'], $issuesPerPage, $data['customer_service_desk_flag'], null, $currentDate);
 
     $userId = $result[0];
 

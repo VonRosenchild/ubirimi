@@ -33,11 +33,18 @@ class User extends UbirimiService
         if (!array_key_exists('username', $data)) {
             $data['username'] = null;
         }
+
         if (!array_key_exists('password', $data)) {
             $data['password'] = null;
         }
 
-        $result = UserRepository::add($data['clientId'], $data['firstName'], $data['lastName'], $data['email'], $data['username'], $data['password'], $issuesPerPage, $data['customer_service_desk_flag'], $currentDate);
+        if (!array_key_exists('country', $data)) {
+            $data['country'] = null;
+        }
+
+        $result = UserRepository::add($data['clientId'], $data['firstName'], $data['lastName'], $data['email'],
+                                      $data['username'], $data['password'], $issuesPerPage,
+                                      $data['customer_service_desk_flag'], $data['country'], $currentDate);
 
         $userId = $result[0];
 

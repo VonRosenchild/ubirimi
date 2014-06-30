@@ -3,12 +3,16 @@
     use Ubirimi\Util;
 
     Util::checkUserIsLoggedInAndRedirect();
+
     $userId = $_POST['id'];
     $issuesPerPage = $_POST['issues_per_page'];
     $notifyOwnChangesFlag = $_POST['notify_own_changes'];
+    $countryId = $_POST['country_id'];
 
     $parameters = array(array('field' => 'issues_per_page', 'value' => $issuesPerPage, 'type' => 'i'),
-        array('field' => 'notify_own_changes_flag', 'value' => $notifyOwnChangesFlag, 'type' => 'i'));
+                        array('field' => 'notify_own_changes_flag', 'value' => $notifyOwnChangesFlag, 'type' => 'i'),
+                        array('field' => 'country_id', 'value' => $countryId, 'type' => 'i'));
 
     User::updatePreferences($userId, $parameters);
+
     $session->set('user/issues_per_page', $issuesPerPage);

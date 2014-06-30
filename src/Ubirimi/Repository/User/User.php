@@ -72,16 +72,16 @@ class User {
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function add($clientId, $first_name, $last_name, $email, $username, $password, $issuesPerPage, $customerServiceDeskFlag, $currentDate) {
-        $query = "INSERT INTO user(client_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
-                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static function add($clientId, $first_name, $last_name, $email, $username, $password, $issuesPerPage, $customerServiceDeskFlag, $countryId, $currentDate) {
+        $query = "INSERT INTO user(client_id, country_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
+                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $t_hasher = new PasswordHash(8, FALSE);
         $hash = $t_hasher->HashPassword($password);
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("isssssiis", $clientId, $first_name, $last_name, $email, $username, $hash, $issuesPerPage, $customerServiceDeskFlag, $currentDate);
+            $stmt->bind_param("iisssssiis", $clientId, $countryId, $first_name, $last_name, $email, $username, $hash, $issuesPerPage, $customerServiceDeskFlag, $currentDate);
             $stmt->execute();
 
             return array(UbirimiContainer::get()['db.connection']->insert_id, $password);
@@ -478,7 +478,7 @@ class User {
     }
 
     public static function getYongoSettings($userId) {
-        $query = 'select issues_per_page, notify_own_changes_flag ' .
+        $query = 'select issues_per_page, notify_own_changes_flag, country_id ' .
             'from user ' .
             'where id = ? ' .
             'limit 1';

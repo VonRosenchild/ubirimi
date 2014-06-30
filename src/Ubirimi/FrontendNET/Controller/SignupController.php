@@ -23,6 +23,7 @@ class SignupController extends UbirimiController
         $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
         $client = Client::getById($clientId);
         $clientSettings = Client::getSettings($clientId);
+        $countries = Util::getCountries();
 
         $errors = array('empty_email' => false,
             'email_not_valid' => false,
@@ -45,6 +46,7 @@ class SignupController extends UbirimiController
             $username = Util::cleanRegularInputField($_POST['username']);
             $password = Util::cleanRegularInputField($_POST['password']);
             $passwordAgain = Util::cleanRegularInputField($_POST['password_again']);
+            $countryId = $_POST['country'];
 
             if (empty($email)) {
                 $errors['empty_email'] = true;
@@ -90,7 +92,8 @@ class SignupController extends UbirimiController
                         'email' => $email,
                         'username' => $username,
                         'password' => $password,
-                        'clientDomain' => $client['company_domain']
+                        'clientDomain' => $client['company_domain'],
+                        'country' => $countryId
                     )
                 );
 
