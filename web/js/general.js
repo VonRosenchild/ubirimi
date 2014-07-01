@@ -2,6 +2,12 @@ var selected_rows = [];
 var PRODUCT_DOCUMENTADOR = 4;
 var PRODUCT_QUICK_NOTES = 7;
 
+function addParameterToURL(url, parameter) {
+    url += (url.split('?')[1] ? '&':'?') + parameter;
+
+    return url;
+}
+
 function validateDate(stringDate) {
 
     var year = stringDate.split("-")[0];

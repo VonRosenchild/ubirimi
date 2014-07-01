@@ -1967,7 +1967,7 @@ $('document').ready(function () {
                                 $("#saveFilterModal").empty();
                                 if (response != '-1') {
                                     var locationURL = window.location.href;
-                                    locationURL += '?filter=' + response;
+                                    locationURL = addParameterToURL(locationURL, 'filter=' + response);
                                     window.location.href = locationURL;
                                 } else {
                                     location.reload();

@@ -83,7 +83,7 @@
 
                                             <input class="btn ubirimi-btn"
                                                    type="button"
-                                                   value="<?php if ($getFilter) echo 'Update'; else echo 'Save Report' ?>"
+                                                   value="<?php if ($getFilter) echo 'Update'; else echo 'Save Filter' ?>"
                                                    id="btn_save_filter" name="btn_save_filter"/>
                                             <input class="btn ubirimi-btn" type="submit" value="Search" name="search"/>
                                         </td>
