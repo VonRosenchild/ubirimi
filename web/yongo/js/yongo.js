@@ -1983,6 +1983,18 @@ $('document').ready(function () {
         $('#content_chose_display_columns').hide();
     });
 
+    $(document).on('click', '#perm_choose_user', function (event) {
+        $('#label_user_permission').prop('checked', true);
+    });
+
+    $(document).on('click', '#perm_choose_group', function (event) {
+        $('#label_group_permission').prop('checked', true);
+    });
+
+    $(document).on('click', '#perm_choose_project_role', function (event) {
+        $('#label_project_role_permission').prop('checked', true);
+    });
+
     $(document).on('change', '#move_to_project', function (event) {
         $.ajax({
             type: "POST",

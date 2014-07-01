@@ -64,11 +64,11 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input class="radio" type="radio" name="type" id="label_user" value="user">
-                        <label for="label_user">User</label>
+                        <input class="radio" type="radio" name="type" id="label_user_permission" value="user">
+                        <label for="label_user_permission">User</label>
                     </td>
                     <td>
-                        <select name="user" class="inputTextCombo">
+                        <select name="user" class="inputTextCombo" id="perm_choose_user">
                             <option value>Choose a user</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
@@ -79,11 +79,11 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input class="radio" type="radio" name="type" id="label_group" value="group">
-                        <label for="label_group">Group</label>
+                        <input class="radio" type="radio" name="type" id="label_group_permission" value="group">
+                        <label for="label_group_permission">Group</label>
                     </td>
                     <td>
-                        <select name="group" class="inputTextCombo">
+                        <select name="group" class="inputTextCombo" id="perm_choose_group">
                             <option value>Choose a group</option>
                             <option value="0">Anyone</option>
                             <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>
@@ -95,11 +95,11 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input class="radio" type="radio" name="type" id="label_project_role" value="role">
-                        <label for="label_project_role">Project Role</label>
+                        <input class="radio" type="radio" name="type" id="label_project_role_permission" value="role">
+                        <label for="label_project_role_permission">Project Role</label>
                     </td>
                     <td>
-                        <select name="role" class="inputTextCombo">
+                        <select name="role" class="inputTextCombo" id="perm_choose_project_role">
                             <option value>Choose a project role</option>
                             <?php while ($role = $roles->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
