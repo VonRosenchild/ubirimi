@@ -1525,7 +1525,7 @@ $('document').ready(function () {
                 url: '/yongo/issue/render-field-list',
                 data: {
                     issue_type_id: $('#field_type_type').val(),
-                    project_id: $('#project_id').val(),
+                    project_id: $('#field_type_project').val(),
                     operation_id: operationId
                 },
                 success: function (response) {
