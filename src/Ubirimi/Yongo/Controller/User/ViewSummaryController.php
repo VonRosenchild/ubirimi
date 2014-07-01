@@ -19,6 +19,7 @@ class ViewSummaryController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
         $projectId = $session->get('selected_project_id');
         $userId = $request->get('id');
         $user = User::getById($userId);

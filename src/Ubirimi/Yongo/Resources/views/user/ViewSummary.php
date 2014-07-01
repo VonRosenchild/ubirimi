@@ -108,6 +108,14 @@
                                 <?php endif ?>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <div class="textLabel">Country:</div>
+                            </td>
+                            <td>
+                                <?php echo $user['country_name'] ?>
+                            </td>
+                        </tr>
                     </table>
 
                     <table width="100%">
