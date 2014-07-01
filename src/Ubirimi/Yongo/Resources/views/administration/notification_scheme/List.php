@@ -36,7 +36,7 @@
                                 <td width="22">
                                     <input type="checkbox" value="1" id="el_check_<?php echo $scheme['id'] ?>"/>
                                 </td>
-                                <td valign="top">
+                                <td>
                                     <a href="/yongo/administration/notification-scheme/edit/<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></a>
                                     <br />
                                     <?php echo $scheme['description'] ?>
