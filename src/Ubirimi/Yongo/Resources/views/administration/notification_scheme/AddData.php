@@ -31,7 +31,7 @@
                 <tr>
                     <td width="100px" valign="top">Events</td>
                     <td width="200">
-                        <select class="inputTextCombo" name="event" size="10">
+                        <select class="inputTextCombo" name="event[]" size="10" multiple="multiple">
                             <?php while ($event = $events->fetch_array(MYSQLI_ASSOC)): ?>
                             <option <?php if ($event['id'] == $eventId) echo 'selected="selected"' ?> value="<?php echo $event['id'] ?>"><?php echo $event['name'] ?></option>
                             <?php endwhile ?>
