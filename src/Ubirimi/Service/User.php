@@ -59,7 +59,7 @@ class User extends UbirimiService
             Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, CalendarEventReminderPeriod::PERIOD_MINUTE, 30);
 
             // add the newly created user to the Ubirimi Users Global Permission Groups
-            $groups = GlobalPermission::getDataByPermissionId($this->session->get('client/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);
+            $groups = GlobalPermission::getDataByPermissionId($data['clientId'], GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);
             while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
                 Group::addData($group['id'], array($userId), $currentDate);
             }
@@ -87,6 +87,7 @@ class User extends UbirimiService
             )
         );
 
+        // todo: fix the commented lines
 //        $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, 'ADD User ' . $data['username']);
 
 //        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
