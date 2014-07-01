@@ -32,41 +32,41 @@
         $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
 
         if ($permissionType) {
+            for ($i = 0; $i < count($sysPermissionIds); $i++){
+                // check for duplicate information
+                $duplication = false;
+                $dataPermission = PermissionScheme::getDataByPermissionSchemeIdAndPermissionId($permissionSchemeId, $sysPermissionIds[$i]);
+                if ($dataPermission) {
 
-            // check for duplicate information
-            $duplication = false;
-            $dataPermission = PermissionScheme::getDataByPermissionSchemeIdAndPermissionId($permissionSchemeId, $sysPermissionIds);
-            if ($dataPermission) {
+                    while ($data = $dataPermission->fetch_array(MYSQLI_ASSOC)) {
 
-                while ($data = $dataPermission->fetch_array(MYSQLI_ASSOC)) {
+                        if (isset($data['group_id']) && $group && $data['group_id'] == $group)
+                            $duplication = true;
+                        if ($data['user_id'] && $data['user_id'] == $user)
+                            $duplication = true;
+                        if ($data['permission_role_id'] && $data['permission_role_id'] == $role) {
+                            $duplication = true;
+                        }
 
-                    if (isset($data['group_id']) && $group && $data['group_id'] == $group)
-                        $duplication = true;
-                    if ($data['user_id'] && $data['user_id'] == $user)
-                        $duplication = true;
-                    if ($data['permission_role_id'] && $data['permission_role_id'] == $role) {
-                        $duplication = true;
+                        if ($permissionType == Permission::PERMISSION_TYPE_PROJECT_LEAD)
+                            if ($data['project_lead'])
+                                $duplication = true;
+                        if ($permissionType == Permission::PERMISSION_TYPE_CURRENT_ASSIGNEE)
+                            if ($data['current_assignee'])
+                                $duplication = true;
+                        if ($permissionType == Permission::PERMISSION_TYPE_REPORTER)
+                            if ($data['reporter'])
+                                $duplication = true;
                     }
-
-                    if ($permissionType == Permission::PERMISSION_TYPE_PROJECT_LEAD)
-                        if ($data['project_lead'])
-                            $duplication = true;
-                    if ($permissionType == Permission::PERMISSION_TYPE_CURRENT_ASSIGNEE)
-                        if ($data['current_assignee'])
-                            $duplication = true;
-                    if ($permissionType == Permission::PERMISSION_TYPE_REPORTER)
-                        if ($data['reporter'])
-                            $duplication = true;
                 }
-            }
 
-            if (!$duplication) {
-                for ($i = 0; $i < count($sysPermissionIds); $i++) {
+                if (!$duplication) {
                     PermissionScheme::addData($permissionSchemeId, $sysPermissionIds[$i], $permissionType, $role, $group, $user, $currentDate);
 
                     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Permission Scheme Data', $currentDate);
                 }
             }
+
         }
 
         header('Location: /yongo/administration/permission-scheme/edit/' . $permissionSchemeId);
