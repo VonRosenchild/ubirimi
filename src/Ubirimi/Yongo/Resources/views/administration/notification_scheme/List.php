@@ -27,6 +27,7 @@
                             <th></th>
                             <th>Name</th>
                             <th>Projects</th>
+                            <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,7 +36,7 @@
                                 <td width="22">
                                     <input type="checkbox" value="1" id="el_check_<?php echo $scheme['id'] ?>"/>
                                 </td>
-                                <td>
+                                <td valign="top">
                                     <a href="/yongo/administration/notification-scheme/edit/<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></a>
                                     <br />
                                     <?php echo $scheme['description'] ?>
@@ -54,6 +55,13 @@
                                             echo '<input type="hidden" id="delete_possible_' . $scheme['id'] . '" value="1">';
                                         }
                                     ?>
+                                </td>
+                                <td>
+                                    <a href="/yongo/administration/notification-scheme/edit/<?php echo $scheme['id'] ?>">Notifications</a>
+                                    &middot;
+                                    <a href="/yongo/administration/notification-scheme/edit-metadata/<?php echo $scheme['id'] ?>">Edit</a>
+                                    &middot;
+                                    <a href="/yongo/administration/notification-scheme/copy/<?php echo $scheme['id'] ?>">Copy</a>
                                 </td>
                             </tr>
                         <?php endwhile ?>
