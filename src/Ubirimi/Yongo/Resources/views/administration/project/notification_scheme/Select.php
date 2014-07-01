@@ -11,7 +11,7 @@
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
     <div class="pageContent">
         <?php
-            $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . '> Notification Scheme > Select a Different Scheme</div>';
+            $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . ' > Notification Scheme > Select a Different Scheme</div>';
             Util::renderBreadCrumb($breadCrumb);
         ?>
 
