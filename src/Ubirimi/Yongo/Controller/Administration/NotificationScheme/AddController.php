@@ -27,4 +27,4 @@
     }
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Notification Scheme';
 
-    require_once __DIR__ . '/../../../Resources/views/administration/notification_scheme/add_notification_scheme.php.tpl';
+    require_once __DIR__ . '/../../../Resources/views/administration/notification_scheme/Add.php';
