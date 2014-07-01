@@ -27,6 +27,7 @@
                         <th></th>
                         <th>Name</th>
                         <th>Projects</th>
+                        <th>Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,13 @@
                                         echo '<input type="hidden" id="delete_possible_' . $scheme['id'] . '" value="1">';
                                     }
                                 ?>
+                            </td>
+                            <td>
+                                <a href="/yongo/administration/permission-scheme/edit/<?php echo $scheme['id']?>">Permissions</a>
+                                &middot;
+                                <a href="/yongo/administration/permission-scheme/edit-metadata/<?php echo $scheme['id']?>">Edit</a>
+                                &middot;
+                                <a href="/yongo/administration/permission-scheme/copy/<?php echo $scheme['id']?>">Copy</a>
                             </td>
                         </tr>
                     <?php endwhile ?>
