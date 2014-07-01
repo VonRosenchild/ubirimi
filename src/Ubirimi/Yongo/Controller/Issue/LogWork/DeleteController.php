@@ -7,7 +7,7 @@
     $workLogId = $_POST['id'];
     $issueId = $_POST['issue_id'];
     $remainingTime = $_POST['remaining'];
-    $comment = $_POST['comment'];
+    $comment = isset($_POST['comment']) ? Util::cleanRegularInputField($_POST['comment']) : null;
 
     $workLog = IssueWorkLog::getWorkLogById($workLogId);
     $timeSpent = $workLog['time_spent'];

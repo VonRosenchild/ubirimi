@@ -28,7 +28,7 @@
     <table class="table table-hover table-condensed">
         <thead>
             <tr>
-                <th width="120px"><b>Field</b></th>
+                <th width="280px"><b>Field</b></th>
                 <th><b>Original Value</b></th>
                 <th><b>New Value</b></th>
             </tr>
@@ -59,8 +59,8 @@
             <?php endif ?>
             <?php if ($row['source'] == 'history_event') : ?>
                 <tr>
-                    <td width="10%"><?php echo Field::$fieldTranslation[$row['field']] ?></td>
-                    <td valign="top" width="45%">
+                    <td width="280px"><?php echo Field::$fieldTranslation[$row['field']] ?></td>
+                    <td valign="top">
                         <?php if ($row['field'] == 'time_spent' || $row['field'] == 'remaining_estimate' || $row['field'] == 'worklog_time_spent'): ?>
                             <?php echo ($row['old_value'] != 'NULL') ? Util::transformTimeToString(Util::transformLogTimeToMinutes($row['old_value'], $hoursPerDay, $daysPerWeek), $hoursPerDay, $daysPerWeek) : 'None'; ?>
                         <?php else: ?>

@@ -33,18 +33,18 @@ use Ubirimi\Util;
                         <?php require_once __DIR__ . '/_sectionDetailsDates.php' ?>
 
                         <?php if ($timeTrackingFlag): ?>
-                            <?php if ($workLogs): ?>
-                                <table width="100%" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td id="sectTimeTracking" class="sectionDetail">
-                                            <span class="sectionDetailTitle headerPageText">Time Tracking</span>
-                                            <?php if ($hasWorkOnIssuePermission): ?>
-                                                <img id="add_issue_log_work" src="/img/plus.png" class="headerPageText menu_img" height="20px" style=" padding-left: 4px; margin-top: 3px; float: right; text-align: right; background-color: #ffffff"/>
-                                            <?php endif ?>
-                                        </td>
-                                    </tr>
-                                </table>
-                            <?php endif ?>
+
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td id="sectTimeTracking" class="sectionDetail">
+                                        <span class="sectionDetailTitle headerPageText">Time Tracking</span>
+                                        <?php if ($hasWorkOnIssuePermission): ?>
+                                            <img id="add_issue_log_work" src="/img/plus.png" class="headerPageText menu_img" height="20px" style=" padding-left: 4px; margin-top: 3px; float: right; text-align: right; background-color: #ffffff"/>
+                                        <?php endif ?>
+                                    </td>
+                                </tr>
+                            </table>
+
                             <div id="ajax_time_tracking">
                                 <?php if ($workLogs): ?>
                                     <?php require __DIR__ . '/_timeTrackingInformation.php' ?>

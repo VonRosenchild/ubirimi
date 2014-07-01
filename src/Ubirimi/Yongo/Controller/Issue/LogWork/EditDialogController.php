@@ -11,6 +11,6 @@
     $workLog = IssueWorkLog::getWorkLogById($workLogId);
 
     $mode = 'edit';
-    require_once __DIR__ . '/../../../Resources/views/issue/_worklog_dialog.php.tpl';
+    require_once __DIR__ . '/../../../Resources/views/issue/log_work/AddDialog.php';
 
     echo '<input type="hidden" value="' . $workLogId . '" id="work_log_id" />';
