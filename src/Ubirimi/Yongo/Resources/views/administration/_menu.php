@@ -4,6 +4,8 @@
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 
+    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
+
     $isSuperUser = $session->get('user/super_user_flag');
 
     $loggedInUserFirstName = $session->get('user/first_name');
