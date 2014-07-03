@@ -7,7 +7,7 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $emptyName = false;
-    $resolution_exists = false;
+    $resolutionExists = false;
 
     if (isset($_POST['new_resolution'])) {
         $name = Util::cleanRegularInputField($_POST['name']);
@@ -19,9 +19,9 @@
         // check for duplication
         $resolution = IssueSettings::getByName($clientId, 'resolution', mb_strtolower($name));
         if ($resolution)
-            $resolution_exists = true;
+            $resolutionExists = true;
 
-        if (!$resolution_exists && !$emptyName) {
+        if (!$resolutionExists && !$emptyName) {
             $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
             IssueSettings::create('issue_resolution', $clientId, $name, $description, null, null, $currentDate);
 

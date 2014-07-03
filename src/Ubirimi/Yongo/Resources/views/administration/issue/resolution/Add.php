@@ -16,7 +16,7 @@
                         <input class="inputText" type="text" value="<?php if (isset($name)) echo $name; ?>" name="name" />
                         <?php if ($emptyName): ?>
                         <div class="error">The name can not be empty.</div>
-                        <?php elseif ($resolution_exists): ?>
+                        <?php elseif ($resolutionExists): ?>
                         <div class="error">A resolution with the same name already exists.</div>
                         <?php endif ?>
                     </td>

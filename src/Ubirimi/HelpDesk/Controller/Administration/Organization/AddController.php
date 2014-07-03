@@ -7,7 +7,7 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $emptyName = false;
-    $status_exists = false;
+    $statusExists = false;
 
     if (isset($_POST['new_organization'])) {
         $name = Util::cleanRegularInputField($_POST['name']);
@@ -19,9 +19,9 @@
         $organization = Organization::getByName($clientId, mb_strtolower($name));
 
         if ($organization)
-            $status_exists = true;
+            $statusExists = true;
 
-        if (!$emptyName && !$status_exists) {
+        if (!$emptyName && !$statusExists) {
             $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
             Organization::create($clientId, $name, $currentDate);
 

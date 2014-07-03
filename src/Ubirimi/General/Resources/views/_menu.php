@@ -131,6 +131,11 @@
                     <div><a class="linkSubMenu" href="/general-settings/users">Users</a></div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <div><a class="linkSubMenu" href="/general-settings/users/profile-manager">Profile Manager</a></div>
+                </td>
+            </tr>
         </table>
     </div>
 

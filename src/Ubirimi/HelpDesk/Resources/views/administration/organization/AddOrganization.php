@@ -17,7 +17,7 @@
                         <input class="inputText" type="text" value="<?php if (isset($name)) echo $name; ?>" name="name" />
                         <?php if ($emptyName): ?>
                             <div class="error">The name can not be empty.</div>
-                        <?php elseif ($status_exists): ?>
+                        <?php elseif ($statusExists): ?>
                             <div class="error">An organization with the same name already exists.</div>
                         <?php endif ?>
                     </td>

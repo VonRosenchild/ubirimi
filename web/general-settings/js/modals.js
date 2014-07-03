@@ -116,4 +116,13 @@ $('document').ready(function () {
             $("#modalDeleteSMTPServer").dialog("open");
         });
     });
-})
+
+    $('.deleteFromGeneralList').click(function (event) {
+        event.preventDefault();
+        var userId = $(this).attr('data');
+        $('#el_check_' + userId).prop('checked', true);
+        selected_rows = [];
+        selected_rows.push(userId);
+        $('#btnDeleteUser').trigger('click');
+    });
+});

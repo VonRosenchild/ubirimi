@@ -13,7 +13,7 @@
         <?php if (Util::userHasClientAdministrationPermission()): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
-                    <td><a id="btnNew" href="/general-settings/users/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create User</a></td>
+                    <td><a href="/general-settings/users/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create User</a></td>
                     <td><a id="btnEditUser" href="#" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit</a></td>
                     <td><a id="btnDeleteUser" href="#" class="btn ubirimi-btn disabled"><i class="icon-remove"></i> Delete</a></td>
                 </tr>
@@ -30,6 +30,7 @@
                     <th>Email Address</th>
                     <th>Helpdesk Customer</th>
                     <th>Client Administrator</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +59,11 @@
                             <?php else: ?>
                                 <span>No</span>
                             <?php endif ?>
+                        </td>
+                        <td>
+                            <a href="/general-settings/users/edit/<?php echo $user['id'] ?>">Edit</a>
+                            &middot;
+                            <a href="#" class="deleteFromGeneralList" data="<?php echo $user['id'] ?>">Delete</a>
                         </td>
                     </tr>
                 <?php endwhile ?>

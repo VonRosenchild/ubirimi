@@ -7,7 +7,7 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $emptyName = false;
-    $status_exists = false;
+    $statusExists = false;
 
     if (isset($_POST['new_status'])) {
         $name = Util::cleanRegularInputField($_POST['name']);
@@ -19,9 +19,9 @@
         $status = IssueSettings::getByName($clientId, 'status', mb_strtolower($name));
 
         if ($status)
-            $status_exists = true;
+            $statusExists = true;
 
-        if (!$emptyName && !$status_exists) {
+        if (!$emptyName && !$statusExists) {
             $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
             IssueSettings::create('issue_status', $clientId, $name, $description, null, null, $currentDate);
 
