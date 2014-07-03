@@ -281,64 +281,87 @@ class SLA {
         $issueId = $issue['id'];
 
         $issueSLAData = SLA::getSLAData($issueId, $SLA['id']);
+        $slaCalendarData = SLA::getCalendarDataByCalendarId($issueSLAData['help_sla_calendar_id']);
         $stopConditionDate = null;
         $intervalMinutes = null;
         $goalValue = null;
         $goalId = null;
         $startConditionDate = null;
 
-        if (!$issueSLAData['started_flag']) {
-            // check if this issue has the start condition of the sla true
-            $startConditionDate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start');
-            if (!$startConditionDate) {
-                return null;
-            }
+        $initialDate = new \DateTime($issueId['date_created'], new \DateTimeZone($clientSettings['timezone']));
+        $currentDateObject = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
 
-            $issueSLAData['started_flag'] = 1;
-            $dateStart = new \DateTime($startConditionDate, new \DateTimeZone($clientSettings['timezone']));
-            $dateStop = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+        $currentHourMinuteSecond = date_format($currentDateObject, 'H:i:00');
+        $currentDate = date_format($currentDateObject, 'Y-m-d');
 
-            $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
-            $goalId = $goalData['id'];
-            $goalValue = $goalData['value'];
+        $finalDate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+        $finalDate = date_create($finalDate, 'Y-m-d');
 
-            $intervalMinutes = null;
-            if ($goalData['value']) {
-                $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
-            }
-        } else if ($issueSLAData['started_flag'] && !$issueSLAData['stopped_flag']) {
-            // check if this issue has the stop condition of the sla true
-            $stopConditionDate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop');
+        while (date_format($initialDate, 'Y-m-d') <= $finalDate) {
+            $dayNumber = date_format($initialDate, 'N');
 
-            if (!$stopConditionDate) {
-                $dateStop = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
-            } else {
-                $dateStop = new \DateTime($stopConditionDate);
-                if (!$issueSLAData['stopped_flag']) {
-                    Issue::updateSLAStopped($issueId, $SLA['id'], $dateStop->format('Y-m-d H:i:s'));
+            for ($i = 0; $i < count($slaCalendarData); $i++) {
+                if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
+                    if (!$issueSLAData['started_flag']) {
+                        // check if this issue has the start condition of the sla true
+                        $startConditionDate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start');
+                        if (!$startConditionDate) {
+                            return null;
+                        }
+
+                        $issueSLAData['started_flag'] = 1;
+                        $dateStart = new \DateTime($startConditionDate, new \DateTimeZone($clientSettings['timezone']));
+                        $dateStop = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+
+                        $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
+                        $goalId = $goalData['id'];
+                        $goalValue = $goalData['value'];
+
+                        $intervalMinutes = null;
+                        if ($goalData['value']) {
+                            $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
+                        }
+                    } else if ($issueSLAData['started_flag'] && !$issueSLAData['stopped_flag']) {
+                        // check if this issue has the stop condition of the sla true
+                        $stopConditionDate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop');
+
+                        if (!$stopConditionDate) {
+                            $dateStop = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+                        } else {
+                            $dateStop = new \DateTime($stopConditionDate);
+                            if (!$issueSLAData['stopped_flag']) {
+                                Issue::updateSLAStopped($issueId, $SLA['id'], $dateStop->format('Y-m-d H:i:s'));
+                            }
+                        }
+
+                        if ($currentHourMinuteSecond > $slaCalendarData[$i]['time_from']) {
+
+                        }
+
+                        $dateStart = new \DateTime($issueSLAData['started_date'], new \DateTimeZone($clientSettings['timezone']));
+                        $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
+
+                        $goalId = $goalData['id'];
+                        $goalValue = $goalData['value'];
+
+                        if ($goalValue) {
+                            $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
+                        }
+                        $startConditionDate = $issueSLAData['started_date'];
+                    } else if ($issueSLAData['started_flag'] && $issueSLAData['stopped_flag']) {
+
+                        $dateStart = new \DateTime($issueSLAData['started_date']);
+                        $dateStop = new \DateTime($issueSLAData['stopped_date']);
+
+                        $goal = SLA::getGoalById($issueSLAData['help_sla_goal_id']);
+                        $goalValue = $goal['value'];
+                        $goalId = $goal['id'];
+                        $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
+                        $startConditionDate = $issueSLAData['started_date'];
+                    }
                 }
             }
-
-            $dateStart = new \DateTime($issueSLAData['started_date'], new \DateTimeZone($clientSettings['timezone']));
-            $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
-
-            $goalId = $goalData['id'];
-            $goalValue = $goalData['value'];
-
-            if ($goalValue) {
-                $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
-            }
-            $startConditionDate = $issueSLAData['started_date'];
-        } else if ($issueSLAData['started_flag'] && $issueSLAData['stopped_flag']) {
-
-            $dateStart = new \DateTime($issueSLAData['started_date']);
-            $dateStop = new \DateTime($issueSLAData['stopped_date']);
-
-            $goal = SLA::getGoalById($issueSLAData['help_sla_goal_id']);
-            $goalValue = $goal['value'];
-            $goalId = $goal['id'];
-            $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
-            $startConditionDate = $issueSLAData['started_date'];
+            date_add($initialDate, date_interval_create_from_date_string('1 days'));
         }
 
         return array($intervalMinutes, $goalValue, $issueSLAData['started_flag'], $goalId, $startConditionDate);
@@ -486,9 +509,13 @@ class SLA {
             $stmt->execute();
             $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
+            if ($result->num_rows) {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $data;
+                }
+                return $resultArray;
+            } else
                 return false;
         }
     }
