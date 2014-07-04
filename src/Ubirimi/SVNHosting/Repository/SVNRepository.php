@@ -443,8 +443,8 @@
             }
         }
 
-        public static function apacheConfig($clientDomain, $repoName) {
-            file_put_contents(UbirimiContainer::get()['subversion.apache_config'], "Use SubversionRepo $clientDomain $repoName\n", FILE_APPEND | LOCK_EX);
+        public static function apacheConfig($clientDomain, $repositoryName) {
+            file_put_contents(UbirimiContainer::get()['subversion.apache_config'], "Use SubversionRepo $clientDomain $repositoryName\n", FILE_APPEND | LOCK_EX);
             system("/etc/init.d/apache2 reload");
         }
 

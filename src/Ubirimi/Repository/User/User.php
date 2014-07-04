@@ -72,7 +72,7 @@ class User {
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function add($clientId, $first_name, $last_name, $email, $username, $password, $issuesPerPage, $customerServiceDeskFlag, $countryId, $currentDate) {
+    public static function add($clientId, $firstName, $lastName, $email, $username, $password, $issuesPerPage, $customerServiceDeskFlag, $countryId, $currentDate) {
         $query = "INSERT INTO user(client_id, country_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -81,7 +81,7 @@ class User {
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("iisssssiis", $clientId, $countryId, $first_name, $last_name, $email, $username, $hash, $issuesPerPage, $customerServiceDeskFlag, $currentDate);
+            $stmt->bind_param("iisssssiis", $clientId, $countryId, $firstName, $lastName, $email, $username, $hash, $issuesPerPage, $customerServiceDeskFlag, $currentDate);
             $stmt->execute();
 
             return array(UbirimiContainer::get()['db.connection']->insert_id, $password);
@@ -149,7 +149,7 @@ class User {
         }
     }
 
-    public static function updateById($userId, $first_name, $last_name, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
+    public static function updateById($userId, $firstName, $lastName, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
         $query = 'UPDATE user SET ' .
                  'first_name = ?, last_name = ?, email = ?, username = ?, client_administrator_flag = ?, customer_service_desk_flag = ?, date_updated = ? ';
 
@@ -161,9 +161,9 @@ class User {
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             if ($issuesPerPage)
-                $stmt->bind_param("ssssiisii", $first_name, $last_name, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $issuesPerPage, $userId);
+                $stmt->bind_param("ssssiisii", $firstName, $lastName, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $issuesPerPage, $userId);
             else
-                $stmt->bind_param("ssssiisi", $first_name, $last_name, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $userId);
+                $stmt->bind_param("ssssiisi", $firstName, $lastName, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $userId);
 
             $stmt->execute();
         }
@@ -391,18 +391,19 @@ class User {
         }
     }
 
-    public static function getUserByUsername($username) {
+    public static function getByEmailAddress($clientId, $emailAddress) {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password,
                     super_user_flag, svn_administrator_flag, client_administrator_flag ' .
                  'FROM user ' .
-                 "WHERE username = ? " .
+                 "WHERE client_id = ? and email = ? " .
                  "LIMIT 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("s", $username);
+            $stmt->bind_param("is", $clientId, mb_strtolower($emailAddress));
             $stmt->execute();
             $result = $stmt->get_result();
+
             if ($result->num_rows)
                 return $result->fetch_array(MYSQLI_ASSOC);
             else
@@ -410,7 +411,7 @@ class User {
         }
     }
 
-    public static function getUserByUsernameAndAdministrator($username) {
+    public static function getByUsernameAndAdministrator($username) {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password, super_user_flag, svn_administrator_flag ' .
             'FROM user ' .
             "WHERE username = ? and client_administrator_flag = 1 and customer_service_desk_flag = 0 " .
@@ -425,24 +426,6 @@ class User {
                 return $result->fetch_array(MYSQLI_ASSOC);
             else
                 return null;
-        }
-    }
-
-    public static function update($username, $password, $email, $firstName, $lastName, $userId) {
-        $query = 'UPDATE user SET
-                        password = ?,
-                        username = ?,
-                        email = ?,
-                        first_name = ?,
-                        last_name = ?
-                    where id = ? limit 1';
-
-        $t_hasher = new PasswordHash(8, FALSE);
-        $hash = $t_hasher->HashPassword($password);
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssssi", $hash, $username, $email, $firstName, $lastName, $userId);
-            $stmt->execute();
         }
     }
 

@@ -20,7 +20,7 @@ class SigninController extends UbirimiController
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $userData = User::getUserByUsernameAndAdministrator($username);
+            $userData = User::getByUsernameAndAdministrator($username);
             if ($userData['id']) {
                 $hasher = new PasswordHash(8, false);
                 $check = $hasher->CheckPassword($password, $userData['password']);

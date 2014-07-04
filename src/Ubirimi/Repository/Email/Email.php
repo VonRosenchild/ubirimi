@@ -79,32 +79,32 @@ class Email {
                         Util::getCurrentDateTime());
     }
 
-    public static function sendNewUserRepositoryNotificationEmail($clientId, $first_name, $last_name, $username, $password, $email, $repoName) {
+    public static function sendNewUserRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
         EmailQueue::add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
                         null,
-                        Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - You have been granted access to ' . $repoName . ' SVN Repository',
-                        Util::getTemplate('_newRepositoryUser.php',array('first_name' => $first_name,
-                                                                                  'last_name' => $last_name,
+                        Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - You have been granted access to ' . $repositoryName . ' SVN Repository',
+                        Util::getTemplate('_newRepositoryUser.php',array('first_name' => $firstName,
+                                                                                  'last_name' => $lastName,
                                                                                   'username' => $username,
                                                                                   'password' => $password,
-                                                                                  'repoName' => $repoName,
+                                                                                  'repoName' => $repositoryName,
                                                                                   'clientData' => UbirimiContainer::get()['session']->get('client'))),
                         Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone')));
     }
 
-    public static function sendUserChangedPasswordForRepositoryNotificationEmail($clientId, $first_name, $last_name, $username, $password, $email, $repoName) {
+    public static function sendUserChangedPasswordForRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
         EmailQueue::add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
                         null,
-                        Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - Password change for ' . $repoName . ' SVN Repository',
-                        Util::getTemplate('_userChangePassword.php', array('first_name' => $first_name,
-                                                                                 'last_name' => $last_name,
+                        Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - Password change for ' . $repositoryName . ' SVN Repository',
+                        Util::getTemplate('_userChangePassword.php', array('first_name' => $firstName,
+                                                                                 'last_name' => $lastName,
                                                                                  'username' => $username,
                                                                                  'password' => $password,
-                                                                                 'repoName' => $repoName,
+                                                                                 'repoName' => $repositoryName,
                                                                                  'clientData' => UbirimiContainer::get()['session']->get('client'))),
                         Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone')));
     }
