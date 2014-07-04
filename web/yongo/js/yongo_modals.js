@@ -2109,7 +2109,7 @@ $('document').ready(function () {
                                     $("#modalLinkIssue").dialog('destroy');
                                     $("#modalLinkIssue").empty();
 
-                                location.reload();
+                                    location.reload();
                                 }
                             });
                         } else {

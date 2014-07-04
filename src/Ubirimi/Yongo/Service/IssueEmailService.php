@@ -62,7 +62,7 @@ class IssueEmailService extends UbirimiService
         }
     }
 
-    public function emailIssueComment($issue, $content)
+    public function emailIssueComment($issue, $project, $content)
     {
         if ($this->session->get('client/settings/smtp')) {
 
@@ -74,15 +74,15 @@ class IssueEmailService extends UbirimiService
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
                 if ($userToNotify['user_id'] == $this->session->get('user/id') && $userToNotify['notify_own_changes_flag']) {
-                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $userToNotify, $content, $this->session->get('user'));
+                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $content, $this->session->get('user'));
                 } else {
-                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $userToNotify, $content, $this->session->get('user'));
+                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $content, $this->session->get('user'));
                 }
             }
         }
     }
 
-    public function emailIssueLink($issueId, $comment)
+    public function emailIssueLink($issueId, $project, $comment)
     {
         $smtpSettings = $this->session->get('client/settings/smtp');
         if ($smtpSettings) {
@@ -94,10 +94,10 @@ class IssueEmailService extends UbirimiService
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
                 if ($userToNotify['user_id'] == $this->session->get('user/id') && $userToNotify['notify_own_changes_flag']) {
-                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $userToNotify, $comment, $this->session->get('user'));
+                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $comment, $this->session->get('user'));
                 }
                 else {
-                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $userToNotify, $comment, $this->session->get('user'));
+                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $comment, $this->session->get('user'));
                 }
             }
         }

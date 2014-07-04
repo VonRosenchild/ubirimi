@@ -5,8 +5,11 @@ namespace Ubirimi\Yongo\Controller\Issue\Link;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Event\IssueEvent;
@@ -22,6 +25,9 @@ class LinkController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $issueId = $request->request->get('id');
+        $issue = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $project = Project::getById($issue['issue_project_id']);
+
         $linkTypeData = explode('_', $request->request->get('link_type'));
         $linkTypeId = $linkTypeData[0];
         $type = $linkTypeData[1];
@@ -34,7 +40,7 @@ class LinkController extends UbirimiController
         if ($comment != '') {
             IssueComment::add($issueId, $loggedInUserId, $comment, $date);
 
-            $issueEvent = new IssueEvent(null, null, IssueEvent::STATUS_UPDATE, array('issueId' => $issueId, 'comment' => $comment));
+            $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, array('issueId' => $issueId, 'comment' => $comment));
             UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_LINK_EMAIL, $issueEvent);
         }
 

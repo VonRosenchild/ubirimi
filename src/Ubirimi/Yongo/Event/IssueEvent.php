@@ -27,6 +27,11 @@ class IssueEvent extends Event
         return $this->issue;
     }
 
+    public function getProject()
+    {
+        return $this->project;
+    }
+
     public function getStatus()
     {
         return $this->status;

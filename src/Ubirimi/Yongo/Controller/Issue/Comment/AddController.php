@@ -9,11 +9,13 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Project\Project;
 
 class AddController extends UbirimiController
 {
@@ -29,10 +31,10 @@ class AddController extends UbirimiController
         $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
 
         $issue = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-
+        $project = Project::getById($issue['issue_project_id']);
         IssueComment::add($issueId, $session->get('user/id'), $content, $date);
 
-        $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_UPDATE, $content);
+        $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $content);
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'ADD Yongo issue comment ' . $issue['project_code'] . '-' . $issue['nr']);
 
         UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);

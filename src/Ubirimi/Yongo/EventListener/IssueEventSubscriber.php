@@ -37,14 +37,14 @@ class IssueEventSubscriber implements EventSubscriberInterface
     {
         $container = UbirimiContainer::get();
 
-        $container['issue.email']->emailIssueComment($event->getIssue(), $event->getExtra());
+        $container['issue.email']->emailIssueComment($event->getIssue(), $event->getProject(), $event->getExtra());
     }
 
     public function onIssueLinkEmail(IssueEvent $event)
     {
         $container = UbirimiContainer::get();
 
-        $container['issue.email']->emailIssueLink($event->getExtra()['issueId'], $event->getExtra()['comment']);
+        $container['issue.email']->emailIssueLink($event->getExtra()['issueId'], $event->getProject(), $event->getExtra()['comment']);
     }
 
     public function onIssueShareEmail(IssueEvent $event)
