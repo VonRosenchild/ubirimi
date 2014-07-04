@@ -17,7 +17,7 @@ use Ubirimi\Yongo\Controller\Administration\Service\ProjectService;
 
 Util::checkUserIsLoggedInAndRedirect();
 
-$lead_users = Client::getUsers($session->get('client/id'));
+$leadUsers = Client::getUsers($session->get('client/id'));
 $forHelpDesk = isset($_GET['helpdesk']) ? true : false;
 
 $emptyName = false;

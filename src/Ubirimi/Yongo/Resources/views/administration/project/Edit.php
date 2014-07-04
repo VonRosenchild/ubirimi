@@ -82,8 +82,9 @@
                     <td>Lead</td>
                     <td>
                         <select name="lead" class="inputTextCombo">
-                            <?php while ($user = $lead_users->fetch_array(MYSQLI_ASSOC)): ?>
-                                <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></option>
+                            <?php while ($user = $leadUsers->fetch_array(MYSQLI_ASSOC)): ?>
+                                <option <?php if ($project['lead_id'] == $user['id']) echo 'selected="selected"' ?>
+                                    value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>

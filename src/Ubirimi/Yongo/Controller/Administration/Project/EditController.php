@@ -12,7 +12,7 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $projectId = $_GET['id'];
-    $lead_users = Client::getUsers($session->get('client/id'));
+    $leadUsers = Client::getUsers($session->get('client/id'));
 
     // todo: leadul sa fie adaugat in lista de useri pentru acest proiect
     $project = Project::getById($projectId);
