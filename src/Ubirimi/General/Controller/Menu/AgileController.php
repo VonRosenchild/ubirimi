@@ -1,8 +1,6 @@
 <?php
-    use Ubirimi\Util;
     use Ubirimi\Agile\Repository\AgileBoard;
 
-    Util::checkUserIsLoggedInAndRedirect();
     $last5Board = AgileBoard::getLast5BoardsByClientId($clientId);
     $recentBoard = null;
     if ($session->has('last_selected_board_id')) {

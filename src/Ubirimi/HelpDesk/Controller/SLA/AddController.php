@@ -77,9 +77,10 @@
 
             // for every issue in this project add an empty line in yongo_issue_sla
             $issuesData = Issue::getByParameters(array('project' => $projectId));
-            $issues = $issuesData[0];
-            while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                Issue::addPlainSLAData($issue['id'], $projectId);
+            if ($issuesData->num_rows) {
+                while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
+                    Issue::addPlainSLAData($issue['id'], $projectId);
+                }
             }
 
             header('Location: /helpdesk/sla/' . $projectId . '/' . $slaId);

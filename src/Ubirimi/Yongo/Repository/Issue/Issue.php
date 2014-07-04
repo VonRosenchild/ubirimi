@@ -460,6 +460,7 @@ class Issue {
 
         if (substr($queryWhere, strlen($queryWhere) - 4, 4) == 'AND ')
             $queryWhere = substr($query, 0, strlen($queryWhere) - 4);
+
         $sortColumn = null;
         if (isset($parameters['sort'])) {
             switch ($parameters['sort']) {

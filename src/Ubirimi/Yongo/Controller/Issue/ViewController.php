@@ -35,6 +35,7 @@ class ViewController extends UbirimiController
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
         } else {
             $clientId = Client::getClientIdAnonymous();
+            $session->set('client/id', $clientId);
             $session->set('user/id', null);
             $clientSettings = Client::getSettings($session->get('client/id'));
             $issue = Issue::getById($issueId, $session->get('user/id'));
