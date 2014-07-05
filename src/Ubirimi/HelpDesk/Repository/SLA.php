@@ -282,6 +282,8 @@ class SLA {
 
         $stopConditionSLADate = null;
         $startConditionSLADate = null;
+        $currentDate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+        $currentDate = date_format($currentDate, 'Y-m-d');
 
         if ($issueSLAData['started_date']) {
             $initialDate = new \DateTime($issueSLAData['started_date'], new \DateTimeZone($clientSettings['timezone']));
@@ -302,7 +304,6 @@ class SLA {
 
         while (date_format($initialDate, 'Y-m-d') <= $finalDate) {
             $dayNumber = date_format($initialDate, 'N');
-
             for ($i = 0; $i < count($slaCalendarData); $i++) {
 
                 if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
@@ -328,7 +329,11 @@ class SLA {
                         $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop');
 
                         if (!$stopConditionSLADate) {
-                            $stopConditionSLADate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+                            if (date_format($initialDate, 'Y-m-d') < $currentDate) {
+                                $stopConditionSLADate = new \DateTime('2014-06-12 ' . $slaCalendarData[$i]['time_to'], new \DateTimeZone($clientSettings['timezone']));
+                            } else {
+                                $stopConditionSLADate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+                            }
                         } else {
                             $stopConditionSLADate = new \DateTime($stopConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
                             $issueSLAData['stopped_flag'] = 1;
@@ -356,7 +361,6 @@ class SLA {
 
                         $countStartTimeDateObject = new \DateTime('2014-06-12 ' . $countStartTime, new \DateTimeZone($clientSettings['timezone']));
                         $countEndTimeDateObject = new \DateTime('2014-06-12 ' . $countEndTime, new \DateTimeZone($clientSettings['timezone']));
-
 
                         $intervalMinutes += floor(($countEndTimeDateObject->getTimestamp() - $countStartTimeDateObject->getTimestamp()) / 60);
                     }
