@@ -3,6 +3,7 @@
 namespace Ubirimi\Yongo\Controller\Administration\Service;
 
 use Ubirimi\Entity\Yongo\Project as ProjectEntity;
+use Ubirimi\Repository\HelpDesk\SLACalendar;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 use Ubirimi\Repository\HelpDesk\Queue;
@@ -56,6 +57,18 @@ class ProjectService
             $queueDefinition = 'resolution = Unresolved AND (Time waiting for support < 0 OR Time to resolution < 0)';
             Queue::save($userId, $projectId, 'SLA breached', 'SLA breached', $queueDefinition, $defaultColumns, $currentDate);
 
+            // add the default SLA calendar
+            $dataDefaultCalendar = array();
+            for ($i = 0; $i < 7; $i++) {
+                $dataDefaultCalendar[$i]['notWorking'] = 0;
+                $dataDefaultCalendar[$i]['from_hour'] = '00';
+                $dataDefaultCalendar[$i]['from_minute'] = '00';
+                $dataDefaultCalendar[$i]['to_hour'] = '23';
+                $dataDefaultCalendar[$i]['to_minute'] = '59';
+            }
+
+            $defaultSLACalendarId = SLACalendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, $currentDate);
+
             // add the default SLAs
             // --------------------------------------------------------
 
@@ -65,12 +78,12 @@ class ProjectService
 
             // sla 2: time to resolution
             $slaId = SLA::save($projectId, 'Time to resolution', 'Time to resolution', 'start_issue_created', 'stop_resolution_set', $currentDate);
-            SLA::addGoal($slaId, 'priority = Blocker', '', 1440);
+            SLA::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 1440);
 
             // sla 3: time waiting for support
             $slaId = SLA::save($projectId, 'Time waiting for support', 'Time waiting for support', 'start_issue_created', 'stop_resolution_set', $currentDate);
-            SLA::addGoal($slaId, 'priority = Blocker', '', 24);
-            SLA::addGoal($slaId, 'priority = Critical', '', 96);
+            SLA::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 24);
+            SLA::addGoal($slaId, $defaultSLACalendarId, 'priority = Critical', '', 96);
         }
 
         return $projectId;

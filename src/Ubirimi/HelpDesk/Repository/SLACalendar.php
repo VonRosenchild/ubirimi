@@ -155,6 +155,8 @@ class SLACalendar {
                 }
             }
         }
+
+        return $calendarId;
     }
 
     public static function getCalendarDataByCalendarId($calendarId) {

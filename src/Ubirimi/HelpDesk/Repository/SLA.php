@@ -84,17 +84,19 @@ class SLA {
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("isssss", $projectId, $name, $description, $startCondition, $stopCondition, $date);
             $stmt->execute();
+
             return UbirimiContainer::get()['db.connection']->insert_id;
         }
     }
 
-    public static function addGoal($slaId, $definition, $definitionSQL, $value) {
-        $query = "INSERT INTO help_sla_goal(help_sla_id, definition, definition_sql, value) VALUES " .
-                 "(?, ?, ?, ?)";
+    public static function addGoal($slaId, $SLACalendarId, $definition, $definitionSQL, $value) {
+        $query = "INSERT INTO help_sla_goal(help_sla_id, help_sla_calendar_id, definition, definition_sql, value) VALUES " .
+                 "(?, ?, ?, ?, ?)";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("isss", $slaId, $definition, $definitionSQL, $value);
+            $stmt->bind_param("iisss", $slaId, $SLACalendarId, $definition, $definitionSQL, $value);
             $stmt->execute();
+
             return UbirimiContainer::get()['db.connection']->insert_id;
         }
     }
