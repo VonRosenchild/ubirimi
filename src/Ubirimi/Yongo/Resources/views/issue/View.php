@@ -27,7 +27,7 @@ use Ubirimi\Util;
                     <td id="sectDetails" width="70%" class="sectionDetail" colspan="3"><span class="sectionDetailTitle headerPageText">Details</span></td>
                     <td width="20"></td>
                     <td rowspan="4" valign="top">
-                        <?php if ($atLeastOneSLA): ?>
+                        <?php  if ($atLeastOneSLA): ?>
                             <?php require_once __DIR__ . '/_sectionDetailsSlas.php' ?>
                         <?php endif ?>
                         <?php require_once __DIR__ . '/_sectionDetailsDates.php' ?>

@@ -1600,7 +1600,6 @@ class Issue {
     public static function updateSLAValue($issue, $clientId, $clientSettings) {
 
         $slasPrintData = array();
-        $atLeastOneSLA = false;
         $projectId = $issue['issue_project_id'];
         $SLAs = SLA::getByProjectId($projectId);
 
@@ -1610,15 +1609,11 @@ class Issue {
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
                 $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
 
-
                 if ($slaData) {
                     $slasPrintData[$SLA['id']] = array('name' => $SLA['name'],
                         'offset' => $slaData[0],
                         'goal' => $slaData[1],
                         'goal_id' => $slaData[2]);
-                    if ($slaData[0]) {
-                        $atLeastOneSLA = true;
-                    }
                 } else {
 
                     // it is already stored in the database, stopped before recalculation
@@ -1630,28 +1625,25 @@ class Issue {
                         'offset' => $offsetValue,
                         'goal' => $goalData['value'],
                         'goal_id' => $slaCalculated['help_sla_goal_id']);
-
-                    $atLeastOneSLA = true;
                 }
             }
 
             foreach ($slasPrintData as $slaId => $data) {
-                if ($data['offset']) {
-                    SLA::updateDataForSLA($issue['id'], $slaId, $data['offset'], $data['goal_id']);
-                }
+                SLA::updateDataForSLA($issue['id'], $slaId, $data['offset'], $data['goal_id']);
             }
         }
 
-        return array($slasPrintData, $atLeastOneSLA);
+        return $slasPrintData;
     }
 
     public static function addPlainSLAData($issueId, $projectId) {
         $SLAs = SLA::getByProjectId($projectId);
         if ($SLAs) {
+            $defaultValue = 0;
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-                $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id) VALUES (?, ?)";
+                $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) VALUES (?, ?, ?)";
                 if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    $stmt->bind_param("ii", $issueId, $SLA['id']);
+                    $stmt->bind_param("iii", $issueId, $SLA['id'], $defaultValue);
                     $stmt->execute();
                 }
             }
