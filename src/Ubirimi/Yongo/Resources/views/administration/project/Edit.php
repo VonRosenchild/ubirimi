@@ -92,7 +92,7 @@
                 <tr>
                     <td>Enable for Helpdesk</td>
                     <td>
-                        <input type="checkbox" value="1" <?php if ($project['service_desk_enabled_flag']) echo 'checked="checked"' ?> name="enable_for_helpdesk" />
+                        <input type="checkbox" value="1" <?php if ($project['help_desk_enabled_flag']) echo 'checked="checked"' ?> name="enable_for_helpdesk" />
                     </td>
                 </tr>
                 <tr>

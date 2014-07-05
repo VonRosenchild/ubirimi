@@ -10523,7 +10523,7 @@ CREATE TABLE IF NOT EXISTS `project` (
   `name` varchar(200) NOT NULL,
   `code` varchar(5) NOT NULL,
   `description` varchar(250) NOT NULL,
-  `service_desk_enabled_flag` tinyint(3) unsigned DEFAULT NULL,
+  `help_desk_enabled_flag` tinyint(3) unsigned DEFAULT NULL,
   `issue_number` bigint(20) unsigned NOT NULL,
   `date_created` datetime NOT NULL,
   `date_updated` datetime DEFAULT NULL
@@ -10533,7 +10533,7 @@ CREATE TABLE IF NOT EXISTS `project` (
 -- Dumping data for table `project`
 --
 
-INSERT INTO `project` (`id`, `lead_id`, `client_id`, `issue_type_scheme_id`, `issue_type_screen_scheme_id`, `issue_type_field_configuration_id`, `workflow_scheme_id`, `permission_scheme_id`, `notification_scheme_id`, `issue_security_scheme_id`, `project_category_id`, `name`, `code`, `description`, `service_desk_enabled_flag`, `issue_number`, `date_created`, `date_updated`) VALUES
+INSERT INTO `project` (`id`, `lead_id`, `client_id`, `issue_type_scheme_id`, `issue_type_screen_scheme_id`, `issue_type_field_configuration_id`, `workflow_scheme_id`, `permission_scheme_id`, `notification_scheme_id`, `issue_security_scheme_id`, `project_category_id`, `name`, `code`, `description`, `help_desk_enabled_flag`, `issue_number`, `date_created`, `date_updated`) VALUES
 (458, 2836, 1959, 3948, 1959, 1958, 1970, 1969, 1963, NULL, NULL, 'MMS', 'code', 'MMS Sofia', 0, 5, '2014-06-26 14:00:20', NULL),
 (459, 2836, 1959, 3948, 1959, 1958, 1970, 1969, 1963, NULL, NULL, 'Bayer ISP on Myriad2', 'code', 'Bayer ISP pipeline for Myriad2', 0, 0, '2014-06-26 14:00:20', NULL),
 (460, 2836, 1959, 3948, 1959, 1958, 1970, 1969, 1963, NULL, NULL, 'Fragrak_postTO', 'code', 'Placeholder for bug/features that can be resolved after tapeout', 0, 0, '2014-06-26 14:00:20', NULL),

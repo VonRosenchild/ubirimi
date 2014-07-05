@@ -265,7 +265,7 @@ class Project {
         $query = 'SELECT project.id, project.client_id, permission_scheme_id, lead_id, code, name,' .
                     'issue_type_screen_scheme_id, issue_type_field_configuration_id, workflow_scheme_id, notification_scheme_id, ' .
                     'description, user.first_name, user.last_name, issue_type_scheme_id, issue_security_scheme_id, project_category_id, ' .
-                    'service_desk_enabled_flag ' .
+                    'help_desk_enabled_flag ' .
                  'FROM project ' .
                  'LEFT JOIN user ON user.id = project.lead_id ' .
                  'WHERE project.id = ? ';
@@ -545,7 +545,7 @@ class Project {
     public static function add($clientId, $issueTypeSchemeId, $issueTypeScreenSchemeId, $issueTypeFieldConfigurationSchemeId, $workflowSchemeId,
                                       $permissionSchemeId, $notificationSchemeId, $lead_id, $name, $code, $description, $projectCategoryId, $forHelpDesk, $currentDate) {
         $query = "INSERT INTO project(client_id, lead_id, issue_type_scheme_id, issue_type_screen_scheme_id, issue_type_field_configuration_id, " .
-                    "workflow_scheme_id, permission_scheme_id, notification_scheme_id, name, code, description, project_category_id, service_desk_enabled_flag, date_created) VALUES " .
+                    "workflow_scheme_id, permission_scheme_id, notification_scheme_id, name, code, description, project_category_id, help_desk_enabled_flag, date_created) VALUES " .
                  "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -565,7 +565,7 @@ class Project {
                      "issue_type_scheme_id = ?, " .
                      "workflow_scheme_id = ?, " .
                      "project_category_id = ?, " .
-                     "service_desk_enabled_flag = ?, " .
+                     "help_desk_enabled_flag = ?, " .
                      "date_updated = ? " .
                  "WHERE id = ?";
 

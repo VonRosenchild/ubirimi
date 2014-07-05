@@ -566,7 +566,7 @@ class Client {
     public static function getProjects($clientId, $resultType = null, $resultColumn = null, $onlyHelpDeskFlag = false) {
         $partQuery = '';
         if ($onlyHelpDeskFlag) {
-            $partQuery = ' AND project.service_desk_enabled_flag = 1 ';
+            $partQuery = ' AND project.help_desk_enabled_flag = 1 ';
         }
         $query = 'SELECT project.id, code, project.name, project.description, user.first_name, user.last_name, user.id as user_id, ' .
                  'project_category.name as category_name, project_category_id as category_id ' .

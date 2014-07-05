@@ -281,14 +281,15 @@ class SLA {
         $issueId = $issue['id'];
 
         $issueSLAData = SLA::getSLAData($issueId, $SLA['id']);
-        $slaCalendarData = SLA::getCalendarDataByCalendarId($issueSLAData['help_sla_calendar_id']);
+        $SLA = SLA::getById($SLA['id']);
+        $slaCalendarData = SLA::getCalendarDataByCalendarId($SLA['help_sla_calendar_id']);
         $stopConditionDate = null;
         $intervalMinutes = null;
         $goalValue = null;
         $goalId = null;
         $startConditionDate = null;
 
-        $initialDate = new \DateTime($issueId['date_created'], new \DateTimeZone($clientSettings['timezone']));
+        $initialDate = new \DateTime($issue['date_created'], new \DateTimeZone($clientSettings['timezone']));
         $currentDateObject = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
 
         $currentHourMinuteSecond = date_format($currentDateObject, 'H:i:00');
@@ -318,7 +319,8 @@ class SLA {
                         $goalValue = $goalData['value'];
 
                         $intervalMinutes = null;
-                        if ($goalData['value']) {
+                        if ($goalData['value'] && date_format('H:i:00', $dateStart) >= $slaCalendarData['time_from'] &&
+                            date_format('H:i:00', $dateStop) >= $slaCalendarData['time_from']) {
                             $intervalMinutes = $goalValue - floor(($dateStop->getTimestamp() - $dateStart->getTimestamp()) / 60);
                         }
                     } else if ($issueSLAData['started_flag'] && !$issueSLAData['stopped_flag']) {
