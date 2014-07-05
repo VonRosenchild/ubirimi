@@ -5,6 +5,7 @@
 
     Util::checkUserIsLoggedInAndRedirect();
     $clientSettings = $session->get('client/settings');
+
     $projects = Client::getProjects($clientId, null, null, true);
 
     $menuSelectedCategory = 'help_desk';

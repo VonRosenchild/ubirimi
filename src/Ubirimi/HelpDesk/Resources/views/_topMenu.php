@@ -5,6 +5,9 @@
     <li <?php if ($menuProjectCategory == 'sla'): ?>class="active" <?php endif ?>>
         <a href="/helpdesk/sla/<?php echo $projectId ?>/<?php if (isset($slaSelected)) echo $slaSelected['id']; else echo '-1'; ?>" title="SLA">SLA</a>
     </li>
+    <li <?php if ($menuProjectCategory == 'sla_calendar'): ?>class="active" <?php endif ?>>
+        <a href="/helpdesk/sla/calendar/<?php echo $projectId ?>" title="SLA Calendars">SLA Calendars</a>
+    </li>
     <li <?php if ($menuProjectCategory == 'customer_portal'): ?>class="active" <?php endif ?>>
         <a href="/helpdesk/customer-portal/administration/home/<?php echo $projectId ?>" title="Customer Portal">Customer Portal</a>
     </li>

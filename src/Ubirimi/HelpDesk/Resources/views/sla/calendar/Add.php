@@ -7,7 +7,7 @@
     <?php require_once __DIR__ . '/../../../../../Yongo/Resources/views/_menu.php'; ?>
 
     <div class="pageContent">
-        <form name="add_sla_calendar" action="/helpdesk/sla/calendars/add" method="post">
+        <form name="add_sla_calendar" action="/helpdesk/sla/calendar/add/<?php echo $projectId ?>" method="post">
             <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="">SLAs</a> > Create Calendar') ?>
             <table width="100%">
                 <tr>
@@ -29,10 +29,10 @@
                         <textarea class="inputTextAreaLarge" name="description"><?php if (isset($description)) echo $description ?></textarea>
                     </td>
                 </tr>
-                <?php $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') ?>
-                <?php for ($k = 0; $k < 7; $k++): ?>
+                <?php $days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') ?>
+                <?php for ($k = 1; $k <= 7; $k++): ?>
                     <tr>
-                        <td><?php echo $days[$k] ?></td>
+                        <td><?php echo $days[$k - 1] ?></td>
                         <td>
                             <select class="inputTextCombo" style="width: 50px" name="from_<?php echo $k ?>_hour">
                                 <?php for ($i = 0; $i <= 23; $i++): ?>
@@ -70,7 +70,7 @@
                     <td align="left">
                         <div align="left">
                             <button type="submit" name="confirm_new_calendar" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Calendar</button>
-                            <a class="btn ubirimi-btn" href="/helpdesk/sla/calendars">Cancel</a>
+                            <a class="btn ubirimi-btn" href="/helpdesk/sla/calendar/<?php echo $projectId ?>">Cancel</a>
                         </div>
                     </td>
                 </tr>

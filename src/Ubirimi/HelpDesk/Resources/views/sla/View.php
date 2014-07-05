@@ -17,7 +17,6 @@
                 <td>
                     <a href="/helpdesk/sla/add/<?php echo $projectId ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create SLA</a>
                     <a href="/helpdesk/sla/edit/<?php echo $slaSelectedId?>" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit</a>
-<!--                    <a href="/helpdesk/sla/calendars" class="btn ubirimi-btn">Calendars</a>-->
                     <a href="#" id="btnDeleteSLA" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a>
                 </td>
             </tr>

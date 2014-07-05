@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\SLA;
+    use Ubirimi\Repository\HelpDesk\SLACalendar;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 
@@ -7,11 +7,13 @@
     $clientSettings = $session->get('client/settings');
 
     $menuSelectedCategory = 'help_desk';
-    $menuProjectCategory = 'sla';
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks';
+    $menuProjectCategory = 'sla_calendar';
+    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks > Create Calendar';
 
     $emptyName = false;
     $duplicateName = false;
+
+    $projectId = $_GET['id'];
 
     if (isset($_POST['confirm_new_calendar'])) {
 
@@ -23,20 +25,20 @@
         }
 
         $dataCalendar = array();
-        for ($i = 0; $i < 7; $i++) {
-            $dataCalendar[$i]['from_hour'] = $_POST['from_' . $i . '_hour'];
-            $dataCalendar[$i]['from_minute'] = $_POST['from_' . $i . '_minute'];
-            $dataCalendar[$i]['to_hour'] = $_POST['to_' . $i . '_hour'];
-            $dataCalendar[$i]['to_minute'] = $_POST['to_' . $i . '_minute'];
-            $dataCalendar[$i]['notWorking'] = isset($_POST['not_working_day_' . $i]) ? $_POST['not_working_day_' . $i] : 0;
+        for ($i = 1; $i <= 7; $i++) {
+            $dataCalendar[$i - 1]['from_hour'] = $_POST['from_' . $i . '_hour'];
+            $dataCalendar[$i - 1]['from_minute'] = $_POST['from_' . $i . '_minute'];
+            $dataCalendar[$i - 1]['to_hour'] = $_POST['to_' . $i . '_hour'];
+            $dataCalendar[$i - 1]['to_minute'] = $_POST['to_' . $i . '_minute'];
+            $dataCalendar[$i - 1]['notWorking'] = isset($_POST['not_working_day_' . $i]) ? $_POST['not_working_day_' . $i] : 0;
         }
 
         if (!$emptyName && !$duplicateName) {
 
             $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
 
-            SLA::addCalendar($clientId, $name, $description, $dataCalendar, $currentDate);
-            header('Location: /helpdesk/sla/calendars');
+            SLACalendar::addCalendar($projectId, $name, $description, $dataCalendar, $currentDate);
+            header('Location: /helpdesk/sla/calendar/' . $projectId);
         }
     }
 

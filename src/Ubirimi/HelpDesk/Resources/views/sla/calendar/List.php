@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\SLA;
+    use Ubirimi\Repository\HelpDesk\SLACalendar;
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
@@ -8,14 +8,16 @@
 
     <?php require_once __DIR__ . '/../../../../../Yongo/Resources/views/_menu.php'; ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('<a href="/helpdesk/all">Help Desks</a> > SLAs > Calendars'); ?>
+        <?php Util::renderBreadCrumb('<a href="/helpdesk/all">Help Desks</a> > ' . $project['name'] . ' > SLA Calendars'); ?>
+
+        <?php require_once __DIR__ . '/../../../views/_topMenu.php'; ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <td>
-                    <a href="/helpdesk/sla/calendars/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Calendar</a>
-                    <a href="/helpdesk/sla/edit/<?php echo $slaSelectedId?>" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit</a>
-                    <a href="#" id="btnDeleteSLA" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a>
+                    <a href="/helpdesk/sla/calendar/add/<?php echo $projectId ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Calendar</a>
+                    <a href="#" class="btn ubirimi-btn" id="btnEditSLACalendar"><i class="icon-edit"></i> Edit</a>
+                    <a href="#" id="btnDeleteSLACalendar" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a>
                 </td>
             </tr>
         </table>
@@ -42,10 +44,10 @@
                         <td><?php echo $calendar['description']; ?></td>
                         <td>
                             <?php
-                                $data = SLA::getCalendarDataByCalendarId($calendar['id']);
-                                $dowMap = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+                                $data = SLACalendar::getCalendarDataByCalendarId($calendar['id']);
+                                $dowMap = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
                             ?>
-                            <table class="table table-hover table-condensed">
+                            <table style="width: 350px">
                                 <thead>
                                     <tr>
                                         <th>Day</th>
@@ -53,14 +55,17 @@
                                         <th>End Time</th>
                                     </tr>
                                 </thead>
-                                <?php while ($dayData = $data->fetch_array(MYSQLI_ASSOC)): ?>
+                                <?php for ($i = 0; $i < count($data); $i++): ?>
+                                    <?php if ($data[$i]['not_working_flag']): ?>
+                                        <?php continue ?>
+                                    <?php endif ?>
                                     <tr>
-                                        <td><?php echo $dowMap[$dayData['help_sla_calendar_day_id']] ?></td>
-                                        <td><?php echo $dayData['start_time'] ?></td>
-                                        <td><?php echo $dayData['end_time'] ?></td>
-                                        <td><?php echo $dayData['not_working_flag'] ?></td>
+                                        <td><?php echo $dowMap[$i] ?></td>
+                                        <td><?php echo $data[$i]['time_from'] ?></td>
+                                        <td><?php echo $data[$i]['time_to'] ?></td>
+                                        <td><?php echo $data[$i]['not_working_flag'] ?></td>
                                     </tr>
-                                <?php endwhile ?>
+                                <?php endfor ?>
                             </table>
                         </td>
                     </tr>

@@ -43,6 +43,12 @@ hdViewSLA:
     id:  \d+
     sla_id: \-?\d+
 
+hdViewSLACalendars:
+  path: /helpdesk/sla/calendar/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\ListController' }
+  requirements:
+    id:  \d+
+
 hdEditSLA:
   path: /helpdesk/sla/edit/{id}
   defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\EditController' }
@@ -167,13 +173,11 @@ hdCustomerPortalViewUserProfile:
   requirements:
     id:  \d+
 
-hdSlaCalendars:
-  path: /helpdesk/sla/calendars
-  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\ListController' }
-
 hdSlaCalendarsAdd:
-  path: /helpdesk/sla/calendars/add
+  path: /helpdesk/sla/calendar/add/{id}
   defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\AddController' }
+  requirements:
+    id:  \d+
 
 hdDeleteOrganizationDialog:
   path: /helpdesk/administration/organizations/dialog/delete/{id}
