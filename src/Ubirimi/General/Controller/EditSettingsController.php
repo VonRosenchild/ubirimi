@@ -31,7 +31,7 @@
         Client::updateProductSettings($clientId, 'client_settings', $parameters);
 
         $session->set('client/settings/language', $language);
-        $session->set('client/settings/timezone', $language);
+        $session->set('client/settings/timezone', $timezone);
 
         header('Location: /general-settings/view-general');
     }

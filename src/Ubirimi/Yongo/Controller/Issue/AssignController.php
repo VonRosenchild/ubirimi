@@ -14,6 +14,7 @@ class AssignController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
         $issueId = $_POST['issue_id'];
         $userAssignedId = $_POST['user_assigned_id'];
         $comment = Util::cleanRegularInputField($_POST['comment']);

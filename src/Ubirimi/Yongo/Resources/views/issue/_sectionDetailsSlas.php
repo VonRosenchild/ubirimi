@@ -16,8 +16,8 @@
                     <div><?php echo 'within ' . $slaData['goal'] ?> minutes</div>
                 </td>
                 <td valign="top">
-                    <span class="<?php if ($slaData['offset'] < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                        <?php echo SLA::formatOffset($slaData['offset']) ?>
+                    <span class="<?php if (($slaData['goal'] - $slaData['offset']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
+                        <?php echo SLA::formatOffset($slaData['goal'] - $slaData['offset']) ?>
                     </span>
                     &nbsp;
                     <img src="/img/clock.png" height="16px" />

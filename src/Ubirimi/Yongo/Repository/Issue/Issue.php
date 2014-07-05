@@ -1,6 +1,7 @@
 <?php
 namespace Ubirimi\Yongo\Repository\Issue;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\Repository\User\User;
@@ -1333,10 +1334,12 @@ class Issue {
         $userAssigned = User::getById($userAssignedId);
         $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];
 
-        if ($userAssignedId != -1)
+        if ($userAssignedId != -1) {
             Issue::updateField($issueId, 'user_assigned_id', $userAssignedId);
-        else
+        } else {
             Issue::setUnassignedById($issueId);
+        }
+
         $oldAssignee = User::getById($issueData['assignee']);
         $newAssignee = User::getById($userAssignedId);
 
@@ -1344,10 +1347,33 @@ class Issue {
         $newAssigneeName = $newAssignee['first_name'] . ' ' . $newAssignee['last_name'];
 
         $date = Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone'));
+
+        // check SLA data
+        if ($oldAssignee != $newAssignee) {
+
+            $session = UbirimiContainer::get()['session'];
+            $clientSettings = Client::getSettings($session->get('client/id'));
+            Issue::updateSLAValue($issueData, $clientId, $clientSettings);
+
+            $SLAs = SLA::getByProjectId($issueData['issue_project_id']);
+            while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
+                $conditions = explode("#", $SLA['start_condition']);
+                for ($i = 0; $i < count($conditions); $i++) {
+                    if ('start_assignee_changed' == $conditions[$i]) {
+                        Issue::updateSLAStarted($issueId, $SLA['id'], $date);
+                    }
+                    if ('stop_assignee_changed' == $conditions[$i]) {
+                        Issue::updateSLAStopped($issueId, $SLA['id'], $date);
+                    }
+                }
+            }
+        }
+
         Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $date);
 
-        if (!empty($comment))
+        if (!empty($comment)) {
             IssueComment::add($issueId, $loggedInUserId, $comment, $date);
+        }
 
         $issueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $project = Project::getById($issueData['issue_project_id']);
@@ -1526,10 +1552,32 @@ class Issue {
     }
 
     public static function updateSLAStopped($issueId, $SLAId, $dateStopped) {
-        $query = "update yongo_issue_sla set stopped_flag = 1, stopped_date = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
+        // keep the value between cycles if any
+        $query = "update yongo_issue_sla set value_between_cycles = value_between_cycles + value, " .
+                 "stopped_flag = 1, stopped_date = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("sii", $dateStopped, $issueId, $SLAId);
+            $stmt->execute();
+        }
+
+        // reset the offset to 0
+        $query = "update yongo_issue_sla set value = 0 " .
+                 "where yongo_issue_id = ? and help_sla_id = ? limit 1";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("ii", $issueId, $SLAId);
+            $stmt->execute();
+        }
+    }
+
+    public static function updateSLAStarted($issueId, $SLAId, $dateStarted) {
+        // keep the value between cycles if any
+        $query = "update yongo_issue_sla set value_between_cycles = value_between_cycles + value, started_flag = 1, " .
+                 "started_date = ?, stopped_date = NULL, stopped_flag = 0 where yongo_issue_id = ? and help_sla_id = ? limit 1";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("sii", $dateStarted, $issueId, $SLAId);
             $stmt->execute();
         }
     }
@@ -1562,22 +1610,34 @@ class Issue {
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
                 $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
 
+
                 if ($slaData) {
                     $slasPrintData[$SLA['id']] = array('name' => $SLA['name'],
                         'offset' => $slaData[0],
                         'goal' => $slaData[1],
-                        'started_flag' => $slaData[2],
-                        'goal_id' => $slaData[3],
-                        'started_date' => $slaData[4]);
+                        'goal_id' => $slaData[2]);
                     if ($slaData[0]) {
                         $atLeastOneSLA = true;
                     }
+                } else {
+
+                    // it is already stored in the database, stopped before recalculation
+                    $slaCalculated = SLA::getSLAData($issue['id'], $SLA['id']);
+                    $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
+
+                    $offsetValue = $slaCalculated['value'] ? $slaCalculated['value'] : $slaCalculated['value_between_cycles'];
+                    $slasPrintData[$slaCalculated['id']] = array('name' => $SLA['name'],
+                        'offset' => $offsetValue,
+                        'goal' => $goalData['value'],
+                        'goal_id' => $slaCalculated['help_sla_goal_id']);
+
+                    $atLeastOneSLA = true;
                 }
             }
 
             foreach ($slasPrintData as $slaId => $data) {
-                if ($data['started_flag']) {
-                    SLA::updateDataForSLA($issue['id'], $slaId, $data['offset'], $data['started_flag'], $data['goal_id'], $data['started_date']);
+                if ($data['offset']) {
+                    SLA::updateDataForSLA($issue['id'], $slaId, $data['offset'], $data['goal_id']);
                 }
             }
         }
