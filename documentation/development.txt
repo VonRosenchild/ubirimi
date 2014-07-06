@@ -1,0 +1,2 @@
+- to generate a configuration run the following command
+./dev/bin/phing generate-config -Dproject.environment=dev

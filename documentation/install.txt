@@ -1,5 +1,4 @@
-./dev/bin/phing generate-config -Dproject.environment=dev
-
+==== apache configuration ====
 
 <VirtualHost *:80>
   ServerName api.ubirimi.lan
@@ -17,7 +16,7 @@
   ServerAlias my.ubirimi.lan
   DocumentRoot "c:/www/ubirimi-web/web"
   DirectoryIndex index.php
-  
+
   <Directory "c:/www/ubirimi-web/web">
       AllowOverride All
       Allow from All
@@ -29,15 +28,18 @@
   DocumentRoot "c:/www/ubirimi-web/web"
   ServerAlias domnuprofesor.ubirimi_net.lan my.ubirimi_net.lan demo.ubirimi_net.lan happydaygames.ubirimi_net.lan
   DirectoryIndex index.php
-  
+
   <Directory "c:/www/ubirimi-web/web">
       AllowOverride All
       Allow from ubirimi_net.lan
   </Directory>
-  
+
   Alias /assets c:/www/ubirimi-web/assets
   <Directory "c:/www/ubirimi-web/assets">
 	AllowOverride All
 	Allow from All
   </Directory>
 </VirtualHost>
+
+==== php ini configuration ====
+date.timezone = "Europe/Bucharest"
