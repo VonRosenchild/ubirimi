@@ -164,12 +164,12 @@ function getPriorities($connection)
 
 function installComponent($valiId, $projectId, $name, $description)
 {
-    Project::addComponent($projectId, $name, $description, $valiId, null, Util::getCurrentDateTime());
+    Project::addComponent($projectId, $name, $description, $valiId, null, Util::getServerCurrentDateTime());
 }
 
 function installVersion($projectId, $name, $description = null)
 {
-    Project::addVersion($projectId, $name, $description, Util::getCurrentDateTime());
+    Project::addVersion($projectId, $name, $description, Util::getServerCurrentDateTime());
 }
 
 function getYongoProjectFromMovidusProject($movidiuProjects, $ubirimiProjects, $productId)
@@ -223,7 +223,7 @@ function installProject($clientId, $leadId, $name, $description)
     $notificationScheme = NotificationScheme::getByClientId($clientId);
     $projectCategories = ProjectCategory::getAll($clientId);
 
-    $currentDate = Util::getCurrentDateTime();
+    $currentDate = Util::getServerCurrentDateTime();
 
     $projectId = Project::add(
         $clientId,
@@ -268,7 +268,7 @@ function insertMovidiusDatabase()
 
 function installUser($data)
 {
-    $currentDate = Util::getCurrentDateTime();
+    $currentDate = Util::getServerCurrentDateTime();
 
     $issuesPerPage = Client::getYongoSetting($data['clientId'], 'issues_per_page');
 

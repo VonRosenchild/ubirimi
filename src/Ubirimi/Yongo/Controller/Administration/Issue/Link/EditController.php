@@ -44,7 +44,7 @@
             $linkTypeDuplicateName = true;
 
         if (!$emptyName && !$emptyOutwardDescription && !$emptyInwardDescription && !$linkTypeDuplicateName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueLinkType::update($linkTypeId, $name, $outwardDescription, $inwardDescription, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Link Type ' . $name, $currentDate);

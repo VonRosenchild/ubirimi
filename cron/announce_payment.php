@@ -54,7 +54,7 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
                 \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO,
                 $client['id'],
                 'Could not send announce payment email',
-                \Ubirimi\Util::getCurrentDateTime()
+                \Ubirimi\Util::getServerCurrentDateTime()
             );
         }
     }
@@ -80,7 +80,7 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
                 \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO,
                 $client['id'],
                 'Could not send announce payment email',
-                \Ubirimi\Util::getCurrentDateTime()
+                \Ubirimi\Util::getServerCurrentDateTime()
             );
         }
     }

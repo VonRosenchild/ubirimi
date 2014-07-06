@@ -15,7 +15,7 @@ function installPriorities($connectionBugzilla, $clientId)
             '',
             'generic.png',
             '',
-            Util::getCurrentDateTime()
+            Util::getServerCurrentDateTime()
         );
     }
 

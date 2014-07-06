@@ -23,7 +23,7 @@ class LogController extends UbirimiController
         $remainingTime = $request->request->get('remaining');
         $comment = $request->request->get('comment');
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         $dateStarted = \DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
         $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
@@ -37,7 +37,7 @@ class LogController extends UbirimiController
 
         $remainingTime = IssueWorkLog::adjustRemainingEstimate($issue, $timeSpentPost, $remainingTime, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         if ($timeSpentPost) {
             $fieldChanges = array(array('time_spent', null, $timeSpentPost), array('remaining_estimate', $issue['remaining_estimate'], $remainingTime));
             Issue::updateHistory($issue['id'], $loggedInUserId, $fieldChanges, $currentDate);

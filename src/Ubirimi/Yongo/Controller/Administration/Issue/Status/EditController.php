@@ -30,7 +30,7 @@
             $statusExists = true;
 
         if (!$statusExists && !$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueSettings::updateById($Id, 'status', $name, $description, null, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Status ' . $name, $currentDate);

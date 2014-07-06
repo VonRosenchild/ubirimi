@@ -31,7 +31,7 @@
 
         if (!$emptyName && !$duplicateName) {
             $copiedNotificationScheme = new NotificationScheme($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $copiedNotificationSchemeId = $copiedNotificationScheme->save($currentDate);
 
             $notificationSchemeData = NotificationScheme::getDataByNotificationSchemeId($notificationSchemeId);

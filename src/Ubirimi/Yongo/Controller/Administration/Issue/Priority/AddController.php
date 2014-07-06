@@ -24,7 +24,7 @@
 
         if (!$priorityExists && !$emptyPriorityName) {
             $iconName = 'generic.png';
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueSettings::create(
                 'issue_priority',
                 $clientId,

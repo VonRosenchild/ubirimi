@@ -26,7 +26,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $dateUpdated = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $dateUpdated = Util::getServerCurrentDateTime();
             ProjectCategory::updateById($categoryId, $name, $description, $dateUpdated);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Project Category ' . $name, $dateUpdated);

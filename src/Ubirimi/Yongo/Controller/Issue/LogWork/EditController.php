@@ -11,7 +11,7 @@
     $remainingTimePost = $_POST['remaining'];
     $comment = $_POST['comment'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $dateStarted = DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
     $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
@@ -31,7 +31,7 @@
     $remainingTimePost = IssueWorkLog::adjustRemainingEstimate($issue, $timeSpent, $remainingTimePost, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
 
     // update the history
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $fieldChanges = array(array('time_spent', $workLog['time_spent'], $timeSpent),
                           array('remaining_estimate', $previousIssueRemainingEstimate, $remainingTimePost));
 

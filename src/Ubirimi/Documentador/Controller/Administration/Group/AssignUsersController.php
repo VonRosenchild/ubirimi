@@ -8,5 +8,5 @@
     $userArray = $_POST['user_arr'];
     Group::deleteDataByGroupId($groupId);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Group::addData($groupId, $userArray, $currentDate);

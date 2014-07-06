@@ -31,7 +31,7 @@
             $screenExists = true;
 
         if (!$screenExists && !$emptyScreenName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Screen::updateMetadataById($screenId, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Screen ' . $name, $currentDate);

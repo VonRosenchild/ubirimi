@@ -17,7 +17,7 @@
 
         if (!$emptyName) {
             $permissionScheme = new PermissionScheme($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $permissionSchemeId = $permissionScheme->save($currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Permission Scheme ' . $name, $currentDate);

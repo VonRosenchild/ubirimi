@@ -26,7 +26,7 @@ class SaveController extends UbirimiController
         $filterDescription = $request->request->get('filter_description');
         $filterData = $request->request->get('filter_data');
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         if ($Id != -1) {
             IssueFilter::updateById($Id, $filterName, $filterDescription, $filterData, $date);

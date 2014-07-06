@@ -32,7 +32,7 @@
         if (!$emptyName && !$duplicateName) {
             $copiedIssueTypeScreenScheme = new IssueTypeScreenScheme($clientId, $name, $description);
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $copiedIssueTypeScreenSchemeId = $copiedIssueTypeScreenScheme->save($currentDate);
 
             $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);

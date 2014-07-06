@@ -2,6 +2,7 @@
 
 namespace Ubirimi;
 
+use Sabre\VObject\Property\ICalendar\DateTime;
 use Symfony\Component\HttpFoundation\Cookie;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
@@ -87,10 +88,7 @@ class Util {
         return $resultArray;
     }
 
-    public static function getCurrentDateTime($timezone = null) {
-        if ($timezone)
-            date_default_timezone_set($timezone);
-
+    public static function getServerCurrentDateTime() {
         return date("Y-m-d H:i:s");
     }
 
@@ -168,8 +166,13 @@ class Util {
     }
 
     public static function getFormattedDate($date) {
+        $clientTimezone = UbirimiContainer::get()['session']->get('client/settings/timezone');
+
+        $dateObject = new \DateTime($date, new \DateTimeZone(date_default_timezone_get()));
+        $dateObject->setTimezone(new \DateTimeZone($clientTimezone));
+
         if (date('j/M/Y', strtotime($date)) == date('j/M/Y')) {
-            return 'today ' . date('H:i', strtotime($date));
+            return 'today ' . date_format($dateObject, 'H:i');
         }
         else {
             if ((date('j', strtotime($date)) + 1) == date('j') && date('M/Y', strtotime($date)) == date('M/Y')) {
@@ -177,7 +180,7 @@ class Util {
             }
         }
 
-        return date('j M Y', strtotime($date));
+        return date('j M Y H:i:s', strtotime($date));
     }
 
     public static function cleanRegularInputField($value) {

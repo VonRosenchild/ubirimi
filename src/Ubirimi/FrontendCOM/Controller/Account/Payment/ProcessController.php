@@ -27,14 +27,14 @@ class ProcessController extends UbirimiController
                     \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('client/id'),
                     sprintf('SUCCESS payment. id: %d', $paymentRecord['id']),
-                    \Ubirimi\Util::getCurrentDateTime()
+                    \Ubirimi\Util::getServerCurrentDateTime()
                 );
             } catch (\Exception $e) {
                 Log::add(
                     $session->get('client/id'),
                     \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('client/id'), sprintf('ERROR in payment. [%s]', $e->getMessage()),
-                    \Ubirimi\Util::getCurrentDateTime()
+                    \Ubirimi\Util::getServerCurrentDateTime()
                 );
 
                 $session->getFlashBag()->set('payment.transaction.failed', true);

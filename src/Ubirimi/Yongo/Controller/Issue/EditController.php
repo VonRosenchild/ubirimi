@@ -72,7 +72,7 @@ class EditController extends UbirimiController
         if (!isset($newIssueData[Field::FIELD_STATUS_CODE]))
             $newIssueData[Field::FIELD_STATUS_CODE] = $oldIssueData[Field::FIELD_STATUS_CODE];
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData);
 

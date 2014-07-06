@@ -33,7 +33,7 @@ if (!empty($pendingClients)) {
                                        $data['baseURL'],
                                        $data['adminEmail'],
                                        Client::INSTANCE_TYPE_ON_DEMAND,
-                                       Util::getCurrentDateTime());
+                                       Util::getServerCurrentDateTime());
 
             // create the user
             $userId = User::createAdministratorUser($data['adminFirstName'],
@@ -43,7 +43,7 @@ if (!empty($pendingClients)) {
                                                     $data['adminEmail'],
                                                     $clientId,
                                                     20, 1, 1,
-                                                    Util::getCurrentDateTime());
+                                                    Util::getServerCurrentDateTime());
 
             $columns = 'code#summary#priority#status#created#type#updated#reporter#assignee';
             User::updateDisplayColumns($userId, $columns);
@@ -59,7 +59,7 @@ if (!empty($pendingClients)) {
                                 'companyDomain' => $data['companyDomain'],
                                 'emailAddress' => $data['adminEmail'])
                             ),
-                            Util::getCurrentDateTime());
+                            Util::getServerCurrentDateTime());
 
             GeneralTaskQueue::delete($pendingClient['id']);
 

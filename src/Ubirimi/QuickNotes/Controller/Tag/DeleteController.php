@@ -9,7 +9,7 @@
 
     $tagId = $_POST['id'];
     $tag = Tag::getById($tagId);
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
     Tag::deleteById($tagId);
 

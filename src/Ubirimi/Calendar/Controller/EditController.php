@@ -42,7 +42,7 @@ class EditController extends UbirimiController
                 $calendarExists = true;
             }
             if (!$calendarExists && !$emptyName) {
-                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $date = Util::getServerCurrentDateTime();
                 Calendar::updateById($calendarId, $name, $description, $color, $date);
 
                 Log::add(

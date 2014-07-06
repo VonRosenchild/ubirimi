@@ -13,5 +13,5 @@
 
     Entity::deleteFileById($entityId, $fileId);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador file ' . $file['name'], $currentDate);

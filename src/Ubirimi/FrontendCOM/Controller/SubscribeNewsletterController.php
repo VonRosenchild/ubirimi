@@ -7,7 +7,7 @@
         $validEmailAddress = Util::isValidEmail($emailAddress);
 
         if ($validEmailAddress) {
-            $currentDate = Util::getCurrentDateTime();
+            $currentDate = Util::getServerCurrentDateTime();
             $isDuplicate = Newsletter::checkEmailAddressDuplication($emailAddress);
 
             if (!$isDuplicate) {

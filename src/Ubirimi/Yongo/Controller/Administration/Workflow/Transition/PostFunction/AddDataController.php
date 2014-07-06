@@ -24,7 +24,7 @@
 
             WorkflowFunction::addPostFunction($workflowDataId, $postFunctionId, $value);
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);
         }
 

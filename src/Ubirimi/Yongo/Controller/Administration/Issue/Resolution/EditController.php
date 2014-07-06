@@ -30,7 +30,7 @@
             $resolutionExists = true;
 
         if (!$resolutionExists && !$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueSettings::updateById($Id, 'resolution', $name, $description, null, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Resolution ' . $name, $currentDate);

@@ -26,7 +26,7 @@ class DuplicateController extends UbirimiController
         $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $project = Project::getById($oldIssueData['issue_project_id']);
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         $issueSystemFields = array('reporter' => $oldIssueData[Field::FIELD_REPORTER_CODE], 'summary' => $summary, 'priority' => $oldIssueData['priority'],
             'assignee' => $oldIssueData['assignee'], 'description' => $oldIssueData['description'], Field::FIELD_DUE_DATE_CODE => $oldIssueData['due_date'],
             'environment' => $oldIssueData['environment'], 'type' => $oldIssueData['type']);

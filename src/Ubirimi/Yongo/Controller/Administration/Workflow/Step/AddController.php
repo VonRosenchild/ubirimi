@@ -37,7 +37,7 @@
             $duplicateName = true;
 
         if (!$emptyName && !$duplicateName) {
-            $currentDate = $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = $date = Util::getServerCurrentDateTime();
             $StatusId = $_POST['linked_status'];
 
             Workflow::addStep($workflowId, $name, $StatusId, $currentDate);

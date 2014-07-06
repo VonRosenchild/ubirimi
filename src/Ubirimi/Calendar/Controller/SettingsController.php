@@ -27,7 +27,7 @@ class SettingsController extends UbirimiController
         }
 
         if ($request->request->has('edit_calendar_settings')) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             Calendar::deleteReminders($calendarId);
 
             // reminder information

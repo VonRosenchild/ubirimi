@@ -42,7 +42,7 @@ class EditController extends UbirimiController
 
             $dateFrom .= ':00';
             $dateTo .= ':00';
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             CalendarEvent::updateById(
                 $eventId,
                 $calendarId,

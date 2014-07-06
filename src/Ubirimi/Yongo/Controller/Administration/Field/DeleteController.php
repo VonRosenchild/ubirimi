@@ -11,5 +11,5 @@
 
     CustomField::deleteById($Id);
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Custom Field ' . $customField['name'], $date);

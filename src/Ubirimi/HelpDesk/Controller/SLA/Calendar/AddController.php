@@ -35,7 +35,7 @@
 
         if (!$emptyName && !$duplicateName) {
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             SLACalendar::addCalendar($projectId, $name, $description, $dataCalendar, $currentDate);
             header('Location: /helpdesk/sla/calendar/' . $projectId);

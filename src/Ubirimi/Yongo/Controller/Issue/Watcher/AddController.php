@@ -7,7 +7,7 @@
     $userIds = $_POST['id'];
     $issueId = $_POST['issue_id'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     if ($userIds) {
         for ($i = 0; $i < count($userIds); $i++) {
             IssueWatcher::addWatcher($issueId, $userIds[$i], $currentDate);

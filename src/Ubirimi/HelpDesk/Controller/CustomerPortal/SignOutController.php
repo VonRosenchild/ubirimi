@@ -3,7 +3,7 @@
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'LOG OUT', $date);
 
     // Unset all of the session variables.

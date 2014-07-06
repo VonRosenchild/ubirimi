@@ -23,7 +23,7 @@
 
         if (!$emptyName && !$duplicateName) {
             $projectCategory = new ProjectCategory($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $projectCategory->save($currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Project Category ' . $name, $currentDate);

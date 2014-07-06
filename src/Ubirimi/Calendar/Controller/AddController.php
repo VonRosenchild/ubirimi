@@ -39,7 +39,7 @@ class AddController extends UbirimiController
             }
 
             if (!$emptyName && !$duplicateName) {
-                $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $currentDate = Util::getServerCurrentDateTime();
                 $calendarId = Calendar::save($session->get('user/id'), $name, $description, $color, $currentDate);
 
                 // add default reminders

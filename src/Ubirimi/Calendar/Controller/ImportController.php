@@ -50,7 +50,7 @@ class ImportController extends UbirimiController
             }
 
             // deal with the events
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             $calendarId = Calendar::save($session->get('user/id'), $calendarName, null, '#A1FF9E', $date);
 
             $defaultColor = 'A1FF9E';

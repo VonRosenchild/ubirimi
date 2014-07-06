@@ -50,7 +50,7 @@
         $name = $_POST['name'];
         $content = $_POST['content'];
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         Entity::addRevision($entityId, $loggedInUserId, $page['content'], $date);
         Entity::updateById($entityId, $name, $content, $date);

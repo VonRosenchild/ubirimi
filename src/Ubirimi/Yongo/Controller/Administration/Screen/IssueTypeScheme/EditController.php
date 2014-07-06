@@ -23,7 +23,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueTypeScreenScheme::updateMetaDataById($issueTypeScreenSchemeId, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Type Screen Scheme ' . $name, $currentDate);

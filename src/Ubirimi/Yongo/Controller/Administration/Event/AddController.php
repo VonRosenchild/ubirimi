@@ -19,7 +19,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             $event = new IssueEvent($clientId, $name, $description);
             $event->save($currentDate);

@@ -5,6 +5,6 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $pageId = $_POST['id'];
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
     Entity::addFavourite($pageId, $loggedInUserId, $date);

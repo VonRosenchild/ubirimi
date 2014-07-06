@@ -26,7 +26,7 @@ class ShareController extends UbirimiController
         $noteContent = $request->request->get('note');
         $userIds = $request->request->get('user_id');
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         Calendar::shareWithUsers($calendarId, $userIds, $currentDate);
 
         $userThatShares = User::getById($session->get('user/id'));

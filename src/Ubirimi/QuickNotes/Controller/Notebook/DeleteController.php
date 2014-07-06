@@ -9,7 +9,7 @@
     $notebookId = $_POST['id'];
     $notebook = Notebook::getById($notebookId);
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
     Notebook::deleteById($notebookId);
 

@@ -22,7 +22,7 @@
 
         if (!$emptyName && !$duplicateName) {
             $description = Util::cleanRegularInputField($_POST['description']);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Group::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Group ' . $name, $currentDate);

@@ -12,8 +12,8 @@
     $group = Group::getMetadataById($groupId);
     Group::deleteDataByGroupId($groupId);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Group::addData($groupId, $userArray, $currentDate);
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Group Members ' . $group['name'], $date);

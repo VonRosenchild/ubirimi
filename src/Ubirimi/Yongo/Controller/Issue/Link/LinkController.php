@@ -34,7 +34,7 @@ class LinkController extends UbirimiController
         $linkedIssues = $request->request->get('linked_issues');
         $comment = Util::cleanRegularInputField($_POST['comment']);
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
         IssueLinkType::addLink($issueId, $linkTypeId, $type, $linkedIssues, $date);
 
         if ($comment != '') {

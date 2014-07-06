@@ -57,7 +57,7 @@ class Email {
                             'password' => $password,
                             'clientDomain' => $clientDomain)
                         ),
-                        Util::getCurrentDateTime());
+                        Util::getServerCurrentDateTime());
     }
 
     public static function sendNewCustomerNotificationEmail($clientId, $firstName, $lastName, $email, $password, $clientDomain) {
@@ -76,7 +76,7 @@ class Email {
                             'isCustomer' => true,
                             'clientDomain' => $clientDomain)
                         ),
-                        Util::getCurrentDateTime());
+                        Util::getServerCurrentDateTime());
     }
 
     public static function sendNewUserRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
@@ -91,7 +91,7 @@ class Email {
                                                                                   'password' => $password,
                                                                                   'repoName' => $repositoryName,
                                                                                   'clientData' => UbirimiContainer::get()['session']->get('client'))),
-                        Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone')));
+                        Util::getServerCurrentDateTime());
     }
 
     public static function sendUserChangedPasswordForRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
@@ -106,7 +106,7 @@ class Email {
                                                                                  'password' => $password,
                                                                                  'repoName' => $repositoryName,
                                                                                  'clientData' => UbirimiContainer::get()['session']->get('client'))),
-                        Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone')));
+                        Util::getServerCurrentDateTime());
     }
 
     public static function triggerNewIssueNotification($clientId, $issue, $project, $loggedInUserId) {
@@ -187,7 +187,7 @@ class Email {
                             'versions_fixed' => $versions_fixed,
                             'versions_affected' => $versions_affected)
                         ),
-                        Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone')));
+                        Util::getServerCurrentDateTime());
     }
 
     public static function getMailer($smtpSettings) {
@@ -227,7 +227,7 @@ class Email {
                                 $issue['project_code'] . '-' .
                                 $issue['nr'];
 
-        $date = Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         EmailQueue::add($clientId,
                         Email::$smtpSettings['from_address'],
@@ -255,7 +255,7 @@ class Email {
                             'issue' => $issue,
                             'fieldChanges' => $fieldChanges)
                         ),
-                        Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone')));
+                        Util::getServerCurrentDateTime());
     }
 
     public static function triggerIssueUpdatedNotification($clientId, $issue, $loggedInUserId, $changedFields) {
@@ -316,7 +316,7 @@ class Email {
     public static function sendEmailNotificationNewComment($issue, $clientId, $project, $userToNotify, $content, $user) {
         $subject = Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue COMMENT " . $issue['project_code'] . '-' . $issue['nr'];
 
-        $date = Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         EmailQueue::add($clientId,
                         Email::$smtpSettings['from_address'],
@@ -363,7 +363,7 @@ class Email {
                         null,
                         $subject,
                         Util::getTemplate('_deleteIssue.php', array('issue' => $issue)),
-                        Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone')));
+                        Util::getServerCurrentDateTime());
     }
 
     public static function triggerDeleteIssueNotification($clientId, $issue, $loggedInUserId) {
@@ -447,7 +447,7 @@ class Email {
                         $userThatShares['last_name'] . ' shared ' .
                         $issue['project_code'] . '-' . $issue['nr'] . ': ' . substr($issue['summary'], 0, 20) . ' with you';
 
-        $date = Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         EmailQueue::add($clientId,
                         Email::$smtpSettings['from_address'],
@@ -469,7 +469,7 @@ class Email {
             $userThatShares['last_name'] . ' shared calendar ' .
             $calendar['name'] . ' with you';
 
-        $date = Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         EmailQueue::add($clientId,
             Email::$smtpSettings['from_address'],
@@ -489,7 +489,7 @@ class Email {
             $userThatShares['last_name'] . ' shared event ' .
             $event['name'] . ' with you';
 
-        $date = Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         EmailQueue::add($clientId,
             Email::$smtpSettings['from_address'],

@@ -12,5 +12,5 @@
     ScreenScheme::deleteDataByScreenSchemeId($Id);
     ScreenScheme::deleteById($Id);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Screen Scheme ' . $screen['name'], $currentDate);

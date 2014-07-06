@@ -6,7 +6,7 @@ use Ubirimi\Util;
 $noteId = $_POST['note_id'];
 $content = $_POST['content'];
 
-$date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+$date = Util::getServerCurrentDateTime();
 
 Note::updateById($noteId, $content, $date);
 

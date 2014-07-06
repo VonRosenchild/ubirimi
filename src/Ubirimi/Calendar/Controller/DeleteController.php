@@ -20,7 +20,7 @@ class DeleteController extends UbirimiController
         $calendarId = $request->request->get('id');
         $calendar = Calendar::getById($calendarId);
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         Calendar::deleteById($calendarId);
 

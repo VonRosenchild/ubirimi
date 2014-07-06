@@ -69,9 +69,6 @@ class SaveController extends UbirimiController
 
         $project = Project::getById($projectId);
 
-        $issueTypeId = $issueSystemFieldsData[Field::FIELD_ISSUE_TYPE_CODE];
-        $screenData = Project::getScreenData($project, $issueTypeId, SystemOperation::OPERATION_CREATE);
-
         if (array_key_exists(Field::FIELD_ASSIGNEE_CODE, $issueSystemFieldsData)) {
             // assignee field is placed on screen
             if ($issueSystemFieldsData[Field::FIELD_ASSIGNEE_CODE] == -1)
@@ -81,7 +78,7 @@ class SaveController extends UbirimiController
             $issueSystemFieldsData[Field::FIELD_ASSIGNEE_CODE] = $project['lead_id'];
         }
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         $issueSystemFieldsData['helpdesk_flag'] = 0;
         if ($session->get("selected_product_id") == SystemProduct::SYS_PRODUCT_HELP_DESK) {

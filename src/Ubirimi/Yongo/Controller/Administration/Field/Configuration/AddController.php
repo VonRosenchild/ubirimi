@@ -18,7 +18,7 @@
 
         if (!$emptyName) {
             $fieldConfiguration = new FieldConfiguration($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $fieldConfiguration->save($currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Field Configuration ' . $name, $currentDate);

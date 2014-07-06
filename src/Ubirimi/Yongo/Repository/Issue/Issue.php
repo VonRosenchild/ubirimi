@@ -1346,7 +1346,7 @@ class Issue {
         $oldAssigneeName = $oldAssignee['first_name'] . ' ' . $oldAssignee['last_name'];
         $newAssigneeName = $newAssignee['first_name'] . ' ' . $newAssignee['last_name'];
 
-        $date = Util::getCurrentDateTime(UbirimiContainer::get()['session']->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         // check SLA data
         if ($oldAssignee != $newAssignee) {

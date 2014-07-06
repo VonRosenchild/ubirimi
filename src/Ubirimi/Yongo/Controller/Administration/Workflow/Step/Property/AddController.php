@@ -31,7 +31,7 @@
 
             $duplicateKey = Workflow::getStepKeyByStepIdAndKeyId($stepId, $keyId);
             if (!$duplicateKey) {
-                $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $currentDate = Util::getServerCurrentDateTime();
                 Workflow::addStepProperty($stepId, $keyId, $value, $currentDate);
 
                 Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Step Property' , $currentDate);

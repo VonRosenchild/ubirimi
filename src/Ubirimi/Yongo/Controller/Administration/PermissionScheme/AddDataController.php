@@ -29,7 +29,7 @@
         $user = $_POST['user'];
         $group = $_POST['group'];
         $role = $_POST['role'];
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         if ($permissionType) {
             for ($i = 0; $i < count($sysPermissionIds); $i++){

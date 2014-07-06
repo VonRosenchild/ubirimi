@@ -30,7 +30,7 @@
         if (!$emptyIssueTypeName) {
 
             $issueTypeScheme = new IssueTypeScheme($clientId, $name, $description, $type);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $issueTypeSchemeId = $issueTypeScheme->save($currentDate);
 
             foreach ($_POST as $key => $value) {

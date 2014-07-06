@@ -19,7 +19,7 @@
     $screens = Screen::getAll($clientId);
 
     if (isset($_POST['edit_field_custom_screen'])) {
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         while ($screen = $screens->fetch_array(MYSQLI_ASSOC)) {
             Screen::deleteDataByScreenIdAndFieldId($screen['id'], $fieldId);

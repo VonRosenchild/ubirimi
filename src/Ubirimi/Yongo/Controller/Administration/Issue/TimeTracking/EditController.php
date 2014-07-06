@@ -31,7 +31,7 @@
         $defaultUnit = $_POST['default_unit'];
 
         Client::updateTimeTrackingSettings($clientId, $hoursPerDay, $daysPerWeek, $defaultUnit);
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Time Tracking Settings', $currentDate);
 
         $session->set('yongo/settings/time_tracking_hours_per_day', $hoursPerDay);

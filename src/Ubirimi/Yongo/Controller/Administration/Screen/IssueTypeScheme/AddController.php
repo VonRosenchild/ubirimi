@@ -20,7 +20,7 @@
 
         if (!$emptyName) {
             $issueTypeScreenScheme = new IssueTypeScreenScheme($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $issueTypeScreenSchemeId = $issueTypeScreenScheme->save($currentDate);
 
             $issueTypes = IssueType::getAll($clientId);

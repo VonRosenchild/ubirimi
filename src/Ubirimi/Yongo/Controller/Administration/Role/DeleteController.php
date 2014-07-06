@@ -11,5 +11,5 @@
     $permissionRole = PermissionRole::getById($permissionRoleId);
     PermissionRole::deleteById($permissionRoleId);
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Project Role ' . $permissionRole['name'], $date);

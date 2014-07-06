@@ -13,7 +13,7 @@
         $logText = 'Deactivate';
     }
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, $logText . ' Yongo Time Tracking', $currentDate);
 
     header('Location: /yongo/administration/issue-features/time-tracking');

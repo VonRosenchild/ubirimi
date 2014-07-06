@@ -30,7 +30,7 @@ try {
         'baseURL' => 'http://movidius.ubirimi_net.lan',
         'companyEmail' => 'contact@movidius.ro',
         Client::INSTANCE_TYPE_ON_DEMAND,
-        Util::getCurrentDateTime()
+        Util::getServerCurrentDateTime()
     );
 
     $valentinData = array(

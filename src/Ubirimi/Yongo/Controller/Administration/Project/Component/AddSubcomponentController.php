@@ -39,7 +39,7 @@
             if ($leader == -1) {
                 $leader = null;
             }
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Project::addComponent($projectId, $name, $description, $leader, $postParentComponentId, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Project Sub-Component ' . $name, $currentDate);

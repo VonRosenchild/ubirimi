@@ -22,7 +22,7 @@
     }
 
     if (!$emptyName && !$duplicateName) {
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         $notebookId = Notebook::save($loggedInUserId, $name, $description, $currentDate);
 
         Log::add($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $loggedInUserId, 'ADD QUICK NOTES notebook ' . $name, $currentDate);

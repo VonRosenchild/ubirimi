@@ -9,7 +9,7 @@
     $permissionRoleId = $_POST['role_id'];
     $userArray = $_POST['user_arr'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $permissionRole = PermissionRole::getById($permissionRoleId);
     PermissionRole::deleteDefaultUsersByPermissionRoleId($permissionRoleId);
     PermissionRole::addDefaultUsers($permissionRoleId, $userArray, $currentDate);

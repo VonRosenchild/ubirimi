@@ -24,7 +24,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             IssueSecurityScheme::updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Security Scheme Level ' . $name, $date);

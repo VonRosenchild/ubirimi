@@ -28,7 +28,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
 
             CustomField::updateMetaDataById($Id, $name, $description, $date);
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Custom Field ' . $name, $date);

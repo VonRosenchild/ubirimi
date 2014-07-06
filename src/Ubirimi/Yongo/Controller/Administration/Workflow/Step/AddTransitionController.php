@@ -38,7 +38,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             $transitionId = Workflow::addTransition($workflowId, $screen, $workflowStepId, $step, $name, $description);
             Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');

@@ -9,7 +9,7 @@
     $smtpServerId = $_POST['id'];
 
     $smtpServer = SMTPServer::getById($smtpServerId);
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'DELETE SMTP Server ' . $smtpServer['name'], $date);
 
     SMTPServer::deleteById($smtpServerId);

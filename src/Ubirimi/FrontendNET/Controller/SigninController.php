@@ -48,7 +48,7 @@ class SigninController extends UbirimiController
 
                     UbirimiContainer::get()['warmup']->warmUpClient($userData, true, true);
 
-                    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                    $date = Util::getServerCurrentDateTime();
                     Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);
 
                     return new RedirectResponse($httpHOST . '/yongo/my-dashboard');

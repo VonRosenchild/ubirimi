@@ -117,7 +117,7 @@ class SignupController extends UbirimiController
             if (!$problemFound) {
 
                 // prepare the data
-                $currentDate = Util::getCurrentDateTime();
+                $currentDate = Util::getServerCurrentDateTime();
                 $baseURL = 'https://' . $companyDomain . '.ubirimi.net';
 
                 /* save data to the general task queue */

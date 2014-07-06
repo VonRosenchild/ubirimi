@@ -28,7 +28,7 @@ class AddController extends UbirimiController
         $issueId = $request->request->get('id');
         $content = $request->request->get('content');
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         $issue = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $project = Project::getById($issue['issue_project_id']);

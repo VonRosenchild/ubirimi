@@ -27,7 +27,7 @@
             Email::$smtpSettings = $smtpSettings;
         }
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
         WorkflowFunction::triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
 
         $issue = Issue::getById($issueId);

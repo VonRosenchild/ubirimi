@@ -24,7 +24,7 @@
         $attachmentId = IssueAttachment::add($issueId,
             Util::slugify($filenameWithoutExtension) . '.' . $ext,
             $loggedInUserId,
-            Util::getCurrentDateTime($session->get('client/settings/timezone')));
+            Util::getServerCurrentDateTime());
 
         if ($issueId == null) {
             $issueId = 'user_' . $loggedInUserId;

@@ -30,7 +30,7 @@
 
         if (!$screenExists && !$emptyScreenName) {
             $copiedScreen = new Screen($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $copiedScreenId = $copiedScreen->save($currentDate);
 
             $screenData = Screen::getDataById($screenId);

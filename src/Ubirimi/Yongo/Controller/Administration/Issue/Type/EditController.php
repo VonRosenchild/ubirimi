@@ -31,7 +31,7 @@
             $typeExists = true;
 
         if (!$typeExists && !$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueType::updateById($Id, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Type ' . $name, $currentDate);

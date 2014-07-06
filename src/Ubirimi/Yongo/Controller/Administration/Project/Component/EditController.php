@@ -33,7 +33,7 @@
             $alreadyExists = true;
 
         if (!$emptyName && !$alreadyExists) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             Project::updateComponentById($componentId, $name, $description, $leader, $currentDate);
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Project Component ' . $name, $currentDate);

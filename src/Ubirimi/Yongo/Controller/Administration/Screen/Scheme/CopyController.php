@@ -29,7 +29,7 @@
 
         if (!$emptyName && !$duplicateName) {
             $copiedScreenScheme = new ScreenScheme($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $copiedScreenSchemeId = $copiedScreenScheme->save($currentDate);
 
             $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);

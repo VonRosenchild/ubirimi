@@ -31,7 +31,7 @@
             $alreadyExists = true;
 
         if (!$emptyName && !$alreadyExists) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Project::updateVersionById($versionId, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Project Version ' . $name, $currentDate);

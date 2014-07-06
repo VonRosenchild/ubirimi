@@ -18,7 +18,7 @@
 
     FieldConfiguration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Field Configuration ' . $fieldConfiguration['name'], $currentDate);
 
     header('Location: /yongo/administration/field-configuration/edit/' . $fieldConfigurationId);

@@ -32,7 +32,7 @@
             $queueExists = true;
 
         if (!$queueExists && !$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $defaultColumns = 'code#summary#priority#status#created#updated#reporter#assignee';
 
             $queueId = Queue::save($loggedInUserId, $projectId, $name, $description, $queueDefinition, $defaultColumns, $currentDate);

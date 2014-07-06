@@ -15,7 +15,7 @@
 
         if (!$emptyName) {
             $issueSecurityScheme = new IssueSecurityScheme($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $issueSecurityScheme->save($currentDate);
 
             header('Location: /yongo/administration/issue-security-schemes');

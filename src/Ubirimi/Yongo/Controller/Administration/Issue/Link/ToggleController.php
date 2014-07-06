@@ -13,7 +13,7 @@
     if (0 == $session->get('yongo/settings/issue_linking_flag')) {
         $logText = 'Deactivate';
     }
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, $logText . ' Yongo Issue Linking', $currentDate);
 
     header('Location: /yongo/administration/issue-features/linking');

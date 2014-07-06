@@ -25,7 +25,7 @@
 
         FieldConfigurationScheme::updateDataById($fieldConfigurationId, $fieldConfigurationSchemeId, $issueTypeId);
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Field Configuration Scheme ' . $fieldConfigurationScheme['name'], $currentDate);
 
         header('Location: /yongo/administration/field-configuration/scheme/edit/' . $fieldConfigurationSchemeId);

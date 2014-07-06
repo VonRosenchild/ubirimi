@@ -22,7 +22,7 @@
     }
 
     if (isset($_POST['edit_user_project_role'])) {
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         PermissionRole::deleteRolesForUser($userId);
         foreach ($_POST as $key => $value) {
             if (substr($key, 0, 5) == 'role_') {

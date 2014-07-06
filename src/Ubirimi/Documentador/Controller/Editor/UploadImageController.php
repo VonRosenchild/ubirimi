@@ -18,7 +18,7 @@
     $entity = Entity::getById($entityId);
     $spaceId = $entity['space_id'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $attachmentsBaseFilePath = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_DOCUMENTADOR, 'attachments');
     if ((($_FILES["upload"]["type"] == "image/gif")
         || ($_FILES["upload"]["type"] == "image/jpeg")
@@ -47,7 +47,7 @@
 
             } else {
                 // add the attachment in the database
-                $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $currentDate = Util::getServerCurrentDateTime();
                 $attachmentId = EntityAttachment::add($entityId, $fileName, $currentDate);
 
                 $revisionNumber = 1;

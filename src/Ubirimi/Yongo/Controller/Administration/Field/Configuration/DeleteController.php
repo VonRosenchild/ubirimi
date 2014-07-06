@@ -13,5 +13,5 @@
     FieldConfiguration::deleteDataByFieldConfigurationId($Id);
     FieldConfiguration::deleteById($Id);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Field Configuration ' . $fieldConfiguration['name'], $currentDate);

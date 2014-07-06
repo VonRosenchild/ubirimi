@@ -25,7 +25,7 @@
 
         Workflow::deleteTransitions($workflowId, $transitionsPosted);
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Workflow Transition', $currentDate);
 
         header('Location: /yongo/administration/workflow/view-as-text/' . $workflowId);

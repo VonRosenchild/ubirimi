@@ -8,7 +8,7 @@
     $page = Entity::getById($pageId);
     $revision = Entity::getRevisionsByPageIdAndRevisionId($pageId, $revisionId);
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Entity::addRevision($pageId, $loggedInUserId, $page['content'], $date);
 
     Entity::updateContent($pageId, $revision['content']);

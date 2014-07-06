@@ -19,7 +19,7 @@ require_once __DIR__ . '/../web/bootstrap_cli.php';
 $reminders = EventReminder::getRemindersToBeFired();
 
 while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
-    $currentDate = Util::getCurrentDateTime($reminder['timezone']);
+    $currentDate = Util::getServerCurrentDateTime();
     $smtpSettings = SMTPServer::getByClientId($reminder['client_id']);
 
     if ($smtpSettings) {

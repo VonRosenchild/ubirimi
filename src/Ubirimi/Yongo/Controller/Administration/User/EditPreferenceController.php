@@ -17,7 +17,7 @@
 
         Client::updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_YONGO, $parameters);
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Global User Preferences', $currentDate);
 
         header('Location: /yongo/administration/user-preference');

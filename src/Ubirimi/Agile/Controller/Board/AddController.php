@@ -43,7 +43,7 @@ class AddController extends UbirimiController
 
             if (!$emptyName && !$noProjectSelected) {
                 $definitionData = 'project=' . implode('|', $projectsInBoard);
-                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $date = Util::getServerCurrentDateTime();
 
                 $filterId = IssueFilter::save(
                     $session->get('user/id'),
@@ -54,7 +54,7 @@ class AddController extends UbirimiController
                 );
 
                 $board = new AgileBoard($session->get('client/id'), $filterId, $name, $description, $projectsInBoard);
-                $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $currentDate = Util::getServerCurrentDateTime();
                 $boardId = $board->save($session->get('user/id'), $currentDate);
                 $board->addDefaultColumnData($session->get('client/id'), $boardId);
 

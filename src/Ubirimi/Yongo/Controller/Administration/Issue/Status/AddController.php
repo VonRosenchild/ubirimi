@@ -22,7 +22,7 @@
             $statusExists = true;
 
         if (!$emptyName && !$statusExists) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueSettings::create('issue_status', $clientId, $name, $description, null, null, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Issue Status ' . $name, $currentDate);

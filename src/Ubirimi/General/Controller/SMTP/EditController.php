@@ -29,7 +29,7 @@
         $username = Util::cleanRegularInputField($_POST['username']);
         $password = Util::cleanRegularInputField($_POST['password']);
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
         SMTPServer::updateById($smtpServerId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, $date);
 
         Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'UPDATE SMTP Server ' . $name, $date);

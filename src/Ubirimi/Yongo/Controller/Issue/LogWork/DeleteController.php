@@ -23,7 +23,7 @@
 
     $remainingTime = IssueWorkLog::adjustRemainingEstimate($issue, $timeSpent, $remainingTime, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $fieldChanges = array(array('time_spent', $workLog['time_spent'], 0),
                           array('remaining_estimate', $previousEstimate, $remainingTime),
                           array('worklog_time_spent', $workLog['time_spent'], null));

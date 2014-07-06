@@ -16,7 +16,7 @@
     $screens = Screen::getAll($clientId);
 
     if (isset($_POST['edit_field_configuration_screen'])) {
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         Screen::deleteDataByFieldId($fieldId);
         foreach ($_POST as $key => $value) {
             if (substr($key, 0, 13) == 'field_screen_') {

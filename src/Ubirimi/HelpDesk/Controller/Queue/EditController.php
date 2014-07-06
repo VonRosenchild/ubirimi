@@ -28,7 +28,7 @@
         }
 
         if (!$queueExists && !$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             Queue::updateById($queueId, $name, $description, $description, $currentDate);
 

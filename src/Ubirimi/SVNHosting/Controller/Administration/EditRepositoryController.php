@@ -44,7 +44,7 @@ class EditRepositoryController extends UbirimiController
             }
 
             if (!$empty_code && !$duplicate_code) {
-                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $date = Util::getServerCurrentDateTime();
                 SVNRepository::updateRepo($description, $code, $repoId, $date);
 
                 Log::add($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $loggedInUserId, 'UPDATE SVN Repository ' . Util::slugify($code), $date);

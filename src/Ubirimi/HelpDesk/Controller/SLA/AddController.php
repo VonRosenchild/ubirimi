@@ -60,7 +60,7 @@
 
         if (!$emptyName && !$duplicateName) {
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             $slaId = SLA::save($projectId, $name, $description, $startCondition, $stopCondition, $currentDate);
 

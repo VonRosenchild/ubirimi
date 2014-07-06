@@ -34,7 +34,7 @@
         if (!$emptyName && !$duplicateName) {
             $copiedIssueTypeScheme = new IssueTypeScheme($clientId, $name, $description, $type);
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $copiedIssueTypeSchemeId = $copiedIssueTypeScheme->save($currentDate);
 
             $issueTypeSchemeData = IssueTypeScheme::getDataById($issueTypeSchemeId);

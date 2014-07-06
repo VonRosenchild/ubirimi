@@ -12,7 +12,7 @@
     $entityId = $attachment['documentator_entity_id'];
     $space = Entity::getById($entityId);
     $spaceId = $space['space_id'];
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
 
     EntityAttachment::deleteById($spaceId, $entityId, $attachmentId);
 

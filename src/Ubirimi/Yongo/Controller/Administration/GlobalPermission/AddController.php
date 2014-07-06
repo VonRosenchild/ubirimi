@@ -13,11 +13,11 @@
     if (isset($_POST['confirm_new_permission'])) {
         $permissionId = $_POST['permission'];
         $groupId = $_POST['group'];
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         $group = Group::getMetadataById($groupId);
         $permission = GlobalPermission::getById($permissionId);
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         // check if the group is already added
         $permissionData = GlobalPermission::getDataByPermissionIdAndGroupId($clientId, $permissionId, $groupId);

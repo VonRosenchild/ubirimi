@@ -8,6 +8,6 @@
     $userArray = $_POST['user_arr'];
     $projectId = $_POST['project_id'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Project::deleteUsersByPermissionRole($projectId, $permissionRoleId);
     Project::addUsersForPermissionRole($projectId, $permissionRoleId, $userArray, $currentDate);

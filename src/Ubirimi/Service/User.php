@@ -19,7 +19,7 @@ class User extends UbirimiService
 {
     public function newUser($data)
     {
-        $currentDate = Util::getCurrentDateTime($this->session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         $issuesPerPage = Client::getYongoSetting($data['clientId'], 'issues_per_page');
 

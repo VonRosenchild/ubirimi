@@ -27,7 +27,7 @@
         $username = Util::cleanRegularInputField($_POST['username']);
         $password = Util::cleanRegularInputField($_POST['password']);
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
         SMTPServer::add($clientId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, 0, $date);
 
         Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD SMTP Server ' . $name, $date);

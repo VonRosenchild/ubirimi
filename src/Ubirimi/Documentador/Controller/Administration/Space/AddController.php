@@ -17,7 +17,7 @@
         $name = Util::cleanRegularInputField($_POST['name']);
         $code = Util::cleanRegularInputField($_POST['code']);
         $description = Util::cleanRegularInputField($_POST['description']);
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         if (empty($name))
             $emptySpaceName = true;
@@ -36,7 +36,7 @@
 
             if (!$doubleCode && !$doubleName) {
 
-                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $date = Util::getServerCurrentDateTime();
 
                 $space = new Space($clientId, $loggedInUserId, $name, $code, $description);
                 $spaceId = $space->save($currentDate);

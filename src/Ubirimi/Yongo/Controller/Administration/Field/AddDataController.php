@@ -36,7 +36,7 @@
                 $duplicateName = true;
         }
         if (!$emptyName && !$duplicateName) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             $fieldId = CustomField::create($clientId, $fieldTypeCode, $name, $description, $issueType, $project, $date);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Custom Field ' . $name, $date);

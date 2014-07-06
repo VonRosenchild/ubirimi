@@ -8,5 +8,5 @@
     $name = $_POST['name'];
     $boardId = $_POST['board_id'];
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     AgileSprint::add($boardId, $name, $date, $loggedInUserId);

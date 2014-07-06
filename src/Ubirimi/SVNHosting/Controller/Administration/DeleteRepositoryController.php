@@ -43,7 +43,7 @@ class DeleteRepositoryController extends UbirimiController
             SystemProduct::SYS_PRODUCT_SVN_HOSTING,
             $loggedInUserId,
             'DELETE SVN Repository ' . $repo['name'],
-            Util::getCurrentDateTime($session->get('client/settings/timezone'))
+            Util::getServerCurrentDateTime()
         );
 
         return new Response('');

@@ -29,7 +29,7 @@
 
         if (!$emptyName && !$organizationDuplicate) {
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Organization::updateById($organizationId, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_HELP_DESK, $loggedInUserId, 'UPDATE Organization ' . $name, $currentDate);

@@ -29,7 +29,7 @@
         $fieldId = Util::cleanRegularInputField($_POST['field']);
 
         if ($fieldId != -1) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $lastOrder = Screen::getLastOrderNumber($screenId);
             Screen::addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
 

@@ -35,7 +35,7 @@
         }
 
         if (!$emptyName && !$duplicateName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Group::updateById($Id, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Group ' . $name, $currentDate);

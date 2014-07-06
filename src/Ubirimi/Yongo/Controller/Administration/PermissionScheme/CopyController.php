@@ -30,7 +30,7 @@
 
         if (!$emptyName && !$duplicateName) {
             $copiedPermissionScheme = new PermissionScheme($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $copiedPermissionSchemeId = $copiedPermissionScheme->save($currentDate);
 
             $permissionSchemeData = PermissionScheme::getDataByPermissionSchemeId($permissionSchemeId);

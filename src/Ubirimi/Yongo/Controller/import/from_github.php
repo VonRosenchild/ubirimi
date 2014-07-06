@@ -22,7 +22,7 @@
         $projectId = $_POST['project'];
         $repository = $_POST['repository'];
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         $curl = curl_init();
 

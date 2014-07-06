@@ -15,6 +15,6 @@
     Util::manageModalAttachments($issueId, $loggedInUserId, $attachIdsToBeKept);
 
     if (!empty($comment)) {
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         IssueComment::add($issueId, $loggedInUserId, $comment, $currentDate);
     }

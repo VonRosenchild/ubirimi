@@ -17,7 +17,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             IssueSecurityScheme::addLevel($issueSecuritySchemeId, $name, $description, $currentDate);
             header('Location: /yongo/administration/issue-security-scheme-levels/' . $issueSecuritySchemeId);
         }

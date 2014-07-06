@@ -19,7 +19,7 @@ class EditController extends UbirimiController
         $commentId = $request->request->get('id');
         $content = $request->request->get('content');
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         IssueComment::updateById($commentId, $content, $loggedInUserId, $date);
 

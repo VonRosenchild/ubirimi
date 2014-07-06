@@ -22,7 +22,7 @@
             $statusExists = true;
 
         if (!$emptyName && !$statusExists) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Organization::create($clientId, $name, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_HELP_DESK, $loggedInUserId, 'ADD Organization ' . $name, $currentDate);

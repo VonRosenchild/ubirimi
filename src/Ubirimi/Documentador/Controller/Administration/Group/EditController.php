@@ -33,7 +33,7 @@
         }
 
         if (!$emptyName && !$duplicateName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Group::updateById($Id, $name, $description, $currentDate);
 
             header('Location: /documentador/administration/groups');

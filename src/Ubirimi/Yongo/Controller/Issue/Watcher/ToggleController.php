@@ -8,7 +8,7 @@
     $issueId = $_POST['id'];
 
     if ($action == 'add') {
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         IssueWatcher::addWatcher($issueId, $loggedInUserId, $currentDate);
     } else if ($action == 'remove') {

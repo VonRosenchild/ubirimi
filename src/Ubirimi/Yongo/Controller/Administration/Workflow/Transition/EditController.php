@@ -22,7 +22,7 @@
         $screen = $_POST['screen'];
         Workflow::updateDataById($workflowData['id'], $name, $description, $screen, $step);
 
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
         Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Transition ' . $name, $currentDate);
 
         header('Location: /yongo/administration/workflow/view-transition/' . $workflowDataId);

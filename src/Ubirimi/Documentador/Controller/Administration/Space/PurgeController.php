@@ -20,5 +20,5 @@
     EntityAttachment::deleteByEntityId($entityId, $entity['space_id']);
     Entity::deleteById($entityId);
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador entity ' . $entity['name'], $date);

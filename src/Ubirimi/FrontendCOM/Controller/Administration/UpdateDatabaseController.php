@@ -12,9 +12,9 @@
 
     $clients = Client::getAll();
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
-    $currentDate = Util::getCurrentDateTime();
+    $currentDate = Util::getServerCurrentDateTime();
 
     while ($client = $clients->fetch_array(MYSQLI_ASSOC)) {
         $clientId = $client['id'];

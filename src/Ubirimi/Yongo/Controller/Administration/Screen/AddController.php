@@ -15,7 +15,7 @@
 
         $name = Util::cleanRegularInputField($_POST['name']);
         $description = Util::cleanRegularInputField($_POST['description']);
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         if (empty($name))
             $emptyName = true;

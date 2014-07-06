@@ -26,7 +26,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             Workflow::updateStepById($stepId, $name, $StatusId, $currentDate);
 

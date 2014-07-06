@@ -41,7 +41,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
 
-                $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $date = Util::getServerCurrentDateTime();
 
                 AgileBoard::updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
 

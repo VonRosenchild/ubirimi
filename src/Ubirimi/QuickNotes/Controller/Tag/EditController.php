@@ -32,7 +32,7 @@
             $tagExists = true;
         }
         if (!$tagExists && !$emptyName) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             Tag::updateById($tagId, $name, $description, $date);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_QUICK_NOTES, $loggedInUserId, 'UPDATE NOTEBOOK tag ' . $name, $date);

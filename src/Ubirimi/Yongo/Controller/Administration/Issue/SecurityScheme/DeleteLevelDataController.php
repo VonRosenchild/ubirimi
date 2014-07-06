@@ -13,5 +13,5 @@
 
     IssueSecurityScheme::deleteLevelDataById($issueSecuritySchemeLevelDataId);
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Security Scheme Level ' . $issueSecuritySchemeLevel['name'], $date);

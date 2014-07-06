@@ -7,7 +7,7 @@ use Ubirimi\Util;
 class GeneralTaskQueue {
 
     public static function savePendingClientData($data) {
-        $currentData = Util::getCurrentDateTime();
+        $currentData = Util::getServerCurrentDateTime();
         $query = "INSERT INTO general_task_queue(type, data, date_created, date_updated) VALUES " .
                     "(1, '" . $data . "', '" . $currentData . "', '" . $currentData . "');";
 

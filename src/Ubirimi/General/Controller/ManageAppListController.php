@@ -9,7 +9,7 @@
     $application = $_POST['app'];
     $visible = $_POST['visible'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
 
     switch ($application) {
         case 'yongo':

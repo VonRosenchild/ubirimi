@@ -38,7 +38,7 @@
         }
 
         if (count($oldNewLevel)) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             Project::updateIssuesSecurityLevel($projectId, $oldNewLevel, $date);
         }
 

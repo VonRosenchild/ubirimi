@@ -18,7 +18,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $iconName = 'generic.png';
             $newIssueTypeId = IssueSettings::createIssueType($clientId, $name, $description, $subTaskFlag, $iconName, $currentDate);
 

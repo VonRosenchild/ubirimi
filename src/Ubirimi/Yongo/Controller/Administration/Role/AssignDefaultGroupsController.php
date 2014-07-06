@@ -9,7 +9,7 @@
     $permissionRoleId = $_POST['role_id'];
     $groupArrayIds = $_POST['group_arr'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $permissionRole = PermissionRole::getById($permissionRoleId);
     PermissionRole::deleteDefaultGroupsByPermissionRoleId($permissionRoleId);
     PermissionRole::addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);

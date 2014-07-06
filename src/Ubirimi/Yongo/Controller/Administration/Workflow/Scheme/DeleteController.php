@@ -11,5 +11,5 @@
     WorkflowScheme::deleteDataByWorkflowSchemeId($Id);
     WorkflowScheme::deleteById($Id);
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Workflow Scheme ' . $workflowScheme['name'], $currentDate);

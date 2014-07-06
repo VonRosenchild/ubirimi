@@ -28,7 +28,7 @@
             $duplicateName = true;
 
         if (!$emptyName && !$workflowAlreadyExisting) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Workflow::copy($clientId, $workflowId, $name, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'Copy Yongo Workflow ' . $workflow['name'], $currentDate);

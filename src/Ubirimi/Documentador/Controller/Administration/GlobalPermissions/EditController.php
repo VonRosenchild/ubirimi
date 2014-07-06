@@ -29,7 +29,7 @@
             GlobalPermission::deleteByPermissionId($clientId, $globalsPermission['id'], 'group');
         }
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
 
         foreach ($_POST as $key => $value) {
             if (substr($key, 0, 5) == 'group') {

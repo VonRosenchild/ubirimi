@@ -15,7 +15,7 @@
 
     $conditionId = isset($_POST['condition']) ? $_POST['condition'] : null;
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
 
     if ($conditionId) {
 

@@ -69,7 +69,7 @@ use Ubirimi\Entity\Yongo\Project as ProjectEntity;
 
         if (!$emptyName && !$emptyCode && !$duplicateName && !$duplicateCode) {
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             $project = new ProjectEntity();
             $project->setClientId($clientId);

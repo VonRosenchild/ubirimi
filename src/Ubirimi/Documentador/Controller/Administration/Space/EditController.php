@@ -33,7 +33,7 @@
             $emptyCode = true;
 
         if (!$emptyName && !$emptyCode) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             Space::updateById($spaceId, $name, $code, $homepageId, $description, $currentDate);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador space ' . $name, $currentDate);

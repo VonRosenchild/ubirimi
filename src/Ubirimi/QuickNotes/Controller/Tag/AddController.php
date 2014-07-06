@@ -6,7 +6,7 @@
     Util::checkUserIsLoggedInAndRedirect();
     $clientSettings = $session->get('client/settings');
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
     $name = $_POST['name'];
     $description = $_POST['description'];

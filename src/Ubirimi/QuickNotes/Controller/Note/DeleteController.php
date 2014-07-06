@@ -5,7 +5,7 @@
     Util::checkUserIsLoggedInAndRedirect();
     $clientSettings = $session->get('client/settings');
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
     $noteId = $_POST['id'];
     $notebookSelectedId = $_POST['notebook_selected_id'];

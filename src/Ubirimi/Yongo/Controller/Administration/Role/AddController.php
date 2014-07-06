@@ -21,7 +21,7 @@
             $alreadyExists = true;
 
         if (!$emptyName && !$alreadyExists) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             PermissionRole::add($clientId, $name, $description, $date);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Project Role ' . $name, $date);

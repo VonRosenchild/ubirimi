@@ -29,7 +29,7 @@
     }
 
     $page = new Entity($pageType, $spaceId, $loggedInUserId, $parentId, $name, $description);
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $pageId = $page->save($currentDate);
 
     // if the page is a file list create the folders

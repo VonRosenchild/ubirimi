@@ -28,7 +28,7 @@ class AddController extends UbirimiController
         $repeatData = $request->request->get('repeat_data');
 
         if (!empty($name)) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
 
             ini_set('memory_limit', '1024M');
 

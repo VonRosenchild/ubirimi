@@ -18,7 +18,7 @@
 
         if (!$emptyName) {
             $fieldConfigurationScheme = new FieldConfigurationScheme($clientId, $name, $description);
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $fieldConfigurationSchemeId = $fieldConfigurationScheme->save($currentDate);
 
             $issueTypes = IssueType::getAll($clientId);

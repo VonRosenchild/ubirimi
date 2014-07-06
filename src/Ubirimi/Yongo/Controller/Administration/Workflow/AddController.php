@@ -25,7 +25,7 @@
         if (!$emptyName && !$workflowExists) {
             $workflowIssueTypeSchemeId = $_POST['workflow_issue_type_scheme'];
 
-            $currentDate = $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = $date = Util::getServerCurrentDateTime();
 
             $workflowId = Workflow::createNewMetaData($clientId, $workflowIssueTypeSchemeId, $name, $description, $currentDate);
             Workflow::createInitialData($clientId, $workflowId);

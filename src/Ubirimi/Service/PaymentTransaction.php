@@ -4,6 +4,7 @@ use Ubirimi\Repository\Log;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Payment as PaymentRepository;
 use Ubirimi\Repository\Invoice as InvoiceRepository;
+use Ubirimi\Util;
 
 class PaymentTransaction
 {
@@ -64,7 +65,7 @@ class PaymentTransaction
         } catch (\Paymill\Services\PaymillException $e) {
             UbirimiContainer::get()['db.connection']->rollback();
 
-            Log::add($clientId, \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO, $clientId, sprintf('ERROR in payment [%s]', $e->getMessage()), \Ubirimi\Util::getCurrentDateTime());
+            Log::add($clientId, \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO, $clientId, sprintf('ERROR in payment [%s]', $e->getMessage()), Util::getServerCurrentDateTime());
 
             PaymentRepository::save($clientId, $amount, 0);
 

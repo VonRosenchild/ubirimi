@@ -22,7 +22,7 @@ class DeleteController extends UbirimiController
 
         AgileBoard::deleteById($boardId);
 
-        $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $date = Util::getServerCurrentDateTime();
         Log::add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_CHEETAH,

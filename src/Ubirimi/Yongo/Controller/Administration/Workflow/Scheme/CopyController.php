@@ -33,7 +33,7 @@
         if (!$emptyName && !$workflowSchemeAlreadyExisting) {
             $copiedWorkflowScheme = new WorkflowScheme($clientId, $name, $description);
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             $copiedWorkflowSchemeId = $copiedWorkflowScheme->save($currentDate);
 
             $workflowSchemeData = WorkflowScheme::getDataById($workflowSchemeId);

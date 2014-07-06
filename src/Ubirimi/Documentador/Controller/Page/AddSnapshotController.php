@@ -6,7 +6,7 @@
     $entityId = $_POST['id'];
     $entityLastSnapshotId = $_POST['entity_last_snapshot_id'];
     $newEntityContent = $_POST['content'];
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
     $entity = Entity::getById($entityId);
     $oldEntityContent = $entity['content'];

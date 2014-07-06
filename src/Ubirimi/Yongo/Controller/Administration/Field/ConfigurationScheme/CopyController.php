@@ -30,7 +30,7 @@
             $duplicateName = true;
 
         if (!$emptyName && !$duplicateName) {
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             $copiedFieldConfigurationScheme = new FieldConfigurationScheme($clientId, $name, $description);
             $copiedFieldConfigurationSchemeId = $copiedFieldConfigurationScheme->save($currentDate);

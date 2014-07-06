@@ -52,7 +52,7 @@ class AddRepositoryController extends UbirimiController
             }
 
             if (!$emptyName && !$emptyCode && !$duplicateName && !$duplicateCode) {
-                $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+                $currentDate = Util::getServerCurrentDateTime();
                 $repoId = SVNRepository::addRepo($clientId, $session->get('user/id'), $name, $description, $code, $currentDate);
 
                 $repoPath = UbirimiContainer::get()['subversion.path'] . Util::slugify($session->get('client/company_domain')) . '/' . Util::slugify($name);

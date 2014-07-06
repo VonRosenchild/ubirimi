@@ -88,7 +88,7 @@
 
         if (Util::hasNoErrors($errors)) {
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
             User::updateById($userId, $firstName, $lastName, $email, $username, null, $clientAdministratorFlag, $customerServiceDeskFlag, $currentDate);
             $userUpdated = User::getById($userId);
 

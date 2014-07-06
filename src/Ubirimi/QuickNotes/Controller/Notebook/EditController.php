@@ -31,7 +31,7 @@
             $notebookExists = true;
         }
         if (!$notebookExists && !$emptyName) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             Notebook::updateById($notebookId, $name, $description, $date);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_QUICK_NOTES, $loggedInUserId, 'UPDATE NOTEBOOK notebook ' . $name, $date);

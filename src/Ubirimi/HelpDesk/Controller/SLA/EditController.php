@@ -64,7 +64,7 @@
 
         if (!$emptyName && !$duplicateName) {
 
-            $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $currentDate = Util::getServerCurrentDateTime();
 
             SLA::updateById($slaId, $name, $description, $startCondition, $stopCondition, $currentDate);
 

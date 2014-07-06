@@ -12,7 +12,7 @@
     $user_group_arr = $_POST['user_group_arr'];
     $perm_roles_arr = $_POST['perm_roles_arr'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     $somethingChanged = false;
 
     if ($userArray != -1) {

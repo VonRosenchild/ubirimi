@@ -20,7 +20,7 @@
     }
 
     if (isset($_POST['edit_issue_type_screen_scheme_data'])) {
-        $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+        $currentDate = Util::getServerCurrentDateTime();
 
         $screenSchemeId = Util::cleanRegularInputField($_POST['screen_scheme']);
         $issueTypeId = Util::cleanRegularInputField($_POST['issue_type']);

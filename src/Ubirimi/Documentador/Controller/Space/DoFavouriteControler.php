@@ -6,5 +6,5 @@
     Util::checkUserIsLoggedInAndRedirect();
     $spaceId = $_POST['id'];
 
-    $currentDate = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $currentDate = Util::getServerCurrentDateTime();
     Space::addToFavourites($spaceId, $loggedInUserId, $currentDate);

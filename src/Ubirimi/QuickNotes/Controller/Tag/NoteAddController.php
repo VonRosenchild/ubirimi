@@ -6,7 +6,7 @@
     Util::checkUserIsLoggedInAndRedirect();
     $clientSettings = $session->get('client/settings');
 
-    $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+    $date = Util::getServerCurrentDateTime();
 
     $value = $_POST['value'];
     $noteId = $_POST['id'];
