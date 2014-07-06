@@ -1,3 +1,5 @@
+!!! adauga calendarul default la fiecare proiect de help desk si modifica fiecare goal sa aibe acel calendar default
+
 ALTER TABLE `project` CHANGE `service_desk_enabled_flag` `help_desk_enabled_flag` TINYINT(3) UNSIGNED NULL DEFAULT NULL;
 
 ALTER TABLE `help_sla_calendar` CHANGE `client_id` `project_id` BIGINT(20) UNSIGNED NOT NULL;
