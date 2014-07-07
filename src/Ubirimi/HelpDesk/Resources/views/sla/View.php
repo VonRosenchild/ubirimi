@@ -76,6 +76,7 @@
                                 <tr>
                                     <th width="400px">Issues</th>
                                     <th>Goal</th>
+                                    <th>Calendar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,6 +92,7 @@
                                                 <?php endif ?>
                                             </td>
                                             <td><?php echo $goal['value'] ?> minutes</td>
+                                            <td><?php echo $goal['calendar_name'] ?></td>
                                         </tr>
                                     <?php endwhile ?>
                                 <?php endif ?>

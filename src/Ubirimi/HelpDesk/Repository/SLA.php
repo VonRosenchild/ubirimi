@@ -102,7 +102,12 @@ class SLA {
     }
 
     public static function getGoals($slaId) {
-        $query = 'select * from help_sla_goal where help_sla_id = ?';
+        $query = 'select help_sla_goal.id, help_sla_goal.help_sla_id, help_sla_goal.help_sla_calendar_id, ' .
+                 'help_sla_goal.definition, help_sla_goal.definition_sql, help_sla_goal.value, ' .
+                 'help_sla_calendar.name as calendar_name ' .
+                 'from help_sla_goal ' .
+                 'left join help_sla_calendar on help_sla_calendar.id = help_sla_goal.help_sla_calendar_id ' .
+                 'where help_sla_id = ?';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $slaId);

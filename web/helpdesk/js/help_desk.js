@@ -130,12 +130,14 @@ $('document').ready(function () {
     }
 
     $('#btnAddGoal').on('click', function () {
-        var placeToInsert = $(this).parent().parent().parent().children().last().prev();
         $.ajax({
             type: "POST",
+            data: {
+                project_id: $('#project_id').val()
+            },
             url: '/helpdesk/sla/render-new-goal',
             success: function (response) {
-                placeToInsert.before(response);
+                $('#slaGoals tbody').children().last().prev().after(response);
                 applyGoaldAutocomplete();
             }
         });

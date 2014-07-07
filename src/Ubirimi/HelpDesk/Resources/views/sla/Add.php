@@ -70,37 +70,52 @@
                         <div><b>Goals</b></div>
 
                         <div>Issues will be checked against this list, top to bottom, and assigned a time target based on the first matching YQL statement.</div>
-                        <table>
-                            <tr>
-                                <td>Issues (YQL)</td>
-                                <td>Goal</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <textarea class="inputTextAreaLarge goal_autocomplete"
-                                              id="goal_definition_1"
-                                              name="goal_definition_1"></textarea>
-                                </td>
-                                <td valign="top">
-                                    <input size="5" type="text" value="" name="goal_value_1" /> minutes
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    All remaining issues
-                                    <input type="hidden" value="" name="goal_definition_0" />
-                                </td>
-                                <td valign="top">
-                                    <input size="5" type="text" value="" name="goal_value_0" /> minutes
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="button" id="btnAddGoal" class="btn ubirimi-btn">Add Another Goal</button>
-                                </td>
-                                <td></td>
-                            </tr>
+                        <table class="table table-hover table-condensed" id="slaGoals">
+                            <thead>
+                                <tr>
+                                    <th>Issues (YQL)</th>
+                                    <th>Goal</th>
+                                    <th>Calendar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <textarea class="inputTextAreaLarge goal_autocomplete"
+                                                  id="goal_definition_1"
+                                                  name="goal_definition_1"></textarea>
+                                    </td>
+                                    <td valign="top">
+                                        <input size="5" type="text" value="" name="goal_value_1" /> minutes
+                                    </td>
+                                    <td>
+                                        <select name="goal_calendar_1" class="inputTextCombo">
+                                            <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
+                                                <option value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
+                                            <?php endwhile ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        All remaining issues
+                                        <input type="hidden" value="" name="goal_definition_0" />
+                                    </td>
+                                    <td valign="top">
+                                        <input size="5" type="text" value="" name="goal_value_0" /> minutes
+                                    </td>
+                                    <?php $slaCalendars->data_seek(0) ?>
+                                    <td>
+                                        <select name="goal_calendar_0" class="inputTextCombo">
+                                            <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
+                                                <option value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
+                                            <?php endwhile ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
+                        <button type="button" id="btnAddGoal" class="btn ubirimi-btn">Add Another Goal</button>
                     </td>
                 </tr>
                 <tr>

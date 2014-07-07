@@ -71,55 +71,73 @@
 
                         <div>Issues will be checked against this list, top to bottom, and assigned a time target based on the first matching YQL statement.</div>
 
-                        <table class="table table-hover table-condensed">
+                        <table class="table table-hover table-condensed" id="slaGoals">
                             <thead>
                                 <tr>
                                     <th width="200">Issues (YQL)</th>
                                     <th>Goal</th>
+                                    <th>Calendar</th>
+                                    <th>Options</th>
                                 </tr>
                             </thead>
-                            <?php while ($goals && $goal = $goals->fetch_array(MYSQLI_ASSOC)): ?>
-                                <?php if ($goal['definition'] == 'all_remaining_issues'): ?>
-                                    <?php $allRemainingIssuesDefinitionFound = true ?>
+                            <tbody>
+                                <?php while ($goals && $goal = $goals->fetch_array(MYSQLI_ASSOC)): ?>
+                                    <?php if ($goal['definition'] == 'all_remaining_issues'): ?>
+                                        <?php $allRemainingIssuesDefinitionFound = true ?>
+                                    <?php endif ?>
+                                    <tr>
+                                        <td>
+                                            <?php if ($goal['definition'] == 'all_remaining_issues'): ?>
+                                                <span>All remaining issues</span>
+                                                <input type="hidden" value="all_remaining_issues" name="goal_definition_<?php echo $goal['id'] ?>" />
+                                            <?php else: ?>
+                                                <textarea class="inputTextAreaLarge goal_autocomplete"
+                                                          id="goal_definition_<?php echo $goal['id'] ?>"
+                                                          name="goal_definition_<?php echo $goal['id'] ?>"><?php echo $goal['definition'] ?></textarea>
+                                            <?php endif ?>
+                                        </td>
+
+                                        <td valign="top">
+                                            <input size="5"
+                                                   type="text"
+                                                   value="<?php echo $goal['value'] ?>"
+                                                   name="goal_value_<?php echo $goal['id'] ?>" /> minutes
+                                        </td>
+                                        <td>
+                                            <select name="goal_calendar_<?php echo $goal['value'] ?>" class="inputTextCombo">
+                                                <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
+                                                    <option <?php if ($goal['help_sla_calendar_id'] == $calendar['id']) echo 'selected="selected"' ?> value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
+                                                <?php endwhile ?>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="button" id="delete_goal_<?php echo $goal['id'] ?>" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</button>
+                                        </td>
+                                    </tr>
+                                <?php endwhile ?>
+                                <?php if (!$allRemainingIssuesDefinitionFound): ?>
+                                    <tr>
+                                        <td>
+                                            All remaining issues
+                                            <input type="hidden" value="all_remaining_issues" name="goal_definition_0" />
+                                        </td>
+                                        <td valign="top">
+                                            <input size="5" type="text" value="" name="goal_value_0" /> minutes
+                                        </td>
+                                        <td>
+                                            <?php $slaCalendars->data_seek(0) ?>
+                                            <select name="goal_calendar_0<?php echo $goal['value'] ?>" class="inputTextCombo">
+                                                <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
+                                                    <option <?php if ($goal['help_sla_calendar_id'] == $calendar['id']) echo 'selected="selected"' ?> value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
+                                                <?php endwhile ?>
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
                                 <?php endif ?>
-                                <tr>
-                                    <td>
-                                        <?php if ($goal['definition'] == 'all_remaining_issues'): ?>
-                                            <span>All remaining issues</span>
-                                            <input type="hidden" value="all_remaining_issues" name="goal_definition_<?php echo $goal['id'] ?>" />
-                                        <?php else: ?>
-                                            <textarea class="inputTextAreaLarge goal_autocomplete"
-                                                      id="goal_definition_<?php echo $goal['id'] ?>"
-                                                      name="goal_definition_<?php echo $goal['id'] ?>"><?php echo $goal['definition'] ?></textarea>
-                                        <?php endif ?>
-                                    </td>
-                                    <td valign="top">
-                                        <input size="5"
-                                               type="text"
-                                               value="<?php echo $goal['value'] ?>"
-                                               name="goal_value_<?php echo $goal['id'] ?>" /> minutes
-                                        <button type="button" id="delete_goal_<?php echo $goal['id'] ?>" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</button>
-                                    </td>
-                                </tr>
-                            <?php endwhile ?>
-                            <?php if (!$allRemainingIssuesDefinitionFound): ?>
-                                <tr>
-                                    <td>
-                                        All remaining issues
-                                        <input type="hidden" value="all_remaining_issues" name="goal_definition_0" />
-                                    </td>
-                                    <td valign="top">
-                                        <input size="5" type="text" value="" name="goal_value_0" /> minutes
-                                    </td>
-                                </tr>
-                            <?php endif ?>
-                            <tr>
-                                <td>
-                                    <button type="button" id="btnAddGoal" class="btn ubirimi-btn">Add Another Goal</button>
-                                </td>
-                                <td></td>
-                            </tr>
+                            </tbody>
                         </table>
+                        <button type="button" id="btnAddGoal" class="btn ubirimi-btn">Add Another Goal</button>
                     </td>
                 </tr>
                 <tr>

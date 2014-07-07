@@ -33,7 +33,7 @@
                     "cogpowered\\FineDiff": "src/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -121,7 +121,7 @@
                     "Guzzle": "src/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -178,7 +178,7 @@
                     "GuzzleServiceProvider.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Michael Dowling",
@@ -216,7 +216,7 @@
                     "Nyholm\\ZebraImage": "src"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL"
             ],
@@ -255,7 +255,7 @@
                     "Paymill": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -301,7 +301,7 @@
                     "Pimple": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -341,7 +341,7 @@
                     "Psr\\Log\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -391,14 +391,14 @@
                     "Sabre\\VObject": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "email": "me@evertpot.com",
+                    "email": "evert@rooftopsolutions.nl",
                     "homepage": "http://evertpot.com/",
                     "role": "Developer"
                 }
@@ -434,7 +434,7 @@
                     "Savant3/resources"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL"
             ],
@@ -475,7 +475,7 @@
                     "lib/swift_required.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -505,12 +505,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config.git",
-                "reference": "32018f35de323afd1bffb601f9e760ff3fb6ba05"
+                "reference": "255da03130f66b01c249afe2a7e540798f3c9d5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Config/zipball/32018f35de323afd1bffb601f9e760ff3fb6ba05",
-                "reference": "32018f35de323afd1bffb601f9e760ff3fb6ba05",
+                "url": "https://api.github.com/repos/symfony/Config/zipball/255da03130f66b01c249afe2a7e540798f3c9d5c",
+                "reference": "255da03130f66b01c249afe2a7e540798f3c9d5c",
                 "shasum": ""
             },
             "require": {
@@ -528,7 +528,7 @@
                     "Symfony\\Component\\Config\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -546,7 +546,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-23 14:36:49"
+            "time": "2014-07-01 06:41:10"
         },
         {
             "name": "symfony/debug",
@@ -555,12 +555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "4bd5484d456e6263acc6429fabea7e2fbc74fffc"
+                "reference": "ff1ca47ea7a83ebb42637fb0a4a37bbb47b14363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/4bd5484d456e6263acc6429fabea7e2fbc74fffc",
-                "reference": "4bd5484d456e6263acc6429fabea7e2fbc74fffc",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/ff1ca47ea7a83ebb42637fb0a4a37bbb47b14363",
+                "reference": "ff1ca47ea7a83ebb42637fb0a4a37bbb47b14363",
                 "shasum": ""
             },
             "require": {
@@ -586,7 +586,7 @@
                     "Symfony\\Component\\Debug\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -604,7 +604,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-16 11:52:56"
+            "time": "2014-07-06 11:06:03"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -645,7 +645,7 @@
                     "Symfony\\Component\\EventDispatcher\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -694,7 +694,7 @@
                     "Symfony\\Component\\Filesystem\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -749,7 +749,7 @@
                     "Symfony/Component/HttpFoundation/Resources/stubs"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -822,7 +822,7 @@
                     "Symfony\\Component\\HttpKernel\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -884,7 +884,7 @@
                     "Symfony\\Component\\Routing\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -939,7 +939,7 @@
                     "Symfony\\Component\\Yaml\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -992,7 +992,7 @@
                     "include/barcodes/qrcode.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPLv3"
             ],

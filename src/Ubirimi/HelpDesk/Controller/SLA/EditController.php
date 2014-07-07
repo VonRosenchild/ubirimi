@@ -5,6 +5,7 @@
     use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\Repository\HelpDesk\SLACalendar;
 
     Util::checkUserIsLoggedInAndRedirect();
     $clientSettings = $session->get('client/settings');
@@ -18,16 +19,18 @@
     $stopConditions = explode("#", $SLA['stop_condition']);
 
     $slaConditions = array_merge($startConditions, $stopConditions);
-
+    $slaCalendars = SLACalendar::getByProjectId($SLA['project_id']);
     $goals = SLA::getGoals($slaId);
     $menuSelectedCategory = 'help_desk';
     $menuProjectCategory = 'sla';
+
     $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks';
 
     $emptyName = false;
     $duplicateName = false;
 
     $availableStatuses = IssueSettings::getAllIssueSettings('status', $clientId);
+
     if (isset($_POST['confirm_update_sla'])) {
 
         $name = Util::cleanRegularInputField($_POST['name']);
@@ -74,7 +77,7 @@
                 if (substr($key, 0, 16) == 'goal_definition_') {
                     $index = str_replace('goal_definition_', '', $key);
                     if ($value && $_POST['goal_value_' . $index]) {
-                        SLA::addGoal($slaId, $value, $value, $_POST['goal_value_' . $index]);
+                        SLA::addGoal($slaId, $_POST['goal_calendar_' . $index], $value, $value, $_POST['goal_value_' . $index]);
                     }
                 }
             }

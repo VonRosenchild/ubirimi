@@ -5,6 +5,7 @@
     use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\Repository\HelpDesk\SLACalendar;
 
     Util::checkUserIsLoggedInAndRedirect();
     $clientSettings = $session->get('client/settings');
@@ -24,6 +25,7 @@
     if ($SLAs) {
         $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
     }
+    $slaCalendars = SLACalendar::getByProjectId($projectId);
 
     $availableStatuses = IssueSettings::getAllIssueSettings('status', $clientId);
     if (isset($_POST['confirm_new_sla'])) {
@@ -68,9 +70,12 @@
             foreach ($_POST as $key => $value) {
                 if (substr($key, 0, 16) == 'goal_definition_') {
                     $index = str_replace('goal_definition_', '', $key);
-                    if ($value && $_POST['goal_value_' . $index]) {
 
-                        SLA::addGoal($slaId, $value, $value, $_POST['goal_value_' . $index]);
+                    if ($_POST['goal_value_' . $index]) {
+                        if ($value == '') {
+                            $value = 'all_remaining_issues';
+                        }
+                        SLA::addGoal($slaId, $_POST['goal_calendar_' . $index], $value, $value, $_POST['goal_value_' . $index]);
                     }
                 }
             }
