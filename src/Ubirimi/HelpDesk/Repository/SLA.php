@@ -256,25 +256,31 @@ class SLA {
         $goalValue = null;
         $goalId = null;
         $goalCalendarId = null;
+
         // find what goal applies to this issue
         while ($goals && $goal = $goals->fetch_array(MYSQLI_ASSOC)) {
-
-            $definitionSQL = SLA::transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
-
-            $issueFound = false;
-            if ($stmtGoal = UbirimiContainer::get()['db.connection']->prepare($definitionSQL)) {
-                $stmtGoal->execute();
-                $resultGoal = $stmtGoal->get_result();
-                if ($resultGoal->num_rows) {
-                    $issueFound = true;
-                }
-            }
-
-            if ($issueFound) {
+            if ('all_remaining_issues' == $goal['definition']) {
                 $goalValue = $goal['value'];
                 $goalId = $goal['id'];
                 $goalCalendarId = $goal['help_sla_calendar_id'];
-                break;
+            } else {
+                $definitionSQL = SLA::transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
+
+                $issueFound = false;
+                if ($stmtGoal = UbirimiContainer::get()['db.connection']->prepare($definitionSQL)) {
+                    $stmtGoal->execute();
+                    $resultGoal = $stmtGoal->get_result();
+                    if ($resultGoal->num_rows) {
+                        $issueFound = true;
+                    }
+                }
+
+                if ($issueFound) {
+                    $goalValue = $goal['value'];
+                    $goalId = $goal['id'];
+                    $goalCalendarId = $goal['help_sla_calendar_id'];
+                    break;
+                }
             }
         }
 
@@ -305,7 +311,7 @@ class SLA {
         $goalId = $goalData['id'];
         $goalValue = $goalData['value'];
 
-        $slaCalendarData = SLA::getCalendarDataByCalendarId($goalData['goalCalendarId']);
+        $slaCalendarData = SLACalendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
         $intervalMinutes = 0;
 

@@ -104,6 +104,7 @@
                                                    name="goal_value_<?php echo $goal['id'] ?>" /> minutes
                                         </td>
                                         <td>
+                                            <?php $slaCalendars->data_seek(0); ?>
                                             <select name="goal_calendar_<?php echo $goal['value'] ?>" class="inputTextCombo">
                                                 <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
                                                     <option <?php if ($goal['help_sla_calendar_id'] == $calendar['id']) echo 'selected="selected"' ?> value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
