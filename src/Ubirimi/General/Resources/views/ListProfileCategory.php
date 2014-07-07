@@ -23,6 +23,7 @@
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Name</th>
                         <th>Description</th>
                         <th>Fields</th>
@@ -42,9 +43,6 @@
                             </td>
                             <td><?php echo $profileCategory['description'] ?></td>
                             <td></td>
-                            <td>
-
-                            </td>
                             <td>
                                 <a href="/general-settings/users/edit/<?php echo $profileCategory['id'] ?>">Edit</a>
                                 &middot;

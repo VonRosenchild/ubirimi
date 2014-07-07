@@ -46,6 +46,10 @@ generalUsersProfileManager:
   path: /general-settings/users/profile-manager
   defaults: { _controller: '\Ubirimi\General\Controller\ListProfileCategoryController' }
 
+generalUsersProfileManagerAddCategory:
+  path: /general-settings/users/profile-manager/category/add
+  defaults: { _controller: '\Ubirimi\General\Controller\AddProfileCategoryController' }
+
 generalViewGeneral:
   path: /general-settings/view-general
   defaults: { _controller: '\Ubirimi\General\Controller\ViewGeneralController' }
