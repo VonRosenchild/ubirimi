@@ -2,6 +2,13 @@ var selected_rows = [];
 var PRODUCT_DOCUMENTADOR = 4;
 var PRODUCT_QUICK_NOTES = 7;
 
+var topMenusToClose = ['contentMenuHome', 'contentMenuIssues', 'contentMenuProjects', 'contentMenuAgile',
+    'contentMenuMailGeneral', 'contentMenuUsersGeneral', 'contentUserHomeGeneral', 'menu_add_to_sprint',
+    'contentMenuSVN', 'contentMenuFilters', 'contentMenuAdminProjects', 'contentMenuAdminUsers', 'contentMenuAdminIssues', 'contentMenuAdminSystem',
+    'contentMenuUserMenu', 'contentMenuIssueSearchOptions', 'menu_child_pages', 'contentMenuDocumentator', 'menu_page_tools',
+    'contentMenuAdminDocSpaces', 'contentMenuAdminDocUsersSecurity', 'contentMenuCalendars', 'contentMenuHelpDesk', 'contentMenuNotebooks',
+    'contentAddIssueWatcher'];
+
 function addParameterToURL(url, parameter) {
     url += (url.split('?')[1] ? '&':'?') + parameter;
 
@@ -21,12 +28,19 @@ function validateDate(stringDate) {
     return true
 }
 
+// close open menus when you click outside
+$(document).mouseup(function (e)
+{
+    for (var i = 0; i < topMenusToClose.length; i++) {
+        var container = $('#' + topMenusToClose[i]);
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+
+            container.hide();
+        }
+    }
+});
+
 function closeOpenMenus() {
-    var topMenusToClose = ['contentMenuHome', 'contentMenuIssues', 'contentMenuProjects', 'contentMenuAgile',
-        'contentMenuMailGeneral', 'contentMenuUsersGeneral', 'contentUserHomeGeneral', 'menu_add_to_sprint',
-        'contentMenuSVN', 'contentMenuFilters', 'contentMenuAdminProjects', 'contentMenuAdminUsers', 'contentMenuAdminIssues', 'contentMenuAdminSystem',
-        'contentMenuUserMenu', 'contentMenuIssueSearchOptions', 'menu_child_pages', 'contentMenuDocumentator', 'menu_page_tools',
-        'contentMenuAdminDocSpaces', 'contentMenuAdminDocUsersSecurity', 'contentMenuCalendars', 'contentMenuHelpDesk', 'contentMenuNotebooks'];
 
     var menuSelected = $('#menu_selected').val();
 
@@ -100,11 +114,6 @@ function closeOpenMenus() {
     } else
         $('#menuCalendars').css('background-color', '#6A8EB2');
 
-    for (var i = 0; i < topMenusToClose.length; i++) {
-        if ($('#' + topMenusToClose[i]).is(':visible')) {
-            $('#' + topMenusToClose[i]).hide();
-        }
-    }
     $('#menu_top_user').css('background-color', '#003466');
     $('#menu_top_userAdmin').css('background-color', '#003466');
     $('#menuUsersGeneral').css('background-color', '#6A8EB2');
