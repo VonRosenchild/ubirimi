@@ -59,7 +59,7 @@ agileSprintDelete:
 
 agileStartSprintConfirmController:
   path: /agile/start-sprint-dialog/{id}
-  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\SstartConfirmController' }
+  defaults: { _controller: '\Ubirimi\Agile\Controller\Sprint\StartConfirmController' }
   requirements:
     id:  \d+
 

@@ -1,9 +1,24 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Sprint;
 
-    $ids = $_POST['id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Agile\Repository\AgileBoard;
 
-    AgileBoard::deleteIssuesFromSprints($ids);
+class MoveToBacklogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $ids = $request->request->get('id');
+
+        AgileBoard::deleteIssuesFromSprints($ids);
+
+        return new Response('');
+    }
+}

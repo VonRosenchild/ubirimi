@@ -1,39 +1,69 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $workLogId = $_POST['id'];
-    $issueId = $_POST['issue_id'];
-    $timeSpent = trim(str_replace(" ", '', $_POST['time_spent']));
-    $dateStartedString = $_POST['date_started'];
-    $remainingTimePost = $_POST['remaining'];
-    $comment = $_POST['comment'];
+namespace Ubirimi\Yongo\Controller\Issue\LogWork;
 
-    $currentDate = Util::getServerCurrentDateTime();
-    $dateStarted = DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
-    $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
 
-    $workLog = IssueWorkLog::getWorkLogById($workLogId);
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $workLogId = $request->request->get('id');
+        $issueId = $request->request->get('issue_id');
+        $timeSpent = trim(str_replace(" ", '', $request->request->get('time_spent')));
+        $dateStartedString = $request->request->get('date_started');
+        $remainingTimePost = $request->request->get('remaining');
+        $comment = $request->request->get('comment');
 
-    IssueWorkLog::updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
+        $currentDate = Util::getServerCurrentDateTime();
+        $dateStarted = \DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
+        $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
-    $issueQueryParameters = array('issue_id' => $issueId);
-    $issue = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+        $workLog = IssueWorkLog::getWorkLogById($workLogId);
 
-    $remaining = IssueWorkLog::adjustRemainingEstimate($issue, null, "+" . $workLog['time_spent'], $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
+        IssueWorkLog::updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
 
-    $previousIssueRemainingEstimate = $issue['remaining_estimate'];
+        $issueQueryParameters = array('issue_id' => $issueId);
+        $issue = Issue::getByParameters($issueQueryParameters, $session->get('user/id'));
 
-    $issue['remaining_estimate'] = $remaining;
+        $remaining = IssueWorkLog::adjustRemainingEstimate(
+            $issue,
+            null,
+            "+" . $workLog['time_spent'],
+            $session->get('yongo/settings/time_tracking_hours_per_day'),
+            $session->get('yongo/settings/time_tracking_days_per_week'),
+            $session->get('user/id')
+        );
 
-    $remainingTimePost = IssueWorkLog::adjustRemainingEstimate($issue, $timeSpent, $remainingTimePost, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
+        $previousIssueRemainingEstimate = $issue['remaining_estimate'];
 
-    // update the history
-    $currentDate = Util::getServerCurrentDateTime();
-    $fieldChanges = array(array('time_spent', $workLog['time_spent'], $timeSpent),
-                          array('remaining_estimate', $previousIssueRemainingEstimate, $remainingTimePost));
+        $issue['remaining_estimate'] = $remaining;
 
-    Issue::updateHistory($issue['id'], $loggedInUserId, $fieldChanges, $currentDate);
-    echo $remainingTimePost;
+        $remainingTimePost = IssueWorkLog::adjustRemainingEstimate(
+            $issue,
+            $timeSpent,
+            $remainingTimePost,
+            $session->get('yongo/settings/time_tracking_hours_per_day'),
+            $session->get('yongo/settings/time_tracking_days_per_week'),
+            $session->get('user/id')
+        );
+
+        // update the history
+        $currentDate = Util::getServerCurrentDateTime();
+        $fieldChanges = array(
+            array('time_spent', $workLog['time_spent'], $timeSpent),
+            array('remaining_estimate', $previousIssueRemainingEstimate, $remainingTimePost)
+        );
+
+        Issue::updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
+
+        return new Response($remainingTimePost);
+    }
+}

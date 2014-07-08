@@ -1,16 +1,27 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Issue\LogWork;
 
-    $workLogId = $_GET['work_log_id'];
-    $remainingEstimate = $_GET['remaining'];
-    $remainingEstimate = trim(str_replace(array('w', 'd', 'h', 'm'), array('w ', 'd ', 'h ', 'm'), $remainingEstimate));
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
 
-    $workLog = IssueWorkLog::getWorkLogById($workLogId);
+class EditDialogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $mode = 'edit';
-    require_once __DIR__ . '/../../../Resources/views/issue/log_work/AddDialog.php';
+        $workLogId = $request->get('work_log_id');
+        $remainingEstimate = $request->get('remaining');
+        $remainingEstimate = trim(str_replace(array('w', 'd', 'h', 'm'), array('w ', 'd ', 'h ', 'm'), $remainingEstimate));
 
-    echo '<input type="hidden" value="' . $workLogId . '" id="work_log_id" />';
+        $workLog = IssueWorkLog::getWorkLogById($workLogId);
+
+        $mode = 'edit';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/issue/log_work/EditDialog.php', get_defined_vars());
+    }
+}

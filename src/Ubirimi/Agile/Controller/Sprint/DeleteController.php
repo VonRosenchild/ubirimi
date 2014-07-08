@@ -1,10 +1,24 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Agile\Repository\AgileSprint;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Sprint;
 
-    $sprintId = $_POST['id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Util;
 
-    AgileSprint::deleteById($sprintId);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $sprintId = $request->request->get('id');
+
+        AgileSprint::deleteById($sprintId);
+
+        return new Response('');
+    }
+}

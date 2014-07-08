@@ -1,15 +1,3 @@
-<?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Agile\Repository\AgileSprint;
-    use Ubirimi\Util;
-
-    Util::checkUserIsLoggedInAndRedirect();
-
-    $sprintId = $_GET['id'];
-    $sprint = AgileSprint::getById($sprintId);
-    $today = date("Y-m-d");
-    $todayPlus2Weeks = date('Y-m-d', strtotime('+2 week', strtotime($today)));
-?>
 <table>
     <tr>
         <td>Sprint Name</td>

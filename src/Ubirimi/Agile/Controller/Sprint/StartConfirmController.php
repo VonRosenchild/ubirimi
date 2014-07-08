@@ -3,24 +3,22 @@
 namespace Ubirimi\Agile\Controller\Sprint;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Agile\Repository\AgileSprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-class AddController extends UbirimiController
+class StartConfirmController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $name = $request->request->get('name');
-        $boardId = $request->request->get('board_id');
+        $sprintId = $request->get('id');
+        $sprint = AgileSprint::getById($sprintId);
+        $today = date("Y-m-d");
+        $todayPlus2Weeks = date('Y-m-d', strtotime('+2 week', strtotime($today)));
 
-        $date = Util::getServerCurrentDateTime();
-        AgileSprint::add($boardId, $name, $date, $session->get('user/id'));
-
-        return new Response('');
+        return $this->render(__DIR__ . '/../../Resources/views/sprint/StartConfirm.php', get_defined_vars());
     }
 }
