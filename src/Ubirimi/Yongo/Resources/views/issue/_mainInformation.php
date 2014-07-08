@@ -69,34 +69,33 @@
                             <?php echo LinkHelper::getUserProfileLink($issue[Field::FIELD_REPORTER_CODE], $selectedProductId, $issue['ur_first_name'], $issue['ur_last_name']) ?>
                     </td>
                 </tr>
-                <?php if (isset($watchers)): ?>
-                    <tr>
-                        <td valign="top" colspan="2">
-                            <div class="textLabel">
-                                <span>Watchers: </span>
-                                <span style="background-color: #d3d3d3; border-radius: 2em; padding: 0px 2px 2px 6px; cursor: pointer;" id="issueWatcherCount">
-                                    <b><?php if (isset($watchers)) echo $watchers->num_rows; else echo '0' ?></b>
-                                </span>
-                                &nbsp;
-                                <?php if ($loggedInUserId): ?>
-                                    <?php $loggedInUserIsWatcher = false; ?>
-                                    <?php while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)): ?>
-                                        <?php if ($watcher['id'] == $loggedInUserId): ?>
-                                            <a href="#" data="remove" class="toggle_watch_issue">Stop watching this issue</a>
-                                            <?php
-                                                $loggedInUserIsWatcher = true;
-                                                break;
-                                            ?>
-                                        <?php endif ?>
-                                    <?php endwhile ?>
-                                    <?php if (!$loggedInUserIsWatcher): ?>
-                                        <a href="#" data="add" class="toggle_watch_issue">Start watching this issue</a>
+                <tr>
+                    <td valign="top" colspan="2">
+                        <div class="textLabel">
+                            <span>Watchers: </span>
+                            <span style="background-color: #d3d3d3; border-radius: 2em; padding: 0px 2px 2px 6px; cursor: pointer;" id="issueWatcherCount">
+                                <b><?php if (isset($watchers)) echo $watchers->num_rows; else echo '0' ?></b>
+                            </span>
+                            &nbsp;
+                            <?php if ($loggedInUserId): ?>
+                                <?php $loggedInUserIsWatcher = false; ?>
+                                <?php while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)): ?>
+                                    <?php if ($watcher['id'] == $loggedInUserId): ?>
+                                        <a href="#" data="remove" class="toggle_watch_issue">Stop watching this issue</a>
+                                        <?php
+                                            $loggedInUserIsWatcher = true;
+                                            break;
+                                        ?>
                                     <?php endif ?>
+                                <?php endwhile ?>
+                                <?php if (!$loggedInUserIsWatcher): ?>
+                                    <a href="#" data="add" class="toggle_watch_issue">Start watching this issue</a>
                                 <?php endif ?>
-                            </div>
-                        </td>
-                    </tr>
-                <?php endif ?>
+                            <?php endif ?>
+                        </div>
+                    </td>
+                </tr>
+
                 <?php if ($issue[Field::FIELD_ISSUE_SECURITY_LEVEL]): ?>
                     <tr>
                         <td>
