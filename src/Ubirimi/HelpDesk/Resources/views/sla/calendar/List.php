@@ -53,6 +53,7 @@
                                         <th>Day</th>
                                         <th>Start Time</th>
                                         <th>End Time</th>
+                                        <th>Working</th>
                                     </tr>
                                 </thead>
                                 <?php for ($i = 0; $i < count($data); $i++): ?>
@@ -63,7 +64,7 @@
                                         <td><?php echo $dowMap[$i] ?></td>
                                         <td><?php echo $data[$i]['time_from'] ?></td>
                                         <td><?php echo $data[$i]['time_to'] ?></td>
-                                        <td><?php echo $data[$i]['not_working_flag'] ?></td>
+                                        <td><?php if ($data[$i]['not_working_flag']) echo 'No'; else echo 'Yes'; ?></td>
                                     </tr>
                                 <?php endfor ?>
                             </table>
