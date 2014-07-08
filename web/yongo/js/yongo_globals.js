@@ -326,7 +326,7 @@ function editIssue(issueId) {
     });
 }
 
-function createIssue() {
+function createIssue(message) {
 
     function initializeDialog(message) {
 
@@ -459,7 +459,7 @@ function createIssue() {
         }
     };
 
-    initializeDialog();
+    initializeDialog(message);
 }
 
 function createIssueProcess(doNotCloseDialog) {
@@ -521,8 +521,7 @@ function createIssueProcess(doNotCloseDialog) {
         },
         success: function (response) {
             if (doNotCloseDialog) {
-
-                initializeDialog(response);
+                createIssue(response);
             } else {
                 $("#modalCreateIssue").dialog('destroy');
                 $("#modalCreateIssue").empty();
