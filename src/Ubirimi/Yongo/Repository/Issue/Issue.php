@@ -1562,10 +1562,11 @@ class Issue {
         }
 
         // reset the offset to 0
-        $query = "update yongo_issue_sla set value = 0 " .
+        $query = "update yongo_issue_sla set `value` = 0 " .
                  "where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+
             $stmt->bind_param("ii", $issueId, $SLAId);
             $stmt->execute();
         }
@@ -1604,7 +1605,6 @@ class Issue {
         $SLAs = SLA::getByProjectId($projectId);
 
         if ($SLAs) {
-            $atLeastOneSLA = false;
             // check issue against the SLAs
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
                 $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);

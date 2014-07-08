@@ -202,8 +202,8 @@ function doTransitionWithoutScreen(issueId, stepIdFrom, stepIdTo, workflowId, fu
             workflow_id: workflowId
         },
         success: function (response) {
-            if (functionToCall)
-                functionToCall(functionToCallParameters);
+//            if (functionToCall)
+//                functionToCall(functionToCallParameters);
         }
     });
 }
@@ -259,8 +259,8 @@ function doTransitionWithScreen(issueId, stepIdFrom, stepIdTo, workflowId, modal
             $("#" + modalIdToClose).dialog('destroy');
             $("#" + modalIdToClose).empty();
 
-            if (functionToCall)
-                functionToCall(functionToCallParameters)
+//            if (functionToCall)
+//                functionToCall(functionToCallParameters)
         }
     });
 }

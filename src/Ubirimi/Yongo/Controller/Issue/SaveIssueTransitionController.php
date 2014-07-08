@@ -9,7 +9,7 @@
     use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
-
+    use Ubirimi\Repository\HelpDesk\SLA;
     Util::checkUserIsLoggedInAndRedirect();
 
     $issueId = $_POST['issue_id'];
@@ -88,13 +88,23 @@
 
         WorkflowFunction::triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
 
-        if (in_array(Field::FIELD_COMMENT_CODE, $fieldTypes)) {
-            // update date_resolved date
-            Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
-        }
+        // check SLA
+        $SLAs = SLA::getByProjectId($issueData['issue_project_id']);
 
-        $issueData = Issue::getById($issueId, $loggedInUserId);
-        Issue::updateSLAValue($issueData, $clientId, $clientSettings);
+        if ($SLAs) {
+            while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
+                $issueSLAData = SLA::getSLAData($issueId, $SLA['id']);
+                $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issueData, 'start', $issueSLAData['started_date']);
+                if ($startConditionSLADate) {
+                    Issue::updateSLAStarted($issueId, $SLA['id'], $startConditionSLADate);
+                }
+
+                $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issueData, 'stop', $issueSLAData['stopped_date']);
+                if ($stopConditionSLADate) {
+                    Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate);
+                }
+            }
+        }
 
         echo 'success';
     } else
