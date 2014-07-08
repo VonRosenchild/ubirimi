@@ -222,40 +222,44 @@ class Email {
     }
 
     public static function sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment) {
-        $subject = Email::$smtpSettings['email_prefix'] . ' ' .
-                                "[Issue] - Issue UPDATED " .
-                                $issue['project_code'] . '-' .
-                                $issue['nr'];
+        if (Email::$smtpSettings) {
+            $subject = Email::$smtpSettings['email_prefix'] . ' ' .
+                "[Issue] - Issue UPDATED " .
+                $issue['project_code'] . '-' .
+                $issue['nr'];
 
-        $date = Util::getServerCurrentDateTime();
+            $date = Util::getServerCurrentDateTime();
 
-        EmailQueue::add($clientId,
-                        Email::$smtpSettings['from_address'],
-                        $user['email'],
-                        null,
-                        $subject,
-                        Util::getTemplate('_issueAssign.php', array(
-                            'clientDomain' => Util::getSubdomain(),
-                            'issue' => $issue,
-                            'comment' => $comment,
-                            'oldUserAssignedName' => $oldUserAssignedName,
-                            'newUserAssignedName' => $newUserAssignedName)
-                        ),
-                        $date);
+            EmailQueue::add($clientId,
+                Email::$smtpSettings['from_address'],
+                $user['email'],
+                null,
+                $subject,
+                Util::getTemplate('_issueAssign.php', array(
+                        'clientDomain' => Util::getSubdomain(),
+                        'issue' => $issue,
+                        'comment' => $comment,
+                        'oldUserAssignedName' => $oldUserAssignedName,
+                        'newUserAssignedName' => $newUserAssignedName)
+                ),
+                $date);
+        }
     }
 
     public static function sendEmailIssueChanged($issue, $clientId, $fieldChanges, $userToNotify) {
-        EmailQueue::add($clientId,
-                        Email::$smtpSettings['from_address'],
-                        $userToNotify['email'],
-                        null,
-                        Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue UPDATED " . $issue['project_code'] . '-' . $issue['nr'],
-                        Util::getTemplate('_issueUpdated.php', array(
-                            'clientDomain' => Util::getSubdomain(),
-                            'issue' => $issue,
-                            'fieldChanges' => $fieldChanges)
-                        ),
-                        Util::getServerCurrentDateTime());
+        if (Email::$smtpSettings) {
+            EmailQueue::add($clientId,
+                Email::$smtpSettings['from_address'],
+                $userToNotify['email'],
+                null,
+                Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue UPDATED " . $issue['project_code'] . '-' . $issue['nr'],
+                Util::getTemplate('_issueUpdated.php', array(
+                        'clientDomain' => Util::getSubdomain(),
+                        'issue' => $issue,
+                        'fieldChanges' => $fieldChanges)
+                ),
+                Util::getServerCurrentDateTime());
+        }
     }
 
     public static function triggerIssueUpdatedNotification($clientId, $issue, $loggedInUserId, $changedFields) {
@@ -314,23 +318,25 @@ class Email {
     }
 
     public static function sendEmailNotificationNewComment($issue, $clientId, $project, $userToNotify, $content, $user) {
-        $subject = Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue COMMENT " . $issue['project_code'] . '-' . $issue['nr'];
+        if (Email::$smtpSettings) {
+            $subject = Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue COMMENT " . $issue['project_code'] . '-' . $issue['nr'];
 
-        $date = Util::getServerCurrentDateTime();
+            $date = Util::getServerCurrentDateTime();
 
-        EmailQueue::add($clientId,
-                        Email::$smtpSettings['from_address'],
-                        $userToNotify['email'],
-                        null,
-                        $subject,
-                        Util::getTemplate('_newComment.php',array(
-                            'clientDomain' => Util::getSubdomain(),
-                            'issue' => $issue,
-                            'project' => $project,
-                            'content' => $content,
-                            'user' => $user)
-                        ),
-                        $date);
+            EmailQueue::add($clientId,
+                Email::$smtpSettings['from_address'],
+                $userToNotify['email'],
+                null,
+                $subject,
+                Util::getTemplate('_newComment.php',array(
+                        'clientDomain' => Util::getSubdomain(),
+                        'issue' => $issue,
+                        'project' => $project,
+                        'content' => $content,
+                        'user' => $user)
+                ),
+                $date);
+        }
     }
 
     public static function sendEmailRetrievePassword($address, $password) {
@@ -352,18 +358,20 @@ class Email {
     }
 
     private static function sendEmailDeleteIssue($issue, $clientId, $user) {
-        $subject = Email::$smtpSettings['email_prefix'] . ' ' .
-                        "[Issue] - Issue DELETED " .
-                        $issue['project_code'] . '-' .
-                        $issue['nr'];
+        if (Email::$smtpSettings) {
+            $subject = Email::$smtpSettings['email_prefix'] . ' ' .
+                "[Issue] - Issue DELETED " .
+                $issue['project_code'] . '-' .
+                $issue['nr'];
 
-        EmailQueue::add($clientId,
-                        Email::$smtpSettings['from_address'],
-                        $user['email'],
-                        null,
-                        $subject,
-                        Util::getTemplate('_deleteIssue.php', array('issue' => $issue)),
-                        Util::getServerCurrentDateTime());
+            EmailQueue::add($clientId,
+                Email::$smtpSettings['from_address'],
+                $user['email'],
+                null,
+                $subject,
+                Util::getTemplate('_deleteIssue.php', array('issue' => $issue)),
+                Util::getServerCurrentDateTime());
+        }
     }
 
     public static function triggerDeleteIssueNotification($clientId, $issue, $loggedInUserId) {
@@ -442,64 +450,70 @@ class Email {
     }
 
     public static function shareIssue($clientId, $issue, $userThatShares, $userToSendEmailAddress, $noteContent) {
-        $subject = Email::$smtpSettings['email_prefix'] . ' ' .
-                        $userThatShares['first_name'] . ' ' .
-                        $userThatShares['last_name'] . ' shared ' .
-                        $issue['project_code'] . '-' . $issue['nr'] . ': ' . substr($issue['summary'], 0, 20) . ' with you';
+        if (Email::$smtpSettings) {
+            $subject = Email::$smtpSettings['email_prefix'] . ' ' .
+                $userThatShares['first_name'] . ' ' .
+                $userThatShares['last_name'] . ' shared ' .
+                $issue['project_code'] . '-' . $issue['nr'] . ': ' . substr($issue['summary'], 0, 20) . ' with you';
 
-        $date = Util::getServerCurrentDateTime();
+            $date = Util::getServerCurrentDateTime();
 
-        EmailQueue::add($clientId,
-                        Email::$smtpSettings['from_address'],
-                        $userToSendEmailAddress,
-                        null,
-                        $subject,
-                        Util::getTemplate('_issueShare.php', array(
-                            'issue' => $issue,
-                            'userThatShares' => $userThatShares,
-                            'noteContent' => $noteContent,
-                            'clientDomain' => Util::getSubdomain())
-                        ),
-                        $date);
+            EmailQueue::add($clientId,
+                Email::$smtpSettings['from_address'],
+                $userToSendEmailAddress,
+                null,
+                $subject,
+                Util::getTemplate('_issueShare.php', array(
+                        'issue' => $issue,
+                        'userThatShares' => $userThatShares,
+                        'noteContent' => $noteContent,
+                        'clientDomain' => Util::getSubdomain())
+                ),
+                $date);
+        }
     }
 
     public static function shareCalendar($clientId, $calendar, $userThatShares, $userToSendEmailAddress, $noteContent) {
-        $subject = Email::$smtpSettings['email_prefix'] . ' ' .
-            $userThatShares['first_name'] . ' ' .
-            $userThatShares['last_name'] . ' shared calendar ' .
-            $calendar['name'] . ' with you';
+        if (Email::$smtpSettings) {
+            $subject = Email::$smtpSettings['email_prefix'] . ' ' .
+                $userThatShares['first_name'] . ' ' .
+                $userThatShares['last_name'] . ' shared calendar ' .
+                $calendar['name'] . ' with you';
 
-        $date = Util::getServerCurrentDateTime();
+            $date = Util::getServerCurrentDateTime();
 
-        EmailQueue::add($clientId,
-            Email::$smtpSettings['from_address'],
-            $userToSendEmailAddress,
-            null,
-            $subject,
-            Util::getTemplate('_share.php', array('calendar' => $calendar,
-                                                               'userThatShares' => $userThatShares,
-                                                               'noteContent' => $noteContent,
-                                                               'clientDomain' => Util::getSubdomain())),
-            $date);
+            EmailQueue::add($clientId,
+                Email::$smtpSettings['from_address'],
+                $userToSendEmailAddress,
+                null,
+                $subject,
+                Util::getTemplate('_share.php', array('calendar' => $calendar,
+                    'userThatShares' => $userThatShares,
+                    'noteContent' => $noteContent,
+                    'clientDomain' => Util::getSubdomain())),
+                $date);
+        }
     }
 
     public static function shareEvent($clientId, $event, $userThatShares, $userToSendEmailAddress, $noteContent) {
-        $subject = Email::$smtpSettings['email_prefix'] . ' ' .
-            $userThatShares['first_name'] . ' ' .
-            $userThatShares['last_name'] . ' shared event ' .
-            $event['name'] . ' with you';
+        if (Email::$smtpSettings) {
+            $subject = Email::$smtpSettings['email_prefix'] . ' ' .
+                $userThatShares['first_name'] . ' ' .
+                $userThatShares['last_name'] . ' shared event ' .
+                $event['name'] . ' with you';
 
-        $date = Util::getServerCurrentDateTime();
+            $date = Util::getServerCurrentDateTime();
 
-        EmailQueue::add($clientId,
-            Email::$smtpSettings['from_address'],
-            $userToSendEmailAddress,
-            null,
-            $subject,
-            Util::getTemplate('_eventShare.php', array('event' => $event,
-                                                            'userThatShares' => $userThatShares,
-                                                            'noteContent' => $noteContent,
-                                                            'clientDomain' => Util::getSubdomain())),
-            $date);
+            EmailQueue::add($clientId,
+                Email::$smtpSettings['from_address'],
+                $userToSendEmailAddress,
+                null,
+                $subject,
+                Util::getTemplate('_eventShare.php', array('event' => $event,
+                    'userThatShares' => $userThatShares,
+                    'noteContent' => $noteContent,
+                    'clientDomain' => Util::getSubdomain())),
+                $date);
+        }
     }
 }

@@ -212,20 +212,20 @@ class SLA {
         for ($i = 0; $i < count($conditions); $i++) {
 
             if ($conditions[$i] == ($type . '_' . SLA::CONDITION_CREATE_ISSUE)) {
-                if (!$conditionFulfilledDate || $conditionFulfilledDate < $issue['created']) {
+                if (!$conditionFulfilledDate || $conditionFulfilledDate < $issue['date_created']) {
                     $conditionFulfilledDate = $issue['date_created'];
                 }
             } else if ($conditions[$i] == $type . '_' . SLA::CONDITION_RESOLUTION_SET) {
 
                 if ($issue['resolution']) {
-                    if (!$conditionFulfilledDate || $conditionFulfilledDate < $issue['created']) {
+                    if (!$conditionFulfilledDate || $conditionFulfilledDate < $issue['date_created']) {
                         $conditionFulfilledDate = $issue['date_resolved'];
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_status_set_') !== false) {
                 if ($issue['status'] == str_replace($type . '_status_set_',  '', $conditions[$i])) {
 
-                    if (!$conditionFulfilledDate || $conditionFulfilledDate < $issue['created']) {
+                    if (!$conditionFulfilledDate || $conditionFulfilledDate < $issue['date_created']) {
                         $conditionFulfilledDate = $issue['date_updated'];
                     }
                 }

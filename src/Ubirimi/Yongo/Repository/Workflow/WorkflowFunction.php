@@ -58,6 +58,7 @@ class WorkflowFunction {
                         } else {
                             $updateValue = $field_value_arr[1];
                         }
+
                         Issue::updateById($issueId, array(Field::FIELD_RESOLUTION_CODE => $updateValue), $currentDate);
                         $oldResolution = IssueSettings::getById($issueData[Field::FIELD_RESOLUTION_CODE], 'resolution', 'name');
                         if ($updateValue)
@@ -68,8 +69,12 @@ class WorkflowFunction {
                         if ($oldResolution != $newResolution)
                             $issueFieldChanges[] = array(Field::FIELD_RESOLUTION_CODE, $oldResolution, $newResolution);
 
+
                         if ($updateValue) {
                             Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
+                        } else {
+                            // clear the resolved date
+                            Issue::updateById($issueId, array('date_resolved' => null), $currentDate);
                         }
                         break;
                 }
