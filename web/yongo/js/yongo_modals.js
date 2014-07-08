@@ -2643,7 +2643,9 @@ $('document').ready(function () {
         };
 
         var issueRemainingEstimate = $('#issue_remaining_estimate').val();
-
+        if (issueRemainingEstimate == undefined) {
+            issueRemainingEstimate = -1;
+        }
         $("#modalLogWork").load("/yongo/issue/log-work-dialog/" + issueRemainingEstimate, [], function () {
             $("#modalLogWork").dialog(options);
             $("#modalLogWork").dialog("open");
