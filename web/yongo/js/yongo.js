@@ -1962,7 +1962,6 @@ $('document').ready(function () {
     }
 
     $(document).on('click', '#btnIssueSearchColumns', function (event) {
-        event.stopPropagation();
         event.preventDefault();
 
         if ($('#content_chose_display_columns').is(':visible') && $('#content_chose_display_columns').html()) {

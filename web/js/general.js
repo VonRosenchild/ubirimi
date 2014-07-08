@@ -2,13 +2,6 @@ var selected_rows = [];
 var PRODUCT_DOCUMENTADOR = 4;
 var PRODUCT_QUICK_NOTES = 7;
 
-var topMenusToClose = ['contentMenuHome', 'contentMenuIssues', 'contentMenuProjects', 'contentMenuAgile',
-    'contentMenuMailGeneral', 'contentMenuUsersGeneral', 'contentUserHomeGeneral', 'menu_add_to_sprint',
-    'contentMenuSVN', 'contentMenuFilters', 'contentMenuAdminProjects', 'contentMenuAdminUsers', 'contentMenuAdminIssues', 'contentMenuAdminSystem',
-    'contentMenuUserMenu', 'contentMenuIssueSearchOptions', 'menu_child_pages', 'contentMenuDocumentator', 'menu_page_tools',
-    'contentMenuAdminDocSpaces', 'contentMenuAdminDocUsersSecurity', 'contentMenuCalendars', 'contentMenuHelpDesk', 'contentMenuNotebooks',
-    'contentAddIssueWatcher'];
-
 function addParameterToURL(url, parameter) {
     url += (url.split('?')[1] ? '&':'?') + parameter;
 
@@ -31,10 +24,18 @@ function validateDate(stringDate) {
 // close open menus when you click outside
 $(document).mouseup(function (e)
 {
-    for (var i = 0; i < topMenusToClose.length; i++) {
-        var container = $('#' + topMenusToClose[i]);
-        if (!container.is(e.target) && container.has(e.target).length === 0) {
 
+    var contentToClose = ['#contentMenuHome', '#contentMenuIssues', '#contentMenuProjects', '#contentMenuAgile',
+        '#contentMenuMailGeneral', '#contentMenuUsersGeneral', '#contentUserHomeGeneral', '#menu_add_to_sprint',
+        '#contentMenuSVN', '#contentMenuFilters', '#contentMenuAdminProjects', '#contentMenuAdminUsers', '#contentMenuAdminIssues', '#contentMenuAdminSystem',
+        '#contentMenuUserMenu', '#contentMenuIssueSearchOptions', '#menu_child_pages', '#contentMenuDocumentator', '#menu_page_tools',
+        '#contentMenuAdminDocSpaces', '#contentMenuAdminDocUsersSecurity', '#contentMenuCalendars', '#contentMenuHelpDesk', '#contentMenuNotebooks',
+        '#contentAddIssueWatcher', '#content_chose_display_columns'];
+
+
+    for (var i = 0; i < contentToClose.length; i++) {
+        var container = $(contentToClose[i]);
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
             container.hide();
         }
     }
