@@ -1,37 +1,40 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Agile\Repository\AgileSprint;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Sprint;
 
-    $boardId = $_GET['board_id'];
-    $lastSprint = AgileSprint::getLast($boardId);
-    $suggestedName = '';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    if ($lastSprint) {
-        $name = $lastSprint['name'];
-        $nameComponents = explode(' ', $name);
+class AddConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (is_numeric($nameComponents[count($nameComponents) - 1])) {
-            $value = $nameComponents[count($nameComponents) - 1];
-            $value++;
-            array_pop($nameComponents);
-            if (count($nameComponents) == 1)
-                $suggestedName = $nameComponents[0] . ' ' . $value;
-            else
-                $suggestedName = implode(' ', $nameComponents) . ' ' . $value;
+        $boardId = $request->get('board_id');
+        $lastSprint = AgileSprint::getLast($boardId);
+        $suggestedName = '';
+
+        if ($lastSprint) {
+            $name = $lastSprint['name'];
+            $nameComponents = explode(' ', $name);
+
+            if (is_numeric($nameComponents[count($nameComponents) - 1])) {
+                $value = $nameComponents[count($nameComponents) - 1];
+                $value++;
+                array_pop($nameComponents);
+                if (count($nameComponents) == 1)
+                    $suggestedName = $nameComponents[0] . ' ' . $value;
+                else
+                    $suggestedName = implode(' ', $nameComponents) . ' ' . $value;
+            }
+        } else {
+            $suggestedName = 'Sprint 1';
         }
-    } else {
-        $suggestedName = 'Sprint 1';
+
+        return $this->render(__DIR__ . '/../../Resources/views/sprint/AddConfirm.php', get_defined_vars());
     }
-?>
-<table>
-    <tr>
-        <td valign="top">Sprint Name</td>
-        <td>
-            <input type="text" class="inputText" value="<?php echo $suggestedName ?>" id="sprint_name" />
-            <div class="error" id="empty_sprint_name"></div>
-        </td>
-    </tr>
-</table>
+}

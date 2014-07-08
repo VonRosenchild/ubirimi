@@ -1,22 +1,30 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Agile\Repository\AgileSprint;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Sprint;
 
-    $sprintId = $_GET['id'];
-    $boardId = $_GET['board_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Agile\Repository\AgileBoard;
 
-    $sprint = AgileSprint::getById($sprintId);
-    $lastColumn = AgileBoard::getLastColumn($boardId);
-    $completeStatuses = AgileBoard::getColumnStatuses($lastColumn['id'], 'array', 'id');
+class CompleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $issuesInSprintCount = AgileSprint::getSprintIssuesCount($sprintId);
-    $completedIssuesInSprint = AgileSprint::getCompletedIssuesCountBySprintId($sprintId, $completeStatuses);
+        $sprintId = $request->get('id');
+        $boardId = $request->get('board_id');
 
-?>
-<div class="headerPageText"><?php echo $sprint['name'] ?></div>
-<br />
-<div><b><?php echo $completedIssuesInSprint ?></b> issue was Done.</div>
-<div><b><?php echo ($issuesInSprintCount - $completedIssuesInSprint) ?></b> incomplete issues will be returned to the top of the backlog.</div>
+        $sprint = AgileSprint::getById($sprintId);
+        $lastColumn = AgileBoard::getLastColumn($boardId);
+        $completeStatuses = AgileBoard::getColumnStatuses($lastColumn['id'], 'array', 'id');
+
+        $issuesInSprintCount = AgileSprint::getSprintIssuesCount($sprintId);
+        $completedIssuesInSprint = AgileSprint::getCompletedIssuesCountBySprintId($sprintId, $completeStatuses);
+
+        return $this->render(__DIR__ . '/../../Resources/views/sprint/CompleteConfirm.php', get_defined_vars());
+    }
+}
