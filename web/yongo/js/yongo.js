@@ -1519,13 +1519,18 @@ $('document').ready(function () {
 
     $(document).on('change', '#field_type_type', function (event) {
         var operationId = $('#operation_id').val();
+        var projectId = $('#field_type_project').val();
+        if (projectId == undefined) {
+            projectId = $('#project_id').val();
+        }
+
         if (operationId == 1) { // create issue
             $.ajax({
                 type: "POST",
                 url: '/yongo/issue/render-field-list',
                 data: {
                     issue_type_id: $('#field_type_type').val(),
-                    project_id: $('#field_type_project').val(),
+                    project_id: projectId,
                     operation_id: operationId
                 },
                 success: function (response) {
