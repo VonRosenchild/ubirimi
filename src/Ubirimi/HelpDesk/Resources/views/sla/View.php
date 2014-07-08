@@ -100,6 +100,7 @@
                                     <tr>
                                         <td>All remaining issues</td>
                                         <td>No target</td>
+                                        <td></td>
                                     </tr>
                                 <?php endif ?>
                             </tbody>

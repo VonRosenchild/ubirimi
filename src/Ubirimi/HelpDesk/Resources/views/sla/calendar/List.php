@@ -16,8 +16,8 @@
             <tr>
                 <td>
                     <a href="/helpdesk/sla/calendar/add/<?php echo $projectId ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Calendar</a>
-                    <a href="#" class="btn ubirimi-btn" id="btnEditSLACalendar"><i class="icon-edit"></i> Edit</a>
-                    <a href="#" id="btnDeleteSLACalendar" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a>
+                    <a href="#" class="btn ubirimi-btn disabled" id="btnEditSLACalendar"><i class="icon-edit"></i> Edit</a>
+                    <a href="#" id="btnDeleteSLACalendar" class="btn ubirimi-btn disabled"><i class="icon-remove"></i> Delete</a>
                 </td>
             </tr>
         </table>
@@ -36,7 +36,9 @@
                 <?php while ($calendar = $calendars->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr id="table_row_<?php echo $calendar['id'] ?>">
                         <td width="22">
-                            <input type="checkbox" value="1" id="el_check_<?php echo $calendar['id'] ?>" />
+                            <?php if ($calendar['default_flag'] == 0): ?>
+                                <input type="checkbox" value="1" id="el_check_<?php echo $calendar['id'] ?>" />
+                            <?php endif ?>
                         </td>
                         <td>
                             <?php echo $calendar['name']; ?>

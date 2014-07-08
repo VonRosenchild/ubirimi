@@ -77,6 +77,7 @@
                 if (substr($key, 0, 16) == 'goal_definition_') {
                     $index = str_replace('goal_definition_', '', $key);
                     if ($value && $_POST['goal_value_' . $index]) {
+
                         SLA::addGoal($slaId, $_POST['goal_calendar_' . $index], $value, $value, $_POST['goal_value_' . $index]);
                     }
                 }
