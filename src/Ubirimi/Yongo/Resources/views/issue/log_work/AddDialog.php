@@ -33,7 +33,7 @@
             <label for="radio_log_work_remaining_estimate_auto"><span>Adjust automatically</span></label>
             <div class="smallDescription" style="margin-left: 21px">the estimate will be reduced by the amount of work done, but never below 0.</div>
             <input type="radio" name="log_work_remaining_estimate" value="existing_estimate" id="radio_log_work_remaining_estimate" />
-            <label for="radio_log_work_remaining_estimate"><span>Use existing estimate of <?php echo $remainingEstimate ?></span></label>
+            <label for="radio_log_work_remaining_estimate"><span>Leave estimate unset</span></label>
             <br />
             <input type="radio" name="log_work_remaining_estimate" value="set_to" id="radio_log_remaining_work_set_to" />
             <label for="radio_log_remaining_work_set_to"><span>Set to</span></label>
