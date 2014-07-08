@@ -384,12 +384,16 @@ $('document').ready(function () {
                     backlogEnabled = false;
                 }
             });
-            if (backlogEnabled) {
-                $('#btnMoveToBacklog').attr('class', 'btn ubirimi-btn');
-            } else {
-                $('#btnMoveToBacklog').attr('class', 'btn ubirimi-btn disabled');
-            }
+        } else {
+            backlogEnabled = false;
         }
+
+        if (backlogEnabled) {
+            $('#btnMoveToBacklog').attr('class', 'btn ubirimi-btn');
+        } else {
+            $('#btnMoveToBacklog').attr('class', 'btn ubirimi-btn disabled');
+        }
+
         $('#btnNotifications').attr('class', classCSS);
         $('#btnUserAssignInProjectRole').attr('class', classCSS);
         $('#btnManageUsersInProjectRole').attr('class', classCSS);
