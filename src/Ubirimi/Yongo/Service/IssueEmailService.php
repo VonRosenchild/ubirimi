@@ -72,14 +72,12 @@ class IssueEmailService extends UbirimiService
             $users = Project::getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
-                $sendEmail = true;
+
                 if ($userToNotify['user_id'] == $this->session->get('user/id') && !$userToNotify['notify_own_changes_flag']) {
-                    $sendEmail = false;
+                    continue;
                 }
 
-                if ($sendEmail) {
-                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $content, $this->session->get('user'));
-                }
+                Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $content, $this->session->get('user'));
             }
         }
     }

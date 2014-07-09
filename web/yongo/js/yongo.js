@@ -202,8 +202,8 @@ function doTransitionWithoutScreen(issueId, stepIdFrom, stepIdTo, workflowId, fu
             workflow_id: workflowId
         },
         success: function (response) {
-//            if (functionToCall)
-//                functionToCall(functionToCallParameters);
+            if (functionToCall)
+                functionToCall(functionToCallParameters);
         }
     });
 }
@@ -259,8 +259,8 @@ function doTransitionWithScreen(issueId, stepIdFrom, stepIdTo, workflowId, modal
             $("#" + modalIdToClose).dialog('destroy');
             $("#" + modalIdToClose).empty();
 
-//            if (functionToCall)
-//                functionToCall(functionToCallParameters)
+            if (functionToCall)
+                functionToCall(functionToCallParameters)
         }
     });
 }
@@ -825,16 +825,16 @@ $('document').ready(function () {
                                 issue_id: issue_id
                             },
                             success: function (response) {
-//                                $("#deleteIssueModal").dialog('destroy');
-//                                $("#deleteIssueModal").empty();
-//
-//                                var obj = jQuery.parseJSON(response);
-//                                var link = '';
-//                                if (obj.go_to_search) {
-//                                    document.location.href = '/yongo/issue/search?' + obj.url; // search
-//                                } else if (obj.go_to_dashboard) {
-//                                    document.location.href = '/yongo/my-dashboard'; // search
-//                                }
+                                $("#deleteIssueModal").dialog('destroy');
+                                $("#deleteIssueModal").empty();
+
+                                var obj = jQuery.parseJSON(response);
+                                var link = '';
+                                if (obj.go_to_search) {
+                                    document.location.href = '/yongo/issue/search?' + obj.url; // search
+                                } else if (obj.go_to_dashboard) {
+                                    document.location.href = '/yongo/my-dashboard'; // search
+                                }
                             }
                         });
 

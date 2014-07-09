@@ -311,7 +311,13 @@ class Email {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue COMMENT " . $issue['project_code'] . '-' . $issue['nr'];
 
             $date = Util::getServerCurrentDateTime();
-
+echo     Util::getTemplate('_newComment.php',array(
+        'clientDomain' => Util::getSubdomain(),
+        'issue' => $issue,
+        'project' => $project,
+        'content' => $content,
+        'user' => $user)
+);
             EmailQueue::add($clientId,
                 Email::$smtpSettings['from_address'],
                 $userToNotify['email'],
