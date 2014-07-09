@@ -1,28 +1,40 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\User;
 
-    $userId = $_GET['id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Group\Group;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    $users = Client::getUsers($clientId);
-    $user = User::getById($userId);
-    $projects = Project::getByClientId($clientId);
-    $roles = PermissionRole::getByClient($clientId);
-    $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
-    $groupIds = array();
-    while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
-        $groupIds[] = $group['id'];
+class ListProjectRoleController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $userId = $request->get('id');
+
+        $users = Client::getUsers($session->get('client/id'));
+        $user = User::getById($userId);
+        $projects = Project::getByClientId($session->get('client/id'));
+        $roles = PermissionRole::getByClient($session->get('client/id'));
+        $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
+        $groupIds = array();
+        while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
+            $groupIds[] = $group['id'];
+        }
+
+        $menuSelectedCategory = 'user';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / User Project Roles';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/user/ListProjectRole.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'user';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / User Project Roles';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/user/ListProjectRole.php';
+}

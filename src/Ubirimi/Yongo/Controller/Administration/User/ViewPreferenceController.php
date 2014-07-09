@@ -1,13 +1,25 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $settings = Client::getYongoSettings($clientId);
+namespace Ubirimi\Yongo\Controller\Administration\User;
 
-    $menuSelectedCategory = 'user';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / User Preferences';
+class ViewPreferenceController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $settings = Client::getYongoSettings($session->get('client/id'));
 
-    require_once __DIR__ . '/../../../Resources/views/administration/user/ViewPreference.php';
+        $menuSelectedCategory = 'user';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / User Preferences';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/user/ViewPreference.php', get_defined_vars());
+    }
+}

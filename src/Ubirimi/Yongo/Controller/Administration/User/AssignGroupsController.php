@@ -1,14 +1,29 @@
 <?php
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\User;
 
-    $userId = $_POST['user_id'];
-    $assignedGroups = $_POST['assigned_groups'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\User\User;
 
-    User::deleteGroupsByUserId($userId);
+class AssignGroupsController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($assignedGroups != -1) {
-        User::addGroups($userId, $assignedGroups);
+        $userId = $request->request->get('user_id');
+        $assignedGroups = $request->request->get('assigned_groups');
+
+        User::deleteGroupsByUserId($userId);
+
+        if ($assignedGroups != -1) {
+            User::addGroups($userId, $assignedGroups);
+        }
+
+        return new Response('');
     }
+}

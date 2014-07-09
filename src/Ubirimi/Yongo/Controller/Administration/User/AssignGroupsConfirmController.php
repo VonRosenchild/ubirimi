@@ -1,25 +1,37 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\User;
 
-    $userId = $_GET['user_id'];
-    $productId = $_GET['product_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\Group\Group;
 
-    $user = User::getById($userId);
-    $allProductGroups = Group::getByClientIdAndProductId($clientId, $productId);
-    $userGroups = Group::getByUserIdAndProductId($userId, $productId);
+class AssignGroupsConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $user_groups_ids_arr = array();
+        $userId = $request->get('user_id');
+        $productId = $request->get('product_id');
 
-    while ($userGroups && $group = $userGroups->fetch_array(MYSQLI_ASSOC))
-        $user_groups_ids_arr[] = $group['id'];
+        $user = User::getById($userId);
+        $allProductGroups = Group::getByClientIdAndProductId($session->get('client/id'), $productId);
+        $userGroups = Group::getByUserIdAndProductId($userId, $productId);
 
-    if ($userGroups)
-        $userGroups->data_seek(0);
+        $user_groups_ids_arr = array();
 
-    $first_selected = true;
+        while ($userGroups && $group = $userGroups->fetch_array(MYSQLI_ASSOC))
+            $user_groups_ids_arr[] = $group['id'];
 
-    require_once __DIR__ . '/../../../Resources/views/administration/user/AssignGroupsConfirm.php';
+        if ($userGroups)
+            $userGroups->data_seek(0);
+
+        $first_selected = true;
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/user/AssignGroupsConfirm.php', get_defined_vars());
+    }
+}

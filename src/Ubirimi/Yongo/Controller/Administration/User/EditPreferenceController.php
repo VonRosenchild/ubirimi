@@ -1,28 +1,54 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\User;
 
-    $settings = Client::getYongoSettings($clientId);
-    $menuSelectedCategory = 'user';
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['edit_settings'])) {
-        $issuesPerPage = $_POST['issues_per_page'];
-        $notifyOwnChanges = $_POST['notify_own_changes'];
-        $parameters = array(array('field' => 'issues_per_page', 'value' => $issuesPerPage, 'type' => 'i'),
-                            array('field' => 'notify_own_changes_flag', 'value' => $notifyOwnChanges, 'type' => 'i'));
+class EditPreferenceController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        Client::updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_YONGO, $parameters);
+        $settings = Client::getYongoSettings($session->get('client/id'));
+        $menuSelectedCategory = 'user';
 
-        $currentDate = Util::getServerCurrentDateTime();
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Global User Preferences', $currentDate);
+        if ($request->request->has('edit_settings')) {
+            $issuesPerPage = $request->request->get('issues_per_page');
+            $notifyOwnChanges = $request->request->get('notify_own_changes');
 
-        header('Location: /yongo/administration/user-preference');
+            $parameters = array(
+                array('field' => 'issues_per_page', 'value' => $issuesPerPage, 'type' => 'i'),
+                array('field' => 'notify_own_changes_flag', 'value' => $notifyOwnChanges, 'type' => 'i')
+            );
+
+            Client::updateProductSettings(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_YONGO,
+                $parameters
+            );
+
+            $currentDate = Util::getServerCurrentDateTime();
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_YONGO,
+                $session->get('user/id'),
+                'UPDATE Yongo Global User Preferences',
+                $currentDate
+            );
+
+            return new RedirectResponse('/yongo/administration/user-preference');
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update User Preferences';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/user/EditPreference.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update User Preferences';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/user/EditPreference.php';
+}
