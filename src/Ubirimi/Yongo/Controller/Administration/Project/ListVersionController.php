@@ -1,21 +1,33 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project;
 
-    $projectId = $_GET['id'];
-    $releases = Project::getVersions($projectId);
-    $project = Project::getById($projectId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    if ($project['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+class ListVersionController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $projectId = $request->get('id');
+        $releases = Project::getVersions($projectId);
+        $project = Project::getById($projectId);
+
+        if ($project['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
+
+        $menuSelectedCategory = 'project';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Project Versions';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/project/ListVersion.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'project';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Project Versions';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/project/ListVersion.php';
+}
