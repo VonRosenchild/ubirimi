@@ -11,7 +11,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
-class SelectSchemeController extends UbirimiController
+class ViewController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
@@ -19,22 +19,15 @@ class SelectSchemeController extends UbirimiController
 
         $projectId = $request->get('id');
         $project = Project::getById($projectId);
+
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-
-        if ($request->request->has('associate')) {
-
-            $workflowSchemeId = $request->request->get('workflow_scheme');
-
-            return new RedirectResponse('/yongo/administration/project/workflows/update-status/' . $projectId . '/' . $workflowSchemeId);
-        }
-
-        $workflowSchemes = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
+        $workflows = WorkflowScheme::getWorkflows($project['workflow_scheme_id']);
         $menuSelectedCategory = 'project';
 
-        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Select Project Workflow Scheme';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Scheme';
 
-        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/SelectWorkflowScheme.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/ViewWorkflowScheme.php', get_defined_vars());
     }
 }

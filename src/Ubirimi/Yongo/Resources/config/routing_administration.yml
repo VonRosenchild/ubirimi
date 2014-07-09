@@ -16,7 +16,7 @@ adminViewProjectIssueTypeScheme:
 
 adminViewProjectWorkflowScheme:
   path: /yongo/administration/project/workflows/{id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Workflow\ViewWorkflowSchemeController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\Workflow\ViewController' }
   requirements:
     id:  \d+
 
