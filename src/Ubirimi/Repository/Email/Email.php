@@ -9,6 +9,7 @@ use Swift_SendmailTransport;
 use Swift_SmtpTransport;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\SMTPServer;
+use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 use Ubirimi\Yongo\Repository\Issue\IssueEvent;
@@ -138,29 +139,15 @@ class Email {
         $eventAssignedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_ASSIGNED_CODE, 'id');
         $projectId = $project['id'];
         $users = Project::getUsersForNotification($projectId, $eventAssignedId, $issue, $loggedInUserId);
-        if (!$users) {
-            return;
-        }
+        $loggedInUser = User::getById($loggedInUserId);
 
-        $usersSentNotification = array();
-        while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
-            if ($user['user_id'] == $loggedInUserId) {
-                if ($user['notify_own_changes_flag']) {
-                    Email::sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment);
-                    $usersSentNotification[] = $user['user_id'];
-                }
-            } else {
-                Email::sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment);
-                $usersSentNotification[] = $user['user_id'];
-            }
-        }
+        while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
 
-        // get the issue watchers and send them an email
-        $watchers = IssueWatcher::getByIssueId($issue['id']);
-        while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)) {
-            if (!in_array($watcher['id'], $usersSentNotification)) {
-                Email::sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $watcher, $comment);
+            if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
+                continue;
             }
+
+            Email::sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment, $loggedInUser);
         }
     }
 
@@ -221,7 +208,7 @@ class Email {
         return '</div>';
     }
 
-    public static function sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment) {
+    public static function sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment, $loggedInUser) {
         if (Email::$smtpSettings) {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                 "[Issue] - Issue UPDATED " .
@@ -239,6 +226,8 @@ class Email {
                         'clientDomain' => Util::getSubdomain(),
                         'issue' => $issue,
                         'comment' => $comment,
+                        'project' => array('id' => $issue['issue_project_id'], 'name' => $issue['project_name']),
+                        'loggedInUser' => $loggedInUser,
                         'oldUserAssignedName' => $oldUserAssignedName,
                         'newUserAssignedName' => $newUserAssignedName)
                 ),

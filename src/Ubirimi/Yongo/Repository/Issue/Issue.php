@@ -1381,7 +1381,8 @@ class Issue {
         $smtpSettings = UbirimiContainer::get()['session']->get('client/settings/smtp');
         if ($smtpSettings) {
             Email::$smtpSettings = $smtpSettings;
-            Email::triggerAssignIssueNotification($clientId, $issueData, $oldUserAssignedName, $newUserAssignedName, $project, $loggedInUserId, $comment);
+            Email::triggerAssignIssueNotification($clientId, $issueData, $oldUserAssignedName, $newUserAssignedName,
+                                                  $project, $loggedInUserId, $comment);
         }
     }
 
