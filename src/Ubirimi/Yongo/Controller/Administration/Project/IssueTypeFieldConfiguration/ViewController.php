@@ -1,24 +1,36 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\IssueTypeFieldConfiguration;
 
-    $projectId = $_GET['id'];
-    $project = Project::getById($projectId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\Field;
 
-    if ($project['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+class ViewController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $projectId = $request->get('id');
+        $project = Project::getById($projectId);
+
+        if ($project['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
+
+        $fieldConfigurations = FieldConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
+        $allFields = Field::getByClient($session->get('client/id'));
+        $menuSelectedCategory = 'project';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Type Field Configuration';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/ViewIssueTypeFieldConfiguration.php', get_defined_vars());
     }
-
-    $fieldConfigurations = FieldConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
-    $allFields = Field::getByClient($clientId);
-    $menuSelectedCategory = 'project';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Type Field Configuration';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/project/ViewIssueTypeFieldConfiguration.php';
+}

@@ -1,28 +1,40 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\IssueTypeFieldConfiguration;
 
-    $projectId = $_GET['id'];
-    $project = Project::getById($projectId);
-    if ($project['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+
+class SelectSchemeController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $projectId = $request->get('id');
+        $project = Project::getById($projectId);
+        if ($project['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
+        $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($session->get('client/id'));
+
+        $menuSelectedCategory = 'project';
+
+        if ($request->request->has('associate')) {
+            $issueTypeFieldSchemeId = $request->request->get('issue_type_field_scheme');
+            Project::updateFieldConfigurationScheme($projectId, $issueTypeFieldSchemeId);
+
+            return new RedirectResponse('/yongo/administration/project/fields/' . $projectId);
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Select Issue Type Field Configuration';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/SelectIssueTypeFieldScheme.php', get_defined_vars());
     }
-    $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($clientId);
-
-    $menuSelectedCategory = 'project';
-
-    if (isset($_POST['associate'])) {
-
-        $issueTypeFieldSchemeId = $_POST['issue_type_field_scheme'];
-        Project::updateFieldConfigurationScheme($projectId, $issueTypeFieldSchemeId);
-
-        header('Location: /yongo/administration/project/fields/' . $projectId);
-    }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Select Issue Type Field Configuration';
-    require_once __DIR__ . '/../../../../Resources/views/administration/project/SelectIssueTypeFieldScheme.php';
+}
