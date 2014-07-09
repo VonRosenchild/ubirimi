@@ -1,44 +1,63 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\Component;
 
-    $projectId = $_GET['id'];
-    $project = Project::getById($projectId);
-    $users = Client::getUsers($clientId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Log;
 
-    $emptyName = false;
-    $alreadyExists = false;
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['confirm_new_component'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $leader = Util::cleanRegularInputField($_POST['leader']);
+        $projectId = $request->get('id');
+        $project = Project::getById($projectId);
+        $users = Client::getUsers($session->get('client/id'));
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
+        $alreadyExists = false;
 
-        $components_duplicate = Project::getComponentByName($projectId, $name);
-        if ($components_duplicate)
-            $alreadyExists = true;
+        if ($request->request->has('confirm_new_component')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $leader = Util::cleanRegularInputField($request->request->get('leader'));
 
-        if (!$emptyName && !$alreadyExists) {
-            if ($leader == -1) {
-                $leader = null;
+            if (empty($name))
+                $emptyName = true;
+
+            $components_duplicate = Project::getComponentByName($projectId, $name);
+            if ($components_duplicate)
+                $alreadyExists = true;
+
+            if (!$emptyName && !$alreadyExists) {
+                if ($leader == -1) {
+                    $leader = null;
+                }
+                $currentDate = Util::getServerCurrentDateTime();
+                Project::addComponent($projectId, $name, $description, $leader, null, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Project Component ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/project/components/' . $projectId);
             }
-            $currentDate = Util::getServerCurrentDateTime();
-            Project::addComponent($projectId, $name, $description, $leader, null, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Project Component ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/project/components/' . $projectId);
         }
-    }
-    $menuSelectedCategory = 'project';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Project Component';
+        $menuSelectedCategory = 'project';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Project Component';
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/project/component/Add.php';
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/component/Add.php', get_defined_vars());
+    }
+}
