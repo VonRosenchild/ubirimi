@@ -1,15 +1,36 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\Version;
 
-    $releaseId = $_POST['release_id'];
-    $release = Project::getVersionById($releaseId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    Project::deleteVersionById($releaseId);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Project Version ' . $release['name'], $currentDate);
+        $releaseId = $request->request->get('release_id');
+        $release = Project::getVersionById($releaseId);
+
+        Project::deleteVersionById($releaseId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Project Version ' . $release['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

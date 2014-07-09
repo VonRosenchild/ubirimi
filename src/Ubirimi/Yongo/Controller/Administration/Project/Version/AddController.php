@@ -1,39 +1,58 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\Version;
 
-    $projectId = $_GET['id'];
-    $project = Project::getById($projectId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Repository\Log;
 
-    $emptyName = false;
-    $alreadyExists = false;
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['confirm_new_release'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $projectId = $request->get('id');
+        $project = Project::getById($projectId);
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
+        $alreadyExists = false;
 
-        $releasesDuplicate = Project::getVersionByName($projectId, $name);
-        if ($releasesDuplicate)
-            $alreadyExists = true;
+        if ($request->request->has('confirm_new_release')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-        if (!$emptyName && !$alreadyExists) {
-            $currentDate = Util::getServerCurrentDateTime();
-            Project::addVersion($projectId, $name, $description, $currentDate);
+            if (empty($name))
+                $emptyName = true;
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Project Version ' . $name, $currentDate);
+            $releasesDuplicate = Project::getVersionByName($projectId, $name);
+            if ($releasesDuplicate)
+                $alreadyExists = true;
 
-            header('Location: /yongo/administration/project/versions/' . $projectId);
+            if (!$emptyName && !$alreadyExists) {
+                $currentDate = Util::getServerCurrentDateTime();
+                Project::addVersion($projectId, $name, $description, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Project Version ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/project/versions/' . $projectId);
+            }
         }
+
+        $menuSelectedCategory = 'project';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Project Version';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/version/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'project';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Project Version';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/project/version/Add.php';
+}
