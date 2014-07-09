@@ -121,6 +121,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
+                    <td>
+                        <input class="radio" type="radio" name="type" id="label_all_watchers" value="all_watchers">
+                        <label for="label_all_watchers">All Watchers</label>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="3">
                         <hr size="1" />
                     </td>

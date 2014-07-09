@@ -13,7 +13,6 @@ use Ubirimi\Yongo\Repository\Project\Project;
 
 class IssueEmailService extends UbirimiService
 {
-
     /**
      * @var \Ubirimi\Yongo\Service\WorkflowService;
      */
@@ -52,13 +51,13 @@ class IssueEmailService extends UbirimiService
         }
     }
 
-    public function emailIssueDelete($issue)
+    public function emailIssueDelete($issue, $project, $extraInformation)
     {
         $smtpSettings = $this->session->get('client/settings/smtp');
         if ($smtpSettings) {
 
             Email::$smtpSettings = $smtpSettings;
-            Email::triggerDeleteIssueNotification($this->session->get('client/id'), $issue, $this->session->get('user/id'));
+            Email::triggerDeleteIssueNotification($this->session->get('client/id'), $issue, $project, $extraInformation);
         }
     }
 
@@ -73,9 +72,12 @@ class IssueEmailService extends UbirimiService
             $users = Project::getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
-                if ($userToNotify['user_id'] == $this->session->get('user/id') && $userToNotify['notify_own_changes_flag']) {
-                    Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $content, $this->session->get('user'));
-                } else {
+                $sendEmail = true;
+                if ($userToNotify['user_id'] == $this->session->get('user/id') && !$userToNotify['notify_own_changes_flag']) {
+                    $sendEmail = false;
+                }
+
+                if ($sendEmail) {
                     Email::sendEmailNotificationNewComment($issue, $this->session->get('client/id'), $project, $userToNotify, $content, $this->session->get('user'));
                 }
             }

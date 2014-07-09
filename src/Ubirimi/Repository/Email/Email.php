@@ -357,7 +357,8 @@ class Email {
         }
     }
 
-    private static function sendEmailDeleteIssue($issue, $clientId, $user) {
+    private static function sendEmailDeleteIssue($issue, $clientId, $user, $loggedInUser, $project) {
+
         if (Email::$smtpSettings) {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                 "[Issue] - Issue DELETED " .
@@ -369,39 +370,25 @@ class Email {
                 $user['email'],
                 null,
                 $subject,
-                Util::getTemplate('_deleteIssue.php', array('issue' => $issue)),
+                Util::getTemplate('_deleteIssue.php', array('issue' => $issue, 'loggedInUser' => $loggedInUser, 'project' => $project)),
                 Util::getServerCurrentDateTime());
         }
     }
 
-    public static function triggerDeleteIssueNotification($clientId, $issue, $loggedInUserId) {
+    public static function triggerDeleteIssueNotification($clientId, $issue, $project, $extraInformation) {
         $projectId = $issue['issue_project_id'];
+
+        $loggedInUser = $extraInformation['loggedInUser'];
+        $loggedInUserId = $loggedInUser['id'];
+
         $eventDeletedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_DELETED_CODE, 'id');
         $users = Project::getUsersForNotification($projectId, $eventDeletedId, $issue, $loggedInUserId);
 
-        if (!$users) {
-            return;
-        }
-        $usersSentNotification = array();
-
-        while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
-            if ($user['user_id'] == $loggedInUserId) {
-                if ($user['notify_own_changes_flag']) {
-                    Email::sendEmailDeleteIssue($issue, $clientId, $user);
-                    $usersSentNotification[] = $user['user_id'];
-                }
-            } else {
-                Email::sendEmailDeleteIssue($issue, $clientId, $user);
-                $usersSentNotification[] = $user['user_id'];
+        while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
+            if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
+                continue;
             }
-        }
-
-        // get the issue watchers and send them an email
-        $watchers = IssueWatcher::getByIssueId($issue['id']);
-        while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)) {
-            if (!in_array($watcher['id'], $usersSentNotification)) {
-                Email::sendEmailDeleteIssue($issue, $clientId, $watcher);
-            }
+            Email::sendEmailDeleteIssue($issue, $clientId, $user, $loggedInUser, $project);
         }
     }
 

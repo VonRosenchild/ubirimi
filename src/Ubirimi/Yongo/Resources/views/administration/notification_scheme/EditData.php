@@ -71,6 +71,8 @@
                                     echo '<li> Group (' . $data['group_name'] . ') (' . $link_delete . ')</li>';
                                 } else if ($data['role_name']) {
                                     echo '<li>Project Role (' . $data['role_name'] . ') (' . $link_delete . ')</li>';
+                                } else if ($data['all_watchers']) {
+                                    echo '<li>All Watchers</li>';
                                 }
                             }
                             echo '</ul>';

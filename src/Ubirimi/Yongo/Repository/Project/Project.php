@@ -975,7 +975,21 @@ class Project {
                 'notification_scheme_data.current_user is not null and ' .
                 'user.id is not null ' .
 
-            // 8. project_lead in permission scheme
+            // 8. all watchers
+            'UNION DISTINCT ' .
+            'SELECT user.id as user_id, user.first_name, user.last_name, user.email, user.notify_own_changes_flag ' .
+            'from project ' .
+            'left join notification_scheme on notification_scheme.id = project.notification_scheme_id ' .
+            'left join notification_scheme_data on (notification_scheme_data.notification_scheme_id = notification_scheme.id and ' .
+            'notification_scheme_data.current_user is not null) ' .
+            'left join yongo_issue on yongo_issue.project_id = project.id ' .
+            'left join yongo_issue_watch on yongo_issue_watch.yongo_issue_id = yongo_issue.id ' .
+            'left join user on user.id = yongo_issue_watch.user_id ' .
+            'where project.id  IN ' . $projectsSQL . ' and ' .
+            'notification_scheme_data.event_id = ? and ' .
+            'user.id is not null ' .
+
+            // 9. project_lead in permission scheme
 
             'UNION DISTINCT ' .
             'SELECT user.id as user_id, user.first_name, user.last_name, user.email, user.notify_own_changes_flag ' .
@@ -990,7 +1004,7 @@ class Project {
                 'project.lead_id is not null and ' .
                 'user.id is not null ' .
 
-            // 9. component_lead in permission scheme
+            // 10. component_lead in permission scheme
 
             'UNION DISTINCT ' .
             'SELECT user.id as user_id, user.first_name, user.last_name, user.email, user.notify_own_changes_flag ' .
@@ -1009,7 +1023,7 @@ class Project {
                 'user.id is not null';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiiiiiiii", $eventId, $eventId, $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId, $loggedInUserId, $eventId, $eventId, $issue['id'], $eventId);
+            $stmt->bind_param("iiiiiiiiiiiiii", $eventId, $eventId, $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId, $eventId, $loggedInUserId, $eventId, $eventId, $issue['id'], $eventId);
             $stmt->execute();
             $result = $stmt->get_result();
 

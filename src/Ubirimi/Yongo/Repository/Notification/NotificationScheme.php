@@ -151,6 +151,7 @@ class NotificationScheme {
             case Notification::NOTIFICATION_TYPE_CURRENT_USER:
             case Notification::NOTIFICATION_TYPE_PROJECT_LEAD:
             case Notification::NOTIFICATION_TYPE_COMPONENT_LEAD:
+            case Notification::NOTIFICATION_TYPE_ALL_WATCHERS:
                 $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, `" . $notificationType . "`, date_created) VALUES (?, ?, ?, ?)";
                 if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
                     $value = 1;
@@ -181,6 +182,7 @@ class NotificationScheme {
 
     public static function getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventId) {
         $query = "select notification_scheme_data.id, user.first_name, user.last_name, user.id as user_id, group.id as group_id, group.name as group_name, notification_scheme_data.current_assignee, notification_scheme_data.reporter,  " .
+            "notification_scheme_data.all_watchers, " .
             "notification_scheme_data.current_user, notification_scheme_data.permission_role_id, notification_scheme_data.project_lead, notification_scheme_data.component_lead, permission_role.name as role_name, " .
             "event.id as event_id, event.name as event_name " .
             "from notification_scheme_data " .

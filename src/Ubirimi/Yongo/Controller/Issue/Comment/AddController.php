@@ -38,6 +38,7 @@ class AddController extends UbirimiController
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'ADD Yongo issue comment ' . $issue['project_code'] . '-' . $issue['nr']);
 
         UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
+
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_COMMENT_EMAIL, $issueEvent);
 
         return new Response('');

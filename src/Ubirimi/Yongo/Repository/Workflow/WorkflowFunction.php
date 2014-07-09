@@ -91,27 +91,25 @@ class WorkflowFunction {
 
                 $users = Project::getUsersForNotification($projectId, $eventId, $issueData, $loggedInUserId);
 
-                $usersSentNotification = array();
-
                 if ($users && Email::$smtpSettings) {
                     while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
+                        $sendEmail = true;
                         if ($user['user_id'] == $loggedInUserId) {
-                            if ($user['notify_own_changes_flag']) {
-                                Email::sendEmailIssueChanged($issueData, $clientId, $issueFieldChanges, $user);
-                                $usersSentNotification[] = $user['user_id'];
+                            if (!$user['notify_own_changes_flag']) {
+                                $sendEmail = false;
                             }
-                        } else {
-                            Email::sendEmailIssueChanged($issueData, $clientId, $issueFieldChanges, $user);
-                            $usersSentNotification[] = $user['user_id'];
                         }
-                    }
-                }
 
-                // get the issue watchers and send them an email
-                $watchers = IssueWatcher::getByIssueId($issueData['id']);
-                while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)) {
-                    if (!in_array($watcher['id'], $usersSentNotification)) {
-                        Email::sendEmailIssueChanged($issueData, $clientId, $issueFieldChanges, $watcher);
+                        if ($sendEmail) {
+                            switch ($eventId) {
+                                case IssueEvent::EVENT_ISSUE_CLOSED_CODE:
+                                    Email::sendEmailIssueChanged($issueData, $clientId, $issueFieldChanges, $user);
+                                    break;
+
+                                case IssueEvent::EVENT_ISSUE_COMMENTED_CODE:
+                                    Email::sendEmailNotificationNewComment($issueData, $clientId, $projectId, $user);
+                            }
+                        }
                     }
                 }
             }

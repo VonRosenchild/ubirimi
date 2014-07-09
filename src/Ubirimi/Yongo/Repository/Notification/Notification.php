@@ -12,4 +12,5 @@ class Notification {
     const NOTIFICATION_TYPE_USER = 'user';
     const NOTIFICATION_TYPE_GROUP = 'group';
     const NOTIFICATION_TYPE_PROJECT_ROLE = 'role';
+    const NOTIFICATION_TYPE_ALL_WATCHERS = 'all_watchers';
 }

@@ -30,6 +30,7 @@
         $user = $_POST['user'];
         $group = $_POST['group'];
         $role = $_POST['role'];
+
         $currentDate = Util::getServerCurrentDateTime();
 
         if ($notificationType) {
@@ -62,6 +63,9 @@
                                 $duplication = true;
                         if ($notificationType == Notification::NOTIFICATION_TYPE_REPORTER)
                             if ($data['reporter'])
+                                $duplication = true;
+                        if ($notificationType == Notification::NOTIFICATION_TYPE_ALL_WATCHERS)
+                            if ($data['all_watchers'])
                                 $duplication = true;
                     }
                 }

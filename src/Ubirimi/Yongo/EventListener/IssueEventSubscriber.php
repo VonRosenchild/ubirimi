@@ -25,7 +25,7 @@ class IssueEventSubscriber implements EventSubscriberInterface
                 $container['issue.email']->emailIssueNew($event->getIssue());
                 break;
             case IssueEvent::STATUS_DELETE:
-                $container['issue.email']->emailIssueDelete($event->getIssue());
+                $container['issue.email']->emailIssueDelete($event->getIssue(), $event->getProject(), $event->getExtra());
                 break;
             case IssueEvent::STATUS_UPDATE:
                 $container['issue.email']->emailIssueUpdate($event->getIssue(), $event->getExtra()['oldIssueData'], $event->getExtra()['fieldChanges']);

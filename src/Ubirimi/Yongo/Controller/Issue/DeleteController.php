@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
+use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -19,6 +20,7 @@ use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
 use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
 use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
+use Ubirimi\Yongo\Repository\Project\Project;
 
 class DeleteController extends UbirimiController
 {
@@ -30,8 +32,10 @@ class DeleteController extends UbirimiController
         $issueId = $request->get('issue_id');
 
         $issue = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $project = Project::getById($issue['issue_project_id']);
 
-        $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_DELETE);
+        $loggedInUser = User::getById($loggedInUserId);
+        $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_DELETE, array('loggedInUser' => $loggedInUser));
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
 
         Issue::deleteById($issueId);
