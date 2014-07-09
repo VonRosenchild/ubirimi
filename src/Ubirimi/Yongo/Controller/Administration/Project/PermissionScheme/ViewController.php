@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Yongo\Controller\Administration\Project\NotificationScheme;
+namespace Ubirimi\Yongo\Controller\Administration\Project\PermissionScheme;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,9 +10,9 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 
 class ViewController extends UbirimiController
 {
@@ -27,10 +27,8 @@ class ViewController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $notificationSchemeId = $project['notification_scheme_id'];
-        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
-        $events = IssueEvent::getByClient($session->get('client/id'));
-
+        $permissionScheme = PermissionScheme::getMetaDataById($project['permission_scheme_id']);
+        $permissionCategories = Permission::getCategories();
         $hasGlobalAdministrationPermission = User::hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
@@ -45,8 +43,8 @@ class ViewController extends UbirimiController
 
         $menuSelectedCategory = 'project';
 
-        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Project Notification Scheme';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Project Permission Scheme';
 
-        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/notification_scheme/View.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/permission_scheme/View.php', get_defined_vars());
     }
 }

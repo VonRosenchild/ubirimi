@@ -1,32 +1,43 @@
 <?php
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
-    use Ubirimi\Yongo\Repository\Project\Project;
+namespace Ubirimi\Yongo\Controller\Administration\Project\NotificationScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
-    $projectId = $_GET['id'];
-    $project = Project::getById($projectId);
-    if ($project['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+class SelectSchemeController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $projectId = $request->get('id');
+        $project = Project::getById($projectId);
+        if ($project['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
+
+        if ($request->request->has('associate')) {
+
+            $notificationSchemeId = $request->request->get('perm_scheme');
+
+            Project::updateNotificationScheme($projectId, $notificationSchemeId);
+
+            return new RedirectResponse('/yongo/administration/project/notifications/' . $projectId);
+        }
+
+        $notificationSchemes = NotificationScheme::getByClientId($session->get('client/id'));
+
+        $menuSelectedCategory = 'project';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Select Project Notification Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/notification_scheme/Select.php', get_defined_vars());
     }
-
-    if (isset($_POST['associate'])) {
-
-        $notificationSchemeId = $_POST['perm_scheme'];
-
-        Project::updateNotificationScheme($projectId, $notificationSchemeId);
-
-        header('Location: /yongo/administration/project/notifications/' . $projectId);
-    }
-
-    $notificationSchemes = NotificationScheme::getByClientId($clientId);
-
-    $menuSelectedCategory = 'project';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Select Project Notification Scheme';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/project/notification_scheme/Select.php';
+}

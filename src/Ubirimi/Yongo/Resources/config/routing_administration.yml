@@ -40,7 +40,7 @@ adminViewProjectPeople:
 
 adminViewProjectPermissionScheme:
   path: /yongo/administration/project/permissions/{id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\PermissionScheme\ViewPermissionSchemeController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\PermissionScheme\ViewController' }
   requirements:
     id:  \d+
 
