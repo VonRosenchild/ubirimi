@@ -35,7 +35,7 @@
         $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
 
     $projectComponents = Project::getComponents($projectId);
-    $issueComponents = IssueComponent::getByIssueId($issueId);
+    $issueComponents = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
     $arrIssueComponents = array();
 
     if ($issueComponents)

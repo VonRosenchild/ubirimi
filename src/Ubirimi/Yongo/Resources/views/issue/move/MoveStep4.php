@@ -104,7 +104,7 @@
                             <?php endif ?>
                             <?php if (($issueAffectedVersions && $issueAffectedVersions->num_rows) || ($issueAffectedVersions && $newIssueAffectsVersions->num_rows)): ?>
                                 <tr>
-                                    <td>Fix Versions</td>
+                                    <td>Affects Versions</td>
                                     <td>
                                         <?php while ($issueAffectedVersions && $issueVersion = $issueAffectedVersions->fetch_array(MYSQLI_ASSOC)): ?>
                                             <?php echo $issueVersion['name'] ?>

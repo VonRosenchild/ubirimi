@@ -34,7 +34,7 @@ class DuplicateController extends UbirimiController
         $issueReturnValues = Issue::add($project, $currentDate, $issueSystemFields, $loggedInUserId);
         $issueId = $issueReturnValues[0];
 
-        $components = IssueComponent::getByIssueId($oldIssueData['id']);
+        $components = IssueComponent::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id']);
         if ($components) {
             $components_arr = array();
             while ($component = $components->fetch_array(MYSQLI_ASSOC))

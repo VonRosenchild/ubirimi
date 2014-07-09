@@ -19,7 +19,7 @@
     $issueProject = Project::getById($projectId);
 
     $comments = IssueComment::getByIssueId($issueId, 'desc');
-    $components = IssueComponent::getByIssueId($issueId);
+    $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
 
     $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $versionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);

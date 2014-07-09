@@ -63,9 +63,9 @@
     $newProject = Project::getById($session->get('move_issue/new_project'));
     $newTypeName = IssueSettings::getById($session->get('move_issue/new_type'), 'type', 'name');
 
-    $issueComponents = IssueComponent::getByIssueId($issue['id']);
-    $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $session->get('move_issue/new_project'), Issue::ISSUE_FIX_VERSION_FLAG);
-    $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $session->get('move_issue/new_project'), Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $issueComponents = IssueComponent::getByIssueIdAndProjectId($issue['id'], $projectId);
+    $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+    $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
     $newIssueComponents = null;
     $newIssueFixVersions = null;

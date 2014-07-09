@@ -15,15 +15,15 @@
             }
         }
 
-        public static function getByIssueId($issueId) {
+        public static function getByIssueIdAndProjectId($issueId, $projectId) {
             $query = 'SELECT issue_component.id, project_component.name, project_component_id, parent_id ' .
                 'FROM issue_component ' .
                 'LEFT JOIN project_component on issue_component.project_component_id = project_component.id ' .
-                'WHERE issue_id = ? ' .
+                'WHERE issue_id = ? and project_component.project_id = ? ' .
                 'order by id asc';
 
             if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                $stmt->bind_param("i", $issueId);
+                $stmt->bind_param("ii", $issueId, $projectId);
                 $stmt->execute();
 
                 $result = $stmt->get_result();

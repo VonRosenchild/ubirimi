@@ -45,9 +45,9 @@
     $targetProjectComponents = Project::getComponents($targetProjectId);
     $targetVersions = Project::getVersions($targetProjectId);
 
-    $issueComponents = IssueComponent::getByIssueId($issue['id']);
-    $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $targetProjectId, Issue::ISSUE_FIX_VERSION_FLAG);
-    $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $targetProjectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $issueComponents = IssueComponent::getByIssueIdAndProjectId($issue['id'], $projectId);
+    $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+    $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
     $actionTaken = false;
     if (($issueComponents || $issueFixVersions || $issueAffectedVersions) && ($targetProjectComponents || $targetVersions)) {

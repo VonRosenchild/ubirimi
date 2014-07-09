@@ -31,7 +31,7 @@
 
         // check if step 3 is necessary
 
-        $issueComponents = IssueComponent::getByIssueId($issue['id']);
+        $issueComponents = IssueComponent::getByIssueIdAndProjectId($issue['id'], $projectId);
         $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
         $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 

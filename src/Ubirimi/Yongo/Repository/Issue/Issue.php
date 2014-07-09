@@ -1168,7 +1168,7 @@ class Issue {
 
         // deal with the components
         if (array_key_exists('component', $newIssueData) && null !== $newIssueData['component']) {
-            $oldComponents = IssueComponent::getByIssueId($issueId);
+            $oldComponents = IssueComponent::getByIssueIdAndProjectId($issueId, $oldIssueData['issue_project_id']);
             $oldVersionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $oldIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
             $oldVersionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
 

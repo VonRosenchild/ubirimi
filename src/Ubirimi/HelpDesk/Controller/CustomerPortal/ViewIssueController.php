@@ -38,7 +38,7 @@
 
     /* before going further, check to is if the issue id a valid id -- end */
 
-    $components = IssueComponent::getByIssueId($issueId);
+    $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
     $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $versionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 

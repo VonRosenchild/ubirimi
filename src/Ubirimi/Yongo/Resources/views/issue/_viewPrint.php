@@ -8,7 +8,7 @@
 
     $issueId = $issue['id'];
 
-    $components = IssueComponent::getByIssueId($issueId);
+    $components = IssueComponent::getByIssueIdAndProjectId($issueId, $issue['issue_project_id']);
     $versions_affected = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
     $attachments = IssueAttachment::getByIssueId($issueId);

@@ -19,7 +19,7 @@
             $query = 'SELECT issue_version.id, project_version.name, project_version_id ' .
                 'FROM issue_version ' .
                 'LEFT JOIN project_version on issue_version.project_version_id = project_version.id ' .
-                'WHERE issue_id = ? and project_id = ? ' .
+                'WHERE issue_id = ? and project_version.project_id = ? ' .
                 'AND affected_targeted_flag = ?';
 
             if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
