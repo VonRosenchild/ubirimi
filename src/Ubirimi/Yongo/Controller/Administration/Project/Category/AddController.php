@@ -1,37 +1,56 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\Category;
 
-    $emptyName = false;
-    $duplicateName = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
-    if (isset($_POST['add_project_category'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyName = true;
-        else {
-            $data = ProjectCategory::getByName($name, null, $clientId);
-            if ($data)
-                $duplicateName = true;
+        $emptyName = false;
+        $duplicateName = false;
+
+        if ($request->request->has('add_project_category')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+            else {
+                $data = ProjectCategory::getByName($name, null, $session->get('client/id'));
+                if ($data)
+                    $duplicateName = true;
+            }
+
+            if (!$emptyName && !$duplicateName) {
+                $projectCategory = new ProjectCategory($session->get('client/id'), $name, $description);
+                $currentDate = Util::getServerCurrentDateTime();
+                $projectCategory->save($currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Project Category ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/project/categories');
+            }
         }
+        $menuSelectedCategory = 'project';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Project Category';
 
-        if (!$emptyName && !$duplicateName) {
-            $projectCategory = new ProjectCategory($clientId, $name, $description);
-            $currentDate = Util::getServerCurrentDateTime();
-            $projectCategory->save($currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Project Category ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/project/categories');
-        }
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/category/Add.php', get_defined_vars());
     }
-    $menuSelectedCategory = 'project';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Project Category';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/project/category/Add.php';
+}

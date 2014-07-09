@@ -1,40 +1,58 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\Category;
 
-    $categoryId = $_GET['id'];
-    $projectId = $session->get('selected_project_id');
-    $category = ProjectCategory::getById($categoryId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    if ($category['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $alreadyExists = false;
+        $categoryId = $request->get('id');
+        $projectId = $session->get('selected_project_id');
+        $category = ProjectCategory::getById($categoryId);
 
-    if (isset($_POST['edit_release'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-
-        if (empty($name))
-            $emptyName = true;
-
-        if (!$emptyName) {
-            $dateUpdated = Util::getServerCurrentDateTime();
-            ProjectCategory::updateById($categoryId, $name, $description, $dateUpdated);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Project Category ' . $name, $dateUpdated);
-
-            header('Location: /yongo/administration/project/categories');
+        if ($category['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-    }
-    $menuSelectedCategory = 'project';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Project Category';
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/project/category/Edit.php';
+        $emptyName = false;
+        $alreadyExists = false;
+
+        if ($request->request->has('edit_release')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $dateUpdated = Util::getServerCurrentDateTime();
+                ProjectCategory::updateById($categoryId, $name, $description, $dateUpdated);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Project Category ' . $name,
+                    $dateUpdated
+                );
+
+                return new RedirectResponse('/yongo/administration/project/categories');
+            }
+        }
+        $menuSelectedCategory = 'project';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Project Category';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/project/category/Edit.php', get_defined_vars());
+    }
+}

@@ -1,14 +1,35 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Project\Category;
 
-    $projectCategoryId = $_POST['id'];
-    $projectCategory = ProjectCategory::getById($projectCategoryId);
-    ProjectCategory::deleteById($clientId, $projectCategoryId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Project Category ' . $projectCategory['name'], $currentDate);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $projectCategoryId = $request->request->get('id');
+        $projectCategory = ProjectCategory::getById($projectCategoryId);
+        ProjectCategory::deleteById($session->get('client/id'), $projectCategoryId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Yongo Project Category ' . $projectCategory['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}
