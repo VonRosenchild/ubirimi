@@ -20,8 +20,9 @@
 
     $comments = IssueComment::getByIssueId($issueId, 'desc');
     $components = IssueComponent::getByIssueId($issueId);
-    $versionsAffected = IssueVersion::getByIssueId($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-    $versionsTargeted = IssueVersion::getByIssueId($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+
+    $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $versionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 
     $hasAddCommentsPermission = Project::userHasPermission($projectId, Permission::PERM_ADD_COMMENTS, $loggedInUserId);
     $hasDeleteAllComments = Project::userHasPermission($projectId, Permission::PERM_DELETE_ALL_COMMENTS, $loggedInUserId);

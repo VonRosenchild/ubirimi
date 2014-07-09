@@ -64,8 +64,8 @@ class ViewController extends UbirimiController
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
 
             $components = IssueComponent::getByIssueId($issueId);
-            $versionsAffected = IssueVersion::getByIssueId($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-            $versionsTargeted = IssueVersion::getByIssueId($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+            $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            $versionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 
             $arrayListResultIds = null;
             if ($session->has('array_ids')) {

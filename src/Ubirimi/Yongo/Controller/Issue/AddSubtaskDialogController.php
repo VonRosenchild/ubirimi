@@ -30,8 +30,8 @@ class AddSubtaskDialogController extends UbirimiController
         $issue_types->data_seek(0);
 
         $screenData = Project::getScreenData($projectData, $issueTypeId, SystemOperation::OPERATION_CREATE);
-        $project_components = Project::getComponents($projectId);
-        $project_versions = Project::getVersions($projectId);
+        $projectComponents = Project::getComponents($projectId);
+        $projectVersions = Project::getVersions($projectId);
 
         $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
         $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);

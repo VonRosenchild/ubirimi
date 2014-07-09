@@ -491,10 +491,10 @@ class Project {
     }
 
     public static function getStatsUnresolvedByComponent($projectId) {
-        $project_components = Project::getComponents($projectId);
+        $projectComponents = Project::getComponents($projectId);
         $stats = array();
-        if ($project_components) {
-            while ($component = $project_components->fetch_array(MYSQLI_ASSOC)) {
+        if ($projectComponents) {
+            while ($component = $projectComponents->fetch_array(MYSQLI_ASSOC)) {
                 $q = 'select count(yongo_issue.id) as total ' .
                         'from yongo_issue ' .
                         'left join issue_component on yongo_issue.id = issue_component.issue_id ' .

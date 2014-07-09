@@ -42,14 +42,14 @@
         while ($row = $issueComponents->fetch_array(MYSQLI_ASSOC))
             $arrIssueComponents[] = $row['project_component_id'];
 
-    $project_versions = Project::getVersions($projectId);
-    $issue_versions_affected = IssueVersion::getByIssueId($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $projectVersions = Project::getVersions($projectId);
+    $issue_versions_affected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $arr_issue_versions_affected = array();
     if ($issue_versions_affected)
         while ($row = $issue_versions_affected->fetch_array(MYSQLI_ASSOC))
             $arr_issue_versions_affected[] = $row['project_version_id'];
 
-    $issue_versions_targeted = IssueVersion::getByIssueId($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+    $issue_versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
     $arr_issue_versions_targeted = array();
     if ($issue_versions_targeted)
         while ($row = $issue_versions_targeted->fetch_array(MYSQLI_ASSOC))
@@ -59,9 +59,9 @@
     $fieldsPlacedOnScreen = array();
 
     echo '<table border="0" cellpadding="2" cellspacing="0" id="tableFieldList" class="modal-table">';
-    echo '<tr>';
-    echo '<td width="170">Project</td>';
-    echo '<td>' . $issueData['project_name'] . '</td>';
+        echo '<tr>';
+        echo '<td width="170">Project</td>';
+        echo '<td>' . $issueData['project_name'] . '</td>';
     echo '</tr>';
 
     $fieldCodeNULL = null;
@@ -200,9 +200,9 @@
                             break;
 
                         case Field::FIELD_AFFECTS_VERSION_CODE:
-                            if ($project_versions) {
+                            if ($projectVersions) {
                                 echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
-                                while ($version = $project_versions->fetch_array(MYSQLI_ASSOC)) {
+                                while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     $textSelected = '';
                                     if (in_array($version['id'], $arr_issue_versions_affected))
                                         $textSelected = 'selected="selected"';
@@ -215,10 +215,10 @@
                             break;
 
                         case Field::FIELD_FIX_VERSION_CODE:
-                            if ($project_versions) {
-                                $project_versions->data_seek(0);
+                            if ($projectVersions) {
+                                $projectVersions->data_seek(0);
                                 echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
-                                while ($version = $project_versions->fetch_array(MYSQLI_ASSOC)) {
+                                while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     $textSelected = '';
                                     if (in_array($version['id'], $arr_issue_versions_targeted))
                                         $textSelected = 'selected="selected"';

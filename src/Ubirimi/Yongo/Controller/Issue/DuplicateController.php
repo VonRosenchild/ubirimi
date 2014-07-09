@@ -43,7 +43,7 @@ class DuplicateController extends UbirimiController
             Issue::addComponentVersion($issueId, $components_arr, 'issue_component');
         }
 
-        $versions = IssueVersion::getByIssueId($oldIssueData['id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versions = IssueVersion::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
         if ($versions) {
             $versions_arr = array();
             while ($version = $versions->fetch_array(MYSQLI_ASSOC))
@@ -52,7 +52,7 @@ class DuplicateController extends UbirimiController
             Issue::addComponentVersion($issueId, $versions_arr, 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
-        $targets = IssueVersion::getByIssueId($oldIssueData['id'], Issue::ISSUE_FIX_VERSION_FLAG);
+        $targets = IssueVersion::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
         if ($targets) {
             $targets_arr = array();
             while ($target = $targets->fetch_array(MYSQLI_ASSOC))

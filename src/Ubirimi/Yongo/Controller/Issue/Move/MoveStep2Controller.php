@@ -32,8 +32,8 @@
         // check if step 3 is necessary
 
         $issueComponents = IssueComponent::getByIssueId($issue['id']);
-        $issueFixVersions = IssueVersion::getByIssueId($issue['id'], Issue::ISSUE_FIX_VERSION_FLAG);
-        $issueAffectedVersions = IssueVersion::getByIssueId($issue['id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+        $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
         if ($issueComponents || $issueFixVersions || $issueAffectedVersions) {
             header('Location: /yongo/issue/move/fields/' . $issueId);

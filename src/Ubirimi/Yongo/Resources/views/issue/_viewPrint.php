@@ -7,9 +7,10 @@
     use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 
     $issueId = $issue['id'];
+
     $components = IssueComponent::getByIssueId($issueId);
-    $versions_affected = IssueVersion::getByIssueId($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-    $versions_targeted = IssueVersion::getByIssueId($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+    $versions_affected = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
     $attachments = IssueAttachment::getByIssueId($issueId);
     $countAttachments = 0;
     if ($attachments) {

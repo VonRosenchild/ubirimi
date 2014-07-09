@@ -165,8 +165,8 @@ class Email {
     }
 
     private static function sendEmailNewIssue($clientId, $issue, $userToNotify) {
-        $versions_affected = IssueVersion::getByIssueId($issue['id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
-        $versions_fixed = IssueVersion::getByIssueId($issue['id'], Issue::ISSUE_FIX_VERSION_FLAG);
+        $versions_affected = IssueVersion::getByIssueIdAndProjectId($issue['id'], $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versions_fixed = IssueVersion::getByIssueIdAndProjectId($issue['id'], $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
         $components = IssueComponent::getByIssueId($issue['id']);
         $client_domain = Util::getSubdomain();
 
