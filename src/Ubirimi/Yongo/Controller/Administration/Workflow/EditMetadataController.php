@@ -1,43 +1,61 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 
-    $workflowId = $_GET['id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
-    $workflow = Workflow::getMetaDataById($workflowId);
-    $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($clientId, 'workflow');
+class EditMetadataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($workflow['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+        $workflowId = $request->get('id');
 
-    $emptyName = false;
+        $workflow = Workflow::getMetaDataById($workflowId);
+        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
 
-    if (isset($_POST['edit_workflow'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $workflowIssueTypeSchemeId = $_POST['workflow_issue_type_scheme'];
-
-        if (empty($name))
-            $emptyName = true;
-
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-
-            Workflow::updateMetaDataById($workflowId, $name, $description, $workflowIssueTypeSchemeId, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/workflows');
+        if ($workflow['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-    }
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow';
 
-    require_once __DIR__ . '/../../../Resources/views/administration/workflow/EditMetadata.php';
+        $emptyName = false;
+
+        if ($request->request->has('edit_workflow')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $workflowIssueTypeSchemeId = $request->request->get('workflow_issue_type_scheme');
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+
+                Workflow::updateMetaDataById($workflowId, $name, $description, $workflowIssueTypeSchemeId, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Workflow ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/workflows');
+            }
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/workflow/EditMetadata.php', get_defined_vars());
+    }
+}

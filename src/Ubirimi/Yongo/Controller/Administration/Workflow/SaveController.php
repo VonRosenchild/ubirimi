@@ -1,17 +1,33 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowPosition;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 
-    $Id = $_POST['id'];
-    $positions = $_POST['positions'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowPosition;
 
-    $good_positions = array();
-    for ($i = 0; $i < count($positions); $i++) {
-        $values = explode('###', $positions[$i]);
-        $good_positions[] = $values;
+class SaveController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $Id = $request->request->get('id');
+        $positions = $request->request->get('positions');
+
+        $good_positions = array();
+        for ($i = 0; $i < count($positions); $i++) {
+            $values = explode('###', $positions[$i]);
+            $good_positions[] = $values;
+        }
+
+        WorkflowPosition::deleteByWorkflowId($Id);
+
+        WorkflowPosition::addPosition($Id, $good_positions);
+
+        return new Response('');
     }
-    WorkflowPosition::deleteByWorkflowId($Id);
-
-    WorkflowPosition::addPosition($Id, $good_positions);
+}

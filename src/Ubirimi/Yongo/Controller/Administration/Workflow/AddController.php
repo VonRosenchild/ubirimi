@@ -1,41 +1,67 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 
-    $emptyName = false;
-    $workflowExists = false;
-    $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($clientId, 'workflow');
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
-    if (isset($_POST['new_workflow'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
+        $workflowExists = false;
+        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
 
-        $duplicateWorkflow = Workflow::getByClientIdAndName($clientId, mb_strtolower($name));
-        if ($duplicateWorkflow)
-            $workflowExists = true;
+        if ($request->request->has('new_workflow')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-        if (!$emptyName && !$workflowExists) {
-            $workflowIssueTypeSchemeId = $_POST['workflow_issue_type_scheme'];
+            if (empty($name))
+                $emptyName = true;
 
-            $currentDate = $date = Util::getServerCurrentDateTime();
+            $duplicateWorkflow = Workflow::getByClientIdAndName($session->get('client/id'), mb_strtolower($name));
+            if ($duplicateWorkflow)
+                $workflowExists = true;
 
-            $workflowId = Workflow::createNewMetaData($clientId, $workflowIssueTypeSchemeId, $name, $description, $currentDate);
-            Workflow::createInitialData($clientId, $workflowId);
+            if (!$emptyName && !$workflowExists) {
+                $workflowIssueTypeSchemeId = $request->request->get('workflow_issue_type_scheme');
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow ' . $name, $currentDate);
+                $currentDate = $date = Util::getServerCurrentDateTime();
 
-            header('Location: /yongo/administration/workflows');
+                $workflowId = Workflow::createNewMetaData(
+                    $session->get('client/id'),
+                    $workflowIssueTypeSchemeId,
+                    $name,
+                    $description,
+                    $currentDate
+                );
+
+                Workflow::createInitialData($session->get('client/id'), $workflowId);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Workflow ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/workflows');
+            }
         }
-    }
 
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow';
-    require_once __DIR__ . '/../../../Resources/views/administration/workflow/Add.php';
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/workflow/Add.php', get_defined_vars());
+    }
+}
