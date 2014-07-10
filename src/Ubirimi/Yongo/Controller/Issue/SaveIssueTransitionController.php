@@ -87,24 +87,10 @@
         }
 
         WorkflowFunction::triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
+        $issueData = Issue::getById($issueId, $loggedInUserId);
 
         // check SLA
-        $SLAs = SLA::getByProjectId($issueData['issue_project_id']);
-
-        if ($SLAs) {
-            while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-                $issueSLAData = SLA::getSLAData($issueId, $SLA['id']);
-                $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issueData, 'start', $issueSLAData['started_date']);
-                if ($startConditionSLADate) {
-                    Issue::updateSLAStarted($issueId, $SLA['id'], $startConditionSLADate);
-                }
-
-                $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issueData, 'stop', $issueSLAData['stopped_date']);
-                if ($stopConditionSLADate) {
-                    Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate);
-                }
-            }
-        }
+        Issue::updateSLAValue($issueData, $clientId, $clientSettings);
 
         echo 'success';
     } else

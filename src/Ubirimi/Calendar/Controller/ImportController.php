@@ -69,10 +69,6 @@ class ImportController extends UbirimiController
 
                 $endTime = $endTime->format('Y-m-d H:i:s');
 
-//            if ($summary == 'Send e-mail with evaluations from next month') {
-//                var_dump($events[$i]->RRULE->getValue());
-//                die();
-//            }
                 CalendarEvent::add(
                     $calendarId,
                     $session->get('user/id'),
