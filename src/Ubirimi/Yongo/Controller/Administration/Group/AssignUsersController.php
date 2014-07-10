@@ -1,19 +1,40 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Group;
 
-    $groupId = $_POST['group_id'];
-    $userArray = $_POST['user_arr'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Group\Group;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    $group = Group::getMetadataById($groupId);
-    Group::deleteDataByGroupId($groupId);
+class AssignUsersController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Group::addData($groupId, $userArray, $currentDate);
+        $groupId = $request->request->get('group_id');
+        $userArray = $request->request->get('user_arr');
 
-    $date = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Group Members ' . $group['name'], $date);
+        $group = Group::getMetadataById($groupId);
+        Group::deleteDataByGroupId($groupId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Group::addData($groupId, $userArray, $currentDate);
+
+        $date = Util::getServerCurrentDateTime();
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'UPDATE Yongo Group Members ' . $group['name'],
+            $date
+        );
+
+        return new Response('');
+    }
+}
