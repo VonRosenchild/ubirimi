@@ -1,52 +1,71 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Screen\Screen;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Screen;
 
-    $screenId = $_GET['id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\Screen;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Field\Field;
 
-    $screenMetadata = Screen::getMetaDataById($screenId);
-    if ($screenMetadata['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class ConfigureController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $position = isset($_GET['position']) ? $_GET['position'] : null;
-    $fieldId = isset($_GET['field_id']) ? $_GET['field_id'] : null;
+        $screenId = $request->get('id');
 
-    if ($fieldId && $position) {
-        Screen::updatePositionForField($screenId, $fieldId, $position);
-        header('Location: /yongo/administration/screen/configure/' . $screenId);
-    }
-
-    $fields = Field::getByClient($clientId);
-
-    if (isset($_POST['add_screen_field'])) {
-        $fieldId = Util::cleanRegularInputField($_POST['field']);
-
-        if ($fieldId != -1) {
-            $currentDate = Util::getServerCurrentDateTime();
-            $lastOrder = Screen::getLastOrderNumber($screenId);
-            Screen::addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Screen Data ' . $screenMetadata['name'], $currentDate);
-
-            header('Location: /yongo/administration/screen/configure/' . $screenId);
+        $screenMetadata = Screen::getMetaDataById($screenId);
+        if ($screenMetadata['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $position = $request->get('position');
+        $fieldId = $request->get('field_id');
+
+        if ($fieldId && $position) {
+            Screen::updatePositionForField($screenId, $fieldId, $position);
+
+            return new RedirectResponse('/yongo/administration/screen/configure/' . $screenId);
+        }
+
+        $fields = Field::getByClient($session->get('client/id'));
+
+        if ($request->request->has('add_screen_field')) {
+            $fieldId = Util::cleanRegularInputField($request->request->get('field'));
+
+            if ($fieldId != -1) {
+                $currentDate = Util::getServerCurrentDateTime();
+                $lastOrder = Screen::getLastOrderNumber($screenId);
+                Screen::addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Screen Data ' . $screenMetadata['name'],
+                    $currentDate
+                );
+
+                return new RedirectResponse('yongo/administration/screen/configure/' . $screenId);
+            }
+        }
+
+        $screenData = Screen::getDataById($screenId);
+        $menuSelectedCategory = 'issue';
+
+        $source = $request->get('source');
+        $projectId = null;
+        if ($source == 'project_screen' || $source == 'project_field') {
+            $projectId = $request->get('project_id');
+        }
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Screen';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/screen/Configure.php', get_defined_vars());
     }
-
-    $screenData = Screen::getDataById($screenId);
-    $menuSelectedCategory = 'issue';
-
-    $source = isset($_GET['source']) ? $_GET['source'] : null;
-    $projectId = null;
-    if ($source == 'project_screen' || $source == 'project_field') {
-        $projectId = $_GET['project_id'];
-    }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Screen';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/screen/Configure.php';
+}
