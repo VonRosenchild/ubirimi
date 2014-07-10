@@ -1,25 +1,39 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Screen\Scheme;
 
-    $screenSchemeId = $_GET['id'];
-    $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-    if ($screenScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+class ConfigureController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $screenSchemeId = $request->get('id');
+        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+
+        if ($screenScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
+
+        $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
+        $menuSelectedCategory = 'issue';
+        $source = $request->get('source');
+        $projectId = null;
+
+        if ($source == 'project') {
+            $projectId = $request->get('project_id');
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Screen Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/screen/scheme/Configure.php', get_defined_vars());
     }
-
-    $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
-    $menuSelectedCategory = 'issue';
-    $source = isset($_GET['source']) ? $_GET['source'] : null;
-    $projectId = null;
-
-    if ($source == 'project') {
-        $projectId = $_GET['project_id'];
-    }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Screen Scheme';
-    require_once __DIR__ . '/../../../../Resources/views/administration/screen/scheme/Configure.php';
+}

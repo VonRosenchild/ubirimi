@@ -1,39 +1,59 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\SystemOperation;
-    use Ubirimi\Yongo\Repository\Screen\Screen;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Screen\Scheme;
 
-    $emptyName = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Issue\SystemOperation;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
-    $allScreens = Screen::getAll($clientId);
-    $allOperations = SystemOperation::getAll();
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['new_screen_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $screenId = Util::cleanRegularInputField($_POST['screen']);
-        $currentDate = Util::getServerCurrentDateTime();
+        $emptyName = false;
 
-        if (empty($name))
-            $emptyName = true;
+        $allScreens = Screen::getAll($session->get('client/id'));
+        $allOperations = SystemOperation::getAll();
 
-        if (!$emptyName) {
-            $screenScheme = new ScreenScheme($clientId, $name, $description);
-            $screenSchemeId = $screenScheme->save($currentDate);
-            while ($operation = $allOperations->fetch_array(MYSQLI_ASSOC)) {
-                $operationId = $operation['id'];
-                ScreenScheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
+        if ($request->request->has('new_screen_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $screenId = Util::cleanRegularInputField($request->request->get('screen'));
+            $currentDate = Util::getServerCurrentDateTime();
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $screenScheme = new ScreenScheme($session->get('client/id'), $name, $description);
+                $screenSchemeId = $screenScheme->save($currentDate);
+                while ($operation = $allOperations->fetch_array(MYSQLI_ASSOC)) {
+                    $operationId = $operation['id'];
+                    ScreenScheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
+                }
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('client/id'),
+                    'ADD Yongo Screen Scheme ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/screens/schemes');
             }
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Screen Scheme ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/screens/schemes');
         }
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Screen Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/screen/scheme/Add.php', get_defined_vars());
     }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Screen Scheme';
-    require_once __DIR__ . '/../../../../Resources/views/administration/screen/scheme/Add.php';
+}

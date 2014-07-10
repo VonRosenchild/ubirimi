@@ -1,16 +1,38 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Screen\Scheme;
 
-    $Id = $_POST['id'];
-    $screen = ScreenScheme::getMetaDataById($Id);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-    ScreenScheme::deleteDataByScreenSchemeId($Id);
-    ScreenScheme::deleteById($Id);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Screen Scheme ' . $screen['name'], $currentDate);
+        $Id = $request->request->get('id');
+        $screen = ScreenScheme::getMetaDataById($Id);
+
+        ScreenScheme::deleteDataByScreenSchemeId($Id);
+        ScreenScheme::deleteById($Id);
+
+        $currentDate = Util::getServerCurrentDateTime();
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('client/id'),
+            'DELETE Yongo Screen Scheme ' . $screen['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

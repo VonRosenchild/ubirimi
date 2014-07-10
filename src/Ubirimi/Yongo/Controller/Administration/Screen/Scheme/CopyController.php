@@ -1,48 +1,67 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Screen\Scheme;
 
-    $screenSchemeId = $_GET['id'];
-    $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Repository\Log;
 
-    if ($screenScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class CopyController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $duplicateName = false;
-    if (isset($_POST['copy_screen_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $screenSchemeId = $request->get('id');
+        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
 
-        if (empty($name))
-            $emptyName = true;
-
-        $duplicateScreen = ScreenScheme::getMetaDataByNameAndClientId($clientId, mb_strtolower($name));
-        if ($duplicateScreen)
-            $duplicateName = true;
-
-        if (!$emptyName && !$duplicateName) {
-            $copiedScreenScheme = new ScreenScheme($clientId, $name, $description);
-            $currentDate = Util::getServerCurrentDateTime();
-            $copiedScreenSchemeId = $copiedScreenScheme->save($currentDate);
-
-            $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
-            while ($data = $screenSchemeData->fetch_array(MYSQLI_ASSOC)) {
-                $copiedScreenScheme->addData($copiedScreenSchemeId, $data['sys_operation_id'], $data['screen_id'], $currentDate);
-            }
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'Copy Yongo Screen Scheme ' . $screenScheme['name'], $currentDate);
-
-            header('Location: /yongo/administration/screens/schemes');
+        if ($screenScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-    }
-    $menuSelectedCategory = 'issue';
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Screen Scheme';
-    require_once __DIR__ . '/../../../../Resources/views/administration/screen/scheme/Copy.php';
+        $emptyName = false;
+        $duplicateName = false;
+        if ($request->request->has('copy_screen_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            $duplicateScreen = ScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            if ($duplicateScreen)
+                $duplicateName = true;
+
+            if (!$emptyName && !$duplicateName) {
+                $copiedScreenScheme = new ScreenScheme($session->get('client/id'), $name, $description);
+                $currentDate = Util::getServerCurrentDateTime();
+                $copiedScreenSchemeId = $copiedScreenScheme->save($currentDate);
+
+                $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
+                while ($data = $screenSchemeData->fetch_array(MYSQLI_ASSOC)) {
+                    $copiedScreenScheme->addData($copiedScreenSchemeId, $data['sys_operation_id'], $data['screen_id'], $currentDate);
+                }
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'Copy Yongo Screen Scheme ' . $screenScheme['name'],
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/screens/schemes');
+            }
+        }
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Screen Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/screen/scheme/Copy.php', get_defined_vars());
+    }
+}
