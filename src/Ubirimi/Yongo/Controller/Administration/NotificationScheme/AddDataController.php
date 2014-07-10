@@ -1,84 +1,115 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
-    use Ubirimi\Yongo\Repository\Notification\Notification;
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\NotificationScheme;
 
-    $notificationSchemeId = $_GET['not_scheme_id'];
-    $eventId = isset($_GET['id']) ? $_GET['id'] : null;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Repository\Log;
+use Ubirimi\Repository\Group\Group;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Notification\Notification;
+use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 
-    $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+class AddDataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $events = IssueEvent::getByClient($clientId);
+        $notificationSchemeId = $request->get('not_scheme_id');
+        $eventId = $request->get('id');
 
-    $users = User::getByClientId($clientId);
-    $groups = Group::getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO);
-    $roles = PermissionRole::getByClient($clientId);
+        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
 
-    if (isset($_POST['confirm_new_data'])) {
+        $events = IssueEvent::getByClient($session->get('client/id'));
 
-        $eventIds = $_POST['event'];
-        $notificationType = ($_POST['type']) ? $_POST['type'] : null;
+        $users = User::getByClientId($session->get('client/id'));
+        $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $roles = PermissionRole::getByClient($session->get('client/id'));
 
-        $user = $_POST['user'];
-        $group = $_POST['group'];
-        $role = $_POST['role'];
+        if ($request->request->has('confirm_new_data')) {
 
-        $currentDate = Util::getServerCurrentDateTime();
+            $eventIds = $request->request->get('event');
+            $notificationType = $request->request->get('type');
 
-        if ($notificationType) {
+            $user = $request->request->get('user');
+            $group = $request->request->get('group');
+            $role = $request->request->get('role');
 
-            for ($i = 0; $i < count($eventIds); $i++) {
-                // check for duplicate information
-                $duplication = false;
+            $currentDate = Util::getServerCurrentDateTime();
 
-                $dataNotification = NotificationScheme::getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventIds[$i]);
-                if ($dataNotification) {
+            if ($notificationType) {
 
-                    while ($data = $dataNotification->fetch_array(MYSQLI_ASSOC)) {
-                        if ($data['group_id'] && $data['group_id'] == $group)
-                            $duplication = true;
-                        if ($data['user_id'] && $data['user_id'] == $user)
-                            $duplication = true;
-                        if ($data['permission_role_id'] && $data['permission_role_id'] == $role)
-                            $duplication = true;
-                        if ($notificationType == Notification::NOTIFICATION_TYPE_PROJECT_LEAD)
-                            if ($data['project_lead'])
+                for ($i = 0; $i < count($eventIds); $i++) {
+                    // check for duplicate information
+                    $duplication = false;
+
+                    $dataNotification = NotificationScheme::getDataByNotificationSchemeIdAndEventId(
+                        $notificationSchemeId,
+                        $eventIds[$i]
+                    );
+
+                    if ($dataNotification) {
+                        while ($data = $dataNotification->fetch_array(MYSQLI_ASSOC)) {
+                            if ($data['group_id'] && $data['group_id'] == $group)
                                 $duplication = true;
-                        if ($notificationType == Notification::NOTIFICATION_TYPE_COMPONENT_LEAD)
-                            if ($data['component_lead'])
+                            if ($data['user_id'] && $data['user_id'] == $user)
                                 $duplication = true;
-                        if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_ASSIGNEE)
-                            if ($data['current_assignee'])
+                            if ($data['permission_role_id'] && $data['permission_role_id'] == $role)
                                 $duplication = true;
-                        if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_USER)
-                            if ($data['current_user'])
-                                $duplication = true;
-                        if ($notificationType == Notification::NOTIFICATION_TYPE_REPORTER)
-                            if ($data['reporter'])
-                                $duplication = true;
-                        if ($notificationType == Notification::NOTIFICATION_TYPE_ALL_WATCHERS)
-                            if ($data['all_watchers'])
-                                $duplication = true;
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_PROJECT_LEAD)
+                                if ($data['project_lead'])
+                                    $duplication = true;
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_COMPONENT_LEAD)
+                                if ($data['component_lead'])
+                                    $duplication = true;
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_ASSIGNEE)
+                                if ($data['current_assignee'])
+                                    $duplication = true;
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_USER)
+                                if ($data['current_user'])
+                                    $duplication = true;
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_REPORTER)
+                                if ($data['reporter'])
+                                    $duplication = true;
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_ALL_WATCHERS)
+                                if ($data['all_watchers'])
+                                    $duplication = true;
+                        }
+                    }
+                    if (!$duplication) {
+                        NotificationScheme::addData(
+                            $notificationSchemeId,
+                            $eventIds[$i],
+                            $notificationType,
+                            $user,
+                            $group,
+                            $role,
+                            $currentDate
+                        );
+
+                        Log::add(
+                            $session->get('client/id'),
+                            SystemProduct::SYS_PRODUCT_YONGO,
+                            $session->get('user/id'),
+                            'ADD Yongo Notification Scheme Data',
+                            $currentDate
+                        );
                     }
                 }
-                if (!$duplication) {
-                    NotificationScheme::addData($notificationSchemeId, $eventIds[$i], $notificationType, $user, $group, $role, $currentDate);
-
-                    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Notification Scheme Data', $currentDate);
-                }
             }
+
+            return new RedirectResponse('/yongo/administration/notification-scheme/edit/' . $notificationSchemeId);
         }
 
-        header('Location: /yongo/administration/notification-scheme/edit/' . $notificationSchemeId);
-    }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Notification Data';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Notification Data';
 
-    require_once __DIR__ . '/../../../Resources/views/administration/notification_scheme/AddData.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/notification_scheme/AddData.php', get_defined_vars());
+    }
+}

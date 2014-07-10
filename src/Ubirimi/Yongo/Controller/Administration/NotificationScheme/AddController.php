@@ -1,30 +1,49 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\NotificationScheme;
 
-    $emptyName = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['add_notification_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
 
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            $notificationScheme = new NotificationScheme($clientId, $name, $description);
-            $notificationSchemeId = $notificationScheme->save($currentDate);
+        if ($request->request->has('add_notification_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Notification Scheme ' . $name, $currentDate);
+            if (empty($name))
+                $emptyName = true;
 
-            header('Location: /yongo/administration/notification-schemes');
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                $notificationScheme = new NotificationScheme($session->get('client/id'), $name, $description);
+                $notificationSchemeId = $notificationScheme->save($currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Notification Scheme ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/notification-schemes');
+            }
         }
-    }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Notification Scheme';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Notification Scheme';
 
-    require_once __DIR__ . '/../../../Resources/views/administration/notification_scheme/Add.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/notification_scheme/Add.php', get_defined_vars());
+    }
+}

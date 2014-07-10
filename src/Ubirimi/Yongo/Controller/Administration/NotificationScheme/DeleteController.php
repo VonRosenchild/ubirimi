@@ -1,16 +1,37 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\NotificationScheme;
 
-    $notificationSchemeId = $_POST['id'];
-    $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
-    NotificationScheme::deleteDataByNotificationSchemeId($notificationSchemeId);
-    NotificationScheme::deleteById($notificationSchemeId);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Notification Scheme ' . $notificationScheme['name'], $currentDate);
+        $notificationSchemeId = $request->request->get('id');
+        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+
+        NotificationScheme::deleteDataByNotificationSchemeId($notificationSchemeId);
+        NotificationScheme::deleteById($notificationSchemeId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Yongo Notification Scheme ' . $notificationScheme['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

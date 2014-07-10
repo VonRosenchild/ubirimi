@@ -1,38 +1,56 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\NotificationScheme;
 
-    $notificationSchemeId = $_GET['id'];
-    $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Repository\Log;
 
-    if ($notificationScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    if (isset($_POST['edit_notification_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $notificationSchemeId = $request->get('id');
+        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
 
-        if (empty($name))
-            $emptyName = true;
-
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            NotificationScheme::updateMetaDataById($notificationSchemeId, $name, $description, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Notification Scheme ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/notification-schemes');
+        if ($notificationScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $emptyName = false;
+        if ($request->request->has('edit_notification_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                NotificationScheme::updateMetaDataById($notificationSchemeId, $name, $description, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Notification Scheme ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/notification-schemes');
+            }
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Notification Scheme';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/notification_scheme/Edit.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Notification Scheme';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/notification_scheme/Edit.php';
+}
