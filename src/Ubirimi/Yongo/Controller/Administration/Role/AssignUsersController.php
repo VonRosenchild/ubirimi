@@ -1,13 +1,28 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Role;
 
-    $permissionRoleId = $_POST['role_id'];
-    $userArray = $_POST['user_arr'];
-    $projectId = $_POST['project_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Project::deleteUsersByPermissionRole($projectId, $permissionRoleId);
-    Project::addUsersForPermissionRole($projectId, $permissionRoleId, $userArray, $currentDate);
+class AssignUsersController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $permissionRoleId = $request->request->get('role_id');
+        $userArray = $request->request->get('user_arr');
+        $projectId = $request->request->get('project_id');
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Project::deleteUsersByPermissionRole($projectId, $permissionRoleId);
+        Project::addUsersForPermissionRole($projectId, $permissionRoleId, $userArray, $currentDate);
+
+        return new Response('');
+    }
+}

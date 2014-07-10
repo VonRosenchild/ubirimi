@@ -1,10 +1,22 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $menuSelectedCategory = 'user';
+namespace Ubirimi\Yongo\Controller\Administration\Role;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Roles';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../Resources/views/administration/role/List.php';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $menuSelectedCategory = 'user';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Roles';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/role/List.php', get_defined_vars());
+    }
+}

@@ -1,10 +1,22 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Role;
 
-    $permissionRoleId = $_GET['perm_role_id'];
-    $role = PermissionRole::getPermissionRoleById($permissionRoleId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 
-    require_once __DIR__ . '/../../../Resources/views/administration/role/DeleteConfirm.php';
+class DeleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $permissionRoleId = $request->get('perm_role_id');
+        $role = PermissionRole::getPermissionRoleById($permissionRoleId);
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/role/DeleteConfirm.php', get_defined_vars());
+    }
+}

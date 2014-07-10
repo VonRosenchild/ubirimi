@@ -1,17 +1,38 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Role;
 
-    $permissionRoleId = $_POST['role_id'];
-    $userArray = $_POST['user_arr'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    $currentDate = Util::getServerCurrentDateTime();
-    $permissionRole = PermissionRole::getById($permissionRoleId);
-    PermissionRole::deleteDefaultUsersByPermissionRoleId($permissionRoleId);
-    PermissionRole::addDefaultUsers($permissionRoleId, $userArray, $currentDate);
+class AssignDefaultUsersController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Project Role ' . $permissionRole['name'] . ' Definition', $currentDate);
+        $permissionRoleId = $request->request->get('role_id');
+        $userArray = $request->request->get('user_arr');
+
+        $currentDate = Util::getServerCurrentDateTime();
+        $permissionRole = PermissionRole::getById($permissionRoleId);
+        PermissionRole::deleteDefaultUsersByPermissionRoleId($permissionRoleId);
+        PermissionRole::addDefaultUsers($permissionRoleId, $userArray, $currentDate);
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'UPDATE Yongo Project Role ' . $permissionRole['name'] . ' Definition',
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

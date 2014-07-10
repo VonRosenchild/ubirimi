@@ -1,22 +1,34 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Role;
 
-    $permissionRoleId = $_GET['role_id'];
-    $role = PermissionRole::getPermissionRoleById($permissionRoleId);
-    
-    $allGroups = Group::getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO);
-    $roleGroups = PermissionRole::getDefaultGroups($permissionRoleId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\SystemProduct;
+use Ubirimi\Repository\Group\Group;
 
-    $role_groups_arr_ids = array();
-    while ($roleGroups && $group = $roleGroups->fetch_array(MYSQLI_ASSOC))
-        $role_groups_arr_ids[] = $group['group_id'];
+class AssignGroupsConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($roleGroups)
-        $roleGroups->data_seek(0);
+        $permissionRoleId = $request->get('role_id');
+        $role = PermissionRole::getPermissionRoleById($permissionRoleId);
 
-    require_once __DIR__ . '/../../../Resources/views/administration/role/AssignGroupsConfirm.php';
+        $allGroups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $roleGroups = PermissionRole::getDefaultGroups($permissionRoleId);
+
+        $role_groups_arr_ids = array();
+        while ($roleGroups && $group = $roleGroups->fetch_array(MYSQLI_ASSOC))
+            $role_groups_arr_ids[] = $group['group_id'];
+
+        if ($roleGroups)
+            $roleGroups->data_seek(0);
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/role/AssignGroupsConfirm.php', get_defined_vars());
+    }
+}
