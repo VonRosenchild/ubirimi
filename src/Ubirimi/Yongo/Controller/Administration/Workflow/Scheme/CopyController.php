@@ -1,55 +1,77 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Scheme;
 
-    $workflowSchemeId = $_GET['id'];
-    $workflowScheme = WorkflowScheme::getMetaDataById($workflowSchemeId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
-    if ($workflowScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class CopyController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $duplicateName = false;
+        $workflowSchemeId = $request->get('id');
+        $workflowScheme = WorkflowScheme::getMetaDataById($workflowSchemeId);
 
-    if (isset($_POST['copy_workflow_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-
-        if (empty($name)) {
-            $emptyName = true;
+        if ($workflowScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $workflowSchemeAlreadyExisting = WorkflowScheme::getByClientIdAndName($clientId, mb_strtolower($name));
-        if ($workflowSchemeAlreadyExisting) {
-            $duplicateName = true;
-        }
+        $emptyName = false;
+        $duplicateName = false;
 
-        if (!$emptyName && !$workflowSchemeAlreadyExisting) {
-            $copiedWorkflowScheme = new WorkflowScheme($clientId, $name, $description);
+        if ($request->request->has('copy_workflow_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            $currentDate = Util::getServerCurrentDateTime();
-            $copiedWorkflowSchemeId = $copiedWorkflowScheme->save($currentDate);
-
-            $workflowSchemeData = WorkflowScheme::getDataById($workflowSchemeId);
-
-            while ($workflowSchemeData && $data = $workflowSchemeData->fetch_array(MYSQLI_ASSOC)) {
-                $copiedWorkflowScheme->addData($copiedWorkflowSchemeId, $data['workflow_id'], $currentDate);
+            if (empty($name)) {
+                $emptyName = true;
             }
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'Copy Yongo Workflow Scheme ' . $workflowScheme['name'], $currentDate);
+            $workflowSchemeAlreadyExisting = WorkflowScheme::getByClientIdAndName(
+                $session->get('client/id'),
+                mb_strtolower($name)
+            );
 
-            header('Location: /yongo/administration/workflows/schemes');
+            if ($workflowSchemeAlreadyExisting) {
+                $duplicateName = true;
+            }
+
+            if (!$emptyName && !$workflowSchemeAlreadyExisting) {
+                $copiedWorkflowScheme = new WorkflowScheme($session->get('client/id'), $name, $description);
+
+                $currentDate = Util::getServerCurrentDateTime();
+                $copiedWorkflowSchemeId = $copiedWorkflowScheme->save($currentDate);
+
+                $workflowSchemeData = WorkflowScheme::getDataById($workflowSchemeId);
+
+                while ($workflowSchemeData && $data = $workflowSchemeData->fetch_array(MYSQLI_ASSOC)) {
+                    $copiedWorkflowScheme->addData($copiedWorkflowSchemeId, $data['workflow_id'], $currentDate);
+                }
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'Copy Yongo Workflow Scheme ' . $workflowScheme['name'],
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/workflows/schemes');
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Workflow Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/workflow/scheme/Copy.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Workflow Scheme';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/workflow/scheme/Copy.php';
+}

@@ -1,32 +1,51 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Scheme;
 
-    $emptyName = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
-    if (isset($_POST['new_workflow_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
 
-        if (!$emptyName) {
-            $issueTypeScheme = new WorkflowScheme($clientId, $name, $description);
-            $currentDate = Util::getServerCurrentDateTime();
-            $issueTypeScheme->save($currentDate);
+        if ($request->request->has('new_workflow_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Scheme ' . $name, $currentDate);
+            if (empty($name))
+                $emptyName = true;
 
-            header('Location: /yongo/administration/workflows/schemes');
+            if (!$emptyName) {
+                $issueTypeScheme = new WorkflowScheme($session->get('client/id'), $name, $description);
+                $currentDate = Util::getServerCurrentDateTime();
+                $issueTypeScheme->save($currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Workflow Scheme ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/workflows/schemes');
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/workflow/scheme/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Scheme';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/workflow/scheme/Add.php';
+}
