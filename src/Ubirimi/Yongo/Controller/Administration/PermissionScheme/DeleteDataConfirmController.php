@@ -1,8 +1,21 @@
 <?php
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\PermissionScheme;
 
-    $permission_scheme_data_id = $_GET['id'];
-?>
-Are you sure you want to delete this permission?
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+
+class DeleteDataConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $permission_scheme_data_id = $request->get('id');
+
+        return new Response('Are you sure you want to delete this permission?');
+    }
+}
