@@ -1,38 +1,57 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueType;
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme;
 
-    $emptyName = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
-    $allIssueTypes = IssueType::getAll($clientId);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['new_issue_type_screen_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $emptyName = false;
 
-        if (empty($name))
-            $emptyName = true;
+        $allIssueTypes = IssueType::getAll($session->get('client/id'));
 
-        if (!$emptyName) {
-            $issueTypeScreenScheme = new IssueTypeScreenScheme($clientId, $name, $description);
-            $currentDate = Util::getServerCurrentDateTime();
-            $issueTypeScreenSchemeId = $issueTypeScreenScheme->save($currentDate);
+        if ($request->request->has('new_issue_type_screen_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            $issueTypes = IssueType::getAll($clientId);
-            while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
-                IssueTypeScreenScheme::addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $issueTypeScreenScheme = new IssueTypeScreenScheme($session->get('client/id'), $name, $description);
+                $currentDate = Util::getServerCurrentDateTime();
+                $issueTypeScreenSchemeId = $issueTypeScreenScheme->save($currentDate);
+
+                $issueTypes = IssueType::getAll($session->get('client/id'));
+                while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
+                    IssueTypeScreenScheme::addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
+                }
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Issue Type Screen Scheme ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/screens/issue-types');
             }
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Issue Type Screen Scheme ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/screens/issue-types');
         }
-    }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Type Screen Scheme';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Type Screen Scheme';
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/screen/issue_type_scheme/Add.php';
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/screen/issue_type_scheme/Add.php', get_defined_vars());
+    }
+}

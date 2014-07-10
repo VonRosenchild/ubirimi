@@ -1,53 +1,71 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme;
 
-    $issueTypeScreenSchemeId = $_GET['id'];
-    $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Repository\Log;
 
-    if ($issueTypeScreenScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class CopyController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $duplicateName = false;
+        $issueTypeScreenSchemeId = $request->get('id');
+        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
 
-    if (isset($_POST['copy_issue_type_screen_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-
-        if (empty($name)) {
-            $emptyName = true;
+        if ($issueTypeScreenScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $duplicateIssueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataByNameAndClientId($clientId, mb_strtolower($name));
-        if ($duplicateIssueTypeScreenScheme)
-            $duplicateName = true;
+        $emptyName = false;
+        $duplicateName = false;
 
-        if (!$emptyName && !$duplicateName) {
-            $copiedIssueTypeScreenScheme = new IssueTypeScreenScheme($clientId, $name, $description);
+        if ($request->request->has('copy_issue_type_screen_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            $currentDate = Util::getServerCurrentDateTime();
-            $copiedIssueTypeScreenSchemeId = $copiedIssueTypeScreenScheme->save($currentDate);
-
-            $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
-
-            while ($issueTypeScreenSchemeData && $data = $issueTypeScreenSchemeData->fetch_array(MYSQLI_ASSOC)) {
-                $copiedIssueTypeScreenScheme->addDataComplete($copiedIssueTypeScreenSchemeId, $data['issue_type_id'], $data['screen_scheme_id'], $currentDate);
+            if (empty($name)) {
+                $emptyName = true;
             }
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'Copy Yongo Issue Type Scheme ' . $issueTypeScheme['name'], $currentDate);
+            $duplicateIssueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            if ($duplicateIssueTypeScreenScheme)
+                $duplicateName = true;
 
-            header('Location: /yongo/administration/screens/issue-types');
+            if (!$emptyName && !$duplicateName) {
+                $copiedIssueTypeScreenScheme = new IssueTypeScreenScheme($session->get('client/id'), $name, $description);
+
+                $currentDate = Util::getServerCurrentDateTime();
+                $copiedIssueTypeScreenSchemeId = $copiedIssueTypeScreenScheme->save($currentDate);
+
+                $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
+
+                while ($issueTypeScreenSchemeData && $data = $issueTypeScreenSchemeData->fetch_array(MYSQLI_ASSOC)) {
+                    $copiedIssueTypeScreenScheme->addDataComplete($copiedIssueTypeScreenSchemeId, $data['issue_type_id'], $data['screen_scheme_id'], $currentDate);
+                }
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'Copy Yongo Issue Type Scheme ' . $issueTypeScheme['name'],
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/screens/issue-types');
+            }
         }
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Issue Type Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/screen/issue_type_scheme/Copy.php', get_defined_vars());
     }
-    $menuSelectedCategory = 'issue';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Issue Type Scheme';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/screen/issue_type_scheme/Copy.php';
+}
