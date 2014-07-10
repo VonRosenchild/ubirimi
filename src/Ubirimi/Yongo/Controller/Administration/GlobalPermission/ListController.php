@@ -1,16 +1,28 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\GlobalPermission;
 
-    $users = Client::getUsers($clientId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Client;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-    $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
-    $menuSelectedCategory = 'user';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Global Permissions';
+        $users = Client::getUsers($session->get('client/id'));
 
-    require_once __DIR__ . '/../../../Resources/views/administration/global_permission/List.php';
+        $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
+        $menuSelectedCategory = 'user';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Global Permissions';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/global_permission/List.php', get_defined_vars());
+    }
+}

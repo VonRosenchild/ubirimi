@@ -1,27 +1,54 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\GeneralConfiguration;
 
-    $menuSelectedCategory = 'system';
-    $clientSettings = Client::getYongoSettings($clientId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['update_configuration'])) {
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        $allowUnassignedIssuesFlag = $_POST['allow_unassigned_issues'];
+        $menuSelectedCategory = 'system';
+        $clientSettings = Client::getYongoSettings($session->get('client/id'));
 
-        $parameters = array(array('field' => 'allow_unassigned_issues_flag', 'value' => $allowUnassignedIssuesFlag, 'type' => 'i'));
+        if ($request->request->has('update_configuration')) {
 
-        Client::updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_YONGO, $parameters);
+            $allowUnassignedIssuesFlag = $request->request->get('allow_unassigned_issues');
 
-        $currentDate = Util::getServerCurrentDateTime();
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo General Settings', $currentDate);
+            $parameters = array(
+                array(
+                    'field' => 'allow_unassigned_issues_flag',
+                    'value' => $allowUnassignedIssuesFlag,
+                    'type' => 'i'
+                )
+            );
 
-        header('Location: /yongo/administration/general-configuration');
+            Client::updateProductSettings($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $parameters);
+
+            $currentDate = Util::getServerCurrentDateTime();
+
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_YONGO,
+                $session->get('user/id'),
+                'UPDATE Yongo General Settings',
+                $currentDate
+            );
+
+            return new RedirectResponse('/yongo/administration/general-configuration');
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update General Configuration';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/general_configuration/Edit.php', get_defined_vars());
     }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update General Configuration';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/general_configuration/Edit.php';
+}

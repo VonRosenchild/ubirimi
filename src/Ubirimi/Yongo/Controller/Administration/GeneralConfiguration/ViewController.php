@@ -1,10 +1,22 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\GeneralConfiguration;
 
-    $clientYongoSettings = Client::getYongoSettings($clientId);
-    $menuSelectedCategory = 'system';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Client;
 
-    require_once __DIR__ . '/../../../Resources/views/administration/general_configuration/View.php';
+class ViewController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $clientYongoSettings = Client::getYongoSettings($session->get('client/id'));
+        $menuSelectedCategory = 'system';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/general_configuration/View.php', get_defined_vars());
+    }
+}

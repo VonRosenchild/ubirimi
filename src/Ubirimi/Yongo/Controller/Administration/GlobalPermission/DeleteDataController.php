@@ -1,16 +1,36 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\GlobalPermission;
 
-    $Id = $_GET['id'];
-    $permissionData = GlobalPermission::getDataById($Id);
-    GlobalPermission::deleteById($Id);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Repository\Log;
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Global Permission ' . $permissionData['permission_name'] . ' from group ' . $permissionData['name'], $currentDate);
+class DeleteDataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    header('Location: /yongo/administration/global-permissions');
+        $id = $request->get('id');
+        $permissionData = GlobalPermission::getDataById($id);
+        GlobalPermission::deleteById($id);
+
+        $currentDate = Util::getServerCurrentDateTime();
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Yongo Global Permission ' . $permissionData['permission_name'] . ' from group ' . $permissionData['name'],
+            $currentDate
+        );
+
+        return new RedirectResponse('/yongo/administration/global-permissions');
+    }
+}

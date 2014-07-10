@@ -1,37 +1,61 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\GlobalPermission;
 
-    $allGroups = Group::getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO);
-    $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Repository\Group\Group;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['confirm_new_permission'])) {
-        $permissionId = $_POST['permission'];
-        $groupId = $_POST['group'];
-        $currentDate = Util::getServerCurrentDateTime();
-        $group = Group::getMetadataById($groupId);
-        $permission = GlobalPermission::getById($permissionId);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        $date = Util::getServerCurrentDateTime();
+        $allGroups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
 
-        // check if the group is already added
-        $permissionData = GlobalPermission::getDataByPermissionIdAndGroupId($clientId, $permissionId, $groupId);
+        if ($request->request->has('confirm_new_permission')) {
+            $permissionId = $request->request->get('permission');
+            $groupId = $request->request->get('group');
+            $currentDate = Util::getServerCurrentDateTime();
+            $group = Group::getMetadataById($groupId);
+            $permission = GlobalPermission::getById($permissionId);
 
-        if (!$permissionData) {
-            GlobalPermission::addDataForGroupId($clientId, $permissionId, $groupId, $date);
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Global Permission ' . $permission['name'] . ' to group ' . $group['name'], $currentDate);
+            $date = Util::getServerCurrentDateTime();
+
+            // check if the group is already added
+            $permissionData = GlobalPermission::getDataByPermissionIdAndGroupId(
+                $session->get('client/id'),
+                $permissionId,
+                $groupId
+            );
+
+            if (!$permissionData) {
+                GlobalPermission::addDataForGroupId($session->get('client/id'), $permissionId, $groupId, $date);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Global Permission ' . $permission['name'] . ' to group ' . $group['name'],
+                    $currentDate
+                );
+            }
+
+            return new RedirectResponse('/yongo/administration/global-permissions');
         }
 
-        header('Location: /yongo/administration/global-permissions');
+        $menuSelectedCategory = 'user';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Global Permission';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/global_permission/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'user';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Global Permission';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/global_permission/Add.php';
+}
