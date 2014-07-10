@@ -1,52 +1,80 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\CustomField;
-    use Ubirimi\Yongo\Repository\Field\FieldType;
-    use Ubirimi\Yongo\Repository\Issue\IssueType;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Field;
 
-    $issueTypes = IssueType::getAll($clientId);
-    $projects = Project::getByClientId($clientId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\CustomField;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Field\FieldType;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    $fieldTypeCode = $_GET['type'];
+class AddDataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $duplicateName = false;
+        $issueTypes = IssueType::getAll($session->get('client/id'));
+        $projects = Project::getByClientId($session->get('client/id'));
 
-    if (isset($_POST['finish_custom_field'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $issueType = $_POST['issue_type'];
-        $project = $_POST['project'];
+        $fieldTypeCode = $request->get('type');
 
-        $fieldType = FieldType::getByCode($fieldTypeCode);
-        $fieldTypeId = $fieldType['id'];
+        $emptyName = false;
+        $duplicateName = false;
 
-        if (empty($name)) {
-            $emptyName = true;
-        } else {
-            // check for duplicate name
+        if ($request->request->has('finish_custom_field')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $issueType = $request->request->get('issue_type');
+            $project = $request->request->get('project');
 
-            $duplicateField = CustomField::getByNameAndType($clientId, $name, $fieldTypeId);
-            if ($duplicateField)
-                $duplicateName = true;
+            $fieldType = FieldType::getByCode($fieldTypeCode);
+            $fieldTypeId = $fieldType['id'];
+
+            if (empty($name)) {
+                $emptyName = true;
+            } else {
+                // check for duplicate name
+
+                $duplicateField = CustomField::getByNameAndType($session->get('client/id'), $name, $fieldTypeId);
+                if ($duplicateField)
+                    $duplicateName = true;
+            }
+            if (!$emptyName && !$duplicateName) {
+                $date = Util::getServerCurrentDateTime();
+
+                $fieldId = CustomField::create(
+                    $session->get('client/id'),
+                    $fieldTypeCode,
+                    $name,
+                    $description,
+                    $issueType,
+                    $project,
+                    $date
+                );
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Custom Field ' . $name,
+                    $date
+                );
+
+                return new RedirectResponse('/yongo/administration/custom-field/edit-field-screen/' . $fieldId);
+            }
         }
-        if (!$emptyName && !$duplicateName) {
-            $date = Util::getServerCurrentDateTime();
-            $fieldId = CustomField::create($clientId, $fieldTypeCode, $name, $description, $issueType, $project, $date);
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Custom Field ' . $name, $date);
+        $menuSelectedCategory = 'issue';
 
-            header('Location: /yongo/administration/custom-field/edit-field-screen/' . $fieldId);
-        }
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Custom Field Data';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/field/AddData.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Custom Field Data';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/field/AddData.php';
+}

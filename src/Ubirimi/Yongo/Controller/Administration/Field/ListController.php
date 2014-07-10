@@ -1,14 +1,25 @@
 <?php
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\CustomField;
+namespace Ubirimi\Yongo\Controller\Administration\Field;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $fields = CustomField::getAllByClient($clientId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\CustomField;
 
-    $menuSelectedCategory = 'issue';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $fields = CustomField::getAllByClient($session->get('client/id'));
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Custom Fields';
+        $menuSelectedCategory = 'issue';
 
-    require_once __DIR__ . '/../../../Resources/views/administration/field/List.php';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Custom Fields';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/field/List.php', get_defined_vars());
+    }
+}
