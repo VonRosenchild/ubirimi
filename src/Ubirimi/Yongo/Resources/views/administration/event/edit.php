@@ -1,10 +1,10 @@
 <?php
     use Ubirimi\Util;
 
-    require_once __DIR__ . '/../include/header.php';
+    require_once __DIR__ . '/../_header.php';
 ?>
 <body>
-    <?php require_once __DIR__ . '/../include/menu.php'; ?>
+    <?php require_once __DIR__ . '/../_menu.php'; ?>
     <div class="pageContent">
         <form name="add_event" action="/yongo/administration/edit-event/<?php echo $eventId ?>" method="post">
             <?php
@@ -41,6 +41,6 @@
             </table>
         </form>
     </div>
-    <?php require_once __DIR__ . '/../include/footer.php' ?>
+    <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>
 </html>

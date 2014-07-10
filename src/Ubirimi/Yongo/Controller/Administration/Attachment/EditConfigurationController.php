@@ -1,29 +1,58 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Attachment;
 
-    $menuSelectedCategory = 'system';
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
 
-    $settings = Client::getYongoSettings($clientId);
+class EditConfigurationController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['update_configuration'])) {
+        $menuSelectedCategory = 'system';
 
-        $allowAttachmentsFlag = $_POST['allow_attachments_flag'];
+        $settings = Client::getYongoSettings($session->get('client/id'));
 
-        $parameters = array(array('field' => 'allow_attachments_flag', 'value' => $allowAttachmentsFlag, 'type' => 'i'));
+        if ($request->request->has('update_configuration')) {
+            $allowAttachmentsFlag = $request->request->get('allow_attachments_flag');
 
-        Client::updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_YONGO, $parameters);
+            $parameters = array(
+                array(
+                    'field' => 'allow_attachments_flag',
+                    'value' => $allowAttachmentsFlag,
+                    'type' => 'i'
+                )
+            );
 
-        $currentDate = Util::getServerCurrentDateTime();
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Attachment Settings', $currentDate);
+            Client::updateProductSettings(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_YONGO,
+                $parameters
+            );
 
-        header('Location: /yongo/administration/attachment-configuration');
+            $currentDate = Util::getServerCurrentDateTime();
+
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_YONGO,
+                $session->get('user/id'),
+                'UPDATE Yongo Attachment Settings',
+                $currentDate
+            );
+
+            return new RedirectResponse('/yongo/administration/attachment-configuration');
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Attachment Configuration';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/attachment/edit_configuration.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Attachment Configuration';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/attachment/edit_configuration.php';
+}

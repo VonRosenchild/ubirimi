@@ -1,17 +1,38 @@
 <?php
 
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+namespace Ubirimi\Yongo\Controller\Administration\Event;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 
-    $eventId = $_POST['id'];
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $event = IssueEvent::getById($eventId);
+        $eventId = $request->request->get('id');
 
-    IssueEvent::deleteById($eventId);
+        $event = IssueEvent::getById($eventId);
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Event ' . $event['name'], $currentDate);
+        IssueEvent::deleteById($eventId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Yongo Event ' . $event['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

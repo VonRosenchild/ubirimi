@@ -1,37 +1,57 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Event;
 
-    $menuSelectedCategory = 'system';
-    $emptyName = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Repository\Log;
 
-    $eventId = $_GET['id'];
-    $event = IssueEvent::getById($eventId);
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($event['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+        $menuSelectedCategory = 'system';
+        $emptyName = false;
 
-    if (isset($_POST['edit_event'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $eventId = $request->get('id');
+        $event = IssueEvent::getById($eventId);
 
-        if (empty($name))
-            $emptyName = true;
-
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            IssueEvent::updateById($eventId, $name, $description, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Event ' . $name, $currentDate);
-            header('Location: /yongo/administration/events');
+        if ($event['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-    }
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Event';
-    require_once __DIR__ . '/../../../Resources/views/administration/event/edit.php';
+        if ($request->request->has('edit_event')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                IssueEvent::updateById($eventId, $name, $description, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Event ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/events');
+            }
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Event';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/event/edit.php', get_defined_vars());
+    }
+}

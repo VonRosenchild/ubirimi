@@ -1,13 +1,25 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Attachment;
 
-    $menuSelectedCategory = 'system';
-    $settings = Client::getYongoSettings($clientId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Attachment Configuration';
+class ViewConfigurationController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    require_once __DIR__ . '/../../../Resources/views/administration/attachment/view_configuration.php';
+        $menuSelectedCategory = 'system';
+        $settings = Client::getYongoSettings($session->get('client/id'));
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Attachment Configuration';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/attachment/view_configuration.php', get_defined_vars());
+    }
+}

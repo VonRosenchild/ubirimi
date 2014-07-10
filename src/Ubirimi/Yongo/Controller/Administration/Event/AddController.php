@@ -1,35 +1,54 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Event;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Repository\Log;
 
-    $menuSelectedCategory = 'system';
-    $emptyName = false;
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['new_event'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        if (empty($name))
-            $emptyName = true;
+        $menuSelectedCategory = 'system';
+        $emptyName = false;
 
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
+        if ($request->request->has('new_event')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            $event = new IssueEvent($clientId, $name, $description);
-            $event->save($currentDate);
+            if (empty($name))
+                $emptyName = true;
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Event ' . $name, $currentDate);
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
 
-            header('Location: /yongo/administration/events');
+                $event = new IssueEvent($session->get('client/id'), $name, $description);
+                $event->save($currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Event ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/events');
+            }
         }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Event';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/event/add.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Event';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/event/add.php';
+}
