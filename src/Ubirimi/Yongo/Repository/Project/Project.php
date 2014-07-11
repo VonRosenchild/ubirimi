@@ -606,13 +606,17 @@ class Project {
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getIssueTypes($projectId, $resultType = null, $resultColumn = null) {
+    public static function getIssueTypes($projectId, $includeSubTasks, $resultType = null, $resultColumn = null) {
         $query = 'SELECT issue_type.id, issue_type.name, issue_type.description ' .
             'FROM project ' .
             'left join issue_type_scheme on issue_type_scheme.id = project.issue_type_scheme_id ' .
             'left join issue_type_scheme_data on issue_type_scheme_data.issue_type_scheme_id = issue_type_scheme.id ' .
             'left join issue_type on issue_type.id = issue_type_scheme_data.issue_type_id ' .
             'where project.id = ?';
+
+        if ($includeSubTasks == 0) {
+            $query .= ' and issue_type.sub_task_flag = 0';
+        }
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $projectId);

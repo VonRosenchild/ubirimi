@@ -20,7 +20,7 @@
 
     $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
     $issuePriorities = IssueSettings::getAllIssueSettings('priority', $clientId);
-    $projectIssueTypes = Project::getIssueTypes($projectId);
+    $projectIssueTypes = Project::getIssueTypes($projectId, 0);
 
     $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
     $userHasModifyReporterPermission = Project::userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);

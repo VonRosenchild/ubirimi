@@ -5,7 +5,7 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $projectId = $_POST['id'];
-    $moveToIssueTypes = Project::getIssueTypes($projectId, 'array');
+    $moveToIssueTypes = Project::getIssueTypes($projectId, 0, 'array');
 
     echo json_encode($moveToIssueTypes);
 

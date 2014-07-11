@@ -44,7 +44,7 @@
             $childrenIssues = Issue::getByParameters(array('parent_id' => $issue['id']));
         }
 
-        $newProjectIssueTypes = Project::getIssueTypes($newProjectId, 'array', 'id');
+        $newProjectIssueTypes = Project::getIssueTypes($newProjectId, 0, 'array', 'id');
         $selectIssueTypeForSubstaks = false;
 
         if ($childrenIssues) {
@@ -85,7 +85,7 @@
     $projectForMoving = Client::getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_CREATE_ISSUE);
     $firstProject = $projectForMoving->fetch_array(MYSQLI_ASSOC);
 
-    $moveToIssueTypes = Project::getIssueTypes($firstProject['id']);
+    $moveToIssueTypes = Project::getIssueTypes($firstProject['id'], 0);
     $projectForMoving->data_seek(0);
     $menuSelectedCategory = 'issue';
 

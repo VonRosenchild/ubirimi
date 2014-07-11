@@ -28,7 +28,7 @@ class AddDialogController extends UbirimiController
             }
 
             $projectData = Project::getById($selectedProjectId);
-            $issueTypes = Project::getIssueTypes($selectedProjectId);
+            $issueTypes = Project::getIssueTypes($selectedProjectId, 0);
 
             $firstIssueType = $issueTypes->fetch_array(MYSQLI_ASSOC);
             $issueTypeId = $firstIssueType['id'];

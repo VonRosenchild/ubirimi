@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2c9a6af72a782f3cd5968a0d6de25060",
+    "hash": "d2577e3ee6deef6c1731728ca0c5d70f",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -555,12 +555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "52d0ee303ff1014e29d40fd02ec3194d1539c720"
+                "reference": "a0f1676b45b69aada4d630bd9e6317b1e95ed236"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/52d0ee303ff1014e29d40fd02ec3194d1539c720",
-                "reference": "52d0ee303ff1014e29d40fd02ec3194d1539c720",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/a0f1676b45b69aada4d630bd9e6317b1e95ed236",
+                "reference": "a0f1676b45b69aada4d630bd9e6317b1e95ed236",
                 "shasum": ""
             },
             "require": {
@@ -604,7 +604,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-09 09:06:26"
+            "time": "2014-07-11 15:37:14"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -776,12 +776,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "c7d582cf30374775581f2574aaac5aeae5316411"
+                "reference": "edf9fe2c69ae3e17d95d930172f9cecf07b80589"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/c7d582cf30374775581f2574aaac5aeae5316411",
-                "reference": "c7d582cf30374775581f2574aaac5aeae5316411",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/edf9fe2c69ae3e17d95d930172f9cecf07b80589",
+                "reference": "edf9fe2c69ae3e17d95d930172f9cecf07b80589",
                 "shasum": ""
             },
             "require": {
@@ -840,7 +840,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-08 18:56:57"
+            "time": "2014-07-09 09:05:48"
         },
         {
             "name": "symfony/routing",
