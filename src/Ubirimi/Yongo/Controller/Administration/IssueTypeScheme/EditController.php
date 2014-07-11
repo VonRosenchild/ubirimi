@@ -1,57 +1,77 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueType;
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\IssueTypeScheme;
 
-    $issueTypeSchemeId = $_GET['id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
-    $emptyName = false;
-    $typeExists = false;
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
+        $issueTypeSchemeId = $request->get('id');
 
-    if ($issueTypeScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+        $emptyName = false;
+        $typeExists = false;
 
-    $allIssueTypes = IssueType::getAll($clientId);
-    $schemeIssueTypes = IssueTypeScheme::getDataById($issueTypeSchemeId);
+        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
 
-    $type = $issueTypeScheme['type'];
-    $name = $issueTypeScheme['name'];
-    $description = $issueTypeScheme['description'];
-
-    if (isset($_POST['edit_type_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $currentDate = Util::getServerCurrentDateTime();
-
-        if (empty($name))
-            $emptyName = true;
-
-        if (!$emptyName) {
-            IssueTypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
-            IssueTypeScheme::deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
-            foreach ($_POST as $key => $value) {
-                if (substr($key, 0, 11) == 'issue_type_') {
-                    $issueTypeId = str_replace('issue_type_', '', $key);
-                    IssueTypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
-                }
-            }
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Type Scheme ' . $name, $currentDate);
-
-            if ($type == 'project')
-                header('Location: /yongo/administration/issue-type-schemes');
-            else
-                header('Location: /yongo/administration/workflows/issue-type-schemes');
+        if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $allIssueTypes = IssueType::getAll($session->get('client/id'));
+        $schemeIssueTypes = IssueTypeScheme::getDataById($issueTypeSchemeId);
+
+        $type = $issueTypeScheme['type'];
+        $name = $issueTypeScheme['name'];
+        $description = $issueTypeScheme['description'];
+
+        if ($request->request->has('edit_type_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $currentDate = Util::getServerCurrentDateTime();
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                IssueTypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
+                IssueTypeScheme::deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
+                foreach ($request->request as $key => $value) {
+                    if (substr($key, 0, 11) == 'issue_type_') {
+                        $issueTypeId = str_replace('issue_type_', '', $key);
+                        IssueTypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
+                    }
+                }
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Issue Type Scheme ' . $name,
+                    $currentDate
+                );
+
+                if ($type == 'project') {
+                    return new RedirectResponse('/yongo/administration/issue-type-schemes');
+                }
+
+                return new RedirectResponse('/yongo/administration/workflows/issue-type-schemes');
+            }
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Type Scheme';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/issue/issue_type_scheme/Edit.php', get_defined_vars());
     }
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Type Scheme';
-    require_once __DIR__ . '/../../../Resources/views/administration/issue/issue_type_scheme/Edit.php';
+}
