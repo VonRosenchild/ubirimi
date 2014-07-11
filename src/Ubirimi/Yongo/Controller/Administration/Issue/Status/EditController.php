@@ -1,45 +1,69 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Status;
 
-    $Id = $_GET['id'];
-    $issueStatus = IssueSettings::getById($Id, 'status');
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    if ($issueStatus['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $statusExists = false;
+        $Id = $request->get('id');
+        $issueStatus = IssueSettings::getById($Id, 'status');
 
-    if (isset($_POST['edit_status'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-
-        if (empty($name))
-            $emptyName = true;
-
-        // check for duplication
-        $status = IssueSettings::getByName($clientId, 'status', mb_strtolower($name), $Id);
-        if ($status)
-            $statusExists = true;
-
-        if (!$statusExists && !$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            IssueSettings::updateById($Id, 'status', $name, $description, null, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Status ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/issue/statuses');
+        if ($issueStatus['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $emptyName = false;
+        $statusExists = false;
+
+        if ($request->request->has('edit_status')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            // check for duplication
+            $status = IssueSettings::getByName(
+                $session->get('client/id'),
+                'status',
+                mb_strtolower($name),
+                $Id
+            );
+
+            if ($status)
+                $statusExists = true;
+
+            if (!$statusExists && !$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                IssueSettings::updateById($Id, 'status', $name, $description, null, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Issue Status ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/issue/statuses');
+            }
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Status';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/status/Edit.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Status';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/status/Edit.php';
+}

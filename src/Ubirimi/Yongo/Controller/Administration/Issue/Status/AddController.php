@@ -1,37 +1,65 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Status;
 
-    $emptyName = false;
-    $statusExists = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['new_status'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
+        $statusExists = false;
 
-        $status = IssueSettings::getByName($clientId, 'status', mb_strtolower($name));
+        if ($request->request->has('new_status')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-        if ($status)
-            $statusExists = true;
+            if (empty($name))
+                $emptyName = true;
 
-        if (!$emptyName && !$statusExists) {
-            $currentDate = Util::getServerCurrentDateTime();
-            IssueSettings::create('issue_status', $clientId, $name, $description, null, null, $currentDate);
+            $status = IssueSettings::getByName($session->get('client/id'), 'status', mb_strtolower($name));
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Issue Status ' . $name, $currentDate);
+            if ($status)
+                $statusExists = true;
 
-            header('Location: /yongo/administration/issue/statuses');
+            if (!$emptyName && !$statusExists) {
+                $currentDate = Util::getServerCurrentDateTime();
+
+                IssueSettings::create(
+                    'issue_status',
+                    $session->get('client/id'),
+                    $name,
+                    $description,
+                    null,
+                    null,
+                    $currentDate
+                );
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Issue Status ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/issue/statuses');
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Status';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/status/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Status';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/status/Add.php';
+}
