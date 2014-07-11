@@ -1,54 +1,88 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme;
 
-    $fieldConfigurationSchemeId = $_GET['id'];
-    $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Repository\Log;
 
-    if ($fieldConfigurationScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class CopyController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $duplicateName = false;
+        $fieldConfigurationSchemeId = $request->get('id');
+        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
-    if (isset($_POST['copy_field_configuration_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-
-        if (empty($name)) {
-            $emptyName = true;
+        if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $duplicateFieldConfigurationScheme = FieldConfigurationScheme::getMetaDataByNameAndClientId($clientId, mb_strtolower($name));
-        if ($duplicateFieldConfigurationScheme)
-            $duplicateName = true;
+        $emptyName = false;
+        $duplicateName = false;
 
-        if (!$emptyName && !$duplicateName) {
-            $currentDate = Util::getServerCurrentDateTime();
+        if ($request->request->has('copy_field_configuration_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            $copiedFieldConfigurationScheme = new FieldConfigurationScheme($clientId, $name, $description);
-            $copiedFieldConfigurationSchemeId = $copiedFieldConfigurationScheme->save($currentDate);
-
-            $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataByFieldConfigurationSchemeId($fieldConfigurationSchemeId);
-
-            while ($fieldConfigurationSchemeData && $data = $fieldConfigurationSchemeData->fetch_array(MYSQLI_ASSOC)) {
-
-                $copiedFieldConfigurationScheme->addData($copiedFieldConfigurationSchemeId, $data['field_configuration_id'], $data['issue_type_id'], $currentDate);
+            if (empty($name)) {
+                $emptyName = true;
             }
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'Copy Yongo Field Configuration Scheme ' . $fieldConfigurationScheme['name'], $currentDate);
+            $duplicateFieldConfigurationScheme = FieldConfigurationScheme::getMetaDataByNameAndClientId(
+                $session->get('client/id'),
+                mb_strtolower($name)
+            );
 
-            header('Location: /yongo/administration/field-configurations/schemes');
+            if ($duplicateFieldConfigurationScheme)
+                $duplicateName = true;
+
+            if (!$emptyName && !$duplicateName) {
+                $currentDate = Util::getServerCurrentDateTime();
+
+                $copiedFieldConfigurationScheme = new FieldConfigurationScheme(
+                    $session->get('client/id'),
+                    $name,
+                    $description
+                );
+
+                $copiedFieldConfigurationSchemeId = $copiedFieldConfigurationScheme->save($currentDate);
+
+                $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataByFieldConfigurationSchemeId(
+                    $fieldConfigurationSchemeId
+                );
+
+                while ($fieldConfigurationSchemeData && $data = $fieldConfigurationSchemeData->fetch_array(MYSQLI_ASSOC)) {
+                    $copiedFieldConfigurationScheme->addData(
+                        $copiedFieldConfigurationSchemeId,
+                        $data['field_configuration_id'],
+                        $data['issue_type_id'],
+                        $currentDate
+                    );
+                }
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'Copy Yongo Field Configuration Scheme ' . $fieldConfigurationScheme['name'],
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/field-configurations/schemes');
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Field Configuration Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/field/configuration_scheme/Copy.php', get_defined_vars());
     }
-    $menuSelectedCategory = 'issue';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Field Configuration Scheme';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/field/configuration_scheme/Copy.php';
+}

@@ -1,37 +1,57 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme;
 
-    $fieldConfigurationSchemeId = $_GET['id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Repository\Log;
 
-    $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
-    if ($fieldConfigurationScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
-    $emptyName = false;
+class EditMetadataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['edit_field_configuration_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $fieldConfigurationSchemeId = $request->get('id');
 
-        if (empty($name))
-            $emptyName = true;
+        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            FieldConfigurationScheme::updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Field Configuration Scheme ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/field-configurations/schemes');
+        if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-    }
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Field Configuration Scheme';
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/field/configuration_scheme/EditMetadata.php';
+        $emptyName = false;
+
+        if ($request->request->has('edit_field_configuration_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                FieldConfigurationScheme::updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Field Configuration Scheme ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/field-configurations/schemes');
+            }
+        }
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Field Configuration Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/field/configuration_scheme/EditMetadata.php', get_defined_vars());
+    }
+}
