@@ -1,35 +1,56 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Type;
 
-    $subTaskFlag = (isset($_GET['type'])) ? 1 : 0;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    $emptyName = false;
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['new_type'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $subTaskFlag = $request->query->has('type') ? 1 : 0;
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
 
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            $iconName = 'generic.png';
-            $newIssueTypeId = IssueSettings::createIssueType($clientId, $name, $description, $subTaskFlag, $iconName, $currentDate);
+        if ($request->request->has('new_type')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Issue Type ' . $name, $currentDate);
+            if (empty($name))
+                $emptyName = true;
 
-            if ($subTaskFlag)
-                header('Location: /yongo/administration/issue-sub-tasks');
-            else
-                header('Location: /yongo/administration/issue-types');
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                $iconName = 'generic.png';
+                $newIssueTypeId = IssueSettings::createIssueType($session->get('client/id'), $name, $description, $subTaskFlag, $iconName, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Issue Type ' . $name,
+                    $currentDate
+                );
+
+                if ($subTaskFlag) {
+                    return new RedirectResponse('/yongo/administration/issue-sub-tasks');
+                }
+
+                return new RedirectResponse('/yongo/administration/issue-types');
+            }
         }
-    }
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Type';
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/type/Add.php';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Type';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/type/Add.php', get_defined_vars());
+    }
+}

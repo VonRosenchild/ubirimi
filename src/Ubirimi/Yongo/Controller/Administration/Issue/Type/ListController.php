@@ -1,13 +1,25 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueType;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $types = IssueType::getAll($clientId);
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Type;
 
-    $menuSelectedCategory = 'issue';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Types';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $types = IssueType::getAll($session->get('client/id'));
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/type/List.php';
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Types';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/type/List.php', get_defined_vars());
+    }
+}
