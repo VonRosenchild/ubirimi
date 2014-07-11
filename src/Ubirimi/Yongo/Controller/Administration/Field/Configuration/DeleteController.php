@@ -1,17 +1,37 @@
 <?php
 
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+namespace Ubirimi\Yongo\Controller\Administration\Field\Configuration;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 
-    $Id = $_POST['id'];
-    $fieldConfiguration = FieldConfiguration::getMetaDataById($Id);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    FieldConfiguration::deleteDataByFieldConfigurationId($Id);
-    FieldConfiguration::deleteById($Id);
+        $Id = $request->request->get('id');
+        $fieldConfiguration = FieldConfiguration::getMetaDataById($Id);
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Field Configuration ' . $fieldConfiguration['name'], $currentDate);
+        FieldConfiguration::deleteDataByFieldConfigurationId($Id);
+        FieldConfiguration::deleteById($Id);
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Yongo Field Configuration ' . $fieldConfiguration['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

@@ -642,7 +642,7 @@ adminCopyFieldConfiguration:
     id:  \d+
 
 adminDeleteConfirmFieldConfiguration:
-  path: /yongo/administration/field-configuration/delete-confirm/{id}
+  path: /yongo/administration/field-configuration/delete-confirm/{delete_possible}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Configuration\DeleteConfirmController' }
   requirements:
     id:  \d+

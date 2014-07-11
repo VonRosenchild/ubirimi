@@ -1,24 +1,44 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Field\Configuration;
 
-    $fieldConfigurationId = $_GET['field_configuration_id'];
-    $fieldId = $_GET['field_id'];
-    $visibleFlag = isset($_GET['visible_flag']) ? $_GET['visible_flag'] : null;
-    $requiredFlag = isset($_GET['required_flag']) ? $_GET['required_flag'] : null;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Repository\Log;
 
-    $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
-    $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
-    if (!$data)
-        FieldConfiguration::addSimpleData($fieldConfigurationId, $fieldId);
+class EditDataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    FieldConfiguration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
+        $fieldConfigurationId = $request->get('field_configuration_id');
+        $fieldId = $request->get('field_id');
+        $visibleFlag = $request->get('visible_flag');
+        $requiredFlag = $request->get('required_flag');
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Field Configuration ' . $fieldConfiguration['name'], $currentDate);
+        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
+        if (!$data)
+            FieldConfiguration::addSimpleData($fieldConfigurationId, $fieldId);
 
-    header('Location: /yongo/administration/field-configuration/edit/' . $fieldConfigurationId);
+        FieldConfiguration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
+
+        $currentDate = Util::getServerCurrentDateTime();
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'UPDATE Yongo Field Configuration ' . $fieldConfiguration['name'],
+            $currentDate
+        );
+
+        return new RedirectResponse('/yongo/administration/field-configuration/edit/' . $fieldConfigurationId);
+    }
+}
