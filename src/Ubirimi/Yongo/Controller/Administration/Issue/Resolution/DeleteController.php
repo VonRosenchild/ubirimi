@@ -1,21 +1,42 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Resolution;
 
-    $oldId = $_POST['id'];
-    $newId = $_POST['new_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    $resolution = IssueSettings::getById($oldId, 'resolution');
-    $projects = Client::getProjects($clientId, 'array', 'id');
-    Issue::updateResolution($projects, $oldId, $newId);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    IssueSettings::deleteResolutionById($oldId);
+        $oldId = $request->request->get('id');
+        $newId = $request->request->get('new_id');
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Issue Resolution ' . $resolution['name'], $currentDate);
+        $resolution = IssueSettings::getById($oldId, 'resolution');
+        $projects = Client::getProjects($session->get('client/id'), 'array', 'id');
+        Issue::updateResolution($projects, $oldId, $newId);
+
+        IssueSettings::deleteResolutionById($oldId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Yongo Issue Resolution ' . $resolution['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

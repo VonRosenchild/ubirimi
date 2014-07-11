@@ -1,11 +1,23 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Resolution;
 
-    $Id = $_GET['id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    $resolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
+class DeleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/resolution/DeleteConfirm.php';
+        $Id = $request->get('id');
+
+        $resolutions = IssueSettings::getAllIssueSettings('resolution', $session->get('client/id'));
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/resolution/DeleteConfirm.php', get_defined_vars());
+    }
+}

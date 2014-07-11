@@ -1,37 +1,65 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Resolution;
 
-    $emptyName = false;
-    $resolutionExists = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['new_resolution'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
+        $resolutionExists = false;
 
-        // check for duplication
-        $resolution = IssueSettings::getByName($clientId, 'resolution', mb_strtolower($name));
-        if ($resolution)
-            $resolutionExists = true;
+        if ($request->request->has('new_resolution')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-        if (!$resolutionExists && !$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            IssueSettings::create('issue_resolution', $clientId, $name, $description, null, null, $currentDate);
+            if (empty($name))
+                $emptyName = true;
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Issue Resolution ' . $name, $currentDate);
+            // check for duplication
+            $resolution = IssueSettings::getByName($session->get('client/id'), 'resolution', mb_strtolower($name));
+            if ($resolution)
+                $resolutionExists = true;
 
-            header('Location: /yongo/administration/issue/resolutions');
+            if (!$resolutionExists && !$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+
+                IssueSettings::create(
+                    'issue_resolution',
+                    $session->get('client/id'),
+                    $name,
+                    $description,
+                    null,
+                    null,
+                    $currentDate
+                );
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Issue Resolution ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/issue/resolutions');
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Resolution';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/resolution/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Resolution';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/resolution/Add.php';
+}

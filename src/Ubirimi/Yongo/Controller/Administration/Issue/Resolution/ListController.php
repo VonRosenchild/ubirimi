@@ -1,14 +1,26 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Resolution;
 
-    $resolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    $menuSelectedCategory = 'issue';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Resolutions';
+        $resolutions = IssueSettings::getAllIssueSettings('resolution', $session->get('client/id'));
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/resolution/List.php';
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Resolutions';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/resolution/List.php', get_defined_vars());
+    }
+}
