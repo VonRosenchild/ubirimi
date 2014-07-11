@@ -1,13 +1,25 @@
 <?php
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Issue\Issue;
+    use Ubirimi\Repository\Client;
+    use Ubirimi\Yongo\Repository\Permission\Permission;
 
     Util::checkUserIsLoggedInAndRedirect();
-    $code = $_POST['code'];
 
-    $issue = Issue::getByParameters(array('project' => $session->get('selected_project_id'), 'nr' => $code), $loggedInUserId);
+    $searchQuery = $_POST['code'];
 
-    if ($issue)
+    $clientId = $session->get('client/id');
+    $loggedInUserId = $session->get('user/id');
+
+    $projects = Client::getProjectsByPermission($clientId, $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
+    $projects = Util::array_column($projects, 'id');
+
+    // search first for a perfect match
+    $issueResult = Issue::getByParameters(array('project' => $projects, 'code_nr' => $searchQuery), $loggedInUserId);
+
+    if ($issueResult) {
+        $issue = $issueResult->fetch_array(MYSQLI_ASSOC);
         echo $issue['id'];
-    else
-        echo 'error';
+    } else {
+        echo '-1';
+    }

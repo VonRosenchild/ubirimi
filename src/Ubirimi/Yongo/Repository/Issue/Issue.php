@@ -217,6 +217,13 @@ class Issue {
             $parameterArray[] = $parameters['nr'];
         }
 
+        if (isset($parameters['code_nr'])) {
+
+            $queryWhere .= " CONCAT(project.code, '-', issue_main_table.nr) = ? AND ";
+            $parameterType .= 's';
+            $parameterArray[] = $parameters['code_nr'];
+        }
+
         if (isset($parameters['security_scheme_level'])) {
             if ($parameters['security_scheme_level'] == -1) {
                 $queryWhere .= ' issue_main_table.security_scheme_level_id IS NULL AND ';

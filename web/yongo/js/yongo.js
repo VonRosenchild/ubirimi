@@ -1834,24 +1834,20 @@ $('document').ready(function () {
         if (event.keyCode == 13) {
 
             var value = $('#ubirimi_quick_search').val();
-            var intRegex = /^\d+$/;
-            if (intRegex.test(value)) {
-                $.ajax({
-                    type: "POST",
-                    url: '/yongo/issue/quick-search',
-                    data: {
-                        code: value
-                    },
-                    success: function (response) {
-                        if (response != 'error')
-                            window.location.href = '/yongo/issue/' + response;
-                        else
-                            window.location.href = '/yongo/issue/-1';
-                    }
-                });
-            } else {
-                window.location.href = '/yongo/issue/search?search_query=' + value + '&summary_flag=1&description_flag=1&comments_flag=1&project=' + $('#projects_for_browsing').val();
-            }
+
+            $.ajax({
+                type: "POST",
+                url: '/yongo/issue/quick-search',
+                data: {
+                    code: value
+                },
+                success: function (response) {
+                    if (response != '-1')
+                        window.location.href = '/yongo/issue/' + response;
+                    else
+                        window.location.href = '/yongo/issue/search?search_query=' + value + '&summary_flag=1&description_flag=1&comments_flag=1&project=' + $('#projects_for_browsing').val();
+                }
+            });
         }
     });
 
