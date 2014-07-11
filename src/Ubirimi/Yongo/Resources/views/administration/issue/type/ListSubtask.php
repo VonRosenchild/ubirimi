@@ -45,7 +45,7 @@
                         <?php endwhile ?>
                     </tbody>
                 </table>
-                <div id="deleteIssueSetting"></div>
+                <div id="modalDeleteIssueType"></div>
                 <input type="hidden" value="type" id="setting_type" />
             <?php else: ?>
                 <div class="messageGreen">There are no sub-tasks defined.</div>
