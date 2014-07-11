@@ -1,19 +1,41 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Link;
 
-    Client::toggleIssueLinkingFeature($clientId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Log;
 
-    $session->set('yongo/settings/issue_linking_flag', 1 - $session->get('yongo/settings/issue_linking_flag'));
-    $logText = 'Activate';
-    if (0 == $session->get('yongo/settings/issue_linking_flag')) {
-        $logText = 'Deactivate';
+class ToggleController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        Client::toggleIssueLinkingFeature($session->get('client/id'));
+
+        $session->set('yongo/settings/issue_linking_flag', 1 - $session->get('yongo/settings/issue_linking_flag'));
+
+        $logText = 'Activate';
+        if (0 == $session->get('yongo/settings/issue_linking_flag')) {
+            $logText = 'Deactivate';
+        }
+
+        $currentDate = Util::getServerCurrentDateTime();
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            $logText . ' Yongo Issue Linking',
+            $currentDate
+        );
+
+        return new RedirectResponse('/yongo/administration/issue-features/linking');
     }
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, $logText . ' Yongo Issue Linking', $currentDate);
-
-    header('Location: /yongo/administration/issue-features/linking');
+}

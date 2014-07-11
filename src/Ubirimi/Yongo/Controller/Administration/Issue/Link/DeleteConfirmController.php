@@ -1,35 +1,24 @@
 <?php
 
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Link;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 
-    $linkTypeId = $_GET['id'];
+class DeleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $issues = IssueLinkType::getByLinkTypeId($linkTypeId);
-    $linkTypes = IssueLinkType::getByClientId($clientId);
+        $linkTypeId = $request->get('id');
 
-    if ($issues) {
-        echo '<div>Are you sure you want to delete this issue link type?</div>';
+        $issues = IssueLinkType::getByLinkTypeId($linkTypeId);
+        $linkTypes = IssueLinkType::getByClientId($session->get('client/id'));
 
-            echo '<div>There are currently ' . $issues->num_rows . ' matching links.</div>';
-        if ($linkTypes->num_rows > 1) {
-            echo '<input type="radio" checked="checked" name="action_remove_link" value="swap" id="swap_link_type" />';
-            echo '<label for="swap_link_type">Swap current links to link type: </label>';
-            echo '<select class="inputTextCombo" id="new_link_type">';
-                while ($linkTypes && $linkType = $linkTypes->fetch_array(MYSQLI_ASSOC)) {
-                    if ($linkType['id'] != $linkTypeId)
-                        echo '<option value="' . $linkType['id'] . '">' . $linkType['name'] . '</option>';
-                }
-            echo '</select>';
-            echo '<br />';
-            echo '<input type="radio" name="action_remove_link" value="remove" id="swap_link_type_remove" />';
-            echo '<label for="swap_link_type_remove">Remove all links</label>';
-        } else {
-            echo '<div>There are no other link types. All links will be removed.</div>';
-        }
-    } else {
-        echo '<div>Are you sure you want to delete this issue link type?</div>';
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/link/DeleteConfirm.php', get_defined_vars());
     }
+}

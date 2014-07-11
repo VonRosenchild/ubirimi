@@ -1,58 +1,82 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Link;
 
-    $linkTypeId = $_GET['id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 
-    $emptyName = false;
-    $emptyOutwardDescription = false;
-    $emptyInwardDescription = false;
-    $linkTypeDuplicateName = false;
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $linkType = IssueLinkType::getById($linkTypeId);
+        $linkTypeId = $request->get('id');
 
-    if ($linkType['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+        $emptyName = false;
+        $emptyOutwardDescription = false;
+        $emptyInwardDescription = false;
+        $linkTypeDuplicateName = false;
 
-    $name = $linkType['name'];
-    $outwardDescription = $linkType['outward_description'];
-    $inwardDescription = $linkType['inward_description'];
+        $linkType = IssueLinkType::getById($linkTypeId);
 
-    if (isset($_POST['edit_link_type'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $outwardDescription = Util::cleanRegularInputField($_POST['outward']);
-        $inwardDescription = Util::cleanRegularInputField($_POST['inward']);
-
-        if (empty($name))
-            $emptyName = true;
-
-        if (empty($outwardDescription))
-            $emptyOutwardDescription = true;
-
-        if (empty($inwardDescription))
-            $emptyInwardDescription = true;
-
-        // check for duplication
-        $existingLinkType = IssueLinkType::getByNameAndClientId($clientId, mb_strtolower($name), $linkTypeId);
-        if ($existingLinkType)
-            $linkTypeDuplicateName = true;
-
-        if (!$emptyName && !$emptyOutwardDescription && !$emptyInwardDescription && !$linkTypeDuplicateName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            IssueLinkType::update($linkTypeId, $name, $outwardDescription, $inwardDescription, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Link Type ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/issue-features/linking');
+        if ($linkType['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-    }
-    $menuSelectedCategory = 'system';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Link Type';
 
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/link/Edit.php';
+        $name = $linkType['name'];
+        $outwardDescription = $linkType['outward_description'];
+        $inwardDescription = $linkType['inward_description'];
+
+        if ($request->request->has('edit_link_type')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $outwardDescription = Util::cleanRegularInputField($request->request->get('outward'));
+            $inwardDescription = Util::cleanRegularInputField($request->request->get('inward'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (empty($outwardDescription))
+                $emptyOutwardDescription = true;
+
+            if (empty($inwardDescription))
+                $emptyInwardDescription = true;
+
+            // check for duplication
+            $existingLinkType = IssueLinkType::getByNameAndClientId(
+                $session->get('client/id'),
+                mb_strtolower($name),
+                $linkTypeId
+            );
+
+            if ($existingLinkType)
+                $linkTypeDuplicateName = true;
+
+            if (!$emptyName && !$emptyOutwardDescription && !$emptyInwardDescription && !$linkTypeDuplicateName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                IssueLinkType::update($linkTypeId, $name, $outwardDescription, $inwardDescription, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Issue Link Type ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/issue-features/linking');
+            }
+        }
+
+        $menuSelectedCategory = 'system';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Link Type';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/link/Edit.php', get_defined_vars());
+    }
+}
