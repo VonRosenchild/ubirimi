@@ -1,21 +1,43 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Priority;
 
-    $oldId = $_POST['id'];
-    $newId = $_POST['new_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    $priority = IssueSettings::getById($oldId, 'priority');
-    $projects = Client::getProjects($clientId, 'array', 'id');
-    Issue::updatePriority($projects, $oldId, $newId);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    IssueSettings::deletePriorityById($oldId);
+        $oldId = $request->request->get('id');
+        $newId = $request->request->get('new_id');
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'DELETE Yongo Issue Priority ' . $priority['name'], $currentDate);
+        $priority = IssueSettings::getById($oldId, 'priority');
+        $projects = Client::getProjects($session->get('client/id'), 'array', 'id');
+        Issue::updatePriority($projects, $oldId, $newId);
+
+        IssueSettings::deletePriorityById($oldId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_YONGO,
+            $session->get('user/id'),
+            'DELETE Yongo Issue Priority ' . $priority['name'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}

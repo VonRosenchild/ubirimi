@@ -1,54 +1,68 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Priority;
 
-    $emptyPriorityName = false;
-    $priorityExists = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['new_priority'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $color = Util::cleanRegularInputField($_POST['color']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyPriorityName = true;
+        $emptyPriorityName = false;
+        $priorityExists = false;
 
-        // check for duplication
-        $priority = IssueSettings::getByName($clientId, 'priority', mb_strtolower($name));
-        if ($priority)
-            $priorityExists = true;
+        if ($request->request->has('new_priority')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $color = Util::cleanRegularInputField($request->request->get('color'));
 
-        if (!$priorityExists && !$emptyPriorityName) {
-            $iconName = 'generic.png';
-            $currentDate = Util::getServerCurrentDateTime();
-            IssueSettings::create(
-                'issue_priority',
-                $clientId,
-                $name,
-                $description,
-                $iconName,
-                $color,
-                $currentDate
-            );
+            if (empty($name))
+                $emptyPriorityName = true;
 
-            Log::add(
-                $clientId,
-                SystemProduct::SYS_PRODUCT_YONGO,
-                $loggedInUserId,
-                'ADD Yongo Issue Priority ' . $name,
-                $currentDate
-            );
+            // check for duplication
+            $priority = IssueSettings::getByName($session->get('client/id'), 'priority', mb_strtolower($name));
+            if ($priority)
+                $priorityExists = true;
 
-            header('Location: /yongo/administration/issue/priorities');
+            if (!$priorityExists && !$emptyPriorityName) {
+                $iconName = 'generic.png';
+                $currentDate = Util::getServerCurrentDateTime();
+
+                IssueSettings::create(
+                    'issue_priority',
+                    $session->get('client/id'),
+                    $name,
+                    $description,
+                    $iconName,
+                    $color,
+                    $currentDate
+                );
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Issue Priority ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/issue/priorities');
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Priority';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/priority/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Priority';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/priority/Add.php';
+}

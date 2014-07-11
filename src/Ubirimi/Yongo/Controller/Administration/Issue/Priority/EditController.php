@@ -1,46 +1,70 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\Priority;
 
-    $Id = $_GET['id'];
-    $issuePriority = IssueSettings::getById($Id, 'priority');
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    if ($issuePriority['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    $priorityExists = false;
+        $Id = $request->get('id');
+        $issuePriority = IssueSettings::getById($Id, 'priority');
 
-    if (isset($_POST['edit_priority'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $color = $_POST['color'];
-
-        if (empty($name))
-            $emptyName = true;
-
-        // check for duplication
-        $priority = IssueSettings::getByName($clientId, 'priority', mb_strtolower($name), $Id);
-        if ($priority)
-            $priorityExists = true;
-
-        if (!$priorityExists && !$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
-            IssueSettings::updateById($Id, 'priority', $name, $description, $color, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Priority ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/issue/priorities');
+        if ($issuePriority['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $emptyName = false;
+        $priorityExists = false;
+
+        if ($request->request->has('edit_priority')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $color = $request->request->get('color');
+
+            if (empty($name))
+                $emptyName = true;
+
+            // check for duplication
+            $priority = IssueSettings::getByName(
+                $session->get('client/id'),
+                'priority',
+                mb_strtolower($name),
+                $Id
+            );
+
+            if ($priority)
+                $priorityExists = true;
+
+            if (!$priorityExists && !$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
+                IssueSettings::updateById($Id, 'priority', $name, $description, $color, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Issue Priority ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/issue/priorities');
+            }
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Priority';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/priority/Edit.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Priority';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/priority/Edit.php';
+}
