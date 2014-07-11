@@ -115,22 +115,12 @@ class Email {
         $eventCreatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE, 'id');
         $users = Project::getUsersForNotification($project['id'], $eventCreatedId, $issue, $loggedInUserId);
 
-        if (!$users) {
-            return;
-        }
-
-        $usersSentNotification = array();
-
-        while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
-            if ($user['user_id'] == $loggedInUserId) {
-                if ($user['notify_own_changes_flag']) {
-                    Email::sendEmailNewIssue($clientId, $issue, $user);
-                    $usersSentNotification[] = $user['user_id'];
-                }
-            } else {
-                Email::sendEmailNewIssue($clientId, $issue, $user);
-                $usersSentNotification[] = $user['user_id'];
+        while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
+            if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
+                continue;
             }
+
+            Email::sendEmailNewIssue($clientId, $issue, $user);
         }
     }
 
@@ -235,7 +225,7 @@ class Email {
         }
     }
 
-    public static function sendEmailIssueChanged($issue, $clientId, $fieldChanges, $userToNotify) {
+    public static function sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $fieldChanges, $userToNotify) {
         if (Email::$smtpSettings) {
             EmailQueue::add($clientId,
                 Email::$smtpSettings['from_address'],
@@ -245,6 +235,8 @@ class Email {
                 Util::getTemplate('_issueUpdated.php', array(
                         'clientDomain' => Util::getSubdomain(),
                         'issue' => $issue,
+                        'project' => $project,
+                        'user' => $loggedInUser,
                         'fieldChanges' => $fieldChanges)
                 ),
                 Util::getServerCurrentDateTime());

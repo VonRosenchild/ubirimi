@@ -4,12 +4,12 @@ namespace Ubirimi\Yongo\Repository\Workflow;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
+use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
 
 class WorkflowFunction {
 
@@ -23,8 +23,10 @@ class WorkflowFunction {
 
         $workflowDataId = $workflowData['id'];
         $issueId = $issueData['id'];
-
+        $projectId = $issueData['issue_project_id'];
+        $project = Project::getById($projectId);
         $functions = WorkflowFunction::getByWorkflowDataId($workflowDataId);
+        $loggedInUser = User::getById($loggedInUserId);
 
         while ($functions && $function = $functions->fetch_array(MYSQLI_ASSOC)) {
 
@@ -82,9 +84,6 @@ class WorkflowFunction {
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_FIRE_EVENT) {
 
-                $projectId = $issueData['issue_project_id'];
-                $users = null;
-
                 $definition_data = $function['definition_data'];
                 $eventData = explode("=", $definition_data);
                 $eventId = $eventData[1];
@@ -94,21 +93,12 @@ class WorkflowFunction {
                 if ($users && Email::$smtpSettings) {
                     while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
                         $sendEmail = true;
-                        if ($user['user_id'] == $loggedInUserId) {
-                            if (!$user['notify_own_changes_flag']) {
-                                $sendEmail = false;
-                            }
+                        if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
+                            $sendEmail = false;
                         }
 
                         if ($sendEmail) {
-                            switch ($eventId) {
-                                case IssueEvent::EVENT_ISSUE_CLOSED_CODE:
-                                    Email::sendEmailIssueChanged($issueData, $clientId, $issueFieldChanges, $user);
-                                    break;
-
-                                case IssueEvent::EVENT_ISSUE_COMMENTED_CODE:
-                                    Email::sendEmailNotificationNewComment($issueData, $clientId, $projectId, $user);
-                            }
+                            Email::sendEmailIssueChanged($issueData, $project, $loggedInUser, $clientId, $issueFieldChanges, $user);
                         }
                     }
                 }

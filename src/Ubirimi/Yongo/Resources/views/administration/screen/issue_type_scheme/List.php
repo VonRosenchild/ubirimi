@@ -42,11 +42,11 @@
                 <tbody>
                     <?php while ($scheme = $issueTypeScreenSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                         <tr id="table_row_<?php echo $scheme['id'] ?>">
-                            <td style="vertical-align: top" width="22"><input type="checkbox" value="1" id="el_check_<?php echo $scheme['id'] ?>" /></td>
-                            <td style="vertical-align: top">
+                            <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $scheme['id'] ?>" /></td>
+                            <td>
                                 <a href="/yongo/administration/screen/configure-scheme-issue-type/<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></a>
                             </td>
-                            <td style="vertical-align: top" width="500px">
+                            <td width="500px">
                                 <?php
                                     $projects = Project::getByIssueTypeScreenSchemeId($clientId, $scheme['id']);
                                     if ($projects) {

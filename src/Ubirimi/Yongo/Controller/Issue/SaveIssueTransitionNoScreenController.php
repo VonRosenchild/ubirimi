@@ -35,5 +35,6 @@
 
         echo 'success';
 
-    } else
+    } else {
         echo 'can_not_be_executed';
+    }
