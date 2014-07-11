@@ -16,8 +16,9 @@ class EditDialogController extends UbirimiController
 
         $workLogId = $request->get('work_log_id');
         $remainingEstimate = $request->get('remaining');
-        $remainingEstimate = trim(str_replace(array('w', 'd', 'h', 'm'), array('w ', 'd ', 'h ', 'm'), $remainingEstimate));
-
+        if (-1 != $remainingEstimate) {
+            $remainingEstimate = trim(str_replace(array('w', 'd', 'h', 'm'), array('w ', 'd ', 'h ', 'm'), $remainingEstimate));
+        }
         $workLog = IssueWorkLog::getById($workLogId);
 
         $mode = 'edit';

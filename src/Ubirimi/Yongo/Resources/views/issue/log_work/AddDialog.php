@@ -55,7 +55,7 @@
         <tr>
             <td valign="top">Work Description</td>
             <td>
-                <textarea class="inputTextAreaLarge" id="log_work_work_description"></textarea>
+                <textarea class="inputTextAreaLarge" id="log_work_work_description"><?php echo $workLog['comment'] ?></textarea>
             </td>
         </tr>
     <?php endif ?>

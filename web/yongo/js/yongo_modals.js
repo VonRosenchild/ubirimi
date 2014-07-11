@@ -2420,6 +2420,9 @@ $('document').ready(function () {
 
         var issueRemainingEstimate = $('#issue_remaining_estimate').val();
 
+        if (issueRemainingEstimate == undefined) {
+            issueRemainingEstimate = -1;
+        }
         $("#modalLogWorkEdit").load("/yongo/issue/log-work-edit-dialog/" + workLogId + '/' + issueRemainingEstimate, [], function () {
             $("#modalLogWorkEdit").dialog(options);
             $("#modalLogWorkEdit").dialog("open");
