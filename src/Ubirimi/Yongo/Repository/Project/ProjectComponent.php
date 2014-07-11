@@ -3,7 +3,6 @@
 namespace Ubirimi\Yongo\Repository\Project;
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 
 class ProjectComponent {
 

@@ -2,15 +2,15 @@
 
 namespace Ubirimi\Yongo\Repository\Project;
 
+use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\Repository\HelpDesk\Queue;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\CustomField;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 use Ubirimi\Yongo\Repository\Screen\Screen;
@@ -583,6 +583,8 @@ class Project {
         Project::deleteIssuesByProjectId($Id);
         ProjectComponent::deleteByProjectId($Id);
         ProjectVersion::deleteByProjectId($Id);
+        CustomField::deleteDataByProjectId($Id);
+        AgileBoard::deleteByProjectId($Id);
 
         $query = "DELETE IGNORE FROM project_role_data WHERE project_id = " . $Id;
         UbirimiContainer::get()['db.connection']->query($query);

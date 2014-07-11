@@ -483,6 +483,14 @@ class AgileBoard {
         }
     }
 
+    public static function deleteByProjectId($projectId) {
+        $query = "delete from agile_board_project where project_id = ?";
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $projectId);
+            $stmt->execute();
+        }
+    }
+
     public static function deleteById($boardId) {
         $boardColumnsArray = AgileBoard::getColumns($boardId, 'array');
         $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');

@@ -118,6 +118,14 @@ class CustomField {
         }
     }
 
+    public static function deleteDataByProjectId($projectId) {
+        $query = "delete from field_project_data where project_id = ?";
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $projectId);
+            $stmt->execute();
+        }
+    }
+
     public static function deleteById($customFieldId) {
         $query = "delete from field where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
