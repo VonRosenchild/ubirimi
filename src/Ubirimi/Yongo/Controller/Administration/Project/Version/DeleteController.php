@@ -10,6 +10,7 @@ use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\ProjectVersion;
 
 class DeleteController extends UbirimiController
 {
@@ -20,7 +21,7 @@ class DeleteController extends UbirimiController
         $releaseId = $request->request->get('release_id');
         $release = Project::getVersionById($releaseId);
 
-        Project::deleteVersionById($releaseId);
+        ProjectVersion::deleteVersionById($releaseId);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

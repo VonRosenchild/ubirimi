@@ -29,8 +29,8 @@
     if (isset($_POST['move_issue_step_4'])) {
 
         IssueComponent::deleteByIssueId($issueId);
-        IssueVersion::deleteByIssueId($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
-        IssueVersion::deleteByIssueId($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+        IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
         if (count($session->get('move_issue/new_component'))) {
             Issue::addComponentVersion($issueId, $session->get('move_issue/new_component'), 'issue_component');

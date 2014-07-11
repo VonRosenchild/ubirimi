@@ -14,6 +14,14 @@ class IssueComment {
         }
     }
 
+    public static function deleteByIssueId($issueId) {
+        $query = 'DELETE FROM issue_comment WHERE issue_id = ?';
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $issueId);
+            $stmt->execute();
+        }
+    }
+
     public static function getById($commentId) {
         $query = 'select issue_comment.id, issue_comment.content, issue_comment.date_created, ' .
                  'user.first_name, user.last_name, user.id as user_id ' .

@@ -26,7 +26,7 @@ class EditController extends UbirimiController
         $dateStarted = \DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
         $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
-        $workLog = IssueWorkLog::getWorkLogById($workLogId);
+        $workLog = IssueWorkLog::getById($workLogId);
 
         IssueWorkLog::updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
 

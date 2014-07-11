@@ -39,15 +39,7 @@ class DeleteController extends UbirimiController
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
 
         Issue::deleteById($issueId);
-        IssueAttachment::deleteByIssueId($issueId);
-        IssueCustomField::deleteCustomFieldsData($issueId);
-        IssueWorkLog::deleteWorkLog($issueId);
 
-        // delete SLA related data
-        Issue::deleteSLADataByIssueId($issueId);
-
-        // delete the watchers
-        IssueWatcher::deleteByIssueId($issueId);
 
         // also delete the substaks
         $childrenIssues = Issue::getByParameters(array('parent_id' => $issueId), $loggedInUserId);
@@ -55,7 +47,7 @@ class DeleteController extends UbirimiController
             Issue::deleteById($childIssue['id']);
             IssueAttachment::deleteByIssueId($childIssue['id']);
             IssueCustomField::deleteCustomFieldsData($childIssue['id']);
-            IssueWorkLog::deleteWorkLog($childIssue['id']);
+            IssueWorkLog::deleteByIssueId($childIssue['id']);
 
             // delete SLA related data
             Issue::deleteSLADataByIssueId($childIssue['id']);

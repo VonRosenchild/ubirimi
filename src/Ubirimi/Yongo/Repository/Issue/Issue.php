@@ -1,5 +1,6 @@
 <?php
 namespace Ubirimi\Yongo\Repository\Issue;
+use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Email\Email;
@@ -650,35 +651,20 @@ class Issue {
     }
 
     public static function deleteById($issueId) {
-        $query = 'DELETE FROM issue_comment WHERE issue_id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
 
-        $query = 'DELETE FROM issue_history WHERE issue_id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
+        IssueComment::deleteByIssueId($issueId);
+        IssueHistory::deleteByIssueId($issueId);
+        IssueComponent::deleteByIssueId($issueId);
+        IssueVersion::deleteByIssueId($issueId);
 
-        $query = 'DELETE FROM issue_component WHERE issue_id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
+        IssueWatcher::deleteByIssueId($issueId);
+        Issue::deleteSLADataByIssueId($issueId);
+        IssueWorkLog::deleteByIssueId($issueId);
+        IssueAttachment::deleteByIssueId($issueId);
+        IssueCustomField::deleteCustomFieldsData($issueId);
 
-        $query = 'DELETE FROM issue_version WHERE issue_id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
+        AgileBoard::deleteIssuesFromSprints(array($issueId));
 
-        $query = 'DELETE FROM agile_board_sprint_issue WHERE issue_id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
 
         $query = 'DELETE from yongo_issue WHERE id = ?';
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -1073,13 +1059,13 @@ class Issue {
         }
 
         if (array_key_exists(Field::FIELD_AFFECTS_VERSION_CODE, $data)) {
-            IssueVersion::deleteByIssueId($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
             if ($data[Field::FIELD_AFFECTS_VERSION_CODE])
                 Issue::addComponentVersion($issueId, $data['affects_version'], 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
         if (array_key_exists(Field::FIELD_FIX_VERSION_CODE, $data)) {
-            IssueVersion::deleteByIssueId($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+            IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
             if ($data[Field::FIELD_FIX_VERSION_CODE])
                 Issue::addComponentVersion($issueId, $data['fix_version'], 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
         }
@@ -1413,8 +1399,8 @@ class Issue {
                     // update last issue number for this project
                     Project::updateLastIssueNumber($newProjectId, $nextNumber);
 
-                    IssueVersion::deleteByIssueId($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
-                    IssueVersion::deleteByIssueId($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+                    IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
+                    IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
                     IssueComponent::deleteByIssueId($subTaskId);
 
                     // also update the issue type Id if necessary

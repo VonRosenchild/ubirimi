@@ -26,7 +26,7 @@ class ViewController extends UbirimiController
         $issueId = $request->request->get('issue_id');
         $projectId = $request->request->get('project_id');
 
-        $workLogs = IssueWorkLog::getWorkLogByIssueId($issueId);
+        $workLogs = IssueWorkLog::getByIssueId($issueId);
 
         $hasEditOwnWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_OWN_WORKLOGS, $session->get('user/id'));
         $hasEditAllWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ALL_WORKLOGS, $session->get('user/id'));

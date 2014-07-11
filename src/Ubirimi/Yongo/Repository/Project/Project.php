@@ -580,13 +580,9 @@ class Project {
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
-        $query = "DELETE IGNORE FROM project_component WHERE project_id = " . $Id;
-        UbirimiContainer::get()['db.connection']->query($query);
-
-        $query = "DELETE IGNORE FROM project_version WHERE project_id = " . $Id;
-        UbirimiContainer::get()['db.connection']->query($query);
-
         Project::deleteIssuesByProjectId($Id);
+        ProjectComponent::deleteByProjectId($Id);
+        ProjectVersion::deleteByProjectId($Id);
 
         $query = "DELETE IGNORE FROM project_role_data WHERE project_id = " . $Id;
         UbirimiContainer::get()['db.connection']->query($query);
@@ -1212,46 +1208,6 @@ class Project {
         }
     }
 
-    public static function deleteVersionById($versionId) {
-        $query = 'delete from issue_version where project_version_id = ?';
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $versionId);
-            $stmt->execute();
-        }
-
-        $query = 'delete from project_version where id = ?';
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $versionId);
-            $stmt->execute();
-        }
-    }
-
-    public static function deleteComponentById($componentId) {
-        $query = 'delete from issue_component where project_component_id = ?';
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $componentId);
-            $stmt->execute();
-        }
-
-        $query = 'delete from project_component where id = ? limit 1';
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $componentId);
-            $stmt->execute();
-        }
-
-        // delete also any subcomponents
-        $query = 'delete from project_component where parent_id = ?';
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $componentId);
-            $stmt->execute();
-        }
-    }
-
     public static function getScreenData($project, $issueTypeId, $sysOperationId, $resultType = null) {
         $issueTypeScreenSchemeId = $project['issue_type_screen_scheme_id'];
         $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeIdAndIssueTypeId($issueTypeScreenSchemeId, $issueTypeId);
@@ -1426,34 +1382,14 @@ class Project {
         $issues = Issue::getByParameters(array('project' => $projectId));
 
         if ($issues) {
-            $issuesArray = array();
+
             while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                $issuesArray[] = $issue['id'];
+
                 // delete issues from disk, if any
                 Util::deleteDir(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issue['id']);
+
+                Issue::deleteById($issue['id']);
             }
-            $issueIds_string = implode($issuesArray, ', ');
-
-            $query = 'delete from issue_comment where issue_id IN (' . $issueIds_string . ')';
-            UbirimiContainer::get()['db.connection']->query($query);
-
-            $query = 'delete from issue_history where issue_id IN (' . $issueIds_string . ')';
-            UbirimiContainer::get()['db.connection']->query($query);
-
-            $query = 'delete from issue_attachment where issue_id IN (' . $issueIds_string . ')';
-            UbirimiContainer::get()['db.connection']->query($query);
-
-            $query = 'delete from issue_component where issue_id IN (' . $issueIds_string . ')';
-            UbirimiContainer::get()['db.connection']->query($query);
-
-            $query = 'delete from issue_version where issue_id IN (' . $issueIds_string . ')';
-            UbirimiContainer::get()['db.connection']->query($query);
-
-            $query = 'delete from issue_custom_field_data where issue_id IN (' . $issueIds_string . ')';
-            UbirimiContainer::get()['db.connection']->query($query);
-
-            $query = 'delete from issue_work_log where issue_id IN (' . $issueIds_string . ')';
-            UbirimiContainer::get()['db.connection']->query($query);
         }
 
         $query = "DELETE IGNORE from yongo_issue WHERE project_id = " . $projectId;

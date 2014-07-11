@@ -120,7 +120,7 @@ class ViewController extends UbirimiController
             }
 
             // get the worklogs
-            $workLogs = IssueWorkLog::getWorkLogByIssueId($issueId);
+            $workLogs = IssueWorkLog::getByIssueId($issueId);
 
             // get the watchers, if any
             $watchers = IssueWatcher::getByIssueId($issueId);

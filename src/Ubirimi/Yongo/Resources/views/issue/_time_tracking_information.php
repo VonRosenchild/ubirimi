@@ -6,7 +6,7 @@
     // the biggest time is 100%
     $originalEstimate = Util::transformLogTimeToMinutes($issue['original_estimate'], $hoursPerDay, $daysPerWeek);
     $remainingEstimate = Util::transformLogTimeToMinutes($issue['remaining_estimate'], $hoursPerDay, $daysPerWeek);
-    $worklogs = IssueWorkLog::getWorkLogByIssueId($issue['id']);
+    $worklogs = IssueWorkLog::getByIssueId($issue['id']);
     $minutesLogged = 0;
     while ($worklogs && $worklog = $worklogs->fetch_array(MYSQLI_ASSOC)) {
         $minutesLogged += Util::transformLogTimeToMinutes($worklog['time_spent'], $hoursPerDay, $daysPerWeek);

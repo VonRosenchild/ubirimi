@@ -6,11 +6,20 @@
 
     class IssueVersion {
 
-        public static function deleteByIssueId($issueId, $flag) {
+        public static function deleteByIssueIdAndFlag($issueId, $flag) {
             $query = 'DELETE FROM issue_version WHERE issue_id = ? and affected_targeted_flag = ?';
 
             if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
                 $stmt->bind_param("ii", $issueId, $flag);
+                $stmt->execute();
+            }
+        }
+
+        public static function deleteByIssueId($issueId) {
+            $query = 'DELETE FROM issue_version WHERE issue_id = ?';
+
+            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+                $stmt->bind_param("i", $issueId);
                 $stmt->execute();
             }
         }

@@ -21,4 +21,32 @@ class ProjectVersion {
                 return null;
         }
     }
+
+    public static function deleteByProjectId($projectId)
+    {
+        $versions = Project::getVersions($projectId);
+
+        while ($version = $versions->fetch_array(MYSQLI_ASSOC)) {
+            $versionId = $version['id'];
+            ProjectVersion::deleteById($versionId);
+
+        }
+    }
+
+    public static function deleteVById($versionId)
+    {
+        $query = 'delete from issue_version where project_version_id = ?';
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $versionId);
+            $stmt->execute();
+        }
+
+        $query = 'delete from project_version where id = ?';
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $versionId);
+            $stmt->execute();
+        }
+    }
 }

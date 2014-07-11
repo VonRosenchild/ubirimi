@@ -7,7 +7,7 @@ use Ubirimi\Util;
 
 class IssueWorkLog {
 
-    public static function getWorkLogByIssueId($issueId) {
+    public static function getByIssueId($issueId) {
         $query = 'select issue_work_log.id, issue_work_log.time_spent, issue_work_log.date_started, issue_work_log.comment, user.id as user_id, user.first_name, user.last_name, edited_flag
                   from issue_work_log
                   left join user on issue_work_log.user_id = user.id
@@ -25,7 +25,7 @@ class IssueWorkLog {
         }
     }
 
-    public static function getWorkLogById($Id) {
+    public static function getById($Id) {
         $query = 'select *
                   from issue_work_log
                   where issue_work_log.id = ?
@@ -70,7 +70,7 @@ class IssueWorkLog {
 
     }
 
-    public static function deleteWorkLog($issueId) {
+    public static function deleteByIssueId($issueId) {
         $query = 'delete from issue_work_log where issue_id = ?';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {

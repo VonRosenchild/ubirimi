@@ -18,7 +18,7 @@ class DeleteDialogController extends UbirimiController
         $remainingEstimate = $request->get('remaining');
         $remainingEstimate = trim(str_replace(array('w', 'd', 'h', 'm'), array('w ', 'd ', 'h ', 'm'), $remainingEstimate));
 
-        $workLog = IssueWorkLog::getWorkLogById($workLogId);
+        $workLog = IssueWorkLog::getById($workLogId);
 
         $mode = 'delete';
 

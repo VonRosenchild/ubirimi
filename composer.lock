@@ -555,12 +555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "153f7baed257309c8779c869653a488ecfaabe91"
+                "reference": "52d0ee303ff1014e29d40fd02ec3194d1539c720"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/153f7baed257309c8779c869653a488ecfaabe91",
-                "reference": "153f7baed257309c8779c869653a488ecfaabe91",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/52d0ee303ff1014e29d40fd02ec3194d1539c720",
+                "reference": "52d0ee303ff1014e29d40fd02ec3194d1539c720",
                 "shasum": ""
             },
             "require": {
@@ -604,7 +604,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-08 12:21:41"
+            "time": "2014-07-09 09:06:26"
         },
         {
             "name": "symfony/event-dispatcher",

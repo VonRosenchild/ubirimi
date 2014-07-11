@@ -20,7 +20,7 @@ class DeleteController extends UbirimiController
         $remainingTime = $request->request->get('remaining');
         $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
-        $workLog = IssueWorkLog::getWorkLogById($workLogId);
+        $workLog = IssueWorkLog::getById($workLogId);
         $timeSpent = $workLog['time_spent'];
 
         IssueWorkLog::deleteById($workLogId);
