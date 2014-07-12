@@ -25,9 +25,10 @@
         }
 
         public static function getCustomFieldsData($issueId) {
-            $query = 'SELECT issue_custom_field_data.value, field.name, sys_field_type.code ' .
+            $query = 'SELECT issue_custom_field_data.value, field.name, sys_field_type.code, field_data.value ' .
                 'FROM issue_custom_field_data ' .
                 'LEFT JOIN field on field.id = issue_custom_field_data.field_id ' .
+                'left join field_data on field_data.id = issue_custom_field_data. value ' .
                 'left join sys_field_type on sys_field_type.id = field.sys_field_type_id ' .
                 'WHERE issue_id = ?';
 

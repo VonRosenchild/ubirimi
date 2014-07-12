@@ -31,7 +31,7 @@
                             <input type="checkbox" value="1" id="el_check_<?php echo $fieldValue['id'] ?>" />
                         </td>
                         <td>
-                            <?php echo $field['value']; ?>
+                            <?php echo $fieldValue['value']; ?>
                         </td>
                     </tr>
                 <?php endwhile ?>

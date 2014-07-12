@@ -176,6 +176,16 @@ class Field {
             return UbirimiContainer::get()['db.connection']->insert_id;
         }
     }
+    public static function addData($fieldId, $value, $currentDate) {
+        $query = "INSERT INTO field_data(field_id, `value`, date_created) VALUES " .
+                 "(?, ?, ?)";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("iss", $fieldId, $value, $currentDate);
+            $stmt->execute();
+            return UbirimiContainer::get()['db.connection']->insert_id;
+        }
+    }
 
     public static function getDataByFieldId($fieldId) {
         $query = "SELECT * " .
@@ -190,6 +200,21 @@ class Field {
                 return $result;
             else
                 return null;
+        }
+    }
+
+    public static function getDataByFieldIdAndValue($fieldId, $value) {
+        $query = 'select * from `field_data` where field_id = ? and value = ? limit 1';
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("is", $fieldId, $value);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows)
+                return $result->fetch_array(MYSQLI_ASSOC);
+            else
+                return false;
         }
     }
 }

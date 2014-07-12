@@ -605,9 +605,9 @@ adminEditFieldCustomValues:
   requirements:
     id:  \d+
 
-adminAddFieldCustomValues:
+adminAddFieldCustomValuesAdd:
   path: /yongo/administration/custom-field/value/add/{id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\AddCustomValueController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Custom\AddValueController' }
   requirements:
     id:  \d+
 

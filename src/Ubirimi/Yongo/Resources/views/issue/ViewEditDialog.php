@@ -272,6 +272,20 @@
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
                                     break;
 
+                                case Field::CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE:
+
+                                    $possibleValues = Field::getDataByFieldId($field['field_id']);
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
+                                    echo '<option value="">None</option>';
+                                    while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
+                                        $selectedHTML = '';
+                                        if ($fieldValue['id'] == $customValue['id']) {
+                                            $selectedHTML = 'selected="selected"';
+                                        }
+                                        echo '<option ' . $selectedHTML . ' value="' . $customValue['id'] . '">' . $customValue['value'] . '</option>';
+                                    }
+                                    echo '</select>';
+                                    break;
                             }
                             if ($field['description']) {
                                 echo '<div class="smallDescription">' . $field['description'] . '</div>';
