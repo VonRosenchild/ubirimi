@@ -1,12 +1,32 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 
-    $issueSecuritySchemeLevelId = $_POST['id'];
-    $newIssueSecuritySchemeLevelId = $_POST['new_level_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    Issue::updateSecurityLevel($clientId, $issueSecuritySchemeLevelId, $newIssueSecuritySchemeLevelId);
-    IssueSecurityScheme::deleteLevelById($issueSecuritySchemeLevelId);
+class DeleteLevelController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $issueSecuritySchemeLevelId = $request->request->get('id');
+        $newIssueSecuritySchemeLevelId = $request->request->get('new_level_id');
+
+        Issue::updateSecurityLevel(
+            $session->get('client/id'),
+            $issueSecuritySchemeLevelId,
+            $newIssueSecuritySchemeLevelId
+        );
+
+        IssueSecurityScheme::deleteLevelById($issueSecuritySchemeLevelId);
+
+        return new Response('');
+    }
+}

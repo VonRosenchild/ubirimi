@@ -1,29 +1,42 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 
-    $emptyName = false;
-    if (isset($_POST['add_issue_security_scheme'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
-        if (empty($name))
-            $emptyName = true;
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (!$emptyName) {
-            $issueSecurityScheme = new IssueSecurityScheme($clientId, $name, $description);
-            $currentDate = Util::getServerCurrentDateTime();
-            $issueSecurityScheme->save($currentDate);
+        $emptyName = false;
+        if ($request->request->has('add_issue_security_scheme')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            header('Location: /yongo/administration/issue-security-schemes');
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $issueSecurityScheme = new IssueSecurityScheme($session->get('client/id'), $name, $description);
+                $currentDate = Util::getServerCurrentDateTime();
+                $issueSecurityScheme->save($currentDate);
+
+                return new RedirectResponse('/yongo/administration/issue-security-schemes');
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Security Scheme';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/security_scheme/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Issue Security Scheme';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/security_scheme/Add.php';
+}

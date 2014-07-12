@@ -1,38 +1,57 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 
-    $issueSecuritySchemeLevelId = $_GET['id'];
-    $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
-    $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeLevel['issue_security_scheme_id']);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    if ($issueSecurityScheme['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+class EditLevelController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $emptyName = false;
-    if (isset($_POST['edit_issue_security_scheme_level'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $issueSecuritySchemeLevelId = $request->get('id');
+        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
+        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeLevel['issue_security_scheme_id']);
 
-        if (empty($name))
-            $emptyName = true;
-
-        if (!$emptyName) {
-            $date = Util::getServerCurrentDateTime();
-            IssueSecurityScheme::updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Issue Security Scheme Level ' . $name, $date);
-            header('Location: /yongo/administration/issue-security-scheme-levels/' . $issueSecurityScheme['id']);
+        if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $emptyName = false;
+        if ($request->request->has('edit_issue_security_scheme_level')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            if (!$emptyName) {
+                $date = Util::getServerCurrentDateTime();
+                IssueSecurityScheme::updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Issue Security Scheme Level ' . $name,
+                    $date
+                );
+
+                return new RedirectResponse('/yongo/administration/issue-security-scheme-levels/' . $issueSecurityScheme['id']);
+            }
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Security Scheme Level';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/security_scheme/EditLevel.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Security Scheme Level';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/issue/security_scheme/EditLevel.php';
+}
