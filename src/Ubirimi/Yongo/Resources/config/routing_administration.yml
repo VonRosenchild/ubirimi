@@ -593,9 +593,21 @@ adminAddFieldData:
   path: /yongo/administration/custom-field/add-data/{type}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\AddDataController' }
 
-adminEditScreenField:
+adminEditCustomFieldScreenVisibility:
   path: /yongo/administration/custom-field/edit-field-screen/{id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\EditScreenController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Custom\EditScreenVisibilityController' }
+  requirements:
+    id:  \d+
+
+adminEditFieldCustomValues:
+  path: /yongo/administration/custom-fields/define/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Custom\ListValueController' }
+  requirements:
+    id:  \d+
+
+adminAddFieldCustomValues:
+  path: /yongo/administration/custom-field/value/add/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\AddCustomValueController' }
   requirements:
     id:  \d+
 

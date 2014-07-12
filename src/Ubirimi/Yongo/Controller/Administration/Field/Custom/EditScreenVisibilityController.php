@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Yongo\Controller\Administration\Field;
+namespace Ubirimi\Yongo\Controller\Administration\Field\Custom;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +13,7 @@ use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 
-class EditScreenController extends UbirimiController
+class EditScreenVisibilityController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
@@ -60,12 +60,16 @@ class EditScreenController extends UbirimiController
                 $currentDate
             );
 
-            return new RedirectResponse('/yongo/administration/custom-fields');
+            if ($field['sys_field_type_id'] == Field::CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE_ID) {
+                return new RedirectResponse('/yongo/administration/custom-fields/define/' . $fieldId);
+            } else {
+                return new RedirectResponse('/yongo/administration/custom-fields');
+            }
         }
 
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Copy Custome Field';
 
-        return $this->render(__DIR__ . '/../../../Resources/views/administration/field/EditScreen.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/field/custom/EditScreen.php', get_defined_vars());
     }
 }

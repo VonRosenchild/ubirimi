@@ -12,7 +12,7 @@ use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 
-class EditScreenController extends UbirimiController
+class EditScreenVisibilityController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {

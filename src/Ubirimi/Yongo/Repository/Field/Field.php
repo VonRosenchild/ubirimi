@@ -30,6 +30,14 @@ class Field {
     const CUSTOM_FIELD_TYPE_DATE_PICKER_CODE = 'date_picker';
     const CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE = 'date_time';
     const CUSTOM_FIELD_TYPE_NUMBER_CODE = 'number';
+    const CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE = 'select_list_single';
+
+    const CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE_ID = 1;
+    const CUSTOM_FIELD_TYPE_DATE_PICKER_CODE_ID = 2;
+    const CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE_ID = 3;
+    const CUSTOM_FIELD_TYPE_BIG_TEXT_CODE_ID = 4;
+    const CUSTOM_FIELD_TYPE_NUMBER_CODE_ID = 5;
+    const CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE_ID = 6;
 
     public static $fieldTranslation = array(Field::FIELD_SUMMARY_CODE => 'Summary', Field::FIELD_ASSIGNEE_CODE => 'Assigned to', Field::FIELD_DESCRIPTION_CODE => 'Description',
                                     Field::FIELD_REPORTER_CODE => 'Reported by', Field::FIELD_ISSUE_TYPE_CODE => 'Type', Field::FIELD_PRIORITY_CODE => 'Priority',
@@ -166,6 +174,22 @@ class Field {
             $stmt->bind_param("isssiii", $clientId, $code, $name, $description, $systemFlag, $allIssueTypeFlag, $allProjectFlag);
             $stmt->execute();
             return UbirimiContainer::get()['db.connection']->insert_id;
+        }
+    }
+
+    public static function getDataByFieldId($fieldId) {
+        $query = "SELECT * " .
+            "FROM field_data " .
+            "where field_id = ?";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $fieldId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows)
+                return $result;
+            else
+                return null;
         }
     }
 }

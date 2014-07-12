@@ -38,6 +38,7 @@ try {
     $kernel = new HttpKernel(UbirimiContainer::get()['dispatcher'], $resolver);
 
     $response = $kernel->handle($request);
+
     $response->send();
 
     $kernel->terminate($request, $response);
@@ -51,7 +52,9 @@ try {
         });
 
         require_once __DIR__ . '/../src/' . str_replace('\\', '/', $routeMatchedParams['_controller']) . '.php';
+
     } catch (\Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
+
         require_once __DIR__ . '/notFound.html';
     } catch (\Symfony\Component\Routing\Exception\MethodNotAllowedException $e) {
         require_once __DIR__ . '/notFound.html';
