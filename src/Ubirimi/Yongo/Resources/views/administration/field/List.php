@@ -36,6 +36,7 @@
                         <th>Type</th>
                         <th>Available Contexts</th>
                         <th>Screens</th>
+                        <th>Options</th>
                     </tr>
                 </thead>
 
@@ -86,6 +87,9 @@
                             <?php else: ?>
                                 <div>Not placed on any screen.</div>
                             <?php endif ?>
+                        </td>
+                        <td>
+                            <a href="/yongo/administration/custom-fields/define/<?php echo $field['id'] ?>">Options</a>
                         </td>
                     </tr>
                 <?php endwhile ?>

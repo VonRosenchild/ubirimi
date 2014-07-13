@@ -150,6 +150,63 @@ $('document').ready(function () {
         });
     });
 
+    $('#btnDeleteCustomFieldValue').on('click', function (event) {
+        event.preventDefault();
+
+        if (selected_rows.length != 1) {
+            return
+        }
+        var customFieldValueId = selected_rows[0];
+
+        var options = {
+            modal: true,
+            draggable: false,
+            dialogClass: "ubirimi-dialog",
+            width: "auto",
+            stack: true,
+            position: 'center',
+            autoOpen: false,
+            closeOnEscape: true,
+            resizable: false,
+            title: 'Delete Custom Field Value',
+            buttons: [
+                {
+                    text: "Delete",
+                    click: function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '/yongo/administration/custom-fields/value/delete',
+                            data: {
+                                id: customFieldValueId
+                            },
+                            success: function (response) {
+                                $("#modalDeleteCustomFieldValue").dialog('destroy');
+                                $("#modalDeleteCustomFieldValue").empty();
+
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                {
+                    text: "Cancel",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ],
+            close: function () {
+                $("#modalDeleteLinkType").dialog('destroy');
+                $("#modalDeleteLinkType").empty();
+            }
+        };
+
+        $("#modalDeleteCustomFieldValue").load("/yongo/administration/custom-fields/value/dialog/delete/" + customFieldValueId, [], function () {
+            $("#modalDeleteCustomFieldValue").dialog(options);
+            $("#modalDeleteCustomFieldValue").dialog("open");
+        });
+    });
+
     $('#btnDeleteIssueSecurityScheme').on('click', function (event) {
         event.preventDefault();
 

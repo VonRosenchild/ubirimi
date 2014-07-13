@@ -7,13 +7,13 @@
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Custom Fields > ' . $field['name'] . ' > Define Custom Values') ?>
+        <?php Util::renderBreadCrumb('<a href="/yongo/administration/custom-fields">Custom Fields</a> > ' . $field['name'] . ' > Define Custom Values') ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <td><a id="btnNew" href="/yongo/administration/custom-field/value/add/<?php echo $field['id'] ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Custom Value</a></td>
                 <td><a id="btnEditCustomField" href="#" class="btn ubirimi-btn disabled"><i class="icon-edit"></i> Edit</a></td>
-                <td><a id="btnDeleteCustomField" href="#" class="btn ubirimi-btn disabled"><i class="icon-remove"></i> Delete</a></td>
+                <td><a id="btnDeleteCustomFieldValue" href="#" class="btn ubirimi-btn disabled"><i class="icon-remove"></i> Delete</a></td>
             </tr>
         </table>
         <?php if ($fieldData): ?>
