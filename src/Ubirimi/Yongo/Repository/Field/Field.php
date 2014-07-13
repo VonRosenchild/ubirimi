@@ -203,8 +203,14 @@ class Field {
         }
     }
 
-    public static function getDataByFieldIdAndValue($fieldId, $value) {
-        $query = 'select * from `field_data` where field_id = ? and value = ? limit 1';
+    public static function getDataByFieldIdAndValue($fieldId, $value, $dataId = null) {
+        $query = 'select * from `field_data` where field_id = ? and value = ?';
+
+        if ($dataId) {
+            $query .= ' and id != ' . $dataId;
+        }
+
+        $query .= ' limit 1';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("is", $fieldId, $value);
@@ -246,6 +252,16 @@ class Field {
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("ii", $field['id'], $customFieldDataId);
+            $stmt->execute();
+        }
+    }
+
+    public static function updateDataById($id, $value, $date) {
+
+        $query = "update field_data set `value` = ?, date_updated = ? where id = ? limit 1";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("ssi", $value, $date, $id);
             $stmt->execute();
         }
     }

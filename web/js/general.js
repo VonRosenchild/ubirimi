@@ -317,6 +317,7 @@ $('document').ready(function () {
         $('#btnEditIssueSecuritySchemeLevel').attr('class', classCSS);
         $('#btnIssueSecurityLevels').attr('class', classCSS);
         $('#btnDeleteCustomFieldValue').attr('class', classCSS);
+        $('#btnEditCustomFieldValue').attr('class', classCSS);
 
         $('#btnEditCustomField').attr('class', classCSS);
         $('#btnAssignUserToGroup, #btnAssignUserToGroupDocumentator').attr('class', classCSS);

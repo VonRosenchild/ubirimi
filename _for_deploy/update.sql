@@ -25,3 +25,5 @@ CREATE TABLE `field_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `yongo`.`sys_field_type` (`id`, `name`, `description`, `code`) VALUES ('6', 'Select List (Single Choice)', 'A single select list with a configurable list of options', 'select_list_single');
+
+ALTER TABLE `field_data` ADD `date_updated` DATETIME NULL ;

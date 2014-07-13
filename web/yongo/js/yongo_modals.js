@@ -201,7 +201,7 @@ $('document').ready(function () {
             }
         };
 
-        $("#modalDeleteCustomFieldValue").load("/yongo/administration/custom-fields/value/dialog/delete/" + customFieldValueId, [], function () {
+        $("#modalDeleteCustomFieldValue").load("/yongo/administration/custom-field/value/dialog/delete/" + customFieldValueId, [], function () {
             $("#modalDeleteCustomFieldValue").dialog(options);
             $("#modalDeleteCustomFieldValue").dialog("open");
         });

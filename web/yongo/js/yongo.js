@@ -1107,6 +1107,12 @@ $('document').ready(function () {
             document.location.href = '/yongo/administration/screen/edit-scheme-issue-type/' + selected_rows[0];
     });
 
+    $('#btnEditCustomFieldValue').click(function (event) {
+        event.preventDefault();
+        if (selected_rows.length == 1)
+            document.location.href = '/yongo/administration/custom-field/value/edit/' + selected_rows[0];
+    });
+
     $('#btnEditNotificationScheme').click(function (event) {
         event.preventDefault();
         if (selected_rows.length == 1)

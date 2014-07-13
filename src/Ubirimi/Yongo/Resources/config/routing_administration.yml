@@ -612,14 +612,20 @@ adminAddFieldCustomValuesAdd:
     id:  \d+
 
 adminDeleteFieldCustomValueDialog:
-  path: /yongo/administration/custom-fields/value/dialog/delete/{id}
+  path: /yongo/administration/custom-field/value/dialog/delete/{id}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Custom\DeleteValueDialogController' }
   requirements:
     id:  \d+
 
 adminDeleteFieldCustomValue:
-  path: /yongo/administration/custom-fields/value/delete
+  path: /yongo/administration/custom-field/value/delete
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Custom\DeleteValueController' }
+
+adminEditFieldCustomValue:
+  path: /yongo/administration/custom-field/value/edit/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Field\Custom\EditValueController' }
+  requirements:
+    id:  \d+
 
 adminEditFieldMetadata:
   path: /yongo/administration/custom-field/edit/{id}
