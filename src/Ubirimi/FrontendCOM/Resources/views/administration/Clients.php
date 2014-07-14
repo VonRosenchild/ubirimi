@@ -23,7 +23,7 @@
 
     <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
         <tr>
-            <td><a id="btnDeleteClient" href="#" class="btn ubirimi-btn disabled"><i class="icon-remove"></i> Delete</a></td>
+            <td><a id="btnDeleteClient" href="#" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a></td>
         </tr>
     </table>
     <?php while ($client = $clients->fetch_array(MYSQLI_ASSOC)): ?>

@@ -28,6 +28,7 @@ class SigninController extends UbirimiController
                     $httpHOST = $_SERVER['HTTP_HOST'];
 
                     UbirimiContainer::get()['warmup']->warmUpClient($userData);
+                    UbirimiContainer::get()['login.time']->clientSaveLoginTime($userData['client_id']);
 
                     return new RedirectResponse('/account/home');
 

@@ -27,3 +27,6 @@ CREATE TABLE `field_data` (
 INSERT INTO `yongo`.`sys_field_type` (`id`, `name`, `description`, `code`) VALUES ('6', 'Select List (Single Choice)', 'A single select list with a configurable list of options', 'select_list_single');
 
 ALTER TABLE `field_data` ADD `date_updated` DATETIME NULL ;
+
+ALTER TABLE `client` ADD `last_login` DATETIME NULL DEFAULT NULL ;
+ALTER TABLE `user` ADD `last_login` DATETIME NULL DEFAULT NULL ;

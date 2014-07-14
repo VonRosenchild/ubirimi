@@ -1,15 +1,15 @@
 <?php
 
-use Ubirimi\Service\Config;
+use Ubirimi\Service\ConfigService;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Service\UbirimiInjector;
+use Ubirimi\ServiceProvider\UbirimiCoreServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 /* parse .properties file and make them available in the container */
-$configs = Config::process(__DIR__ . '/../app/config/config.properties');
+$configs = ConfigService::process(__DIR__ . '/../app/config/config.properties');
 
 /* register global configs to the container */
 UbirimiContainer::loadConfigs($configs);
-
-UbirimiInjector::inject(UbirimiContainer::get());
+UbirimiContainer::register(new UbirimiCoreServiceProvider());

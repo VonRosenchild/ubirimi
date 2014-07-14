@@ -1917,4 +1917,13 @@ class Client {
                 return null;
         }
     }
+
+    public static function updateLoginTime($clientId, $datetime)
+    {
+        $query = "UPDATE client SET last_login = ? WHERE id = ? limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $datetime, $clientId);
+        $stmt->execute();
+    }
 }

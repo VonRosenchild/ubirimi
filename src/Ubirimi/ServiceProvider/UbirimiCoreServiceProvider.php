@@ -9,12 +9,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Ubirimi\Container\ServiceProviderInterface;
+use Ubirimi\LoginTimeService\LoginTimeService;
+use Ubirimi\Service\ClientService;
 use Ubirimi\Service\WarmUpService;
 use Ubirimi\Service\LogService;
 use Ubirimi\Calendar\Service\EmailService;
 use Ubirimi\Service\UserService;
 use Ubirimi\Service\DatabaseConnectorService;
-
 
 class UbirimiCoreServiceProvider implements ServiceProviderInterface
 {
@@ -42,8 +43,16 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             return new \PaymentTransactionService($pimple['paymill.private_key']);
         });
 
+        $pimple['client'] = $pimple->share(function($pimple) {
+            return new ClientService();
+        });
+
         $pimple['user'] = $pimple->share(function($pimple) {
             return new UserService($pimple['session']);
+        });
+
+        $pimple['login.time'] = $pimple->share(function($pimple) {
+            return new LoginTimeService();
         });
 
         $pimple['session'] = $pimple->share(function() {

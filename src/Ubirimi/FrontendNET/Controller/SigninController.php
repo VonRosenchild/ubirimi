@@ -47,6 +47,7 @@ class SigninController extends UbirimiController
                     $clientId = $userData['client_id'];
 
                     UbirimiContainer::get()['warmup']->warmUpClient($userData, true, true);
+                    UbirimiContainer::get()['login.time']->userSaveLoginTime($userData['id']);
 
                     $date = Util::getServerCurrentDateTime();
                     Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);

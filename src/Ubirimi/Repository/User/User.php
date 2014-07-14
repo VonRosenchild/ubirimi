@@ -798,4 +798,13 @@ class User {
             $stmt->execute();
         }
     }
+
+    public static function updateLoginTime($userId, $datetime)
+    {
+        $query = "UPDATE user SET last_login = ? WHERE id = ? limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $datetime, $userId);
+        $stmt->execute();
+    }
 }
