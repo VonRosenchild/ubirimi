@@ -1,9 +1,15 @@
-<table width="100%" cellpadding="0" cellspacing="0" border="0" class="tableMenu">
-    <tr>
-        <td>
-            <div>
-                <a class="linkSubMenu" href="/svn-hosting/repositories">My SVN Repositories</a>
-            </div>
-        </td>
-    </tr>
-</table>
+<?php
+
+namespace Ubirimi\General\Controller\Menu;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+
+class SVNController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        return $this->render(__DIR__ . '/../../Resources/views/menu/SVN.php', get_defined_vars());
+    }
+}

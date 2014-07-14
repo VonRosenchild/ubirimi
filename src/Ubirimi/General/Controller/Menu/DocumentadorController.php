@@ -6,24 +6,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Documentador\Space;
 use Ubirimi\Util;
 
-class HelpDeskController extends UbirimiController
+class DocumentadorController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         if (Util::checkUserIsLoggedIn()) {
+            Util::checkUserIsLoggedInAndRedirect();
 
-            $selectedProjectId = $session->get('selected_project_id');
+            $spaces = Space::getByClientId($session->get('client/id'));
         } else {
             $httpHOST = Util::getHttpHost();
             $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-            $loggedInUserId = null;
-            $selectedProjectId = null;
+            $spaces = Space::getByClientIdAndAnonymous($clientId);
         }
 
-        $clientAdministratorFlag = $session->get('user/client_administrator_flag');
-
-        return $this->render(__DIR__ . '/../../Resources/views/menu/HelpDesk.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../Resources/views/menu/Documentador.php', get_defined_vars());
     }
 }

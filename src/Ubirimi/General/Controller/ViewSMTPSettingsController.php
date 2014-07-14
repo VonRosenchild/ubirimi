@@ -1,14 +1,26 @@
 <?php
-    use Ubirimi\Repository\SMTPServer;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller;
 
-    $session->set('selected_product_id', -1);
-    $menuSelectedCategory = 'general_mail';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\SMTPServer;
 
-    $smtpSettings = SMTPServer::getByClientId($clientId);
+class ViewSMTPSettingsController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / SMTP Server Settings';
+        $session->set('selected_product_id', -1);
+        $menuSelectedCategory = 'general_mail';
 
-    require_once __DIR__ . '/../Resources/views/ViewSMTPSettings.php';
+        $smtpSettings = SMTPServer::getByClientId($session->get('client/id'));
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / SMTP Server Settings';
+
+        return $this->render(__DIR__ . '/../Resources/views/ViewSMTPSettings.php', get_defined_vars());
+    }
+}

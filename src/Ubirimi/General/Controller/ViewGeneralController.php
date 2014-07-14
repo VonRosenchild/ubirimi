@@ -1,15 +1,27 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller;
 
-    $session->set('selected_product_id', -1);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Client;
 
-    $menuSelectedCategory = 'general_overview';
-    $clientSettings = Client::getSettings($clientId);
-    $client = Client::getById($clientId);
+class ViewGeneralController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings';
+        $session->set('selected_product_id', -1);
 
-    require_once __DIR__ . '/../Resources/views/ViewGeneral.php';
+        $menuSelectedCategory = 'general_overview';
+        $clientSettings = Client::getSettings($session->get('client/id'));
+        $client = Client::getById($session->get('client/id'));
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings';
+
+        return $this->render(__DIR__ . '/../Resources/views/ViewGeneral.php', get_defined_vars());
+    }
+}

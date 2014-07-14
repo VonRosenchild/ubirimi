@@ -1,28 +1,49 @@
 <?php
 
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Project\Project;
+namespace Ubirimi\General\Controller\Menu;
 
-    if (Util::checkUserIsLoggedIn()) {
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Client;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    } else {
-        $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-        $loggedInUserId = null;
+class IssuesController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        if (Util::checkUserIsLoggedIn()) {
+
+        } else {
+            $httpHOST = Util::getHttpHost();
+            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $loggedInUserId = null;
+        }
+
+        $projectsMenu = Client::getProjectsByPermission(
+            $session->get('client/id'),
+            $session->get('user/id'),
+            Permission::PERM_BROWSE_PROJECTS,
+            'array'
+        );
+
+        $projectsForBrowsing = array();
+        for ($i = 0; $i < count($projectsMenu); $i++)
+            $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
+
+        $hasCreateIssuePermission = false;
+        if (count($projectsForBrowsing)) {
+            $hasCreateIssuePermission = Project::userHasPermission(
+                $projectsForBrowsing,
+                Permission::PERM_CREATE_ISSUE,
+                $session->get('user/id')
+            );
+        }
+
+        $recentIssues = $session->get('yongo/recent_issues');
+
+        return $this->render(__DIR__ . '/../../Resources/views/menu/Issues.php', get_defined_vars());
     }
-    $projectsMenu = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
-
-    $projectsForBrowsing = array();
-    for ($i = 0; $i < count($projectsMenu); $i++)
-        $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
-
-    $hasCreateIssuePermission = false;
-    if (count($projectsForBrowsing)) {
-        $hasCreateIssuePermission = Project::userHasPermission($projectsForBrowsing, Permission::PERM_CREATE_ISSUE, $loggedInUserId);
-    }
-
-    $recentIssues = $session->get('yongo/recent_issues');
-
-    require_once __DIR__ . '/../../Resources/views/menu/Issues.php';
+}
