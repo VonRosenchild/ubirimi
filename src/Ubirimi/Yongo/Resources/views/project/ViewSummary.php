@@ -54,8 +54,8 @@
                             </td>
                         </tr>
                     </table>
-
                 </td>
+                <td width="10px"></td>
                 <td valign="top">
                     <table width="100%">
                         <tr>

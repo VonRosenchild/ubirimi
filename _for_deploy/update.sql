@@ -14,6 +14,7 @@ ALTER TABLE `help_sla_calendar` ADD `default_flag` TINYINT UNSIGNED NOT NULL DEF
 
 ALTER TABLE `notification_scheme_data` ADD `all_watchers` TINYINT UNSIGNED NULL AFTER `component_lead`;
 
+ALTER TABLE `project` CHANGE `service_desk_enabled_flag` `help_desk_enabled_flag` TINYINT(3) UNSIGNED NULL DEFAULT NULL;
 
 CREATE TABLE `field_data` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -23,6 +24,32 @@ CREATE TABLE `field_data` (
   PRIMARY KEY (`id`),
   KEY `field_id` (`field_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `help_sla_calendar` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `project_id` bigint(20) unsigned NOT NULL,
+  `sys_timezone_id` bigint(20) unsigned NOT NULL,
+  `default_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(150) NOT NULL,
+  `description` varchar(250) NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sys_timezone_id` (`sys_timezone_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `help_sla_calendar_data` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `help_sla_calendar_id` bigint(20) unsigned NOT NULL,
+  `day_number` int(10) unsigned NOT NULL,
+  `time_from` varchar(8) NOT NULL,
+  `time_to` varchar(8) NOT NULL,
+  `not_working_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `help_calendar_id` (`help_sla_calendar_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 INSERT INTO `yongo`.`sys_field_type` (`id`, `name`, `description`, `code`) VALUES ('6', 'Select List (Single Choice)', 'A single select list with a configurable list of options', 'select_list_single');
 

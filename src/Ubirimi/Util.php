@@ -171,15 +171,6 @@ class Util {
         $dateObject = new \DateTime($date, new \DateTimeZone(date_default_timezone_get()));
         $dateObject->setTimezone(new \DateTimeZone($clientTimezone));
 
-        if (date('j/M/Y', strtotime($date)) == date('j/M/Y')) {
-            return 'today ' . date_format($dateObject, 'H:i');
-        }
-        else {
-            if ((date('j', strtotime($date)) + 1) == date('j') && date('M/Y', strtotime($date)) == date('M/Y')) {
-                return 'yesterday';
-            }
-        }
-
         return date('j M Y H:i:s', strtotime($date));
     }
 

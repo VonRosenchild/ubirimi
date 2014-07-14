@@ -64,12 +64,13 @@ class AddController extends UbirimiController
                 $projectCategoryId = null;
             }
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
-            if (empty($code))
+            if (empty($code)) {
                 $emptyCode = true;
-            else {
+            } else {
                 $projectExists = Project::getByCode(mb_strtolower($code), null, $session->get('client/id'));
                 if ($projectExists)
                     $duplicateCode = true;
@@ -95,7 +96,7 @@ class AddController extends UbirimiController
                 $project->setNotificationSchemeId($notificationSchemeId);
                 $project->setLeadId($leadId);
                 $project->setProjectCategoryId($projectCategoryId);
-                $project->setServiceDeskEnabledFlag($forHelpDesk);
+                $project->setHelpDeskDeskEnabledFlag($forHelpDesk);
                 $project->setDateCreated($currentDate);
 
                 $projectId = UbirimiContainer::get()['project']->add($project, $session->get('user/id'));

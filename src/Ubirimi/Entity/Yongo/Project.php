@@ -18,7 +18,7 @@ class Project
     private $name;
     private $code;
     private $description;
-    private $serviceDeskEnabledFlag;
+    private $helpDeskEnabledFlag;
     private $issueNumber;
     private $dateCreated;
     private $dateUpdated;
@@ -264,19 +264,19 @@ class Project
     }
 
     /**
-     * @param mixed $serviceDeskEnabledFlag
+     * @param mixed $helpDeskEnabledFlag
      */
-    public function setServiceDeskEnabledFlag($serviceDeskEnabledFlag)
+    public function setHelpDeskDeskEnabledFlag($helpDeskEnabledFlag)
     {
-        $this->serviceDeskEnabledFlag = $serviceDeskEnabledFlag;
+        $this->helpDeskEnabledFlag = $helpDeskEnabledFlag;
     }
 
     /**
      * @return mixed
      */
-    public function getServiceDeskEnabledFlag()
+    public function getHelpDeskEnabledFlag()
     {
-        return $this->serviceDeskEnabledFlag;
+        return $this->helpDeskEnabledFlag;
     }
 
     /**

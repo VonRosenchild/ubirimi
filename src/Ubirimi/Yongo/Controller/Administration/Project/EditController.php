@@ -22,6 +22,9 @@ class EditController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
+
         $projectId = $request->get('id');
         $leadUsers = Client::getUsers($session->get('client/id'));
 
@@ -67,9 +70,9 @@ class EditController extends UbirimiController
                 }
             }
 
-            if (empty($code))
+            if (empty($code)) {
                 $empty_code = true;
-            else {
+            } else {
                 $project_exists = Project::getByCode(mb_strtolower($code), $projectId, $session->get('client/id'));
                 if ($project_exists)
                     $duplicate_code = true;
@@ -78,6 +81,10 @@ class EditController extends UbirimiController
             if (!$emptyName && !$empty_code && !$duplicate_name && !$duplicate_code) {
                 $currentDate = Util::getServerCurrentDateTime();
                 Project::updateById($projectId, $lead_id, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $enableForHelpdeskFlag, $currentDate);
+
+                if ($enableForHelpdeskFlag) {
+                    Project::addDefaultInitialDataForHelpDesk($clientId, $projectId, $loggedInUserId, $currentDate);
+                }
 
                 Log::add(
                     $session->get('client/id'),
