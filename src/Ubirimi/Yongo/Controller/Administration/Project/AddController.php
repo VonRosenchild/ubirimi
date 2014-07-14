@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -97,7 +98,7 @@ class AddController extends UbirimiController
                 $project->setServiceDeskEnabledFlag($forHelpDesk);
                 $project->setDateCreated($currentDate);
 
-                $projectId = ProjectService::add($project, $session->get('user/id'));
+                $projectId = UbirimiContainer::get()['project']->add($project, $session->get('user/id'));
 
                 $session->set('selected_project_id', $projectId);
 
