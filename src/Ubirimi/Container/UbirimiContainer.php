@@ -2,6 +2,8 @@
 
 namespace Ubirimi\Container;
 
+use Ubirimi\Container\ServiceProviderInterface;
+
 class UbirimiContainer
 {
     public static function get()
@@ -13,6 +15,12 @@ class UbirimiContainer
         }
 
         return $pimple;
+    }
+
+    public static function register(ServiceProviderInterface $provider)
+    {
+        $provider->register(self::get());
+        $provider->boot(self::get());
     }
 
     public static function loadConfigs($configs = array())

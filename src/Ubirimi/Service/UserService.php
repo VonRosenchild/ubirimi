@@ -15,7 +15,7 @@ use ubirimi\svn\SVNRepository;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-class User extends UbirimiService
+class UserService extends UbirimiService
 {
     public function newUser($data)
     {

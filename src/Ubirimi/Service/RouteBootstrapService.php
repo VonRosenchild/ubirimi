@@ -11,7 +11,7 @@ use Symfony\Component\Config\FileLocator;
 use Ubirimi\Container\UbirimiContainer;
 use Symfony\Component\Routing\RouteCollection;
 
-class RouteBootstrap
+class RouteBootstrapService
 {
     /**
      * @var \Symfony\Component\Routing\RequestContext;

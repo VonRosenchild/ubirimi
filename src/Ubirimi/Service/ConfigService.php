@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Service;
 
-class Config
+class ConfigService
 {
     private $configFile;
 

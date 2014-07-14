@@ -4,28 +4,18 @@ namespace Ubirimi\Yongo\Service;
 
 use Ubirimi\Service\UbirimiService;
 use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
+use Ubirimi\Yongo\Repository\Project\Project;
 
 class WorkflowService extends UbirimiService
 {
     public function hasEvent($clientId, $projectId, $issueTypeId)
     {
-        $workflowUsed = $this->apiClient->get(
-            sprintf('/yongo/workflow/project/%d/issue_type/%d', $projectId, $issueTypeId)
-        )->getContent();
+        $workflowUsed = Project::getWorkflowUsedForType($projectId, $issueTypeId);
+        $creationData = Workflow::getDataForCreation($workflowUsed['id']);
+        $eventData = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE);
 
-        $initialStep = $this->apiClient->get(
-            sprintf('/yongo/workflow/initial_step?workflowId=%d', $workflowUsed[0]['id'])
-        )->getContent();
-
-        $creationData = $this->apiClient->get(
-            sprintf('/yongo/workflow/creation_data?workflowId=%d&stepId=%d', $workflowUsed[0]['id'], $initialStep[0]['id'])
-        )->getContent();
-
-        $eventData = $this->apiClient->get(
-            sprintf('/yongo/event/find/clientId/%d/code/%d', $clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE)
-        )->getContent();
-
-        return WorkflowFunction::hasEvent($creationData[0]['id'], 'event=' . $eventData[0]['id']);
+        return WorkflowFunction::hasEvent($creationData['id'], 'event=' . $eventData['id']);
     }
 }

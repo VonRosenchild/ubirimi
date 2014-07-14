@@ -14,18 +14,8 @@ use Ubirimi\SystemProduct;
  * Warm up data in the session needed in a general context: Client or Customer.
  *
  */
-class WarmUp
+class WarmUpService extends UbirimiService
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
-     */
-    private $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
-
     /**
      * Warms up the session with general information
      *

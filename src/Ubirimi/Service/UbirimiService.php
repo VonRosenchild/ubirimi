@@ -8,18 +8,12 @@ use Ubirimi\Component\ApiClient\ApiClient;
 class UbirimiService
 {
     /**
-     * @var \Ubirimi\Component\ApiClient\ApiClient
-     */
-    protected $apiClient;
-
-    /**
      * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
      */
     protected $session;
 
-    public function __construct(ApiClient $client, SessionInterface $session)
+    public function __construct(SessionInterface $session)
     {
-        $this->apiClient = $client;
         $this->session = $session;
     }
 }

@@ -6,11 +6,11 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Log {
 
-    public static function add($clientId, $productId, $userId, $message, $currentDate) {
-        $query = "INSERT INTO general_log(client_id, sys_product_id, user_id, message, date_created) VALUES (?, ?, ?, ?, ?)";
+    public static function add($clientId, $productId, $userId, $message) {
+        $query = "INSERT INTO general_log(client_id, sys_product_id, user_id, message, date_created) VALUES (?, ?, ?, ?, NOW())";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("iiiss", $clientId, $productId, $userId, $message, $currentDate);
+            $stmt->bind_param("iiis", $clientId, $productId, $userId, $message);
             $stmt->execute();
 
             return UbirimiContainer::get()['db.connection']->insert_id;

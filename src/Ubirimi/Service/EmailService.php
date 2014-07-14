@@ -6,7 +6,7 @@ use Ubirimi\Repository\Email\Email as EmailRepository;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Util;
 
-class Email extends UbirimiService
+class EmailService extends UbirimiService
 {
     public function newUser($firstName, $lastName, $username, $password, $email, $clientDomain, $clientId)
     {

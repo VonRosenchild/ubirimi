@@ -4,7 +4,7 @@ namespace Ubirimi\Service;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class DatabaseConnector
+class DatabaseConnectorService
 {
     public function getConnection() {
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

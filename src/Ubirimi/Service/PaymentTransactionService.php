@@ -6,7 +6,7 @@ use Ubirimi\Repository\Payment as PaymentRepository;
 use Ubirimi\Repository\Invoice as InvoiceRepository;
 use Ubirimi\Util;
 
-class PaymentTransaction
+class PaymentTransactionService
 {
     private $paymillPrivateKey;
 

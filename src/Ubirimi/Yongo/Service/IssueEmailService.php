@@ -18,9 +18,9 @@ class IssueEmailService extends UbirimiService
      */
     private $workflowService;
 
-    public function __construct(ApiClient $client, SessionInterface $session, WorkflowService $service)
+    public function __construct(SessionInterface $session, WorkflowService $service)
     {
-        parent::__construct($client, $session);
+        parent::__construct($session);
 
         $this->workflowService = $service;
     }
