@@ -26,39 +26,48 @@
             <td><a id="btnDeleteClient" href="#" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a></td>
         </tr>
     </table>
-    <?php while ($client = $clients->fetch_array(MYSQLI_ASSOC)): ?>
-    <div class="pageContent" style="float: left; width: 320px; padding-top: 0px; height: 160px; margin: 10px; margin-top: 30px; padding-bottom: 30px; border: solid 1px; border-color: #cacaca;">
-        <table class="table table-condensed" >
+    <div class="pageContent">
+        <table class="table table-hover table-condensed">
+            <thead>
             <tr>
-                <td style="border-top: 0px;">
-                    <h2><?php echo $client['company_name'] ?></h2>
-                    <strong><?php echo count(Client::getProjects($client['id'], 'array')) ?></strong> project,
-                    <strong><?php echo User::getByClientId($client['id'])->num_rows ?></strong> users,
-
-                    <strong>
+                <th></th>
+                <th>Client</th>
+                <th>Stats</th>
+                <th>Domain</th>
+                <th>Email</th>
+                <th>Created at</th>
+                <th>Installed</th>
+                <th>Last login</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php while ($client = $clients->fetch_array(MYSQLI_ASSOC)): ?>
+                <tr id="table_row_<?php echo $client['id'] ?>">
+                    <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $client['id'] ?>"/></td>
+                    <td><?php echo $client['company_name'] ?></td>
+                    <td>
+                        <strong><?php echo count(Client::getProjects($client['id'], 'array')) ?></strong>P
+                        <strong>
+                            <?php
+                                $users = User::getByClientId($client['id']);
+                                echo null !== $users ? count($users) : '0';
+                            ?></strong>U
+                        <strong>
                         <?php
                             $issues = Issue::getByParameters(array('client_id' => $client['id']));
-                            if (null !== $issues) {
-                                echo count($issues->fetch_all(MYSQLI_ASSOC));
-                            } else {
-                                echo '0';
-                            }
-                        ?>
-                    </strong> issues
-                    <br />
-                    <?php echo $client['company_domain'] ?><br />
-                    <?php echo $client['contact_email'] ?><br />
-                    <?php echo date('d F', strtotime($client['date_created'])) ?><br />
-                    INSTALLED: <?php if ($client['installed_flag']) echo 'YES'; else echo 'NO' ?>
-                    <br />
-                    <strong>DELETE</strong> <input type="checkbox" value="1" id="el_check_<?php echo $client['id'] ?>" />
-                </td>
-            </tr>
+                            echo null !== $issues ? count($issues->fetch_all(MYSQLI_ASSOC)) : '0';
+                        ?></strong>I
+                    </td>
+                    <td><?php echo $client['company_domain'] ?><br /></td>
+                    <td><?php echo $client['contact_email'] ?></td>
+                    <td><?php echo date('d F', strtotime($client['date_created'])) ?><br /></td>
+                    <td><?php if ($client['installed_flag']) echo 'YES'; else echo 'NO' ?></td>
+                    <td><?php echo null !== $client['last_login'] ? date('d M Y', strtotime($client['last_login'])) : 'NA' ?></td>
+                </tr>
+            <?php endwhile ?>
+            </tbody>
         </table>
     </div>
-    <?php endwhile ?>
-
     <div id="modalDeleteClient"></div>
-
 </div>
 </body>
