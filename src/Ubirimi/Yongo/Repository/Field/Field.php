@@ -203,8 +203,14 @@ class Field {
         }
     }
 
-    public static function getDataByFieldIdAndValue($fieldId, $value) {
-        $query = 'select * from `field_data` where field_id = ? and value = ? limit 1';
+    public static function getDataByFieldIdAndValue($fieldId, $value, $dataId = null) {
+        $query = 'select * from `field_data` where field_id = ? and value = ?';
+
+        if ($dataId) {
+            $query .= ' and id != ' . $dataId;
+        }
+
+        $query .= ' limit 1';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("is", $fieldId, $value);
@@ -215,6 +221,48 @@ class Field {
                 return $result->fetch_array(MYSQLI_ASSOC);
             else
                 return false;
+        }
+    }
+
+    public static function getDataById($id) {
+        $query = 'select * from `field_data` where id = ? limit 1';
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows)
+                return $result->fetch_array(MYSQLI_ASSOC);
+            else
+                return false;
+        }
+    }
+
+    public static function deleteDataById($customFieldDataId) {
+        $field = Field::getDataById($customFieldDataId);
+
+        $query = "delete from field_data where id = ? limit 1";
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $customFieldDataId);
+            $stmt->execute();
+        }
+
+        $query = "delete from issue_custom_field_data where field_id = ? and value = ?";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("ii", $field['id'], $customFieldDataId);
+            $stmt->execute();
+        }
+    }
+
+    public static function updateDataById($id, $value, $date) {
+
+        $query = "update field_data set `value` = ?, date_updated = ? where id = ? limit 1";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("ssi", $value, $date, $id);
+            $stmt->execute();
         }
     }
 }
