@@ -248,31 +248,14 @@ class Email {
         $projectId = $issue['issue_project_id'];
         $eventUpdatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_UPDATED_CODE, 'id');
         $users = Project::getUsersForNotification($projectId, $eventUpdatedId, $issue, $loggedInUserId);
+        $project = Project::getById($projectId);
 
-        if (!$users) {
-            return;
-        }
-
-        $usersSentNotification = array();
-
-        while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
-            if ($user['user_id'] == $loggedInUserId) {
-                if ($user['notify_own_changes_flag']) {
-                    Email::sendEmailIssueChanged($issue, $clientId, $changedFields, $user);
-                    $usersSentNotification[] = $user['user_id'];
-                }
-            } else {
-                Email::sendEmailIssueChanged($issue, $clientId, $changedFields, $user);
-                $usersSentNotification[] = $user['user_id'];
+        while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
+            if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
+                continue;
             }
-        }
 
-        // get the issue watchers and send them an email
-        $watchers = IssueWatcher::getByIssueId($issue['id']);
-        while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)) {
-            if (!in_array($watcher['id'], $usersSentNotification)) {
-                Email::sendEmailIssueChanged($issue, $clientId, $changedFields, $watcher);
-            }
+            Email::sendEmailIssueChanged($issue, $project, $loggedInUserId, $clientId, $changedFields, $user);
         }
     }
 

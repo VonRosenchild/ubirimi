@@ -25,7 +25,7 @@
         }
 
         public static function getCustomFieldsData($issueId) {
-            $query = 'SELECT issue_custom_field_data.value, field.name, sys_field_type.code, field_data.value ' .
+            $query = 'SELECT coalesce(field_data.value, issue_custom_field_data.value) as value, field.name, sys_field_type.code ' .
                 'FROM issue_custom_field_data ' .
                 'LEFT JOIN field on field.id = issue_custom_field_data.field_id ' .
                 'left join field_data on field_data.id = issue_custom_field_data. value ' .
@@ -47,9 +47,9 @@
         public static function updateCustomFieldsData($issueId, $issueCustomFieldsData, $currentDate) {
 
             foreach ($issueCustomFieldsData as $key => $value) {
+                $keyData = explode("_", $key);
+                $fieldId = $keyData[0];
                 if (!empty($value)) {
-                    $keyData = explode("_", $key);
-                    $fieldId = $keyData[0];
                     $valueField = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $fieldId);
 
                     if ($valueField) {
@@ -68,6 +68,13 @@
                             $stmt->bind_param("iiss", $issueId, $fieldId, $value, $currentDate);
                             $stmt->execute();
                         }
+                    }
+                } else {
+                    $query = "delete from issue_custom_field_data where issue_id = ? and field_id = ? limit 1";
+
+                    if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+                        $stmt->bind_param("ii", $issueId, $fieldId);
+                        $stmt->execute();
                     }
                 }
             }
