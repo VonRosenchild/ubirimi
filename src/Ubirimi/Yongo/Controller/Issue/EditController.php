@@ -41,7 +41,7 @@ class EditController extends UbirimiController
 
         $newIssueData = array();
         $newIssueCustomFieldsData = array();
-        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId, null, $loggedInUserId);
 
         for ($i = 0; $i < count($fieldTypes); $i++) {
             if ($fieldValues[$i] != 'null' && $fieldValues[$i] != '') {

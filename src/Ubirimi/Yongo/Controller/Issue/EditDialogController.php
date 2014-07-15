@@ -15,7 +15,7 @@ class EditDialogController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueId = $request->get('id');
-        $issueData = Issue::getByParameters(array('issue_id' => $issueId), $session->get('user/id'));
+        $issueData = Issue::getByParameters(array('issue_id' => $issueId), $session->get('user/id'), null, $session->get('user/id'));
         $issueTypeId = $issueData['issue_type_id'];
 
         return $this->render(__DIR__ . '/../../Resources/views/issue/EditDialog.php', get_defined_vars());

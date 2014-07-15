@@ -39,51 +39,51 @@ class ViewIssueSummaryController extends UbirimiController
         $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $count = 0;
-        $stats_priority = array();
-        $stats_type = array();
-        $stats_status = array();
-        $stats_assignee = array();
+        $statsPriority = array();
+        $statsType = array();
+        $statsStatus = array();
+        $statsAssignee = array();
 
         if ($issues) {
             $count = $issues->num_rows;
             // group them by priority
             while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                if (!isset($stats_priority[$issue['priority']])) {
-                    $stats_priority[$issue['priority']] = array($issue['priority_name'] => 0);
+                if (!isset($statsPriority[$issue['priority']])) {
+                    $statsPriority[$issue['priority']] = array($issue['priority_name'] => 0);
                 }
-                $stats_priority[$issue['priority']][$issue['priority_name']]++;
+                $statsPriority[$issue['priority']][$issue['priority_name']]++;
             }
 
             // group them by type
             $issues->data_seek(0);
-            $stats_type = array();
+            $statsType = array();
             while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                if (!isset($stats_type[$issue['type']])) {
-                    $stats_type[$issue['type']] = array($issue['type_name'] => 0);
+                if (!isset($statsType[$issue['type']])) {
+                    $statsType[$issue['type']] = array($issue['type_name'] => 0);
                 }
-                $stats_type[$issue['type']][$issue['type_name']]++;
+                $statsType[$issue['type']][$issue['type_name']]++;
             }
 
             // group them by status
             $issues->data_seek(0);
-            $stats_status = array();
+            $statsStatus = array();
             while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                if (!isset($stats_status[$issue['status']])) {
-                    $stats_status[$issue['status']] = array($issue['status_name'] => 0);
+                if (!isset($statsStatus[$issue['status']])) {
+                    $statsStatus[$issue['status']] = array($issue['status_name'] => 0);
                 }
-                $stats_status[$issue['status']][$issue['status_name']]++;
+                $statsStatus[$issue['status']][$issue['status_name']]++;
             }
 
             // group them by assignee
             $issues->data_seek(0);
-            $stats_assignee = array();
+            $statsAssignee = array();
             while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                if (!isset($stats_assignee[$issue['assignee']])) {
+                if (!isset($statsAssignee[$issue['assignee']])) {
                     $userName = $issue['ua_first_name'] . ' ' . $issue['ua_last_name'];
-                    $stats_assignee[$issue['assignee']] = array($userName => 0);
+                    $statsAssignee[$issue['assignee']] = array($userName => 0);
                 }
                 $userName = $issue['ua_first_name'] . ' ' . $issue['ua_last_name'];
-                $stats_assignee[$issue['assignee']][$userName]++;
+                $statsAssignee[$issue['assignee']][$userName]++;
             }
         }
 

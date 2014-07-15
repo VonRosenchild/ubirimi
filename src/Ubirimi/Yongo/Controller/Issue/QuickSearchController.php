@@ -15,7 +15,7 @@
     $projects = Util::array_column($projects, 'id');
 
     // search first for a perfect match
-    $issueResult = Issue::getByParameters(array('project' => $projects, 'code_nr' => $searchQuery), $loggedInUserId);
+    $issueResult = Issue::getByParameters(array('project' => $projects, 'code_nr' => $searchQuery), $loggedInUserId, null, $loggedInUserId);
 
     if ($issueResult) {
         $issue = $issueResult->fetch_array(MYSQLI_ASSOC);

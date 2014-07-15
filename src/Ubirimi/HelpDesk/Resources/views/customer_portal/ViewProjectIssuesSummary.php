@@ -60,18 +60,18 @@
         <table width="100%" cellpadding="8">
             <tr>
                 <td valign="top" width="50%">
-                    <?php Util::renderComponentStatSection($stats_priority, $count, 'Unresolved by priority', 'priority', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
+                    <?php Util::renderComponentStatSection($statsPriority, $count, 'Unresolved by priority', 'priority', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
                 </td>
                 <td valign="top">
-                    <?php Util::renderComponentStatSection($stats_type, $count, 'Unresolved by type', 'type', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
+                    <?php Util::renderComponentStatSection($statsType, $count, 'Unresolved by type', 'type', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
                 </td>
             </tr>
             <tr>
                 <td valign="top" width="500px">
-                    <?php Util::renderComponentStatSection($stats_status, $count, 'Status overview', 'status', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
+                    <?php Util::renderComponentStatSection($statsStatus, $count, 'Status overview', 'status', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
                 </td>
                 <td valign="top">
-                    <?php Util::renderComponentStatSection($stats_assignee, $count, 'Unresolved by assignee', 'assignee', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
+                    <?php Util::renderComponentStatSection($statsAssignee, $count, 'Unresolved by assignee', 'assignee', $projectId, null, null, '/helpdesk/customer-portal/tickets'); ?>
                 </td>
             </tr>
             <tr>

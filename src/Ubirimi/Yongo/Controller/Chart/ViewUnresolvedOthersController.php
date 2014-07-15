@@ -41,7 +41,7 @@ class ViewUnresolvedOthersController extends UbirimiController
             $issueQueryParameters['not_assignee'] = $loggedInUserId;
         }
 
-        $issuesUnresolvedOthers = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+        $issuesUnresolvedOthers = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $renderParameters = array('issues' => $issuesUnresolvedOthers, 'render_checkbox' => false, 'show_header' =>true);
         $renderColumns = array('code', 'summary', 'priority', 'assignee');

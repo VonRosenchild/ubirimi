@@ -75,7 +75,7 @@
     if (isset($parseURLData['query'])) {
         if (Util::searchQueryNotEmpty($getSearchParameters)) {
 
-            $issues = Issue::getByParameters($getSearchParameters, $loggedInUserId);
+            $issues = Issue::getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
             $issuesCount = $issues->num_rows;
             $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';
         }

@@ -11,9 +11,9 @@
     Util::checkUserIsLoggedInAndRedirect();
     $issueId = $_POST['id'];
     $close = isset($_POST['close']) ? $_POST['close'] : 0;
-    $issue_params = array('issue_id' => $issueId);
+    $issueParameters = array('issue_id' => $issueId);
 
-    $issue = Issue::getByParameters($issue_params, $loggedInUserId);
+    $issue = Issue::getByParameters($issueParameters, $loggedInUserId);
 
     $projectId = $issue['issue_project_id'];
     $issueProject = Project::getById($projectId);

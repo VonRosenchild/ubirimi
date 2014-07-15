@@ -43,7 +43,7 @@ class ViewComponentSummaryController extends UbirimiController
             'resolution' => array(-2),
             'page' => 1,
             'component' => array($componentId),
-            'issues_per_page' => 10), $loggedInUserId);
+            'issues_per_page' => 10), $loggedInUserId, null, $loggedInUserId);
         $issues = $issuesResult[0];
 
         $issuesResultUpdatedRecently = Issue::getByParameters(array('project' => $projectId,
@@ -52,7 +52,7 @@ class ViewComponentSummaryController extends UbirimiController
             'issues_per_page' => 10,
             'sort' => 'updated',
             'component' => array($componentId),
-            'sort_order' => 'desc'), $loggedInUserId);
+            'sort_order' => 'desc'), $loggedInUserId, null, $loggedInUserId);
         $issuesUpdatedRecently = $issuesResultUpdatedRecently[0];
 
         return $this->render(__DIR__ . '/../../Resources/views/project/ViewComponentSummary.php', get_defined_vars());

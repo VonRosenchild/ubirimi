@@ -104,9 +104,9 @@ class ViewController extends UbirimiController
             $childrenIssues = null;
             $parentIssue = null;
             if ($issue['parent_id'] == null) {
-                $childrenIssues = Issue::getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'));
+                $childrenIssues = Issue::getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
             } else {
-                $parentIssue = Issue::getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'));
+                $parentIssue = Issue::getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
             }
 
             $customFieldsData = IssueCustomField::getCustomFieldsData($issue['id']);

@@ -46,7 +46,7 @@ class IndexController extends UbirimiController
         } else {
             $issueQueryParameters['project'] = array(-1);
         }
-        $issues = Issue::getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issues = Issue::getByParameters($issueQueryParameters, $session->get('user/id'), null, $session->get('user/id'));
 
         $issueQueryParameters = array('issues_per_page' => $issuesPerPage, 'resolution' => array(-2), 'sort' => 'code', 'sort_order' => 'desc');
         if (count($projectIdsArray)) {
@@ -55,7 +55,7 @@ class IndexController extends UbirimiController
         if ($session->get('user/id')) {
             $issueQueryParameters['not_assignee'] = $userAssignedId;
         }
-        $issuesUnresolvedOthers = Issue::getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issuesUnresolvedOthers = Issue::getByParameters($issueQueryParameters, $session->get('user/id'), null, $session->get('user/id'));
         $menuSelectedCategory = 'home';
 
         $hasGlobalAdministrationPermission = User::hasGlobalPermission($clientId, $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
