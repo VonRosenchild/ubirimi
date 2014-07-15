@@ -82,6 +82,9 @@
                                         if ($data['reporter']) {
                                             echo '<li>Reporter</li>';
                                         }
+                                        if ($data['current_assignee']) {
+                                            echo '<li>Current Assignee</li>';
+                                        }
                                     }
                                     echo '</ul>';
                                 }

@@ -1085,6 +1085,7 @@ class Project {
                 'permission_scheme_data.user_id = ? and ' .
                 'permission_scheme_data.sys_permission_id = ? ' .
 
+
             // 2. group in permission scheme
 
             'UNION ' .
@@ -1100,6 +1101,8 @@ class Project {
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'user.id = ? ' .
 
+
+
             // 3. permission role in permission scheme - user
 
             'UNION ' .
@@ -1113,6 +1116,8 @@ class Project {
                 'project_role_data.user_id is not null and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'user.id = ? ' .
+
+
 
             // 4. permission role in permission scheme - group
 
@@ -1144,11 +1149,32 @@ class Project {
             'permission_scheme_data.reporter = 1 and ' .
             'user.id = ? ';
 
+
+
         if ($issueId) {
-            $query .= 'and yongo_issue.id = ? ';
+            $query .= ' and yongo_issue.id = ? ';
         }
 
-            // 6. check if there is a group 'Anyone' set in the permissions
+            // 6. assignee
+
+        $query .=
+            'UNION ' .
+            'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            'from project ' .
+            'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
+            'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
+            'left join yongo_issue on yongo_issue.project_id = project.id ' .
+            'left join user on user.id = yongo_issue.user_assigned_id ' .
+            'where project.id  IN ' . $projectsSQL . ' and ' .
+            'permission_scheme_data.sys_permission_id = ? and ' .
+            'permission_scheme_data.current_assignee = 1 and ' .
+            'user.id = ? ';
+
+        if ($issueId) {
+            $query .= ' and yongo_issue.id = ? ';
+        }
+
+            // 7. check if there is a group 'Anyone' set in the permissions
 
         $query .=
             'UNION ' .
@@ -1158,14 +1184,15 @@ class Project {
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
             'permission_scheme_data.sys_permission_id = ? and ' .
-            'permission_scheme_data.group_id = 0';
+            'permission_scheme_data.group_id = 0 ';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             if ($issueId) {
-                $stmt->bind_param("iiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $issueId, $userId, $permissionId);
+                $stmt->bind_param("iiiiiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $issueId, $permissionId, $userId, $issueId, $permissionId);
             } else {
-                $stmt->bind_param("iiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId);
+                $stmt->bind_param("iiiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId);
             }
+
             $stmt->execute();
             $result = $stmt->get_result();
 

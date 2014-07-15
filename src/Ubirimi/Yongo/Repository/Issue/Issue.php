@@ -195,14 +195,22 @@ class Issue {
 
                 $queryWhere .= ' issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') AND ';
 
-                $queryProjectPart = array();
+                $queryProjectPartReporter = array();
+                $queryProjectPartRAssignee = array();
                 for ($i = 0; $i <count($parameters['project']); $i++) {
                     $permissions = PermissionScheme::getDataByProjectIdAndPermissionId($parameters['project'][$i], Permission::PERM_BROWSE_PROJECTS);
 
                     while ($permissions && $permission = $permissions->fetch_array(MYSQLI_ASSOC)) {
 
                         if ($permission['reporter'] == 1) {
-                            $queryProjectPart[] = '(issue_main_table.user_reported_id = ? and issue_main_table.project_id = ?)';
+                            $queryProjectPartReporter[] = '(issue_main_table.user_reported_id = ? and issue_main_table.project_id = ?)';
+                            $parameterType .= 'ii';
+                            $parameterArray[] = $loggedInUserId;
+                            $parameterArray[] = $parameters['project'][$i];
+
+                        }
+                        if ($permission['current_assignee'] == 1) {
+                            $queryProjectPartRAssignee[] = '(issue_main_table.user_assigned_id = ? and issue_main_table.project_id = ?)';
                             $parameterType .= 'ii';
                             $parameterArray[] = $loggedInUserId;
                             $parameterArray[] = $parameters['project'][$i];
@@ -211,9 +219,18 @@ class Issue {
                     }
                 }
 
-                if (count($queryProjectPart)) {
-                    $queryWhere .= '(' . implode('OR', $queryProjectPart) . ') AND ';
+                $queryWhereReporter = '';
+                $queryWhereAssignee = '';
+                if (count($queryProjectPartReporter)) {
+                    $queryWhereReporter = '(' . implode(' OR ', $queryProjectPartReporter) . ')';
                 }
+                if (count($queryProjectPartRAssignee)) {
+                    $queryWhereAssignee = '(' . implode(' OR ', $queryProjectPartRAssignee) . ')';
+                }
+
+                $queryPartReporterAssignee = array($queryWhereReporter, $queryWhereAssignee);
+
+                $queryWhere .= '(' . implode(' OR ', $queryPartReporterAssignee) . ') AND ';
             } else {
                 $queryWhere .= ' issue_main_table.project_id = ? AND ';
                 $parameterType .= 'i';
