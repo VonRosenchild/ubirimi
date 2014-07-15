@@ -1,13 +1,26 @@
 <?php
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $session->set('selected_product_id', -1);
-    $menuSelectedCategory = 'general_home';
+namespace Ubirimi\General\Controller;
 
-    $today = date('Y-m-d');
-    $lastWeekToday = date('Y-m-d', strtotime('-1 week'));
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Home';
+class IndexController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $session->set('selected_product_id', -1);
+        $menuSelectedCategory = 'general_home';
 
-    require_once __DIR__ . '/../Resources/views/Index.php';
+        $today = date('Y-m-d');
+        $lastWeekToday = date('Y-m-d', strtotime('-1 week'));
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Home';
+
+        return $this->render(__DIR__ . '/../Resources/views/Index.php', get_defined_vars());
+
+    }
+}

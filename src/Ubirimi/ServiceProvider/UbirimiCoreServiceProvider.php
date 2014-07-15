@@ -13,7 +13,7 @@ use Ubirimi\LoginTimeService\LoginTimeService;
 use Ubirimi\Service\ClientService;
 use Ubirimi\Service\WarmUpService;
 use Ubirimi\Service\LogService;
-use Ubirimi\Calendar\Service\EmailService;
+use Ubirimi\Service\EmailService;
 use Ubirimi\Service\UserService;
 use Ubirimi\Service\DatabaseConnectorService;
 

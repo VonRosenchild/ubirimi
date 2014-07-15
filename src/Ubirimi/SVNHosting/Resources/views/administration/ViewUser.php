@@ -25,7 +25,7 @@
         <tr>
             <?php if ($isSVNAdministrator): ?>
                 <td>
-                    <a id="btnNew" href="/general-settings/users/add?fsvn=<?php echo $_GET['id'] ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create New User</a>
+                    <a id="btnNew" href="/general-settings/users/add?fsvn=<?php echo $request->get('id') ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create New User</a>
                 </td>
             <?php endif ?>
             <?php if ($isSVNAdministrator): ?>
