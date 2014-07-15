@@ -79,6 +79,9 @@
                                         if ($data['permission_role_id']) {
                                             echo '<li>Project Role (' . $data['permission_role_name'] . ')</li>';
                                         }
+                                        if ($data['reporter']) {
+                                            echo '<li>Reporter</li>';
+                                        }
                                     }
                                     echo '</ul>';
                                 }

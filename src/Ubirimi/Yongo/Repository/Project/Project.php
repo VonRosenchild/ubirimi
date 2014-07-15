@@ -1414,7 +1414,6 @@ class Project {
         $issues = Issue::getByParameters(array('project' => $projectId));
 
         if ($issues) {
-
             while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
 
                 // delete issues from disk, if any

@@ -69,7 +69,7 @@ class PermissionScheme {
     }
 
     public static function getDataByPermissionId($permissionSchemeId, $permissionId) {
-        $query = "select permission_scheme_data.id, user.id as user_id, user.first_name, user.last_name, " .
+        $query = "select permission_scheme_data.id, user.id as user_id, user.first_name, user.last_name, permission_scheme_data.reporter, " .
                     "permission_scheme_data.group_id as group_id, group.name as group_name, " .
                     "permission_role.id as permission_role_id, permission_role.name as permission_role_name, " .
                     "permission_scheme_data.current_assignee, permission_scheme_data.reporter, permission_scheme_data.project_lead " .
