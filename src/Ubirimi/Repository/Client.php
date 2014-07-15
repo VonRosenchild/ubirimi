@@ -1199,7 +1199,29 @@ class Client {
             'permission_scheme_data.sys_permission_id = ? and ' .
             'user.id = ? and ' .
             'project.id is not null and ' .
-            'user.id is not null';
+            'user.id is not null ' .
+
+        // 5. reporter
+
+        'UNION DISTINCT ' .
+
+        'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, user.first_name, user.last_name, user.id as user_id, ' .
+        'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
+        'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
+        'from permission_scheme ' .
+        'left join project on project.permission_scheme_id = permission_scheme.id ' .
+        'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
+        'left join yongo_issue on yongo_issue.project_id = project.id ' .
+        'left join user on user.id = yongo_issue.user_reported_id ' .
+        'LEFT JOIN user user_lead ON project.lead_id = user_lead.id ' .
+        'left join project_category on project_category.id = project.project_category_id ' .
+        'where permission_scheme.client_id = ? and ' .
+        'permission_scheme_data.sys_permission_id = ? and ' .
+        'permission_scheme_data.reporter = 1 and ' .
+        'user.id = ? and ' .
+        'project.id is not null and ' .
+        'user.id is not null';
+
 
         // check to see if group 'Anyone' is in the permission. This is for the case of Anonymous access
         if (!$userId) {
@@ -1221,7 +1243,7 @@ class Client {
             }
         } else {
             if ($stmt = UbirimiContainer::get()['db.connection']->prepare($queryLoggedInUser)) {
-                $stmt->bind_param("iiiiiiiiiiiiii", $clientId, $userId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $userId);
+                $stmt->bind_param("iiiiiiiiiiiiiiiii", $clientId, $userId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $userId, $clientId, $permissionId, $userId);
                 $stmt->execute();
                 $result = $stmt->get_result();
             }

@@ -13,6 +13,8 @@ use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
@@ -28,7 +30,7 @@ class Issue {
         return $issue;
     }
 
-    public static function getByParameters($parameters, $loggedInUserId = null, $queryWherePart = null) {
+    public static function getByParameters($parameters, $securitySchemeUserId = null, $queryWherePart = null, $loggedInUserId = null) {
 
         $parameterType = '';
         $parameterArray = array();
@@ -52,7 +54,7 @@ class Issue {
                       'CONCAT(coalesce(issue_parent.id, \'\'), issue_main_table.id) as sort_sprint, ';
         }
 
-        if ($loggedInUserId) {
+        if ($securitySchemeUserId) {
             // deal with security scheme level
 
             // 1. user in security scheme level data
@@ -63,7 +65,7 @@ class Issue {
                       and user.id = ?) as security_check1, ';
 
             $parameterType .= 'i';
-            $parameterArray[] = $loggedInUserId;
+            $parameterArray[] = $securitySchemeUserId;
 
             // 2. user in group security scheme level data
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
@@ -75,7 +77,7 @@ class Issue {
                 'user.id = ?) as security_check2, ';
 
             $parameterType .= 'i';
-            $parameterArray[] = $loggedInUserId;
+            $parameterArray[] = $securitySchemeUserId;
 
             // 3. permission role in security scheme level data - user
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
@@ -86,7 +88,7 @@ class Issue {
                 'user.id = ?) as security_check3, ';
 
             $parameterType .= 'i';
-            $parameterArray[] = $loggedInUserId;
+            $parameterArray[] = $securitySchemeUserId;
 
             // 4. permission role in security scheme level data - group
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
@@ -99,7 +101,7 @@ class Issue {
                 'user.id = ?) as security_check4, ';
 
             $parameterType .= 'i';
-            $parameterArray[] = $loggedInUserId;
+            $parameterArray[] = $securitySchemeUserId;
 
             // 5. current_assignee in security scheme level data
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
@@ -111,7 +113,7 @@ class Issue {
                 'user.id = ?) as security_check5, ';
 
             $parameterType .= 'i';
-            $parameterArray[] = $loggedInUserId;
+            $parameterArray[] = $securitySchemeUserId;
 
             // 6. reporter in security scheme level data
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
@@ -123,7 +125,7 @@ class Issue {
                 'user.id = ?) as security_check6, ';
 
             $parameterType .= 'i';
-            $parameterArray[] = $loggedInUserId;
+            $parameterArray[] = $securitySchemeUserId;
 
             // 7. project_lead in security scheme level data
 
@@ -137,7 +139,7 @@ class Issue {
                 'user.id = ?) as security_check7, ';
 
             $parameterType .= 'i';
-            $parameterArray[] = $loggedInUserId;
+            $parameterArray[] = $securitySchemeUserId;
         }
 
         $query .=
@@ -150,6 +152,7 @@ class Issue {
             'LEFT JOIN issue_component ON issue_main_table.id = issue_component.issue_id ' .
             'LEFT JOIN issue_version ON issue_main_table.id = issue_version.issue_id ' .
             'LEFT JOIN project ON issue_main_table.project_id = project.id ' .
+            'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = project.permission_scheme_id ' .
             'LEFT JOIN user AS user_reported ON issue_main_table.user_reported_id = user_reported.id ' .
             'LEFT JOIN user AS user_assigned ON issue_main_table.user_assigned_id = user_assigned.id ' .
             'LEFT JOIN issue_security_scheme_level ON issue_security_scheme_level.id = issue_main_table.security_scheme_level_id ' .
@@ -189,10 +192,28 @@ class Issue {
         if (isset($parameters['project'])) {
 
             if (is_array($parameters['project'])) {
-                if (!in_array(-1, $parameters['project']))
-                    $queryWhere .= ' issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') AND ';
-                else
-                    $queryWhere .= ' issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') AND ';
+
+                $queryWhere .= ' issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') AND ';
+
+                $queryProjectPart = array();
+                for ($i = 0; $i <count($parameters['project']); $i++) {
+                    $permissions = PermissionScheme::getDataByProjectIdAndPermissionId($parameters['project'][$i], Permission::PERM_BROWSE_PROJECTS);
+
+                    while ($permissions && $permission = $permissions->fetch_array(MYSQLI_ASSOC)) {
+
+                        if ($permission['reporter'] == 1) {
+                            $queryProjectPart[] = '(issue_main_table.user_reported_id = ? and issue_main_table.project_id = ?)';
+                            $parameterType .= 'ii';
+                            $parameterArray[] = $loggedInUserId;
+                            $parameterArray[] = $parameters['project'][$i];
+
+                        }
+                    }
+                }
+
+                if (count($queryProjectPart)) {
+                    $queryWhere .= '(' . implode('OR', $queryProjectPart) . ') AND ';
+                }
             } else {
                 $queryWhere .= ' issue_main_table.project_id = ? AND ';
                 $parameterType .= 'i';
@@ -317,7 +338,7 @@ class Issue {
             if (is_array($parameters['assignee'])) {
                 for ($index = 0; $index < count($parameters['assignee']); $index++) {
                     if ($parameters['assignee'][$index] == 'current_user') {
-                        $parameters['assignee'][$index] = $loggedInUserId;
+                        $parameters['assignee'][$index] = $securitySchemeUserId;
                     }
                 }
                 if (!in_array(-1, $parameters['assignee']))
@@ -325,7 +346,7 @@ class Issue {
             } else {
                 if ($parameters['assignee']) {
                     if ($parameters['assignee'] == 'current_user') {
-                        $parameters['assignee'] = $loggedInUserId;
+                        $parameters['assignee'] = $securitySchemeUserId;
                     }
 
                     $queryWhere .= ' issue_main_table.user_assigned_id = ? AND ';
@@ -434,6 +455,7 @@ class Issue {
             }
         }
 
+
         if (isset($parameters['resolution'])) {
             $includeUnresolvedIssues = false;
             $includeAllResolutions = false;
@@ -453,6 +475,7 @@ class Issue {
             }
 
             $queryResolutionPart = array();
+
             if ($includeAllResolutions)
                 $queryResolutionPart[] = ' issue_main_table.resolution_id IS NOT NULL ';
             if (count($parameters['resolution']))
@@ -464,6 +487,7 @@ class Issue {
                 $queryWhere .= '( ' . implode(' OR ', $queryResolutionPart) . ' ) ';
         }
 
+//        echo $queryWhere;
         if (strtoupper(substr($queryWhere, strlen($queryWhere) - 4, 4)) == 'AND ')
             $queryWhere = substr($queryWhere, 0, strlen($queryWhere) - 4);
 
@@ -516,7 +540,7 @@ class Issue {
 
         $query .= ' GROUP BY issue_main_table.id ';
 
-        if ($loggedInUserId)
+        if ($securitySchemeUserId)
             $query .= ' HAVING ((security_check1 > 0 or security_check2 > 0 or security_check3 > 0 or security_check4 > 0 or security_check5 > 0 or security_check6 > 0 or security_check7 > 0) ' .
                         ' OR (issue_main_table.security_scheme_level_id is null and security_check1 is null and security_check2 is null and security_check3 is null and security_check4 is null and security_check5 is null and security_check6 is null and security_check7 is null)) ';
         if ($sortColumn)

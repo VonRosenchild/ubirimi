@@ -1059,7 +1059,7 @@ class Project {
         }
     }
 
-    public static function userHasPermission($projectIdArray, $permissionId, $userId = null) {
+    public static function userHasPermission($projectIdArray, $permissionId, $userId = null, $issueId = null) {
 
         if (is_array($projectIdArray)) {
             if (count($projectIdArray)) {
@@ -1130,7 +1130,27 @@ class Project {
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'user.id = ? ' .
 
-            // 5. check if there is a group 'Anyone' set in the permissions
+            // 5. reporter
+
+            'UNION ' .
+            'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            'from project ' .
+            'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
+            'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
+            'left join yongo_issue on yongo_issue.project_id = project.id ' .
+            'left join user on user.id = yongo_issue.user_reported_id ' .
+            'where project.id  IN ' . $projectsSQL . ' and ' .
+            'permission_scheme_data.sys_permission_id = ? and ' .
+            'permission_scheme_data.reporter = 1 and ' .
+            'user.id = ? ';
+
+        if ($issueId) {
+            $query .= 'and yongo_issue.id = ? ';
+        }
+
+            // 6. check if there is a group 'Anyone' set in the permissions
+
+        $query .=
             'UNION ' .
             'SELECT -1 as user_id, null as first_name, null as last_name ' .
             'from project ' .
@@ -1141,7 +1161,11 @@ class Project {
             'permission_scheme_data.group_id = 0';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId);
+            if ($issueId) {
+                $stmt->bind_param("iiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $issueId, $userId, $permissionId);
+            } else {
+                $stmt->bind_param("iiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId);
+            }
             $stmt->execute();
             $result = $stmt->get_result();
 

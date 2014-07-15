@@ -8,13 +8,11 @@
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
 
-
     Util::checkUserIsLoggedInAndRedirect();
 
     $clientSettings = $session->get('client/settings');
 
     $projectId = $_GET['id'];
-
     $project = Project::getById($projectId);
 
     if ($project['client_id'] != $clientId) {
@@ -23,7 +21,7 @@
     }
 
     $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'helpdesk_flag' => 1);
-    $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+    $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
     $count = 0;
     $stats_priority = array();
@@ -75,18 +73,18 @@
     }
 
     $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'component' => -1, 'helpdesk_flag' => 1);
-    $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+    $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
     $countUnresolvedWithoutComponent = 0;
     if ($issues)
         $countUnresolvedWithoutComponent = $issues->num_rows;
 
     $components = Project::getComponents($projectId);
-    $stats_component = array();
+    $statsComponent = array();
     while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
         $issueQueryParameters = array('project' => $projectId, 'component' => $component['id'], 'helpdesk_flag' => 1);
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
         if ($issues)
-            $stats_component[$component['name']] = array($component['id'], $issues->num_rows);
+            $statsComponent[$component['name']] = array($component['id'], $issues->num_rows);
     }
 
     $menuSelectedCategory = 'project';

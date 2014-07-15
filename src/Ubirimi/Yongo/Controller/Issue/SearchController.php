@@ -68,7 +68,8 @@
 
         if (isset($parseURLData['query']) && $projectsForBrowsing) {
             if (Util::searchQueryNotEmpty($getSearchParameters)) {
-                $issuesResult = Issue::getByParameters($getSearchParameters, $loggedInUserId);
+
+                $issuesResult = Issue::getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
 
                 $issues = $issuesResult[0];
                 $issuesCount = $issuesResult[1];
