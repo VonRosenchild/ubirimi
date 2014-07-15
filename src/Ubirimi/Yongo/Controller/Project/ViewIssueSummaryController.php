@@ -35,8 +35,8 @@ class ViewIssueSummaryController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2));
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+        $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2));
+        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $count = 0;
         $stats_priority = array();
@@ -87,19 +87,21 @@ class ViewIssueSummaryController extends UbirimiController
             }
         }
 
-        $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'component' => -1);
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+        $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2), 'component' => -1);
+        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
         $countUnresolvedWithoutComponent = 0;
         if ($issues)
             $countUnresolvedWithoutComponent = $issues->num_rows;
 
         $components = Project::getComponents($projectId);
-        $stats_component = array();
+
+        $statsComponent = array();
         while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
-            $issueQueryParameters = array('project' => $projectId, 'component' => $component['id']);
-            $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+            $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2), 'component' => $component['id']);
+            $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+
             if ($issues)
-                $stats_component[$component['name']] = array($component['id'], $issues->num_rows);
+                $statsComponent[$component['name']] = array($component['id'], $issues->num_rows);
         }
 
         $menuSelectedCategory = 'project';

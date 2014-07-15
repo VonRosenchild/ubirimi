@@ -49,7 +49,7 @@ class ViewController extends UbirimiController
             $session->set('selected_project_id', $projectId);
 
             $issueProject = Project::getById($projectId);
-            $hasBrowsingPermission = Project::userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $session->get('user/id'));
+            $hasBrowsingPermission = Project::userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $session->get('user/id'), $issueId);
         } else {
             $issueValid = false;
         }

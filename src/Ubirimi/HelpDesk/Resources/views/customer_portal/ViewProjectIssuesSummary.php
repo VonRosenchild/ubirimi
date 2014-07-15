@@ -100,7 +100,7 @@
                             </tr>
                         <?php endif ?>
 
-                        <?php foreach ($stats_component as $key => $value): ?>
+                        <?php foreach ($statsComponent as $key => $value): ?>
                             <tr>
                                 <td width="180px">
                                     <?php

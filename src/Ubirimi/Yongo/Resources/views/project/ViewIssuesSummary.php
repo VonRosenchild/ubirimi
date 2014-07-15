@@ -98,7 +98,7 @@
                                 <td width="30" align="right"><?php echo $countUnresolvedWithoutComponent ?></td>
                                 <?php $perc = round($countUnresolvedWithoutComponent / $count * 100); ?>
                                 <td valign="top">
-                                    <div style="margin-top: 5px; margin-right: 4px; float:left; background-color: #56A5EC; height: 18px; width: <?php echo($perc * 4) ?>px"></div>
+                                    <div style="margin-top: 5px; margin-right: 4px; float:left; background-color: #56A5EC; height: 18px; width: <?php echo($perc * 3) ?>px"></div>
                                     <div style="float: left"><?php echo $perc ?>%</div>
                                 </td>
                             </tr>
@@ -108,7 +108,7 @@
                             </tr>
                         <?php endif ?>
 
-                        <?php foreach ($stats_component as $key => $value): ?>
+                        <?php foreach ($statsComponent as $key => $value): ?>
                             <tr>
                                 <td width="180px">
                                     <?php
@@ -118,7 +118,7 @@
                                 <td width="30" align="right"><?php echo $value[1] ?></td>
                                 <?php $perc = round($value[1] / $count * 100); ?>
                                 <td valign="top">
-                                    <div style="margin-top: 5px; margin-right: 4px; float:left; background-color: #56A5EC; height: 18px; width: <?php echo($perc * 4) ?>px"></div>
+                                    <div style="margin-top: 5px; margin-right: 4px; float:left; background-color: #56A5EC; height: 18px; width: <?php echo($perc * 3) ?>px"></div>
                                     <div style="float: left"><?php echo $perc ?>%</div>
                                 </td>
                             </tr>

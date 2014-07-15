@@ -123,6 +123,24 @@ class PermissionScheme {
         }
     }
 
+    public static function getDataByProjectIdAndPermissionId($projectId, $sysPermissionId) {
+        $query = "select permission_scheme_data.* " .
+            "from permission_scheme_data " .
+            "left join permission_scheme on permission_scheme.id = permission_scheme_data.permission_scheme_id " .
+            "left join project on project.permission_scheme_id = permission_scheme.id " .
+            "where project.id = ? and sys_permission_id = ?";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("ii", $projectId, $sysPermissionId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows)
+                return $result;
+            else
+                return null;
+        }
+    }
+
     public static function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from permission_scheme where client_id = ? and LOWER(name) = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
