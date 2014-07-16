@@ -1,42 +1,40 @@
 <?php
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller\User;
 
-    $userId = $_GET['user_id'];
-    $delete_own_user = false;
-    if ($userId == $session->get('user/id'))
-        $delete_own_user = true;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    if (!$delete_own_user) {
-        $issues_reported_count = 0;
-        $issues_assigned_count = 0;
+class DeleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        $user = User::getById($userId);
-        $issuesReported = Issue::getByParameters(array('reporter' => $userId));
-        $issuesAssigned = Issue::getByParameters(array('assignee' => $userId));
+        $userId = $request->get('user_id');
+        $delete_own_user = false;
+        if ($userId == $session->get('user/id'))
+            $delete_own_user = true;
 
-        if (null != $issuesReported)
-            $issues_reported_count = $issuesReported->num_rows;
+        if (!$delete_own_user) {
+            $issues_reported_count = 0;
+            $issues_assigned_count = 0;
 
-        if (null != $issuesAssigned)
-            $issues_assigned_count = $issuesAssigned->num_rows;
+            $user = User::getById($userId);
+            $issuesReported = Issue::getByParameters(array('reporter' => $userId));
+            $issuesAssigned = Issue::getByParameters(array('assignee' => $userId));
+
+            if (null != $issuesReported)
+                $issues_reported_count = $issuesReported->num_rows;
+
+            if (null != $issuesAssigned)
+                $issues_assigned_count = $issuesAssigned->num_rows;
+        }
+
+        return $this->render(__DIR__ . '/../../Resources/views/user/DeleteConfirm.php', get_defined_vars());
     }
-?>
-<?php if ($delete_own_user): ?>
-    <div>You can not delete the logged in user.</div>
-    <input type="hidden" value="0" id="delete_possible" />
-<?php else: ?>
-    <?php if ($issues_reported_count || $issues_assigned_count): ?>
-        <div>You are not able to delete this user due to the following reasons:</div>
-        <div>Issues reported by this user: <?php echo $issues_reported_count ?></div>
-        <div>Issues assigned to this user: <?php echo $issues_assigned_count ?></div>
-        <input type="hidden" value="0" id="delete_possible" />
-    <?php else: ?>
-        <div>Are you sure you want to delete <b><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></b>?</div>
-        <div>Keep in mind that any project components where this user is set as lead will be left with out a leader.</div>
-        <input type="hidden" value="1" id="delete_possible" />
-    <?php endif ?>
-<?php endif ?>
+}

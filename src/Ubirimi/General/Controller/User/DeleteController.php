@@ -1,17 +1,38 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller\User;
 
-    $userId = $_POST['user_id'];
-    $user = User::getById($userId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    User::deleteById($userId);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    // todo: delete the avatar, if any
+        $userId = $request->request->get('user_id');
+        $user = User::getById($userId);
 
-    $currentDate = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'DELETE User ' . $user['username'], $currentDate);
+        User::deleteById($userId);
+
+        // todo: delete the avatar, if any
+
+        $currentDate = Util::getServerCurrentDateTime();
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
+            $session->get('user/id'),
+            'DELETE User ' . $user['username'],
+            $currentDate
+        );
+
+        return new Response('');
+    }
+}
