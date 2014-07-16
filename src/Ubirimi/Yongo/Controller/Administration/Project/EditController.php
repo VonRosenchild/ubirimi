@@ -53,7 +53,6 @@ class EditController extends UbirimiController
             $issueTypeSchemeId = $request->request->get('issue_type_scheme');
             $workflowSchemeId = $request->request->get('workflow_scheme');
             $projectCategoryId = $request->request->get('project_category');
-            $enableForHelpdeskFlag = $request->request->get('enable_for_helpdesk');
 
             if (-1 == $projectCategoryId) {
                 $projectCategoryId = null;
@@ -80,11 +79,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$empty_code && !$duplicate_name && !$duplicate_code) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Project::updateById($projectId, $lead_id, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $enableForHelpdeskFlag, $currentDate);
-
-                if ($enableForHelpdeskFlag) {
-                    Project::addDefaultInitialDataForHelpDesk($clientId, $projectId, $loggedInUserId, $currentDate);
-                }
+                Project::updateById($projectId, $lead_id, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

@@ -40,7 +40,7 @@
                     <td valign="top">
                         <div class="headerPageText"><?php echo $queueSelected['name'] ?></div>
                     </td>
-                    <td>
+                    <td valign="top">
                         <div class="btn-group" style="float: right; margin-right: 0px;" id="btnIssueSearchColumns">
                             <a href="#" class="btn ubirimi-btn dropdown-toggle">Columns <span class="caret"></span></a>
                         </div>
@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td align="left" colspan="2">
+                    <td align="left" colspan="2" valign="top">
                         <?php
                             $urlIssuePrefix = '/yongo/issue/';
                             require_once __DIR__ . '/../../../../Yongo/Resources/views/issue/search/_listResult.php';

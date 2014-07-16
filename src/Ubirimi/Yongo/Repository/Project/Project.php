@@ -558,7 +558,7 @@ class Project {
         }
     }
 
-    public static function updateById($projectId, $leaderId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $enableForHelpdeskFlag, $date) {
+    public static function updateById($projectId, $leaderId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $date) {
         $query = "UPDATE project " .
                  "SET lead_id = ?, " .
                      "name = ?, " .
@@ -567,13 +567,12 @@ class Project {
                      "issue_type_scheme_id = ?, " .
                      "workflow_scheme_id = ?, " .
                      "project_category_id = ?, " .
-                     "help_desk_enabled_flag = ?, " .
                      "date_updated = ? " .
                  "WHERE id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        $stmt->bind_param("isssiiiisi", $leaderId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $enableForHelpdeskFlag, $date, $projectId);
+        $stmt->bind_param("isssiiisi", $leaderId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $date, $projectId);
         $stmt->execute();
     }
 
@@ -1775,6 +1774,32 @@ class Project {
             while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
                 Issue::addPlainSLAData($issue['id'], $projectId);
             }
+        }
+    }
+
+    public static function removeHelpdeskData($projectId) {
+        $slas = SLA::getByProjectId($projectId);
+        while ($slas && $sla = $slas->fetch_array(MYSQLI_ASSOC)) {
+            SLA::deleteById($sla['id']);
+        }
+
+        $calendars = SLACalendar::getByProjectId($projectId);
+        while ($calendars && $calendar = $calendars->fetch_array(MYSQLI_ASSOC)) {
+            SLACalendar::deleteById($calendar['id']);
+        }
+
+        $queues = Queue::getByProjectId($projectId);
+        while ($queues && $queue = $queues->fetch_array(MYSQLI_ASSOC)) {
+            Queue::deleteById($queue['id']);
+        }
+    }
+
+    public static function toggleHelpDeskFlag($projectId) {
+        $query = 'update project set help_desk_enabled_flag = 1 - help_desk_enabled_flag where id = ?';
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $projectId);
+            $stmt->execute();
         }
     }
 }

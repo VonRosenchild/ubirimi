@@ -38,7 +38,7 @@
         $getSearchParameters['page'] = $page;
         $getSearchParameters['issues_per_page'] = 50;
 
-        $issuesResult = Issue::getByParameters($getSearchParameters, $loggedInUserId, $whereSQL);
+        $issuesResult = Issue::getByParameters($getSearchParameters, $loggedInUserId, $whereSQL, $loggedInUserId);
 
         $issues = $issuesResult[0];
 

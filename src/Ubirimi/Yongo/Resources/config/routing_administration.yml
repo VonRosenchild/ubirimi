@@ -68,6 +68,18 @@ adminViewProjectComponents:
   requirements:
     id:  \d+
 
+adminViewProjectHelpDesk:
+  path: /yongo/administration/project/helpdesk/toggle/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ToggleHelpdeskController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectHelpDeskToggle:
+  path: /yongo/administration/project/helpdesk/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ViewHelpdeskController' }
+  requirements:
+    id:  \d+
+
 #########################################################################
 #                      Issue Security Schemes                           #
 #########################################################################

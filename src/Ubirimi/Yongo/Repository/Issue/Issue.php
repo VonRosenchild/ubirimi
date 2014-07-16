@@ -511,12 +511,13 @@ class Issue {
                 $queryWhere .= '( ' . implode(' OR ', $queryResolutionPart) . ' ) ';
         }
 
-//        echo $queryWhere;
-        if (strtoupper(substr($queryWhere, strlen($queryWhere) - 4, 4)) == 'AND ')
-            $queryWhere = substr($queryWhere, 0, strlen($queryWhere) - 4);
 
-        if (substr($queryWhere, strlen($queryWhere) - 4, 4) == 'AND ')
-            $queryWhere = substr($query, 0, strlen($queryWhere) - 4);
+        if (strtoupper(substr($queryWhere, strlen($queryWhere) - 4, 4)) == 'AND ') {
+            $queryWhere = substr($queryWhere, 0, strlen($queryWhere) - 4);
+        }
+        if (strtoupper(substr($queryWherePart, strlen($queryWherePart) - 4, 4)) == 'AND ') {
+            $queryWherePart = substr($queryWherePart, 0, strlen($queryWherePart) - 4);
+        }
 
         $sortColumn = null;
         if (isset($parameters['sort'])) {
@@ -559,8 +560,10 @@ class Issue {
         if ($queryWherePart) {
             $queryWhere .= $queryWherePart;
         }
+
         if ($queryWhere != '')
             $query .= ' WHERE ' . $queryWhere;
+
 
         $query .= ' GROUP BY issue_main_table.id ';
 
@@ -576,7 +579,7 @@ class Issue {
         if (isset($parameters['page']))
             $query .= ' LIMIT ' . (($parameters['page'] - 1) * $parameters['issues_per_page']) . ', ' . ($parameters['issues_per_page']);
 
-//echo $query;
+
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
             if ($queryWhere != '') {
