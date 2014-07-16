@@ -51,6 +51,63 @@ function getUbirimiPriorities($clientId)
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
+function getUbirimiIssues()
+{
+    $query = 'SELECT *
+                FROM yongo_issue
+                ORDER BY id DESC';
+
+    $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function updateUbirimiBugSeverity($issue_id, $field_id, $value)
+{
+    $query = "INSERT INTO issue_custom_field_data(issue_id, field_id, value, date_created)
+                    VALUES ('" . $issue_id. "', '" . $field_id . "', '" . $value . "', NOW())";
+
+    UbirimiContainer::get()['db.connection']->query($query);
+
+    return UbirimiContainer::get()['db.connection']->insert_id;
+}
+
+function getUbirimiIssueIdBasedOnBugzillaBug($shortDesc, $creationTs)
+{
+    $query = 'SELECT *
+                FROM yongo_issue
+                WHERE summary = ?
+                  AND date_created = ?';
+
+    if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt->bind_param("ss", $shortDesc, $creationTs);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if (1 !== $result->num_rows) {
+            echo "\nCould not find Ubirimi issue correspondence\n";
+            die();
+        }
+        return $result->fetch_array(MYSQLI_ASSOC);
+    }
+
+    return null;
+}
+
+function getUbirimiFieldValue($severityConstants, $severityText)
+{
+    foreach ($severityConstants as $key => $value) {
+        if ($severityText == $value) {
+            return $key;
+        }
+    }
+
+    return null;
+}
+
 function getYongoStatusId($ubirimiStatuses, $status)
 {
     foreach ($ubirimiStatuses as $ubirimiStatus) {

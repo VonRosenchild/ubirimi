@@ -31,7 +31,12 @@ class IndexController extends UbirimiController
         $userAssignedId = $session->get('user/id');
         $allProjects = Client::getProjects($clientId);
 
-        $projects = Client::getProjectsByPermission($clientId, $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projects = Client::getProjectsByPermission(
+            $clientId,
+            $session->get('user/id'),
+            Permission::PERM_BROWSE_PROJECTS,
+            'array'
+        );
 
         $projectIdsArray = array();
         $projectIdsNames = array();
@@ -40,26 +45,64 @@ class IndexController extends UbirimiController
             $projectIdsNames[] = array($projects[$i]['id'], $projects[$i]['name']);
         }
 
-        $issueQueryParameters = array('issues_per_page' => $issuesPerPage, 'assignee' => $userAssignedId, 'resolution' => array(-2), 'sort' => 'code', 'sort_order' => 'desc');
+        $issueQueryParameters = array(
+            'issues_per_page' => $issuesPerPage,
+            'assignee' => $userAssignedId,
+            'resolution' => array(-2),
+            'sort' => 'code',
+            'sort_order' => 'desc',
+            'date_created_after' => date('Y-m-d H:i:s', strtotime("-90 days"))
+        );
+
         if (count($projectIdsArray)) {
             $issueQueryParameters['project'] = $projectIdsArray;
         } else {
             $issueQueryParameters['project'] = array(-1);
         }
-        $issues = Issue::getByParameters($issueQueryParameters, $session->get('user/id'), null, $session->get('user/id'));
 
-        $issueQueryParameters = array('issues_per_page' => $issuesPerPage, 'resolution' => array(-2), 'sort' => 'code', 'sort_order' => 'desc');
+        $issues = Issue::getByParameters(
+            $issueQueryParameters,
+            $session->get('user/id'),
+            null,
+            $session->get('user/id')
+        );
+
+        $issueQueryParameters = array(
+            'issues_per_page' => $issuesPerPage,
+            'resolution' => array(-2),
+            'sort' => 'code',
+            'sort_order' => 'desc',
+            'date_created_after' => date('Y-m-d H:i:s', strtotime("-90 days"))
+        );
+
         if (count($projectIdsArray)) {
             $issueQueryParameters['project'] = $projectIdsArray;
         }
+
         if ($session->get('user/id')) {
             $issueQueryParameters['not_assignee'] = $userAssignedId;
         }
-        $issuesUnresolvedOthers = Issue::getByParameters($issueQueryParameters, $session->get('user/id'), null, $session->get('user/id'));
+
+        $issuesUnresolvedOthers = Issue::getByParameters(
+            $issueQueryParameters,
+            $session->get('user/id'),
+            null,
+            $session->get('user/id')
+        );
+
         $menuSelectedCategory = 'home';
 
-        $hasGlobalAdministrationPermission = User::hasGlobalPermission($clientId, $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
-        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission($clientId, $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasGlobalAdministrationPermission = User::hasGlobalPermission(
+            $clientId,
+            $session->get('user/id'),
+            GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
+        );
+
+        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission(
+            $clientId,
+            $session->get('user/id'),
+            GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS
+        );
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 

@@ -480,7 +480,6 @@ class Issue {
             }
         }
 
-
         if (isset($parameters['resolution'])) {
             $includeUnresolvedIssues = false;
             $includeAllResolutions = false;
