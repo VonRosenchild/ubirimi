@@ -1,16 +1,38 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\Repository\SMTPServer;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller\SMTP;
 
-    $smtpServerId = $_POST['id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Repository\Log;
+use Ubirimi\Repository\SMTPServer;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    $smtpServer = SMTPServer::getById($smtpServerId);
-    $date = Util::getServerCurrentDateTime();
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'DELETE SMTP Server ' . $smtpServer['name'], $date);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    SMTPServer::deleteById($smtpServerId);
-    $session->remove('client/settings/smtp');
+        $smtpServerId = $request->request->get('id');
+
+        $smtpServer = SMTPServer::getById($smtpServerId);
+        $date = Util::getServerCurrentDateTime();
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
+            $session->get('user/id'),
+            'DELETE SMTP Server ' . $smtpServer['name'],
+            $date
+        );
+
+        SMTPServer::deleteById($smtpServerId);
+        $session->remove('client/settings/smtp');
+
+        return new Response('');
+    }
+}

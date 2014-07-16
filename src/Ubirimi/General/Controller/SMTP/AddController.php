@@ -1,40 +1,75 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\Repository\SMTPServer;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller\SMTP;
 
-    $session->set('selected_product_id', -1);
-    $menuSelectedCategory = 'general_mail';
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
+use Ubirimi\Repository\SMTPServer;
+use Ubirimi\SystemProduct;
 
-    $emptyName = false;
-    $emptyFromAddress = false;
-    $emptyEmailPrefix = false;
-    $emptyHostname = false;
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['add_smtp'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $fromAddress  = Util::cleanRegularInputField($_POST['from_address']);
-        $emailPrefix = Util::cleanRegularInputField($_POST['email_prefix']);
-        $protocol = Util::cleanRegularInputField($_POST['protocol']);
-        $hostname = Util::cleanRegularInputField($_POST['hostname']);
-        $port = Util::cleanRegularInputField($_POST['port']);
-        $timeout = Util::cleanRegularInputField($_POST['timeout']);
-        $tls = isset ($_POST['tls']) ? 1 : 0;
-        $username = Util::cleanRegularInputField($_POST['username']);
-        $password = Util::cleanRegularInputField($_POST['password']);
+        $session->set('selected_product_id', -1);
+        $menuSelectedCategory = 'general_mail';
 
-        $date = Util::getServerCurrentDateTime();
-        SMTPServer::add($clientId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, 0, $date);
+        $emptyName = false;
+        $emptyFromAddress = false;
+        $emptyEmailPrefix = false;
+        $emptyHostname = false;
 
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD SMTP Server ' . $name, $date);
+        if ($request->request->has('add_smtp')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $fromAddress  = Util::cleanRegularInputField($request->request->get('from_address'));
+            $emailPrefix = Util::cleanRegularInputField($request->request->get('email_prefix'));
+            $protocol = Util::cleanRegularInputField($request->request->get('protocol'));
+            $hostname = Util::cleanRegularInputField($request->request->get('hostname'));
+            $port = Util::cleanRegularInputField($request->request->get('port'));
+            $timeout = Util::cleanRegularInputField($request->request->get('timeout'));
+            $tls = $request->request->has('tls') ? 1 : 0;
+            $username = Util::cleanRegularInputField($request->request->get('username'));
+            $password = Util::cleanRegularInputField($request->request->get('password'));
 
-        header('Location: /general-settings/smtp-settings');
+            $date = Util::getServerCurrentDateTime();
+
+            SMTPServer::add(
+                $session->get('client/id'),
+                $name,
+                $description,
+                $fromAddress,
+                $emailPrefix,
+                $protocol,
+                $hostname,
+                $port,
+                $timeout,
+                $tls,
+                $username,
+                $password,
+                0,
+                $date
+            );
+
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
+                $session->get('user/id'),
+                'ADD SMTP Server ' . $name,
+                $date
+            );
+
+            return new RedirectResponse('/general-settings/smtp-settings');
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Create SMTP Server';
+
+        return $this->render(__DIR__ . '/../../Resources/views/smtp/Add.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Create SMTP Server';
-
-    require_once __DIR__ . '/../../Resources/views/smtp/Add.php';
+}

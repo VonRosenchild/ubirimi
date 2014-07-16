@@ -1,43 +1,78 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\Repository\SMTPServer;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller\SMTP;
 
-    $smtpServerId = $_GET['id'];
-    $smtpServer = SMTPServer::getById($smtpServerId);
-    $session->set('selected_product_id', -1);
-    $menuSelectedCategory = 'general_mail';
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
+use Ubirimi\Repository\SMTPServer;
+use Ubirimi\SystemProduct;
 
-    $emptyName = false;
-    $emptyFromAddress = false;
-    $emptyEmailPrefix = false;
-    $emptyHostname = false;
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['edit_smtp'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-        $fromAddress  = Util::cleanRegularInputField($_POST['from_address']);
-        $emailPrefix = Util::cleanRegularInputField($_POST['email_prefix']);
-        $protocol = Util::cleanRegularInputField($_POST['protocol']);
-        $hostname = Util::cleanRegularInputField($_POST['hostname']);
-        $port = Util::cleanRegularInputField($_POST['port']);
-        $timeout = Util::cleanRegularInputField($_POST['timeout']);
-        $tls = isset ($_POST['tls']) ? 1 : 0;
-        $username = Util::cleanRegularInputField($_POST['username']);
-        $password = Util::cleanRegularInputField($_POST['password']);
+        $smtpServerId = $request->get('id');
+        $smtpServer = SMTPServer::getById($smtpServerId);
+        $session->set('selected_product_id', -1);
+        $menuSelectedCategory = 'general_mail';
 
-        $date = Util::getServerCurrentDateTime();
-        SMTPServer::updateById($smtpServerId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, $date);
+        $emptyName = false;
+        $emptyFromAddress = false;
+        $emptyEmailPrefix = false;
+        $emptyHostname = false;
 
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'UPDATE SMTP Server ' . $name, $date);
-        $session->set('client/settings/smtp', SMTPServer::getById($smtpServerId));
+        if ($request->request->has('edit_smtp')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+            $fromAddress  = Util::cleanRegularInputField($request->request->get('from_address'));
+            $emailPrefix = Util::cleanRegularInputField($request->request->get('email_prefix'));
+            $protocol = Util::cleanRegularInputField($request->request->get('protocol'));
+            $hostname = Util::cleanRegularInputField($request->request->get('hostname'));
+            $port = Util::cleanRegularInputField($request->request->get('port'));
+            $timeout = Util::cleanRegularInputField($request->request->get('timeout'));
+            $tls = $request->request->has('tls') ? 1 : 0;
+            $username = Util::cleanRegularInputField($request->request->get('username'));
+            $password = Util::cleanRegularInputField($request->request->get('password'));
 
-        header('Location: /general-settings/smtp-settings');
+            $date = Util::getServerCurrentDateTime();
+
+            SMTPServer::updateById(
+                $smtpServerId,
+                $name,
+                $description,
+                $fromAddress,
+                $emailPrefix,
+                $protocol,
+                $hostname,
+                $port,
+                $timeout,
+                $tls,
+                $username,
+                $password,
+                $date
+            );
+
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
+                $session->get('user/id'),
+                'UPDATE SMTP Server ' . $name,
+                $date
+            );
+
+            $session->set('client/settings/smtp', SMTPServer::getById($smtpServerId));
+
+            return new RedirectResponse('/general-settings/smtp-settings');
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Update SMTP Server Settings';
+
+        return $this->render(__DIR__ . '/../../Resources/views/smtp/Edit.php', get_defined_vars());
     }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Update SMTP Server Settings';
-
-    require_once __DIR__ . '/../../Resources/views/smtp/Edit.php';
+}
