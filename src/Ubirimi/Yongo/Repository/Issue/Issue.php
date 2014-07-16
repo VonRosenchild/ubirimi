@@ -228,9 +228,17 @@ class Issue {
                     $queryWhereAssignee = '(' . implode(' OR ', $queryProjectPartRAssignee) . ')';
                 }
 
-                $queryPartReporterAssignee = array($queryWhereReporter, $queryWhereAssignee);
+                $queryPartReporterAssignee = array();
+                if (!empty($queryWhereReporter)) {
+                    $queryPartReporterAssignee[] = $queryWhereReporter;
+                }
+                if (!empty($queryWhereAssignee)) {
+                    $queryPartReporterAssignee[] = $queryWhereAssignee;
+                }
 
-                $queryWhere .= '(' . implode(' OR ', $queryPartReporterAssignee) . ') AND ';
+                if (count($queryPartReporterAssignee)) {
+                    $queryWhere .= '(' . implode(' OR ', $queryPartReporterAssignee) . ') AND ';
+                }
             } else {
                 $queryWhere .= ' issue_main_table.project_id = ? AND ';
                 $parameterType .= 'i';
