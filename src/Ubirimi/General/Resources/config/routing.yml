@@ -56,7 +56,7 @@ generalViewGeneral:
 
 generalViewSMTPSettings:
   path: /general-settings/smtp-settings
-  defaults: { _controller: '\Ubirimi\General\Controller\ViewSMTPSettingsController' }
+  defaults: { _controller: '\Ubirimi\General\Controller\SMTP\ViewController' }
 
 generalEditSettings:
   path: /general-settings/edit-general

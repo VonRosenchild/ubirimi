@@ -1,10 +1,10 @@
 <?php
     use Ubirimi\Util;
 
-    require_once __DIR__ . '/_header.php';
+    require_once __DIR__ . '/../_header.php';
 ?>
 <body>
-    <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php require_once __DIR__ . '/../_menu.php'; ?>
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
             <?php Util::renderBreadCrumb('Mail > SMTP Settings') ?>
@@ -81,5 +81,5 @@
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>
     </div>
-    <?php require_once __DIR__ . '/_footer.php' ?>
+    <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>
