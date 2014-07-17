@@ -896,7 +896,7 @@ adminViewTransitionWorkflow:
     id:  \d+
 
 adminDeleteWorkflowTransition:
-  path: /yongo/administration/ajax/workflow/delete-transition
+  path: /yongo/administration/workflow/delete-transition
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\DeleteController' }
 
 adminSaveTransitionData:
