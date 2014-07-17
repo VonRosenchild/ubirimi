@@ -1,33 +1,53 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Screen\Screen;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition;
 
-    $workflowDataId = $_GET['id'];
-    $workflowData = Workflow::getDataById($workflowDataId);
-    $workflowId = $workflowData['workflow_id'];
-    $workflow = Workflow::getMetaDataById($workflowId);
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
-    $screens = Screen::getAll($clientId);
-    $steps = Workflow::getSteps($workflowId);
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['edit_transition'])) {
-        $name = Util::cleanRegularInputField($_POST['transition_name']);
-        $description = Util::cleanRegularInputField($_POST['transition_description']);
-        $step = $_POST['step'];
-        $screen = $_POST['screen'];
-        Workflow::updateDataById($workflowData['id'], $name, $description, $screen, $step);
+        $workflowDataId = $request->get('id');
+        $workflowData = Workflow::getDataById($workflowDataId);
+        $workflowId = $workflowData['workflow_id'];
+        $workflow = Workflow::getMetaDataById($workflowId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Transition ' . $name, $currentDate);
+        $screens = Screen::getAll($session->get('client/id'));
+        $steps = Workflow::getSteps($workflowId);
 
-        header('Location: /yongo/administration/workflow/view-transition/' . $workflowDataId);
+        if ($request->request->has('edit_transition')) {
+            $name = Util::cleanRegularInputField($request->request->get('transition_name'));
+            $description = Util::cleanRegularInputField($request->request->get('transition_description'));
+            $step = $request->request->get('step');
+            $screen = $request->request->get('screen');
+            Workflow::updateDataById($workflowData['id'], $name, $description, $screen, $step);
+
+            $currentDate = Util::getServerCurrentDateTime();
+            Log::add(
+                $session->get('client/id'),
+                SystemProduct::SYS_PRODUCT_YONGO,
+                $session->get('user/id'),
+                'UPDATE Yongo Workflow Transition ' . $name,
+                $currentDate
+            );
+
+            return new RedirectResponse('/yongo/administration/workflow/view-transition/' . $workflowDataId);
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow Transition';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/workflow/transition/Edit.php', get_defined_vars());
     }
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow Transition';
-    
-    require_once __DIR__ . '/../../../../Resources/views/administration/workflow/transition/Edit.php';
+}

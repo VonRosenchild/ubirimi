@@ -1,10 +1,25 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition;
 
-    $workflowId = $_POST['workflow_id'];
-    $idFrom = $_POST['id_from'];
-    $idTo = $_POST['id_to'];
-    Workflow::deleteRecord($workflowId, $idFrom, $idTo);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $workflowId = $request->request->get('workflow_id');
+        $idFrom = $request->request->get('id_from');
+        $idTo = $request->request->get('id_to');
+        Workflow::deleteRecord($workflowId, $idFrom, $idTo);
+
+        return new Response('');
+    }
+}
