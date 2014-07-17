@@ -26,7 +26,7 @@
 
                                 <fieldset>
                                     <label for="sign-in-password">password</label>
-                                    <input id="sign-in-password" type="password" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="password" style="width:240px;"/>
+                                    <input tabindex="2  " id="sign-in-password" type="password" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="password" style="width:240px;"/>
                                 </fieldset>
 
                                 <?php if ($signInError): ?>

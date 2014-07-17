@@ -845,6 +845,11 @@ textarea:required {
     font-size: 11px !important;
 }
 
+.divLikeTable:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
 #footer #copyright a:hover {
     color: #FFFFFF !important;
     text-decoration: none;
