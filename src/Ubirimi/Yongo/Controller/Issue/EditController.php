@@ -41,7 +41,7 @@ class EditController extends UbirimiController
 
         $newIssueData = array();
         $newIssueCustomFieldsData = array();
-        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId, null, $loggedInUserId);
+        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         for ($i = 0; $i < count($fieldTypes); $i++) {
             if ($fieldValues[$i] != 'null' && $fieldValues[$i] != '') {
@@ -55,22 +55,25 @@ class EditController extends UbirimiController
 
         if ($fieldTypesCustom) {
             for ($i = 0; $i < count($fieldTypesCustom); $i++) {
-                if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '')
+                if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '') {
                     $newIssueCustomFieldsData[$fieldTypesCustom[$i]] = $fieldValuesCustom[$i];
-                else
+                } else {
                     $newIssueCustomFieldsData[$fieldTypesCustom[$i]] = null;
+                }
             }
         }
 
         if (array_key_exists(Field::FIELD_ASSIGNEE_CODE, $newIssueData)) {
             // assignee field is placed on screen
 
-            if ($newIssueData[Field::FIELD_ASSIGNEE_CODE] == -1)
+            if ($newIssueData[Field::FIELD_ASSIGNEE_CODE] == -1) {
                 $newIssueData[Field::FIELD_ASSIGNEE_CODE] = null;
+            }
         }
 
-        if (!isset($newIssueData[Field::FIELD_STATUS_CODE]))
+        if (!isset($newIssueData[Field::FIELD_STATUS_CODE])) {
             $newIssueData[Field::FIELD_STATUS_CODE] = $oldIssueData[Field::FIELD_STATUS_CODE];
+        }
 
         $currentDate = Util::getServerCurrentDateTime();
 

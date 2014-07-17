@@ -9,6 +9,12 @@
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Yongo\Repository\Project\ProjectComponent;
     use Ubirimi\Yongo\Repository\Project\ProjectVersion;
+    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+    use Ubirimi\Yongo\Event\IssueEvent as Event;
+    use Ubirimi\Event\LogEvent;
+    use Ubirimi\Container\UbirimiContainer;
+    use Ubirimi\Yongo\Event\YongoEvents;
+    use Ubirimi\Event\UbirimiEvents;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -27,6 +33,8 @@
     $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
     if (isset($_POST['move_issue_step_4'])) {
+
+        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         IssueComponent::deleteByIssueId($issueId);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
@@ -49,7 +57,16 @@
 
         $session->remove('move_issue');
 
-        header('Location: ' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
+        $newIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData);
+
+        $issueEvent = new Event(null, null, Event::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
+        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);
+
+        UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
+        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
+
+//        header('Location: ' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
         die();
     }
 

@@ -17,6 +17,7 @@ class IssueEvent {
     const EVENT_ISSUE_WORK_STARTED_CODE = 10;
     const EVENT_ISSUE_WORK_STOPPED_CODE = 11;
     const EVENT_GENERIC_CODE = 12;
+    const EVENT_ISSUE_MOVED  = 13;
 
     private $name;
     private $description;
@@ -44,7 +45,8 @@ class IssueEvent {
     public static function getByClient($clientId) {
         $query = "SELECT event.* " .
             "FROM event " .
-            "WHERE event.client_id = ?";
+            "WHERE event.client_id = ? " .
+            "order by system_flag desc, name";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $clientId);

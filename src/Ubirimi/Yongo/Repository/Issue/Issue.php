@@ -1155,6 +1155,10 @@ class Issue {
             $fieldChanges[] = array(Field::FIELD_SUMMARY_CODE, $oldIssueData[Field::FIELD_SUMMARY_CODE], $newIssueData[Field::FIELD_SUMMARY_CODE]);
         }
 
+        if (Issue::issueFieldChanged(Field::FIELD_PROJECT, $oldIssueData, $newIssueData)) {
+            $fieldChanges[] = array(Field::FIELD_PROJECT, $oldIssueData[Field::FIELD_PROJECT], $newIssueData[Field::FIELD_PROJECT]);
+        }
+
         if (Issue::issueFieldChanged(Field::FIELD_DESCRIPTION_CODE, $oldIssueData, $newIssueData)) {
             $fieldChanges[] = array(Field::FIELD_DESCRIPTION_CODE, $oldIssueData[Field::FIELD_DESCRIPTION_CODE], $newIssueData[Field::FIELD_DESCRIPTION_CODE]);
         }

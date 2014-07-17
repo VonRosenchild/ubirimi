@@ -226,6 +226,14 @@ class Email {
     }
 
     public static function sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $fieldChanges, $userToNotify) {
+        echo                 Util::getTemplate('_issueUpdated.php', array(
+                'clientDomain' => Util::getSubdomain(),
+                'issue' => $issue,
+                'project' => $project,
+                'user' => $loggedInUser,
+                'fieldChanges' => $fieldChanges)
+        );
+        die();
         if (Email::$smtpSettings) {
             EmailQueue::add($clientId,
                 Email::$smtpSettings['from_address'],
@@ -249,13 +257,14 @@ class Email {
         $eventUpdatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_UPDATED_CODE, 'id');
         $users = Project::getUsersForNotification($projectId, $eventUpdatedId, $issue, $loggedInUserId);
         $project = Project::getById($projectId);
+        $loggedInUser = User::getById($loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
                 continue;
             }
 
-            Email::sendEmailIssueChanged($issue, $project, $loggedInUserId, $clientId, $changedFields, $user);
+            Email::sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $changedFields, $user);
         }
     }
 

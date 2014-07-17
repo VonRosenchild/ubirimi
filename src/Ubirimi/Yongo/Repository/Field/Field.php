@@ -24,6 +24,7 @@ class Field {
     const FIELD_STATUS_CODE = 'status';
     const FIELD_ISSUE_SECURITY_LEVEL = 'security_level';
     const FIELD_ISSUE_TIME_TRACKING = 'time_tracking';
+    const FIELD_PROJECT = 'project_name';
 
     const CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE = 'small_text_field';
     const CUSTOM_FIELD_TYPE_BIG_TEXT_CODE = 'big_text_field';
@@ -44,7 +45,8 @@ class Field {
                                     Field::FIELD_STATUS_CODE => 'Status', Field::FIELD_ENVIRONMENT_CODE => 'Environment', Field::FIELD_COMPONENT_CODE => 'Components',
                                     Field::FIELD_FIX_VERSION_CODE => 'Target releases', Field::FIELD_AFFECTS_VERSION_CODE => 'Affected versions', Field::FIELD_RESOLUTION_CODE => 'Resolution',
                                     Field::FIELD_DUE_DATE_CODE => 'Due Date', Field::FIELD_ISSUE_SECURITY_LEVEL => 'Security Level', 'time_spent' => 'Time Spent',
-                                    'remaining_estimate' => 'Remaining Estimate', 'worklog_time_spent' => 'Worklog Time Spent', Field::FIELD_ATTACHMENT_CODE => 'Attachment');
+                                    'remaining_estimate' => 'Remaining Estimate', 'worklog_time_spent' => 'Worklog Time Spent', Field::FIELD_ATTACHMENT_CODE => 'Attachment',
+                                    Field::FIELD_PROJECT => 'Project');
 
     public static function getByClient($clientId) {
         $query = "SELECT * FROM field where client_id = ? order by name";

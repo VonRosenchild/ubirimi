@@ -12,7 +12,7 @@
     </div>
     <div style="height: 10px"></div>
 
-    <div>Project: <a href="<?php echo $session->get('client/base_url') ?>/yongo/project/<?php echo $this->project['id'] ?>"><?php echo $this->project['name'] ?></a></div>
+    <div>Current Project: <a href="<?php echo $session->get('client/base_url') ?>/yongo/project/<?php echo $this->project['id'] ?>"><?php echo $this->project['name'] ?></a></div>
 
     <?php for ($index = 0; $index < count($this->fieldChanges); $index++): ?>
         <?php $fieldChanged = ucfirst(str_replace('_', ' ', $this->fieldChanges[$index][0])) ?>
