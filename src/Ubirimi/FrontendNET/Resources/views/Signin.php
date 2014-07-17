@@ -21,7 +21,7 @@
                             <div class="form-section clearfix sectionFeature blue">
                                 <fieldset>
                                     <label for="sign-in-username">username</label>
-                                    <input id="sign-in-username" type="text" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="username" style="width:240px; "/>
+                                    <input tabindex="1" id="sign-in-username" type="text" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="username" style="width:240px; "/>
                                 </fieldset>
 
                                 <fieldset>

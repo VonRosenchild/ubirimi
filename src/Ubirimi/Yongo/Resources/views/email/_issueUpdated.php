@@ -30,7 +30,9 @@
                     $diffHTML = $render->process($this->fieldChanges[$index][1], $opCodes);
 
                     $diffHTML = str_replace('<ins>', '<ins style="color: green; background: #dfd; text-decoration: none;">', $diffHTML);
-                    $diffHTML = str_replace('<del>', '<del style="color: red;background: #fdd;	text-decoration: none;">', $diffHTML);
+                    $diffHTML = str_replace('<del>', '&nbsp;<del style="color: red;background: #fdd;	text-decoration: none;">', $diffHTML);
+                    $diffHTML = str_replace('</del><ins', '</del>&nbsp;<ins', $diffHTML);
+
                 ?>
                 <span><?php echo ucfirst($fieldChanged) . ': ' . htmlspecialchars_decode($diffHTML) ?></span>
             <?php endif ?>

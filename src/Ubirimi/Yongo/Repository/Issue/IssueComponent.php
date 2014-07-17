@@ -15,7 +15,7 @@
             }
         }
 
-        public static function getByIssueIdAndProjectId($issueId, $projectId) {
+        public static function getByIssueIdAndProjectId($issueId, $projectId, $resultType = null, $resultColumn = null) {
             $query = 'SELECT issue_component.id, project_component.name, project_component_id, parent_id ' .
                 'FROM issue_component ' .
                 'LEFT JOIN project_component on issue_component.project_component_id = project_component.id ' .
@@ -27,9 +27,19 @@
                 $stmt->execute();
 
                 $result = $stmt->get_result();
-                if ($result->num_rows)
-                    return $result;
-                else
+                if ($result->num_rows) {
+                    if ($resultType == 'array') {
+                        $resultArray = array();
+                        while ($component = $result->fetch_array(MYSQLI_ASSOC)) {
+                            if ($resultColumn)
+                                $resultArray[] = $component[$resultColumn];
+                            else
+                                $resultArray[] = $component;
+                        }
+
+                        return $resultArray;
+                    } else return $result;
+                } else
                     return null;
             }
         }

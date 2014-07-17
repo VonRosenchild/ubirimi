@@ -226,14 +226,6 @@ class Email {
     }
 
     public static function sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $fieldChanges, $userToNotify) {
-        echo                 Util::getTemplate('_issueUpdated.php', array(
-                'clientDomain' => Util::getSubdomain(),
-                'issue' => $issue,
-                'project' => $project,
-                'user' => $loggedInUser,
-                'fieldChanges' => $fieldChanges)
-        );
-        die();
         if (Email::$smtpSettings) {
             EmailQueue::add($clientId,
                 Email::$smtpSettings['from_address'],

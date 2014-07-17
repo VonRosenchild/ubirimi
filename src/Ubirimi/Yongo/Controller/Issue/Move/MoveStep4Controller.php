@@ -15,6 +15,7 @@
     use Ubirimi\Container\UbirimiContainer;
     use Ubirimi\Yongo\Event\YongoEvents;
     use Ubirimi\Event\UbirimiEvents;
+    use Ubirimi\Yongo\Repository\Field\Field;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -35,6 +36,18 @@
     if (isset($_POST['move_issue_step_4'])) {
 
         $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+        if ($oldIssueData['component'] == null) {
+            $oldIssueData['component'] = array();
+        }
+        $oldIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        if ($oldIssueData['affects_version'] == null) {
+            $oldIssueData['affects_version'] = array();
+        }
+        $oldIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        if ($oldIssueData['fix_version'] == null) {
+            $oldIssueData['fix_version'] = array();
+        }
 
         IssueComponent::deleteByIssueId($issueId);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
@@ -52,13 +65,29 @@
             Issue::addComponentVersion($issueId, $session->get('move_issue/new_affects_version'), 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
+        $newProjectId = $session->get('move_issue/new_project');
         // move the issue
-        Issue::move($issueId, $session->get('move_issue/new_project'), $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
+        Issue::move($issueId, $newProjectId, $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
 
         $session->remove('move_issue');
-
         $newIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData);
+        $newIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $newProjectId, 'array', 'name');
+        if ($newIssueData['component'] == null) {
+            $newIssueData['component'] = array();
+        }
+        $newIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $newProjectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        if ($newIssueData['affects_version'] == null) {
+            $newIssueData['affects_version'] = array();
+        }
+        $newIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $newProjectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        if ($newIssueData['fix_version'] == null) {
+            $newIssueData['fix_version'] = array();
+        }
+
+        $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
+        $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, implode(', ', $oldIssueData['fix_version']), implode(', ', $newIssueData['fix_version']));
+        $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
 
         $issueEvent = new Event(null, null, Event::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);
@@ -66,7 +95,7 @@
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
         UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
 
-//        header('Location: ' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
+        header('Location: ' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
         die();
     }
 

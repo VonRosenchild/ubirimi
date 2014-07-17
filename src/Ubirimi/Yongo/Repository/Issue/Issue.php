@@ -942,7 +942,7 @@ class Issue {
         }
     }
 
-    public static function addComponentVersion($issueId, $values, $table, $version_flag = null) {
+    public static function addComponentVersion($issueId, $values, $table, $versionFlag = null) {
         $query = '';
         if ($table == 'issue_component')
             $query = "INSERT INTO issue_component(issue_id, project_component_id) VALUES ";
@@ -955,7 +955,7 @@ class Issue {
 
         foreach ($values as $key => $value) {
 
-            if (!$version_flag) {
+            if (!$versionFlag) {
                 $query .= '(?, ?), ';
                 $bind_param_str .= 'ii';
             } else {
@@ -964,7 +964,7 @@ class Issue {
             }
             $bind_param_arr[] = $issueId;
             $bind_param_arr[] = (int)$value;
-            if ($version_flag) $bind_param_arr[] = $version_flag;
+            if ($versionFlag) $bind_param_arr[] = $versionFlag;
         }
 
         $query = substr($query, 0, strlen($query) - 2);
@@ -1221,25 +1221,29 @@ class Issue {
             $oldVersionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
 
             $oldComponentsArray = array();
-            while ($oldComponents && $c = $oldComponents->fetch_array(MYSQLI_ASSOC))
+            while ($oldComponents && $c = $oldComponents->fetch_array(MYSQLI_ASSOC)) {
                 $oldComponentsArray[] = $c['project_component_id'];
+            }
 
             if ((count($oldComponentsArray) != count($newIssueData['component'])) || count(array_diff($oldComponentsArray, $newIssueData['component']))) {
                 $projectComponents = Project::getComponents($oldIssueData['issue_project_id']);
 
                 $project_components_names = array();
-                while ($comp = $projectComponents->fetch_array(MYSQLI_ASSOC))
+                while ($comp = $projectComponents->fetch_array(MYSQLI_ASSOC)) {
                     $project_components_names[$comp['id']] = $comp['name'];
+                }
 
                 $old_components_arr_names = array();
                 $new_components_arr_names = array();
-                for ($i = 0; $i < count($oldComponentsArray); $i++)
+                for ($i = 0; $i < count($oldComponentsArray); $i++) {
                     $old_components_arr_names[] = $project_components_names[$oldComponentsArray[$i]];
+                }
 
-                if ($newIssueData['component'])
-                    for ($i = 0; $i < count($newIssueData['component']); $i++)
+                if ($newIssueData['component']) {
+                    for ($i = 0; $i < count($newIssueData['component']); $i++) {
                         $new_components_arr_names[] = $project_components_names[$newIssueData['component'][$i]];
-
+                    }
+                }
                 $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $old_components_arr_names), implode(', ', $new_components_arr_names));
             }
         }
