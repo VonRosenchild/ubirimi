@@ -1,3 +1,12 @@
+function setInputFieldFocused(id) {
+
+    var SearchInput = $('#' + id);
+    SearchInput.val(SearchInput.val());
+    var strLength = SearchInput.val().length;
+    SearchInput.focus();
+    SearchInput[0].setSelectionRange(strLength, strLength);
+}
+
 $(document).ready(function () {
 
     /* process recover password */
@@ -22,4 +31,6 @@ $(document).ready(function () {
     $(".container.user-sing-up").on("click", "button[name='cancel']", function() {
         document.location = "/";
     });
+
+    setInputFieldFocused('sign-in-username');
 });
