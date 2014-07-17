@@ -31,7 +31,7 @@ use Ubirimi\Util;
                             <?php require_once __DIR__ . '/_sectionDetailsSlas.php' ?>
                         <?php endif ?>
                         <?php require_once __DIR__ . '/_sectionDetailsDates.php' ?>
-
+                        <br />
                         <?php if ($timeTrackingFlag): ?>
 
                             <table width="100%" cellspacing="0" cellpadding="0">
@@ -50,6 +50,7 @@ use Ubirimi\Util;
                                     <?php require __DIR__ . '/_timeTrackingInformation.php' ?>
                                 <?php endif ?>
                             </div>
+                            <br />
                             <table width="100%" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td id="sectExtraInformation" class="sectionDetail">
@@ -66,7 +67,7 @@ use Ubirimi\Util;
                 <tr>
                     <td colspan="3">
                         <?php require_once __DIR__ . '/_mainInformation.php' ?>
-
+                        <br />
                         <table width="100%">
                             <?php if (Util::deepInArray('description', $screenData)) : ?>
                                 <tr>
@@ -75,6 +76,7 @@ use Ubirimi\Util;
                                 <tr>
                                     <td>
                                         <div id="contentDescription"><?php echo str_replace("\n", '<br />', htmlentities($issue['description'])) ?></div>
+                                        <br />
                                     </td>
                                 </tr>
                             <?php endif ?>
@@ -101,6 +103,7 @@ use Ubirimi\Util;
                                 <tr>
                                     <td>
                                         <div id="contentEnvironment"><?php echo str_replace("\n", '<br />', htmlentities($issue['environment'])) ?></div>
+                                        <br />
                                     </td>
                                 </tr>
                             <?php endif ?>
@@ -112,6 +115,7 @@ use Ubirimi\Util;
                             </tr>
                             <tr>
                                 <td style="border-spacing: 0px">
+                                    <div style="height: 10px"></div>
                                     <div id="contentActivity">
                                         <ul class="nav nav-tabs" style="padding: 0px;">
                                             <li class="active" id="is_tab_comment">

@@ -123,11 +123,11 @@
     line-height: 14px;
 }
 .nav-tabs {
-    border-bottom: 2px solid #ddd;
+    border-bottom: 1px solid #ccc;
 }
 
 .nav-tabs > li {
-    margin-bottom: -1px;
+    margin-bottom: 0px;
 }
 .nav-tabs > li > a {
     padding-top: 4px;
@@ -140,7 +140,7 @@
 }
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus {
-    border-color: #eeeeee #eeeeee #dddddd;
+    /*border-color: #eeeeee #eeeeee #dddddd;*/
 }
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover,
