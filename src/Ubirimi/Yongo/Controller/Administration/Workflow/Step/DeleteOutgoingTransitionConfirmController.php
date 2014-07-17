@@ -1,1 +1,0 @@
-Are you sure you want to delete the outgoing transitions for this step?
