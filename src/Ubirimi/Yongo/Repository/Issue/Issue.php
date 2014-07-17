@@ -1214,108 +1214,17 @@ class Issue {
             $fieldChanges[] = array(Field::FIELD_REPORTER_CODE, $fieldChangedOldValue, $fieldChangedNewValue);
         }
 
-        // deal with the components
-        if (array_key_exists('component', $newIssueData) && null !== $newIssueData['component']) {
-            $oldComponents = IssueComponent::getByIssueIdAndProjectId($issueId, $oldIssueData['issue_project_id']);
-            $oldVersionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $oldIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
-            $oldVersionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
-
-            $oldComponentsArray = array();
-            while ($oldComponents && $c = $oldComponents->fetch_array(MYSQLI_ASSOC)) {
-                $oldComponentsArray[] = $c['project_component_id'];
-            }
-
-            if ((count($oldComponentsArray) != count($newIssueData['component'])) || count(array_diff($oldComponentsArray, $newIssueData['component']))) {
-                $projectComponents = Project::getComponents($oldIssueData['issue_project_id']);
-
-                $project_components_names = array();
-                while ($comp = $projectComponents->fetch_array(MYSQLI_ASSOC)) {
-                    $project_components_names[$comp['id']] = $comp['name'];
-                }
-
-                $old_components_arr_names = array();
-                $new_components_arr_names = array();
-                for ($i = 0; $i < count($oldComponentsArray); $i++) {
-                    $old_components_arr_names[] = $project_components_names[$oldComponentsArray[$i]];
-                }
-
-                if ($newIssueData['component']) {
-                    for ($i = 0; $i < count($newIssueData['component']); $i++) {
-                        $new_components_arr_names[] = $project_components_names[$newIssueData['component'][$i]];
-                    }
-                }
-                $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $old_components_arr_names), implode(', ', $new_components_arr_names));
-            }
-        }
-
-        // deal with the affected versions
-        if (array_key_exists('affects_version', $newIssueData) && null !== $newIssueData['affects_version']) {
-            $old_versions_affected_arr = array();
-            $oldValueArray = array();
-            while (isset($oldVersionsAffected) && ($v = $oldVersionsAffected->fetch_array(MYSQLI_ASSOC)))
-                $old_versions_affected_arr[] = $v['project_version_id'];
-
-            for ($i = 0; $i < count($old_versions_affected_arr); $i++) {
-                $versionData = Project::getVersionById($old_versions_affected_arr[$i]);
-                $oldValueArray[] = $versionData['name'];
-            }
-            $oldValue = implode(', ', $oldValueArray);
-
-            if (isset($newIssueData['affects_version']) && !is_array($newIssueData['affects_version']))
-                $newIssueData['affects_version'] = array($newIssueData['affects_version']);
-
-            $newValueArray = array();
-            if (isset($newIssueData['affects_version'])) {
-                for ($i = 0; $i < count($newIssueData['affects_version']); $i++) {
-                    $versionData = Project::getVersionById($newIssueData['affects_version'][$i]);
-                    $newValueArray[] = $versionData['name'];
-                }
-            }
-
-            if ((count($old_versions_affected_arr) != count($newIssueData['affects_version'])) || count(array_diff($old_versions_affected_arr, $newIssueData['affects_version']))) {
-                if ($oldValue != implode(', ', $newValueArray))
-                    $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, $oldValue, implode(', ', $newValueArray));
-            }
-        }
-
-        // deal with the fix versions
-        if (array_key_exists('fix_version', $newIssueData) && null !== $newIssueData['fix_version']) {
-            $old_versions_targeted_arr = array();
-            $oldValueArray = array();
-            while (isset($oldVersionsTargeted) && ($v = $oldVersionsTargeted->fetch_array(MYSQLI_ASSOC)))
-                $old_versions_targeted_arr[] = $v['project_version_id'];
-
-            for ($i = 0; $i < count($old_versions_targeted_arr); $i++) {
-                $versionData = Project::getVersionById($old_versions_targeted_arr[$i]);
-                $oldValueArray[] = $versionData['name'];
-            }
-            $oldValue = implode(', ', $oldValueArray);
-
-            if (isset($newIssueData['fix_version']) && !is_array($newIssueData['fix_version']))
-                $newIssueData['fix_version'] = array($newIssueData['fix_version']);
-
-            $newValueArray = array();
-            if (isset($newIssueData['fix_version'])) {
-                for ($i = 0; $i < count($newIssueData['fix_version']); $i++) {
-                    $versionData = Project::getVersionById($newIssueData['fix_version'][$i]);
-                    $newValueArray[] = $versionData['name'];
-                }
-            }
-
-            if ((count($old_versions_targeted_arr) != count($newIssueData['fix_version'])) || count(array_diff($old_versions_targeted_arr, $newIssueData['fix_version']))) {
-                if ($oldValue != implode(', ', $newValueArray))
-                    $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, $oldValue, implode(', ', $newValueArray));
-            }
-        }
-
         return $fieldChanges;
     }
 
     public static function updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate) {
 
         for ($i = 0; $i < count($fieldChanges); $i++) {
-            if ($fieldChanges[$i][0] != 'comment')
-                Issue::addHistory($issueId, $loggedInUserId, $fieldChanges[$i][0], $fieldChanges[$i][1], $fieldChanges[$i][2], $currentDate);
+            if ($fieldChanges[$i][0] != 'comment') {
+                if ($fieldChanges[$i][1] != $fieldChanges[$i][2]) {
+                    Issue::addHistory($issueId, $loggedInUserId, $fieldChanges[$i][0], $fieldChanges[$i][1], $fieldChanges[$i][2], $currentDate);
+                }
+            }
         }
     }
 

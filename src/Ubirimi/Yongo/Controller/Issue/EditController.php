@@ -16,7 +16,9 @@ use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 
 class EditController extends UbirimiController
 {
@@ -41,7 +43,22 @@ class EditController extends UbirimiController
 
         $newIssueData = array();
         $newIssueCustomFieldsData = array();
+
         $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $projectId = $oldIssueData['issue_project_id'];
+
+        $oldIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+        if ($oldIssueData['component'] == null) {
+            $oldIssueData['component'] = array();
+        }
+        $oldIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        if ($oldIssueData['affects_version'] == null) {
+            $oldIssueData['affects_version'] = array();
+        }
+        $oldIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        if ($oldIssueData['fix_version'] == null) {
+            $oldIssueData['fix_version'] = array();
+        }
 
         for ($i = 0; $i < count($fieldTypes); $i++) {
             if ($fieldValues[$i] != 'null' && $fieldValues[$i] != '') {
@@ -65,7 +82,6 @@ class EditController extends UbirimiController
 
         if (array_key_exists(Field::FIELD_ASSIGNEE_CODE, $newIssueData)) {
             // assignee field is placed on screen
-
             if ($newIssueData[Field::FIELD_ASSIGNEE_CODE] == -1) {
                 $newIssueData[Field::FIELD_ASSIGNEE_CODE] = null;
             }
@@ -76,12 +92,27 @@ class EditController extends UbirimiController
         }
 
         $currentDate = Util::getServerCurrentDateTime();
-
+        Issue::updateById($issueId, $newIssueData, $currentDate);
         $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData);
 
-        Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
+        $newIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+        if ($newIssueData['component'] == null) {
+            $newIssueData['component'] = array();
+        }
+        $newIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        if ($newIssueData['affects_version'] == null) {
+            $newIssueData['affects_version'] = array();
+        }
+        $newIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        if ($newIssueData['fix_version'] == null) {
+            $newIssueData['fix_version'] = array();
+        }
 
-        Issue::updateById($issueId, $newIssueData, $currentDate);
+        $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
+        $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, implode(', ', $oldIssueData['fix_version']), implode(', ', $newIssueData['fix_version']));
+        $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
+
+        Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         // check if on the modal there is a comment field
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $newIssueData) && !empty($newIssueData[Field::FIELD_COMMENT_CODE])) {
