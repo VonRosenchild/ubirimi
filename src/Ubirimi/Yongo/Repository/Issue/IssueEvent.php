@@ -42,6 +42,17 @@ class IssueEvent {
         }
     }
 
+    public static function addRaw($clientId, $name, $code, $description, $systemFlag, $dateCreated) {
+        $query = "INSERT INTO event(client_id, name, code, description, system_flag, date_created) VALUES (?, ?, ?, ?, ?, ?)";
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+
+            $stmt->bind_param("isssis", $clientId, $name, $code, $description, $systemFlag, $dateCreated);
+            $stmt->execute();
+
+            return UbirimiContainer::get()['db.connection']->insert_id;
+        }
+    }
+
     public static function getByClient($clientId) {
         $query = "SELECT event.* " .
             "FROM event " .

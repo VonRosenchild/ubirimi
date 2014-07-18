@@ -7,7 +7,7 @@
     use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
     use Ubirimi\Yongo\Repository\Permission\PermissionRole;
     use Ubirimi\Yongo\Repository\Permission\Permission;
-
+    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
     Util::checkSuperUserIsLoggedIn();
 
     $clients = Client::getAll();
@@ -19,5 +19,8 @@
     while ($client = $clients->fetch_array(MYSQLI_ASSOC)) {
         $clientId = $client['id'];
 
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_HELP_DESK, $currentDate);
+        $currentDate = Util::getServerCurrentDateTime();
+
+
+        $eventId = IssueEvent::addRaw($clientId, 'Issue Moved', 13, "This is the 'issue moved' event.", 1, $currentDate);
     }
