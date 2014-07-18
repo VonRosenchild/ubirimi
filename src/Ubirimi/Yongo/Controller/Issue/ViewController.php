@@ -55,8 +55,12 @@ class ViewController extends UbirimiController
         }
 
         // before going further, check to is if the issue id a valid id
-        if (!$issue || !isset($issueProject) || (isset($issueProject) && $session->get('client/id') != $issueProject['client_id']) || (!$hasBrowsingPermission)) {
+        if (!$issue || !isset($issueProject) || (isset($issueProject) && $session->get('client/id') != $issueProject['client_id'])) {
             $issueValid = false;
+        }
+
+        if ($issueValid && !$hasBrowsingPermission) {
+            Util::checkUserIsLoggedInAndRedirect('?context=/yongo/issue/' . $issueId);
         }
 
         if ($issueValid) {

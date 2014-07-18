@@ -32,6 +32,8 @@ class SigninController extends UbirimiController
             return new RedirectResponse($httpHOST . '/yongo/my-dashboard');
         }
 
+        $context = isset($_GET['context']) ? $_GET['context'] : null;
+
         if (isset($_POST['sign_in'])) {
 
             $username = $_POST['username'];
@@ -52,7 +54,12 @@ class SigninController extends UbirimiController
                     $date = Util::getServerCurrentDateTime();
                     Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);
 
-                    return new RedirectResponse($httpHOST . '/yongo/my-dashboard');
+                    if ($context) {
+                        return new RedirectResponse($httpHOST . $context);
+                    } else {
+                        return new RedirectResponse($httpHOST . '/yongo/my-dashboard');
+                    }
+
                 } else $signInError = true;
             } else $signInError = true;
         } else if (isset($_POST['create_account'])) {

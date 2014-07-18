@@ -46,17 +46,17 @@ class Util {
         return null !== UbirimiContainer::get()['session']->get('user/id');
     }
 
-    public static function signOutAndRedirect() {
+    public static function signOutAndRedirect($context) {
         UbirimiContainer::get()['session']->invalidate();
 
-        header('Location: /');
+        header('Location: /' . $context);
         exit;
     }
 
-    public static function checkUserIsLoggedInAndRedirect() {
+    public static function checkUserIsLoggedInAndRedirect($context) {
 
         if (!Util::checkUserIsLoggedIn()) {
-            Util::signOutAndRedirect();
+            Util::signOutAndRedirect($context);
         }
     }
 
