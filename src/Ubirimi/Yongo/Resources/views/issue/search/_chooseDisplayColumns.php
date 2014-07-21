@@ -54,7 +54,7 @@
                 <?php endwhile ?>
                 <?php foreach ($SLAColumns as $name => $ids): ?>
                     <tr>
-                        <td><input <?php if (in_array($ids, $columns)) echo 'checked="checked"' ?> type="checkbox" id="issue_column_sla_<?php echo $ids ?>"></td>
+                        <td><input <?php if (in_array('sla_' . $ids, $columns)) echo 'checked="checked"' ?> type="checkbox" id="issue_column_sla_<?php echo $ids ?>"></td>
                         <td><?php echo $name ?></td>
                     </tr>
                 <?php endforeach ?>
