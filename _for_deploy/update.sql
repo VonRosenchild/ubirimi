@@ -1,5 +1,3 @@
-UPDATE `yongo`.`yongo_issue_sla` SET `started_flag` = '0', `stopped_flag` = '0', `started_date` = NULL, `stopped_date` = NULL, `value` = 0 WHERE `yongo_issue_sla`.`id` = 880;
-
 
 !!! adauga calendarul default la fiecare proiect de help desk si modifica fiecare goal sa aibe acel calendar default
 
@@ -40,16 +38,10 @@ CREATE TABLE `help_sla_calendar_data` (
   KEY `help_calendar_id` (`help_sla_calendar_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
-ALTER TABLE `help_sla_calendar` CHANGE `client_id` `project_id` BIGINT(20) UNSIGNED NOT NULL;
 
 ALTER TABLE `help_sla_goal` ADD `help_sla_calendar_id` BIGINT UNSIGNED NOT NULL AFTER `help_sla_id`, ADD INDEX (`help_sla_calendar_id`) ;
 
 ALTER TABLE `yongo_issue_sla` ADD `value_between_cycles` INT NOT NULL DEFAULT '0' ;
-
-ALTER TABLE `help_sla_calendar_data` ADD `not_working_flag` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `time_to`;
-
-ALTER TABLE `help_sla_calendar` ADD `default_flag` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sys_timezone_id`;
-ALTER TABLE `help_sla_calendar` CHANGE `client_id` `project_id` BIGINT(20) UNSIGNED NOT NULL;
 
 
 ALTER TABLE `notification_scheme_data` ADD `all_watchers` TINYINT UNSIGNED NULL AFTER `component_lead`;
