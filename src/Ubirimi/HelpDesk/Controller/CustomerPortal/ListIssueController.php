@@ -63,6 +63,7 @@
     }
 
     $SLAs = SLA::getByProjectIds(array(229));
+
     $columns = array('code', 'summary', 'priority', 'status', 'created', 'updated', 'reporter', 'assignee', 'settings_menu');
     if (Util::checkUserIsLoggedIn()) {
         $columns = explode('#', $session->get('user/issues_display_columns'));

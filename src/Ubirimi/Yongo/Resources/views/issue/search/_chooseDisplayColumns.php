@@ -43,12 +43,21 @@
                     <td><input <?php if (in_array('assignee', $columns)) echo 'checked="checked"' ?> type="checkbox" id="issue_column_assignee"></td>
                     <td>Assignee</td>
                 </tr>
+
+                <?php $SLAColumns = array(); ?>
                 <?php while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)): ?>
-                    <tr>
-                        <td><input <?php if (in_array('sla_' . $SLA['id'], $columns)) echo 'checked="checked"' ?> type="checkbox" id="issue_column_sla_<?php echo $SLA['id'] ?>"></td>
-                        <td><?php echo $SLA['name'] ?></td>
-                    </tr>
+                    <?php if (array_key_exists($SLA['name'], $SLAColumns)): ?>
+                        <?php $SLAColumns[$SLA['name']] .= '_' . $SLA['id']; ?>
+                    <?php else: ?>
+                        <?php $SLAColumns[$SLA['name']] = $SLA['id']; ?>
+                    <?php endif ?>
                 <?php endwhile ?>
+                <?php foreach ($SLAColumns as $name => $ids): ?>
+                    <tr>
+                        <td><input <?php if (in_array($ids, $columns)) echo 'checked="checked"' ?> type="checkbox" id="issue_column_sla_<?php echo $ids ?>"></td>
+                        <td><?php echo $name ?></td>
+                    </tr>
+                <?php endforeach ?>
             </tbody>
         </table>
     </div>

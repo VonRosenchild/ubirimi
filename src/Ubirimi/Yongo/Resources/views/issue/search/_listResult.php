@@ -84,16 +84,19 @@
                         <?php endif ?>
                         <?php if (substr($columns[$i], 0, 4) == 'sla_'): ?>
                             <?php
-                                $slaId = str_replace('sla_', '', $columns[$i]);
+                                $slaIds = explode("_", str_replace('sla_', '', $columns[$i]));
                             ?>
                             <td class="issueSLA">
-                                <?php if (isset($slaData[$slaId]['goal'])): ?>
-                                    <span class="<?php if (($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                                        <?php echo SLA::formatOffset($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) ?>
-                                    </span>
-                                    &nbsp;
-                                    <img src="/img/clock.png" height="16px" />
-                                <?php endif ?>
+                                <?php for ($j = 0; $j < count($slaIds); $j++): ?>
+                                    <?php $slaId = $slaIds[$j] ?>
+                                    <?php if (isset($slaData[$slaId]['goal'])): ?>
+                                        <span class="<?php if (($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
+                                            <?php echo SLA::formatOffset($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) ?>
+                                        </span>
+                                        &nbsp;
+                                        <img src="/img/clock.png" height="16px" />
+                                    <?php endif ?>
+                                <?php endfor ?>
                             </td>
                         <?php endif ?>
                         <?php if (Util::checkUserIsLoggedIn() && $columns[$i] == 'settings_menu'):  ?>

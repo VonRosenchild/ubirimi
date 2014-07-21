@@ -639,7 +639,10 @@ class Util {
                 $columnWidth = 20;
                 $align = 'align="center"';
             } elseif (substr($column, 0, 4) == 'sla_') {
-                $slaColumn = SLA::getById(str_replace('sla_', '', $column));
+                $slaIds = explode("_", $column);
+                $slaId = $slaIds[1];
+
+                $slaColumn = SLA::getById($slaId);
                 $columnName = $slaColumn['name'];
             } else {
                 $columnName = str_replace("_", ' ', ucfirst($column));
