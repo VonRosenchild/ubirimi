@@ -1,7 +1,7 @@
 <?php
     use Ubirimi\Container\UbirimiContainer;
 
-    require_once __DIR__ . '/_header.php';
+    require __DIR__ . '/_header.php';
     $session = UbirimiContainer::get()['session'];
 ?>
 
@@ -24,4 +24,4 @@
     <a style="text-decoration: none;" href="<?php echo $session->get('client/base_url') ?>/yongo/issue/<?php echo $this->issue['id'] ?>">View Issue</a>
 </div>
 
-<?php require_once __DIR__ . '/_footer.php' ?>
+<?php require __DIR__ . '/_footer.php' ?>
