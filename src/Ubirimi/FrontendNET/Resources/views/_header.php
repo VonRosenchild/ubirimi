@@ -13,6 +13,7 @@
     <link rel="icon" type="image/ico" href="/img/site/bg.logo.png" />
 
     <script type="text/javascript" src="/js/vendor/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="/js/general.js"></script>
     <!--[if lt IE 9]>
     <script>window.html5 || document.write('<script src="/js/vendor/html5shiv.js"><\/script>')</script>
     <![endif]-->

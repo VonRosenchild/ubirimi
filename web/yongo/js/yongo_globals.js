@@ -345,6 +345,10 @@ function createIssue(message) {
             if (window.File && window.FileList && window.FileReader) {
                 $(".chzn-select").chosen();
 
+                $(".chzn-select").on("chosen:showing_dropdown", function () {
+                    $(this).parents("div").css("overflow", "visible");
+                });
+
                 if ($("#field_type_component").children().length) {
                     $("#field_type_component").chosen().change(function() {
                         $("[id^='field_type_component_chosen'] > ul > li > span").each(function (i, selected) {

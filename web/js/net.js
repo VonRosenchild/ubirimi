@@ -1,12 +1,3 @@
-function setInputFieldFocused(id) {
-
-    var SearchInput = $('#' + id);
-    SearchInput.val(SearchInput.val());
-    var strLength = SearchInput.val().length;
-    SearchInput.focus();
-    SearchInput[0].setSelectionRange(strLength, strLength);
-}
-
 $(document).ready(function () {
 
     /* process recover password */

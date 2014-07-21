@@ -1569,6 +1569,7 @@ class Issue {
         if ($SLAs) {
             // check issue against the SLAs
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
+
                 $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
 
                 if ($slaData) {
@@ -1577,13 +1578,12 @@ class Issue {
                         'goal' => $slaData[1],
                         'goal_id' => $slaData[2]);
                 } else {
-
                     // it is already stored in the database, stopped before recalculation
                     $slaCalculated = SLA::getSLAData($issue['id'], $SLA['id']);
                     $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
 
                     $offsetValue = $slaCalculated['value'] ? $slaCalculated['value'] : $slaCalculated['value_between_cycles'];
-                    $slasPrintData[$slaCalculated['id']] = array('name' => $SLA['name'],
+                    $slasPrintData[$slaCalculated['help_sla_id']] = array('name' => $SLA['name'],
                         'offset' => $offsetValue,
                         'goal' => $goalData['value'],
                         'goal_id' => $slaCalculated['help_sla_goal_id']);

@@ -1,3 +1,6 @@
+UPDATE `yongo`.`yongo_issue_sla` SET `started_flag` = '0', `stopped_flag` = '0', `started_date` = NULL, `stopped_date` = NULL, `value` = 0 WHERE `yongo_issue_sla`.`id` = 880;
+
+
 !!! adauga calendarul default la fiecare proiect de help desk si modifica fiecare goal sa aibe acel calendar default
 
 update la toti userii cu issue moved event

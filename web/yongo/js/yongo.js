@@ -1710,7 +1710,6 @@ $('document').ready(function () {
 
                 $('#user_to_watch').append('<option value="' + watcherId + '">' + userFirstLastName + '</option>');
                 $(".chzn-select").trigger('chosen:updated');
-
             }
         });
     });
@@ -1804,7 +1803,6 @@ $('document').ready(function () {
                         placeholder_text_multiple: 'Select some users',
                         no_results_text: "Oops, no users found!"
                     });
-
                 }
             });
         }

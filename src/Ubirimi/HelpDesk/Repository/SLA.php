@@ -345,8 +345,8 @@ class SLA {
             for ($i = 0; $i < count($slaCalendarData); $i++) {
 
                 if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
-
                     // check if this issue has the stop condition of the sla true
+
                     if (0 == $issueSLAData['stopped_flag']) {
                         $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $issueSLAData['stopped_date']);
 
@@ -363,7 +363,9 @@ class SLA {
                             Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
                         }
                     } else {
-                        return null;
+                        $intervalMinutes += $issueSLAData['value'];
+                        return array($intervalMinutes, $goalValue, $goalId);
+//                        return null;
                     }
 
                     if ($goalData['value'] && date_format($startConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to'] &&
@@ -394,6 +396,7 @@ class SLA {
             date_add($initialDate, date_interval_create_from_date_string('1 days'));
         }
 
+
         if ($issueSLAData['value_between_cycles']) {
             $intervalMinutes += $issueSLAData['value_between_cycles'];
         }
@@ -402,7 +405,7 @@ class SLA {
     }
 
     public static function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId) {
-        $query = "update yongo_issue_sla set value = ?, help_sla_goal_id = ? where stopped_flag = 0 and yongo_issue_id = ? and help_sla_id = ? limit 1";
+        $query = "update yongo_issue_sla set value = ?, help_sla_goal_id = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("iiii", $intervalMinutes, $goalId, $issueId, $SLAId);

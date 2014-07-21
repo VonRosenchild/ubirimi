@@ -83,7 +83,7 @@
     <?php endif ?>
     <?php if ($hasManageWatchersPermission): ?>
         <div align="right">
-            <input id="add_watcher" type="button" value="Add Watchers" />
+            <input class="btn ubirimi-btn" id="add_watcher" type="button" value="Add Watchers" />
         </div>
     <?php endif ?>
 <?php endif ?>
