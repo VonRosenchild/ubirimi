@@ -108,10 +108,18 @@ class EditController extends UbirimiController
             $newIssueData['fix_version'] = array();
         }
 
-        $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
-        $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, implode(', ', $oldIssueData['fix_version']), implode(', ', $newIssueData['fix_version']));
-        $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
+        if ($oldIssueData['component'] != $newIssueData['component']) {
+            $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
+        }
 
+        if ($oldIssueData['fix_version'] != $newIssueData['fix_version']) {
+            $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, implode(', ', $oldIssueData['fix_version']), implode(', ', $newIssueData['fix_version']));
+        }
+
+        if ($oldIssueData['affects_version'] != $newIssueData['affects_version']) {
+            $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
+        }
+        
         Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         // check if on the modal there is a comment field
