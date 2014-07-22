@@ -31,8 +31,8 @@ class Field {
     const CUSTOM_FIELD_TYPE_DATE_PICKER_CODE = 'date_picker';
     const CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE = 'date_time';
     const CUSTOM_FIELD_TYPE_NUMBER_CODE = 'number';
-    const CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE = 'select_list_single';
-    const CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER = 'user_picker_multiple_user';
+    const CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE = 'select_list_single';
+    const CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE = 'user_picker_multiple_user';
 
     const CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE_ID = 1;
     const CUSTOM_FIELD_TYPE_DATE_PICKER_CODE_ID = 2;

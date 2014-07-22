@@ -114,6 +114,8 @@ class ViewController extends UbirimiController
             }
 
             $customFieldsData = IssueCustomField::getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = IssueCustomField::getUserPickerData($issue['id']);
+
             $subTaskIssueTypes = Project::getSubTasksIssueTypes($projectId);
 
             $attachments = IssueAttachment::getByIssueId($issue['id'], true);

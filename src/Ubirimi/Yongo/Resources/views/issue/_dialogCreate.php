@@ -223,7 +223,7 @@
                                 case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="mousetrap" name="' . $field['field_code'] . '" type="text" value="" />';
                                     break;
-                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE:
+                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
                                     echo '<option value="">None</option>';
@@ -233,16 +233,10 @@
                                     echo '</select>';
                                     break;
 
-                                case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER:
-
-                                    echo '<select ' . ' ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px;">';
-
+                                case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" name="' . $field['field_code'] . '[]" multiple="multiple" style="width: 650px;" type="text" value="">';
                                     while ($user = $allUsers->fetch_array(MYSQLI_ASSOC)) {
-                                        $textSelected = '';
-                                        if ($user['user_id'] == $projectData['lead_id'])
-                                            $textSelected = 'selected="selected"';
-
-                                        echo '<option ' . $textSelected . ' value="' . $user['user_id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
+                                        echo '<option ' . $textSelected . ' value="' . $user['id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
                                     }
                                     echo '</select>';
                                     break;

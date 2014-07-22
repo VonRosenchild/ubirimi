@@ -34,19 +34,15 @@ function createSubtask(issueId, projectId, onSuccess) {
                     // deal with the regular fields
                     for (var i = 0; i < fields.length; i++) {
                         var elemId = fields[i].getAttribute('id');
-                        if (elemId.indexOf('chzn') == -1) {
-                            field_types.push(elemId.replace('field_type_', ''));
-                            field_values.push($('#' + elemId).val());
-                        }
+                        field_types.push(elemId.replace('field_type_', ''));
+                        field_values.push($('#' + elemId).val());
                     }
 
                     // deal with the custom fields
                     for (var i = 0; i < fieldsCustom.length; i++) {
                         var elemId = fieldsCustom[i].getAttribute('id');
-                        if (elemId.indexOf('chzn') == -1) {
-                            field_types_custom.push(elemId.replace('field_custom_type_', ''));
-                            field_values_custom.push($('#' + elemId).val());
-                        }
+                        field_types_custom.push(elemId.replace('field_custom_type_', ''));
+                        field_values_custom.push($('#' + elemId).val());
                     }
 
                     var attach_ids = []
@@ -206,19 +202,15 @@ function editIssue(issueId) {
                     // deal with the regular fields
                     for (i = 0; i < fields.length; i++) {
                         elemId = fields[i].getAttribute('id');
-                        if (elemId.indexOf('chzn') == -1) {
-                            field_types.push(elemId.replace('field_type_', ''));
-                            field_values.push($('#' + elemId).val());
-                        }
+                        field_types.push(elemId.replace('field_type_', ''));
+                        field_values.push($('#' + elemId).val());
                     }
 
                     // deal with the custom fields
                     for (i = 0; i < fieldsCustom.length; i++) {
                         elemId = fieldsCustom[i].getAttribute('id');
-                        if (elemId.indexOf('chzn') == -1) {
-                            field_types_custom.push(elemId.replace('field_custom_type_', ''));
-                            field_values_custom.push($('#' + elemId).val());
-                        }
+                        field_types_custom.push(elemId.replace('field_custom_type_', ''));
+                        field_values_custom.push($('#' + elemId).val());
                     }
 
                     var attach_ids = [];
@@ -485,22 +477,19 @@ function createIssueProcess(doNotCloseDialog) {
     var field_values = [];
     var field_values_custom = [];
     var i, elemId;
+
     // deal with the regular fields
     for (i = 0; i < fields.length; i++) {
         elemId = fields[i].getAttribute('id');
-        if (elemId.indexOf('chzn') == -1) {
-            field_types.push(elemId.replace('field_type_', ''));
-            field_values.push($('#' + elemId).val());
-        }
+        field_types.push(elemId.replace('field_type_', ''));
+        field_values.push($('#' + elemId).val());
     }
 
     // deal with the custom fields
     for (i = 0; i < fieldsCustom.length; i++) {
         elemId = fieldsCustom[i].getAttribute('id');
-        if (elemId.indexOf('chzn') == -1) {
-            field_types_custom.push(elemId.replace('field_custom_type_', ''));
-            field_values_custom.push($('#' + elemId).val());
-        }
+        field_types_custom.push(elemId.replace('field_custom_type_', ''));
+        field_values_custom.push($('#' + elemId).val());
     }
 
     var attach_ids = [];

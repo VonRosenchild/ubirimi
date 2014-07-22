@@ -11,6 +11,8 @@
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\Repository\User\User;
+    use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
 
     $issueId = $issueData['id'];
     $projectId = $issueData['issue_project_id'];
@@ -38,23 +40,26 @@
     $issueComponents = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
     $arrIssueComponents = array();
 
-    if ($issueComponents)
+    if ($issueComponents) {
         while ($row = $issueComponents->fetch_array(MYSQLI_ASSOC))
             $arrIssueComponents[] = $row['project_component_id'];
+    }
 
     $projectVersions = Project::getVersions($projectId);
     $issue_versions_affected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $arr_issue_versions_affected = array();
-    if ($issue_versions_affected)
+    if ($issue_versions_affected) {
         while ($row = $issue_versions_affected->fetch_array(MYSQLI_ASSOC))
             $arr_issue_versions_affected[] = $row['project_version_id'];
+    }
 
     $issue_versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
     $arr_issue_versions_targeted = array();
-    if ($issue_versions_targeted)
+    if ($issue_versions_targeted) {
         while ($row = $issue_versions_targeted->fetch_array(MYSQLI_ASSOC))
             $arr_issue_versions_targeted[] = $row['project_version_id'];
-
+    }
+    $allUsers = User::getByClientId($clientId);
     $fieldData = Project::getFieldInformation($project['issue_type_field_configuration_id'], $issueTypeId, 'array');
     $fieldsPlacedOnScreen = array();
 
@@ -272,11 +277,11 @@
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
                                     break;
 
-                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE:
+                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
 
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
 
-                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
                                     echo '<option value="">None</option>';
                                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
                                         $selectedHTML = '';
@@ -284,6 +289,28 @@
                                             $selectedHTML = 'selected="selected"';
                                         }
                                         echo '<option ' . $selectedHTML . ' value="' . $customValue['id'] . '">' . $customValue['value'] . '</option>';
+                                    }
+                                    echo '</select>';
+                                    break;
+
+                                case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
+                                    $customFieldsDataUserPickerMultipleUser = IssueCustomField::getUserPickerData($issueId);
+
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';
+                                    while ($allUsers && $systemUser = $allUsers->fetch_array(MYSQLI_ASSOC)) {
+                                        $userFound = false;
+                                        while ($customFieldsDataUserPickerMultipleUser && $fieldUser = $customFieldsDataUserPickerMultipleUser->fetch_array(MYSQLI_ASSOC)) {
+                                            if ($fieldUser['id'] == $systemUser['id']) {
+                                                $userFound = true;
+                                                break;
+                                            }
+                                        }
+                                        $customFieldsDataUserPickerMultipleUser->data_seek(0);
+                                        $textSelected = '';
+                                        if ($userFound) {
+                                            $textSelected = 'selected="selected"';
+                                        }
+                                        echo '<option ' . $textSelected . ' value="' . $systemUser['id'] . '">' . $systemUser['first_name'] . ' ' . $systemUser['last_name'] . '</option>';
                                     }
                                     echo '</select>';
                                     break;
