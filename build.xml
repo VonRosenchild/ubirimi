@@ -37,6 +37,14 @@
     </target>
 
     <target name="generate-config" description="Generate the config for the dev|prod environment">
+        <input propertyName="release.type"
+               validArgs="Major, Minor, Bugfix"
+               defaultValue="Minor"
+               promptChar="?"
+               message="Release type: " />
+
+        <version releasetype="${release.type}" file="${project.basedir}/app/config/phing/version" property="app.version"/>
+
         <copy file="${project.basedir}/app/config/config-dist.properties" tofile="${project.basedir}/app/config/config.properties" overwrite="true">
             <filterchain>
                 <expandproperties/>
