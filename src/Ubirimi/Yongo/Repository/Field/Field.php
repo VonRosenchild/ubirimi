@@ -31,14 +31,16 @@ class Field {
     const CUSTOM_FIELD_TYPE_DATE_PICKER_CODE = 'date_picker';
     const CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE = 'date_time';
     const CUSTOM_FIELD_TYPE_NUMBER_CODE = 'number';
-    const CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE = 'select_list_single';
+    const CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE = 'select_list_single';
+    const CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER = 'user_picker_multiple_user';
 
     const CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE_ID = 1;
     const CUSTOM_FIELD_TYPE_DATE_PICKER_CODE_ID = 2;
     const CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE_ID = 3;
     const CUSTOM_FIELD_TYPE_BIG_TEXT_CODE_ID = 4;
     const CUSTOM_FIELD_TYPE_NUMBER_CODE_ID = 5;
-    const CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE_ID = 6;
+    const CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID = 6;
+    const CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID = 7;
 
     public static $fieldTranslation = array(Field::FIELD_SUMMARY_CODE => 'Summary', Field::FIELD_ASSIGNEE_CODE => 'Assigned to', Field::FIELD_DESCRIPTION_CODE => 'Description',
                                     Field::FIELD_REPORTER_CODE => 'Reported by', Field::FIELD_ISSUE_TYPE_CODE => 'Type', Field::FIELD_PRIORITY_CODE => 'Priority',

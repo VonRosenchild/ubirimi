@@ -1,3 +1,5 @@
+INSERT INTO `yongo`.`sys_field_type` (`id`, `name`, `description`, `code`) VALUES ('7', 'User Picker (Multiple User)', 'Choose multiple users from the user base.', 'user_picker_multiple_user');
+
 
 !!! adauga calendarul default la fiecare proiect de help desk si modifica fiecare goal sa aibe acel calendar default
 

@@ -99,7 +99,7 @@
 
                 case Field::FIELD_COMPONENT_CODE:
                     if ($projectComponents) {
-                        $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_component" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select" style="width: 400px;">';
+                        $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_component" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input" style="width: 400px;">';
                         while ($component = $projectComponents->fetch_array(MYSQLI_ASSOC)) {
                             $htmlOutput .= '<option value="' . $component['id'] . '">' . $component['name'] . '</option>';
                         }

@@ -6,6 +6,7 @@
     use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\Repository\User\User;
 
     $screenData = Project::getScreenData($projectData, $issueTypeId, $sysOperationId);
 
@@ -23,6 +24,7 @@
     $issueResolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
     $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
     $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+    $allUsers = User::getByClientId($session->get('client/id'));
 
     $userHasModifyReporterPermission = Project::userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
     $userHasAssignIssuePermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
@@ -148,7 +150,7 @@
 
                         case Field::FIELD_COMPONENT_CODE:
                             if ($projectComponents) {
-                                echo '<select size="3" ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 650px;">';
+                                echo '<select size="3" ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px;">';
                                 $printedComponents = array();
                                 Project::renderTreeComponentsInCombobox($projectComponents, 0, null, $printedComponents);
                                 echo '</select>';
@@ -161,7 +163,7 @@
                         case Field::FIELD_AFFECTS_VERSION_CODE:
                             if ($projectVersions) {
                                 $projectVersions->data_seek(0);
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 650px">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px">';
                                 while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<option value="' . $version['id'] . '">' . $version['name'] . '</option>';
                                 }
@@ -174,7 +176,7 @@
                         case Field::FIELD_FIX_VERSION_CODE:
                             if ($projectVersions) {
                                 $projectVersions->data_seek(0);
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 650px;">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px;">';
                                 while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<option value="' . $version['id'] . '">' . $version['name'] . '</option>';
                                 }
@@ -203,7 +205,7 @@
                             // deal with the custom fields
                             switch ($field['type_code']) {
                                 case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
-                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="" name="' . $field['type_code'] . '" />';
+                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="" style="width: 650px;" name="' . $field['type_code'] . '" />';
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_BIG_TEXT_CODE:
@@ -221,12 +223,26 @@
                                 case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="mousetrap" name="' . $field['field_code'] . '" type="text" value="" />';
                                     break;
-                                case Field::CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE:
+                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE:
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
                                     echo '<option value="">None</option>';
                                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
                                         echo '<option value="' . $customValue['id'] . '">' . $customValue['value'] . '</option>';
+                                    }
+                                    echo '</select>';
+                                    break;
+
+                                case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER:
+
+                                    echo '<select ' . ' ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px;">';
+
+                                    while ($user = $allUsers->fetch_array(MYSQLI_ASSOC)) {
+                                        $textSelected = '';
+                                        if ($user['user_id'] == $projectData['lead_id'])
+                                            $textSelected = 'selected="selected"';
+
+                                        echo '<option ' . $textSelected . ' value="' . $user['user_id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
                                     }
                                     echo '</select>';
                                     break;

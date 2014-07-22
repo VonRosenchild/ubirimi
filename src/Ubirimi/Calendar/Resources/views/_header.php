@@ -10,7 +10,7 @@
     <script type="text/javascript" src="/js/vendor/jquery-ui-1.10.3.custom.min.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/time_picker.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jscolor/jscolor.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-    <script type="text/javascript" src="/js/vendor/chosen.jquery.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
+    <script type="text/javascript" src="/js/vendor/select2.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery.qtip.min.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/general.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/general_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="/css/vendor/time_picker.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/bootstrap.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.qtip.min.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
-    <link rel="stylesheet" type="text/css" href="/css/vendor/chosen.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
+    <link rel="stylesheet" type="text/css" href="/css/vendor/select2.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery-ui-1.10.3.custom.min.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/menu.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/general.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>

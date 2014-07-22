@@ -15,7 +15,7 @@
     <script type="text/javascript" src="/js/vendor/jquery.qtip.min.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fancybox.pack.js?v=2.1.5"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fancybox-buttons.js?v=1.0.5"></script>
-    <script type="text/javascript" src="/js/vendor/chosen.jquery.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
+    <script type="text/javascript" src="/js/vendor/select2.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
 
     <script type="text/javascript" src="/js/vendor/jquery.iframe-transport.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fileupload.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
@@ -40,7 +40,7 @@
     <link rel="stylesheet" type="text/css" href="/css/general.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery-ui-1.10.3.custom.min.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/custom-dialog.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
-    <link rel="stylesheet" type="text/css" href="/css/vendor/chosen.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
+    <link rel="stylesheet" type="text/css" href="/css/vendor/select2.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/yongo/css/upload_file.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/time_picker.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/net.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>

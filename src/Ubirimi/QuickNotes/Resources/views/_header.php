@@ -7,7 +7,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-
     <script type="text/javascript" src="/js/vendor/jquery-1.11.0.min.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery-ui-1.10.3.custom.min.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/bootstrap-dropdown.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
@@ -15,12 +14,10 @@
     <script type="text/javascript" src="/js/vendor/jquery.qtip.min.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fancybox.pack.js?v=2.1.5"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fancybox-buttons.js?v=1.0.5"></script>
-    <script type="text/javascript" src="/js/vendor/chosen.jquery.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-
+    <script type="text/javascript" src="/js/vendor/select2.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery.iframe-transport.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fileupload.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/ckeditor/ckeditor.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-
     <script type="text/javascript" src="/quick_notes/js/quick_notes.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/quick_notes/js/quick_notes_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/general_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
@@ -34,15 +31,13 @@
     <link rel="stylesheet" type="text/css" href="/css/general.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery-ui-1.10.3.custom.min.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/custom-dialog.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
-    <link rel="stylesheet" type="text/css" href="/css/vendor/chosen.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
+    <link rel="stylesheet" type="text/css" href="/css/vendor/select2.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/time_picker.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/net.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.qtip.min.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/quick_notes/css/quick_notes.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
-
     <link rel="stylesheet" type="text/css" href="/css/vendor/bootstrap.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.fileupload.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
-
     <link rel="stylesheet" type="text/css" href="/css/print.css?<?php echo UbirimiContainer::get()['app.version'] ?>" media="print"/>
 
     <link rel="icon" type="image/ico" href="/img/logo_small.png" />

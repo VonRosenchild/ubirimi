@@ -267,7 +267,7 @@ function doTransitionWithScreen(issueId, stepIdFrom, stepIdTo, workflowId, modal
 
 $('document').ready(function () {
 
-    $(".chzn-select").chosen();
+    $(".select2Input").select2();
 
     $(function () {
         $("#sortable").sortable({
@@ -919,7 +919,7 @@ $('document').ready(function () {
                         // restore fields data
                         restoreFieldsData(fields, fieldsData);
 
-                        $(".chzn-select").chosen();
+                        $(".select2Input").select2();
                         var due_date_picker = $("#field_type_due_date");
                         if (due_date_picker.length) {
                             due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
@@ -1550,7 +1550,7 @@ $('document').ready(function () {
                     // restore fields data
                     restoreFieldsData(fields, fieldsData);
 
-                    $(".chzn-select").chosen();
+                    $(".select2Input").select2();
                     var due_date_picker = $("#field_type_due_date");
                     if (due_date_picker.length) {
                         due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
@@ -1581,7 +1581,7 @@ $('document').ready(function () {
                     // restore fields data
                     restoreFieldsData(fields, fieldsData);
 
-                    $(".chzn-select").chosen();
+                    $(".select2Input").select2();
                     var due_date_picker = $("#field_type_due_date");
                     if (due_date_picker.length) {
                         due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
@@ -1709,7 +1709,7 @@ $('document').ready(function () {
                 var userFirstLastName = element.parent().parent().children().first().html();
 
                 $('#user_to_watch').append('<option value="' + watcherId + '">' + userFirstLastName + '</option>');
-                $(".chzn-select").trigger('chosen:updated');
+                $(".select2Input").trigger('chosen:updated');
             }
         });
     });
@@ -1799,7 +1799,7 @@ $('document').ready(function () {
                     $('#contentAddIssueWatcher').css('box-shadow', '3px 3px 5px rgba(0, 0, 0, 0.5)');
                     $('#contentAddIssueWatcher').show();
                     $('#contentAddIssueWatcher').html(response);
-                    $(".chzn-select").chosen({
+                    $(".select2Input").chosen({
                         placeholder_text_multiple: 'Select some users',
                         no_results_text: "Oops, no users found!"
                     });

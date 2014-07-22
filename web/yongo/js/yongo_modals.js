@@ -2196,7 +2196,7 @@ $('document').ready(function () {
         $("#modalLinkIssue").load("/yongo/issue/link-dialog/" + projectId + '/' + issueId + '/' + linkPossible, [], function () {
             $("#modalLinkIssue").dialog(options);
             $("#modalLinkIssue").dialog("open");
-            $(".chzn-select").chosen();
+            $(".select2Input").select2();
         });
     });
 
@@ -3966,7 +3966,7 @@ $('document').ready(function () {
         $("#modalShareIssue").load("/yongo/issue/share-dialog/" + issueId, [], function () {
             $("#modalShareIssue").dialog(options);
             $("#modalShareIssue").dialog("open");
-            $(".chzn-select").chosen({placeholder_text: 'Click to select a user'});
+            $(".select2Input").chosen({placeholder_text: 'Click to select a user'});
         });
     });
 });

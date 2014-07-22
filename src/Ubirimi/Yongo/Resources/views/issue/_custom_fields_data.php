@@ -24,7 +24,7 @@
                                 case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
                                     echo $fieldData['value'];
                                     break;
-                                case Field::CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE:
+                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE:
                                     echo $fieldData['value'];
                                     break;
                             }

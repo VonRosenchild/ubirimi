@@ -60,7 +60,7 @@ class EditScreenVisibilityController extends UbirimiController
                 $currentDate
             );
 
-            if ($field['sys_field_type_id'] == Field::CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE_ID) {
+            if ($field['sys_field_type_id'] == Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID) {
                 return new RedirectResponse('/yongo/administration/custom-fields/define/' . $fieldId);
             } else {
                 return new RedirectResponse('/yongo/administration/custom-fields');

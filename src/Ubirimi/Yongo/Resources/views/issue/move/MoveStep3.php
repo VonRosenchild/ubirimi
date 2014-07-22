@@ -65,7 +65,7 @@
                                     <tr>
                                         <td valing="top" style="vertical-align: top">Components:</td>
                                         <td>
-                                            <select name="new_component[]" multiple="multiple" class="chzn-select" style="width: 300px">
+                                            <select name="new_component[]" multiple="multiple" class="select2Input" style="width: 300px">
                                                 <?php while ($targetProjectComponents && $targetProjectComponent = $targetProjectComponents->fetch_array(MYSQLI_ASSOC)): ?>
                                                     <option value="<?php echo $targetProjectComponent['id'] ?>"><?php echo $targetProjectComponent['name'] ?></option>
                                                 <?php endwhile ?>
@@ -77,7 +77,7 @@
                                     <tr>
                                         <td valing="top" style="vertical-align: top">Fix Versions:</td>
                                         <td>
-                                            <select name="new_fix_version[]" multiple="multiple" class="chzn-select" style="width: 300px">
+                                            <select name="new_fix_version[]" multiple="multiple" class="select2Input" style="width: 300px">
                                                 <?php while ($targetVersions && $targetVersion = $targetVersions->fetch_array(MYSQLI_ASSOC)): ?>
                                                     <option value="<?php echo $targetVersion['id'] ?>"><?php echo $targetVersion['name'] ?></option>
                                                 <?php endwhile ?>
@@ -90,7 +90,7 @@
                                     <tr>
                                         <td valing="top" style="vertical-align: top">Affects Versions:</td>
                                         <td>
-                                            <select name="new_affects_version[]" multiple="multiple" class="chzn-select" style="width: 300px">
+                                            <select name="new_affects_version[]" multiple="multiple" class="select2Input" style="width: 300px">
                                                 <?php while ($targetVersions && $targetVersion = $targetVersions->fetch_array(MYSQLI_ASSOC)): ?>
                                                     <option value="<?php echo $targetVersion['id'] ?>"><?php echo $targetVersion['name'] ?></option>
                                                 <?php endwhile ?>

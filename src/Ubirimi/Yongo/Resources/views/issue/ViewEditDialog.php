@@ -189,7 +189,7 @@
 
                         case Field::FIELD_COMPONENT_CODE:
                             if ($projectComponents) {
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 $printedComponents = array();
                                 Project::renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
                                 echo '</select>';
@@ -201,7 +201,7 @@
 
                         case Field::FIELD_AFFECTS_VERSION_CODE:
                             if ($projectVersions) {
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     $textSelected = '';
                                     if (in_array($version['id'], $arr_issue_versions_affected))
@@ -217,7 +217,7 @@
                         case Field::FIELD_FIX_VERSION_CODE:
                             if ($projectVersions) {
                                 $projectVersions->data_seek(0);
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     $textSelected = '';
                                     if (in_array($version['id'], $arr_issue_versions_targeted))
@@ -272,7 +272,7 @@
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
                                     break;
 
-                                case Field::CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE:
+                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE:
 
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
 

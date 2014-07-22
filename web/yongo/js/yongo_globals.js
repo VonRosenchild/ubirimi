@@ -112,10 +112,11 @@ function createSubtask(issueId, projectId, onSuccess) {
 
         // call initialization file
         if (window.File && window.FileList && window.FileReader) {
-            $(".chzn-select").chosen();
+            $(".select2Input").select2();
             if ($("#field_type_component").children().length) {
-                $("#field_type_component").chosen().change(function() {
-                    $("[id^='field_type_component_chosen'] > ul > li > span").each(function (i, selected) {
+                $("#field_type_component").select2();
+                $("#field_type_component").change(function() {
+                    $("[id^='s2_id_field_type_component'] > ul > li > div").each(function (i, selected) {
                         $(this).text($(this).text().replace(/^\s+/,""));
                     });
                 });
@@ -279,7 +280,7 @@ function editIssue(issueId) {
 
         // call initialization file
         if (window.File && window.FileList && window.FileReader) {
-            $(".chzn-select").chosen({
+            $(".select2Input").select2({
                 display_selected_options: true,
                 display_disabled_options: true,
                 inherit_select_classes: true,
@@ -287,12 +288,13 @@ function editIssue(issueId) {
                 width: "100%"
             });
 
-            $("[id^='field_type_component_chosen'] > ul > li > span").each(function (i, selected) {
+            $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
                 $(this).text($(this).text().replace(/^\s+/,""));
             });
 
-            $("#field_type_component").chosen().change(function() {
-                $("[id^='field_type_component_chosen'] > ul > li > span").each(function (i, selected) {
+            $("#field_type_component").select2();
+            $("#field_type_component").change(function() {
+                $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
                     $(this).text($(this).text().replace(/^\s+/,""));
                 });
             });
@@ -343,15 +345,14 @@ function createIssue(message) {
 
             // call initialization file
             if (window.File && window.FileList && window.FileReader) {
-                $(".chzn-select").chosen();
-
-                $(".chzn-select").on("chosen:showing_dropdown", function () {
-                    $(this).parents("div").css("overflow", "visible");
-                });
+                $(".select2Input").select2();
 
                 if ($("#field_type_component").children().length) {
-                    $("#field_type_component").chosen().change(function() {
-                        $("[id^='field_type_component_chosen'] > ul > li > span").each(function (i, selected) {
+                    $("#field_type_component").select2();
+
+                    $("#field_type_component").change(function() {
+
+                        $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
                             $(this).text($(this).text().replace(/^\s+/,""));
                         });
                     });

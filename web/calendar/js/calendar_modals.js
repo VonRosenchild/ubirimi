@@ -308,7 +308,7 @@ $('document').ready(function () {
         $("#modalShareCalendar").load("/calendar/dialog/share/" + calendarId, [], function () {
             $("#modalShareCalendar").dialog(options);
             $("#modalShareCalendar").dialog("open");
-            $(".chzn-select").chosen({placeholder_text: 'Click to select a user'});
+            $(".select2Input").chosen({placeholder_text: 'Click to select a user'});
         });
     });
 
@@ -375,7 +375,7 @@ $('document').ready(function () {
         $("#modalAddGuestsToEvent").load("/calendar/event/dialog/add-guests/" + eventId, [], function () {
             $("#modalAddGuestsToEvent").dialog(options);
             $("#modalAddGuestsToEvent").dialog("open");
-            $(".chzn-select").chosen({placeholder_text: 'Click to select a user'});
+            $(".select2Input").chosen({placeholder_text: 'Click to select a user'});
         });
     });
 
