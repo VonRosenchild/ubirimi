@@ -7,6 +7,7 @@
 <tr>
     <td id="sectSubTasks" class="sectionDetail" colspan="2">
         <span class="sectionDetailTitle headerPageText">Sub-Tasks</span>
+        <div style="height: 10px"></div>
     </td>
 </tr>
 <tr>
