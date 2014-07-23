@@ -1146,7 +1146,7 @@ class Issue {
         return $fieldChanged;
     }
 
-    public static function computeDifference($oldIssueData, $newIssueData) {
+    public static function computeDifference($oldIssueData, $newIssueData, $newIssueCustomFieldsData) {
 
         $fieldChanges = array();
         $issueId = $oldIssueData['id'];
