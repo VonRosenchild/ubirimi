@@ -84,7 +84,7 @@
                         <select name="user" class="inputTextCombo" id="not_choose_user">
                             <option value>Choose a user</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
-                            <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                                <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
@@ -99,7 +99,7 @@
                         <select name="group" class="inputTextCombo" id="not_choose_group">
                             <option value>Choose a group</option>
                             <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>
-                            <option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
+                                <option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
@@ -114,7 +114,7 @@
                         <select name="role" class="inputTextCombo" id="not_choose_project_role">
                             <option value>Choose a project role</option>
                             <?php while ($role = $roles->fetch_array(MYSQLI_ASSOC)): ?>
-                            <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
+                                <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
