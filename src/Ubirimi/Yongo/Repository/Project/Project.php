@@ -985,8 +985,8 @@ class Project {
             'from project ' .
             'left join notification_scheme on notification_scheme.id = project.notification_scheme_id ' .
             'left join notification_scheme_data on (notification_scheme_data.notification_scheme_id = notification_scheme.id and ' .
-            'notification_scheme_data.current_user is not null) ' .
-            'left join yongo_issue on yongo_issue.project_id = project.id ' .
+            'notification_scheme_data.all_watchers is not null) ' .
+            'left join yongo_issue on yongo_issue.id = ? ' .
             'left join yongo_issue_watch on yongo_issue_watch.yongo_issue_id = yongo_issue.id ' .
             'left join user on user.id = yongo_issue_watch.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
@@ -1024,10 +1024,25 @@ class Project {
                 'notification_scheme_data.event_id = ? and ' .
                 'notification_scheme_data.component_lead is not null and ' .
                 'project_component.leader_id is not null and ' .
-                'user.id is not null';
+                'user.id is not null ' .
+
+            // 11. user picker multiple selection
+
+            'UNION DISTINCT ' .
+            'SELECT user.id as user_id, user.first_name, user.last_name, user.email, user.notify_own_changes_flag ' .
+            'from project ' .
+            'left join notification_scheme on notification_scheme.id = project.notification_scheme_id ' .
+            'left join notification_scheme_data on (notification_scheme_data.notification_scheme_id = notification_scheme.id and ' .
+            'notification_scheme_data.user_picker_multiple_selection is not null) ' .
+            'left join yongo_issue on yongo_issue.id = ? ' .
+            'left join issue_custom_field_data on (issue_custom_field_data.issue_id = yongo_issue.id and issue_custom_field_data.field_id = notification_scheme_data.user_picker_multiple_selection) ' .
+            'left join user on user.id = issue_custom_field_data.value ' .
+            'where project.id  IN ' . $projectsSQL . ' and ' .
+            'notification_scheme_data.event_id = ? and ' .
+            'user.id is not null';
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiiiiiiiii", $eventId, $eventId, $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId, $eventId, $loggedInUserId, $eventId, $eventId, $issue['id'], $eventId);
+            $stmt->bind_param("iiiiiiiiiiiiiiiii", $eventId, $eventId, $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId, $eventId, $loggedInUserId, $issue['id'], $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId);
             $stmt->execute();
             $result = $stmt->get_result();
 

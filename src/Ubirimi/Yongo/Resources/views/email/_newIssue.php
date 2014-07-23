@@ -12,24 +12,24 @@
     </div>
     <div style="height: 10px"></div>
 
-    <table width="100%" cellpadding="2" border="0">
+    <table width="100%" border="0">
         <tr>
-            <td style="color: #666666;" width="80">Project:</td>
+            <td style="width="80">Project:</td>
             <td><a href="<?php echo $session->get('client/base_url') ?>/yongo/project/<?php echo $this->issue['issue_project_id'] ?>"><?php echo $this->issue['project_name'] ?></a></td>
         </tr>
         <tr>
-            <td width="150" style="color: #666666;">Issue Type:</td>
+            <td width="150">Issue Type:</td>
             <td><?php echo $this->issue['type_name'] ?></td>
         </tr>
 
         <tr>
-            <td style="color: #666666;">Reporter:</td>
+            <td>Reporter:</td>
             <td>
                 <a href="<?php echo $session->get('client/base_url') ?>/yongo/user/profile/<?php echo $this->issue['reporter'] ?>"><?php echo $this->issue['ur_first_name'] . ' ' . $this->issue['ur_last_name'] ?></a>
             </td>
         </tr>
         <tr>
-            <td style="color: #666666;">Assignee:</td>
+            <td>Assignee:</td>
             <td>
                 <?php if ($this->issue['ua_first_name']): ?>
                 <a href="<?php echo $session->get('client/base_url') ?>/yongo/user/profile/<?php echo $this->issue['assignee'] ?>"><?php echo $this->issue['ua_first_name'] . ' ' . $this->issue['ua_last_name'] ?></a>
@@ -39,26 +39,26 @@
             </td>
         </tr>
         <tr>
-            <td style="color: #666666;">Created:</td>
+            <td>Created:</td>
             <td><?php echo $this->issue['date_created'] ?></td>
         </tr>
         <?php if ($this->issue['due_date']): ?>
         <tr>
-            <td style="color: #666666;">Due:</td>
+            <td>Due:</td>
             <td><?php echo $this->issue['due_date'] ?></td>
         </tr>
         <?php endif ?>
         <tr>
-            <td style="color: #666666;" valign="top" width="80">Description:</td>
+            <td valign="top" width="80">Description:</td>
             <td><?php echo str_replace("\n",  '<br />', $this->issue['description']) ?></td>
         </tr>
         <tr>
-            <td style="color: #666666;">Priority:</td>
+            <td>Priority:</td>
             <td><?php echo $this->issue['priority_name'] ?></td>
         </tr>
         <?php if ($this->versions_affected): ?>
         <tr>
-            <td style="color: #666666;">Affects version/s:</td>
+            <td>Affects version/s:</td>
             <td>
                 <?php
                     $arr_string = array();
@@ -72,7 +72,7 @@
         <?php endif ?>
         <?php if ($this->versions_fixed): ?>
         <tr>
-            <td style="color: #666666;">Fix versions:</td>
+            <td>Fix versions:</td>
             <td>
                 <?php
                     $arr_string = array();
@@ -86,7 +86,7 @@
         <?php endif ?>
         <?php if ($this->components): ?>
         <tr>
-            <td style="color: #666666;">Components:</td>
+            <td>Components:</td>
             <td>
                 <?php
                     $arr_string = array();

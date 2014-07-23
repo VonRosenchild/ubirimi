@@ -1,3 +1,5 @@
+ALTER TABLE  `notification_scheme_data` ADD  `user_picker_multiple_selection` BIGINT UNSIGNED NULL AFTER  `all_watchers`
+
 INSERT INTO `yongo`.`sys_field_type` (`id`, `name`, `description`, `code`) VALUES ('7', 'User Picker (Multiple User)', 'Choose multiple users from the user base.', 'user_picker_multiple_user');
 
 

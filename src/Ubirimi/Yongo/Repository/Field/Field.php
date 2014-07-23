@@ -64,6 +64,20 @@ class Field {
         }
     }
 
+    public static function getByClientIdAndFieldTypeId($clientId, $typeId) {
+        $query = "SELECT * FROM field where client_id = ? and sys_field_type_id = ? group by name order by name";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("ii", $clientId, $typeId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows)
+                return $result;
+            else
+                return null;
+        }
+    }
+
     public static function getById($fieldId) {
         $query = "SELECT * FROM field where id = ? limit 1";
 

@@ -6,8 +6,7 @@
     use Ubirimi\Util;
 
     $styleSelectedMenu = 'style="background-color: #EEEEEE;';
-
-//    $loggedInUserId = null;
+    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
     if (Util::checkUserIsLoggedIn()) {
 
         $hasAdministrationPermission = Util::userHasDocumentatorAdministrativePermission();
@@ -23,20 +22,11 @@
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#003466">
     <tr>
-        <?php if (Util::checkUserIsLoggedIn()): ?>
-            <td width="12px"></td>
-            <td style="height: 40px" valign="middle">
-                <?php require_once __DIR__ . '/../../../Resources/views/productTopBar.php' ?>
-            </td>
-        <?php else: ?>
-            <td width="12px"></td>
-            <td valign="middle" width="34px" align="center">
-                <img style="vertical-align: middle" src="/img/site/bg.logo.png" height="30px"/>
-            </td>
-            <td style="border-right: 1px #9c9c9c solid; color: #ffffff; font-size: 18px;" width="90px" align="center"><a style="color: #ffffff; text-decoration: none;" href="#">Ubirimi</a></td>
 
-            <td style="background-color: #6A8EB2; border-right: 1px #9c9c9c solid;" width="182px" class="product-menu" align="center"><div><a href="/documentador/dashboard/spaces">Documentador</a></div></td>
-        <?php endif ?>
+        <td width="12px"></td>
+        <td style="height: 40px" valign="middle">
+            <?php require_once __DIR__ . '/../../../Resources/views/productTopBar.php' ?>
+        </td>
         <td style="padding-right: 12px;">
             <table align="right" border="0" cellpadding="0" cellspacing="0" >
                 <tr>
