@@ -93,33 +93,8 @@ class EditController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
         Issue::updateById($issueId, $newIssueData, $currentDate);
-        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData);
+        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, $newIssueCustomFieldsData);
 
-        $newIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
-        if ($newIssueData['component'] == null) {
-            $newIssueData['component'] = array();
-        }
-        $newIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
-        if ($newIssueData['affects_version'] == null) {
-            $newIssueData['affects_version'] = array();
-        }
-        $newIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
-        if ($newIssueData['fix_version'] == null) {
-            $newIssueData['fix_version'] = array();
-        }
-
-        if ($oldIssueData['component'] != $newIssueData['component']) {
-            $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
-        }
-
-        if ($oldIssueData['fix_version'] != $newIssueData['fix_version']) {
-            $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, implode(', ', $oldIssueData['fix_version']), implode(', ', $newIssueData['fix_version']));
-        }
-
-        if ($oldIssueData['affects_version'] != $newIssueData['affects_version']) {
-            $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
-        }
-        
         Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         // check if on the modal there is a comment field

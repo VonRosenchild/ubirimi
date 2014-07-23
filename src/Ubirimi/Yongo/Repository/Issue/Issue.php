@@ -1150,6 +1150,7 @@ class Issue {
 
         $fieldChanges = array();
         $issueId = $oldIssueData['id'];
+        $projectId = $oldIssueData['issue_project_id'];
 
         if (Issue::issueFieldChanged(Field::FIELD_SUMMARY_CODE, $oldIssueData, $newIssueData)) {
             $fieldChanges[] = array(Field::FIELD_SUMMARY_CODE, $oldIssueData[Field::FIELD_SUMMARY_CODE], $newIssueData[Field::FIELD_SUMMARY_CODE]);
@@ -1171,48 +1172,75 @@ class Issue {
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_ISSUE_TYPE_CODE, $oldIssueData, $newIssueData)) {
-            $field_changed_old_value_row = IssueType::getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
-            $field_changed_new_value_row = IssueType::getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
-            $fieldChanges[] = array(Field::FIELD_ISSUE_TYPE_CODE, $field_changed_old_value_row['name'], $field_changed_new_value_row['name']);
+            $fieldChangedOldValueRow = IssueType::getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChangedNewValueRow = IssueType::getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChanges[] = array(Field::FIELD_ISSUE_TYPE_CODE, $fieldChangedOldValueRow['name'], $fieldChangedNewValueRow['name']);
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_PRIORITY_CODE, $oldIssueData, $newIssueData)) {
-            $field_changed_old_value_row = IssueSettings::getById($oldIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
-            $field_changed_new_value_row = IssueSettings::getById($newIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
+            $fieldChangedOldValueRow = IssueSettings::getById($oldIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
+            $fieldChangedNewValueRow = IssueSettings::getById($newIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
 
-            $fieldChanges[] = array(Field::FIELD_PRIORITY_CODE, $field_changed_old_value_row['name'], $field_changed_new_value_row['name']);
+            $fieldChanges[] = array(Field::FIELD_PRIORITY_CODE, $fieldChangedOldValueRow['name'], $fieldChangedNewValueRow['name']);
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_STATUS_CODE, $oldIssueData, $newIssueData)) {
-            $field_changed_old_value_row = IssueSettings::getById($oldIssueData[Field::FIELD_STATUS_CODE], 'status');
-            $field_changed_new_value_row = IssueSettings::getById($newIssueData[Field::FIELD_STATUS_CODE], 'status');
-            $fieldChanges[] = array(Field::FIELD_STATUS_CODE, $field_changed_old_value_row['name'], $field_changed_new_value_row['name']);
+            $fieldChangedOldValueRow = IssueSettings::getById($oldIssueData[Field::FIELD_STATUS_CODE], 'status');
+            $fieldChangedNewValueRow = IssueSettings::getById($newIssueData[Field::FIELD_STATUS_CODE], 'status');
+            $fieldChanges[] = array(Field::FIELD_STATUS_CODE, $fieldChangedOldValueRow['name'], $fieldChangedNewValueRow['name']);
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_RESOLUTION_CODE, $oldIssueData, $newIssueData)) {
-            $field_changed_old_value_row = IssueSettings::getById($oldIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
-            $field_changed_new_value_row = IssueSettings::getById($newIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
+            $fieldChangedOldValueRow = IssueSettings::getById($oldIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
+            $fieldChangedNewValueRow = IssueSettings::getById($newIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
 
-            $fieldChanges[] = array(Field::FIELD_RESOLUTION_CODE, $field_changed_old_value_row['name'], $field_changed_new_value_row['name']);
+            $fieldChanges[] = array(Field::FIELD_RESOLUTION_CODE, $fieldChangedOldValueRow['name'], $fieldChangedNewValueRow['name']);
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_ASSIGNEE_CODE, $oldIssueData, $newIssueData)) {
+            $fieldChangedOldValueRow = User::getById($oldIssueData[Field::FIELD_ASSIGNEE_CODE]);
+            $fieldChangedOldValue = $fieldChangedOldValueRow['first_name'] . ' ' . $fieldChangedOldValueRow['last_name'];
 
-            $field_changed_old_value_row = User::getById($oldIssueData[Field::FIELD_ASSIGNEE_CODE]);
-            $fieldChangedOldValue = $field_changed_old_value_row['first_name'] . ' ' . $field_changed_old_value_row['last_name'];
-
-            $field_changed_new_value_row = User::getById($newIssueData[Field::FIELD_ASSIGNEE_CODE]);
-            $fieldChangedNewValue = $field_changed_new_value_row['first_name'] . ' ' . $field_changed_new_value_row['last_name'];
+            $fieldChangedNewValueRow = User::getById($newIssueData[Field::FIELD_ASSIGNEE_CODE]);
+            $fieldChangedNewValue = $fieldChangedNewValueRow['first_name'] . ' ' . $fieldChangedNewValueRow['last_name'];
             $fieldChanges[] = array(Field::FIELD_ASSIGNEE_CODE, $fieldChangedOldValue, $fieldChangedNewValue);
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_REPORTER_CODE, $oldIssueData, $newIssueData)) {
-            $field_changed_old_value_row = User::getById($oldIssueData[Field::FIELD_REPORTER_CODE]);
-            $fieldChangedOldValue = $field_changed_old_value_row['first_name'] . ' ' . $field_changed_old_value_row['last_name'];
-            $field_changed_new_value_row = User::getById($newIssueData[Field::FIELD_REPORTER_CODE]);
-            $fieldChangedNewValue = $field_changed_new_value_row['first_name'] . ' ' . $field_changed_new_value_row['last_name'];
+            $fieldChangedOldValueRow = User::getById($oldIssueData[Field::FIELD_REPORTER_CODE]);
+            $fieldChangedOldValue = $fieldChangedOldValueRow['first_name'] . ' ' . $fieldChangedOldValueRow['last_name'];
+            $fieldChangedNewValueRow = User::getById($newIssueData[Field::FIELD_REPORTER_CODE]);
+            $fieldChangedNewValue = $fieldChangedNewValueRow['first_name'] . ' ' . $fieldChangedNewValueRow['last_name'];
             $fieldChanges[] = array(Field::FIELD_REPORTER_CODE, $fieldChangedOldValue, $fieldChangedNewValue);
         }
+
+        $newIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+        if ($newIssueData['component'] == null) {
+            $newIssueData['component'] = array();
+        }
+        $newIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        if ($newIssueData['affects_version'] == null) {
+            $newIssueData['affects_version'] = array();
+        }
+        $newIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        if ($newIssueData['fix_version'] == null) {
+            $newIssueData['fix_version'] = array();
+        }
+
+        if ($oldIssueData['component'] != $newIssueData['component']) {
+            $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
+        }
+
+        if ($oldIssueData['fix_version'] != $newIssueData['fix_version']) {
+            $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, implode(', ', $oldIssueData['fix_version']), implode(', ', $newIssueData['fix_version']));
+        }
+
+        if ($oldIssueData['affects_version'] != $newIssueData['affects_version']) {
+            $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
+        }
+
+
+        // deal with custom field values also
 
         return $fieldChanges;
     }
