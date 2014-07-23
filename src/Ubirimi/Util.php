@@ -170,12 +170,15 @@ class Util {
     }
 
     public static function getFormattedDate($date) {
+
         $clientTimezone = UbirimiContainer::get()['session']->get('client/settings/timezone');
 
         $dateObject = new \DateTime($date, new \DateTimeZone(date_default_timezone_get()));
-        $dateObject->setTimezone(new \DateTimeZone($clientTimezone));
+        if ($clientTimezone) {
+            $dateObject->setTimezone(new \DateTimeZone($clientTimezone));
+        }
 
-        return date('j M Y H:i:s', strtotime($date));
+        return date('j M Y H:i:s', $dateObject->getTimestamp());
     }
 
     public static function cleanRegularInputField($value) {

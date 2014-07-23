@@ -979,6 +979,7 @@ class Project {
                 'user.id is not null ' .
 
             // 8. all watchers
+            
             'UNION DISTINCT ' .
             'SELECT user.id as user_id, user.first_name, user.last_name, user.email, user.notify_own_changes_flag ' .
             'from project ' .
@@ -1101,7 +1102,6 @@ class Project {
                 'user.id = ? ' .
 
 
-
             // 3. permission role in permission scheme - user
 
             'UNION ' .
@@ -1115,7 +1115,6 @@ class Project {
                 'project_role_data.user_id is not null and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'user.id = ? ' .
-
 
 
             // 4. permission role in permission scheme - group

@@ -33,6 +33,7 @@
             <li><a href="/yongo/administration/project/notifications/<?php echo $projectId ?>">Notifications</a></li>
             <li class="active"><a href="/yongo/administration/project/versions/<?php echo $projectId ?>">Versions</a></li>
             <li><a href="/yongo/administration/project/components/<?php echo $projectId ?>">Components</a></li>
+            <li><a href="/yongo/administration/project/helpdesk/<?php echo $projectId ?>">Helpdesk</a></li>
         </ul>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">

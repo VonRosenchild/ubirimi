@@ -37,18 +37,19 @@
                 <?php endwhile ?>
             <?php endif ?>
 
-            <?php
-                $usersCustomField = array();
-                $fieldName = '';
-            ?>
-            <?php while ($fieldData = $customFieldsDataUserPickerMultipleUser->fetch_array(MYSQLI_ASSOC)): ?>
-                <?php
-                    $usersCustomField[] = LinkHelper::getUserProfileLink($fieldData['id'], SystemProduct::SYS_PRODUCT_YONGO, $fieldData['first_name'], $fieldData['last_name']);
-                    $fieldName = $fieldData['name'];
-                ?>
-            <?php endwhile ?>
-
             <?php if ($customFieldsDataUserPickerMultipleUser): ?>
+                <?php
+                    $usersCustomField = array();
+                    $fieldName = '';
+                ?>
+                <?php while ($fieldData = $customFieldsDataUserPickerMultipleUser->fetch_array(MYSQLI_ASSOC)): ?>
+                    <?php
+                        $usersCustomField[] = LinkHelper::getUserProfileLink($fieldData['id'], SystemProduct::SYS_PRODUCT_YONGO, $fieldData['first_name'], $fieldData['last_name']);
+                        $fieldName = $fieldData['name'];
+                    ?>
+                <?php endwhile ?>
+
+
                 <tr>
                     <td width="160px" class="textLabel"><?php echo $fieldName ?>:</td>
                     <td>
