@@ -723,7 +723,6 @@ class Issue {
 
         AgileBoard::deleteIssuesFromSprints(array($issueId));
 
-
         $query = 'DELETE from yongo_issue WHERE id = ?';
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $issueId);
