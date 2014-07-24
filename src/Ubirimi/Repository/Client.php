@@ -420,7 +420,6 @@ class Client {
 
         $workflows = Workflow::getByClientId($clientId);
         while ($workflows && $workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {
-
             Workflow::deleteById($workflow['id']);
         }
         WorkflowScheme::deleteByClientId($clientId);
@@ -451,23 +450,22 @@ class Client {
 
         $issueSecuritySchemes = IssueSecurityScheme::getByClientId($clientId);
         while ($issueSecuritySchemes && $issueSecurityScheme = $issueSecuritySchemes->fetch_array(MYSQLI_ASSOC)) {
-
             IssueSecurityScheme::deleteById($issueSecurityScheme['id']);
         }
 
         $users = Client::getUsers($clientId);
 
         if ($users) {
-            $users_ids_arr = array();
+            $userIdsArray = array();
             while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
-                $users_ids_arr[] = $user['id'];
+                $userIdsArray[] = $user['id'];
 
                 // delete user avatars
                 $spaceBasePath = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, 'user_avatars');
                 Util::deleteDir($spaceBasePath . $user['id']);
 
             }
-            $users_ids_string = implode($users_ids_arr, ', ');
+            $users_ids_string = implode($userIdsArray, ', ');
 
             $query = 'delete from group_data where user_id IN (' . $users_ids_string . ')';
             UbirimiContainer::get()['db.connection']->query($query);

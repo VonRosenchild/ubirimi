@@ -591,11 +591,7 @@ class Project {
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete the help desk related information
-        $SLAs = SLA::getByProjectId($Id);
-        while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-            SLA::deleteById($SLA['id']);
-        }
-        Queue::deleteByProjectId($Id);
+        Project::removeHelpdeskData($Id);
 
         $query = "DELETE IGNORE FROM help_filter WHERE project_id = " . $Id;
         UbirimiContainer::get()['db.connection']->query($query);
