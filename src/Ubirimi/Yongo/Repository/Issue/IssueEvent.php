@@ -17,7 +17,7 @@ class IssueEvent {
     const EVENT_ISSUE_WORK_STARTED_CODE = 10;
     const EVENT_ISSUE_WORK_STOPPED_CODE = 11;
     const EVENT_GENERIC_CODE = 12;
-    const EVENT_ISSUE_MOVED  = 13;
+    const EVENT_ISSUE_MOVED_CODE  = 13;
 
     private $name;
     private $description;

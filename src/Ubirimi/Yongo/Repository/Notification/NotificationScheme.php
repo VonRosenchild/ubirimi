@@ -254,6 +254,7 @@ class NotificationScheme {
         $eventWorkStoppedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
         $eventDeletedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_DELETED_CODE, 'id');
 
+        $eventMovedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_MOVED_CODE, 'id');
         $eventGenericId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_GENERIC_CODE, 'id');
 
         $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, reporter) VALUES " .
@@ -268,6 +269,7 @@ class NotificationScheme {
             "(" . $notificationSchemeId. "," . $eventDeletedId . ', 1),' .
             "(" . $notificationSchemeId. "," . $eventWorkStartedId . ', 1),' .
             "(" . $notificationSchemeId. "," . $eventGenericId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventMovedId . ', 1),' .
             "(" . $notificationSchemeId. "," . $eventWorkStoppedId . ', 1)';
 
         UbirimiContainer::get()['db.connection']->query($query);
@@ -284,6 +286,24 @@ class NotificationScheme {
             "(" . $notificationSchemeId. "," . $eventDeletedId . ', 1),' .
             "(" . $notificationSchemeId. "," . $eventWorkStartedId . ', 1),' .
             "(" . $notificationSchemeId. "," . $eventGenericId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventMovedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventWorkStoppedId . ', 1)';
+
+        UbirimiContainer::get()['db.connection']->query($query);
+
+        $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, all_watchers) VALUES " .
+            "(" . $notificationSchemeId. "," . $eventCreatedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventUpdatedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventAssignedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventResolvedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventClosedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventCommentedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventCommentEditedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventReopenedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventDeletedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventWorkStartedId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventGenericId . ', 1),' .
+            "(" . $notificationSchemeId. "," . $eventMovedId . ', 1),' .
             "(" . $notificationSchemeId. "," . $eventWorkStoppedId . ', 1)';
 
         UbirimiContainer::get()['db.connection']->query($query);
