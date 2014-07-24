@@ -53,7 +53,7 @@ class ProjectComponent {
     {
         $components = Project::getComponents($projectId);
 
-        while ($component = $components->fetch_array(MYSQLI_ASSOC)) {
+        while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
             $componentId = $component['id'];
             ProjectComponent::deleteById($componentId);
 

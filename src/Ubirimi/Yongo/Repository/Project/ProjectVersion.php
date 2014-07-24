@@ -26,10 +26,9 @@ class ProjectVersion {
     {
         $versions = Project::getVersions($projectId);
 
-        while ($version = $versions->fetch_array(MYSQLI_ASSOC)) {
+        while ($versions && $version = $versions->fetch_array(MYSQLI_ASSOC)) {
             $versionId = $version['id'];
             ProjectVersion::deleteById($versionId);
-
         }
     }
 
