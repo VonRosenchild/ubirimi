@@ -21,6 +21,7 @@ if (!empty($pendingClients)) {
     foreach ($pendingClients as $pendingClient) {
         try {
             UbirimiContainer::get()['client']->add($pendingClient);
+            GeneralTaskQueue::delete($pendingClient['id']);
         } catch (Exception $e) {
             echo $e->getMessage();
         }

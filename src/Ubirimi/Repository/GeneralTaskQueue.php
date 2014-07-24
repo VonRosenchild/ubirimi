@@ -1,6 +1,7 @@
 <?php
 
 namespace Ubirimi\Repository;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 
