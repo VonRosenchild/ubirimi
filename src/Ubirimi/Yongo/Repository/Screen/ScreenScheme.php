@@ -3,8 +3,8 @@
 namespace Ubirimi\Yongo\Repository\Screen;
 use Ubirimi\Container\UbirimiContainer;
 
-class ScreenScheme {
-
+class ScreenScheme
+{
     public $name;
     public $description;
     public $clientId;
@@ -19,49 +19,46 @@ class ScreenScheme {
 
     public function save($currentDate) {
         $query = "INSERT INTO screen_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function addData($screenSchemeId, $operationId, $screenId, $currentDate) {
         $query = "INSERT INTO screen_scheme_data(screen_scheme_id, sys_operation_id, screen_id, date_created) VALUES (?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("iiis", $screenSchemeId, $operationId, $screenId, $currentDate);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("iiis", $screenSchemeId, $operationId, $screenId, $currentDate);
+        $stmt->execute();
     }
 
     public static function deleteDataByScreenSchemeId($Id) {
         $query = "delete from screen_scheme_data where screen_scheme_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
     }
 
     public static function updateDataById($screenSchemeId, $operationId, $screenId) {
         $query = "update screen_scheme_data set screen_id = ? where screen_scheme_id = ? and sys_operation_id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iii", $screenId, $screenSchemeId, $operationId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $screenId, $screenSchemeId, $operationId);
+        $stmt->execute();
     }
 
     public static function updateMetaDataById($Id, $name, $description, $date) {
         $query = "update screen_scheme set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssi", $name, $description, $date, $Id);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssi", $name, $description, $date, $Id);
+        $stmt->execute();
     }
 
     public static function getDataByScreenSchemeId($screenSchemeId) {
@@ -71,15 +68,14 @@ class ScreenScheme {
             "left join sys_operation on sys_operation.id = screen_scheme_data.sys_operation_id " .
             "where screen_scheme_data.screen_scheme_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $screenSchemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $screenSchemeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId) {
@@ -91,15 +87,14 @@ class ScreenScheme {
                 "screen_scheme_data.sys_operation_id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $screenSchemeId, $sysOperationId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $screenSchemeId, $sysOperationId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getDataByScreenDataId($Id) {
@@ -109,15 +104,14 @@ class ScreenScheme {
             "left join sys_operation on sys_operation.id = screen_scheme_data.sys_operation_id " .
             "where screen_scheme_data.id = ? ";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getMetaDataById($Id) {
@@ -126,41 +120,40 @@ class ScreenScheme {
             "where id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getMetaDataByClientId($clientId) {
         $query = "select * from screen_scheme where client_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from screen_scheme where client_id = ? and LOWER(name) = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $clientId, $name);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByIssueType($issueTypeId, $clientId) {
@@ -170,15 +163,15 @@ class ScreenScheme {
                  "where screen_scheme.client_id = ? " .
                  "and issue_type_screen_scheme_data.issue_type_id = ? " .
                  "group by screen_scheme.id";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $issueTypeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $issueTypeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByScreenId($clientId, $screenId) {
@@ -188,24 +181,23 @@ class ScreenScheme {
             "where screen_scheme.client_id = ? " .
             "and screen_scheme_data.screen_id = ? " .
             "group by screen_scheme.id";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $screenId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $screenId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function deleteById($screenSchemeId) {
         $query = "delete from screen_scheme where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $screenSchemeId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $screenSchemeId);
+        $stmt->execute();
     }
 
     public static function deleteByClientId($clientId) {
