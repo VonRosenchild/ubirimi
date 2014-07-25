@@ -10,6 +10,7 @@
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
     use Ubirimi\Repository\HelpDesk\SLA;
+
     Util::checkUserIsLoggedInAndRedirect();
 
     $issueId = $_POST['issue_id'];
@@ -29,10 +30,11 @@
     $issueCustomFieldsData = array();
 
     for ($i = 0; $i < count($fieldTypesCustom); $i++) {
-        if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '')
+        if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '') {
             $issueCustomFieldsData[$fieldTypesCustom[$i]] = $fieldValuesCustom[$i];
-        else
+        } else {
             $issueCustomFieldsData[$fieldTypesCustom[$i]] = null;
+        }
     }
 
     for ($i = 0; $i < count($attIdsSession); $i++) {

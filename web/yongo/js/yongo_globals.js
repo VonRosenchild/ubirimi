@@ -335,49 +335,50 @@ function createIssue(message) {
             $("#modalCreateIssue").dialog("open");
             applyStylesDialog();
 
-            // call initialization file
-            if (window.File && window.FileList && window.FileReader) {
-                $(".select2Input").select2();
+            $(".select2Input").select2();
 
-                if ($("#field_type_component").children().length) {
-                    $("#field_type_component").select2();
+            if ($("#field_type_component").children().length) {
+                $("#field_type_component").select2();
 
-                    $("#field_type_component").change(function() {
+                $("#field_type_component").change(function() {
 
-                        $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
-                            $(this).text($(this).text().replace(/^\s+/,""));
-                        });
+                    $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
+                        $(this).text($(this).text().replace(/^\s+/,""));
+                    });
+                });
+            }
+
+            var due_date_picker = $("#field_type_due_date");
+            if (due_date_picker.length) {
+                due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
+            }
+
+            var customFieldsDatePickers = $("[id^='field_custom_type_']");
+
+            for (var i = 0; i < customFieldsDatePickers.length; i++) {
+                var elemId = customFieldsDatePickers[i].getAttribute('id');
+                if (elemId.indexOf('date_picker') != -1)
+                    $('#' + elemId).datepicker({dateFormat: "yy-mm-dd"});
+                if (elemId.indexOf('date_time') != -1) {
+                    $('#' + elemId).datetimepicker({
+                        timeFormat: "hh:mm",
+                        dateFormat: "yy-mm-dd",
+                        ampm: false
                     });
                 }
+            }
 
-                var due_date_picker = $("#field_type_due_date");
-                if (due_date_picker.length) {
-                    due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
-                }
+            if (message) {
+                $('#messageIssueCreatedDialog').html(message);
+                $('#messageIssueCreatedDialog').show();
+            }
 
-                var customFieldsDatePickers = $("[id^='field_custom_type_']");
+            $('#modalCreateIssue').find('input').eq(0).focus();
+            $('#modalCreateIssue').css('max-height', $(window).height() - 140);
 
-                for (var i = 0; i < customFieldsDatePickers.length; i++) {
-                    var elemId = customFieldsDatePickers[i].getAttribute('id');
-                    if (elemId.indexOf('date_picker') != -1)
-                        $('#' + elemId).datepicker({dateFormat: "yy-mm-dd"});
-                    if (elemId.indexOf('date_time') != -1) {
-                        $('#' + elemId).datetimepicker({
-                            timeFormat: "hh:mm",
-                            dateFormat: "yy-mm-dd",
-                            ampm: false
-                        });
-                    }
-                }
-
+            // call initialization file
+            if (window.File && window.FileList && window.FileReader) {
                 initializaFileUpload();
-                if (message) {
-                    $('#messageIssueCreatedDialog').html(message);
-                    $('#messageIssueCreatedDialog').show();
-                }
-
-                $('#modalCreateIssue').find('input').eq(0).focus();
-                $('#modalCreateIssue').css('max-height', $(window).height() - 140);
             }
         });
     }
@@ -418,7 +419,6 @@ function createIssue(message) {
             {
                 text: "Create Issue",
                 click: function () {
-
                     createIssueProcess();
                 }
             },

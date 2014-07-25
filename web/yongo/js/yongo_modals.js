@@ -1124,6 +1124,7 @@ $('document').ready(function () {
             if (window.File && window.FileList && window.FileReader) {
                 initializaFileUpload(issueId);
             }
+            $(".select2Input").select2();
         });
     });
 
