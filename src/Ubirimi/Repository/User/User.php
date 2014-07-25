@@ -155,12 +155,10 @@ class User {
                  "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, sys_country.name as country_name " .
             "FROM user " .
             "left join sys_country on sys_country.id = user.country_id " .
-            "WHERE user.id IN (?)";
+            "WHERE user.id IN (" . implode(', ', $Ids) . ")";
 
         $finalResult = null;
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $userIds = implode(', ', $Ids);
-            $stmt->bind_param("s", $userIds);
             $stmt->execute();
             $result = $stmt->get_result();
             if ($result->num_rows) {

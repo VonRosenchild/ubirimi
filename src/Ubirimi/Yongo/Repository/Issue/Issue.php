@@ -1149,7 +1149,7 @@ class Issue
         return $fieldChanged;
     }
 
-    public static function computeDifference($oldIssueData, $newIssueData, $newIssueCustomFieldsData) {
+    public static function computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData) {
 
         $fieldChanges = array();
         $issueId = $oldIssueData['id'];
@@ -1243,15 +1243,8 @@ class Issue
         }
 
         // deal with custom field values also
-        $newIssueCustomFieldsDataNice = array();
-        $oldIssueCustomFieldsDataNice = array();
 
         foreach ($newIssueCustomFieldsData as $key => $value) {
-            $keyData = explode("_", $key);
-            $newIssueCustomFieldsDataNice[$keyData[0]] = $value;
-        }
-
-        foreach ($newIssueCustomFieldsDataNice as $key => $value) {
             $fieldData = Field::getById($key);
 
             $oldCustomFieldValue = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
@@ -1265,7 +1258,7 @@ class Issue
                     case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID:
 
                         $valueData = $oldCustomFieldValue->fetch_array(MYSQLI_ASSOC);
-                        $oldIssueCustomFieldsDataNice[$key] = $valueData['value'];
+                        $oldIssueCustomFieldsData[$key] = $valueData['value'];
 
                         break;
 
@@ -1274,27 +1267,29 @@ class Issue
                         while ($data = $oldCustomFieldValue->fetch_array(MYSQLI_ASSOC)) {
                             $valueField[] = $data['value'];
                         }
-                        $oldIssueCustomFieldsDataNice[$key] = $valueField;
+                        $oldIssueCustomFieldsData[$key] = $valueField;
 
                         break;
                 }
             }
         }
 
-        foreach ($newIssueCustomFieldsDataNice as $key => $value) {
+
+
+        foreach ($newIssueCustomFieldsData as $key => $value) {
             $fieldData = Field::getById($key);
             $fieldTypeId = $fieldData['sys_field_type_id'];
             $fieldName = $fieldData['name'];
 
-            if (!array_key_exists($key, $oldIssueCustomFieldsDataNice)) {
-                $oldIssueCustomFieldsDataNice[$key] = null;
+            if (!array_key_exists($key, $oldIssueCustomFieldsData)) {
+                $oldIssueCustomFieldsData[$key] = null;
             }
 
             if (is_array($value)) {
                 switch ($fieldTypeId) {
                     case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID:
-                        $oldUsers = $oldIssueCustomFieldsDataNice[$key];
-                        $newUsers = $newIssueCustomFieldsDataNice[$key];
+                        $oldUsers = $oldIssueCustomFieldsData[$key];
+                        $newUsers = $newIssueCustomFieldsData[$key];
 
                         if ($oldUsers == null) {
                             $oldUsers = array();
@@ -1305,15 +1300,20 @@ class Issue
 
                         // push only if $oldUsersDeleted != $newUsersAdded
                         if (array_diff($oldUsersDeleted, $newUsersAdded) !== array_diff($newUsersAdded, $oldUsersDeleted)) {
-                            $oldUsersData = User::getByIds($oldUsersDeleted, 'array');
                             $oldUsersArray = array();
-                            for ($i = 0; $i < count($oldUsersData); $i++) {
-                                $oldUsersArray[] = $oldUsersData[$i]['first_name'] . ' ' . $oldUsersData[$i]['last_name'];
+                            if (count($oldUsersDeleted)) {
+                                $oldUsersData = User::getByIds($oldUsersDeleted, 'array');
+                                $oldUsersArray = array();
+                                for ($i = 0; $i < count($oldUsersData); $i++) {
+                                    $oldUsersArray[] = $oldUsersData[$i]['first_name'] . ' ' . $oldUsersData[$i]['last_name'];
+                                }
                             }
-                            $newUsersData = User::getByIds($newUsersAdded, 'array');
-                            $newUsersArray = array();
-                            for ($i = 0; $i < count($newUsersData); $i++) {
-                                $newUsersArray[] = $newUsersData[$i]['first_name'] . ' ' . $newUsersData[$i]['last_name'];
+                            if (count($newUsersAdded)) {
+                                $newUsersData = User::getByIds($newUsersAdded, 'array');
+                                $newUsersArray = array();
+                                for ($i = 0; $i < count($newUsersData); $i++) {
+                                    $newUsersArray[] = $newUsersData[$i]['first_name'] . ' ' . $newUsersData[$i]['last_name'];
+                                }
                             }
                             $fieldChanges[] = array($fieldName, implode(', ', $oldUsersArray), implode(', ', $newUsersArray));
                         }
@@ -1321,8 +1321,8 @@ class Issue
                         break;
                 }
             } else {
-                if ($newIssueCustomFieldsDataNice[$key] != $oldIssueCustomFieldsDataNice[$key]) {
-                    $fieldChanges[] = array($fieldName, $oldIssueCustomFieldsDataNice[$key], $newIssueCustomFieldsDataNice[$key]);
+                if ($newIssueCustomFieldsData[$key] != $oldIssueCustomFieldsData[$key]) {
+                    $fieldChanges[] = array($fieldName, $oldIssueCustomFieldsData[$key], $newIssueCustomFieldsData[$key]);
                 }
             }
         }

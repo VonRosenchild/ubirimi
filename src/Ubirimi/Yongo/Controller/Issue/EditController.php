@@ -93,7 +93,17 @@ class EditController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
         Issue::updateById($issueId, $newIssueData, $currentDate);
-        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, $newIssueCustomFieldsData);
+
+        $oldIssueCustomFieldsData = array();
+        foreach ($newIssueCustomFieldsData as $key => $value) {
+            $keyData = explode("_", $key);
+
+            $oldIssueCustomFieldsData[$keyData[0]] = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            unset($newIssueCustomFieldsData[$key]);
+            $newIssueCustomFieldsData[$keyData[0]] = $value;
+        }
+
+        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
 
         Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 

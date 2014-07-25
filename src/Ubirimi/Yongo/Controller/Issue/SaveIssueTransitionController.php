@@ -95,5 +95,6 @@
         Issue::updateSLAValue($issueData, $clientId, $clientSettings);
 
         echo 'success';
-    } else
+    } else {
         echo 'can_not_be_executed';
+    }
