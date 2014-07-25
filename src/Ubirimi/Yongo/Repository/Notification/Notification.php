@@ -2,8 +2,8 @@
 
 namespace Ubirimi\Yongo\Repository\Notification;
 
-class Notification {
-
+class Notification
+{
     const NOTIFICATION_TYPE_CURRENT_ASSIGNEE = 'current_assignee';
     const NOTIFICATION_TYPE_REPORTER = 'reporter';
     const NOTIFICATION_TYPE_CURRENT_USER = 'current_user';

@@ -3,8 +3,8 @@
 namespace Ubirimi\Yongo\Repository\Permission;
 use Ubirimi\Container\UbirimiContainer;
 
-class PermissionScheme {
-
+class PermissionScheme
+{
     private $name;
     private $description;
     private $clientId;
@@ -19,27 +19,26 @@ class PermissionScheme {
 
     public function save($currentDate) {
         $query = "INSERT INTO permission_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getByClientId($clientId) {
         $query = "select * from permission_scheme where client_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getMetaDataById($Id) {
@@ -48,24 +47,22 @@ class PermissionScheme {
             "where id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function updateMetaDataById($Id, $name, $description, $date) {
         $query = "update permission_scheme set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssi", $name, $description, $date, $Id);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssi", $name, $description, $date, $Id);
+        $stmt->execute();
     }
 
     public static function getDataByPermissionId($permissionSchemeId, $permissionId) {
@@ -80,15 +77,15 @@ class PermissionScheme {
             "where permission_scheme_data.permission_scheme_id = ? " .
             "and permission_scheme_data.sys_permission_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getDataByPermissionSchemeId($permissionSchemeId) {
@@ -96,15 +93,15 @@ class PermissionScheme {
             "from permission_scheme_data " .
             "where permission_scheme_data.permission_scheme_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $permissionSchemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $permissionSchemeId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getDataByPermissionSchemeIdAndPermissionId($permissionSchemeId, $sysPermissionId) {
@@ -112,15 +109,14 @@ class PermissionScheme {
             "from permission_scheme_data " .
             "where permission_scheme_data.permission_scheme_id = ? and sys_permission_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $permissionSchemeId, $sysPermissionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $permissionSchemeId, $sysPermissionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getDataByProjectIdAndPermissionId($projectId, $sysPermissionId) {
@@ -130,28 +126,27 @@ class PermissionScheme {
             "left join project on project.permission_scheme_id = permission_scheme.id " .
             "where project.id = ? and sys_permission_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $projectId, $sysPermissionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $projectId, $sysPermissionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from permission_scheme where client_id = ? and LOWER(name) = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $clientId, $name);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function addData($permissionSchemeId, $sysPermissionId, $permissionType, $permissionRoleId, $groupId, $userId, $currentDate) {
@@ -159,34 +154,36 @@ class PermissionScheme {
 
             case Permission::PERMISSION_TYPE_USER:
                 $query = "INSERT INTO permission_scheme_data(permission_scheme_id, sys_permission_id, user_id, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-                    $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $userId, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+                $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $userId, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
 
             case Permission::PERMISSION_TYPE_GROUP:
                 $query = "INSERT INTO permission_scheme_data(permission_scheme_id, sys_permission_id, group_id, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $groupId, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+                $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $groupId, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
 
             case Permission::PERMISSION_TYPE_PROJECT_ROLE:
                 $query = "INSERT INTO permission_scheme_data(permission_scheme_id, sys_permission_id, permission_role_id, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $permissionRoleId, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+                $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $permissionRoleId, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
 
@@ -195,12 +192,13 @@ class PermissionScheme {
             case Permission::PERMISSION_TYPE_PROJECT_LEAD:
 
                 $query = "INSERT INTO permission_scheme_data(permission_scheme_id, sys_permission_id, `" . $permissionType . "`, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    $value = 1;
-                    $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $value, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+                $value = 1;
+                $stmt->bind_param("iiis", $permissionSchemeId, $sysPermissionId, $value, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
         }
@@ -212,15 +210,15 @@ class PermissionScheme {
             "left join user on user.id = permission_scheme_data.user_id " .
             "where permission_scheme_data.permission_scheme_id = ? and permission_scheme_data.sys_permission_id = ? and user_id is not null";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getGroupsForPermissionId($permissionSchemeId, $permissionId) {
@@ -229,15 +227,14 @@ class PermissionScheme {
             "left join `group` on group.id = permission_scheme_data.group_id " .
             "where permission_scheme_data.permission_scheme_id = ? and permission_scheme_data.sys_permission_id = ? and group_id is not null";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getPermissionRolesForPermissionId($permissionSchemeId, $permissionId) {
@@ -246,42 +243,41 @@ class PermissionScheme {
             "left join permission_role on permission_role.id = permission_scheme_data.permission_role_id " .
             "where permission_scheme_data.permission_scheme_id = ? and permission_scheme_data.sys_permission_id = ? and permission_role_id is not null";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function deleteUserDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ? and sys_permission_id = ? and user_id is not null";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
+        $stmt->execute();
     }
 
     public static function deleteGroupDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ? and sys_permission_id = ? and group_id is not null";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
+        $stmt->execute();
     }
 
     public static function deleteRoleDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ? and sys_permission_id = ? and permission_role_id is not null";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ii", $permissionSchemeId, $permissionId);
+        $stmt->execute();
     }
 
     public static function addUserDataToPermissionId($permissionSchemeId, $permissionId, $userArray) {
@@ -290,6 +286,7 @@ class PermissionScheme {
             $query .= '(' . $permissionSchemeId . ', ' . $permissionId . ', ' . $userArray[$i] . '),';
 
         $query = substr($query, 0, strlen($query) - 1);
+
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
@@ -313,19 +310,19 @@ class PermissionScheme {
 
     public static function deleteDataById($permissionSchemeDataId) {
         $query = "delete from permission_scheme_data where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("i", $permissionSchemeDataId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("i", $permissionSchemeDataId);
+        $stmt->execute();
     }
 
     public static function deleteDataByPermissionSchemeId($permissionSchemeId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $permissionSchemeId);
-            $stmt->execute();
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $permissionSchemeId);
+        $stmt->execute();
     }
 
     public static function addDefaultPermissions($permissionSchemeId, $roleAdministratorsId, $roleDevelopersId, $roleUsersId, $currentDate) {
@@ -365,11 +362,11 @@ class PermissionScheme {
 
     public static function deleteById($permissionSchemeId) {
         $query = "delete from permission_scheme where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("i", $permissionSchemeId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("i", $permissionSchemeId);
+        $stmt->execute();
     }
 
     public static function deleteByClientId($clientId) {
@@ -383,12 +380,13 @@ class PermissionScheme {
     public static function addDataRaw($permissionSchemeId, $permissionId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $projectLead, $currentDate) {
         $query = "INSERT INTO permission_scheme_data(permission_scheme_id, sys_permission_id, permission_role_id, group_id, user_id, current_assignee, reporter, " .
             "project_lead, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("iiiiiiiis", $permissionSchemeId, $permissionId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $projectLead, $currentDate);
-            $stmt->execute();
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        } else echo UbirimiContainer::get()['db.connection']->error;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("iiiiiiiis", $permissionSchemeId, $permissionId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $projectLead, $currentDate);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getByClientIdAndGroupBy($clientId, $groupId) {
@@ -398,14 +396,13 @@ class PermissionScheme {
             "where permission_scheme.client_id = ? and permission_scheme_data.group_id = ? " .
             "group by permission_scheme.id";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $groupId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $groupId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 }

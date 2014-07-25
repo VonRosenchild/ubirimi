@@ -1,11 +1,12 @@
 <?php
 
 namespace Ubirimi\Yongo\Repository\Notification;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 
-class NotificationScheme {
-
+class NotificationScheme
+{
     private $name;
     private $description;
     private $clientId;
@@ -22,25 +23,24 @@ class NotificationScheme {
         $query = "select * " .
                  "from notification_scheme ";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public function save($currentDate) {
         $query = "INSERT INTO notification_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getByClientId($clientId) {
@@ -48,15 +48,14 @@ class NotificationScheme {
             "from notification_scheme " .
             "where client_id = ? ";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getMetaDataById($Id) {
@@ -65,95 +64,96 @@ class NotificationScheme {
             "where id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from notification_scheme where client_id = ? and LOWER(name) = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $clientId, $name);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function updateMetaDataById($Id, $name, $description, $date) {
         $query = "update notification_scheme set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssi", $name, $description, $date, $Id);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssi", $name, $description, $date, $Id);
+        $stmt->execute();
     }
 
     public static function addDataRaw($notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $currentDate) {
         $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, permission_role_id, group_id, user_id, current_assignee, reporter, " .
                     "`current_user`, project_lead, component_lead, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("iiiiiiiiiis", $notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $currentDate);
-            $stmt->execute();
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        } else echo UbirimiContainer::get()['db.connection']->error;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("iiiiiiiiiis", $notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $currentDate);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function addData($notificationSchemeId, $eventId, $notificationType, $user, $group, $role, $userPickerMultipleSelection, $currentDate) {
-
         switch ($notificationType) {
-
             case Notification::NOTIFICATION_TYPE_USER:
                 $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, user_id, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $user, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+                $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $user, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
 
             case Notification::NOTIFICATION_TYPE_USER_PICKER_MULTIPLE_SELECTION:
                 $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, user_picker_multiple_selection, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $userPickerMultipleSelection, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+                $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $userPickerMultipleSelection, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
 
             case Notification::NOTIFICATION_TYPE_GROUP:
                 $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, group_id, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $group, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+                $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $group, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
 
             case Notification::NOTIFICATION_TYPE_PROJECT_ROLE:
                 $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, permission_role_id, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-                    $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $role, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+                $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $role, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
 
@@ -164,12 +164,13 @@ class NotificationScheme {
             case Notification::NOTIFICATION_TYPE_COMPONENT_LEAD:
             case Notification::NOTIFICATION_TYPE_ALL_WATCHERS:
                 $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, `" . $notificationType . "`, date_created) VALUES (?, ?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    $value = 1;
-                    $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $value, $currentDate);
-                    $stmt->execute();
-                    return UbirimiContainer::get()['db.connection']->insert_id;
-                }
+
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+                $value = 1;
+                $stmt->bind_param("iiis", $notificationSchemeId, $eventId, $value, $currentDate);
+                $stmt->execute();
+
+                return UbirimiContainer::get()['db.connection']->insert_id;
 
                 break;
         }
@@ -180,15 +181,15 @@ class NotificationScheme {
                      "from notification_scheme_data " .
                      "where notification_scheme_data.notification_scheme_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $notificationSchemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $notificationSchemeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventId) {
@@ -206,37 +207,35 @@ class NotificationScheme {
             "where notification_scheme_data.notification_scheme_id = ? and " .
                 "notification_scheme_data.event_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $notificationSchemeId, $eventId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $notificationSchemeId, $eventId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function deleteDataById($notificationSchemeDataId) {
         $query = "delete from notification_scheme_data where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("i", $notificationSchemeDataId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("i", $notificationSchemeDataId);
+        $stmt->execute();
     }
 
     public static function deleteDataByNotificationSchemeId($notificationSchemeId) {
         $query = "delete from notification_scheme_data where notification_scheme_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("i", $notificationSchemeId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("i", $notificationSchemeId);
+        $stmt->execute();
     }
 
     public static function addDefaultNotifications($clientId, $notificationSchemeId) {
-
         $eventCreatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE, 'id');
 
         $eventUpdatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_UPDATED_CODE, 'id');
@@ -311,11 +310,11 @@ class NotificationScheme {
 
     public static function deleteById($notificationSchemeId) {
         $query = "delete from notification_scheme where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("i", $notificationSchemeId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("i", $notificationSchemeId);
+        $stmt->execute();
     }
 
     public static function deleteByClientId($clientId) {

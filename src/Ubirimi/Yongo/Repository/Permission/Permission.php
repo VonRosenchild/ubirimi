@@ -1,10 +1,10 @@
 <?php
 
 namespace Ubirimi\Yongo\Repository\Permission;
+
 use Ubirimi\Container\UbirimiContainer;
 
 class Permission {
-
     const PERMISSION_TYPE_CURRENT_ASSIGNEE = 'current_assignee';
     const PERMISSION_TYPE_REPORTER = 'reporter';
     const PERMISSION_TYPE_PROJECT_LEAD = 'project_lead';
@@ -53,14 +53,13 @@ class Permission {
         $query = "select sys_permission.id, sys_permission.name, sys_permission.description " .
             "from sys_permission";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByCategory($categoryId) {
@@ -68,28 +67,26 @@ class Permission {
             "from sys_permission " .
             "where sys_permission_category_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $categoryId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $categoryId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getCategories() {
         $query = "select sys_permission_category.* " .
             "from sys_permission_category";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 }
