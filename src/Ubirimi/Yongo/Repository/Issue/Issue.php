@@ -1,5 +1,7 @@
 <?php
+
 namespace Ubirimi\Yongo\Repository\Issue;
+
 use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
@@ -18,8 +20,8 @@ use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-class Issue {
-
+class Issue
+{
     const ISSUE_AFFECTED_VERSION_FLAG = 1;
     const ISSUE_FIX_VERSION_FLAG = 2;
 

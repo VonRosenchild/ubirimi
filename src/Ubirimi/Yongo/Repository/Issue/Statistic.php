@@ -1,10 +1,11 @@
 <?php
 
 namespace Ubirimi\Yongo\Repository\Issue;
+
 use Ubirimi\Container\UbirimiContainer;
 
-class Statistic {
-
+class Statistic
+{
     public static function getUnresolvedIssuesByProjectForUser($userId) {
         $q = 'select count(yongo_issue.id) as total, project.name, project.id as project_id ' .
             'from yongo_issue ' .
@@ -14,18 +15,15 @@ class Statistic {
             'and project.name is not null ' .
             'group by yongo_issue.project_id';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($q)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            $stmt->bind_param("i", $userId);
-
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getComponentOrVersionStatsUnresolvedBySetting($projectId, $setting, $comp_version_id, $type) {
@@ -66,17 +64,15 @@ class Statistic {
 
         $query .= $group_by;
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $comp_version_id, $projectId);
+        $stmt->execute();
 
-            $stmt->bind_param("ii", $comp_version_id, $projectId);
-
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getComponentORVersionCountUnresolved($comp_version_id, $type) {
@@ -86,16 +82,15 @@ class Statistic {
             'where issue_' . $type . '.project_' . $type . '_id = ? ' .
             'and yongo_issue.resolution_id is null';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $comp_version_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $row_result = $result->fetch_array(MYSQLI_ASSOC);
-                return $row_result['count'];
-            }
-            else
-                return null;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $comp_version_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $row_result = $result->fetch_array(MYSQLI_ASSOC);
+            return $row_result['count'];
         }
+        else
+            return null;
     }
 }

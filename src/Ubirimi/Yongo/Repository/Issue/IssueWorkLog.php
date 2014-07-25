@@ -5,8 +5,8 @@ namespace Ubirimi\Yongo\Repository\Issue;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 
-class IssueWorkLog {
-
+class IssueWorkLog
+{
     public static function getByIssueId($issueId) {
         $query = 'select issue_work_log.id, issue_work_log.time_spent, issue_work_log.date_started, issue_work_log.comment, user.id as user_id, user.first_name, user.last_name, edited_flag
                   from issue_work_log
@@ -14,15 +14,14 @@ class IssueWorkLog {
                   where issue_work_log.issue_id = ?
                   order by issue_work_log.date_created desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $issueId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function getById($Id) {
@@ -31,56 +30,49 @@ class IssueWorkLog {
                   where issue_work_log.id = ?
                   limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function addLog($issueId, $loggedInUserId, $timeSpent, $dateStarted, $comment, $currentDate) {
         $query = "INSERT INTO issue_work_log(issue_id, user_id, time_spent, comment, date_started, date_created) VALUES (?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iissss", $issueId, $loggedInUserId, $timeSpent, $comment, $dateStarted, $currentDate);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iissss", $issueId, $loggedInUserId, $timeSpent, $comment, $dateStarted, $currentDate);
+        $stmt->execute();
     }
 
     public static function updateLogById($workLogId, $timeSpent, $dateStartedString, $comment) {
         $query = "update issue_work_log set time_spent = ?, comment = ?, date_started = ?, edited_flag = 1 where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssi", $timeSpent, $comment, $dateStartedString, $workLogId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssi", $timeSpent, $comment, $dateStartedString, $workLogId);
+        $stmt->execute();
     }
 
     public static function deleteById($Id) {
         $query = "delete from issue_work_log where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-        }
-
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
     }
 
     public static function deleteByIssueId($issueId) {
         $query = 'delete from issue_work_log where issue_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $issueId);
+        $stmt->execute();
     }
 
     public static function adjustRemainingEstimate($issueData, $timeSpent, $remainingTime, $hoursPerDay, $daysPerWeek, $loggedInUserId) {
-
         $issueRemainingTime = $issueData['remaining_estimate'];
         $issueRemainingMinutes = Util::transformLogTimeToMinutes($issueRemainingTime, $hoursPerDay, $daysPerWeek);
 
@@ -143,9 +135,8 @@ class IssueWorkLog {
     public static function updateRemainingEstimate($issueId, $remainingTime) {
         $query = 'update yongo_issue SET remaining_estimate = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("si", $remainingTime, $issueId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $remainingTime, $issueId);
+        $stmt->execute();
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
 namespace Ubirimi\Yongo\Repository\Issue;
+
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueEvent {
-
+class IssueEvent
+{
     const EVENT_ISSUE_CREATED_CODE = 1;
     const EVENT_ISSUE_UPDATED_CODE = 2;
     const EVENT_ISSUE_ASSIGNED_CODE = 3;
@@ -33,24 +34,24 @@ class IssueEvent {
 
     public function save($currentDate) {
         $query = "INSERT INTO event(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt->bind_param("isss", $this->clientId, $this->name, $this->description, $currentDate);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function addRaw($clientId, $name, $code, $description, $systemFlag, $dateCreated) {
         $query = "INSERT INTO event(client_id, name, code, description, system_flag, date_created) VALUES (?, ?, ?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("isssis", $clientId, $name, $code, $description, $systemFlag, $dateCreated);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt->bind_param("isssis", $clientId, $name, $code, $description, $systemFlag, $dateCreated);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getByClient($clientId) {
@@ -59,16 +60,15 @@ class IssueEvent {
             "WHERE event.client_id = ? " .
             "order by system_flag desc, name";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getById($Id) {
@@ -77,15 +77,14 @@ class IssueEvent {
             "WHERE event.id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result->fetch_array(MYSQLI_ASSOC);
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else
+            return null;
     }
 
     public static function getByClientIdAndCode($clientId, $code, $returnedField = null) {
@@ -94,29 +93,28 @@ class IssueEvent {
             "WHERE event.client_id = ? and code = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $code);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $data = $result->fetch_array(MYSQLI_ASSOC);
-                $value = $data;
-                if ($returnedField)
-                    $value = $data[$returnedField];
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $code);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $data = $result->fetch_array(MYSQLI_ASSOC);
+            $value = $data;
+            if ($returnedField)
+                $value = $data[$returnedField];
 
-                return $value;
-            } else
-                return null;
-        }
+            return $value;
+        } else
+            return null;
     }
 
     public static function updateById($Id, $name, $description, $date) {
         $query = "update event set name = ?, description = ?, date_updated = ? where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("sssi", $name, $description, $date, $Id);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("sssi", $name, $description, $date, $Id);
+        $stmt->execute();
     }
 
     public static function getEventByWorkflowDataId($workflowDataId) {
@@ -126,20 +124,19 @@ class IssueEvent {
             "and definition_data like 'event=%' " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $workflowDataId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $data = $result->fetch_array(MYSQLI_ASSOC);
-                $definitionData = explode("=", $data['definition_data']);
-                $eventId = $definitionData[1];
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $workflowDataId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $data = $result->fetch_array(MYSQLI_ASSOC);
+            $definitionData = explode("=", $data['definition_data']);
+            $eventId = $definitionData[1];
 
-                $event = IssueEvent::getById($eventId);
-                return $event;
-            } else
-                return null;
-        }
+            $event = IssueEvent::getById($eventId);
+            return $event;
+        } else
+            return null;
     }
 
     public static function getWorkflowsByEventId($clientId, $eventId) {
@@ -151,16 +148,16 @@ class IssueEvent {
             "and workflow_post_function_data.definition_data = ? " .
             "group by workflow.id";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $eventString = 'event=' . $eventId;
-            $stmt->bind_param("is", $clientId, $eventString);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $eventString = 'event=' . $eventId;
+        $stmt->bind_param("is", $clientId, $eventString);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function getNotificationSchemesByEventId($clientId, $eventId) {
@@ -171,23 +168,23 @@ class IssueEvent {
             "and notification_scheme_data.event_id = ? " .
             "group by notification_scheme.id";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
             $stmt->bind_param("ii", $clientId, $eventId);
             $stmt->execute();
             $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        }
+
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function deleteById($eventId) {
         $query = "delete from event where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("i", $eventId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("i", $eventId);
+        $stmt->execute();
     }
 }
