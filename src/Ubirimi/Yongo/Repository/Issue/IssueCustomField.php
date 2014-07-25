@@ -102,11 +102,10 @@ class IssueCustomField
     }
 
     public static function getCustomFieldsDataByFieldId($issueId, $fieldId) {
-        $query = 'SELECT issue_custom_field_data.value, field.name ' .
+        $query = 'SELECT issue_custom_field_data.value, field.name, field.sys_field_type_id ' .
             'FROM issue_custom_field_data ' .
             'LEFT JOIN field on field.id = issue_custom_field_data.field_id ' .
-            'WHERE issue_id = ? and field_id = ? ' .
-            "limit 1";
+            'WHERE issue_id = ? and field_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("ii", $issueId, $fieldId);
@@ -114,7 +113,7 @@ class IssueCustomField
 
         $result = $stmt->get_result();
         if ($result->num_rows)
-            return $result->fetch_array(MYSQLI_ASSOC);
+            return $result;
         else
             return null;
     }

@@ -1242,8 +1242,90 @@ class Issue
             $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
         }
 
-
         // deal with custom field values also
+        $newIssueCustomFieldsDataNice = array();
+        $oldIssueCustomFieldsDataNice = array();
+
+        foreach ($newIssueCustomFieldsData as $key => $value) {
+            $keyData = explode("_", $key);
+            $newIssueCustomFieldsDataNice[$keyData[0]] = $value;
+        }
+
+        foreach ($newIssueCustomFieldsDataNice as $key => $value) {
+            $fieldData = Field::getById($key);
+
+            $oldCustomFieldValue = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            if ($oldCustomFieldValue) {
+                switch ($fieldData['sys_field_type_id']) {
+                    case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE_ID;
+                    case Field::CUSTOM_FIELD_TYPE_DATE_PICKER_CODE_ID:
+                    case Field::CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE_ID:
+                    case Field::CUSTOM_FIELD_TYPE_BIG_TEXT_CODE_ID:
+                    case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE_ID:
+                    case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID:
+
+                        $valueData = $oldCustomFieldValue->fetch_array(MYSQLI_ASSOC);
+                        $oldIssueCustomFieldsDataNice[$key] = $valueData['value'];
+
+                        break;
+
+                    case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID:
+                        $valueField = array();
+                        while ($data = $oldCustomFieldValue->fetch_array(MYSQLI_ASSOC)) {
+                            $valueField[] = $data['value'];
+                        }
+                        $oldIssueCustomFieldsDataNice[$key] = $valueField;
+
+                        break;
+                }
+            }
+        }
+
+        foreach ($newIssueCustomFieldsDataNice as $key => $value) {
+            $fieldData = Field::getById($key);
+            $fieldTypeId = $fieldData['sys_field_type_id'];
+            $fieldName = $fieldData['name'];
+
+            if (!array_key_exists($key, $oldIssueCustomFieldsDataNice)) {
+                $oldIssueCustomFieldsDataNice[$key] = null;
+            }
+
+            if (is_array($value)) {
+                switch ($fieldTypeId) {
+                    case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID:
+                        $oldUsers = $oldIssueCustomFieldsDataNice[$key];
+                        $newUsers = $newIssueCustomFieldsDataNice[$key];
+
+                        if ($oldUsers == null) {
+                            $oldUsers = array();
+                        }
+
+                        $oldUsersDeleted = array_diff($oldUsers, $newUsers);
+                        $newUsersAdded = array_diff($newUsers, $oldUsers);
+
+                        // push only if $oldUsersDeleted != $newUsersAdded
+                        if (array_diff($oldUsersDeleted, $newUsersAdded) !== array_diff($newUsersAdded, $oldUsersDeleted)) {
+                            $oldUsersData = User::getByIds($oldUsersDeleted, 'array');
+                            $oldUsersArray = array();
+                            for ($i = 0; $i < count($oldUsersData); $i++) {
+                                $oldUsersArray[] = $oldUsersData[$i]['first_name'] . ' ' . $oldUsersData[$i]['last_name'];
+                            }
+                            $newUsersData = User::getByIds($newUsersAdded, 'array');
+                            $newUsersArray = array();
+                            for ($i = 0; $i < count($newUsersData); $i++) {
+                                $newUsersArray[] = $newUsersData[$i]['first_name'] . ' ' . $newUsersData[$i]['last_name'];
+                            }
+                            $fieldChanges[] = array($fieldName, implode(', ', $oldUsersArray), implode(', ', $newUsersArray));
+                        }
+
+                        break;
+                }
+            } else {
+                if ($newIssueCustomFieldsDataNice[$key] != $oldIssueCustomFieldsDataNice[$key]) {
+                    $fieldChanges[] = array($fieldName, $oldIssueCustomFieldsDataNice[$key], $newIssueCustomFieldsDataNice[$key]);
+                }
+            }
+        }
 
         return $fieldChanges;
     }

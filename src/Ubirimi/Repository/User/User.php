@@ -136,7 +136,8 @@ class User {
                  "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, sys_country.name as country_name " .
             "FROM user " .
             "left join sys_country on sys_country.id = user.country_id " .
-            "WHERE user.id = ?";
+            "WHERE user.id = ? " .
+            "limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $Id);
@@ -147,6 +148,35 @@ class User {
             else
                 return null;
         }
+    }
+
+    public static function getByIds($Ids, $resultType = null) {
+        $query = "SELECT user.id, user.client_id, password, first_name, last_name, email, username, user.date_created, user.avatar_picture, " .
+                 "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, sys_country.name as country_name " .
+            "FROM user " .
+            "left join sys_country on sys_country.id = user.country_id " .
+            "WHERE user.id IN (?)";
+
+        $finalResult = null;
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $userIds = implode(', ', $Ids);
+            $stmt->bind_param("s", $userIds);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows) {
+                if ($resultType == 'array') {
+                    $resultData = array();
+                    while ($user = $result->fetch_array(MYSQLI_ASSOC)) {
+                        $resultData[] = $user;
+                    }
+                    $finalResult = $resultData;
+                } else $finalResult = $result;
+            } else {
+                $finalResult = null;
+            }
+        }
+
+        return $finalResult;
     }
 
     public static function updateById($userId, $firstName, $lastName, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
