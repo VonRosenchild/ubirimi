@@ -239,6 +239,7 @@
                                         echo '<option ' . $textSelected . ' value="' . $user['id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
                                     }
                                     echo '</select>';
+                                    $allUsers->data_seek(0);
                                     break;
                             }
                             if ($field['description'])

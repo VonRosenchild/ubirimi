@@ -38,24 +38,18 @@
             <?php endif ?>
 
             <?php if ($customFieldsDataUserPickerMultipleUser): ?>
-                <?php
-                    $usersCustomField = array();
-                    $fieldName = '';
-                ?>
-                <?php while ($fieldData = $customFieldsDataUserPickerMultipleUser->fetch_array(MYSQLI_ASSOC)): ?>
-                    <?php
-                        $usersCustomField[] = LinkHelper::getUserProfileLink($fieldData['id'], SystemProduct::SYS_PRODUCT_YONGO, $fieldData['first_name'], $fieldData['last_name']);
-                        $fieldName = $fieldData['name'];
-                    ?>
-                <?php endwhile ?>
-
-
-                <tr>
-                    <td width="160px" class="textLabel"><?php echo $fieldName ?>:</td>
-                    <td>
-                        <?php echo implode(', ', $usersCustomField) ?>
-                    </td>
-                </tr>
+                <?php foreach ($customFieldsDataUserPickerMultipleUser as $fieldId => $fieldData): ?>
+                    <tr>
+                        <td width="160px" class="textLabel"><?php echo $fieldData[0]['field_name'] ?>:</td>
+                        <td>
+                            <?php $usersCustomField = array() ?>
+                            <?php foreach ($fieldData as $userSelected): ?>
+                                <?php $usersCustomField[] = LinkHelper::getUserProfileLink($userSelected['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $userSelected['first_name'], $userSelected['last_name']); ?>
+                            <?php endforeach ?>
+                            <?php echo implode(', ', $usersCustomField) ?>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
             <?php endif ?>
         </table>
     </td>

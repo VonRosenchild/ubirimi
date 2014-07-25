@@ -71,6 +71,7 @@
 
     $fieldCodeNULL = null;
     while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
+
         if (!$userHasSetSecurityLevelPermission && $field['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL)
             continue;
 
@@ -248,7 +249,6 @@
 
                         case $fieldCodeNULL:
                             $fieldValue = Field::getCustomFieldValueByFieldId($issueId, $field['field_id']);
-
                             // deal with the custom fields
                             switch ($field['type_code']) {
                                 case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
@@ -294,18 +294,22 @@
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
-                                    $customFieldsDataUserPickerMultipleUser = IssueCustomField::getUserPickerData($issueId);
+                                    $customFieldsDataUserPickerMultipleUserData = IssueCustomField::getUserPickerData($issueId, $field['field_id']);
+
+                                    $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
 
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';
                                     while ($allUsers && $systemUser = $allUsers->fetch_array(MYSQLI_ASSOC)) {
                                         $userFound = false;
-                                        while ($customFieldsDataUserPickerMultipleUser && $fieldUser = $customFieldsDataUserPickerMultipleUser->fetch_array(MYSQLI_ASSOC)) {
-                                            if ($fieldUser['id'] == $systemUser['id']) {
-                                                $userFound = true;
-                                                break;
+                                        if ($customFieldsDataUserPickerMultipleUser) {
+                                            foreach ($customFieldsDataUserPickerMultipleUser as $fieldUser) {
+                                                if ($fieldUser['user_id'] == $systemUser['id']) {
+                                                    $userFound = true;
+                                                    break;
+                                                }
                                             }
                                         }
-                                        $customFieldsDataUserPickerMultipleUser->data_seek(0);
+
                                         $textSelected = '';
                                         if ($userFound) {
                                             $textSelected = 'selected="selected"';
@@ -313,6 +317,7 @@
                                         echo '<option ' . $textSelected . ' value="' . $systemUser['id'] . '">' . $systemUser['first_name'] . ' ' . $systemUser['last_name'] . '</option>';
                                     }
                                     echo '</select>';
+                                    $allUsers->data_seek(0);
                                     break;
                             }
                             if ($field['description']) {

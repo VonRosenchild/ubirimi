@@ -62,7 +62,7 @@
                 $fieldId = $keyData[0];
                 if (!empty($value)) {
                     if (is_array($value)) {
-                        $query = "delete from issue_custom_field_data where issue_id = ? and field_id = ? limit 1";
+                        $query = "delete from issue_custom_field_data where issue_id = ? and field_id = ?";
 
                         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
                             $stmt->bind_param("ii", $issueId, $fieldId);
@@ -138,14 +138,19 @@
             }
         }
 
-        public static function getUserPickerData($issueId) {
-            $query = 'SELECT user.id, user.first_name, user.last_name, field.name, sys_field_type.code ' .
+        public static function getUserPickerData($issueId, $fieldId = null) {
+
+            $queryWhere = '';
+            if ($fieldId) {
+                $queryWhere = ' and issue_custom_field_data.field_id = ' . $fieldId;
+            }
+            $query = 'SELECT user.id, user.first_name, user.last_name, field.name, sys_field_type.code, issue_custom_field_data.field_id ' .
                 'FROM issue_custom_field_data ' .
                 'LEFT JOIN field on field.id = issue_custom_field_data.field_id ' .
                 'left join sys_field_type on sys_field_type.id = field.sys_field_type_id ' .
                 'left join user on user.id = issue_custom_field_data.value ' .
                 'WHERE issue_id = ? and ' .
-                'sys_field_type.id IN (7) ' .
+                'sys_field_type.id IN (7) ' . $queryWhere . ' ' .
                 'order by field.name';
 
             if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -153,9 +158,20 @@
                 $stmt->execute();
 
                 $result = $stmt->get_result();
-                if ($result->num_rows)
-                    return $result;
-                else
+                if ($result->num_rows) {
+                    $resultData = array();
+                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                        if (!array_key_exists($data['field_id'], $resultData)) {
+                            $resultData[$data['field_id']] = array();
+                        }
+                        array_push($resultData[$data['field_id']], array('user_id' => $data['id'],
+                                                                     'first_name' => $data['first_name'],
+                                                                     'last_name' => $data['last_name'],
+                                                                     'field_name' => $data['name'],
+                                                                     'field_code' => $data['code']));
+                    }
+                    return $resultData;
+                } else
                     return null;
             }
         }
