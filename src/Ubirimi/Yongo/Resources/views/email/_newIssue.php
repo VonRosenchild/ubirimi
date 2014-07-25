@@ -48,10 +48,12 @@
             <td><?php echo $this->issue['due_date'] ?></td>
         </tr>
         <?php endif ?>
-        <tr>
-            <td valign="top" width="80">Description:</td>
-            <td><?php echo str_replace("\n",  '<br />', $this->issue['description']) ?></td>
-        </tr>
+        <?php if (!empty($this->issue['description'])): ?>
+            <tr>
+                <td valign="top" width="80">Description:</td>
+                <td><?php echo str_replace("\n",  '<br />', $this->issue['description']) ?></td>
+            </tr>
+        <?php endif ?>
         <tr>
             <td>Priority:</td>
             <td><?php echo $this->issue['priority_name'] ?></td>
