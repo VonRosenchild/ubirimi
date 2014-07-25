@@ -1230,6 +1230,16 @@ class Issue
             $newIssueData['fix_version'] = array();
         }
 
+        if (!array_key_exists('component', $oldIssueData)) {
+            $oldIssueData['component'] = array();
+        }
+        if (!array_key_exists('fix_version', $oldIssueData)) {
+            $oldIssueData['fix_version'] = array();
+        }
+        if (!array_key_exists('affects_version', $oldIssueData)) {
+            $oldIssueData['affects_version'] = array();
+        }
+
         if ($oldIssueData['component'] != $newIssueData['component']) {
             $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
         }
@@ -1274,8 +1284,6 @@ class Issue
             }
         }
 
-
-
         foreach ($newIssueCustomFieldsData as $key => $value) {
             $fieldData = Field::getById($key);
             $fieldTypeId = $fieldData['sys_field_type_id'];
@@ -1308,13 +1316,14 @@ class Issue
                                     $oldUsersArray[] = $oldUsersData[$i]['first_name'] . ' ' . $oldUsersData[$i]['last_name'];
                                 }
                             }
+                            $newUsersArray = array();
                             if (count($newUsersAdded)) {
                                 $newUsersData = User::getByIds($newUsersAdded, 'array');
-                                $newUsersArray = array();
                                 for ($i = 0; $i < count($newUsersData); $i++) {
                                     $newUsersArray[] = $newUsersData[$i]['first_name'] . ' ' . $newUsersData[$i]['last_name'];
                                 }
                             }
+
                             $fieldChanges[] = array($fieldName, implode(', ', $oldUsersArray), implode(', ', $newUsersArray));
                         }
 

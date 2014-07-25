@@ -33,16 +33,18 @@
 
     $issueSecuritySchemeId = $project['issue_security_scheme_id'];
     $issueSecuritySchemeLevels = null;
-    if ($issueSecuritySchemeId)
+    if ($issueSecuritySchemeId) {
         $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+    }
 
     $projectComponents = Project::getComponents($projectId);
     $issueComponents = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
     $arrIssueComponents = array();
 
     if ($issueComponents) {
-        while ($row = $issueComponents->fetch_array(MYSQLI_ASSOC))
+        while ($row = $issueComponents->fetch_array(MYSQLI_ASSOC)) {
             $arrIssueComponents[] = $row['project_component_id'];
+        }
     }
 
     $projectVersions = Project::getVersions($projectId);

@@ -9,6 +9,7 @@
     use Ubirimi\Yongo\Repository\Screen\Screen;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Repository\User\User;
+    use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -198,9 +199,26 @@
                             break;
 
                         case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
-                            $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" name="' . $field['field_code'] . '[]" multiple="multiple" style="width: 650px;" type="text" value="">';
-                            while ($user = $allUsers->fetch_array(MYSQLI_ASSOC)) {
-                                $htmlOutput .= '<option ' . $textSelected . ' value="' . $user['id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
+                            $customFieldsDataUserPickerMultipleUserData = IssueCustomField::getUserPickerData($issueId, $field['field_id']);
+                            $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
+
+                            $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';
+                            while ($allUsers && $systemUser = $allUsers->fetch_array(MYSQLI_ASSOC)) {
+                                $userFound = false;
+                                if ($customFieldsDataUserPickerMultipleUser) {
+                                    foreach ($customFieldsDataUserPickerMultipleUser as $fieldUser) {
+                                        if ($fieldUser['user_id'] == $systemUser['id']) {
+                                            $userFound = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                $textSelected = '';
+                                if ($userFound) {
+                                    $textSelected = 'selected="selected"';
+                                }
+                                $htmlOutput .= '<option ' . $textSelected . ' value="' . $systemUser['id'] . '">' . $systemUser['first_name'] . ' ' . $systemUser['last_name'] . '</option>';
                             }
                             $htmlOutput .= '</select>';
                             $allUsers->data_seek(0);

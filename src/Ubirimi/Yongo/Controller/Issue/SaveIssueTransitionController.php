@@ -61,7 +61,17 @@
         for ($i = 0; $i < count($fieldTypes); $i++) {
             $newIssueSystemFieldsData[$fieldTypes[$i]] = $fieldValues[$i];
         }
-        $fieldChanges = Issue::computeDifference($issueData, $newIssueSystemFieldsData);
+
+        $oldIssueCustomFieldsData = array();
+        foreach ($issueCustomFieldsData as $key => $value) {
+            $keyData = explode("_", $key);
+
+            $oldIssueCustomFieldsData[$keyData[0]] = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            unset($issueCustomFieldsData[$key]);
+            $issueCustomFieldsData[$keyData[0]] = $value;
+        }
+
+        $fieldChanges = Issue::computeDifference($issueData, $newIssueSystemFieldsData, $oldIssueCustomFieldsData, $issueCustomFieldsData);
 
         if (in_array(Field::FIELD_COMMENT_CODE, $fieldTypes)) {
             if ($fieldValues[array_search('comment', $fieldTypes)]) {
