@@ -42,68 +42,82 @@ class Field {
     const CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID = 6;
     const CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID = 7;
 
-    public static $fieldTranslation = array(Field::FIELD_SUMMARY_CODE => 'Summary', Field::FIELD_ASSIGNEE_CODE => 'Assigned to', Field::FIELD_DESCRIPTION_CODE => 'Description',
-                                    Field::FIELD_REPORTER_CODE => 'Reported by', Field::FIELD_ISSUE_TYPE_CODE => 'Type', Field::FIELD_PRIORITY_CODE => 'Priority',
-                                    Field::FIELD_STATUS_CODE => 'Status', Field::FIELD_ENVIRONMENT_CODE => 'Environment', Field::FIELD_COMPONENT_CODE => 'Components',
-                                    Field::FIELD_FIX_VERSION_CODE => 'Target releases', Field::FIELD_AFFECTS_VERSION_CODE => 'Affected versions', Field::FIELD_RESOLUTION_CODE => 'Resolution',
-                                    Field::FIELD_DUE_DATE_CODE => 'Due Date', Field::FIELD_ISSUE_SECURITY_LEVEL => 'Security Level', 'time_spent' => 'Time Spent',
-                                    'remaining_estimate' => 'Remaining Estimate', 'worklog_time_spent' => 'Worklog Time Spent', Field::FIELD_ATTACHMENT_CODE => 'Attachment',
-                                    Field::FIELD_PROJECT => 'Project');
+    public static $fieldTranslation = array(
+        Field::FIELD_SUMMARY_CODE => 'Summary',
+        Field::FIELD_ASSIGNEE_CODE => 'Assigned to',
+        Field::FIELD_DESCRIPTION_CODE => 'Description',
+        Field::FIELD_REPORTER_CODE => 'Reported by',
+        Field::FIELD_ISSUE_TYPE_CODE => 'Type',
+        Field::FIELD_PRIORITY_CODE => 'Priority',
+        Field::FIELD_STATUS_CODE => 'Status',
+        Field::FIELD_ENVIRONMENT_CODE => 'Environment',
+        Field::FIELD_COMPONENT_CODE => 'Components',
+        Field::FIELD_FIX_VERSION_CODE => 'Target releases',
+        Field::FIELD_AFFECTS_VERSION_CODE => 'Affected versions',
+        Field::FIELD_RESOLUTION_CODE => 'Resolution',
+        Field::FIELD_DUE_DATE_CODE => 'Due Date',
+        Field::FIELD_ISSUE_SECURITY_LEVEL => 'Security Level',
+        'time_spent' => 'Time Spent',
+        'remaining_estimate' => 'Remaining Estimate',
+        'worklog_time_spent' => 'Worklog Time Spent',
+        Field::FIELD_ATTACHMENT_CODE => 'Attachment',
+        Field::FIELD_PROJECT => 'Project'
+    );
 
     public static function getByClient($clientId) {
         $query = "SELECT * FROM field where client_id = ? order by name";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByClientIdAndFieldTypeId($clientId, $typeId) {
-        $query = "SELECT * FROM field where client_id = ? and sys_field_type_id = ? group by name order by name";
+        $query = "SELECT * FROM field
+                    where client_id = ?
+                      and sys_field_type_id = ?
+                    group by name
+                    order by name";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $typeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $typeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getById($fieldId) {
         $query = "SELECT * FROM field where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $fieldId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $fieldId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getByCode($clientId, $code) {
         $query = "SELECT * FROM field where client_id = ? and code = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $clientId, $code);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $code);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getIssueTypesFor($fieldId) {
@@ -112,15 +126,14 @@ class Field {
             "left join issue_type on issue_type.id = field_issue_type_data.issue_type_id " .
             "where field_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $fieldId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $fieldId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getProjectsFor($fieldId) {
@@ -129,15 +142,14 @@ class Field {
             "left join project on project.id = field_project_data.project_id " .
             "where field_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $fieldId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $fieldId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getCustomFieldValueByFieldId($issueId, $fieldId) {
@@ -146,15 +158,14 @@ class Field {
             "where issue_id = ? and field_id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $issueId, $fieldId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array();
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueId, $fieldId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array();
+        else
+            return null;
     }
 
     public static function deleteByClientId($clientId) {
@@ -164,45 +175,43 @@ class Field {
                 $fieldId = $field['id'];
 
                 $query = "delete from field_issue_type_data where field_id = ?";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    $stmt->bind_param("i", $fieldId);
-                    $stmt->execute();
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+                $stmt->bind_param("i", $fieldId);
+                $stmt->execute();
 
                 $query = "delete from field_project_data where field_id = ?";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    $stmt->bind_param("i", $fieldId);
-                    $stmt->execute();
-                }
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+                $stmt->bind_param("i", $fieldId);
+                $stmt->execute();
             }
         }
 
         $query = "delete from field where client_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
     }
 
     public static function add($clientId, $code, $name, $description, $systemFlag, $allIssueTypeFlag, $allProjectFlag) {
         $query = "INSERT INTO field(client_id, code, name, description, system_flag, all_issue_type_flag, all_project_flag) VALUES " .
             "(?, ?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("isssiii", $clientId, $code, $name, $description, $systemFlag, $allIssueTypeFlag, $allProjectFlag);
-            $stmt->execute();
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("isssiii", $clientId, $code, $name, $description, $systemFlag, $allIssueTypeFlag, $allProjectFlag);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
+
     public static function addData($fieldId, $value, $currentDate) {
         $query = "INSERT INTO field_data(field_id, `value`, date_created) VALUES " .
                  "(?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iss", $fieldId, $value, $currentDate);
-            $stmt->execute();
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iss", $fieldId, $value, $currentDate);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getDataByFieldId($fieldId) {
@@ -210,15 +219,14 @@ class Field {
             "FROM field_data " .
             "where field_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $fieldId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $fieldId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getDataByFieldIdAndValue($fieldId, $value, $dataId = null) {
@@ -230,57 +238,51 @@ class Field {
 
         $query .= ' limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $fieldId, $value);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $fieldId, $value);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function getDataById($id) {
         $query = 'select * from `field_data` where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function deleteDataById($customFieldDataId) {
         $field = Field::getDataById($customFieldDataId);
 
         $query = "delete from field_data where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $customFieldDataId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $customFieldDataId);
+        $stmt->execute();
 
         $query = "delete from issue_custom_field_data where field_id = ? and value = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $field['id'], $customFieldDataId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $field['id'], $customFieldDataId);
+        $stmt->execute();
     }
 
     public static function updateDataById($id, $value, $date) {
-
         $query = "update field_data set `value` = ?, date_updated = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ssi", $value, $date, $id);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ssi", $value, $date, $id);
+        $stmt->execute();
     }
 }
