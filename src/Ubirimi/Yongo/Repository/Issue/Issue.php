@@ -580,39 +580,37 @@ class Issue {
             $query .= ' LIMIT ' . (($parameters['page'] - 1) * $parameters['issues_per_page']) . ', ' . ($parameters['issues_per_page']);
 
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            if ($queryWhere != '') {
-                $param_arr_ref = array();
+        if ($queryWhere != '') {
+            $param_arr_ref = array();
 
-                foreach ($parameterArray as $key => $value)
-                    $param_arr_ref[$key] = &$parameterArray[$key];
+            foreach ($parameterArray as $key => $value)
+                $param_arr_ref[$key] = &$parameterArray[$key];
 
-                if ($parameterType != '')
-                    call_user_func_array(array($stmt, "bind_param"), array_merge(array($parameterType), $param_arr_ref));
-            }
+            if ($parameterType != '')
+                call_user_func_array(array($stmt, "bind_param"), array_merge(array($parameterType), $param_arr_ref));
+        }
 
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if (!$result->num_rows)
+            return null;
+
+        if (isset($parameters['page'])) {
+            $q = "SELECT FOUND_ROWS() as count;";
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
             $stmt->execute();
-            $result = $stmt->get_result();
+            $result_total = $stmt->get_result();
+            $count = $result_total->fetch_array(MYSQLI_ASSOC);
 
-            if (!$result->num_rows)
-                return null;
+            return array($result, $count['count']);
+        } else if ((isset($parameters['issue_id']) && !is_array($parameters['issue_id'])) || isset($parameters['nr'])) {
 
-            if (isset($parameters['page'])) {
-
-                $q = "SELECT FOUND_ROWS() as count;";
-                $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
-                $stmt->execute();
-                $result_total = $stmt->get_result();
-                $count = $result_total->fetch_array(MYSQLI_ASSOC);
-
-                return array($result, $count['count']);
-            } else if ((isset($parameters['issue_id']) && !is_array($parameters['issue_id'])) || isset($parameters['nr'])) {
-
-                return $result->fetch_array(MYSQLI_ASSOC);
-            } else {
-                return $result;
-            }
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else {
+            return $result;
         }
 
         return null;
@@ -621,10 +619,9 @@ class Issue {
     public static function setUnassignedById($issueId) {
         $query = 'update yongo_issue SET user_assigned_id = null where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $issueId);
+        $stmt->execute();
     }
 
     public static function get2DimensionalFilter($projectId, $resultType = 'array') {
@@ -634,63 +631,59 @@ class Issue {
                     'where yongo_issue.project_id = ? ' .
                     'group by user.id, yongo_issue.status_id';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $resultArray[] = $data;
-                    }
-                    return $resultArray;
-                } else {
-                    return $result;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $data;
                 }
+                return $resultArray;
             } else {
-                return null;
+                return $result;
             }
+        } else {
+            return null;
         }
     }
 
     public static function updateField($issueId, $field_type, $newValue) {
         $query = 'update yongo_issue SET ' . $field_type . ' = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $newValue, $issueId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $newValue, $issueId);
+        $stmt->execute();
     }
 
     public static function updateResolution($projectIdArray, $oldResolutionId, $newResolutionId) {
         $projectSQL = implode(', ', $projectIdArray);
         $query_update = 'update yongo_issue SET resolution_id = ? where resolution_id = ? and project_id IN (' . $projectSQL . ')';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query_update)) {
-            $stmt->bind_param("ii", $newResolutionId, $oldResolutionId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query_update);
+        $stmt->bind_param("ii", $newResolutionId, $oldResolutionId);
+        $stmt->execute();
     }
 
     public static function updatePriority($projectIdArray, $oldPriorityId, $newPriorityId) {
         $projectSQL = implode(', ', $projectIdArray);
         $query_update = 'update yongo_issue SET priority_id = ? where priority_id = ? and project_id IN (' . $projectSQL . ')';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query_update)) {
-            $stmt->bind_param("ii", $newPriorityId, $oldPriorityId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query_update);
+        $stmt->bind_param("ii", $newPriorityId, $oldPriorityId);
+        $stmt->execute();
     }
 
     public static function updateType($projectIdArray, $oldTypeId, $newTypeId) {
         $projectSQL = implode(', ', $projectIdArray);
         $query_update = 'update yongo_issue SET type_id = ? where type_id = ? and project_id IN (' . $projectSQL . ')';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query_update)) {
-            $stmt->bind_param("ii", $newTypeId, $oldTypeId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query_update);
+        $stmt->bind_param("ii", $newTypeId, $oldTypeId);
+        $stmt->execute();
     }
 
     public static function addHistory($issueId, $userId, $field, $old_value, $new_value, $now_date) {
@@ -702,14 +695,12 @@ class Issue {
 
         $query = "INSERT INTO issue_history(issue_id, by_user_id, field, old_value, new_value, date_created) VALUES (?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iissss", $issueId, $userId, $field, $old_value, $new_value, $now_date);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iissss", $issueId, $userId, $field, $old_value, $new_value, $now_date);
+        $stmt->execute();
     }
 
     public static function deleteById($issueId) {
-
         IssueComment::deleteByIssueId($issueId);
         IssueHistory::deleteByIssueId($issueId);
         IssueComponent::deleteByIssueId($issueId);
@@ -724,10 +715,10 @@ class Issue {
         AgileBoard::deleteIssuesFromSprints(array($issueId));
 
         $query = 'DELETE from yongo_issue WHERE id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $issueId);
+        $stmt->execute();
     }
 
     public static function addRaw($projectId, $date, $data) {
@@ -737,18 +728,28 @@ class Issue {
             "summary, description, environment, date_created, date_due) " .
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiisssss", $projectId, $data['priority'], $data['status'], $data['type'], $data['assignee'],
-                $data['reporter'], $issueNumber, $data['summary'], $data['description'],
-                $data['environment'], $date, $data['due_date']);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiiiiiisssss",
+            $projectId,
+            $data['priority'],
+            $data['status'],
+            $data['type'],
+            $data['assignee'],
+            $data['reporter'],
+            $issueNumber,
+            $data['summary'],
+            $data['description'],
+            $data['environment'],
+            $date,
+            $data['due_date']
+        );
 
-            return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
-        }
+        $stmt->execute();
+
+        return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
     }
 
     public static function addBugzilla($project, $currentDate, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null, $statusId) {
-
         $issueNumber = Issue::getAvailableIssueNumber($project['id']);
         $workflowUsed = Project::getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
 
@@ -793,36 +794,36 @@ class Issue {
 
         if (is_numeric($time_tracking_original_estimate))
             $time_tracking_original_estimate .=  $systemTimeTrackingDefaultUnit;
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param(
-                "iiiiiiiisssssiissi",
-                $project['id'],
-                $issueSystemFields['resolution'],
-                $issueSystemFields['priority'],
-                $statusId,
-                $issueSystemFields['type'],
-                $issueSystemFields['assignee'],
-                $issueSystemFields['reporter'],
-                $issueNumber,
-                $issueSystemFields['summary'],
-                $issueSystemFields['description'],
-                $issueSystemFields['environment'],
-                $currentDate,
-                $issueSystemFields['due_date'],
-                $parentIssueId,
-                $securityLevel,
-                $time_tracking_remaining_estimate,
-                $time_tracking_original_estimate,
-                $issueSystemFields['helpdesk_flag']
-            );
 
-            $stmt->execute();
-            return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param(
+            "iiiiiiiisssssiissi",
+            $project['id'],
+            $issueSystemFields['resolution'],
+            $issueSystemFields['priority'],
+            $statusId,
+            $issueSystemFields['type'],
+            $issueSystemFields['assignee'],
+            $issueSystemFields['reporter'],
+            $issueNumber,
+            $issueSystemFields['summary'],
+            $issueSystemFields['description'],
+            $issueSystemFields['environment'],
+            $currentDate,
+            $issueSystemFields['due_date'],
+            $parentIssueId,
+            $securityLevel,
+            $time_tracking_remaining_estimate,
+            $time_tracking_original_estimate,
+            $issueSystemFields['helpdesk_flag']
+        );
+
+        $stmt->execute();
+
+        return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
     }
 
     public static function add($project, $currentDate, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null) {
-
         $issueNumber = Issue::getAvailableIssueNumber($project['id']);
         $workflowUsed = Project::getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
 
@@ -873,48 +874,50 @@ class Issue {
             $time_tracking_original_estimate .=  $systemTimeTrackingDefaultUnit;
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param(
-                "iiiiiiiisssssiissis",
-                $project['id'],
-                $issueSystemFields['resolution'],
-                $issueSystemFields['priority'],
-                $StatusId,
-                $issueSystemFields['type'],
-                $issueSystemFields['assignee'],
-                $issueSystemFields['reporter'],
-                $issueNumber,
-                $issueSystemFields['summary'],
-                $issueSystemFields['description'],
-                $issueSystemFields['environment'],
-                $currentDate,
-                $issueSystemFields['due_date'],
-                $parentIssueId,
-                $securityLevel,
-                $time_tracking_remaining_estimate,
-                $time_tracking_original_estimate,
-                $issueSystemFields['helpdesk_flag'],
-                $issueSystemFields['user_reported_ip']
-            );
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param(
+            "iiiiiiiisssssiissis",
+            $project['id'],
+            $issueSystemFields['resolution'],
+            $issueSystemFields['priority'],
+            $StatusId,
+            $issueSystemFields['type'],
+            $issueSystemFields['assignee'],
+            $issueSystemFields['reporter'],
+            $issueNumber,
+            $issueSystemFields['summary'],
+            $issueSystemFields['description'],
+            $issueSystemFields['environment'],
+            $currentDate,
+            $issueSystemFields['due_date'],
+            $parentIssueId,
+            $securityLevel,
+            $time_tracking_remaining_estimate,
+            $time_tracking_original_estimate,
+            $issueSystemFields['helpdesk_flag'],
+            $issueSystemFields['user_reported_ip']
+        );
 
-            $stmt->execute();
-            return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
-        }
+        $stmt->execute();
+
+        return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
     }
 
     public static function getByIdSimple($issueId) {
         $query = 'SELECT * from yongo_issue where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $result = $result->fetch_array(MYSQLI_ASSOC);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-                return $result;
-            } else return null;
+        $stmt->bind_param("i", $issueId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $result = $result->fetch_array(MYSQLI_ASSOC);
+
+            return $result;
         }
+
+        return null;
     }
 
     public static function getAvailableIssueNumber($projectId) {
@@ -924,21 +927,22 @@ class Issue {
                     'ORDER BY id desc ' .
                     'LIMIT 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $result = $result->fetch_array(MYSQLI_ASSOC);
-                $nr = $result['issue_number'];
-                if (!$nr)
-                    $nr = 1;
-                else
-                    $nr++;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $result = $result->fetch_array(MYSQLI_ASSOC);
+            $nr = $result['issue_number'];
+            if (!$nr)
+                $nr = 1;
+            else
+                $nr++;
 
-                return $nr;
-            } else return 1;
+            return $nr;
         }
+
+        return 1;
     }
 
     public static function addComponentVersion($issueId, $values, $table, $versionFlag = null) {
@@ -972,10 +976,9 @@ class Issue {
         foreach ($bind_param_arr as $key => $value)
             $bind_param_arr_ref[$key] = &$bind_param_arr[$key];
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            call_user_func_array(array($stmt, "bind_param"), array_merge(array($bind_param_str), $bind_param_arr_ref));
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        call_user_func_array(array($stmt, "bind_param"), array_merge(array($bind_param_str), $bind_param_arr_ref));
+        $stmt->execute();
     }
 
     public static function updateById($issueId, $data, $updateDate) {
@@ -1110,10 +1113,9 @@ class Issue {
         foreach ($paramValues as $key => $value)
             $bind_param_arr_ref[$key] = &$paramValues[$key];
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            call_user_func_array(array($stmt, "bind_param"), array_merge(array($paramType), $bind_param_arr_ref));
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        call_user_func_array(array($stmt, "bind_param"), array_merge(array($paramType), $bind_param_arr_ref));
+        $stmt->execute();
 
         if (array_key_exists(Field::FIELD_AFFECTS_VERSION_CODE, $data)) {
             IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
@@ -1263,16 +1265,15 @@ class Issue {
             $query .= " and DATE(date_created) = DATE(NOW())";
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function updateSecurityLevel($clientId, $issueSecuritySchemeLevelId, $newIssueSecuritySchemeLevelId) {
@@ -1282,23 +1283,22 @@ class Issue {
             'where project.client_id = ? and ' .
             'yongo_issue.security_scheme_level_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $issueSecuritySchemeLevelId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $issueSecuritySchemeLevelId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows) {
-                if ($newIssueSecuritySchemeLevelId == -1)
-                    $newIssueSecuritySchemeLevelId = null;
+        if ($result->num_rows) {
+            if ($newIssueSecuritySchemeLevelId == -1)
+                $newIssueSecuritySchemeLevelId = null;
 
-                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                    $queryUpdate = 'update yongo_issue set security_scheme_level_id = ? where id = ? limit 1';
+            while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                $queryUpdate = 'update yongo_issue set security_scheme_level_id = ? where id = ? limit 1';
 
-                    if ($stmtUpdate = UbirimiContainer::get()['db.connection']->prepare($queryUpdate)) {
+                if ($stmtUpdate = UbirimiContainer::get()['db.connection']->prepare($queryUpdate)) {
 
-                        $stmtUpdate->bind_param("ii", $newIssueSecuritySchemeLevelId, $data['id']);
-                        $stmtUpdate->execute();
-                    }
+                    $stmtUpdate->bind_param("ii", $newIssueSecuritySchemeLevelId, $data['id']);
+                    $stmtUpdate->execute();
                 }
             }
         }
@@ -1306,12 +1306,12 @@ class Issue {
 
     public static function setAffectedVersion($issueId, $projectVersionId) {
         $query = "INSERT INTO issue_version(issue_id, project_version_id, affected_targeted_flag) VALUES (?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $versionType = self::ISSUE_AFFECTED_VERSION_FLAG;
-            $stmt->bind_param("iii", $issueId, $projectVersionId, $versionType);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $versionType = self::ISSUE_AFFECTED_VERSION_FLAG;
+        $stmt->bind_param("iii", $issueId, $projectVersionId, $versionType);
+        $stmt->execute();
     }
 
     public static function updateAssignee($clientId, $issueId, $loggedInUserId, $userAssignedId, $comment = null) {
@@ -1369,8 +1369,15 @@ class Issue {
         $smtpSettings = UbirimiContainer::get()['session']->get('client/settings/smtp');
         if ($smtpSettings) {
             Email::$smtpSettings = $smtpSettings;
-            Email::triggerAssignIssueNotification($clientId, $issueData, $oldUserAssignedName, $newUserAssignedName,
-                                                  $project, $loggedInUserId, $comment);
+            Email::triggerAssignIssueNotification(
+                $clientId,
+                $issueData,
+                $oldUserAssignedName,
+                $newUserAssignedName,
+                $project,
+                $loggedInUserId,
+                $comment
+            );
         }
     }
 
@@ -1379,10 +1386,9 @@ class Issue {
         $nextNumber = Issue::getAvailableIssueNumber($newProjectId);
         $query = 'update yongo_issue SET project_id = ?, type_id = ?, nr = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iisi", $newProjectId, $newIssueTypeId, $nextNumber, $issueId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iisi", $newProjectId, $newIssueTypeId, $nextNumber, $issueId);
+        $stmt->execute();
         $stmt->close();
 
         // update last issue number for this project
@@ -1391,31 +1397,30 @@ class Issue {
         $subTasks = Issue::getByParameters(array('parent_id' => $issueId));
         if ($subTasks) {
             while ($issue = $subTasks->fetch_array(MYSQLI_ASSOC)) {
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    $nextNumber = Issue::getAvailableIssueNumber($newProjectId);
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+                $nextNumber = Issue::getAvailableIssueNumber($newProjectId);
 
-                    $subTaskId = $issue['id'];
-                    $stmt->bind_param("iisi", $newProjectId, $newIssueTypeId, $nextNumber, $subTaskId);
-                    $stmt->execute();
+                $subTaskId = $issue['id'];
+                $stmt->bind_param("iisi", $newProjectId, $newIssueTypeId, $nextNumber, $subTaskId);
+                $stmt->execute();
 
-                    // update last issue number for this project
-                    Project::updateLastIssueNumber($newProjectId, $nextNumber);
+                // update last issue number for this project
+                Project::updateLastIssueNumber($newProjectId, $nextNumber);
 
-                    IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
-                    IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-                    IssueComponent::deleteByIssueId($subTaskId);
+                IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
+                IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+                IssueComponent::deleteByIssueId($subTaskId);
 
-                    // also update the issue type Id if necessary
-                    for ($i = 0; $i < count($newSubTaskIssueTypeIds); $i++) {
-                        if ($issue['type'] = $newSubTaskIssueTypeIds[$i][0]) {
-                            $newTypeId = $newSubTaskIssueTypeIds[$i][1];
+                // also update the issue type Id if necessary
+                for ($i = 0; $i < count($newSubTaskIssueTypeIds); $i++) {
+                    if ($issue['type'] = $newSubTaskIssueTypeIds[$i][0]) {
+                        $newTypeId = $newSubTaskIssueTypeIds[$i][1];
 
-                            $queryUpdateType = 'update yongo_issue SET type_id = ? where id = ? limit 1';
+                        $queryUpdateType = 'update yongo_issue SET type_id = ? where id = ? limit 1';
 
-                            if ($stmtUpdateType = UbirimiContainer::get()['db.connection']->prepare($queryUpdateType)) {
-                                $stmtUpdateType->bind_param("ii", $newTypeId, $subTaskId);
-                                $stmtUpdateType->execute();
-                            }
+                        if ($stmtUpdateType = UbirimiContainer::get()['db.connection']->prepare($queryUpdateType)) {
+                            $stmtUpdateType->bind_param("ii", $newTypeId, $subTaskId);
+                            $stmtUpdateType->execute();
                         }
                     }
                 }
@@ -1509,10 +1514,9 @@ class Issue {
     public static function addSLAData($issueId, $slaId, $offset) {
         $query = "insert into yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) values (?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iii", $issueId, $slaId, $offset);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $issueId, $slaId, $offset);
+        $stmt->execute();
     }
 
     public static function updateSLADataForProject($clientId, $projectId, $userId, $clientSettings) {
@@ -1545,20 +1549,17 @@ class Issue {
         $query = "update yongo_issue_sla set value_between_cycles = value_between_cycles + value, " .
                  "stopped_flag = 1, stopped_date = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sii", $dateStopped, $issueId, $SLAId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sii", $dateStopped, $issueId, $SLAId);
+        $stmt->execute();
 
         // reset the offset to 0
         $query = "update yongo_issue_sla set `value` = 0 " .
                  "where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-
-            $stmt->bind_param("ii", $issueId, $SLAId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueId, $SLAId);
+        $stmt->execute();
     }
 
     public static function updateSLAStarted($issueId, $SLAId, $dateStarted) {
@@ -1566,29 +1567,28 @@ class Issue {
         $query = "update yongo_issue_sla set value_between_cycles = value_between_cycles + value, started_flag = 1, " .
                  "started_date = ?, stopped_date = NULL, stopped_flag = 0 where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sii", $dateStarted, $issueId, $SLAId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sii", $dateStarted, $issueId, $SLAId);
+        $stmt->execute();
     }
 
     public static function checkStoppedSLA($issueId, $SLAId) {
         $query = 'SELECT stopped_flag from yongo_issue_sla where yongo_issue_id = ? AND help_sla_id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $issueId, $SLAId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $row = $result->fetch_array(MYSQLI_ASSOC);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueId, $SLAId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $row = $result->fetch_array(MYSQLI_ASSOC);
 
-                return $row['stopped_flag'];
-            } else return null;
+            return $row['stopped_flag'];
         }
+
+        return null;
     }
 
     public static function updateSLAValue($issue, $clientId, $clientSettings) {
-
         $slasPrintData = array();
         $projectId = $issue['issue_project_id'];
         $SLAs = SLA::getByProjectId($projectId);
@@ -1631,10 +1631,10 @@ class Issue {
             $defaultValue = 0;
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
                 $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) VALUES (?, ?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    $stmt->bind_param("iii", $issueId, $SLA['id'], $defaultValue);
-                    $stmt->execute();
-                }
+
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+                $stmt->bind_param("iii", $issueId, $SLA['id'], $defaultValue);
+                $stmt->execute();
             }
         }
     }
@@ -1642,14 +1642,12 @@ class Issue {
     public static function clearSLAData($slaId) {
         $query = "update yongo_issue_sla set help_sla_goal_id = NULL, started_flag = 0, stopped_flag = 0, started_date = NULL, value = NULL where help_sla_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $slaId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $slaId);
+        $stmt->execute();
     }
 
     public static function getSearchParameters($projectsForBrowsing, $clientId, $helpDeskFlag = 0) {
-
         $projectsForBrowsing->data_seek(0);
         $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
@@ -1809,7 +1807,6 @@ class Issue {
     }
     
     public static function prepareDataForSearchFromPostGet($projectIds, $postArray, $getArray) {
-        
         $getFilter = isset($getArray['filter']) ? $getArray['filter'] : null;
         $searchText = $postArray['query'];
         $summaryFlag = isset($postArray['summary_flag']) ? 1 : 0;
@@ -1934,12 +1931,26 @@ class Issue {
         $search_date_created_after = $postArray['search_date_created_after'];
         $search_date_created_before = $postArray['search_date_created_before'];
 
-        $searchParameters = array('search_query' => $searchText, 'description_flag' => $descriptionFlag, 'comments_flag' => $commentsFlag,
-            'project' => $selectedProjectArray, 'assignee' => $selectedUserAssigneeArray, 'reporter' => $selectedUserReporterArray,
-            'type' => $selectedIssueTypeArray, 'status' => $selectedIssueStatusArray, 'priority' => $selectedIssuePriorityArray,
-            'component' => $selectedProjectComponentArray, 'resolution' => $selectedIssueResolutionArray, 'filter' => $getFilter, 'date_due_after' => $search_date_due_after,
-            'date_due_before' => $search_date_due_before, 'date_created_before' => $search_date_created_before, 'date_created_after' => $search_date_created_after,
-            'fix_version' => $selectedProjectFixVersionArray, 'affects_version' => $selectedProjectAffectsVersionArray);
+        $searchParameters = array(
+            'search_query' => $searchText,
+            'description_flag' => $descriptionFlag,
+            'comments_flag' => $commentsFlag,
+            'project' => $selectedProjectArray,
+            'assignee' => $selectedUserAssigneeArray,
+            'reporter' => $selectedUserReporterArray,
+            'type' => $selectedIssueTypeArray,
+            'status' => $selectedIssueStatusArray,
+            'priority' => $selectedIssuePriorityArray,
+            'component' => $selectedProjectComponentArray,
+            'resolution' => $selectedIssueResolutionArray,
+            'filter' => $getFilter,
+            'date_due_after' => $search_date_due_after,
+            'date_due_before' => $search_date_due_before,
+            'date_created_before' => $search_date_created_before,
+            'date_created_after' => $search_date_created_after,
+            'fix_version' => $selectedProjectFixVersionArray,
+            'affects_version' => $selectedProjectAffectsVersionArray
+        );
 
         if ($searchText) {
             $searchParameters['summary_flag'] = $summaryFlag;
@@ -1959,6 +1970,7 @@ class Issue {
 
     public static function deleteSLADataByIssueIdAndSLAId($issueID, $SLAId) {
         $query = "delete from yongo_issue_sla where yongo_issue_id = ? and help_sla_id = ?";
+
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("ii", $issueID, $SLAId);
         $stmt->execute();
@@ -1966,6 +1978,7 @@ class Issue {
 
     public static function deleteSLADataByIssueId($issueID) {
         $query = "delete from yongo_issue_sla where yongo_issue_id = ?";
+
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $issueID);
         $stmt->execute();
@@ -1973,6 +1986,7 @@ class Issue {
 
     public static function updateSLAValueOnly($issueId, $SLAId, $value) {
         $query = "update yongo_issue_sla set `value` = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
+
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("iii", $value, $issueId, $SLAId);
         $stmt->execute();
