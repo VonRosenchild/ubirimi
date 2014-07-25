@@ -1,5 +1,7 @@
 <?php
     use Ubirimi\Container\UbirimiContainer;
+    use Ubirimi\SystemProduct;
+    use Ubirimi\LinkHelper;
 
     $session = UbirimiContainer::get()['session'];
 ?>
@@ -63,12 +65,12 @@
             <td>Affects version/s:</td>
             <td>
                 <?php
-                    $arr_string = array();
+                    $arrayString = array();
                     while ($version = $this->versions_affected->fetch_array(MYSQLI_ASSOC)) {
-                        $arr_string[] = $version['name'];
+                        $arrayString[] = $version['name'];
                     }
                 ?>
-                <?php echo implode($arr_string, ', ') ?>
+                <?php echo implode($arrayString, ', ') ?>
             </td>
         </tr>
         <?php endif ?>
@@ -77,12 +79,12 @@
             <td>Fix versions:</td>
             <td>
                 <?php
-                    $arr_string = array();
+                    $arrayString = array();
                     while ($version = $this->versions_fixed->fetch_array(MYSQLI_ASSOC)) {
-                        $arr_string[] = $version['name'];
+                        $arrayString[] = $version['name'];
                     }
                 ?>
-                <?php echo implode($arr_string, ', ') ?>
+                <?php echo implode($arrayString, ', ') ?>
             </td>
         </tr>
         <?php endif ?>
@@ -91,14 +93,34 @@
             <td>Components:</td>
             <td>
                 <?php
-                    $arr_string = array();
+                    $arrayString = array();
                     while ($component = $this->components->fetch_array(MYSQLI_ASSOC)) {
-                        $arr_string[] = $component['name'];
+                        $arrayString[] = $component['name'];
                     }
                 ?>
-                <?php echo implode($arr_string, ', ') ?>
+                <?php echo implode($arrayString, ', ') ?>
             </td>
         </tr>
+        <?php endif ?>
+        <?php if ($this->custom_fields_single_value): ?>
+            <?php while ($data = $this->custom_fields_single_value->fetch_array(MYSQLI_ASSOC)): ?>
+                <tr>
+                    <td><?php echo $data['name'] ?>:</td>
+                    <td><?php echo $data['value'] ?>:</td>
+                </tr>
+            <?php endwhile ?>
+        <?php endif ?>
+        <?php if ($this->custom_fields_user_picker_multiple): ?>
+            <?php foreach ($this->custom_fields_user_picker_multiple as $fieldName => $data): ?>
+                <tr>
+                    <td><?php echo $data[0]['field_name'] ?>:</td>
+                    <td>
+                        <?php foreach ($data as $user): ?>
+                            <?php echo LinkHelper::getUserProfileLink($user['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $user['first_name'], $user['last_name']) ?>
+                        <?php endforeach ?>
+                    </td>
+                </tr>
+            <?php endforeach ?>
         <?php endif ?>
     </table>
 </div>

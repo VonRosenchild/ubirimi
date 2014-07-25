@@ -12,10 +12,10 @@ use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
 use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
-use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class Email {
@@ -142,10 +142,15 @@ class Email {
     }
 
     private static function sendEmailNewIssue($clientId, $issue, $userToNotify) {
-        $versions_affected = IssueVersion::getByIssueIdAndProjectId($issue['id'], $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
-        $versions_fixed = IssueVersion::getByIssueIdAndProjectId($issue['id'], $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
-        $components = IssueComponent::getByIssueIdAndProjectId($issue['id'], $issue['issue_project_id']);
-        $client_domain = Util::getSubdomain();
+        $issueId = $issue['id'];
+        $projectId = $issue['issue_project_id'];
+        $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versionsFixed = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+        $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
+        $clientDomain = Util::getSubdomain();
+
+        $customFieldsSingleValue = IssueCustomField::getCustomFieldsData($issueId);
+        $customFieldsUserPickerMultiple = IssueCustomField::getUserPickerData($issueId);
 
         $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                             "[Issue] - New issue CREATED " .
@@ -159,10 +164,12 @@ class Email {
                         $subject,
                         Util::getTemplate('_newIssue.php', array(
                             'issue' => $issue,
-                            'client_domain' => $client_domain,
+                            'client_domain' => $clientDomain,
+                            'custom_fields_single_value' => $customFieldsSingleValue,
+                            'custom_fields_user_picker_multiple' => $customFieldsUserPickerMultiple,
                             'components' => $components,
-                            'versions_fixed' => $versions_fixed,
-                            'versions_affected' => $versions_affected)
+                            'versions_fixed' => $versionsFixed,
+                            'versions_affected' => $versionsAffected)
                         ),
                         Util::getServerCurrentDateTime());
     }
