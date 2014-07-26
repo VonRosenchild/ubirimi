@@ -315,15 +315,14 @@ class Util {
 
         $query .= 'order by date_created desc, user_id) ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getProjectHistory($projectId, $helpdeskFlag = 0) {
@@ -401,16 +400,15 @@ class Util {
             'order by date_created desc, user_id) ' .
             'order by date_created desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iii", $projectId, $projectId, $projectId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $projectId, $projectId, $projectId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function createZip($files = array(), $destination, $overwrite = false) {
@@ -455,16 +453,16 @@ class Util {
 
     public static function getCountries() {
         $query = 'select id, name from sys_country';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function updatePasswordForUserId($userId) {
@@ -475,10 +473,9 @@ class Util {
         $t_hasher = new PasswordHash(8, FALSE);
         $hash = $t_hasher->HashPassword($pass);
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("si", $hash, $userId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $hash, $userId);
+        $stmt->execute();
 
         return $pass;
     }
@@ -500,10 +497,9 @@ class Util {
         $t_hasher = new PasswordHash(8, FALSE);
         $hash = $t_hasher->HashPassword($pass);
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("si", $hash, $userId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $hash, $userId);
+        $stmt->execute();
 
         return $pass;
     }
@@ -511,15 +507,14 @@ class Util {
     public static function checkEmailAddressExistenceWithinClient($address, $userId, $clientId) {
         $query = 'select id, email from user where LOWER(email) = LOWER(?) and id != ? and client_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sii", $address, $userId, $clientId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sii", $address, $userId, $clientId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows) {
-                return $result->fetch_array();
-            }
+        if ($result->num_rows) {
+            return $result->fetch_array();
         }
     }
 
@@ -529,33 +524,31 @@ class Util {
 
         if ($clientId) $query .= ' and client_id != ' . $clientId;
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($userId)
-                $stmt->bind_param("si", $address, $userId);
-            else
-                $stmt->bind_param("s", $address);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($userId)
+            $stmt->bind_param("si", $address, $userId);
+        else
+            $stmt->bind_param("s", $address);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array();
-        }
+        if ($result->num_rows)
+            return $result->fetch_array();
 
         $query = 'select id, contact_email from client where LOWER(contact_email) = LOWER(?) ';
         if ($clientId) $query .= ' and id != ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($clientId) $stmt->bind_param("si", $address, $clientId);
-            else
-                $stmt->bind_param("s", $address);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($clientId) $stmt->bind_param("si", $address, $clientId);
+        else
+            $stmt->bind_param("s", $address);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array();
-        }
+        if ($result->num_rows)
+            return $result->fetch_array();
 
         return false;
     }

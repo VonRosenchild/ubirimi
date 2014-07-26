@@ -5,8 +5,8 @@ namespace Ubirimi\Repository;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 
-class GeneralTaskQueue {
-
+class GeneralTaskQueue
+{
     public static function savePendingClientData($data) {
         $currentData = Util::getServerCurrentDateTime();
         $query = "INSERT INTO general_task_queue(type, data, date_created, date_updated) VALUES " .
@@ -21,14 +21,13 @@ class GeneralTaskQueue {
                     WHERE type = 1
                     ORDER BY id asc";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result->fetch_all(MYSQL_ASSOC);
-            } else {
-                return null;
-            }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_all(MYSQL_ASSOC);
+        } else {
+            return null;
         }
     }
 
