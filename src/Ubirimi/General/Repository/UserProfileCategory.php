@@ -4,8 +4,8 @@ namespace Ubirimi\General\Repository\UserProfileCategory;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class UserProfileCategory {
-
+class UserProfileCategory
+{
     public static function getByClientId($clientId) {
         $query = "SELECT * FROM user_profile_category where client_id = ? order by name";
 
@@ -36,18 +36,18 @@ class UserProfileCategory {
         }
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-            if ($userProfileCategoryId) {
-                $stmt->bind_param("isi", $clientId, $name, $userProfileCategoryId);
-            } else {
-                $stmt->bind_param("is", $clientId, $name);
-            }
+        if ($userProfileCategoryId) {
+            $stmt->bind_param("isi", $clientId, $name, $userProfileCategoryId);
+        } else {
+            $stmt->bind_param("is", $clientId, $name);
+        }
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 }

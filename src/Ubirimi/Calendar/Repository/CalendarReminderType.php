@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Calendar\Repository;
 
-class CalendarReminderType {
-
+class CalendarReminderType
+{
     const REMINDER_EMAIL = 1;
 }
