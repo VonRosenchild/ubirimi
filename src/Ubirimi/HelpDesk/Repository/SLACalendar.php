@@ -142,7 +142,7 @@ class SLACalendar {
                     "(?, ?, ?, ?, ?)";
 
                 if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                    if ($data[$i]['notWorking']) {
+                    if ($data[$i-1]['notWorking']) {
                         $startTime = null;
                         $endTime = null;
                     } else {
