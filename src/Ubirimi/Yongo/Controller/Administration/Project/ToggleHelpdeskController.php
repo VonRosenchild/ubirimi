@@ -38,6 +38,7 @@ class ToggleHelpdeskController extends UbirimiController
         }
 
         Project::toggleHelpDeskFlag($projectId);
+
         return new RedirectResponse('/yongo/administration/project/helpdesk/' . $projectId);
     }
 }

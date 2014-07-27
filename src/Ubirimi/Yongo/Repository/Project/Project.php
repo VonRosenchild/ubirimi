@@ -1800,7 +1800,7 @@ class Project
     }
 
     public static function toggleHelpDeskFlag($projectId) {
-        $query = 'update project set help_desk_enabled_flag = 1 - help_desk_enabled_flag where id = ?';
+        $query = 'update project set help_desk_enabled_flag = 1 - help_desk_enabled_flag where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $projectId);
