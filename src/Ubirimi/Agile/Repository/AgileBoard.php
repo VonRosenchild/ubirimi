@@ -12,8 +12,8 @@ use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-class AgileBoard {
-
+class AgileBoard
+{
     public $name;
     public $description;
     public $clientId;
@@ -32,27 +32,25 @@ class AgileBoard {
 
     public function save($userCreatedId, $currentDate) {
         $query = "INSERT INTO agile_board(client_id, filter_id, name, description, swimlane_strategy, user_created_id, date_created) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $defaultSwimlaneStrategy = 'story';
-            $stmt->bind_param("iisssis", $this->clientId, $this->filterId, $this->name, $this->description, $defaultSwimlaneStrategy, $userCreatedId, $currentDate);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $defaultSwimlaneStrategy = 'story';
+        $stmt->bind_param("iisssis", $this->clientId, $this->filterId, $this->name, $this->description, $defaultSwimlaneStrategy, $userCreatedId, $currentDate);
+        $stmt->execute();
+
+        $boardId = UbirimiContainer::get()['db.connection']->insert_id;
+
+        for ($i = 0; $i < count($this->projects); $i++) {
+            $query = "INSERT INTO agile_board_project(agile_board_id, project_id) VALUES (?, ?)";
+
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+            $stmt->bind_param("ii", $boardId, $this->projects[$i]);
             $stmt->execute();
-
-            $boardId = UbirimiContainer::get()['db.connection']->insert_id;
-
-            for ($i = 0; $i < count($this->projects); $i++) {
-                $query = "INSERT INTO agile_board_project(agile_board_id, project_id) VALUES (?, ?)";
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-
-                    $stmt->bind_param("ii", $boardId, $this->projects[$i]);
-                    $stmt->execute();
-                }
-            }
-
-            return $boardId;
         }
 
-        return false;
+        return $boardId;
     }
 
     public static function getByClientId($clientId, $resultType = null) {
@@ -64,23 +62,22 @@ class AgileBoard {
             "left join filter on filter.id = agile_board.filter_id " .
             "where agile_board.client_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($board = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $resultArray[] = $board;
-                    }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($board = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $board;
+                }
 
-                    return $resultArray;
-                } else
-                    return $result;
+                return $resultArray;
             } else
-                return null;
-        }
+                return $result;
+        } else
+            return null;
     }
 
     public static function getById($boardId) {
@@ -93,15 +90,14 @@ class AgileBoard {
             "where agile_board.id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getProjects($boardId, $resultType = null) {
@@ -110,80 +106,75 @@ class AgileBoard {
             "left join project on project.id = agile_board_project.project_id " .
             "where agile_board_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($prj = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $resultArray[] = $prj;
-                    }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($prj = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $prj;
+                }
 
-                    return $resultArray;
-                } else return $result;
+                return $resultArray;
+            } else return $result;
 
-            } else
-                return null;
-        }
+        } else
+            return null;
     }
 
     public static function addStatusToColumn($columnId, $StatusId) {
         $query = "INSERT INTO agile_board_column_status(agile_board_column_id, issue_status_id) VALUES (?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("ii", $columnId, $StatusId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ii", $columnId, $StatusId);
+        $stmt->execute();
     }
 
     public static function addDefaultColumnData($clientId, $boardId) {
-
         // add To Do column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $columnName = 'To Do';
-            $position = 1;
-            $stmt->bind_param("iis", $boardId, $position, $columnName);
-            $stmt->execute();
-            $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-            $openStatusData = IssueSettings::getByName($clientId, 'status', 'Open');
-            $reopenedStatusData = IssueSettings::getByName($clientId, 'status', 'Reopened');
-            AgileBoard::addStatusToColumn($columnId, $openStatusData['id']);
-            AgileBoard::addStatusToColumn($columnId, $reopenedStatusData['id']);
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $columnName = 'To Do';
+        $position = 1;
+        $stmt->bind_param("iis", $boardId, $position, $columnName);
+        $stmt->execute();
+        $columnId = UbirimiContainer::get()['db.connection']->insert_id;
+        $openStatusData = IssueSettings::getByName($clientId, 'status', 'Open');
+        $reopenedStatusData = IssueSettings::getByName($clientId, 'status', 'Reopened');
+        AgileBoard::addStatusToColumn($columnId, $openStatusData['id']);
+        AgileBoard::addStatusToColumn($columnId, $reopenedStatusData['id']);
 
         // add In Progress column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $columnName = 'In Progress';
-            $position = 2;
-            $stmt->bind_param("iis", $boardId, $position, $columnName);
-            $stmt->execute();
-            $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-            $inProgressStatusData = IssueSettings::getByName($clientId, 'status', 'In Progress');
+        $columnName = 'In Progress';
+        $position = 2;
+        $stmt->bind_param("iis", $boardId, $position, $columnName);
+        $stmt->execute();
+        $columnId = UbirimiContainer::get()['db.connection']->insert_id;
+        $inProgressStatusData = IssueSettings::getByName($clientId, 'status', 'In Progress');
 
-            AgileBoard::addStatusToColumn($columnId, $inProgressStatusData['id']);
-        }
+        AgileBoard::addStatusToColumn($columnId, $inProgressStatusData['id']);
 
         // add Done column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $columnName = 'Done';
-            $position = 3;
-            $stmt->bind_param("iis", $boardId, $position, $columnName);
-            $stmt->execute();
-            $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-            $resolvedStatusData = IssueSettings::getByName($clientId, 'status', 'Resolved');
-            $closedStatusData = IssueSettings::getByName($clientId, 'status', 'Closed');
+        $columnName = 'Done';
+        $position = 3;
+        $stmt->bind_param("iis", $boardId, $position, $columnName);
+        $stmt->execute();
+        $columnId = UbirimiContainer::get()['db.connection']->insert_id;
+        $resolvedStatusData = IssueSettings::getByName($clientId, 'status', 'Resolved');
+        $closedStatusData = IssueSettings::getByName($clientId, 'status', 'Closed');
 
-            AgileBoard::addStatusToColumn($columnId, $resolvedStatusData['id']);
-            AgileBoard::addStatusToColumn($columnId, $closedStatusData['id']);
-        }
+        AgileBoard::addStatusToColumn($columnId, $resolvedStatusData['id']);
+        AgileBoard::addStatusToColumn($columnId, $closedStatusData['id']);
     }
 
     public static function getColumns($boardId, $resultType = null) {
@@ -192,23 +183,22 @@ class AgileBoard {
             "where agile_board_column.agile_board_id = ? " .
             "order by position";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($column = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $resultArray[] = $column;
-                    }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($column = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $column;
+                }
 
-                    return $resultArray;
-                } else return $result;
+                return $resultArray;
+            } else return $result;
 
-            } else
-                return null;
-        }
+        } else
+            return null;
     }
 
     public static function getColumnStatuses($columnId, $resultType = null, $column = null) {
@@ -217,26 +207,25 @@ class AgileBoard {
             "left join issue_status on issue_status.id = agile_board_column_status.issue_status_id " .
             "where agile_board_column_status.agile_board_column_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $columnId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($status = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($column)
-                            $resultArray[] = $status[$column];
-                        else
-                            $resultArray[] = $status;
-                    }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $columnId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($status = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($column)
+                        $resultArray[] = $status[$column];
+                    else
+                        $resultArray[] = $status;
+                }
 
-                    return $resultArray;
-                } else return $result;
+                return $resultArray;
+            } else return $result;
 
-            } else
-                return null;
-        }
+        } else
+            return null;
     }
 
     public static function deleteStatusFromColumn($boardId, $StatusId) {
@@ -247,10 +236,10 @@ class AgileBoard {
         }
 
         $query = "delete from agile_board_column_status where issue_status_id = ? and agile_board_column_id IN (" . implode(', ', $columnsIds) . ')';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $StatusId);
-            $stmt->execute();
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $StatusId);
+        $stmt->execute();
     }
 
     public static function getUnmappedStatuses($clientId, $boardId, $resultType = null) {
@@ -263,57 +252,50 @@ class AgileBoard {
             "left join issue_status on issue_status.id = agile_board_column_status.issue_status_id " .
             "where agile_board.id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-                $resultArray = array();
+        $resultArray = array();
 
-                for ($i = 0; $i < count($clientStatuses); $i++) {
-                    $found = false;
-                    while ($status = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($clientStatuses[$i]['id'] == $status['id']) {
-                            $found = true;
-                            break;
-                        }
+        if ($result->num_rows) {
+            for ($i = 0; $i < count($clientStatuses); $i++) {
+                $found = false;
+                while ($status = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($clientStatuses[$i]['id'] == $status['id']) {
+                        $found = true;
+                        break;
                     }
-                    if (!$found)
-                        $resultArray[] = $clientStatuses[$i];
-                    $result->data_seek(0);
                 }
+                if (!$found)
+                    $resultArray[] = $clientStatuses[$i];
+                $result->data_seek(0);
             }
-            return $resultArray;
-        } else {
-            return null;
         }
+
+        return $resultArray;
     }
 
     public static function addColumn($boardId, $name, $description) {
-
         $query = "INSERT INTO agile_board_column(agile_board_id, name) VALUES (?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("is", $boardId, $name);
-            $stmt->execute();
-        }
+        $stmt->bind_param("is", $boardId, $name);
+        $stmt->execute();
     }
 
     public static function deleteColumn($columnId) {
         $query = "delete from agile_board_column_status where agile_board_column_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("i", $columnId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $columnId);
+        $stmt->execute();
 
         $query = "delete from agile_board_column where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-
-            $stmt->bind_param("i", $columnId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $columnId);
+        $stmt->execute();
     }
 
     public static function getLast5BoardsByClientId($clientId) {
@@ -322,15 +304,14 @@ class AgileBoard {
             "where client_id = ? " .
             "order by id desc";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getBacklogIssues($clientId, $boardData, $onlyMyIssuesFlag, $loggedInUserId, $searchText, $completeStatuses) {
@@ -366,13 +347,12 @@ class AgileBoard {
 
     public static function deleteIssuesFromSprints($issueIdArray) {
         $query = "delete from agile_board_sprint_issue where issue_id IN (" . implode(", ", $issueIdArray) . ')';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
     }
 
     public static function getIssuesBySprintAndStatusIdAndParentId($sprintId, $parentId = null, $statuses, $onlyMyIssuesFlag, $loggedInUserId) {
-
         $query = 'select yongo_issue.id, nr, yongo_issue.parent_id, issue_priority.name as priority_name, issue_status.name as status_name, issue_status.id as status, summary, yongo_issue.description, environment, ' .
             'issue_type.name as type, ' .
             'project.code as project_code, project.name as project_name, yongo_issue.project_id as issue_project_id, ' .
@@ -394,15 +374,14 @@ class AgileBoard {
             $query .= 'and yongo_issue.parent_id is null ';
         $query .= "order by id desc";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $sprintId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $sprintId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getLastColumn($boardId) {
@@ -412,15 +391,14 @@ class AgileBoard {
             "order by position desc " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function transferNotDoneIssues($boardId, $sprintId, $completeStatuses) {
@@ -433,22 +411,21 @@ class AgileBoard {
             "where agile_board_sprint_id = ? " .
             "and yongo_issue.status_id IN (" . implode(', ', $completeStatuses) . ')';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $sprintId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $sprintId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows) {
-                $issueIdArray = array();
-                while ($issue = $result->fetch_array(MYSQLI_ASSOC)) {
-                    $issueIdArray[] = $issue['issue_id'];
-                }
-                $queryUpdate = 'update agile_board_sprint_issue set done_flag = 1 where agile_board_sprint_id = ? and issue_id IN (' . implode(', ', $issueIdArray) . ')';
-                if ($stmtUpdate = UbirimiContainer::get()['db.connection']->prepare($queryUpdate)) {
-                    $stmtUpdate->bind_param("i", $sprintId);
-                    $stmtUpdate->execute();
-                }
+        if ($result->num_rows) {
+            $issueIdArray = array();
+            while ($issue = $result->fetch_array(MYSQLI_ASSOC)) {
+                $issueIdArray[] = $issue['issue_id'];
             }
+            $queryUpdate = 'update agile_board_sprint_issue set done_flag = 1 where agile_board_sprint_id = ? and issue_id IN (' . implode(', ', $issueIdArray) . ')';
+
+            $stmtUpdate = UbirimiContainer::get()['db.connection']->prepare($queryUpdate);
+            $stmtUpdate->bind_param("i", $sprintId);
+            $stmtUpdate->execute();
         }
 
         // transfer the not done issues to the next sprint
@@ -458,37 +435,35 @@ class AgileBoard {
             "where agile_board_sprint_id = ? " .
             "and done_flag = 0";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $sprintId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($nextSprint) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $sprintId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($nextSprint) {
 
-                    $issueIdArray = array();
-                    while ($issue = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $issueIdArray[] = $issue['issue_id'];
-                    }
-                    $queryTransfer = 'insert into agile_board_sprint_issue(agile_board_sprint_id, issue_id) values ';
-                    $queryTransferPart = array();
-                    for ($i = 0; $i < count($issueIdArray); $i++) {
-                        $queryTransferPart[] = '(' . $nextSprint['id'] . ', ' . $issueIdArray[$i] . ')';
-                    }
-                    $queryTransfer .= implode(', ', $queryTransferPart);
-                    if ($stmtTransfer = UbirimiContainer::get()['db.connection']->prepare($queryTransfer)) {
-                        $stmtTransfer->execute();
-                    }
+                $issueIdArray = array();
+                while ($issue = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $issueIdArray[] = $issue['issue_id'];
                 }
+                $queryTransfer = 'insert into agile_board_sprint_issue(agile_board_sprint_id, issue_id) values ';
+                $queryTransferPart = array();
+                for ($i = 0; $i < count($issueIdArray); $i++) {
+                    $queryTransferPart[] = '(' . $nextSprint['id'] . ', ' . $issueIdArray[$i] . ')';
+                }
+                $queryTransfer .= implode(', ', $queryTransferPart);
+                $stmtTransfer = UbirimiContainer::get()['db.connection']->prepare($queryTransfer);
+                $stmtTransfer->execute();
             }
         }
     }
 
     public static function deleteByProjectId($projectId) {
         $query = "delete from agile_board_project where project_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
     }
 
     public static function deleteById($boardId) {
@@ -496,53 +471,46 @@ class AgileBoard {
         $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');
 
         $query = "delete from agile_board_column_status where agile_board_column_id IN (" . implode(', ', $boardColumnsIds) . ')';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
 
         $query = "delete from agile_board_column where agile_board_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
 
         $query = "delete from agile_board_project where agile_board_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
 
         $sprintIdsArray = AgileSprint::getByBoardId($boardId, 'array', 'id');
         for ($i = 0; $i < count($sprintIdsArray); $i++) {
             $query = "delete from agile_board_sprint_issue where agile_board_sprint_id = ?";
-            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                $stmt->bind_param("i", $sprintIdsArray[$i]);
-                $stmt->execute();
-            }
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+            $stmt->bind_param("i", $sprintIdsArray[$i]);
+            $stmt->execute();
         }
 
         $query = "delete from agile_board_sprint where agile_board_id = ?";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
 
         $query = "delete from agile_board where id = ? limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $boardId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $boardId);
+        $stmt->execute();
     }
 
     public static function updateColumnOrder($newOrder) {
         for ($i = 0; $i < count($newOrder); $i++) {
             $query = "update agile_board_column set position = ? where id = ? limit 1";
 
-            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-                $position = $i + 1;
-                $stmt->bind_param("ii", $position, $newOrder[$i]);
-                $stmt->execute();
-            }
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+            $position = $i + 1;
+            $stmt->bind_param("ii", $position, $newOrder[$i]);
+            $stmt->execute();
         }
     }
 
@@ -635,19 +603,17 @@ class AgileBoard {
     public static function updateSwimlaneStrategy($boardId, $strategy) {
         $query = "update agile_board set swimlane_strategy = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("si", $strategy, $boardId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $strategy, $boardId);
+        $stmt->execute();
     }
 
     public static function updateMetadata($clientId, $boardId, $name, $description, $date) {
         $query = "update agile_board set name = ?, description = ?, date_updated = ? where client_id = ? and id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssii", $name, $description, $date, $clientId, $boardId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssii", $name, $description, $date, $clientId, $boardId);
+        $stmt->execute();
     }
 
     public static function getByFilterId($filterId) {
@@ -656,16 +622,15 @@ class AgileBoard {
             "where filter_id = ? " .
             "order by id desc";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $filterId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $filterId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
 
-                return $result;
-            } else {
-                return null;
-            }
+            return $result;
+        } else {
+            return null;
         }
     }
 
@@ -679,14 +644,13 @@ class AgileBoard {
             $query .= " order by " . $filters['sort_by'] . ' ' . $filters['sort_order'];
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else {
-                return null;
-            }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else {
+            return null;
         }
     }
 }

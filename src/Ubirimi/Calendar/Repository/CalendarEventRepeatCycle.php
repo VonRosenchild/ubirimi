@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Calendar\Repository;
 
-class CalendarEventRepeatCycle {
-
+class CalendarEventRepeatCycle
+{
     const REPEAT_DAILY = 1;
 }

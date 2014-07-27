@@ -1,58 +1,56 @@
 <?php
 
 namespace Ubirimi\Repository\HelpDesk;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
 
-class SLA {
-
+class SLA
+{
     const CONDITION_CREATE_ISSUE = 'issue_created';
     const CONDITION_RESOLUTION_SET = 'resolution_set';
 
     public static function getByProjectId($projectId) {
         $query = 'SELECT * from help_sla where project_id = ? order by id desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByProjectIds($projectIds) {
         $query = 'SELECT * from help_sla where project_id IN (' . implode(', ', $projectIds) . ') order by id desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getById($Id) {
         $query = 'SELECT * from help_sla where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getByName($name, $projectId, $slaId = null) {
@@ -61,44 +59,41 @@ class SLA {
             $query .= 'and id != ?';
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($slaId)
-                $stmt->bind_param("isi", $projectId, $name, $slaId);
-            else
-                $stmt->bind_param("is", $projectId, $name);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($slaId)
+            $stmt->bind_param("isi", $projectId, $name, $slaId);
+        else
+            $stmt->bind_param("is", $projectId, $name);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function save($projectId, $name, $description, $startCondition, $stopCondition, $date) {
         $query = "INSERT INTO help_sla(project_id, name, description, start_condition, stop_condition, date_created) VALUES " .
             "(?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("isssss", $projectId, $name, $description, $startCondition, $stopCondition, $date);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("isssss", $projectId, $name, $description, $startCondition, $stopCondition, $date);
+        $stmt->execute();
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function addGoal($slaId, $SLACalendarId, $definition, $definitionSQL, $value) {
         $query = "INSERT INTO help_sla_goal(help_sla_id, help_sla_calendar_id, definition, definition_sql, value) VALUES " .
                  "(?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iisss", $slaId, $SLACalendarId, $definition, $definitionSQL, $value);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iisss", $slaId, $SLACalendarId, $definition, $definitionSQL, $value);
+        $stmt->execute();
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getGoals($slaId) {
@@ -109,21 +104,19 @@ class SLA {
                  'left join help_sla_calendar on help_sla_calendar.id = help_sla_goal.help_sla_calendar_id ' .
                  'where help_sla_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $slaId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $slaId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function deleteById($Id) {
-
         $query = "delete from help_sla_goal where help_sla_id = ?";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $Id);
@@ -242,17 +235,16 @@ class SLA {
     public static function getSLAData($issueId, $SLAId) {
         $query = 'select * from yongo_issue_sla where yongo_issue_id = ? and help_sla_id = ? limit 1 ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $issueId, $SLAId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueId, $SLAId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function getGoalForIssueId($slaId, $issueId, $projectId, $clientId) {
@@ -407,26 +399,24 @@ class SLA {
     public static function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId) {
         $query = "update yongo_issue_sla set value = ?, help_sla_goal_id = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiii", $intervalMinutes, $goalId, $issueId, $SLAId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiii", $intervalMinutes, $goalId, $issueId, $SLAId);
+        $stmt->execute();
     }
 
     public static function checkSLABelongsToProject($slaId, $projectId) {
         $query = 'select id from help_sla where id = ? and project_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $slaId, $projectId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $slaId, $projectId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function transformConditionForView($condition) {
@@ -446,23 +436,20 @@ class SLA {
     public static function deleteGoalsBySLAId($slaId) {
         $query = "delete from help_sla_goal where help_sla_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $slaId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $slaId);
+        $stmt->execute();
     }
 
     public static function updateById($slaId, $name, $description, $startCondition, $stopCondition, $date) {
         $query = "update help_sla set name = ?, description = ?, start_condition = ?, stop_condition = ?, date_updated = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssssi", $name, $description, $startCondition, $stopCondition, $date, $slaId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssssi", $name, $description, $startCondition, $stopCondition, $date, $slaId);
+        $stmt->execute();
     }
 
     public static function formatOffset($value) {
-
         $hours = floor(abs($value) / 60);
         $minutes = (abs($value) % 60);
         $sign = '';
@@ -476,16 +463,15 @@ class SLA {
     public static function getGoalById($goalId) {
         $query = 'select * from help_sla_goal where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $goalId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $goalId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 }

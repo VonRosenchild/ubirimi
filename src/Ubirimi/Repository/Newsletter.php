@@ -1,33 +1,30 @@
 <?php
 
 namespace Ubirimi\Repository;
+
 use Ubirimi\Container\UbirimiContainer;
 
-class Newsletter {
-
+class Newsletter
+{
     public static function addSubscription($emailAddress, $currentDate) {
         $query = "INSERT INTO newsletter(email_address, date_created) VALUES (?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ss", $emailAddress, $currentDate);
-            $stmt->execute();
-        }
+        $stmt->bind_param("ss", $emailAddress, $currentDate);
+        $stmt->execute();
     }
 
     public static function checkEmailAddressDuplication($emailAddress) {
         $query = 'select id from newsletter where LOWER(email_address) = LOWER(?) limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("s", $emailAddress);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("s", $emailAddress);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array();
-        }
-
-        return false;
+        if ($result->num_rows)
+            return $result->fetch_array();
     }
 }
