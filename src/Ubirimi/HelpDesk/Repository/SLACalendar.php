@@ -36,12 +36,12 @@ class SLACalendar
 
     public static function getByName($name, $projectId, $slaCalendarId = null) {
         $query = 'select id, name from help_sla_calendar where project_id = ? and LOWER(name) = LOWER(?) ';
-        if ($slaId) {
+        if ($slaCalendarId) {
             $query .= 'and id != ?';
         }
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        if ($slaId)
+        if ($slaCalendarId)
             $stmt->bind_param("isi", $projectId, $name, $slaCalendarId);
         else
             $stmt->bind_param("is", $projectId, $name);
