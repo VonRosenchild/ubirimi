@@ -8,9 +8,11 @@ use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Ubirimi\Api\Service\BasicAuthenticationService;
 use Ubirimi\Container\ServiceProviderInterface;
 use Ubirimi\LoginTimeService\LoginTimeService;
 use Ubirimi\Service\ClientService;
+use Ubirimi\Service\PasswordService;
 use Ubirimi\Service\WarmUpService;
 use Ubirimi\Service\LogService;
 use Ubirimi\Service\EmailService;
@@ -25,6 +27,17 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             $databaseConnector = new DatabaseConnectorService();
 
             return $databaseConnector->getConnection();
+        });
+
+        $pimple['api.auth'] = $pimple->share(function($pimple) {
+            $basicAuthenticationService = new BasicAuthenticationService();
+            $basicAuthenticationService->setPasswordService($pimple['password']);
+
+            return $basicAuthenticationService;
+        });
+
+        $pimple['password'] = $pimple->share(function() {
+            return new PasswordService();
         });
 
         $pimple['dispatcher'] = $pimple->share(function() {
