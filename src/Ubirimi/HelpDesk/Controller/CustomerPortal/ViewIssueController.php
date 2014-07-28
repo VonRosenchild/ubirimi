@@ -14,6 +14,7 @@
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowStepProperty;
+    use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
 
     $issueId = $_GET['id'];
 
@@ -27,7 +28,6 @@
     $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
 
     $session->set('selected_project_id', $projectId);
-
     $issueProject = Project::getById($projectId);
 
     /* before going further, check to is if the issue id a valid id -- start */
@@ -63,10 +63,22 @@
         $attachments = IssueAttachment::getByIssueId($issue['id'], true);
         $countAttachments = count($attachments);
 
-        $issueSLAData = Issue::updateSLAValue($issue, $clientId, $clientSettings);
-        $slasPrintData = $issueSLAData[0];
-        $atLeastOneSLA = $issueSLAData[1];
+        $atLeastOneSLA = false;
+        $slasPrintData = Issue::updateSLAValue($issue, $clientId, $clientSettings);
+
+        foreach ($slasPrintData as $slaData) {
+            if ($slaData['goal']) {
+                $atLeastOneSLA = true;
+                break;
+            }
+        }
+        $watchers = IssueWatcher::getByIssueId($issueId);
+        $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
+
+        $customFieldsData = IssueCustomField::getCustomFieldsData($issue['id']);
+        $customFieldsDataUserPickerMultipleUser = IssueCustomField::getUserPickerData($issue['id']);
     }
+
     $menuSelectedCategory = 'issue';
     $hasEditPermission = true;
     $issueEditableProperty = true;

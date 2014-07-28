@@ -20,8 +20,9 @@ class ListIssueController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'home';
-
-        $projectsForBrowsing = Client::getProjects($session->get('client/id'), null, null, true);
+        $clientId = $session->get('client/id');
+        $projectsForBrowsing = Client::getProjects($clientId, null, null, true);
+        $clientSettings = Client::getSettings($clientId);
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_HELP_DESK);
 

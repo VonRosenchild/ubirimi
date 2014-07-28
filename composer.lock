@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d2577e3ee6deef6c1731728ca0c5d70f",
+    "hash": "2c9a6af72a782f3cd5968a0d6de25060",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -399,7 +399,7 @@
                 {
                     "name": "Evert Pot",
                     "email": "evert@rooftopsolutions.nl",
-                    "homepage": "http://evertpot.com/",
+                    "homepage": "http://www.rooftopsolutions.nl/",
                     "role": "Developer"
                 }
             ],

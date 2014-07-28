@@ -25,6 +25,8 @@ class ViewActivityStreamController extends UbirimiController
             $hasBrowsingPermission = Project::userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS);
         }
 
+        var_dump($hasBrowsingPermission);
+
         if ($hasBrowsingPermission) {
             if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_HELP_DESK) {
                 $historyList = Util::getProjectHistory($projectId, 1);

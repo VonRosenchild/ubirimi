@@ -25,8 +25,8 @@ class EditRepositoryController extends UbirimiController
         $menuSelectedCategory = 'svn';
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_SVN_HOSTING);
 
-        $empty_code = false;
-        $duplicate_code = false;
+        $emptyCode = false;
+        $duplicateCode = false;
 
         if ($request->request->has('confirm_edit_svn_repository')) {
             $repoId = Util::cleanRegularInputField($request->request->get('repo_id'));
@@ -34,16 +34,16 @@ class EditRepositoryController extends UbirimiController
             $description = Util::cleanRegularInputField($request->request->get('description'));
 
             if (empty($code)) {
-                $empty_code = true;
+                $emptyCode = true;
             }
             else {
                 $svn_repository_exists = SVNRepository::getByCode(mb_strtolower($code), $clientId);
                 if ($svn_repository_exists) {
-                    $duplicate_code = true;
+                    $duplicateCode = true;
                 }
             }
 
-            if (!$empty_code && !$duplicate_code) {
+            if (!$emptyCode && !$duplicateCode) {
                 $date = Util::getServerCurrentDateTime();
                 SVNRepository::updateRepo($description, $code, $repoId, $date);
 

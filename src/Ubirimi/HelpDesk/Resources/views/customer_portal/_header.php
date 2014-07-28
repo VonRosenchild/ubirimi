@@ -22,6 +22,7 @@
 
     <script type="text/javascript" src="/yongo/js/yongo.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/yongo_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
+    <script type="text/javascript" src="/yongo/js/yongo_globals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/cheetah.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/cheetah_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/menu.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>

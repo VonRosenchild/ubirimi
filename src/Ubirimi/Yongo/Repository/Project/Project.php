@@ -531,7 +531,7 @@ class Project
         $workflowSchemeId,
         $permissionSchemeId,
         $notificationSchemeId,
-        $lead_id,
+        $leadId,
         $name,
         $code,
         $description,
@@ -547,7 +547,7 @@ class Project
 
         $stmt->bind_param("iiiiiiiisssiis",
             $clientId,
-            $lead_id,
+            $leadId,
             $issueTypeSchemeId,
             $issueTypeScreenSchemeId,
             $issueTypeFieldConfigurationSchemeId,

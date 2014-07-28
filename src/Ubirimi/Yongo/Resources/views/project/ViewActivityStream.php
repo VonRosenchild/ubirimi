@@ -60,8 +60,8 @@
                 <?php endif ?>
             </tr>
             <?php
-            $date = substr($row['date_created'], 0, 10);
-            $issueId = $row['issue_id'];
+                $date = substr($row['date_created'], 0, 10);
+                $issueId = $row['issue_id'];
             ?>
         <?php endwhile ?>
     </table>
