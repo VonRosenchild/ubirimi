@@ -2007,6 +2007,9 @@ $('document').ready(function () {
     $(document).on('click', '#not_choose_project_role', function (event) {
         $('#label_project_role_notification').prop('checked', true);
     });
+    $(document).on('click', '#not_select_user_picker_multiple_selection', function (event) {
+        $('#label_user_picker_multiple_selection').prop('checked', true);
+    });
 
     $(document).on('change', '#move_to_project', function (event) {
         $.ajax({

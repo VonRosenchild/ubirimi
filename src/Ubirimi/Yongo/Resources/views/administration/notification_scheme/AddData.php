@@ -136,7 +136,7 @@
                             <label for="label_user_picker_multiple_selection">User Custom Field Value</label>
                         </td>
                         <td>
-                            <select name="select_user_picker_multiple_selection" class="inputTextCombo">
+                            <select name="select_user_picker_multiple_selection" id="not_select_user_picker_multiple_selection" class="inputTextCombo">
                                 <option value>Choose a custom field</option>
                                 <?php while ($field = $fieldsUserPickerMultipleSelection->fetch_array(MYSQLI_ASSOC)): ?>
                                     <option value="<?php echo $field['id'] ?>"><?php echo $field['name'] ?></option>
