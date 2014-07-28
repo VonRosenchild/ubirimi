@@ -18,13 +18,13 @@
         <?php $fieldChanged = ucfirst(str_replace('_', ' ', $this->fieldChanges[$index][0])) ?>
         <div>
             <?php if ($this->fieldChanges[$index][0] == 'comment'): ?>
-                <span><?php echo ucfirst($fieldChanged) . ': ' . $this->fieldChanges[$index][1] ?></span>
+                <span><?php echo ucfirst($fieldChanged) . ': ' . str_replace("\n", '<br />', $this->fieldChanges[$index][1]) ?></span>
             <?php else: ?>
                 <?php
                     $granularity = new cogpowered\FineDiff\Granularity\Word;
                     $diff = new cogpowered\FineDiff\Diff($granularity);
 
-                    $opCodes = $diff->getOpcodes($this->fieldChanges[$index][1], $this->fieldChanges[$index][2]);
+                    $opCodes = $diff->getOpcodes(str_replace("\n", '<br />', $this->fieldChanges[$index][1]), str_replace('\n', '<br />', $this->fieldChanges[$index][2]));
 
                     $render = new cogpowered\FineDiff\Render\Html;
                     $diffHTML = $render->process($this->fieldChanges[$index][1], $opCodes);

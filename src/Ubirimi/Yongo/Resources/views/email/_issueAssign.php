@@ -16,9 +16,9 @@
         <span style="text-decoration: line-through; background-color: #F78181;"><?php echo $this->oldUserAssignedName ?></span> <span style="background-color: #BCF5A9;"><?php echo $this->newUserAssignedName ?></span>
     </div>
 
-    <?php if (isset($this->comment)): ?>
+    <?php if (isset($this->comment) && !empty($this->comment)): ?>
         <div>Comment:</div>
-        <?php echo $this->comment ?>
+        <?php echo str_replace("\n", '<br />', $this->comment) ?>
     <?php endif ?>
     <div>Assigned by: <a href="<?php echo $session->get('client/base_url') ?>/yongo/user/profile/<?php echo $this->loggedInUser['id'] ?>"><?php echo $this->loggedInUser['first_name'] . ' ' . $this->loggedInUser['last_name'] ?></a></div>
     <div>
