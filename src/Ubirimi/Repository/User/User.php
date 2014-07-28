@@ -4,7 +4,6 @@ namespace Ubirimi\Repository\User;
 
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\PasswordHash;
 
 class User
 {
@@ -59,8 +58,7 @@ class User
     }
 
     public static function createAdministratorUser($admin_first_name, $admin_last_name, $admin_username, $password, $admin_email, $clientId, $issuesPerPage, $svnAdministratorFlag, $clientAdministratorFlag, $currentDate) {
-        $t_hasher = new PasswordHash(8, FALSE);
-        $hash = $t_hasher->HashPassword($password);
+        $hash = UbirimiContainer::get()['password']->hash($password);
 
         $query = "INSERT INTO user(first_name, last_name, username, password, email, " .
                                   "client_id, issues_per_page, svn_administrator_flag, client_administrator_flag, date_created) " .
@@ -75,8 +73,7 @@ class User
         $query = "INSERT INTO user(client_id, country_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $t_hasher = new PasswordHash(8, FALSE);
-        $hash = $t_hasher->HashPassword($password);
+        $hash = UbirimiContainer::get()['password']->hash($password);
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -348,6 +345,26 @@ class User
             return null;
     }
 
+    public static function getByUsernameAndClientDomain($username, $domain) {
+        $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
+                         super_user_flag, client.company_domain, svn_administrator_flag, client_administrator_flag ' .
+            'FROM user ' .
+            'left join client on client.id = user.client_id ' .
+            "WHERE username = ? " .
+            "and client.company_domain = ? " .
+            "LIMIT 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ss", $username, $domain);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
+    }
+
     public static function getByUsernameAndClientId($username, $clientId, $resultColumn = null, $userId = null) {
         $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, svn_administrator_flag, client_administrator_flag, avatar_picture, issues_display_columns ' .
@@ -431,6 +448,24 @@ class User
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
         $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
+    }
+
+    public static function getByUsernameAndPassword($username, $password)
+    {
+        $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password, super_user_flag, svn_administrator_flag ' .
+            'FROM user ' .
+            "WHERE username = ? and password = ? " .
+            "LIMIT 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ss", $username, $password);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows)

@@ -42,18 +42,20 @@ class SignupController extends UbirimiController
         $countries = Util::getCountries();
 
         $clientCreated = false;
-        if (isset($_POST['add_company'])) {
-            $company_name = Util::cleanRegularInputField($_POST['company_name']);
-            $companyDomain = Util::cleanRegularInputField($_POST['company_domain']);
+        if ($request->request->has('add_company')) {
+            $company_name = Util::cleanRegularInputField($request->request->get('company_name'));
+            $companyDomain = Util::cleanRegularInputField($request->request->get('company_domain'));
 
-            $admin_first_name = Util::cleanRegularInputField($_POST['admin_first_name']);
-            $admin_last_name = Util::cleanRegularInputField($_POST['admin_last_name']);
-            $admin_email = Util::cleanRegularInputField($_POST['admin_email']);
-            $adminUsername = $_POST['admin_username'];
-            $admin_pass_1 = Util::cleanRegularInputField($_POST['admin_pass_1']);
-            $admin_pass_2 = Util::cleanRegularInputField($_POST['admin_pass_2']);
+            $admin_first_name = Util::cleanRegularInputField($request->request->get('admin_first_name'));
+            $admin_last_name = Util::cleanRegularInputField($request->request->get('admin_last_name'));
+            $admin_email = Util::cleanRegularInputField($request->request->get('admin_email'));
+            $adminUsername = $request->request->get('admin_username');
+            $admin_pass_1 = Util::cleanRegularInputField($request->request->get('admin_pass_1'));
+            $admin_pass_2 = Util::cleanRegularInputField($request->request->get('admin_pass_2'));
 
-            $agreeTerms = isset($_POST['agree_terms']) ? Util::cleanRegularInputField($_POST['agree_terms']) : false;
+            $agreeTerms = $request->request->has('agree_terms') ?
+                Util::cleanRegularInputField($request->request->get('agree_terms')) :
+                false;
 
             $errorInFormData = false;
 
@@ -115,24 +117,24 @@ class SignupController extends UbirimiController
                     $problemFound = true;
 
             if (!$problemFound) {
-
                 // prepare the data
                 $currentDate = Util::getServerCurrentDateTime();
                 $baseURL = 'https://' . $companyDomain . '.ubirimi.net';
 
                 /* save data to the general task queue */
-                GeneralTaskQueue::savePendingClientData(json_encode(
-                    array('companyName' => $company_name,
-                        'companyDomain' => $companyDomain,
-                        'baseURL' => $baseURL,
-                        'adminFirstName' => $admin_first_name,
-                        'adminLastName' => $admin_last_name,
-                        'adminUsername' => $adminUsername,
-                        'adminPass' => $admin_pass_1,
-                        'adminEmail' => $admin_email)));
+                GeneralTaskQueue::savePendingClientData(json_encode(array(
+                    'companyName' => $company_name,
+                    'companyDomain' => $companyDomain,
+                    'baseURL' => $baseURL,
+                    'adminFirstName' => $admin_first_name,
+                    'adminLastName' => $admin_last_name,
+                    'adminUsername' => $adminUsername,
+                    'adminPass' => $admin_pass_1,
+                    'adminEmail' => $admin_email
+                )));
 
                 $session->set('client_account_created', true);
-                $_POST = array();
+                $request->request->replace(array());
 
                 $clientCreated = true;
 

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\PasswordHash;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Container\UbirimiContainer;
 
@@ -34,10 +33,7 @@ class SignInController extends UbirimiController
             $userData = User::getCustomerByEmailAddressAndClientId($username, $clientId);
 
             if ($userData['id']) {
-                $t_hasher = new PasswordHash(8, false);
-                $passwordIsOK = $t_hasher->CheckPassword($password, $userData['password']);
-
-                if ($passwordIsOK) {
+                if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {
                     $session->invalidate();
                     UbirimiContainer::get()['warmup']->warmUpCustomer($userData);
 
