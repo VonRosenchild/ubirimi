@@ -12,9 +12,11 @@ class ContactController extends UbirimiController
     {
         $session->remove('contact_send');
 
-        $errors = array('empty_email' => false,
+        $errors = array(
+            'empty_email' => false,
             'email_not_valid' => false,
-            'empty_message' => false);
+            'empty_message' => false
+        );
 
         $content = 'Contact.php';
         $page = 'contact';

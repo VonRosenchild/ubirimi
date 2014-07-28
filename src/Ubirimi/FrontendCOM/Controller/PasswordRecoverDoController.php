@@ -14,7 +14,7 @@ class PasswordRecoverDoController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $emailAddress = Util::cleanRegularInputField($_POST['address']);
+        $emailAddress = Util::cleanRegularInputField($request->request->get('address'));
 
         $exists = Util::checkEmailAddressExistence($emailAddress);
 
@@ -34,5 +34,3 @@ class PasswordRecoverDoController extends UbirimiController
         return $this->render(__DIR__ . '/../Resources/views/_passwordRecoverForm.php', get_defined_vars());
     }
 }
-
-

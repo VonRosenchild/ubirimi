@@ -470,8 +470,7 @@ class Util {
 
         $pass = Util::randomPassword(8);
 
-        $t_hasher = new PasswordHash(8, FALSE);
-        $hash = $t_hasher->HashPassword($pass);
+        $hash = UbirimiContainer::get()['password']->hash($pass);
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $hash, $userId);
@@ -494,8 +493,7 @@ class Util {
 
         $pass = Util::randomPassword(8);
 
-        $t_hasher = new PasswordHash(8, FALSE);
-        $hash = $t_hasher->HashPassword($pass);
+        $hash = UbirimiContainer::get()['password']->hash($pass);
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $hash, $userId);

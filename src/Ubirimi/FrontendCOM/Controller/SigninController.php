@@ -3,35 +3,32 @@
 namespace Ubirimi\FrontendCOM\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Ubirimi\PasswordHash;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Container\UbirimiContainer;use Ubirimi\UbirimiController;
 
 class SigninController extends UbirimiController
 {
-    public function indexAction()
+    public function indexAction(Request $request, SessionInterface $session)
     {
         $signInError = null;
         $page = 'sign-in';
         $content = 'Signin.php';
 
-        if (isset($_POST['sign_in'])) {
-
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+        if ($request->request->has('sign_in')) {
+            $username = $request->request->get('username');
+            $password = $request->request->get('password');
 
             $userData = User::getByUsernameAndAdministrator($username);
             if ($userData['id']) {
-                $hasher = new PasswordHash(8, false);
-                $check = $hasher->CheckPassword($password, $userData['password']);
-                if ($check) {
-                    $httpHOST = $_SERVER['HTTP_HOST'];
+                if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {
+                    $httpHOST = $request->server->get('HTTP_HOST');
 
                     UbirimiContainer::get()['warmup']->warmUpClient($userData);
                     UbirimiContainer::get()['login.time']->clientSaveLoginTime($userData['client_id']);
 
                     return new RedirectResponse('/account/home');
-
                 } else $signInError = true;
             } else $signInError = true;
         }
@@ -39,6 +36,3 @@ class SigninController extends UbirimiController
         return $this->render(__DIR__ . '/../Resources/views/_main.php', get_defined_vars());
     }
 }
-
-
-
