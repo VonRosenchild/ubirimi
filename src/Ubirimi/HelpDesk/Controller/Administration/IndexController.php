@@ -1,8 +1,20 @@
 <?php
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\HelpDesk\Controller\Administration;
 
-    $menuSelectedCategory = 'helpdesk_administration';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../Resources/views/administration/Index.php';
+class IndexController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $menuSelectedCategory = 'helpdesk_administration';
+
+        return $this->render(__DIR__ . '/../../Resources/views/administration/Index.php', get_defined_vars());
+    }
+}

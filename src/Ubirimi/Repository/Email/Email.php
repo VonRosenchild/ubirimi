@@ -322,11 +322,11 @@ class Email {
 
         $mailer = Util::getUbirmiMailer();
 
-        try {
+//        try {
             $mailer->send($message);
-        } catch (Exception $e) {
-
-        }
+//        } catch (Exception $e) {
+//
+//        }
     }
 
     private static function sendEmailDeleteIssue($issue, $clientId, $user, $loggedInUser, $project) {
