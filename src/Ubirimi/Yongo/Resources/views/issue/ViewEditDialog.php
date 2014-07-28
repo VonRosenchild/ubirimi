@@ -29,6 +29,7 @@
     $userHasAssignIssuePermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
     $userHasSetSecurityLevelPermission = Project::userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
 
+    $timeTrackingFieldId = null;
     $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
     $issueSecuritySchemeId = $project['issue_security_scheme_id'];
@@ -78,6 +79,8 @@
             continue;
 
         if ($field['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
+            $fieldsPlacedOnScreen[] = $field['field_id'];
+            $timeTrackingFieldId = $field['field_id'];
             continue;
         }
 
@@ -334,37 +337,40 @@
     }
 
     if ($timeTrackingFlag) {
-        // deal with the time tracking fields
-        for ($i = 0; $i < count($fieldData); $i++) {
-            if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
+        if (in_array($timeTrackingFieldId, $fieldsPlacedOnScreen)) {
+            // deal with the time tracking fields
+            for ($i = 0; $i < count($fieldData); $i++) {
+                if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
 
-                $arrayData = Util::checkKeyAndValueInArray('field_id', $fieldData[$i]['field_id'], $fieldData);
-                $mandatoryStarHTML = '';
-                if ($arrayData && $arrayData['visible_flag']) {
-                    if ($arrayData['required_flag'])
-                        $mandatoryStarHTML = '<span class="mandatory">*</span>';
+                    $arrayData = Util::checkKeyAndValueInArray('field_id', $fieldData[$i]['field_id'], $fieldData);
+                    $mandatoryStarHTML = '';
+                    if ($arrayData && $arrayData['visible_flag']) {
+                        if ($arrayData['required_flag'])
+                            $mandatoryStarHTML = '<span class="mandatory">*</span>';
 
-                    $requiredHTML = $arrayData['required_flag'] ? 'required="1"' : 'required="0"';
-                    echo '<tr>';
-                        echo '<td valign="top">Original Estimate ' . $mandatoryStarHTML . '</td>';
-                        echo '<td>';
-                            echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="' . $issueData['original_estimate'] . '" /> ';
-                            echo '<span>(eg. 3w 4d 12h)</span>';
-                            echo '<div class="smallDescription">The original estimate of how much work is involved in resolving this issue.</div>';
-                        echo '</td>';
-                    echo '</tr>';
-                    echo '<tr>';
-                        echo '<td valign="top">Remaining Estimate ' . $mandatoryStarHTML . '</td>';
-                        echo '<td>';
-                            echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="' . $issueData['remaining_estimate'] . '" /> ';
-                            echo '<span>(eg. 3w 4d 12h)</span>';
-                            echo '<div class="smallDescription">An estimate of how much work remains until this issue will be resolved.</div>';
-                        echo '</td>';
-                    echo '</tr>';
+                        $requiredHTML = $arrayData['required_flag'] ? 'required="1"' : 'required="0"';
+                        echo '<tr>';
+                            echo '<td valign="top">Original Estimate ' . $mandatoryStarHTML . '</td>';
+                            echo '<td>';
+                                echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="' . $issueData['original_estimate'] . '" /> ';
+                                echo '<span>(eg. 3w 4d 12h)</span>';
+                                echo '<div class="smallDescription">The original estimate of how much work is involved in resolving this issue.</div>';
+                            echo '</td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td valign="top">Remaining Estimate ' . $mandatoryStarHTML . '</td>';
+                            echo '<td>';
+                                echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="' . $issueData['remaining_estimate'] . '" /> ';
+                                echo '<span>(eg. 3w 4d 12h)</span>';
+                                echo '<div class="smallDescription">An estimate of how much work remains until this issue will be resolved.</div>';
+                            echo '</td>';
+                        echo '</tr>';
+                    }
                 }
             }
         }
     }
+
     for ($i = 0; $i < count($fieldData); $i++) {
         if ($fieldData[$i]['field_code'] != Field::FIELD_ISSUE_TIME_TRACKING) {
             if (!in_array($fieldData[$i]['field_id'], $fieldsPlacedOnScreen) && $fieldData[$i]['required_flag']) {
