@@ -688,17 +688,19 @@ class Issue
         $stmt->execute();
     }
 
-    public static function addHistory($issueId, $userId, $field, $old_value, $new_value, $now_date) {
-        if (!$old_value)
+    public static function addHistory($issueId, $userId, $field, $old_value, $new_value, $oldValueId, $newValueId, $now_date) {
+        if (!$old_value) {
             $old_value = 'NULL';
+        }
 
-        if (!$new_value)
+        if (!$new_value) {
             $new_value = 'NULL';
+        }
 
-        $query = "INSERT INTO issue_history(issue_id, by_user_id, field, old_value, new_value, date_created) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO issue_history(issue_id, by_user_id, field, old_value, new_value, old_value_id, new_value_id, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("iissss", $issueId, $userId, $field, $old_value, $new_value, $now_date);
+        $stmt->bind_param("iissssss", $issueId, $userId, $field, $old_value, $new_value, $oldValueId, $newValueId, $now_date);
         $stmt->execute();
     }
 
@@ -1160,7 +1162,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_PROJECT, $oldIssueData, $newIssueData)) {
-            $fieldChanges[] = array(Field::FIELD_PROJECT, $oldIssueData[Field::FIELD_PROJECT], $newIssueData[Field::FIELD_PROJECT]);
+            $fieldChanges[] = array(Field::FIELD_PROJECT, $oldIssueData[Field::FIELD_PROJECT], $newIssueData[Field::FIELD_PROJECT],
+                                    $oldIssueData['issue_project_id'], $newIssueData['issue_project_id']);
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_DESCRIPTION_CODE, $oldIssueData, $newIssueData)) {
@@ -1206,7 +1209,8 @@ class Issue
 
             $fieldChangedNewValueRow = User::getById($newIssueData[Field::FIELD_ASSIGNEE_CODE]);
             $fieldChangedNewValue = $fieldChangedNewValueRow['first_name'] . ' ' . $fieldChangedNewValueRow['last_name'];
-            $fieldChanges[] = array(Field::FIELD_ASSIGNEE_CODE, $fieldChangedOldValue, $fieldChangedNewValue);
+            $fieldChanges[] = array(Field::FIELD_ASSIGNEE_CODE, $fieldChangedOldValue, $fieldChangedNewValue,
+                                    $oldIssueData[Field::FIELD_ASSIGNEE_CODE], $newIssueData[Field::FIELD_ASSIGNEE_CODE]);
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_REPORTER_CODE, $oldIssueData, $newIssueData)) {
@@ -1344,7 +1348,14 @@ class Issue
         for ($i = 0; $i < count($fieldChanges); $i++) {
             if ($fieldChanges[$i][0] != 'comment') {
                 if ($fieldChanges[$i][1] != $fieldChanges[$i][2]) {
-                    Issue::addHistory($issueId, $loggedInUserId, $fieldChanges[$i][0], $fieldChanges[$i][1], $fieldChanges[$i][2], $currentDate);
+                    Issue::addHistory($issueId,
+                                      $loggedInUserId,
+                                      $fieldChanges[$i][0],
+                                      $fieldChanges[$i][1],
+                                      $fieldChanges[$i][2],
+                                      $fieldChanges[$i][3],
+                                      $fieldChanges[$i][4],
+                                      $currentDate);
                 }
             }
         }
@@ -1450,7 +1461,7 @@ class Issue
             }
         }
 
-        Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $date);
+        Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $oldAssignee['id'], $newAssignee['id'], $date);
 
         if (!empty($comment)) {
             IssueComment::add($issueId, $loggedInUserId, $comment, $date);

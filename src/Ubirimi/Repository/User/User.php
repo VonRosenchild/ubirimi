@@ -835,4 +835,19 @@ class User
         $stmt->bind_param("si", $datetime, $userId);
         $stmt->execute();
     }
+
+    public static function getByClientIdAndFullName($clientId, $fullName) {
+        $query = 'select * from user where client_id = ? and CONCAT(first_name, " ", last_name) = ?';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $fullName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else {
+            return null;
+        }
+    }
 }

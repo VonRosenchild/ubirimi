@@ -4,6 +4,7 @@ namespace Ubirimi\Repository\HelpDesk;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
 
@@ -222,6 +223,28 @@ class SLA
                         break;
                     }
                 }
+            } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
+                $userAssigneeId = $issue['assignee'];
+                $comments = IssueComment::getByIssueIdAndUserId($issue['id'], $userAssigneeId);
+
+                if ($comments) {
+                    $firstComment = $comments->fetch_array(MYSQLI_ASSOC);
+                    $conditionFulfilledDate = $firstComment['date_created'];
+                }
+
+                // look also in the history
+                $comments = IssueComment::getByAssigneeFromHistory($issue['id']);
+                if ($comments) {
+
+                    $comment = $comments->fetch_array(MYSQLI_ASSOC);
+                    if ($conditionFulfilledDate) {
+                        if ($comment['date_created'] < $conditionFulfilledDate) {
+                            $conditionFulfilledDate = $comment['date_created'];
+                        }
+                    } else {
+                        $conditionFulfilledDate = $comment['date_created'];
+                    }
+                }
             }
         }
 
@@ -425,7 +448,8 @@ class SLA
             $StatusId = str_replace('status_set_', '', $condition);
             $statusName = IssueSettings::getById($StatusId, 'status', 'name');
             $condition = 'Status Set ' . $statusName;
-
+        } else if (substr($condition, 0, 11) == 'comment_by_assignee') {
+            $condition = 'Comment: By Assignee';
         } else {
             $condition = str_replace('_', ' ', $condition);
         }
