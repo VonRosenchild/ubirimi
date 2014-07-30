@@ -10,6 +10,7 @@ use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -30,12 +31,21 @@ class MetadataController extends UbirimiController
         foreach ($projects as $project) {
             $issueTypes = Project::getIssueTypes($project['id'], 0, 'array');
 
-            foreach ($issueTypes as $issueType) {
-//                $screenData = Project::getScreenData(
-//                    array(''),
-//                    $issueTypeId,
-//                    $sysOperationId
-//                );
+            foreach ($issueTypes as &$issueType) {
+                $screenData = Project::getScreenData(
+                    array('issue_type_screen_scheme_id' => $project['issue_type_screen_scheme_id']),
+                    $issueType['id'],
+                    SystemOperation::OPERATION_CREATE,
+                    'array'
+                );
+
+                foreach ($screenData as $fieldData) {
+                    $issueType['fields'][] = array(
+                        'id' => $fieldData['field_id'],
+                        'name' => $fieldData['field_name'],
+                        'description' => $fieldData['description']
+                    );
+                }
             }
 
             $project = array(
@@ -45,6 +55,8 @@ class MetadataController extends UbirimiController
             );
 
             $returnData['projects'][] = $project;
+
+            break;
         }
 
         return new JsonResponse($returnData);
