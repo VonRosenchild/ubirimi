@@ -30,10 +30,11 @@ class IssueComponent
             if ($resultType == 'array') {
                 $resultArray = array();
                 while ($component = $result->fetch_array(MYSQLI_ASSOC)) {
-                    if ($resultColumn)
+                    if ($resultColumn) {
                         $resultArray[] = $component[$resultColumn];
-                    else
+                    } else {
                         $resultArray[] = $component;
+                    }
                 }
 
                 return $resultArray;

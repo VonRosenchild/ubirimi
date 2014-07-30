@@ -219,7 +219,7 @@
                                 case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" name="' . $field['field_code'] . '[]" multiple="multiple" style="width: 650px;" type="text" value="">';
                                     while ($user = $allUsers->fetch_array(MYSQLI_ASSOC)) {
-                                        echo '<option ' . $textSelected . ' value="' . $user['id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
+                                        echo '<option  value="' . $user['id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
                                     }
                                     echo '</select>';
                                     $allUsers->data_seek(0);

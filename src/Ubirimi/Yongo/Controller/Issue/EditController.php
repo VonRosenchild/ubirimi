@@ -35,30 +35,20 @@ class EditController extends UbirimiController
         $fieldTypesCustom = $request->get('field_types_custom');
         $fieldValuesCustom = $request->get('field_values_custom');
 
+        // todo: de ce este aceasta variabila nefolosita
+
         $attachIds = $request->get('attach_ids');
         $attachIdsToBeKept = $request->get('attach_ids');
 
-        if (!is_array($attachIdsToBeKept))
+        if (!is_array($attachIdsToBeKept)) {
             $attachIdsToBeKept = array();
-
-        $newIssueData = array();
-        $newIssueCustomFieldsData = array();
+        }
 
         $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $projectId = $oldIssueData['issue_project_id'];
 
-        $oldIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
-        if ($oldIssueData['component'] == null) {
-            $oldIssueData['component'] = array();
-        }
-        $oldIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
-        if ($oldIssueData['affects_version'] == null) {
-            $oldIssueData['affects_version'] = array();
-        }
-        $oldIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
-        if ($oldIssueData['fix_version'] == null) {
-            $oldIssueData['fix_version'] = array();
-        }
+        $newIssueData = array();
+        $newIssueData['issue_project_id'] = $oldIssueData['issue_project_id'];
+        $newIssueCustomFieldsData = array();
 
         for ($i = 0; $i < count($fieldTypes); $i++) {
             if ($fieldValues[$i] != 'null' && $fieldValues[$i] != '') {
@@ -66,8 +56,9 @@ class EditController extends UbirimiController
                     $fieldValues[$i] = \DateTime::createFromFormat('Y-m-d', $fieldValues[$i])->format('Y-m-d');
                 }
                 $newIssueData[$fieldTypes[$i]] = $fieldValues[$i];
-            } else
+            } else {
                 $newIssueData[$fieldTypes[$i]] = null;
+            }
         }
 
         if ($fieldTypesCustom) {
@@ -105,6 +96,7 @@ class EditController extends UbirimiController
 
         $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
 
+        var_dump($fieldChanges);
         Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         // check if on the modal there is a comment field
