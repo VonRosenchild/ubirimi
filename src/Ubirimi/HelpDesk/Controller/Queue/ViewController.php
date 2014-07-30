@@ -28,9 +28,6 @@
     $queues = Queue::getByProjectId($projectId);
     if ($queues) {
 
-        // update the SLAs for this project
-        Issue::updateSLADataForProject($clientId, $projectId, $loggedInUserId, $clientSettings);
-
         $whereSQL = Issue::prepareWhereClauseFromQueue($queueSelected['definition'], $loggedInUserId, $projectId, $clientId);
         $whereSQL = 'issue_main_table.project_id = ' . $projectId . ' AND ' . $whereSQL;
 

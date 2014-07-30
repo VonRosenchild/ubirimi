@@ -118,12 +118,13 @@ class SLACalendar
             return false;
     }
 
-    public static function addCalendar($projectId, $name, $description, $data, $date) {
-        $query = "INSERT INTO help_sla_calendar(project_id, name, description, date_created) VALUES " .
-            "(?, ?, ?, ?)";
+    public static function addCalendar($projectId, $name, $description, $data, $defaultFlag = 0, $date) {
+
+        $query = "INSERT INTO help_sla_calendar(project_id, name, description, default_flag, date_created) VALUES " .
+            "(?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("isss", $projectId, $name, $description, $date);
+        $stmt->bind_param("issis", $projectId, $name, $description, $defaultFlag, $date);
         $stmt->execute();
         $calendarId = UbirimiContainer::get()['db.connection']->insert_id;
 

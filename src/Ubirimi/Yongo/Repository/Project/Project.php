@@ -1754,10 +1754,9 @@ class Project
             $dataDefaultCalendar[$i]['to_minute'] = '59';
         }
 
-        $defaultSLACalendarId = SLACalendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, $currentDate);
+        $defaultSLACalendarId = SLACalendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, 1, $currentDate);
 
         // add the default SLAs
-        // --------------------------------------------------------
 
         // sla 1: time to first response
         $status = IssueSettings::getByName($clientId, 'status', 'In Progress');
