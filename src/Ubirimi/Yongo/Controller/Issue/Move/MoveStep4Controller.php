@@ -71,23 +71,7 @@
 
         $session->remove('move_issue');
         $newIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData);
-        $newIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $newProjectId, 'array', 'name');
-        if ($newIssueData['component'] == null) {
-            $newIssueData['component'] = array();
-        }
-        $newIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $newProjectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
-        if ($newIssueData['affects_version'] == null) {
-            $newIssueData['affects_version'] = array();
-        }
-        $newIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $newProjectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
-        if ($newIssueData['fix_version'] == null) {
-            $newIssueData['fix_version'] = array();
-        }
-
-        $fieldChanges[] = array(Field::FIELD_COMPONENT_CODE, implode(', ', $oldIssueData['component']), implode(', ', $newIssueData['component']));
-        $fieldChanges[] = array(Field::FIELD_FIX_VERSION_CODE, implode(', ', $oldIssueData['fix_version']), implode(', ', $newIssueData['fix_version']));
-        $fieldChanges[] = array(Field::FIELD_AFFECTS_VERSION_CODE, implode(', ', $oldIssueData['affects_version']), implode(', ', $newIssueData['affects_version']));
+        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, array(), array());
 
         $issueEvent = new Event(null, null, Event::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);

@@ -1221,15 +1221,15 @@ class Issue
             $fieldChanges[] = array(Field::FIELD_REPORTER_CODE, $fieldChangedOldValue, $fieldChangedNewValue);
         }
 
-        $newIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+        $newIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], 'array', 'name');
         if ($newIssueData['component'] == null) {
             $newIssueData['component'] = array();
         }
-        $newIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        $newIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
         if ($newIssueData['affects_version'] == null) {
             $newIssueData['affects_version'] = array();
         }
-        $newIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        $newIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
         if ($newIssueData['fix_version'] == null) {
             $newIssueData['fix_version'] = array();
         }

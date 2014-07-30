@@ -1,4 +1,4 @@
-<?php use Ubirimi\SystemProduct ?>
+<?php use Ubirimi\SystemProduct; ?>
 
 <table width="100%" class="headerPageBackground">
     <tr>

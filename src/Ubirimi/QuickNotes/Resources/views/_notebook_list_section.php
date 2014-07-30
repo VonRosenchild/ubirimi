@@ -1,4 +1,4 @@
-<?php use Ubirimi\QuickNotes\Repository\Note ?>
+<?php use Ubirimi\QuickNotes\Repository\Note; ?>
 <div>
     <div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 1px solid #DDDDDD">
         <table width="100%">
