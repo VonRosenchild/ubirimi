@@ -873,8 +873,6 @@ class Project
                 'user.id is not null)' .
             'order by first_name, last_name';
 
-
-
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("iiii", $permissionId, $permissionId, $permissionId, $permissionId);
         $stmt->execute();
