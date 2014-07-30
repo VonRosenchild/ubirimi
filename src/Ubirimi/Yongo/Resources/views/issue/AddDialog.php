@@ -1,5 +1,4 @@
 <?php
-
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 

@@ -7,6 +7,7 @@
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Repository\User\User;
+    use Ubirimi\Yongo\Helper\IssueHelper;
 
     $screenData = Project::getScreenData($projectData, $issueTypeId, $sysOperationId);
 
@@ -67,25 +68,28 @@
                 echo '<td width="160px" valign="top">' . $field['field_name'] . ' ' . $mandatoryStarHTML . '</td>';
                 echo '<td>';
                     switch ($field['field_code']) {
-
                         case Field::FIELD_REPORTER_CODE:
-                            $textDisabled = '';
-                            if (!$userHasModifyReporterPermission)
-                                $textDisabled = 'disabled="disabled"';
+                            echo IssueHelper::renderUserSelect(
+                                Field::FIELD_REPORTER_CODE,
+                                $reporterUsers->fetch_all(MYSQL_ASSOC),
+                                $loggedInUserId,
+                                null === $userHasModifyReporterPermission
+                            );
+                            break;
 
-                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
-                            while ($user = $reporterUsers->fetch_array(MYSQLI_ASSOC)) {
-                                $textSelected = '';
-                                if ($user['user_id'] == $loggedInUserId)
-                                    $textSelected = 'selected="selected"';
-                                echo '<option ' . $textSelected . ' value="' . $user['user_id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
-                            }
-                            echo '</select>';
-
+                        case Field::FIELD_ASSIGNEE_CODE:
+                            echo IssueHelper::renderUserSelect(
+                                Field::FIELD_ASSIGNEE_CODE,
+                                $assignableUsers->fetch_all(MYSQL_ASSOC),
+                                $projectData['lead_id'],
+                                null === $userHasAssignIssuePermission,
+                                $arrayData['required_flag'],
+                                1 === Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag')
+                            );
                             break;
 
                         case Field::FIELD_SUMMARY_CODE:
-                            echo '<input ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" class="inputTextLarge mousetrap" type="text" value="" name="' . $field['field_code'] . '" />';
+                            echo IssueHelper::renderInput(Field::FIELD_SUMMARY_CODE, $arrayData['required_flag']);
                             break;
 
                         case Field::FIELD_ISSUE_SECURITY_LEVEL:
@@ -103,49 +107,27 @@
                             break;
 
                         case Field::FIELD_PRIORITY_CODE:
-                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
-                            while ($priority = $issuePriorities->fetch_array(MYSQLI_ASSOC)) {
-                                echo '<option value="' . $priority['id'] . '">' . $priority['name'] . '</option>';
-                            }
-                            echo '</select>';
+                            echo IssueHelper::renderSelect(
+                                Field::FIELD_PRIORITY_CODE,
+                                $issuePriorities->fetch_all(MYSQL_ASSOC),
+                                $arrayData['required_flag']
+                            );
                             break;
 
                         case Field::FIELD_RESOLUTION_CODE:
-                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
-                            while ($resolution = $issueResolutions->fetch_array(MYSQLI_ASSOC)) {
-                                echo '<option value="' . $resolution['id'] . '">' . $resolution['name'] . '</option>';
-                            }
-                            echo '</select>';
-                            break;
-
-                        case Field::FIELD_ASSIGNEE_CODE:
-
-                            $textDisabled = '';
-                            if (!$userHasAssignIssuePermission)
-                                $textDisabled = 'disabled="disabled"';
-
-                            $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');
-
-                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
-                            if ($allowUnassignedIssuesFlag)
-                                echo '<option value="-1">No one</option>';
-
-                            while ($user = $assignableUsers->fetch_array(MYSQLI_ASSOC)) {
-                                $textSelected = '';
-                                if ($user['user_id'] == $projectData['lead_id'])
-                                    $textSelected = 'selected="selected"';
-
-                                echo '<option ' . $textSelected . ' value="' . $user['user_id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
-                            }
-                            echo '</select>';
+                            echo IssueHelper::renderSelect(
+                                Field::FIELD_RESOLUTION_CODE,
+                                $issueResolutions->fetch_all(MYSQL_ASSOC),
+                                $arrayData['required_flag']
+                            );
                             break;
 
                         case Field::FIELD_DESCRIPTION_CODE:
-                            echo '<textarea ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" class="inputTextAreaLarge mousetrap" name="' . $field['field_code'] . '"></textarea>';
+                            echo IssueHelper::renderTextarea(Field::FIELD_DESCRIPTION_CODE, 1, $arrayData['required_flag']);
                             break;
 
                         case Field::FIELD_DUE_DATE_CODE:
-                            echo '<input style="width: 100px" class="inputText mousetrap" ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" type="text" value="" />';
+                            echo IssueHelper::renderInput(Field::FIELD_DUE_DATE_CODE, $arrayData['required_flag']);
                             break;
 
                         case Field::FIELD_COMPONENT_CODE:
@@ -191,7 +173,7 @@
                             break;
 
                         case Field::FIELD_COMMENT_CODE:
-                            echo '<textarea ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" rows="2" class="inputTextAreaLarge mousetrap" name="' . $field['field_code'] . '"></textarea>';
+                            echo IssueHelper::renderTextarea(Field::FIELD_COMMENT_CODE, 2, $arrayData['required_flag']);
                             break;
 
                         case Field::FIELD_ATTACHMENT_CODE:
