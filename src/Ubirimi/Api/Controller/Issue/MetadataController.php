@@ -6,14 +6,47 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\Project;
 
 class MetadataController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
+        UbirimiContainer::get()['api.auth']->auth($request);
 
+        $returnData = array('projects' => array());
+
+        $projects = Client::getProjectsByPermission(
+            $request->get('api_client_id'),
+            $request->get('api_user_id'),
+            Permission::PERM_CREATE_ISSUE
+        );
+
+        foreach ($projects as $project) {
+            $issueTypes = Project::getIssueTypes($project['id'], 0, 'array');
+
+            foreach ($issueTypes as $issueType) {
+//                $screenData = Project::getScreenData(
+//                    array(''),
+//                    $issueTypeId,
+//                    $sysOperationId
+//                );
+            }
+
+            $project = array(
+                'id' => $project['id'],
+                'name' => $project['name'],
+                'issueTypes' => $issueTypes
+            );
+
+            $returnData['projects'][] = $project;
+        }
+
+        return new JsonResponse($returnData);
     }
 }

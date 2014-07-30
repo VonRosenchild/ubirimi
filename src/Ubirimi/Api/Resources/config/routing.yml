@@ -11,7 +11,7 @@ apiIssuePOST:
   methods:  [POST]
 
 apiIssueMetadataGET:
-  path: /api/issue/createmeta
+  path: /api/issue/metadata
   defaults: { _controller: '\Ubirimi\Api\Controller\Issue\MetadataController' }
   methods:  [GET]
 

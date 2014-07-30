@@ -38,5 +38,6 @@ class BasicAuthenticationService
         $request->attributes->set('api_client_id', $user['client_id']);
         $request->attributes->set('api_client_domain', $clientDomain);
         $request->attributes->set('api_username', $username);
+        $request->attributes->set('api_user_id', $user['id']);
     }
 }
