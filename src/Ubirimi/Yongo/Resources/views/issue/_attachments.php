@@ -18,7 +18,7 @@
                         <table cellpadding="8px" cellspacing="8px">
                             <?php $counter = 0 ?>
                             <?php foreach ($attachments as $attachment): ?>
-                                <?php if (0 == $counter % 5): ?>
+                                <?php if (0 == $counter % 10): ?>
                                     <tr>
                                 <?php endif ?>
                                 <?php if (Util::isImage(Util::getExtension($attachment['name']))): ?>
@@ -31,8 +31,8 @@
                                         <div>
                                             <div style="float: left;">
                                                 <a target="_blank" href="/assets<?php echo UbirimiContainer::get()['asset.yongo_issue_attachments'] . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name'] ?>">
-                                                    <?php if (strlen($attachment['name']) > 15): ?>
-                                                        <?php echo substr($attachment['name'], 0, 15) ?>...
+                                                    <?php if (strlen($attachment['name']) > 25): ?>
+                                                        <?php echo substr($attachment['name'], 0, 25) ?>...
                                                     <?php else: ?>
                                                         <?php echo $attachment['name'] ?>
                                                     <?php endif ?>
@@ -54,7 +54,7 @@
 
                                 <?php $counter += 1 ?>
 
-                                <?php if (0 == $counter % 5): ?>
+                                <?php if (0 == $counter % 10): ?>
                                     </tr>
                                 <?php endif ?>
                             <?php endforeach ?>
@@ -69,11 +69,7 @@
                                     <tr>
                                         <td width="75%">
                                             <a target="_blank" href="/assets<?php echo UbirimiContainer::get()['asset.yongo_issue_attachments'] . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name'] ?>">
-                                                <?php if (strlen($attachment['name']) > 15): ?>
-                                                    <?php echo substr($attachment['name'], 0, 15) ?>...
-                                                <?php else: ?>
-                                                    <?php echo $attachment['name'] ?>
-                                                <?php endif ?>
+                                                <?php echo $attachment['name'] ?>
                                             </a>
                                         </td>
                                         <td>

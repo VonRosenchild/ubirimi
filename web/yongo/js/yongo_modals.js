@@ -2796,6 +2796,10 @@ $('document').ready(function () {
                 {
                     text: "Attach",
                     click: function () {
+                        if ($(this).hasClass('disabled')) {
+                            return;
+                        }
+
                         var attachments = $("[id^='attach_']");
                         var attach_ids = [];
                         for (var i = 0; i < attachments.length; i++) {
@@ -2839,12 +2843,11 @@ $('document').ready(function () {
         $("#modalEditIssueAttachFile").load("/yongo/issue/attach-dialog/" + issueId, [], function () {
             $("#modalEditIssueAttachFile").dialog(options);
             $("#modalEditIssueAttachFile").dialog("open");
+
             // call initialization file
             if (window.File && window.FileList && window.FileReader) {
-
                 initializaFileUpload(issueId);
             }
-
         });
     });
 
