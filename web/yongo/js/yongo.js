@@ -1709,7 +1709,6 @@ $('document').ready(function () {
                 var userFirstLastName = element.parent().parent().children().first().html();
 
                 $('#user_to_watch').append('<option value="' + watcherId + '">' + userFirstLastName + '</option>');
-                $(".select2Input").trigger('chosen:updated');
             }
         });
     });
@@ -1799,10 +1798,7 @@ $('document').ready(function () {
                     $('#contentAddIssueWatcher').css('box-shadow', '3px 3px 5px rgba(0, 0, 0, 0.5)');
                     $('#contentAddIssueWatcher').show();
                     $('#contentAddIssueWatcher').html(response);
-                    $(".select2Input").chosen({
-                        placeholder_text_multiple: 'Select some users',
-                        no_results_text: "Oops, no users found!"
-                    });
+                    $(".select2Input").select2();
                 }
             });
         }
