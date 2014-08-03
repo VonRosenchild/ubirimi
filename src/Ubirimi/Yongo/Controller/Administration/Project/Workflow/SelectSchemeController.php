@@ -18,15 +18,14 @@ class SelectSchemeController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
+
         $project = Project::getById($projectId);
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         if ($request->request->has('associate')) {
-
             $workflowSchemeId = $request->request->get('workflow_scheme');
-
             return new RedirectResponse('/yongo/administration/project/workflows/update-status/' . $projectId . '/' . $workflowSchemeId);
         }
 

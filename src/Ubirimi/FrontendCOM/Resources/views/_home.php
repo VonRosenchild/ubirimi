@@ -37,7 +37,6 @@
                     <a itemprop="url" href="https://www.ubirimi.com/blog">Blog</a>
                     <?php endif ?>
 
-
                     <span class="separator"></span>
                     <?php if (Util::checkUserIsLoggedIn()): ?>
                         <?php if (Util::runsOnLocalhost()): ?>
