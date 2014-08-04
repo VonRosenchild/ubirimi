@@ -40,7 +40,7 @@
                 </tr>
                 <?php while ($issueType = $allIssueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <input type="checkbox" value="1" id="issue_type_<?php echo $issueType['id'] ?>" name="issue_type_<?php echo $issueType['id'] ?>" />
                             <span>
                                 <label for="issue_type_<?php echo $issueType['id'] ?>"><?php echo $issueType['name'] ?></label>
