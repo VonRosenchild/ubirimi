@@ -4,7 +4,6 @@
     use Ubirimi\Yongo\Repository\Project\Project;
 
     require_once __DIR__ . '/../../_header.php';
-
 ?>
 <body>
 
@@ -24,7 +23,7 @@
                     <td>
                         <select name="perm_scheme" class="inputTextCombo">
                             <?php while ($notificationScheme = $notificationSchemes->fetch_array(MYSQLI_ASSOC)): ?>
-                                <option value="<?php echo $notificationScheme['id'] ?>"><?php echo $notificationScheme['name'] ?></option>
+                                <option <?php if ($notificationScheme['id'] == $project['notification_scheme_id']) echo 'selected="selected"' ?> value="<?php echo $notificationScheme['id'] ?>"><?php echo $notificationScheme['name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>

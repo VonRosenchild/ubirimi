@@ -19,7 +19,7 @@
                     <td>
                         <select name="issue_type_screen_scheme" class="inputTextCombo">
                             <?php while ($issueTypeScreenScheme = $issueTypeScreenSchemes->fetch_array(MYSQLI_ASSOC)): ?>
-                                <option value="<?php echo $issueTypeScreenScheme['id'] ?>"><?php echo $issueTypeScreenScheme['name'] ?></option>
+                                <option <?php if ($issueTypeScreenScheme['id'] == $project['issue_type_screen_scheme_id']) echo 'selected="selected"' ?> value="<?php echo $issueTypeScreenScheme['id'] ?>"><?php echo $issueTypeScreenScheme['name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
