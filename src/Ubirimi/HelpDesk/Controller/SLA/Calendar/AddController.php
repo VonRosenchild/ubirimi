@@ -37,7 +37,7 @@
 
             $currentDate = Util::getServerCurrentDateTime();
 
-            SLACalendar::addCalendar($projectId, $name, $description, $dataCalendar, $currentDate);
+            SLACalendar::addCalendar($projectId, $name, $description, $dataCalendar, 0, $currentDate);
             header('Location: /helpdesk/sla/calendar/' . $projectId);
         }
     }

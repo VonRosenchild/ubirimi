@@ -581,7 +581,6 @@ class Issue
         if (isset($parameters['page']))
             $query .= ' LIMIT ' . (($parameters['page'] - 1) * $parameters['issues_per_page']) . ', ' . ($parameters['issues_per_page']);
 
-
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
         if ($queryWhere != '') {

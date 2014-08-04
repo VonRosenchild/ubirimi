@@ -153,8 +153,26 @@ class SLA
 
         $SLAs = SLA::getByProjectId($projectId);
         while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-            if (stripos(mb_strtolower($value), mb_strtolower($SLA['name'])) !== false) {
-                if ($curentSLA['start_condition'] != $SLA['start_condition']) {
+
+            if (($index = stripos(mb_strtolower($value), mb_strtolower($SLA['name']))) !== false) {
+                $index--;
+                $notApplicable = false;
+
+                while ($index > 0) {
+                    if ($value[$index] == ' ') {
+                        $index--;
+                        continue;
+                    } else if ($value[$index] == '=') {
+                        $notApplicable = true;
+                        break;
+                    }
+                }
+
+                if ($notApplicable) {
+                    continue;
+                }
+
+                if ($curentSLA['id'] != $SLA['id']) {
                     $value = str_ireplace($SLA['name'], '(select value from yongo_issue_sla where yongo_issue_id = ' . $issueId . ' and help_sla_id = ' . $SLA['id'] . ' limit 1) ', $value);
                 } else {
                     $value = str_ireplace($SLA['name'], '(select NULL from yongo_issue_sla where yongo_issue_id = ' . $issueId . ' and help_sla_id = ' . $SLA['id'] . ' limit 1) ', $value);
