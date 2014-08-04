@@ -18,7 +18,7 @@ class IssueHelper
             . self::convertRequired($required) . ' '
             . 'id="field_type_' . $id .'"' . ' '
             . 'name="' . $id . '"' . ' '
-            . 'class="inputTextCombo mousetrap">';
+            . 'class="select2Input mousetrap">';
 
         $htmlOption = '';
 
@@ -41,9 +41,9 @@ class IssueHelper
     public static function renderSelect($id, $values, $required = false, $mouseTrap = true)
     {
         if ($mouseTrap) {
-            $classHtml = 'class="inputTextCombo mousetrap"';
+            $classHtml = 'class="select2Input mousetrap"';
         } else {
-            $classHtml = 'class="inputTextCombo"';
+            $classHtml = 'class="select2Input"';
         }
 
         $htmmlSelect = '<select '

@@ -100,7 +100,7 @@
                     switch ($field['field_code']) {
 
                         case Field::FIELD_ISSUE_TYPE_CODE:
-                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="type" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="type" class="select2Input mousetrap">';
 
                             while ($type = $projectIssueTypes->fetch_array(MYSQLI_ASSOC)) {
                                 $selected = '';
@@ -116,7 +116,7 @@
                             if (!$userHasModifyReporterPermission)
                                 $textDisabled = 'disabled="disabled"';
 
-                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="select2Input mousetrap">';
                             while ($user = $reporterUsers->fetch_array(MYSQLI_ASSOC)) {
                                 $textSelected = '';
                                 if ($issueData[Field::FIELD_REPORTER_CODE] == $user['user_id'])
@@ -148,7 +148,7 @@
                             break;
 
                         case Field::FIELD_PRIORITY_CODE:
-                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="select2Input mousetrap">';
                             while ($priority = $issuePriorities->fetch_array(MYSQLI_ASSOC)) {
                                 $text = '';
                                 if ($priority['id'] == $issueData[Field::FIELD_PRIORITY_CODE])
@@ -165,7 +165,7 @@
                             if (!$userHasAssignIssuePermission)
                                 $textDisabled = 'disabled="disabled"';
 
-                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="select2Input mousetrap">';
                             if ($allowUnassignedIssuesFlag) {
                                 $textSelected = '';
                                 if (!$issueData[Field::FIELD_ASSIGNEE_CODE])

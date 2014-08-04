@@ -221,8 +221,10 @@ function editIssue(issueId) {
                             attach_ids.push(attachments[i].getAttribute('id').replace('attach_', ''));
                     }
 
-                    if (!attach_ids.length)
+                    if (!attach_ids.length) {
                         attach_ids = null;
+                    }
+
                     $.ajax({
                         type: "POST",
                         url: '/yongo/issue/update',
