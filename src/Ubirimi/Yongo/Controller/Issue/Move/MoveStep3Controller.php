@@ -29,12 +29,14 @@
         $newIssueComponents = $_POST['new_component'];
         $newIssueFixVersions = $_POST['new_fix_version'];
         $newIssueAffectsVersions = $_POST['new_affects_version'];
-        $newIssueAssignee = $_POST['new_assignee'];
+
+        if (array_key_exists('new_assignee', $_POST)) {
+            $session->set('move_issue/new_assignee', $_POST['new_assignee']);
+        }
 
         $session->set('move_issue/new_component', $newIssueComponents);
         $session->set('move_issue/new_fix_version', $newIssueFixVersions);
         $session->set('move_issue/new_affects_version', $newIssueAffectsVersions);
-        $session->set('move_issue/new_assignee', $newIssueAssignee);
 
         header('Location: /yongo/issue/move/confirmation/' . $issueId);
         die();

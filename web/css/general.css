@@ -1060,3 +1060,7 @@ td.cellCurrentDate {
 .select2Input {
     width: 450px;
 }
+
+.select2InputSmall {
+    width: 250px;
+}

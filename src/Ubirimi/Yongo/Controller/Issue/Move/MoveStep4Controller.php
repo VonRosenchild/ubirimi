@@ -34,6 +34,7 @@
     $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
     if (isset($_POST['move_issue_step_4'])) {
+        $currentDate = Util::getServerCurrentDateTime();
 
         $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $oldIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
@@ -53,7 +54,9 @@
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
-        Issue::updateAssigneeRaw($issueId, $session->get('move_issue/new_fix_version'));
+        if ($session->has('move_issue/new_assignee')) {
+            Issue::updateAssigneeRaw($issueId, $session->get('move_issue/new_assignee'));
+        }
 
         if (count($session->get('move_issue/new_component'))) {
             Issue::addComponentVersion($issueId, $session->get('move_issue/new_component'), 'issue_component');
@@ -75,6 +78,7 @@
         $session->remove('move_issue');
         $newIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, array(), array());
+        Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         $issueEvent = new Event(null, null, Event::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);

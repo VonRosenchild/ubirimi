@@ -2179,7 +2179,7 @@ class Issue
     }
 
     public static function updateAssigneeRaw($issueId, $userAssigneeId) {
-        $query = "update yongo_issue set `user_assigneed_id` = ? where id = ? limit 1";
+        $query = "update yongo_issue set `user_assigned_id` = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("ii", $userAssigneeId, $issueId);

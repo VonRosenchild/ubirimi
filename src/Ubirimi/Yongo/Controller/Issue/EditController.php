@@ -96,7 +96,6 @@ class EditController extends UbirimiController
 
         $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
 
-        var_dump($fieldChanges);
         Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         // check if on the modal there is a comment field

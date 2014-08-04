@@ -124,7 +124,7 @@
                                         <?php echo $issue['ua_first_name'] . ' ' . $issue['ua_last_name'] ?>
                                     </td>
                                     <td>
-
+                                        <?php echo $newUserAssignee['first_name'] . ' ' . $newUserAssignee['last_name'] ?>
                                     </td>
                                 </tr>
                             <?php endif ?>

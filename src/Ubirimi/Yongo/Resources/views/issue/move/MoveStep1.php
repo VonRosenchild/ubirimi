@@ -53,7 +53,7 @@
                                 <td width="25%"><?php echo $issueProject['name'] ?></td>
                                 <td width="25%"><b>New Project</b></td>
                                 <td width="25%">
-                                    <select name="move_to_project" id="move_to_project" class="inputTextCombo">
+                                    <select name="move_to_project" id="move_to_project" class="select2InputSmall">
                                         <?php while ($projectForMoving && $project = $projectForMoving->fetch_array(MYSQLI_ASSOC)): ?>
                                             <?php if ($project['id'] != $issueProject['id']): ?>
                                                 <option value="<?php echo $project['id'] ?>"><?php echo $project['name'] ?></option>
@@ -72,7 +72,7 @@
                                 <td width="25%"><?php echo $issue['type_name'] ?></td>
                                 <td width="25%"><b>New Issue Type</b></td>
                                 <td width="25%">
-                                    <select name="move_to_issue_type" id="move_to_issue_type" class="inputTextCombo">
+                                    <select name="move_to_issue_type" id="move_to_issue_type" class="select2InputSmall">
                                         <?php while ($moveToIssueTypes && $issueType = $moveToIssueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                                             <option value="<?php echo $issueType['id'] ?>"><?php echo $issueType['name'] ?></option>
                                         <?php endwhile ?>
