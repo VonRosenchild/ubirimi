@@ -329,6 +329,7 @@ function createIssue(message) {
         $("#modalCreateIssue").load("/yongo/render-create-issue/" + canCreateIssue, [], function () {
             $("#modalCreateIssue").dialog(options);
             $("#modalCreateIssue").dialog("open");
+
             applyStylesDialog();
 
             $(".select2Input").select2();
@@ -369,7 +370,7 @@ function createIssue(message) {
                 $('#messageIssueCreatedDialog').show();
             }
 
-            $('#modalCreateIssue').find('input').eq(0).focus();
+            $('#modalCreateIssue').find('input').eq(4).focus();
             $('#modalCreateIssue').css('max-height', $(window).height() - 140);
 
             // call initialization file
