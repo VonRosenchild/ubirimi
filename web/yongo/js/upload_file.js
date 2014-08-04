@@ -5,7 +5,7 @@
  */
 
 var finishedUpload = [];
-var xhrFileUpload;
+var xhrFileUpload = null;
 
 // getElementById
 function $id(id) {
