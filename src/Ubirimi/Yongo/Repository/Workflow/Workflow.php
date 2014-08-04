@@ -421,25 +421,26 @@ class Workflow
             "from workflow_step " .
             "left join issue_status on issue_status.id = workflow_step.linked_issue_status_id " .
             "where workflow_step.workflow_id = ? ";
-        if ($allFlag == null)
+        if ($allFlag == null) {
             $query .= " and (workflow_step.initial_step_flag = 0 or workflow_step.initial_step_flag is null)";
-
+        }
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $workflowId);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows)
+        if ($result->num_rows) {
             return $result;
-        else
+        } else {
             return null;
+        }
     }
 
-    public static function addStep($workflowId, $name, $StatusId, $date) {
-        $q = 'insert into workflow_step(workflow_id, linked_issue_status_id, name, date_created) ' .
-            'values(?, ?, ?, ?)';
+    public static function addStep($workflowId, $name, $StatusId, $initialStepFlag, $date) {
+        $q = 'insert into workflow_step(workflow_id, linked_issue_status_id, name, initial_step_flag, date_created) ' .
+            'values(?, ?, ?, ?, ?)';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
-        $stmt->bind_param("iiss", $workflowId, $StatusId, $name, $date);
+        $stmt->bind_param("iisis", $workflowId, $StatusId, $name, $initialStepFlag, $date);
         $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
@@ -763,7 +764,7 @@ class Workflow
         $oldWorkflowSteps = Workflow::getSteps($workflowId, 1);
         $stepsLinking = array();
         while ($oldStep = $oldWorkflowSteps->fetch_array(MYSQLI_ASSOC)) {
-            $newStepId = Workflow::addStep($newWorkflowId, $oldStep['step_name'], $oldStep['status_id'], $date);
+            $newStepId = Workflow::addStep($newWorkflowId, $oldStep['step_name'], $oldStep['status_id'], $oldStep['initial_step_flag'], $date);
             $stepsLinking[$oldStep['id']] = $newStepId;
         }
 

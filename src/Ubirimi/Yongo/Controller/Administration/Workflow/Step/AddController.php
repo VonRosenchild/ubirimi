@@ -30,8 +30,9 @@ class AddController extends UbirimiController
         $linkedStatuses = Workflow::getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
 
         $addStepPossible = true;
-        if (count($linkedStatuses) == $statuses->num_rows)
+        if (count($linkedStatuses) == $statuses->num_rows) {
             $addStepPossible = false;
+        }
 
         $emptyName = false;
         $duplicateName = false;
@@ -39,18 +40,20 @@ class AddController extends UbirimiController
         if ($request->request->has('add_step')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
             $duplicateStep = Workflow::getStepByWorkflowIdAndName($workflowId, $name);
-            if ($duplicateStep)
+            if ($duplicateStep) {
                 $duplicateName = true;
+            }
 
             if (!$emptyName && !$duplicateName) {
                 $currentDate = $date = Util::getServerCurrentDateTime();
                 $StatusId = $request->request->get('linked_status');
 
-                Workflow::addStep($workflowId, $name, $StatusId, $currentDate);
+                Workflow::addStep($workflowId, $name, $StatusId, 0, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),
