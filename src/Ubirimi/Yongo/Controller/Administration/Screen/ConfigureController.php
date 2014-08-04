@@ -52,7 +52,7 @@ class ConfigureController extends UbirimiController
                     $currentDate
                 );
 
-                return new RedirectResponse('yongo/administration/screen/configure/' . $screenId);
+                return new RedirectResponse('/yongo/administration/screen/configure/' . $screenId);
             }
         }
 
