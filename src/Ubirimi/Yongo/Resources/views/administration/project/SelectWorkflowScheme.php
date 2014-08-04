@@ -21,7 +21,7 @@
                     <td>
                         <select name="workflow_scheme" class="inputTextCombo">
                             <?php while ($workflowScheme = $workflowSchemes->fetch_array(MYSQLI_ASSOC)): ?>
-                                <option value="<?php echo $workflowScheme['id'] ?>"><?php echo $workflowScheme['name'] ?></option>
+                                <option <?php if ($project['workflow_scheme_id'] == $workflowScheme['id']) echo 'selected="selected"' ?> value="<?php echo $workflowScheme['id'] ?>"><?php echo $workflowScheme['name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
