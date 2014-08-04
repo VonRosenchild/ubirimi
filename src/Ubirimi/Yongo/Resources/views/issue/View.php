@@ -65,7 +65,7 @@ use Ubirimi\Util;
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="3" valign="top">
                         <?php require_once __DIR__ . '/_mainInformation.php' ?>
                         <br />
                         <table width="100%">

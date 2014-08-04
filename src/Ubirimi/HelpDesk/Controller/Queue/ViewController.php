@@ -27,7 +27,6 @@
 
     $queues = Queue::getByProjectId($projectId);
     if ($queues) {
-
         $whereSQL = Issue::prepareWhereClauseFromQueue($queueSelected['definition'], $loggedInUserId, $projectId, $clientId);
         $whereSQL = 'issue_main_table.project_id = ' . $projectId . ' AND ' . $whereSQL;
 

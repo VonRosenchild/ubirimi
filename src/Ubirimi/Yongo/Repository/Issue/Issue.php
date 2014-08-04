@@ -1824,6 +1824,15 @@ class Issue
         }
     }
 
+    public static function addPlainSLADataBySLAId($issueId, $SLAId) {
+        $defaultValue = 0;
+        $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) VALUES (?, ?, ?)";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $issueId, $SLAId, $defaultValue);
+        $stmt->execute();
+    }
+
     public static function clearSLAData($slaId) {
         $query = "update yongo_issue_sla set help_sla_goal_id = NULL, started_flag = 0, stopped_flag = 0, started_date = NULL, value = NULL where help_sla_id = ?";
 
