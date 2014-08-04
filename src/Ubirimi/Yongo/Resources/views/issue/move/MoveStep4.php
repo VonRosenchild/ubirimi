@@ -117,6 +117,17 @@
                                     </td>
                                 </tr>
                             <?php endif ?>
+                            <?php if ($issue['assignee'] != $session->get('move_issue/new_assignee')): ?>
+                                <tr>
+                                    <td>Assignee </td>
+                                    <td>
+                                        <?php echo $issue['ua_first_name'] . ' ' . $issue['ua_last_name'] ?>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                            <?php endif ?>
                         </table>
                         <hr size="1" />
                         <div align="left">

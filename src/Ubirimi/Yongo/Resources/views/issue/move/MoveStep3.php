@@ -98,6 +98,18 @@
                                         </td>
                                     </tr>
                                 <?php endif ?>
+                                <?php if ($assigneeChanged): ?>
+                                    <tr>
+                                        <td valing="top" style="vertical-align: top">Assignee:</td>
+                                        <td>
+                                            <select name="new_assignee" class="select2Input" style="width: 300px">
+                                                <?php foreach ($assignableUsersTargetProjectArray as $user): ?>
+                                                    <option value="<?php echo $user['user_id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                <?php endif ?>
                             </table>
                         <?php else: ?>
                             <div>All fields will be updated automatically.</div>

@@ -9,7 +9,7 @@
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Yongo\Repository\Project\ProjectComponent;
     use Ubirimi\Yongo\Repository\Project\ProjectVersion;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+    use Ubirimi\Repository\User\User;
     use Ubirimi\Yongo\Event\IssueEvent as Event;
     use Ubirimi\Event\LogEvent;
     use Ubirimi\Container\UbirimiContainer;
@@ -53,6 +53,8 @@
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
+        Issue::updateAssigneeRaw($issueId, $session->get('move_issue/new_fix_version'));
+
         if (count($session->get('move_issue/new_component'))) {
             Issue::addComponentVersion($issueId, $session->get('move_issue/new_component'), 'issue_component');
         }
@@ -66,6 +68,7 @@
         }
 
         $newProjectId = $session->get('move_issue/new_project');
+
         // move the issue
         Issue::move($issueId, $newProjectId, $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
 
@@ -112,5 +115,7 @@
     if (count($session->get('move_issue/new_affects_version'))) {
         $newIssueAffectsVersions = ProjectVersion::getByIds($session->get('move_issue/new_affects_version'));
     }
+
+    $newUserAssignee = User::getById($session->get('move_issue/new_assignee'));
 
     require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep4.php';

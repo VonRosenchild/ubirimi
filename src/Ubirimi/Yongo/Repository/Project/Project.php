@@ -807,7 +807,7 @@ class Project
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getUsersWithPermission($projectIdArray, $permissionId) {
+    public static function getUsersWithPermission($projectIdArray, $permissionId, $resultType = null, $resultColumn = null) {
 
         if (is_array($projectIdArray))
             $projectsSQL = '(' . implode(',', $projectIdArray) . ')';
@@ -878,10 +878,23 @@ class Project
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows)
-            return $result;
-        else
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn) {
+                        $resultArray[] = $data[$resultColumn];
+                    } else {
+                        $resultArray[] = $data;
+                    }
+                }
+                return $resultArray;
+            } else {
+                return $result;
+            }
+        } else {
             return null;
+        }
     }
 
     public static function getUsersForNotification($projectIdArray, $eventId, $issue, $loggedInUserId) {
