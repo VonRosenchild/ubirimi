@@ -920,7 +920,7 @@ $('document').ready(function () {
                         // restore fields data
                         restoreFieldsData(fields, fieldsData);
 
-                        $(".select2Input").select2();
+                        $("select.select2Input").select2();
                         var due_date_picker = $("#field_type_due_date");
                         if (due_date_picker.length) {
                             due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
@@ -1551,7 +1551,7 @@ $('document').ready(function () {
                     // restore fields data
                     restoreFieldsData(fields, fieldsData);
 
-                    $(".select2Input").select2();
+                    $("select.select2Input").select2();
                     var due_date_picker = $("#field_type_due_date");
                     if (due_date_picker.length) {
                         due_date_picker.datepicker({dateFormat: "yy-mm-dd"});

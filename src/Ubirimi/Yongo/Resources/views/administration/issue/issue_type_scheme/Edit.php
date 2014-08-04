@@ -40,7 +40,7 @@
                 </tr>
                 <?php while ($issueType = $allIssueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <?php
                                 $found = false;
                                 while ($schemeIssueTypes && $schemeType = $schemeIssueTypes->fetch_array(MYSQLI_ASSOC)) {
