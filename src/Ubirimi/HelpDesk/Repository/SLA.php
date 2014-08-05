@@ -5,6 +5,7 @@ namespace Ubirimi\Repository\HelpDesk;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
 
@@ -251,9 +252,8 @@ class SLA
                 }
 
                 // look also in the history
-                $comments = IssueComment::getByAssigneeFromHistory($issue['id']);
+                $comments = IssueComment::getByAssigneeFromHistoryAfterDate($issue['id'], $currentSLADate);
                 if ($comments) {
-
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
                         if ($comment['date_created'] < $conditionFulfilledDate) {
@@ -261,6 +261,22 @@ class SLA
                         }
                     } else {
                         $conditionFulfilledDate = $comment['date_created'];
+                    }
+                }
+            } else if (strpos($conditions[$i], $type . '_assignee_changed') !== false) {
+                $userAssigneeId = $issue['assignee'];
+
+                // look also in the history
+                $historyList = IssueHistory::getByAssigneeNewChangedAfterDate($issue['id'], $userAssigneeId, $currentSLADate);
+
+                if ($historyList) {
+                    $history = $historyList->fetch_array(MYSQLI_ASSOC);
+                    if ($conditionFulfilledDate) {
+                        if ($history['date_created'] < $conditionFulfilledDate) {
+                            $conditionFulfilledDate = $history['date_created'];
+                        }
+                    } else {
+                        $conditionFulfilledDate = $history['date_created'];
                     }
                 }
             }
@@ -395,15 +411,12 @@ class SLA
 
                             Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
 
-                            return array(0, $goalValue, $goalId);
+                            $intervalMinutes += $issueSLAData['value'];
+
+                            return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles'], false);
                         }
                     } else {
-                        $intervalMinutes += $issueSLAData['value'];
-                        if ($issueSLAData['value_between_cycles']) {
-                            $intervalMinutes += $issueSLAData['value_between_cycles'];
-                        }
-
-                        return array($intervalMinutes, $goalValue, $goalId);
+                        return null;
                     }
 
                     if ($goalData['value'] && date_format($startConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to'] &&
@@ -428,21 +441,13 @@ class SLA
                         $countStartTimeDateObject = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $countStartTime, new \DateTimeZone($clientSettings['timezone']));
                         $countEndTimeDateObject = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $countEndTime, new \DateTimeZone($clientSettings['timezone']));
                         $intervalMinutes += floor(($countEndTimeDateObject->getTimestamp() - $countStartTimeDateObject->getTimestamp()) / 60);
-                        if ($SLA['id'] == 30) {
-                            var_dump($intervalMinutes);
-                        }
                     }
                 }
             }
             date_add($initialDate, date_interval_create_from_date_string('1 days'));
         }
 
-
-        if ($issueSLAData['value_between_cycles']) {
-            $intervalMinutes += $issueSLAData['value_between_cycles'];
-        }
-
-        return array($intervalMinutes, $goalValue, $goalId);
+        return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles']);
     }
 
     public static function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId) {
