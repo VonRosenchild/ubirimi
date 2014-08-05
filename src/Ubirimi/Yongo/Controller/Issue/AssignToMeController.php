@@ -18,12 +18,17 @@ class AssignToMeController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $currentDate = Util::getServerCurrentDateTime();
+
         $issueId = $request->get('id');
 
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
         Issue::updateAssignee($clientId, $issueId, $loggedInUserId, $loggedInUserId);
+
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         $issueEvent = new IssueEvent(null, null, IssueEvent::STATUS_UPDATE);
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_UPDATE_ASSIGNEE_EMAIL, $issueEvent);

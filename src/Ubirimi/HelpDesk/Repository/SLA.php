@@ -378,8 +378,8 @@ class SLA
             for ($i = 0; $i < count($slaCalendarData); $i++) {
 
                 if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
-                    // check if this issue has the stop condition of the sla true
 
+                    // check if this issue has the stop condition of the sla true
                     if (0 == $issueSLAData['stopped_flag']) {
                         $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $issueSLAData['stopped_date']);
 
@@ -398,7 +398,6 @@ class SLA
                     } else {
                         $intervalMinutes += $issueSLAData['value'];
                         return array($intervalMinutes, $goalValue, $goalId);
-//                        return null;
                     }
 
                     if ($goalData['value'] && date_format($startConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to'] &&

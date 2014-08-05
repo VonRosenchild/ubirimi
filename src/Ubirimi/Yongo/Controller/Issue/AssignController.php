@@ -15,11 +15,16 @@ class AssignController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $currentDate = Util::getServerCurrentDateTime();
+
         $issueId = $_POST['issue_id'];
         $userAssignedId = $_POST['user_assigned_id'];
         $comment = Util::cleanRegularInputField($_POST['comment']);
 
         Issue::updateAssignee($session->get('client/id'), $issueId, $session->get('user/id'), $userAssignedId, $comment);
+
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         return new Response('');
     }

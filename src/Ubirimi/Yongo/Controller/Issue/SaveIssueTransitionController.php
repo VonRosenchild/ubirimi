@@ -101,6 +101,9 @@
         WorkflowFunction::triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
         $issueData = Issue::getById($issueId, $loggedInUserId);
 
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
         // check SLA
         Issue::updateSLAValue($issueData, $clientId, $clientSettings);
 

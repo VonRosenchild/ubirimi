@@ -9,11 +9,11 @@
     use Ubirimi\Yongo\Repository\Issue\IssueEvent;
     use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 
+    require_once __DIR__ . '/../web/bootstrap_cli.php';
+
     Util::checkSuperUserIsLoggedIn();
 
     $currentDate = Util::getServerCurrentDateTime();
-
-    $history = IssueHistory::getAll();
 
     $issues = \Ubirimi\Yongo\Repository\Issue\Issue::getAll();
 

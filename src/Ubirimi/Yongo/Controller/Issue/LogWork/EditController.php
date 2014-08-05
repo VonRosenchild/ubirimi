@@ -64,6 +64,9 @@ class EditController extends UbirimiController
 
         Issue::updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
 
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
         return new Response($remainingTimePost);
     }
 }

@@ -31,6 +31,10 @@
         WorkflowFunction::triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
 
         $issue = Issue::getById($issueId);
+
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $date), $date);
+
         Issue::updateSLAValue($issue, $clientId, $clientSettings);
 
         echo 'success';

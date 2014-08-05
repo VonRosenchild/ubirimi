@@ -124,8 +124,9 @@ class IssueWorkLog
         $remainingTime = str_replace(array('hours', 'hour'), 'h', $remainingTime);
         $remainingTime = str_replace(array('minutes', 'minutes'), 'm', $remainingTime);
 
-        if ($remainingTime == "")
+        if ($remainingTime == "") {
             $remainingTime = 0;
+        }
 
         IssueWorkLog::updateRemainingEstimate($issueData['id'], $remainingTime);
 
