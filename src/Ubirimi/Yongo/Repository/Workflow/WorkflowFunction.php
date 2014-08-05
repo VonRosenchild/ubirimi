@@ -32,6 +32,16 @@ class WorkflowFunction
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY) {
                 Issue::updateHistory($issueId, $loggedInUserId, $issueFieldChanges, $currentDate);
+                foreach ($issueFieldChanges as $key => $value) {
+                    if ($value[0] == Field::FIELD_RESOLUTION_CODE) {
+                        if ($value[2]) {
+                            Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
+                        } else {
+                            // clear the resolved date
+                            Issue::updateById($issueId, array('date_resolved' => null), $currentDate);
+                        }
+                    }
+                }
             }
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP) {
@@ -68,9 +78,9 @@ class WorkflowFunction
                         else
                             $newResolution = null;
 
-                        if ($oldResolution != $newResolution)
+                        if ($oldResolution != $newResolution) {
                             $issueFieldChanges[] = array(Field::FIELD_RESOLUTION_CODE, $oldResolution, $newResolution);
-
+                        }
 
                         if ($updateValue) {
                             Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);

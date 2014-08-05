@@ -56,7 +56,7 @@
     if ($canBeExecuted) {
         $currentDate = Util::getServerCurrentDateTime();
 
-        $newIssueSystemFieldsData = array();
+        $newIssueSystemFieldsData = array('issue_project_id' => $issueData['issue_project_id']);
 
         for ($i = 0; $i < count($fieldTypes); $i++) {
             $newIssueSystemFieldsData[$fieldTypes[$i]] = $fieldValues[$i];
