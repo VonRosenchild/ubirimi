@@ -105,6 +105,7 @@
         Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         // check SLA
+        $issueData['date_updated'] = $currentDate;
         Issue::updateSLAValue($issueData, $clientId, $clientSettings);
 
         echo 'success';

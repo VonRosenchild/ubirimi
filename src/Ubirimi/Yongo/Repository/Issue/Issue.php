@@ -1521,27 +1521,6 @@ class Issue
 
         $date = Util::getServerCurrentDateTime();
 
-        // check SLA data
-        if ($oldAssignee != $newAssignee) {
-
-            $session = UbirimiContainer::get()['session'];
-            $clientSettings = Client::getSettings($session->get('client/id'));
-            Issue::updateSLAValue($issueData, $clientId, $clientSettings);
-
-            $SLAs = SLA::getByProjectId($issueData['issue_project_id']);
-            while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-                $conditions = explode("#", $SLA['start_condition']);
-                for ($i = 0; $i < count($conditions); $i++) {
-                    if ('start_assignee_changed' == $conditions[$i]) {
-                        Issue::updateSLAStarted($issueId, $SLA['id'], $date);
-                    }
-                    if ('stop_assignee_changed' == $conditions[$i]) {
-                        Issue::updateSLAStopped($issueId, $SLA['id'], $date);
-                    }
-                }
-            }
-        }
-
         Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $oldAssignee['id'], $newAssignee['id'], $date);
 
         if (!empty($comment)) {

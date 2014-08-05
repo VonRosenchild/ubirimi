@@ -34,7 +34,7 @@
 
         // update the date_updated field
         Issue::updateById($issueId, array('date_updated' => $date), $date);
-
+        $issue['date_updated'] = $date;
         Issue::updateSLAValue($issue, $clientId, $clientSettings);
 
         echo 'success';

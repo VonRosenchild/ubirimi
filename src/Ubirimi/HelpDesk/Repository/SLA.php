@@ -394,9 +394,15 @@ class SLA
                             $issueSLAData['stopped_flag'] = 1;
 
                             Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
+
+                            return array(0, $goalValue, $goalId);
                         }
                     } else {
                         $intervalMinutes += $issueSLAData['value'];
+                        if ($issueSLAData['value_between_cycles']) {
+                            $intervalMinutes += $issueSLAData['value_between_cycles'];
+                        }
+
                         return array($intervalMinutes, $goalValue, $goalId);
                     }
 
@@ -422,6 +428,9 @@ class SLA
                         $countStartTimeDateObject = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $countStartTime, new \DateTimeZone($clientSettings['timezone']));
                         $countEndTimeDateObject = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $countEndTime, new \DateTimeZone($clientSettings['timezone']));
                         $intervalMinutes += floor(($countEndTimeDateObject->getTimestamp() - $countStartTimeDateObject->getTimestamp()) / 60);
+                        if ($SLA['id'] == 30) {
+                            var_dump($intervalMinutes);
+                        }
                     }
                 }
             }
