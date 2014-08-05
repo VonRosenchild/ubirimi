@@ -11,21 +11,32 @@
 
     Util::checkSuperUserIsLoggedIn();
 
-    $clients = Client::getAll();
-
-    $date = Util::getServerCurrentDateTime();
     $currentDate = Util::getServerCurrentDateTime();
 
     $history = IssueHistory::getAll();
 
-    $clientId = 1936;
+    $issues = \Ubirimi\Yongo\Repository\Issue\Issue::getAll();
 
-    while ($record = $history->fetch_array(MYSQLI_ASSOC)) {
-        if ($record['field'] == 'assignee') {
-            $oldUser = User::getByClientIdAndFullName($clientId, $record['old_value']);
-            $newUser = User::getByClientIdAndFullName($clientId, $record['new_value']);
+    while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
+        if ($issue['date_resolved'] == null) {
 
-            IssueHistory::updateChangedIds($record['id'], $oldUser['id'], $newUser['id']);
+            // look into the history
+            $query = 'select * from issue_history where issue_id = ' . $issue['id'] . " and field = 'resolution' order by id desc";
+
+            $stmt = \Ubirimi\Container\UbirimiContainer::get()['db.connection']->prepare($query);
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows) {
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($data['new_value'] && $data['new_value'] != 'NULL') {
+                        \Ubirimi\Yongo\Repository\Issue\Issue::updateById($issue['id'], array('date_resolved' => $data['date_created']), $data['date_created']);
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
         }
     }
-

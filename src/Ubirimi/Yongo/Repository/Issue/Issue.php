@@ -1443,7 +1443,7 @@ class Issue
     }
 
     public static function getAll($filters = array()) {
-        $query = 'select id from yongo_issue ' .
+        $query = 'select * from yongo_issue ' .
                  'where 1 = 1';
 
         if (!empty($filters['today'])) {
