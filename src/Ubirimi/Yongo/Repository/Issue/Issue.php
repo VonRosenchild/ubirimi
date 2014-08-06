@@ -1762,7 +1762,6 @@ class Issue
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
                 $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
-
                 if ($slaData) {
                     $slasPrintData[$SLA['id']] = array('name' => $SLA['name'],
                                                        'offset' => $slaData[0],

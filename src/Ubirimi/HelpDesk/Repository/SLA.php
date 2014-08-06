@@ -230,14 +230,14 @@ class SLA
                 }
             } else if ($conditions[$i] == $type . '_' . SLA::CONDITION_RESOLUTION_SET) {
                 if ($issue['resolution']) {
-                    if ($currentSLADate != $issue['date_resolved'] && $issue['date_resolved'] > $currentSLADate) {
+                    if ($currentSLADate != $issue['date_resolved'] && $issue['date_resolved'] >= $currentSLADate) {
                         $conditionFulfilledDate = $issue['date_resolved'];
                         break;
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_status_set_') !== false) {
                 if ($issue['status'] == str_replace($type . '_status_set_',  '', $conditions[$i])) {
-                    if ($currentSLADate != $issue['date_updated'] && $issue['date_updated'] > $currentSLADate) {
+                    if ($currentSLADate != $issue['date_updated'] && $issue['date_updated'] >= $currentSLADate) {
                         $conditionFulfilledDate = $issue['date_updated'];
                         break;
                     }
@@ -256,7 +256,7 @@ class SLA
                 if ($comments) {
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
-                        if ($comment['date_created'] < $conditionFulfilledDate) {
+                        if ($comment['date_created'] >= $conditionFulfilledDate) {
                             $conditionFulfilledDate = $comment['date_created'];
                         }
                     } else {
@@ -272,7 +272,7 @@ class SLA
                 if ($historyList) {
                     $history = $historyList->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
-                        if ($history['date_created'] < $conditionFulfilledDate) {
+                        if ($history['date_created'] >= $conditionFulfilledDate) {
                             $conditionFulfilledDate = $history['date_created'];
                         }
                     } else {
@@ -282,11 +282,7 @@ class SLA
             }
         }
 
-        if ($conditionFulfilledDate) {
-            return $conditionFulfilledDate;
-        } else {
-            return $currentSLADate;
-        }
+        return $conditionFulfilledDate;
     }
 
     public static function getSLAData($issueId, $SLAId) {
@@ -370,19 +366,16 @@ class SLA
 
         $intervalMinutes = 0;
 
-        // check if this issue has the start condition of the sla true
-        $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start', $issueSLAData['started_date']);
+        $startConditionSLADate = $issueSLAData['started_date'];
 
-        if (0 == $issueSLAData['started_flag']) {
+        if (0 == $issueSLAData['started_flag'] || (1 == $issueSLAData['started_flag'] && 1 == $issueSLAData['stopped_flag'])) {
+            $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start', $issueSLAData['started_date']);
+
             if (!$startConditionSLADate) {
                 return null;
             } else {
                 $issueSLAData['started_flag'] = 1;
                 $issueSLAData['started_date'] = $startConditionSLADate;
-                Issue::updateSLAStarted($issueId, $SLA['id'], $startConditionSLADate);
-            }
-        } else {
-            if ($startConditionSLADate != $issueSLAData['started_date'] && $issueSLAData['stopped_flag'] == 1) {
                 Issue::updateSLAStarted($issueId, $SLA['id'], $startConditionSLADate);
             }
         }
@@ -397,7 +390,11 @@ class SLA
 
                     // check if this issue has the stop condition of the sla true
                     if (0 == $issueSLAData['stopped_flag']) {
-                        $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $issueSLAData['stopped_date']);
+                        $dateFrom = $issueSLAData['stopped_date'];
+                        if (null == $dateFrom) {
+                            $dateFrom = $issueSLAData['started_date'];
+                        }
+                        $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $dateFrom);
 
                         if (!$stopConditionSLADate) {
                             if (date_format($initialDate, 'Y-m-d') < $currentDate) {
