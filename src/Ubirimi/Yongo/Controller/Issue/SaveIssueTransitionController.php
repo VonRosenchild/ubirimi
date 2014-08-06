@@ -104,9 +104,6 @@
         // update the date_updated field
         Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
-        // check SLA
-        Issue::updateSLAValue($issueData, $clientId, $clientSettings);
-
         echo 'success';
     } else {
         echo 'can_not_be_executed';

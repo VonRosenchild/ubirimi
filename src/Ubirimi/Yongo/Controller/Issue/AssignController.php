@@ -8,12 +8,18 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\Client;
 
 class AssignController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
+        $loggedInUserId = $session->get('user/id');
+        $clientId = $session->get('client/id');
 
         $currentDate = Util::getServerCurrentDateTime();
 

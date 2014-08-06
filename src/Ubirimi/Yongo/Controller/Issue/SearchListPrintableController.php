@@ -5,7 +5,6 @@
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
 
-
     $issuesPerPage = $session->get('user/issues_per_page');
 
     $searchParameters = array();

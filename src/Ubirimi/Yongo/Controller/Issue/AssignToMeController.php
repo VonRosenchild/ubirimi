@@ -11,6 +11,8 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\Client;
 
 class AssignToMeController extends UbirimiController
 {

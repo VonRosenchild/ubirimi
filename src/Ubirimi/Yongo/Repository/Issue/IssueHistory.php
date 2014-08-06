@@ -21,6 +21,24 @@ class IssueHistory
         $result = $stmt->get_result();
         return $result;
     }
+    public static function getByAssigneeNewChangedAfterDate($issueId, $userAssigneeId, $date) {
+        $query = 'select * from issue_history where issue_id = ? and new_value_id = ? ';
+        if ($date) {
+            $query .= ' and date_created >= ? ';
+        }
+        $query .= ' order by id asc ';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($date) {
+            $stmt->bind_param("iis", $issueId, $userAssigneeId, $date);
+        } else {
+            $stmt->bind_param("ii", $issueId, $userAssigneeId);
+        }
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        return $result;
+    }
 
     public static function updateChangedIds($Id, $oldValueId, $newValueiD) {
         $queryUpdate = 'update issue_history set old_value_id = ?, new_value_id = ? where id = ? limit 1';
