@@ -69,5 +69,7 @@
     <?php endif ?>
     <title><?php echo $sectionPageTitle ?></title>
 
-    <?php require_once __DIR__ . '/../../../Resources/views/_googleAnalytics.php' ?>
+    <?php if (UbirimiContainer::get()['deploy.on_demand']): ?>
+        <?php require_once __DIR__ . '/../../../Resources/views/_googleAnalytics.php' ?>
+    <?php endif ?>
 </head>

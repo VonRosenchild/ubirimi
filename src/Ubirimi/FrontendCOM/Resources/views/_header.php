@@ -68,5 +68,7 @@
     <!--[if lt IE 9]>
     <script>window.html5 || document.write('<script src="/js/vendor/html5shiv.js"><\/script>')</script>
     <![endif]-->
-    <?php require_once __DIR__ . '/../../../Resources/views/_googleAnalytics.php' ?>
+    <?php if (UbirimiContainer::get()['deploy.on_demand']): ?>
+        <?php require_once __DIR__ . '/../../../Resources/views/_googleAnalytics.php' ?>
+    <?php endif ?>
 </head>
