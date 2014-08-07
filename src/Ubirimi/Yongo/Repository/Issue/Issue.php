@@ -652,14 +652,22 @@ class Issue
     }
 
     public static function get2DimensionalFilter($projectId, $resultType = 'array') {
-        $query = 'select user.id, user.first_name, user.last_name, yongo_issue.status_id, count(yongo_issue.status_id) as count ' .
-                    'from yongo_issue ' .
-                    'left join user on user.id = yongo_issue.user_assigned_id ' .
-                    'where yongo_issue.project_id = ? ' .
-                    'group by user.id, yongo_issue.status_id';
+        $query = 'SELECT user.id, user.first_name, user.last_name, yongo_issue.status_id, COUNT(yongo_issue.status_id) AS count
+                    FROM yongo_issue
+                    LEFT JOIN user on user.id = yongo_issue.user_assigned_id';
+
+        if (-1 != $projectId) {
+            $query .= ' WHERE yongo_issue.project_id = ?';
+        }
+
+        $query .= ' GROUP BY user.id, yongo_issue.status_id';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("i", $projectId);
+
+        if (-1 != $projectId) {
+            $stmt->bind_param("i", $projectId);
+        }
+
         $stmt->execute();
         $result = $stmt->get_result();
 

@@ -3,14 +3,23 @@
     use Ubirimi\SystemProduct;
 
     $selectedProjectId = $projectIdsNames[0][0];
+    $selectedProjectId = -1;
     if (isset($projectId)) {
         $selectedProjectId = $projectId;
     }
+
+    $projectIds = array();
+    array_walk($projectIdsNames, function($value, $key, $queryAllProjects) use (&$projectIds) {
+        $projectIds[] = $value[0];
+    });
+
+    $projectIdsString = implode('|', $projectIds);
 ?>
 
 <div id="content_gadget_two_dimensional_filter">
     <span>Select Project</span>&nbsp;
     <select name="gadget_two_dimensional_filter" id="gadget_two_dimensional_filter" class="inputTextCombo">
+        <option <?php if ($selectedProjectId == -1) echo 'selected="selected"' ?> value="-1">All Projects</div>
         <?php for ($i = 0; $i < count($projectIdsNames); $i++): ?>
             <?php $selectedText = (isset($projectId) && $projectId == $projectIdsNames[$i][0]) ? 'selected="selected"' : '' ?>
             <option <?php echo $selectedText ?>
@@ -46,7 +55,7 @@
                         }
                     ?>
                     <td>
-                        <a href="/yongo/issue/search?assignee=<?php echo $userAsAssignee['id'] ?>&project=<?php echo $selectedProjectId ?>&status=<?php echo $issueStatuses[$i]['id'] ?>"><?php echo $count ?></a>
+                        <a href="/yongo/issue/search?assignee=<?php echo $userAsAssignee['id'] ?>&project=<?php echo $selectedProjectId == -1 ? $projectIdsString : $selectedProjectId ?>&status=<?php echo $issueStatuses[$i]['id'] ?>"><?php echo $count ?></a>
                     </td>
                 <?php endfor ?>
             </tr>

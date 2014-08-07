@@ -110,7 +110,7 @@ class IndexController extends UbirimiController
         $issueStatuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
         $twoDimensionalData = null;
         if (count($projectIdsArray))
-            $twoDimensionalData = Issue::get2DimensionalFilter($projectIdsArray[0], 'array');
+            $twoDimensionalData = Issue::get2DimensionalFilter(-1, 'array');
 
         return $this->render(__DIR__ . '/../Resources/views/Index.php', get_defined_vars());
     }
