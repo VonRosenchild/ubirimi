@@ -865,7 +865,7 @@ class Util {
     }
 
     public static function validateUsername($username) {
-        return preg_match('/^[A-Za-z0-9_]{1,35}$/', $username);
+        return preg_match('/^[A-Za-z0-9_]{1,35}$/', $username) || false !== filter_var($username, FILTER_VALIDATE_EMAIL);
     }
 
     public static function renderBreadCrumb($htmlBreadCrumb, $iconRight = null, $link = null) {
