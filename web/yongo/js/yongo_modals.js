@@ -3970,7 +3970,7 @@ $('document').ready(function () {
         $("#modalShareIssue").load("/yongo/issue/share-dialog/" + issueId, [], function () {
             $("#modalShareIssue").dialog(options);
             $("#modalShareIssue").dialog("open");
-            $(".select2Input").chosen({placeholder_text: 'Click to select a user'});
+            $(".select2Input").select2();
         });
     });
 });
