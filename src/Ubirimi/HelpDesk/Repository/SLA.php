@@ -224,20 +224,20 @@ class SLA
 
         for ($i = 0; $i < count($conditions); $i++) {
             if ($conditions[$i] == ($type . '_' . SLA::CONDITION_CREATE_ISSUE)) {
-                if ($issue['date_created'] != $currentSLADate && $issue['date_created'] > $currentSLADate) {
+                if ($issue['date_created'] > $currentSLADate) {
                     $conditionFulfilledDate = $issue['date_created'];
                     break;
                 }
             } else if ($conditions[$i] == $type . '_' . SLA::CONDITION_RESOLUTION_SET) {
                 if ($issue['resolution']) {
-                    if ($currentSLADate != $issue['date_resolved'] && $issue['date_resolved'] >= $currentSLADate) {
+                    if ($issue['date_resolved'] > $currentSLADate) {
                         $conditionFulfilledDate = $issue['date_resolved'];
                         break;
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_status_set_') !== false) {
                 if ($issue['status'] == str_replace($type . '_status_set_',  '', $conditions[$i])) {
-                    if ($currentSLADate != $issue['date_updated'] && $issue['date_updated'] >= $currentSLADate) {
+                    if ($issue['date_updated'] > $currentSLADate) {
                         $conditionFulfilledDate = $issue['date_updated'];
                         break;
                     }
@@ -256,7 +256,7 @@ class SLA
                 if ($comments) {
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
-                        if ($comment['date_created'] >= $conditionFulfilledDate) {
+                        if ($comment['date_created'] > $conditionFulfilledDate) {
                             $conditionFulfilledDate = $comment['date_created'];
                         }
                     } else {
@@ -272,7 +272,7 @@ class SLA
                 if ($historyList) {
                     $history = $historyList->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
-                        if ($history['date_created'] >= $conditionFulfilledDate) {
+                        if ($history['date_created'] > $conditionFulfilledDate) {
                             $conditionFulfilledDate = $history['date_created'];
                         }
                     } else {
@@ -370,7 +370,6 @@ class SLA
 
         if (0 == $issueSLAData['started_flag'] || (1 == $issueSLAData['started_flag'] && 1 == $issueSLAData['stopped_flag'])) {
             $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start', $issueSLAData['started_date']);
-
             if (!$startConditionSLADate) {
                 return null;
             } else {
@@ -396,32 +395,42 @@ class SLA
 
                 Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
 
-                $intervalMinutes += $issueSLAData['value'];
+                if ($finalDate > date_format($stopConditionSLADate, 'Y-m-d')) {
+                    $finalDate = date_format($stopConditionSLADate, 'Y-m-d');
+                }
 
-                return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles'], false);
+                $intervalMinutes = $issueSLAData['value'];
+                if ($intervalMinutes) {
+                    return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles'], false);
+                }
             }
         } else {
-            return null;
+            if ($issueSLAData['value'] || $issueSLAData['value_between_cycles']) {
+                return null;
+            }
         }
+
 
         while (date_format($initialDate, 'Y-m-d') <= $finalDate) {
             $dayNumber = date_format($initialDate, 'N');
             for ($i = 0; $i < count($slaCalendarData); $i++) {
-
                 if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
-
                     if (date_format($initialDate, 'Y-m-d') > date_format($startConditionSLADate, 'Y-m-d')) {
                         $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_from'], new \DateTimeZone($clientSettings['timezone']));
                     }
 
                     if (date_format($initialDate, 'Y-m-d') < $finalDate) {
-                        $stopConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_to'], new \DateTimeZone($clientSettings['timezone']));
+                        $stopConditionSLADateIteration = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_to'], new \DateTimeZone($clientSettings['timezone']));
                     } else {
-                        $stopConditionSLADate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+                        if ($stopConditionSLADate && date_format($initialDate, 'Y-m-d') == date_format($stopConditionSLADate, 'Y-m-d')) {
+                            $stopConditionSLADateIteration = $stopConditionSLADate;
+                        } else {
+                            $stopConditionSLADateIteration = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+                        }
                     }
 
                     if ($goalData['value'] && date_format($startConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to'] &&
-                        date_format($stopConditionSLADate, 'H:i:00') >= $slaCalendarData[$i]['time_from']) {
+                        date_format($stopConditionSLADateIteration, 'H:i:00') >= $slaCalendarData[$i]['time_from']) {
 
                         if (date_format($initialDate, 'Y-m-d') > date_format($initialDateOriginal, 'Y-m-d')) {
                             $countStartTime = $slaCalendarData[$i]['time_from'];
@@ -433,8 +442,8 @@ class SLA
                             }
                         }
 
-                        if (date_format($stopConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to']) {
-                            $countEndTime = date_format($stopConditionSLADate, 'H:i:00');
+                        if (date_format($stopConditionSLADateIteration, 'H:i:00') <= $slaCalendarData[$i]['time_to']) {
+                            $countEndTime = date_format($stopConditionSLADateIteration, 'H:i:00');
                         } else {
                             $countEndTime = $slaCalendarData[$i]['time_to'];
                         }
