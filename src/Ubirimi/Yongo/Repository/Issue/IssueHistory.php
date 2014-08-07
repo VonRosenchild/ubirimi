@@ -22,7 +22,7 @@ class IssueHistory
         return $result;
     }
     public static function getByAssigneeNewChangedAfterDate($issueId, $userAssigneeId, $date) {
-        $query = 'select * from issue_history where issue_id = ? and new_value_id = ? ';
+        $query = "select * from issue_history where issue_id = ? and new_value_id = ? and field = 'assignee' ";
         if ($date) {
             $query .= ' and date_created >= ? ';
         }
@@ -40,12 +40,12 @@ class IssueHistory
         return $result;
     }
 
-    public static function updateChangedIds($Id, $oldValueId, $newValueiD) {
+    public static function updateChangedIds($Id, $oldValueId, $newValueId) {
         $queryUpdate = 'update issue_history set old_value_id = ?, new_value_id = ? where id = ? limit 1';
 
         if ($stmtUpdate = UbirimiContainer::get()['db.connection']->prepare($queryUpdate)) {
 
-            $stmtUpdate->bind_param("ssi", $oldValueId, $newValueiD, $Id);
+            $stmtUpdate->bind_param("ssi", $oldValueId, $newValueId, $Id);
             $stmtUpdate->execute();
         }
     }

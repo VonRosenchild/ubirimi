@@ -243,17 +243,10 @@ class SLA
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
-                $userAssigneeId = $issue['assignee'];
-                $comments = IssueComment::getByIssueIdAndUserId($issue['id'], $userAssigneeId);
 
+                $comments = IssueComment::getByAssigneeOldChangedAfterDate($issue['id'], $currentSLADate);
                 if ($comments) {
-                    $firstComment = $comments->fetch_array(MYSQLI_ASSOC);
-                    $conditionFulfilledDate = $firstComment['date_created'];
-                }
 
-                // look also in the history
-                $comments = IssueComment::getByAssigneeFromHistoryAfterDate($issue['id'], $currentSLADate);
-                if ($comments) {
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
                         if ($comment['date_created'] > $conditionFulfilledDate) {
@@ -261,6 +254,14 @@ class SLA
                         }
                     } else {
                         $conditionFulfilledDate = $comment['date_created'];
+                    }
+                } else {
+                    $userAssigneeId = $issue['assignee'];
+                    $comments = IssueComment::getByIssueIdAndUserId($issue['id'], $userAssigneeId);
+
+                    if ($comments) {
+                        $firstComment = $comments->fetch_array(MYSQLI_ASSOC);
+                        $conditionFulfilledDate = $firstComment['date_created'];
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_assignee_changed') !== false) {
@@ -388,7 +389,6 @@ class SLA
                 $dateFrom = $issueSLAData['started_date'];
             }
             $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $dateFrom);
-
             if ($stopConditionSLADate) {
                 $stopConditionSLADate = new \DateTime($stopConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
                 $issueSLAData['stopped_flag'] = 1;
