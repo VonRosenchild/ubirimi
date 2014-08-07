@@ -28,6 +28,7 @@
                         <?php if (count($projectIdsNames)): ?>
                             <span>Select Project</span>
                             <select name="chart_project" id="chart_project_created_resolved" class="inputTextCombo">
+                                <option value="-1" selected="selected">All Projects</option>
                                 <?php for ($i = 0; $i < count($projectIdsNames); $i++): ?>
                                     <option value="<?php echo $projectIdsNames[$i][0] ?>"><?php echo $projectIdsNames[$i][1] ?></option>
                                 <?php endfor ?>

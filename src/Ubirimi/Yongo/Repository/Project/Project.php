@@ -1664,44 +1664,64 @@ class Project
     }
 
     public static function getTotalIssuesPreviousDate($projectId, $date, $helpdeskFlag = 0) {
-        $query = 'select id, resolution_id ' .
-            'from yongo_issue ' .
-            'where yongo_issue.project_id = ? and DATE(date_created) <= ?';
+        $query = 'SELECT id, resolution_id
+            FROM yongo_issue
+            WHERE DATE(date_created) <= ?';
+
+        if (-1 != $projectId) {
+            $query .= ' AND yongo_issue.project_id = ?';
+        }
 
         if ($helpdeskFlag) {
-            $query .= ' and yongo_issue.helpdesk_flag = 1';
+            $query .= ' AND yongo_issue.helpdesk_flag = 1';
         }
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("is", $projectId, $date);
+
+        if (-1 != $projectId) {
+            $stmt->bind_param("si", $date, $projectId);
+        } else {
+            $stmt->bind_param("s", $date);
+        }
 
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows) {
             return $result->num_rows;
-        } else
-            return 0;
+        }
+
+        return 0;
     }
 
     public static function getTotalIssuesResolvedOnDate($projectId, $date, $helpdeskFlag = 0) {
-        $query = 'select id, resolution_id ' .
-            'from yongo_issue ' .
-            'where yongo_issue.project_id = ? and DATE(date_updated) <= ? and resolution_id is not null';
+        $query = 'SELECT id, resolution_id
+                FROM yongo_issue
+                WHERE DATE(date_updated) <= ? AND resolution_id IS NOT NULL';
+
+        if (-1 != $projectId) {
+            $query .= ' AND yongo_issue.project_id = ?';
+        }
 
         if ($helpdeskFlag) {
             $query .= ' and yongo_issue.helpdesk_flag = 1';
         }
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("is", $projectId, $date);
+
+        if (-1 != $projectId) {
+            $stmt->bind_param("si", $date, $projectId);
+        } else {
+            $stmt->bind_param("s", $date);
+        }
 
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows) {
             return $result->num_rows;
-        } else
-            return 0;
+        }
+
+        return 0;
     }
 
     public static function getParentComponent($parentComponentId, $resultType = null) {

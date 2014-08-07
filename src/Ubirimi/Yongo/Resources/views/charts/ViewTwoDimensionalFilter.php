@@ -9,7 +9,7 @@
     }
 
     $projectIds = array();
-    array_walk($projectIdsNames, function($value, $key, $queryAllProjects) use (&$projectIds) {
+    array_walk($projectIdsNames, function($value, $key, $projectIds) {
         $projectIds[] = $value[0];
     });
 

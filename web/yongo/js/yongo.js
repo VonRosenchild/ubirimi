@@ -1858,14 +1858,15 @@ $('document').ready(function () {
         if (!projectId) {
             projectId = $('#project_id').val();
         }
+
         $.ajax({
             type: "POST",
             url: '/yongo/chart/get/created-vs-resolved',
+            dataType: 'json',
             data: {
                 id: projectId
             },
-            success: function (response) {
-                var chartData = jQuery.parseJSON(response);
+            success: function (chartData) {
                 var data = [
                     ['time', 'Created', 'Resolved']
                 ];
