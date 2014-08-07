@@ -410,7 +410,6 @@ class SLA
             }
         }
 
-
         while (date_format($initialDate, 'Y-m-d') <= $finalDate) {
             $dayNumber = date_format($initialDate, 'N');
             for ($i = 0; $i < count($slaCalendarData); $i++) {
