@@ -1,15 +1,27 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
-    $clientSettings = $session->get('client/settings');
-    $projects = Client::getProjects($clientId, null, null, true);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\SystemProduct;
 
-    $menuSelectedCategory = 'project';
+class ListProjectController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Projects';
+        $clientSettings = $session->get('client/settings');
+        $projects = Client::getProjects($session->get('client/id'), null, null, true);
 
-    require_once __DIR__ . '/../../Resources/views/customer_portal/ListProject.php';
+        $menuSelectedCategory = 'project';
+
+        $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Projects';
+
+        return $this->render(__DIR__ . '/../../Resources/views/customer_portal/ListProject.php', get_defined_vars());
+    }
+}

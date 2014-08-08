@@ -1,6 +1,7 @@
 <?php
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
+    use Ubirimi\Yongo\Repository\Issue\Issue;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -12,4 +13,7 @@
         for ($i = 0; $i < count($userIds); $i++) {
             IssueWatcher::addWatcher($issueId, $userIds[$i], $currentDate);
         }
+
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
     }

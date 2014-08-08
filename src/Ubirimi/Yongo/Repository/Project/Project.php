@@ -18,8 +18,8 @@ use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-class Project {
-
+class Project
+{
     public static function getLast5ByClientId($clientId) {
         $query = "select *  " .
             'from project ' .
@@ -27,29 +27,28 @@ class Project {
             'order by id desc ' .
             'limit 5';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getCount($clientId) {
         $query = 'SELECT count(id) as total FROM project WHERE client_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            $data = $result->fetch_array(MYSQLI_ASSOC);
-            return $data['total'];
-        }
+        $data = $result->fetch_array(MYSQLI_ASSOC);
+
+        return $data['total'];
     }
 
     public static function getWorkflowScheme($projectId) {
@@ -58,15 +57,15 @@ class Project {
             'left join workflow_scheme on workflow_scheme.id = project.workflow_scheme_id ' .
             'where project.id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getByClientId($clientId) {
@@ -75,16 +74,14 @@ class Project {
             'WHERE project.client_id = ? ' .
             'order by project.name';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByClientIdAndIds($clientId, $projectIds) {
@@ -92,16 +89,15 @@ class Project {
             'FROM project ' .
             'WHERE project.client_id = ? and id IN (' . implode(", ", $projectIds) . ")";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByIssueTypeFieldConfigurationScheme($clientId, $issueTypeFieldConfigurationId) {
@@ -109,16 +105,15 @@ class Project {
             'FROM project ' .
             'WHERE project.issue_type_field_configuration_id = ? and client_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ii", $issueTypeFieldConfigurationId, $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("ii", $issueTypeFieldConfigurationId, $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByIssueTypeScreenSchemeId($clientId, $issueTypeScreenSchemeId) {
@@ -126,16 +121,15 @@ class Project {
             'FROM project ' .
             'WHERE project.issue_type_screen_scheme_id = ? and client_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ii", $issueTypeScreenSchemeId, $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("ii", $issueTypeScreenSchemeId, $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getWorkflowUsedForType($projectId, $issueTypeId) {
@@ -150,15 +144,14 @@ class Project {
             'where project.id = ? ' .
             'and issue_type.id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $projectId, $issueTypeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $projectId, $issueTypeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getAllIssueTypesForProjects($projectIdOrArray) {
@@ -169,14 +162,13 @@ class Project {
             'left join issue_type on issue_type.id = issue_type_scheme_data.issue_type_id ' .
             'where project.id IN (' . implode(', ', $projectIdOrArray) . ')';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByIssueTypeScheme($schemeId) {
@@ -184,16 +176,15 @@ class Project {
             'FROM project ' .
             'WHERE project.issue_type_scheme_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $schemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $schemeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByPermissionScheme($schemeId) {
@@ -201,16 +192,15 @@ class Project {
             'FROM project ' .
             'WHERE project.permission_scheme_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $schemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $schemeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByIssueSecurityScheme($schemeId) {
@@ -218,16 +208,15 @@ class Project {
             'FROM project ' .
             'WHERE project.issue_security_scheme_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $schemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $schemeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByNotificationScheme($schemeId) {
@@ -235,35 +224,33 @@ class Project {
             'FROM project ' .
             'WHERE project.notification_scheme_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $schemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $schemeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
+
     public static function getByIds($projectIds) {
         $query = 'SELECT project.id, project.client_id, code, name ' .
             'FROM project ' .
             'WHERE project.id IN (' . implode(', ', $projectIds) . ')';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function getById($projectId) {
-
         $query = 'SELECT project.id, project.client_id, permission_scheme_id, lead_id, code, name,' .
                     'issue_type_screen_scheme_id, issue_type_field_configuration_id, workflow_scheme_id, notification_scheme_id, ' .
                     'description, user.first_name, user.last_name, issue_type_scheme_id, issue_security_scheme_id, project_category_id, ' .
@@ -272,65 +259,61 @@ class Project {
                  'LEFT JOIN user ON user.id = project.lead_id ' .
                  'WHERE project.id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function updateLeader($projectId, $leaderId) {
         $query = 'update project set lead_id = ? where id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $leaderId, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $leaderId, $projectId);
+        $stmt->execute();
     }
 
     public static function getByCode($code, $projectId, $clientId) {
         $query = 'select id, name, code from project where client_id = ? and LOWER(code) = LOWER(?) ';
         if ($projectId) $query .= 'and id != ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($projectId)
-                $stmt->bind_param("isi", $clientId, $code, $projectId);
-            else
-                $stmt->bind_param("is", $clientId, $code);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($projectId)
+            $stmt->bind_param("isi", $clientId, $code, $projectId);
+        else
+            $stmt->bind_param("is", $clientId, $code);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function getByName($name, $projectId, $clientId) {
         $query = 'select id, name, code from project where client_id = ? and LOWER(name) = LOWER(?) ';
         if ($projectId) $query .= 'and id != ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($projectId)
-                $stmt->bind_param("isi", $clientId, $name, $projectId);
-            else
-                $stmt->bind_param("is", $clientId, $name);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($projectId)
+            $stmt->bind_param("isi", $clientId, $name, $projectId);
+        else
+            $stmt->bind_param("is", $clientId, $name);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function addComponent($projectId, $name, $description, $leaderId, $parentComponentId, $date) {
@@ -339,6 +322,7 @@ class Project {
 
         $query = "INSERT INTO project_component(project_id, leader_id, parent_id, name, description, date_created) " .
                  "VALUES (" . $projectId . ", " . $leaderId . ", " . $parentComponentId . ", '" . $name . "','" . $description . "', '" . $date . "')";
+
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
@@ -348,20 +332,18 @@ class Project {
             'left join user on user.id = project_component.leader_id ' .
             'where parent_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $parentComponentId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $parentComponentId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        }
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function renderTreeComponentsInViewIssue($component, $htmlComponent) {
-
         $htmlComponent = LinkHelper::getYongoProjectComponentLink($component['project_component_id'], $component['name']) . ' / ' . $htmlComponent;
         $parentComponent = Project::getParentComponent($component['parent_id'], 'array');
         if ($parentComponent) {
@@ -450,23 +432,23 @@ class Project {
         if (isset($onlyParents)) {
             $query .= ' AND project_component.parent_id IS NULL';
         }
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
 
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $resultArray[] = $data;
-                    }
-                    return $resultArray;
-                } else {
-                    return $result;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $data;
                 }
-            } else
-                return null;
-        }
+                return $resultArray;
+            } else {
+                return $result;
+            }
+        } else
+            return null;
     }
 
     public static function getVersions($projectIdOrArray = null) {
@@ -482,14 +464,13 @@ class Project {
 
         $query .= ' order by name';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getStatsUnresolvedByComponent($projectId) {
@@ -504,20 +485,19 @@ class Project {
                         'and issue_component.project_component_id = ? ' .
                         'and yongo_issue.resolution_id is null';
 
-                if ($stmt = UbirimiContainer::get()['db.connection']->prepare($q)) {
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
 
-                    $stmt->bind_param("ii", $projectId, $component['id']);
+                $stmt->bind_param("ii", $projectId, $component['id']);
 
-                    $stmt->execute();
-                    $result = $stmt->get_result();
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-                    if ($result->num_rows) {
-                        $row = $result->fetch_array(MYSQLI_ASSOC);
-                        $stats[] = array($component['name'], $row['total'], $component['id']);
-                    }
-                    else
-                        $stats[] = array($component['name'], 0, $component['id']);
+                if ($result->num_rows) {
+                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    $stats[] = array($component['name'], $row['total'], $component['id']);
                 }
+                else
+                    $stats[] = array($component['name'], 0, $component['id']);
             }
 
             $q = 'select count(yongo_issue.id) as total ' .
@@ -527,38 +507,77 @@ class Project {
                     'and issue_component.project_component_id IS NULL ' .
                     'and yongo_issue.resolution_id is null';
 
-            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($q)) {
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
 
-                $stmt->bind_param("i", $projectId);
+            $stmt->bind_param("i", $projectId);
 
-                $stmt->execute();
-                $result = $stmt->get_result();
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-                if ($result->num_rows) {
-                    $row = $result->fetch_array(MYSQLI_ASSOC);
-                    $stats[] = array("No component", $row['total']);
-                }
+            if ($result->num_rows) {
+                $row = $result->fetch_array(MYSQLI_ASSOC);
+                $stats[] = array("No component", $row['total']);
             }
         }
 
         return $stats;
     }
 
-    public static function add($clientId, $issueTypeSchemeId, $issueTypeScreenSchemeId, $issueTypeFieldConfigurationSchemeId, $workflowSchemeId,
-                                      $permissionSchemeId, $notificationSchemeId, $lead_id, $name, $code, $description, $projectCategoryId, $forHelpDesk, $currentDate) {
+    public static function add(
+        $clientId,
+        $issueTypeSchemeId,
+        $issueTypeScreenSchemeId,
+        $issueTypeFieldConfigurationSchemeId,
+        $workflowSchemeId,
+        $permissionSchemeId,
+        $notificationSchemeId,
+        $leadId,
+        $name,
+        $code,
+        $description,
+        $projectCategoryId,
+        $forHelpDesk,
+        $currentDate
+    ) {
         $query = "INSERT INTO project(client_id, lead_id, issue_type_scheme_id, issue_type_screen_scheme_id, issue_type_field_configuration_id, " .
                     "workflow_scheme_id, permission_scheme_id, notification_scheme_id, name, code, description, project_category_id, help_desk_enabled_flag, date_created) VALUES " .
                  "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiiisssiis", $clientId, $lead_id, $issueTypeSchemeId, $issueTypeScreenSchemeId, $issueTypeFieldConfigurationSchemeId, $workflowSchemeId,
-                $permissionSchemeId, $notificationSchemeId, $name, $code, $description, $projectCategoryId, $forHelpDesk, $currentDate);
-            $stmt->execute();
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("iiiiiiiisssiis",
+            $clientId,
+            $leadId,
+            $issueTypeSchemeId,
+            $issueTypeScreenSchemeId,
+            $issueTypeFieldConfigurationSchemeId,
+            $workflowSchemeId,
+            $permissionSchemeId,
+            $notificationSchemeId,
+            $name,
+            $code,
+            $description,
+            $projectCategoryId,
+            $forHelpDesk,
+            $currentDate
+        );
+
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function updateById($projectId, $leaderId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $enableForHelpdeskFlag, $date) {
+    public static function updateById(
+        $projectId,
+        $leaderId,
+        $name,
+        $code,
+        $description,
+        $issueTypeSchemeId,
+        $workflowSchemeId,
+        $projectCategoryId,
+        $date
+    ) {
         $query = "UPDATE project " .
                  "SET lead_id = ?, " .
                      "name = ?, " .
@@ -567,18 +586,27 @@ class Project {
                      "issue_type_scheme_id = ?, " .
                      "workflow_scheme_id = ?, " .
                      "project_category_id = ?, " .
-                     "help_desk_enabled_flag = ?, " .
                      "date_updated = ? " .
                  "WHERE id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        $stmt->bind_param("isssiiiisi", $leaderId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $enableForHelpdeskFlag, $date, $projectId);
+        $stmt->bind_param("isssiiisi",
+            $leaderId,
+            $name,
+            $code,
+            $description,
+            $issueTypeSchemeId,
+            $workflowSchemeId,
+            $projectCategoryId,
+            $date,
+            $projectId
+        );
+
         $stmt->execute();
     }
 
     public static function deleteById($Id) {
-
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
@@ -592,11 +620,7 @@ class Project {
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete the help desk related information
-        $SLAs = SLA::getByProjectId($Id);
-        while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-            SLA::deleteById($SLA['id']);
-        }
-        Queue::deleteByProjectId($Id);
+        Project::removeHelpdeskData($Id);
 
         $query = "DELETE IGNORE FROM help_filter WHERE project_id = " . $Id;
         UbirimiContainer::get()['db.connection']->query($query);
@@ -620,27 +644,26 @@ class Project {
             $query .= ' and issue_type.sub_task_flag = 0';
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($resultColumn) {
-                            $resultArray[] = $data[$resultColumn];
-                        } else {
-                            $resultArray[] = $data;
-                        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn) {
+                        $resultArray[] = $data[$resultColumn];
+                    } else {
+                        $resultArray[] = $data;
                     }
-                    return $resultArray;
-                } else {
-                    return $result;
                 }
+                return $resultArray;
             } else {
-                return null;
+                return $result;
             }
+        } else {
+            return null;
         }
     }
 
@@ -652,15 +675,14 @@ class Project {
             'left join issue_type on issue_type.id = issue_type_scheme_data.issue_type_id ' .
             'where project.id = ? and issue_type.sub_task_flag = 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function addDefaultUsers($clientId, $projectId, $currentDate) {
@@ -670,20 +692,18 @@ class Project {
             'where permission_role.client_id = ? ' .
             'and permission_role_data.default_user_id is not null';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                    $query_add = "INSERT INTO project_role_data(project_id, permission_role_id, user_id, date_created) VALUES " .
-                        "(?, ?, ?, ?)";
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                $query_add = "INSERT INTO project_role_data(project_id, permission_role_id, user_id, date_created) VALUES " .
+                    "(?, ?, ?, ?)";
 
-                    if ($stmt2 = UbirimiContainer::get()['db.connection']->prepare($query_add)) {
-                        $stmt2->bind_param("iiis", $projectId, $data['permission_role_id'], $data['default_user_id'], $currentDate);
-                        $stmt2->execute();
-                    }
-                }
+                $stmt2 = UbirimiContainer::get()['db.connection']->prepare($query_add);
+                $stmt2->bind_param("iiis", $projectId, $data['permission_role_id'], $data['default_user_id'], $currentDate);
+                $stmt2->execute();
             }
         }
     }
@@ -695,20 +715,18 @@ class Project {
             'where permission_role.client_id = ? ' .
             'and permission_role_data.default_group_id is not null';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                    $query_add = "INSERT INTO project_role_data(project_id, permission_role_id, group_id, date_created) VALUES " .
-                        "(?, ?, ?, ?)";
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                $query_add = "INSERT INTO project_role_data(project_id, permission_role_id, group_id, date_created) VALUES " .
+                    "(?, ?, ?, ?)";
 
-                    if ($stmt2 = UbirimiContainer::get()['db.connection']->prepare($query_add)) {
-                        $stmt2->bind_param("iiis", $projectId, $data['permission_role_id'], $data['default_group_id'], $currentDate);
-                        $stmt2->execute();
-                    }
-                }
+                $stmt2 = UbirimiContainer::get()['db.connection']->prepare($query_add);
+                $stmt2->bind_param("iiis", $projectId, $data['permission_role_id'], $data['default_group_id'], $currentDate);
+                $stmt2->execute();
             }
         }
     }
@@ -721,15 +739,14 @@ class Project {
                 'project_role_data.permission_role_id = ? and ' .
                 'project_role_data.user_id is not null';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $projectId, $roleId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $projectId, $roleId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getGroupsInRole($projectId, $roleId) {
@@ -740,15 +757,14 @@ class Project {
                 'project_role_data.permission_role_id = ? and ' .
                 'project_role_data.group_id is not null';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $projectId, $roleId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $projectId, $roleId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function deleteUsersByPermissionRole($projectId, $roleId) {
@@ -791,7 +807,7 @@ class Project {
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getUsersWithPermission($projectIdArray, $permissionId) {
+    public static function getUsersWithPermission($projectIdArray, $permissionId, $resultType = null, $resultColumn = null) {
 
         if (is_array($projectIdArray))
             $projectsSQL = '(' . implode(',', $projectIdArray) . ')';
@@ -857,17 +873,27 @@ class Project {
                 'user.id is not null)' .
             'order by first_name, last_name';
 
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiii", $permissionId, $permissionId, $permissionId, $permissionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiii", $permissionId, $permissionId, $permissionId, $permissionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows)
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn) {
+                        $resultArray[] = $data[$resultColumn];
+                    } else {
+                        $resultArray[] = $data;
+                    }
+                }
+                return $resultArray;
+            } else {
                 return $result;
-            else
-                return null;
+            }
+        } else {
+            return null;
         }
     }
 
@@ -980,13 +1006,14 @@ class Project {
                 'user.id is not null ' .
 
             // 8. all watchers
+            
             'UNION DISTINCT ' .
             'SELECT user.id as user_id, user.first_name, user.last_name, user.email, user.notify_own_changes_flag ' .
             'from project ' .
             'left join notification_scheme on notification_scheme.id = project.notification_scheme_id ' .
             'left join notification_scheme_data on (notification_scheme_data.notification_scheme_id = notification_scheme.id and ' .
-            'notification_scheme_data.current_user is not null) ' .
-            'left join yongo_issue on yongo_issue.project_id = project.id ' .
+            'notification_scheme_data.all_watchers is not null) ' .
+            'left join yongo_issue on yongo_issue.id = ? ' .
             'left join yongo_issue_watch on yongo_issue_watch.yongo_issue_id = yongo_issue.id ' .
             'left join user on user.id = yongo_issue_watch.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
@@ -1024,18 +1051,32 @@ class Project {
                 'notification_scheme_data.event_id = ? and ' .
                 'notification_scheme_data.component_lead is not null and ' .
                 'project_component.leader_id is not null and ' .
-                'user.id is not null';
+                'user.id is not null ' .
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiiiiiiiii", $eventId, $eventId, $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId, $eventId, $loggedInUserId, $eventId, $eventId, $issue['id'], $eventId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            // 11. user picker multiple selection
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+            'UNION DISTINCT ' .
+            'SELECT user.id as user_id, user.first_name, user.last_name, user.email, user.notify_own_changes_flag ' .
+            'from project ' .
+            'left join notification_scheme on notification_scheme.id = project.notification_scheme_id ' .
+            'left join notification_scheme_data on (notification_scheme_data.notification_scheme_id = notification_scheme.id and ' .
+            'notification_scheme_data.user_picker_multiple_selection is not null) ' .
+            'left join yongo_issue on yongo_issue.id = ? ' .
+            'left join issue_custom_field_data on (issue_custom_field_data.issue_id = yongo_issue.id and issue_custom_field_data.field_id = notification_scheme_data.user_picker_multiple_selection) ' .
+            'left join user on user.id = issue_custom_field_data.value ' .
+            'where project.id  IN ' . $projectsSQL . ' and ' .
+            'notification_scheme_data.event_id = ? and ' .
+            'user.id is not null';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiiiiiiiiiiiiiiii", $eventId, $eventId, $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId, $eventId, $loggedInUserId, $issue['id'], $eventId, $eventId, $issue['id'], $eventId, $issue['id'], $eventId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getUsers($projectIdArray) {
@@ -1049,14 +1090,13 @@ class Project {
             'left join user on user.id = project_role_data.user_id ' .
             'where project_role_data.project_id IN ' . $projectsSQL;
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function userHasPermission($projectIdArray, $permissionId, $userId = null, $issueId = null) {
@@ -1102,7 +1142,6 @@ class Project {
                 'user.id = ? ' .
 
 
-
             // 3. permission role in permission scheme - user
 
             'UNION ' .
@@ -1116,7 +1155,6 @@ class Project {
                 'project_role_data.user_id is not null and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'user.id = ? ' .
-
 
 
             // 4. permission role in permission scheme - group
@@ -1186,35 +1224,33 @@ class Project {
             'permission_scheme_data.sys_permission_id = ? and ' .
             'permission_scheme_data.group_id = 0 ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($issueId) {
-                $stmt->bind_param("iiiiiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $issueId, $permissionId, $userId, $issueId, $permissionId);
-            } else {
-                $stmt->bind_param("iiiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId);
-            }
-
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($issueId) {
+            $stmt->bind_param("iiiiiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $issueId, $permissionId, $userId, $issueId, $permissionId);
+        } else {
+            $stmt->bind_param("iiiiiiiiiiiii", $userId, $permissionId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId, $userId, $permissionId);
         }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getVersionById($versionId) {
         $query = "SELECT id, project_id, name, description FROM project_version WHERE id = ? LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $versionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $versionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getComponentById($componentId) {
@@ -1224,23 +1260,25 @@ class Project {
             "WHERE project_component.id = ? " .
             "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $componentId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $componentId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function addVersion($projectId, $name, $description, $date) {
         $query = "INSERT INTO project_version(project_id, name, description, date_created) VALUES (?, ?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($projectId) $stmt->bind_param("isss", $projectId, $name, $description, $date);
-            $stmt->execute();
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($projectId) {
+            $stmt->bind_param("isss", $projectId, $name, $description, $date);
         }
+
+        $stmt->execute();
     }
 
     public static function updateComponentById($componentId, $name, $description, $leader, $date) {
@@ -1249,10 +1287,9 @@ class Project {
                  'WHERE id = ? ' .
                  'LIMIT 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ssisi", $name, $description, $leader, $date, $componentId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ssisi", $name, $description, $leader, $date, $componentId);
+        $stmt->execute();
     }
 
     public static function updateVersionById($versionId, $name, $description, $date) {
@@ -1261,10 +1298,9 @@ class Project {
                     'WHERE id = ? ' .
                     'LIMIT 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssi", $name, $description, $date, $versionId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssi", $name, $description, $date, $versionId);
+        $stmt->execute();
     }
 
     public static function getScreenData($project, $issueTypeId, $sysOperationId, $resultType = null) {
@@ -1294,21 +1330,20 @@ class Project {
             "WHERE issue_type_field_configuration_data.issue_type_field_configuration_id = ? and " .
             "issue_type_field_configuration_data.issue_type_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $issueTypeFieldConfigurationId, $issueTypeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultData = array();
-                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $resultData[] = $data;
-                    }
-                    return $resultData;
-                } else return $result;
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueTypeFieldConfigurationId, $issueTypeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultData = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultData[] = $data;
+                }
+                return $resultData;
+            } else return $result;
+        } else
+            return null;
     }
 
 //    public static function getFieldInformation($issueTypeScreenSchemeId, $issueTypeFieldConfigurationId, $issueTypeId, $operationId, $resultType = null) {
@@ -1347,16 +1382,15 @@ class Project {
             'FROM project ' .
             'WHERE project.workflow_scheme_id = ? ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $schemeId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $schemeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByIssueId($issueId) {
@@ -1366,15 +1400,14 @@ class Project {
                  'where yongo_issue.id = ? ' .
                  'limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $issueId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $issueId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getUnresolvedIssuesCountByProjectId($projectId) {
@@ -1383,17 +1416,16 @@ class Project {
             'where yongo_issue.project_id = ? ' .
             'and yongo_issue.resolution_id is null ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $row_result = $result->fetch_array(MYSQLI_ASSOC);
-                return $row_result['count'];
-            }
-            else
-                return null;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $row_result = $result->fetch_array(MYSQLI_ASSOC);
+            return $row_result['count'];
         }
+        else
+            return null;
     }
 
     public static function getVersionByName($projectId, $name, $versionId = null) {
@@ -1401,40 +1433,38 @@ class Project {
         if ($versionId) $query .= ' and id != ?';
         $query .= ' limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($versionId)
-                $stmt->bind_param("isi", $projectId, $name, $versionId);
-            else
-                $stmt->bind_param("is", $projectId, $name);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($versionId)
+            $stmt->bind_param("isi", $projectId, $name, $versionId);
+        else
+            $stmt->bind_param("is", $projectId, $name);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function getComponentByName($projectId, $name, $componentId = null) {
         $query = 'select id, name from project_component where project_id = ? and LOWER(name) = LOWER(?)';
         if ($componentId) $query .= ' and id != ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($componentId)
-                $stmt->bind_param("isi", $projectId, $name, $componentId);
-            else
-                $stmt->bind_param("is", $projectId, $name);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($componentId)
+            $stmt->bind_param("isi", $projectId, $name, $componentId);
+        else
+            $stmt->bind_param("is", $projectId, $name);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function deleteIssuesByProjectId($projectId) {
@@ -1463,17 +1493,17 @@ class Project {
                  'workflow.issue_type_scheme_id = ? and ' .
                  'project.id is not null ' .
                  'group by project.id';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $workflowIssueTypeSchemeId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $workflowIssueTypeSchemeId);
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function getAll($filters = array()) {
@@ -1497,16 +1527,15 @@ class Project {
             $query .= ' limit ' . $filters['limit'];
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function updateIssueSecurityLevel($projectId, $oldSecurityLevel, $newSecurityLevel) {
@@ -1515,53 +1544,48 @@ class Project {
 
         $query = 'update yongo_issue set security_scheme_level_id = ? where project_id = ? and security_scheme_level_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iii", $newSecurityLevel, $projectId, $oldSecurityLevel);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $newSecurityLevel, $projectId, $oldSecurityLevel);
+        $stmt->execute();
     }
 
     public static function updateAllIssuesSecurityLevel($projectId, $newSecurityLevel) {
         $query = 'update yongo_issue set security_scheme_level_id = ? where project_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $newSecurityLevel, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $newSecurityLevel, $projectId);
+        $stmt->execute();
     }
 
     public static function setIssueSecuritySchemeId($projectId, $projectIssueSecuritySchemeId) {
         $query = 'update project set issue_security_scheme_id = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $projectIssueSecuritySchemeId, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $projectIssueSecuritySchemeId, $projectId);
+        $stmt->execute();
     }
 
     public static function getIssuesWithNoSecurityScheme($projectId) {
         $query = 'select * from yongo_issue where project_id = ? and security_scheme_level_id is null';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $projectId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function updateIssueSecurityLevelForUnsercuredIssues($projectId, $newSecurityLevel) {
         $query = 'update yongo_issue set security_scheme_level_id = ? where project_id = ? and security_scheme_level_id is null';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $newSecurityLevel, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $newSecurityLevel, $projectId);
+        $stmt->execute();
     }
 
     public static function updateIssuesSecurityLevel($projectId, $oldNewLevel, $date) {
@@ -1583,46 +1607,41 @@ class Project {
     public static function updateLastIssueNumber($projectId, $newIssueNumber) {
         $query = 'update project set issue_number = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $newIssueNumber, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $newIssueNumber, $projectId);
+        $stmt->execute();
     }
 
     public static function updatePermissionScheme($projectId, $permissionSchemeId) {
         $query = 'update project set permission_scheme_id = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $permissionSchemeId, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $permissionSchemeId, $projectId);
+        $stmt->execute();
     }
 
     public static function updateNotificationScheme($projectId, $notificationSchemeId) {
         $query = 'update project set notification_scheme_id = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $notificationSchemeId, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $notificationSchemeId, $projectId);
+        $stmt->execute();
     }
 
     public static function updateFieldConfigurationScheme($projectId, $fieldConfigurationSchemeId) {
         $query = 'update project set issue_type_field_configuration_id = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $fieldConfigurationSchemeId, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $fieldConfigurationSchemeId, $projectId);
+        $stmt->execute();
     }
 
     public static function updateIssueTypeScreenScheme($projectId, $issueTypeScreenSchemeId) {
         $query = 'update project set issue_type_screen_scheme_id = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $issueTypeScreenSchemeId, $projectId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueTypeScreenSchemeId, $projectId);
+        $stmt->execute();
     }
 
     public static function getByWorkflowId($workflowId) {
@@ -1632,60 +1651,77 @@ class Project {
                  'left join workflow_scheme_data on workflow_scheme_data.workflow_scheme_id = workflow_scheme.id ' .
                  'where workflow_scheme_data.workflow_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $workflowId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $workflowId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function getTotalIssuesPreviousDate($projectId, $date, $helpdeskFlag = 0) {
-        $query = 'select id, resolution_id ' .
-            'from yongo_issue ' .
-            'where yongo_issue.project_id = ? and DATE(date_created) <= ?';
+        $query = 'SELECT id, resolution_id
+            FROM yongo_issue
+            WHERE DATE(date_created) <= ?';
+
+        if (-1 != $projectId) {
+            $query .= ' AND yongo_issue.project_id = ?';
+        }
 
         if ($helpdeskFlag) {
-            $query .= ' and yongo_issue.helpdesk_flag = 1';
+            $query .= ' AND yongo_issue.helpdesk_flag = 1';
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $projectId, $date);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows) {
-                return $result->num_rows;
-            } else
-                return 0;
+        if (-1 != $projectId) {
+            $stmt->bind_param("si", $date, $projectId);
+        } else {
+            $stmt->bind_param("s", $date);
         }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows) {
+            return $result->num_rows;
+        }
+
+        return 0;
     }
 
     public static function getTotalIssuesResolvedOnDate($projectId, $date, $helpdeskFlag = 0) {
-        $query = 'select id, resolution_id ' .
-            'from yongo_issue ' .
-            'where yongo_issue.project_id = ? and DATE(date_updated) <= ? and resolution_id is not null';
+        $query = 'SELECT id, resolution_id
+                FROM yongo_issue
+                WHERE DATE(date_updated) <= ? AND resolution_id IS NOT NULL';
+
+        if (-1 != $projectId) {
+            $query .= ' AND yongo_issue.project_id = ?';
+        }
 
         if ($helpdeskFlag) {
             $query .= ' and yongo_issue.helpdesk_flag = 1';
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $projectId, $date);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result->num_rows;
-            } else
-                return 0;
+        if (-1 != $projectId) {
+            $stmt->bind_param("si", $date, $projectId);
+        } else {
+            $stmt->bind_param("s", $date);
         }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->num_rows;
+        }
+
+        return 0;
     }
 
     public static function getParentComponent($parentComponentId, $resultType = null) {
@@ -1693,20 +1729,19 @@ class Project {
             'from project_component ' .
             'where id = ? order by id desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $parentComponentId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $parentComponentId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    return $result->fetch_array(MYSQLI_ASSOC);
-                } else {
-                    return $result;
-                }
-            } else
-                return 0;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                return $result->fetch_array(MYSQLI_ASSOC);
+            } else {
+                return $result;
+            }
+        } else
+            return 0;
     }
 
     public static function checkProjectsBelongToClient($clientId, $projectIds) {
@@ -1752,10 +1787,9 @@ class Project {
             $dataDefaultCalendar[$i]['to_minute'] = '59';
         }
 
-        $defaultSLACalendarId = SLACalendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, $currentDate);
+        $defaultSLACalendarId = SLACalendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, 1, $currentDate);
 
         // add the default SLAs
-        // --------------------------------------------------------
 
         // sla 1: time to first response
         $status = IssueSettings::getByName($clientId, 'status', 'In Progress');
@@ -1776,5 +1810,30 @@ class Project {
                 Issue::addPlainSLAData($issue['id'], $projectId);
             }
         }
+    }
+
+    public static function removeHelpdeskData($projectId) {
+        $slas = SLA::getByProjectId($projectId);
+        while ($slas && $sla = $slas->fetch_array(MYSQLI_ASSOC)) {
+            SLA::deleteById($sla['id']);
+        }
+
+        $calendars = SLACalendar::getByProjectId($projectId);
+        while ($calendars && $calendar = $calendars->fetch_array(MYSQLI_ASSOC)) {
+            SLACalendar::deleteById($calendar['id']);
+        }
+
+        $queues = Queue::getByProjectId($projectId);
+        while ($queues && $queue = $queues->fetch_array(MYSQLI_ASSOC)) {
+            Queue::deleteById($queue['id']);
+        }
+    }
+
+    public static function toggleHelpDeskFlag($projectId) {
+        $query = 'update project set help_desk_enabled_flag = 1 - help_desk_enabled_flag where id = ? limit 1';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
     }
 }

@@ -1,53 +1,57 @@
 <?php
-use Ubirimi\PasswordHash;
+
+namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\Client;
-use Ubirimi\Repository\User\User;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Repository\User\User;
 use Ubirimi\Container\UbirimiContainer;
 
-$signInError = null;
+class SignInController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        $signInError = null;
 
-$httpHOST = Util::getHttpHost();
-$clientSettings = Client::getSettingsByBaseURL($httpHOST);
+        $httpHOST = Util::getHttpHost();
+        $clientSettings = Client::getSettingsByBaseURL($httpHOST);
 
-$clientId = $clientSettings['id'];
+        $clientId = $clientSettings['id'];
 
-if ($session->has('user') && Util::getSubdomain() == $session->get('client/company_domain')) {
-    header('Location: ' . $httpHOST . '/helpdesk/customer-portal/dashboard');
-    die();
-}
+        if ($session->has('user') && Util::getSubdomain() == $session->get('client/company_domain')) {
+            return new RedirectResponse($httpHOST . '/helpdesk/customer-portal/dashboard');
+        }
 
-if (isset($_POST['sign_in'])) {
+        if ($request->request->has('sign_in')) {
+            $username = $request->request->get('username');
+            $password = $request->request->get('password');
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+            $userData = User::getCustomerByEmailAddressAndClientId($username, $clientId);
 
-    $userData = User::getCustomerByEmailAddressAndClientId($username, $clientId);
+            if ($userData['id']) {
+                if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {
+                    $session->invalidate();
+                    UbirimiContainer::get()['warmup']->warmUpCustomer($userData);
 
-    if ($userData['id']) {
+                    return new RedirectResponse($httpHOST . '/helpdesk/customer-portal/dashboard');
+                } else {
+                    $signInError = true;
+                }
+            } else {
+                $signInError = true;
+            }
 
-        $t_hasher = new PasswordHash(8, false);
-        $passwordIsOK = $t_hasher->CheckPassword($password, $userData['password']);
-        if ($passwordIsOK) {
-
-            $session->invalidate();
-
-            UbirimiContainer::get()['warmup']->warmUpCustomer($userData);
-
-            header('Location: ' . $httpHOST . '/helpdesk/customer-portal/dashboard');
-
-            exit;
-        } else $signInError = true;
-
-
-    } else {
-        $signInError = true;
+            if ($signInError) {
+                return new RedirectResponse('/helpdesk/customer-portal');
+            }
+        } else if ($request->request->has('create_account')) {
+            return new RedirectResponse('/helpdesk/customer-portal/sign-up');
+        } else if ($request->request->has('get_password')) {
+            return new RedirectResponse('/helpdesk/customer-portal/get-password');
+        }
     }
-    if ($signInError) {
-        header('Location: /helpdesk/customer-portal');
-    }
-} else if (isset($_POST['create_account'])) {
-    header('Location: /helpdesk/customer-portal/sign-up');
-} else if (isset($_POST['get_password'])) {
-    header('Location: /helpdesk/customer-portal/get-password');
 }

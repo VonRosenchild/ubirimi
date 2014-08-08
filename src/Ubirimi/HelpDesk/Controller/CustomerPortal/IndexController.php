@@ -1,17 +1,28 @@
 <?php
 
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Util;
+namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
-    $signInError = null;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $httpHOST = Util::getHttpHost();
+class IndexController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        $signInError = null;
 
-    $clientSettings = Client::getSettingsByBaseURL($httpHOST);
-    $clientId = $clientSettings['id'];
+        $httpHOST = Util::getHttpHost();
 
-    $client = Client::getById($clientId);
+        $clientSettings = Client::getSettingsByBaseURL($httpHOST);
+        $clientId = $clientSettings['id'];
 
-    $sectionPageTitle = $client['company_name'] . ' - Welcome to Customer Portal';
+        $client = Client::getById($clientId);
 
-    require_once __DIR__ . '/../../Resources/views/customer_portal/Index.php';
+        $sectionPageTitle = $client['company_name'] . ' - Welcome to Customer Portal';
+
+        return $this->render(__DIR__ . '/../../Resources/views/customer_portal/Index.php', get_defined_vars());
+    }
+}

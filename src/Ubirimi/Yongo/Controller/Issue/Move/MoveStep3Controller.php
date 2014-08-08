@@ -6,6 +6,7 @@
     use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Issue\IssueVersion;
     use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\Yongo\Repository\Permission\Permission;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -29,6 +30,10 @@
         $newIssueFixVersions = $_POST['new_fix_version'];
         $newIssueAffectsVersions = $_POST['new_affects_version'];
 
+        if (array_key_exists('new_assignee', $_POST)) {
+            $session->set('move_issue/new_assignee', $_POST['new_assignee']);
+        }
+
         $session->set('move_issue/new_component', $newIssueComponents);
         $session->set('move_issue/new_fix_version', $newIssueFixVersions);
         $session->set('move_issue/new_affects_version', $newIssueAffectsVersions);
@@ -49,8 +54,22 @@
     $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
     $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
+    $sourceAssignee = $issue['assignee'];
+    $assignableUsersTargetProjectArray = Project::getUsersWithPermission($session->get('move_issue/new_project'), Permission::PERM_ASSIGNABLE_USER, 'array');
+
+    $assigneeChanged = true;
+
+    if ($sourceAssignee) {
+        for ($i = 0; $i < count($assignableUsersTargetProjectArray); $i++) {
+            if ($sourceAssignee == $assignableUsersTargetProjectArray[$i]['user_id']) {
+                $assigneeChanged = false;
+                break;
+            }
+        }
+    }
+
     $actionTaken = false;
-    if (($issueComponents || $issueFixVersions || $issueAffectedVersions) && ($targetProjectComponents || $targetVersions)) {
+    if ((($issueComponents || $issueFixVersions || $issueAffectedVersions) && ($targetProjectComponents || $targetVersions)) || $assigneeChanged) {
         $actionTaken = true;
     }
     $newStatusName = IssueSettings::getById($session->get('move_issue/new_status'), 'status', 'name');

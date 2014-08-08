@@ -40,7 +40,7 @@
 
             <tr>
                 <td colspan="2">
-                    <select style="width: 100%" name="user_to_watch[]" id="user_to_watch" class="inputTextCombo chzn-select" multiple="multiple">
+                    <select style="width: 100%" name="user_to_watch[]" id="user_to_watch" class="inputTextCombo select2Input" multiple="multiple">
                         <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
                             <?php if (!in_array($user['id'], $watcherArray)): ?>
                                 <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
@@ -83,7 +83,7 @@
     <?php endif ?>
     <?php if ($hasManageWatchersPermission): ?>
         <div align="right">
-            <input id="add_watcher" type="button" value="Add Watchers" />
+            <input class="btn ubirimi-btn" id="add_watcher" type="button" value="Add Watchers" />
         </div>
     <?php endif ?>
 <?php endif ?>

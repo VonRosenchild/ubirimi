@@ -68,6 +68,18 @@ adminViewProjectComponents:
   requirements:
     id:  \d+
 
+adminViewProjectHelpDesk:
+  path: /yongo/administration/project/helpdesk/toggle/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ToggleHelpdeskController' }
+  requirements:
+    id:  \d+
+
+adminViewProjectHelpDeskToggle:
+  path: /yongo/administration/project/helpdesk/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Project\ViewHelpdeskController' }
+  requirements:
+    id:  \d+
+
 #########################################################################
 #                      Issue Security Schemes                           #
 #########################################################################
@@ -823,25 +835,25 @@ adminDeleteStepWorkflow:
 
 adminAddTransitionStepWorkflow:
   path: /yongo/administration/workflow/add-transition/{id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\AddTransitionController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Transition\AddController' }
   requirements:
     id:  \d+
 
 adminDeleteTransitionsStepWorkflow:
   path: /yongo/administration/workflow/delete-transitions/{id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteTransitionsController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Transition\DeleteController' }
   requirements:
     id:  \d+
 
 adminDeleteOutgoingTransitionStepWorkflowConfirm:
   path: /yongo/administration/workflow/delete-outgoing-transitions-confirm/{step_id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteOutgoingTransitionConfirmController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Transition\DeleteOutgoingConfirmController' }
   requirements:
     step_id:  \d+
 
 adminDeleteOutgoingTransitionStepWorkflow:
   path: /yongo/administration/workflow/delete-outgoing-transitions
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\DeleteOutgoingTransitionsController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Transition\DeleteOutgoingController' }
 
 adminViewStepPropertiesWorkflow:
   path: /yongo/administration/workflow/view-step-properties/{id}
@@ -879,12 +891,12 @@ adminStepBrowserWorkflow:
 
 adminViewTransitionWorkflow:
   path: /yongo/administration/workflow/view-transition/{id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\ViewTransitionController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Step\Transition\ViewController' }
   requirements:
     id:  \d+
 
 adminDeleteWorkflowTransition:
-  path: /yongo/administration/ajax/workflow/delete-transition
+  path: /yongo/administration/workflow/delete-transition
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Administration\Workflow\Transition\DeleteController' }
 
 adminSaveTransitionData:

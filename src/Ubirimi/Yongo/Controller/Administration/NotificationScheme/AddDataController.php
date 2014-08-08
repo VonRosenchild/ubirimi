@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Repository\Log;
 use Ubirimi\Repository\Group\Group;
@@ -22,6 +23,8 @@ class AddDataController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $menuSelectedCategory = 'issue';
+
         $notificationSchemeId = $request->get('not_scheme_id');
         $eventId = $request->get('id');
 
@@ -33,6 +36,8 @@ class AddDataController extends UbirimiController
         $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $roles = PermissionRole::getByClient($session->get('client/id'));
 
+        $fieldsUserPickerMultipleSelection = Field::getByClientIdAndFieldTypeId($session->get('client/id'), Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID);
+
         if ($request->request->has('confirm_new_data')) {
 
             $eventIds = $request->request->get('event');
@@ -41,6 +46,7 @@ class AddDataController extends UbirimiController
             $user = $request->request->get('user');
             $group = $request->request->get('group');
             $role = $request->request->get('role');
+            $userPickerMultipleSelection = $request->request->get('select_user_picker_multiple_selection');
 
             $currentDate = Util::getServerCurrentDateTime();
 
@@ -50,37 +56,47 @@ class AddDataController extends UbirimiController
                     // check for duplicate information
                     $duplication = false;
 
-                    $dataNotification = NotificationScheme::getDataByNotificationSchemeIdAndEventId(
-                        $notificationSchemeId,
-                        $eventIds[$i]
-                    );
+                    $dataNotification = NotificationScheme::getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventIds[$i]);
 
                     if ($dataNotification) {
                         while ($data = $dataNotification->fetch_array(MYSQLI_ASSOC)) {
-                            if ($data['group_id'] && $data['group_id'] == $group)
+                            if ($data['group_id'] && $data['group_id'] == $group) {
                                 $duplication = true;
-                            if ($data['user_id'] && $data['user_id'] == $user)
+                            }
+                            if ($data['user_id'] && $data['user_id'] == $user) {
                                 $duplication = true;
-                            if ($data['permission_role_id'] && $data['permission_role_id'] == $role)
+                            }
+                            if ($data['permission_role_id'] && $data['permission_role_id'] == $role) {
                                 $duplication = true;
-                            if ($notificationType == Notification::NOTIFICATION_TYPE_PROJECT_LEAD)
+                            }
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_PROJECT_LEAD) {
                                 if ($data['project_lead'])
                                     $duplication = true;
-                            if ($notificationType == Notification::NOTIFICATION_TYPE_COMPONENT_LEAD)
+                            }
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_COMPONENT_LEAD) {
                                 if ($data['component_lead'])
                                     $duplication = true;
-                            if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_ASSIGNEE)
+                            }
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_ASSIGNEE) {
                                 if ($data['current_assignee'])
                                     $duplication = true;
-                            if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_USER)
+                            }
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_CURRENT_USER) {
                                 if ($data['current_user'])
                                     $duplication = true;
-                            if ($notificationType == Notification::NOTIFICATION_TYPE_REPORTER)
+                            }
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_REPORTER) {
                                 if ($data['reporter'])
                                     $duplication = true;
-                            if ($notificationType == Notification::NOTIFICATION_TYPE_ALL_WATCHERS)
+                            }
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_ALL_WATCHERS) {
                                 if ($data['all_watchers'])
                                     $duplication = true;
+                            }
+                            if ($notificationType == Notification::NOTIFICATION_TYPE_USER_PICKER_MULTIPLE_SELECTION) {
+                                if ($data['custom_field_id'])
+                                    $duplication = true;
+                            }
                         }
                     }
                     if (!$duplication) {
@@ -91,15 +107,11 @@ class AddDataController extends UbirimiController
                             $user,
                             $group,
                             $role,
+                            $userPickerMultipleSelection,
                             $currentDate
                         );
 
-                        Log::add(
-                            $session->get('client/id'),
-                            SystemProduct::SYS_PRODUCT_YONGO,
-                            $session->get('user/id'),
-                            'ADD Yongo Notification Scheme Data',
-                            $currentDate
+                        Log::add($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $session->get('user/id'), 'ADD Yongo Notification Scheme Data', $currentDate
                         );
                     }
                 }

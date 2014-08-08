@@ -4,64 +4,61 @@ namespace Ubirimi\Repository\User;
 
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\PasswordHash;
 
-class User {
-
+class User
+{
     public static function getPermissionRolesByUserId($userId, $resultType = null, $field = null) {
         $query = 'select distinct permission_role_id from permission_role_data where user_id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
 
-            $finalResult = null;
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultData = array();
-                    while ($group_result = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($field)
-                            $resultData[] = $group_result[$field];
-                        else
-                            $resultData[] = $group_result;
-                    }
-                    $finalResult = $resultData;
-                } else $finalResult = $result;
-            }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            return $finalResult;
+        $finalResult = null;
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultData = array();
+                while ($group_result = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($field)
+                        $resultData[] = $group_result[$field];
+                    else
+                        $resultData[] = $group_result;
+                }
+                $finalResult = $resultData;
+            } else $finalResult = $result;
         }
+
+        return $finalResult;
     }
 
     public static function getGroupsByUserId($userId, $resultType = null, $field = null) {
         $query = 'select distinct group_id from group_data where user_id = ?';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
 
-            $finalResult = null;
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultData = array();
-                    while ($group_result = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($field)
-                            $resultData[] = $group_result[$field];
-                        else
-                            $resultData[] = $group_result;
-                    }
-                    $finalResult = $resultData;
-                } else $finalResult = $result;
-            }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            return $finalResult;
+        $finalResult = null;
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultData = array();
+                while ($group_result = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($field)
+                        $resultData[] = $group_result[$field];
+                    else
+                        $resultData[] = $group_result;
+                }
+                $finalResult = $resultData;
+            } else $finalResult = $result;
         }
+
+        return $finalResult;
     }
 
     public static function createAdministratorUser($admin_first_name, $admin_last_name, $admin_username, $password, $admin_email, $clientId, $issuesPerPage, $svnAdministratorFlag, $clientAdministratorFlag, $currentDate) {
-
-        $t_hasher = new PasswordHash(8, FALSE);
-        $hash = $t_hasher->HashPassword($password);
+        $hash = UbirimiContainer::get()['password']->hash($password);
 
         $query = "INSERT INTO user(first_name, last_name, username, password, email, " .
                                   "client_id, issues_per_page, svn_administrator_flag, client_administrator_flag, date_created) " .
@@ -76,20 +73,17 @@ class User {
         $query = "INSERT INTO user(client_id, country_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $t_hasher = new PasswordHash(8, FALSE);
-        $hash = $t_hasher->HashPassword($password);
+        $hash = UbirimiContainer::get()['password']->hash($password);
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("iisssssiis", $clientId, $countryId, $firstName, $lastName, $email, $username, $hash, $issuesPerPage, $customerServiceDeskFlag, $currentDate);
-            $stmt->execute();
+        $stmt->bind_param("iisssssiis", $clientId, $countryId, $firstName, $lastName, $email, $username, $hash, $issuesPerPage, $customerServiceDeskFlag, $currentDate);
+        $stmt->execute();
 
-            return array(UbirimiContainer::get()['db.connection']->insert_id, $password);
-        }
+        return array(UbirimiContainer::get()['db.connection']->insert_id, $password);
     }
 
     public static function deleteById($userId) {
-
         // delete yongo related entities
         $query = 'delete from issue_comment where user_id = ' . $userId;
         UbirimiContainer::get()['db.connection']->query($query);
@@ -136,17 +130,43 @@ class User {
                  "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, sys_country.name as country_name " .
             "FROM user " .
             "left join sys_country on sys_country.id = user.country_id " .
-            "WHERE user.id = ?";
+            "WHERE user.id = ? " .
+            "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
+    }
+
+    public static function getByIds($Ids, $resultType = null) {
+        $query = "SELECT user.id, user.client_id, password, first_name, last_name, email, username, user.date_created, user.avatar_picture, " .
+                 "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, sys_country.name as country_name " .
+            "FROM user " .
+            "left join sys_country on sys_country.id = user.country_id " .
+            "WHERE user.id IN (" . implode(', ', $Ids) . ")";
+
+        $finalResult = null;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultData = array();
+                while ($user = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultData[] = $user;
+                }
+                $finalResult = $resultData;
+            } else $finalResult = $result;
+        } else {
+            $finalResult = null;
         }
+
+        return $finalResult;
     }
 
     public static function updateById($userId, $firstName, $lastName, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
@@ -159,14 +179,13 @@ class User {
         $query .= 'WHERE id = ? ' .
                   'LIMIT 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($issuesPerPage)
-                $stmt->bind_param("ssssiisii", $firstName, $lastName, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $issuesPerPage, $userId);
-            else
-                $stmt->bind_param("ssssiisi", $firstName, $lastName, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $userId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($issuesPerPage)
+            $stmt->bind_param("ssssiisii", $firstName, $lastName, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $issuesPerPage, $userId);
+        else
+            $stmt->bind_param("ssssiisi", $firstName, $lastName, $email, $username, $clientAdministratorFlag, $customerServiceDeskFlag, $date, $userId);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function checkUserInProjectRoleId($userId, $projectId, $roleId) {
@@ -176,23 +195,22 @@ class User {
             "AND project_id = ? " .
             "AND user_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iii", $roleId, $projectId, $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $roleId, $projectId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getGroupsForUserIdAndRoleId($userId, $projectId, $roleId, $groupIds) {
-
         $queryCondition = '';
         if (!empty($groupIds)) {
             $queryCondition = " OR group_id IN (" . implode(', ', $groupIds) . ')';
         }
+
         $query = "SELECT project_role_data.id, project_role_data.user_id, group.id as group_id, group.name as group_name " .
             "FROM project_role_data " .
             "left join `group` on `group`.id = project_role_data.group_id " .
@@ -201,15 +219,14 @@ class User {
             "AND (user_id = ? " . $queryCondition . ') ' .
             "and project_role_data.group_id is not null";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iii", $roleId, $projectId, $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $roleId, $projectId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function checkProjectRole($userId, $projectId, $roleId, $groupIds) {
@@ -221,19 +238,17 @@ class User {
                         "AND (user_id = ? OR group_id IN (" . implode(', ', $groupIds) . ')) ' .
                     "order by project_role_data.user_id";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iii", $roleId, $projectId, $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $roleId, $projectId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByClientId($clientId, $helpDeskFlag = 0) {
-
         $query = "SELECT user.*, help_organization.name as organization_name " .
             "FROM user " .
             'left join help_organization_user on help_organization_user.user_id = user.id ' .
@@ -242,15 +257,14 @@ class User {
             'and customer_service_desk_flag = ' . $helpDeskFlag . ' ' .
             "order by user.first_name, user.last_name asc";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function hasGlobalPermission($clientId, $userId, $globalPermissionId) {
@@ -273,24 +287,23 @@ class User {
             'sys_permission_global_data.user_id = ? and ' .
             'user.id is not null ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiii", $clientId, $globalPermissionId, $userId, $clientId, $globalPermissionId, $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiiiii", $clientId, $globalPermissionId, $userId, $clientId, $globalPermissionId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function deleteGroupsByUserId($userId) {
         $query = 'delete from group_data where user_id = ? ';
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-        }
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
     }
 
     public static function addGroups($userId, $assigned_user_groups) {
@@ -307,10 +320,9 @@ class User {
     public static function updatePassword($userId, $hash) {
         $query = 'UPDATE user SET password = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("si", $hash, $userId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $hash, $userId);
+        $stmt->execute();
     }
 
     public static function getByUsernameAndBaseURL($username, $baseURL) {
@@ -322,16 +334,35 @@ class User {
             "and client.base_url = ? " .
             "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ss", $username, $baseURL);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("ss", $username, $baseURL);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
+    }
+
+    public static function getByUsernameAndClientDomain($username, $domain) {
+        $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
+                         super_user_flag, client.company_domain, svn_administrator_flag, client_administrator_flag ' .
+            'FROM user ' .
+            'left join client on client.id = user.client_id ' .
+            "WHERE username = ? " .
+            "and client.company_domain = ? " .
+            "LIMIT 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ss", $username, $domain);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getByUsernameAndClientId($username, $clientId, $resultColumn = null, $userId = null) {
@@ -347,28 +378,27 @@ class User {
 
         $query .= "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $username = mb_strtolower($username);
-            if ($userId) {
-                $stmt->bind_param("sii", $username, $clientId, $userId);
-            } else {
-                $stmt->bind_param("si", $username, $clientId);
-            }
-
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows) {
-                $data = $result->fetch_array(MYSQLI_ASSOC);
-                if ($resultColumn) {
-                    return $data[$resultColumn];
-                } else {
-                    return $data;
-                }
-            } else
-                return null;
+        $username = mb_strtolower($username);
+        if ($userId) {
+            $stmt->bind_param("sii", $username, $clientId, $userId);
+        } else {
+            $stmt->bind_param("si", $username, $clientId);
         }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows) {
+            $data = $result->fetch_array(MYSQLI_ASSOC);
+            if ($resultColumn) {
+                return $data[$resultColumn];
+            } else {
+                return $data;
+            }
+        } else
+            return null;
     }
 
     public static function getCustomerByEmailAddressAndClientId($username, $clientId) {
@@ -377,18 +407,17 @@ class User {
                  "WHERE email = ? and customer_service_desk_flag = 1 and client_id = ? " .
                  "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("si", $username, $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->bind_param("si", $username, $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows) {
-                $data = $result->fetch_array(MYSQLI_ASSOC);
-                return $data;
-            } else
-                return null;
-        }
+        if ($result->num_rows) {
+            $data = $result->fetch_array(MYSQLI_ASSOC);
+            return $data;
+        } else
+            return null;
     }
 
     public static function getByEmailAddress($clientId, $emailAddress) {
@@ -398,17 +427,16 @@ class User {
                  "WHERE client_id = ? and email = ? " .
                  "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("is", $clientId, mb_strtolower($emailAddress));
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->bind_param("is", $clientId, mb_strtolower($emailAddress));
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getByUsernameAndAdministrator($username) {
@@ -417,16 +445,33 @@ class User {
             "WHERE username = ? and client_administrator_flag = 1 and customer_service_desk_flag = 0 " .
             "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("s", $username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
+    }
+
+    public static function getByUsernameAndPassword($username, $password)
+    {
+        $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password, super_user_flag, svn_administrator_flag ' .
+            'FROM user ' .
+            "WHERE username = ? and password = ? " .
+            "LIMIT 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getAll($filters = array()) {
@@ -449,16 +494,16 @@ class User {
         if (isset($filters['limit'])) {
             $query .= ' limit ' . $filters['limit'];
         }
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function getYongoSettings($userId) {
@@ -467,16 +512,15 @@ class User {
             'where id = ? ' .
             'limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function updatePreferences($userId, $parameters) {
@@ -497,35 +541,33 @@ class User {
         $values[] = $userId;
         $valuesType .= 'i';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            foreach ($values as $key => $value)
-                $values_ref[$key] = &$values[$key];
+        foreach ($values as $key => $value)
+            $values_ref[$key] = &$values[$key];
 
-            if ($valuesType != '')
-                call_user_func_array(array($stmt, "bind_param"), array_merge(array($valuesType), $values_ref));
-            $stmt->execute();
-            $result = $stmt->get_result();
-        }
+        if ($valuesType != '')
+            call_user_func_array(array($stmt, "bind_param"), array_merge(array($valuesType), $values_ref));
+        $stmt->execute();
+
+        $result = $stmt->get_result();
     }
 
     public static function getNotSVNAdministrators($clientId) {
         $query = 'SELECT user.* FROM user WHERE client_id = ? and svn_administrator_flag = 0 and customer_service_desk_flag = 0';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByEmailAddressAndBaseURL($address, $baseURL) {
-
         $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password, ' .
                   'super_user_flag, client.company_domain, svn_administrator_flag ' .
             'FROM user ' .
@@ -534,20 +576,18 @@ class User {
             "and client.base_url = ? " .
             "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ss", $address, $baseURL);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("ss", $address, $baseURL);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getCustomerByEmailAddressAndBaseURL($address, $baseURL) {
-
         $query = 'SELECT user.id, email, first_name, last_name, client_id, password, ' .
                   'client.company_domain ' .
             'FROM user ' .
@@ -557,20 +597,18 @@ class User {
                 "and client.base_url = ? " .
             "LIMIT 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ss", $address, $baseURL);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("ss", $address, $baseURL);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getIssueSecurityLevelsBySecuritySchemeId($issue, $loggedInUserId) {
-
         $securityLevelId = $issue['security_level'];
         $projectId = $issue['issue_project_id'];
         $issueId = $issue['id'];
@@ -640,16 +678,15 @@ class User {
                 'project.lead_id is not null and ' .
                 'user.id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiiiiiiiiiiiiiiii", $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $issueId, $securityLevelId, $loggedInUserId, $issueId, $securityLevelId, $loggedInUserId, $projectId, $securityLevelId, $loggedInUserId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiiiiiiiiiiiiiiii", $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $issueId, $securityLevelId, $loggedInUserId, $issueId, $securityLevelId, $loggedInUserId, $projectId, $securityLevelId, $loggedInUserId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return true;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return true;
+        else
+            return false;
     }
 
     public static function getYongoActivityStream($userId) {
@@ -678,18 +715,15 @@ class User {
 
             "order by date_created desc";
 
-//            echo $query;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-
-            $stmt->bind_param("ii", $userId, $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("ii", $userId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getDocumentatorActivityStream($userId) {
@@ -720,61 +754,56 @@ class User {
 
         $query .= 'order by date desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("iiii", $userId, $userId, $userId, $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("iiii", $userId, $userId, $userId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByEmailAddressAndIsClientAdministrator($emailAddress) {
         $query = 'select email, id from user where client_administrator_flag = 1 and LOWER(email) = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("s", $emailAddress);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("s", $emailAddress);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->num_rows;
-            else {
-                return null;
-            }
+        if ($result->num_rows)
+            return $result->num_rows;
+        else {
+            return null;
         }
     }
 
     public static function getUserByClientIdAndEmailAddress($clientId, $email) {
         $query = 'select email, id from user where client_id = ? and LOWER(email) = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("is", $clientId, $email);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->num_rows;
-            else {
-                return null;
-            }
+        if ($result->num_rows)
+            return $result->num_rows;
+        else {
+            return null;
         }
     }
 
     public static function updateAvatar($avatar, $userId) {
         $query = 'UPDATE user SET avatar_picture = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("si", $avatar, $userId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $avatar, $userId);
+        $stmt->execute();
     }
 
     public static function getUserAvatarPicture($user, $size = null) {
-
         if (null !==  $user['avatar_picture'] && !empty($user['avatar_picture'])) {
             $pictureData = pathinfo($user['avatar_picture']);
             $fileName = $pictureData['filename'];
@@ -793,10 +822,9 @@ class User {
     public static function updateDisplayColumns($userId, $data) {
         $query = 'UPDATE user SET issues_display_columns = ? where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("si", $data, $userId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $data, $userId);
+        $stmt->execute();
     }
 
     public static function updateLoginTime($userId, $datetime)
@@ -806,5 +834,20 @@ class User {
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $datetime, $userId);
         $stmt->execute();
+    }
+
+    public static function getByClientIdAndFullName($clientId, $fullName) {
+        $query = 'select * from user where client_id = ? and CONCAT(first_name, " ", last_name) = ?';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $fullName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else {
+            return null;
+        }
     }
 }

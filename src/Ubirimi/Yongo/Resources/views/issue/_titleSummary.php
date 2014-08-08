@@ -1,3 +1,5 @@
+<?php use Ubirimi\SystemProduct; ?>
+
 <table width="100%" class="headerPageBackground">
     <tr>
         <td width="48px">
@@ -5,7 +7,11 @@
         </td>
         <td>
             <div class="headerPageText">
-                <a class="linkNoUnderline" href="/yongo/project/<?php echo $projectId ?>"><?php echo $issueProject['name'] ?></a> /
+                <?php if (SystemProduct::SYS_PRODUCT_HELP_DESK == $session->get('selected_product_id')): ?>
+                    <a class="linkNoUnderline" href="/helpdesk/customer-portal/project/<?php echo $projectId ?>"><?php echo $issueProject['name'] ?></a> /
+                <?php else: ?>
+                    <a class="linkNoUnderline" href="/yongo/project/<?php echo $projectId ?>"><?php echo $issueProject['name'] ?></a> /
+                <?php endif ?>
                 <?php
                     if (isset($parentIssue)) {
                         echo $parentIssue['project_code'] . '-' . $parentIssue['nr'] . ' <a class="linkNoUnderline" href="/yongo/issue/' . $parentIssue['id'] . '">' . $parentIssue['summary'] . '</a> / ';

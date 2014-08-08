@@ -30,10 +30,10 @@
                     <td valign="top">Code</td>
                     <td>
                         <input class="inputText" type="text" value="<?php if ($project && $project['code']) echo $project['code']; ?>" name="code"/>
-                        <?php if ($empty_code): ?>
+                        <?php if ($emptyCode): ?>
                             <br />
                             <div class="error">The code of the project can not be empty.</div>
-                        <?php elseif ($duplicate_code): ?>
+                        <?php elseif ($duplicateCode): ?>
                             <br />
                             <div class="error">Duplicate project code. Please choose another code.</div>
                         <?php endif ?>
@@ -88,14 +88,7 @@
                             <?php endwhile ?>
                         </select>
                     </td>
-                </tr>
-                <tr>
-                    <td>Enable for Helpdesk</td>
-                    <td>
-                        <input type="checkbox" value="1" <?php if ($project['help_desk_enabled_flag']) echo 'checked="checked"' ?> name="enable_for_helpdesk" />
-                    </td>
-                </tr>
-                <tr>
+                </tr>                <tr>
                     <td colspan="2">
                         <hr size="1" />
                     </td>

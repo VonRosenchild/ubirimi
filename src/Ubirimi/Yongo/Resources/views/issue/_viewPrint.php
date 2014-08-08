@@ -9,7 +9,7 @@
     $issueId = $issue['id'];
 
     $components = IssueComponent::getByIssueIdAndProjectId($issueId, $issue['issue_project_id']);
-    $versions_affected = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
     $attachments = IssueAttachment::getByIssueId($issueId);
     $countAttachments = 0;
@@ -50,8 +50,8 @@
             <td><?php echo $issue['ur_first_name'] . ' ' . $issue['ur_last_name'] ?></td>
             <td>Affected version</td>
             <td>
-                <?php if ($versions_affected): ?>
-                    <?php while ($version = $versions_affected->fetch_array(MYSQLI_ASSOC)): ?>
+                <?php if ($versionsAffected): ?>
+                    <?php while ($version = $versionsAffected->fetch_array(MYSQLI_ASSOC)): ?>
                         <span><?php echo $version['name'] ?></span>
                     <?php endwhile ?>
                 <?php else: ?>

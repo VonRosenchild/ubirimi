@@ -267,7 +267,8 @@ function doTransitionWithScreen(issueId, stepIdFrom, stepIdTo, workflowId, modal
 
 $('document').ready(function () {
 
-    $(".chzn-select").chosen();
+    $(".select2Input").select2();
+    $(".select2InputSmall").select2();
 
     $(function () {
         $("#sortable").sortable({
@@ -919,7 +920,7 @@ $('document').ready(function () {
                         // restore fields data
                         restoreFieldsData(fields, fieldsData);
 
-                        $(".chzn-select").chosen();
+                        $("select.select2Input").select2();
                         var due_date_picker = $("#field_type_due_date");
                         if (due_date_picker.length) {
                             due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
@@ -1550,7 +1551,7 @@ $('document').ready(function () {
                     // restore fields data
                     restoreFieldsData(fields, fieldsData);
 
-                    $(".chzn-select").chosen();
+                    $("select.select2Input").select2();
                     var due_date_picker = $("#field_type_due_date");
                     if (due_date_picker.length) {
                         due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
@@ -1581,7 +1582,7 @@ $('document').ready(function () {
                     // restore fields data
                     restoreFieldsData(fields, fieldsData);
 
-                    $(".chzn-select").chosen();
+                    $(".select2Input").select2();
                     var due_date_picker = $("#field_type_due_date");
                     if (due_date_picker.length) {
                         due_date_picker.datepicker({dateFormat: "yy-mm-dd"});
@@ -1709,8 +1710,6 @@ $('document').ready(function () {
                 var userFirstLastName = element.parent().parent().children().first().html();
 
                 $('#user_to_watch').append('<option value="' + watcherId + '">' + userFirstLastName + '</option>');
-                $(".chzn-select").trigger('chosen:updated');
-
             }
         });
     });
@@ -1800,11 +1799,7 @@ $('document').ready(function () {
                     $('#contentAddIssueWatcher').css('box-shadow', '3px 3px 5px rgba(0, 0, 0, 0.5)');
                     $('#contentAddIssueWatcher').show();
                     $('#contentAddIssueWatcher').html(response);
-                    $(".chzn-select").chosen({
-                        placeholder_text_multiple: 'Select some users',
-                        no_results_text: "Oops, no users found!"
-                    });
-
+                    $(".select2Input").select2();
                 }
             });
         }
@@ -1863,14 +1858,15 @@ $('document').ready(function () {
         if (!projectId) {
             projectId = $('#project_id').val();
         }
+
         $.ajax({
             type: "POST",
             url: '/yongo/chart/get/created-vs-resolved',
+            dataType: 'json',
             data: {
                 id: projectId
             },
-            success: function (response) {
-                var chartData = jQuery.parseJSON(response);
+            success: function (chartData) {
                 var data = [
                     ['time', 'Created', 'Resolved']
                 ];
@@ -1992,13 +1988,25 @@ $('document').ready(function () {
     $(document).on('click', '#perm_choose_user', function (event) {
         $('#label_user_permission').prop('checked', true);
     });
+    $(document).on('click', '#not_choose_user', function (event) {
+        $('#label_user_notification').prop('checked', true);
+    });
 
     $(document).on('click', '#perm_choose_group', function (event) {
         $('#label_group_permission').prop('checked', true);
     });
+    $(document).on('click', '#not_choose_group', function (event) {
+        $('#label_group_notification').prop('checked', true);
+    });
 
     $(document).on('click', '#perm_choose_project_role', function (event) {
         $('#label_project_role_permission').prop('checked', true);
+    });
+    $(document).on('click', '#not_choose_project_role', function (event) {
+        $('#label_project_role_notification').prop('checked', true);
+    });
+    $(document).on('click', '#not_select_user_picker_multiple_selection', function (event) {
+        $('#label_user_picker_multiple_selection').prop('checked', true);
     });
 
     $(document).on('change', '#move_to_project', function (event) {

@@ -34,4 +34,12 @@
             <td><span>Entered Status: <?php echo $availableStatus['name'] ?></span></td>
         </tr>
     <?php endwhile ?>
+    <tr>
+        <td width="20px">
+            <input type="checkbox" <?php if (isset($slaConditions) && in_array($prefixElementName . '_comment_by_assignee', $slaConditions)) echo 'checked="checked"' ?>
+                   value="1"
+                   name="<?php echo $prefixElementName ?>_comment_by_assignee" />
+        </td>
+        <td><span>Comment: By Assignee</span></td>
+    </tr>
 </table>

@@ -1,62 +1,78 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Repository\HelpDesk\Organization;
-    use Ubirimi\Repository\HelpDesk\OrganizationCustomer;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientDomain = $session->get('client/company_domain');
+namespace Ubirimi\HelpDesk\Controller\Administration\Customer;
 
-    $organizationId = isset($_GET['id']) ? $_GET['id'] : null;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\HelpDesk\Organization;
+use Ubirimi\Repository\HelpDesk\OrganizationCustomer;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Container\UbirimiContainer;
 
-    $errors = array('empty_email' => false,
-                    'email_not_valid' => false,
-                    'email_already_exists' => false);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientDomain = $session->get('client/company_domain');
 
-    $organizations = Organization::getByClientId($clientId);
+        $organizationId = $request->query->get('id');
 
-    if (isset($_POST['confirm_new_customer'])) {
+        $errors = array(
+            'empty_email' => false,
+            'email_not_valid' => false,
+            'email_already_exists' => false
+        );
 
-        $email = Util::cleanRegularInputField($_POST['email']);
-        $firstName = Util::cleanRegularInputField($_POST['first_name']);
-        $lastName = Util::cleanRegularInputField($_POST['last_name']);
+        $organizations = Organization::getByClientId($session->get('client/id'));
 
-        if (empty($email)) {
-            $errors['empty_email'] = true;
-        } else if (!Util::isValidEmail($email)) {
-            $errors['email_not_valid'] = true;
-        }
+        if ($request->request->has('confirm_new_customer')) {
+            $email = Util::cleanRegularInputField($request->request->get('email'));
+            $firstName = Util::cleanRegularInputField($request->request->get('first_name'));
+            $lastName = Util::cleanRegularInputField($request->request->get('last_name'));
 
-        $emailData = User::getUserByClientIdAndEmailAddress($clientId, mb_strtolower($email));
-        if ($emailData)
-            $errors['email_already_exists'] = true;
+            if (empty($email)) {
+                $errors['empty_email'] = true;
+            } else if (!Util::isValidEmail($email)) {
+                $errors['email_not_valid'] = true;
+            }
 
-        if (Util::hasNoErrors($errors)) {
-            $password = Util::randomPassword(8);
+            $emailData = User::getUserByClientIdAndEmailAddress(
+                $session->get('client/id'),
+                mb_strtolower($email)
+            );
 
-            $userId = UbirimiContainer::get()['user']->newUser(
-                array(
-                    'clientId' => $clientId,
+            if ($emailData)
+                $errors['email_already_exists'] = true;
+
+            if (Util::hasNoErrors($errors)) {
+                $password = Util::randomPassword(8);
+
+                $userId = UbirimiContainer::get()['user']->newUser(array(
+                    'clientId' => $session->get('client/id'),
                     'firstName' => $firstName,
                     'lastName' => $lastName,
                     'password' => $password,
                     'email' => $email,
                     'isCustomer' => true,
                     'clientDomain' => $session->get('client/company_domain')
-                )
-            );
+                ));
 
-            if ($organizationId) {
-                OrganizationCustomer::create($organizationId, $userId);
-                header('Location: /helpdesk/administration/customers/' . $organizationId);
-            } else {
-                header('Location: /helpdesk/administration/customers');
+                if ($organizationId) {
+                    OrganizationCustomer::create($organizationId, $userId);
+                    return new RedirectResponse('/helpdesk/administration/customers/' . $organizationId);
+                }
+
+                return new RedirectResponse('/helpdesk/administration/customers');
             }
         }
+        $menuSelectedCategory = 'general_user';
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Create User';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/customer/Add.php', get_defined_vars());
     }
-    $menuSelectedCategory = 'general_user';
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Create User';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/customer/Add.php';
+}

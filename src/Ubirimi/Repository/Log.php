@@ -4,17 +4,17 @@ namespace Ubirimi\Repository;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class Log {
-
+class Log
+{
     public static function add($clientId, $productId, $userId, $message) {
         $query = "INSERT INTO general_log(client_id, sys_product_id, user_id, message, date_created) VALUES (?, ?, ?, ?, NOW())";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("iiis", $clientId, $productId, $userId, $message);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        $stmt->bind_param("iiis", $clientId, $productId, $userId, $message);
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getAll() {
@@ -26,16 +26,13 @@ class Log {
             "order by id desc " .
             "limit 100";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        } else {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
             return null;
-        }
     }
 
     public static function getByClientIdAndInterval($clientId, $from, $to) {
@@ -49,16 +46,13 @@ class Log {
             "DATE(general_log.date_created) <= ? " .
             "order by id desc";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iss", $clientId, $from, $to);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        } else {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iss", $clientId, $from, $to);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
             return null;
-        }
     }
 }

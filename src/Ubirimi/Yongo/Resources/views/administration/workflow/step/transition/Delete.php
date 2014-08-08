@@ -1,10 +1,10 @@
 <?php
     use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../_header.php';
+    require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
-    <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php require_once __DIR__ . '/../../../_menu.php'; ?>
     <div class="pageContent">
         <?php
             $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Step: ' . $step['name'] . ' > Delete Transitions';
@@ -39,5 +39,5 @@
             </table>
         </form>
     </div>
-    <?php require_once __DIR__ . '/../../_footer.php' ?>
+    <?php require_once __DIR__ . '/../../../_footer.php' ?>
 </body>

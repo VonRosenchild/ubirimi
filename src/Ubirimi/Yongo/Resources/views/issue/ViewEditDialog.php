@@ -11,6 +11,8 @@
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\Repository\User\User;
+    use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
 
     $issueId = $issueData['id'];
     $projectId = $issueData['issue_project_id'];
@@ -27,34 +29,40 @@
     $userHasAssignIssuePermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
     $userHasSetSecurityLevelPermission = Project::userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
 
+    $timeTrackingFieldId = null;
     $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
     $issueSecuritySchemeId = $project['issue_security_scheme_id'];
     $issueSecuritySchemeLevels = null;
-    if ($issueSecuritySchemeId)
+    if ($issueSecuritySchemeId) {
         $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+    }
 
     $projectComponents = Project::getComponents($projectId);
     $issueComponents = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
     $arrIssueComponents = array();
 
-    if ($issueComponents)
-        while ($row = $issueComponents->fetch_array(MYSQLI_ASSOC))
+    if ($issueComponents) {
+        while ($row = $issueComponents->fetch_array(MYSQLI_ASSOC)) {
             $arrIssueComponents[] = $row['project_component_id'];
+        }
+    }
 
     $projectVersions = Project::getVersions($projectId);
     $issue_versions_affected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $arr_issue_versions_affected = array();
-    if ($issue_versions_affected)
+    if ($issue_versions_affected) {
         while ($row = $issue_versions_affected->fetch_array(MYSQLI_ASSOC))
             $arr_issue_versions_affected[] = $row['project_version_id'];
+    }
 
     $issue_versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
     $arr_issue_versions_targeted = array();
-    if ($issue_versions_targeted)
+    if ($issue_versions_targeted) {
         while ($row = $issue_versions_targeted->fetch_array(MYSQLI_ASSOC))
             $arr_issue_versions_targeted[] = $row['project_version_id'];
-
+    }
+    $allUsers = User::getByClientId($clientId);
     $fieldData = Project::getFieldInformation($project['issue_type_field_configuration_id'], $issueTypeId, 'array');
     $fieldsPlacedOnScreen = array();
 
@@ -66,10 +74,13 @@
 
     $fieldCodeNULL = null;
     while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
+
         if (!$userHasSetSecurityLevelPermission && $field['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL)
             continue;
 
         if ($field['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
+            $fieldsPlacedOnScreen[] = $field['field_id'];
+            $timeTrackingFieldId = $field['field_id'];
             continue;
         }
 
@@ -89,7 +100,7 @@
                     switch ($field['field_code']) {
 
                         case Field::FIELD_ISSUE_TYPE_CODE:
-                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="type" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="type" class="select2Input mousetrap">';
 
                             while ($type = $projectIssueTypes->fetch_array(MYSQLI_ASSOC)) {
                                 $selected = '';
@@ -105,7 +116,7 @@
                             if (!$userHasModifyReporterPermission)
                                 $textDisabled = 'disabled="disabled"';
 
-                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="select2Input mousetrap">';
                             while ($user = $reporterUsers->fetch_array(MYSQLI_ASSOC)) {
                                 $textSelected = '';
                                 if ($issueData[Field::FIELD_REPORTER_CODE] == $user['user_id'])
@@ -137,7 +148,7 @@
                             break;
 
                         case Field::FIELD_PRIORITY_CODE:
-                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="select2Input mousetrap">';
                             while ($priority = $issuePriorities->fetch_array(MYSQLI_ASSOC)) {
                                 $text = '';
                                 if ($priority['id'] == $issueData[Field::FIELD_PRIORITY_CODE])
@@ -154,7 +165,7 @@
                             if (!$userHasAssignIssuePermission)
                                 $textDisabled = 'disabled="disabled"';
 
-                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
+                            echo '<select ' . $textDisabled . ' ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="select2Input mousetrap">';
                             if ($allowUnassignedIssuesFlag) {
                                 $textSelected = '';
                                 if (!$issueData[Field::FIELD_ASSIGNEE_CODE])
@@ -189,7 +200,7 @@
 
                         case Field::FIELD_COMPONENT_CODE:
                             if ($projectComponents) {
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 $printedComponents = array();
                                 Project::renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
                                 echo '</select>';
@@ -201,7 +212,7 @@
 
                         case Field::FIELD_AFFECTS_VERSION_CODE:
                             if ($projectVersions) {
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     $textSelected = '';
                                     if (in_array($version['id'], $arr_issue_versions_affected))
@@ -217,7 +228,7 @@
                         case Field::FIELD_FIX_VERSION_CODE:
                             if ($projectVersions) {
                                 $projectVersions->data_seek(0);
-                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select mousetrap" style="width: 100%;">';
+                                echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                     $textSelected = '';
                                     if (in_array($version['id'], $arr_issue_versions_targeted))
@@ -243,7 +254,6 @@
 
                         case $fieldCodeNULL:
                             $fieldValue = Field::getCustomFieldValueByFieldId($issueId, $field['field_id']);
-
                             // deal with the custom fields
                             switch ($field['type_code']) {
                                 case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
@@ -272,11 +282,11 @@
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
                                     break;
 
-                                case Field::CUSTOM_FIELD_SELECT_LIST_SINGLE_CHOICE:
+                                case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
 
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
 
-                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
                                     echo '<option value="">None</option>';
                                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
                                         $selectedHTML = '';
@@ -286,6 +296,33 @@
                                         echo '<option ' . $selectedHTML . ' value="' . $customValue['id'] . '">' . $customValue['value'] . '</option>';
                                     }
                                     echo '</select>';
+                                    break;
+
+                                case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
+                                    $customFieldsDataUserPickerMultipleUserData = IssueCustomField::getUserPickerData($issueId, $field['field_id']);
+
+                                    $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
+
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';
+                                    while ($allUsers && $systemUser = $allUsers->fetch_array(MYSQLI_ASSOC)) {
+                                        $userFound = false;
+                                        if ($customFieldsDataUserPickerMultipleUser) {
+                                            foreach ($customFieldsDataUserPickerMultipleUser as $fieldUser) {
+                                                if ($fieldUser['user_id'] == $systemUser['id']) {
+                                                    $userFound = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        $textSelected = '';
+                                        if ($userFound) {
+                                            $textSelected = 'selected="selected"';
+                                        }
+                                        echo '<option ' . $textSelected . ' value="' . $systemUser['id'] . '">' . $systemUser['first_name'] . ' ' . $systemUser['last_name'] . '</option>';
+                                    }
+                                    echo '</select>';
+                                    $allUsers->data_seek(0);
                                     break;
                             }
                             if ($field['description']) {
@@ -300,37 +337,40 @@
     }
 
     if ($timeTrackingFlag) {
-        // deal with the time tracking fields
-        for ($i = 0; $i < count($fieldData); $i++) {
-            if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
+        if (in_array($timeTrackingFieldId, $fieldsPlacedOnScreen)) {
+            // deal with the time tracking fields
+            for ($i = 0; $i < count($fieldData); $i++) {
+                if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
 
-                $arrayData = Util::checkKeyAndValueInArray('field_id', $fieldData[$i]['field_id'], $fieldData);
-                $mandatoryStarHTML = '';
-                if ($arrayData && $arrayData['visible_flag']) {
-                    if ($arrayData['required_flag'])
-                        $mandatoryStarHTML = '<span class="mandatory">*</span>';
+                    $arrayData = Util::checkKeyAndValueInArray('field_id', $fieldData[$i]['field_id'], $fieldData);
+                    $mandatoryStarHTML = '';
+                    if ($arrayData && $arrayData['visible_flag']) {
+                        if ($arrayData['required_flag'])
+                            $mandatoryStarHTML = '<span class="mandatory">*</span>';
 
-                    $requiredHTML = $arrayData['required_flag'] ? 'required="1"' : 'required="0"';
-                    echo '<tr>';
-                        echo '<td valign="top">Original Estimate ' . $mandatoryStarHTML . '</td>';
-                        echo '<td>';
-                            echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="' . $issueData['original_estimate'] . '" /> ';
-                            echo '<span>(eg. 3w 4d 12h)</span>';
-                            echo '<div class="smallDescription">The original estimate of how much work is involved in resolving this issue.</div>';
-                        echo '</td>';
-                    echo '</tr>';
-                    echo '<tr>';
-                        echo '<td valign="top">Remaining Estimate ' . $mandatoryStarHTML . '</td>';
-                        echo '<td>';
-                            echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="' . $issueData['remaining_estimate'] . '" /> ';
-                            echo '<span>(eg. 3w 4d 12h)</span>';
-                            echo '<div class="smallDescription">An estimate of how much work remains until this issue will be resolved.</div>';
-                        echo '</td>';
-                    echo '</tr>';
+                        $requiredHTML = $arrayData['required_flag'] ? 'required="1"' : 'required="0"';
+                        echo '<tr>';
+                            echo '<td valign="top">Original Estimate ' . $mandatoryStarHTML . '</td>';
+                            echo '<td>';
+                                echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="' . $issueData['original_estimate'] . '" /> ';
+                                echo '<span>(eg. 3w 4d 12h)</span>';
+                                echo '<div class="smallDescription">The original estimate of how much work is involved in resolving this issue.</div>';
+                            echo '</td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td valign="top">Remaining Estimate ' . $mandatoryStarHTML . '</td>';
+                            echo '<td>';
+                                echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="' . $issueData['remaining_estimate'] . '" /> ';
+                                echo '<span>(eg. 3w 4d 12h)</span>';
+                                echo '<div class="smallDescription">An estimate of how much work remains until this issue will be resolved.</div>';
+                            echo '</td>';
+                        echo '</tr>';
+                    }
                 }
             }
         }
     }
+
     for ($i = 0; $i < count($fieldData); $i++) {
         if ($fieldData[$i]['field_code'] != Field::FIELD_ISSUE_TIME_TRACKING) {
             if (!in_array($fieldData[$i]['field_id'], $fieldsPlacedOnScreen) && $fieldData[$i]['required_flag']) {

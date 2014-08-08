@@ -18,5 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/css/net.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/bootstrap.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
 
-    <?php require_once __DIR__ . '/../../../../Resources/views/_googleAnalytics.php' ?>
+    <?php if (UbirimiContainer::get()['deploy.on_demand']): ?>
+        <?php require_once __DIR__ . '/../../../../Resources/views/_googleAnalytics.php' ?>
+    <?php endif ?>
 </head>

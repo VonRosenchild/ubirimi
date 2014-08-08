@@ -1,11 +1,11 @@
 <?php
     use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../_header.php';
+    require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
 
-    <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php require_once __DIR__ . '/../../../_menu.php'; ?>
     <div class="pageContent">
         <?php
         $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Transition: ' . $workflowData['transition_name'] . ' > Summary';
@@ -56,5 +56,5 @@
         <input type="hidden" value="<?php echo $workflow['id'] ?>" id="workflow_id" />
         <div id="deleteWorkflowTransitionModal"></div>
     </div>
-    <?php require_once __DIR__ . '/../../_footer.php' ?>
+    <?php require_once __DIR__ . '/../../../_footer.php' ?>
 </body>

@@ -1,45 +1,65 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step;
 
-    $stepId = $_GET['id'];
-    $source = isset($_GET['source']) ? $_GET['source'] : 'step';
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Repository\Log;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
-    $step = Workflow::getStepById($stepId);
-    $workflowId = $step['workflow_id'];
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $workflow = Workflow::getMetaDataById($workflowId);
-    $statuses = IssueSettings::getAllIssueSettings('status', $clientId);
+        $stepId = $request->get('id');
+        $source = $request->get('source', 'step');
 
-    $emptyName = false;
+        $step = Workflow::getStepById($stepId);
+        $workflowId = $step['workflow_id'];
 
-    if (isset($_POST['edit_step'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $StatusId = Util::cleanRegularInputField($_POST['status']);
+        $workflow = Workflow::getMetaDataById($workflowId);
+        $statuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
 
-        if (!$emptyName) {
-            $currentDate = Util::getServerCurrentDateTime();
+        if ($request->request->has('edit_step')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $StatusId = Util::cleanRegularInputField($request->request->get('status'));
 
-            Workflow::updateStepById($stepId, $name, $StatusId, $currentDate);
+            if (empty($name))
+                $emptyName = true;
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Step ' . $step['name'], $currentDate);
+            if (!$emptyName) {
+                $currentDate = Util::getServerCurrentDateTime();
 
-            if ($source == 'workflow_text')
-                header('Location: /yongo/administration/workflow/view-as-text/' . $workflowId);
-            else
-                header('Location: /yongo/administration/workflow/view-step/' . $stepId);
+                Workflow::updateStepById($stepId, $name, $StatusId, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'UPDATE Yongo Workflow Step ' . $step['name'],
+                    $currentDate
+                );
+
+                if ($source == 'workflow_text') {
+                    return new RedirectResponse('/yongo/administration/workflow/view-as-text/' . $workflowId);
+                }
+
+                return new RedirectResponse('/yongo/administration/workflow/view-step/' . $stepId);
+            }
         }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow Step';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/workflow/step/Edit.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow Step';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/workflow/step/Edit.php';
+}

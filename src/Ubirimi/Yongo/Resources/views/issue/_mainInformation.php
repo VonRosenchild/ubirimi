@@ -170,7 +170,7 @@
             </table>
         </td>
     </tr>
-    <?php if ($customFieldsData): ?>
+    <?php if ($customFieldsData || $customFieldsDataUserPickerMultipleUser): ?>
         <?php require_once __DIR__ . '/../../views/issue/_custom_fields_data.php' ?>
     <?php endif ?>
 </table>

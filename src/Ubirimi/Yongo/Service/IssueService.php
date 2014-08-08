@@ -104,7 +104,6 @@ class IssueService extends UbirimiService
 
         // add sla information for this issue
         Issue::addPlainSLAData($newIssueId, $projectId);
-        $issueSLAData = Issue::updateSLAValue($issue, $clientId, $clientSettings);
 
         return $issue;
     }

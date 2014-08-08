@@ -4,6 +4,9 @@
  Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
  */
 
+var finishedUpload = [];
+var xhrFileUpload = null;
+
 // getElementById
 function $id(id) {
     return document.getElementById(id);
@@ -22,6 +25,9 @@ function FileDragHover(e) {
 // file selection
 function FileSelectHandler(e) {
 
+    $('.ui-dialog-buttonset button').first().addClass('disabled');
+    $('.ui-dialog-buttonset button').first().children().addClass('disabled');
+
     // cancel event and hover styling
     FileDragHover(e);
 
@@ -33,17 +39,18 @@ function FileSelectHandler(e) {
     var elements = $("[id^='file_name_']");
     var max = 0;
     $("[id^='file_name_']").each(function(i, selected){
-        var id_element = $(this).attr("id").replace('file_name_', '')
+        var id_element = $(this).attr("id").replace('file_name_', '');
         if (id_element > max)
             max = id_element
     });
 
     max++;
+
     // process all File objects
     for (var i = 0; i < files.length; i++) {
         ParseFile(files[i], max + i);
-
-        UploadFile(files[i], max + i, e.data.issue_id);
+        finishedUpload[i] = 0;
+        UploadFile(files[i], max + i, e.data.issue_id, finishedUpload);
     }
 
 }
@@ -66,50 +73,61 @@ function ParseFile(file, index) {
         };
         reader.readAsText(file);
     }
-
 }
 
 // upload JPEG files
-function UploadFile(file, index, issueId) {
+function UploadFile(file, index, issueId, finishedUpload) {
 
     // following line is not necessary: prevents running on SitePoint servers
     if (location.host.indexOf("sitepointstatic") >= 0) return;
 
-    var xhr = new XMLHttpRequest();
-    if (xhr.upload) {
-
+    xhrFileUpload = new XMLHttpRequest();
+    if (xhrFileUpload.upload) {
+        uploadFinished = false;
         // create progress bar
         var o = $("#progress");
         o.append('<div id="file_name_' + index + '">' + file.name + '</div>');
         o.append('<p id="progress_' + index + '"></p>');
 
         // progress bar
-        xhr.upload.addEventListener("progress", function (e) {
+        xhrFileUpload.upload.addEventListener("progress", function (e) {
             var pc = parseInt(100 - (e.loaded / e.total * 100));
             $('#progress_' + index).css('backgroundPosition', pc + "% 0");
         }, false);
 
         // file received/failed
-        xhr.onreadystatechange = function (e) {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
+        xhrFileUpload.onreadystatechange = function (e) {
+            if (xhrFileUpload.readyState == 4) {
+                if (xhrFileUpload.status == 200) {
                     $('#progress_' + index).remove();
                     var html_filename = $('#file_name_' + index).html();
 
-                    $('#file_name_' + index).html('<input id="attach_' + xhr.responseText + '" type="checkbox" value="1" checked="checked" />' + html_filename)
+                    $('#file_name_' + index).html('<input id="attach_' + xhrFileUpload.responseText + '" type="checkbox" value="1" checked="checked" />' + html_filename)
+                    finishedUpload[index - 1] = 1;
+
+                    var finished = 1;
+                    for (var i = 0; i < finishedUpload.length; i++) {
+                        if (finishedUpload[i] == 0) {
+                            finished = 0;
+                        }
+                    }
+                    if (finished) {
+                        $('.ui-dialog-buttonset button').first().removeClass('disabled');
+                        $('.ui-dialog-buttonset button').first().children().removeClass('disabled')
+                    }
                 }
             }
         };
 
         // start upload
-        if (!issueId)
-            xhr.open("POST", '/yongo/upload-attachement', true);
-        else
-            xhr.open("POST", '/yongo/upload-attachement?issue_id=' + issueId, true);
+        if (!issueId) {
+            xhrFileUpload.open("POST", '/yongo/upload-attachement', true);
+        } else {
+            xhrFileUpload.open("POST", '/yongo/upload-attachement?issue_id=' + issueId, true);
+        }
 
-        xhr.setRequestHeader("X_FILENAME", file.name);
-
-        xhr.send(file);
+        xhrFileUpload.setRequestHeader("X_FILENAME", file.name);
+        xhrFileUpload.send(file);
     }
 }
 

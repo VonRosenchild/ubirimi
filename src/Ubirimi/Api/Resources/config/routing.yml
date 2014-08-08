@@ -1,0 +1,26 @@
+apiIssueGET:
+  path: /api/issue/{id}
+  defaults: { _controller: '\Ubirimi\Api\Controller\Issue\GetController' }
+  methods:  [GET]
+  requirements:
+    id:  \d+
+
+apiIssuePOST:
+  path: /api/issue
+  defaults: { _controller: '\Ubirimi\Api\Controller\Issue\PostController' }
+  methods:  [POST]
+
+apiIssueMetadataGET:
+  path: /api/issue/metadata
+  defaults: { _controller: '\Ubirimi\Api\Controller\Issue\MetadataController' }
+  methods:  [GET]
+
+apiProjectGET:
+  path: /api/project/{code}
+  defaults: { _controller: '\Ubirimi\Api\Controller\Project\GetController' }
+  methods:  [GET]
+
+apiUserGET:
+  path: /api/user/{username}
+  defaults: { _controller: '\Ubirimi\Api\Controller\User\GetController' }
+  methods:  [GET]

@@ -78,7 +78,8 @@ class RouteBootstrapService
             __DIR__ . '/../HelpDesk/Resources/config',
             __DIR__ . '/../Calendar/Resources/config',
             __DIR__ . '/../General/Resources/config',
-            __DIR__ . '/../QuickNotes/Resources/config'
+            __DIR__ . '/../QuickNotes/Resources/config',
+            __DIR__ . '/../Api/Resources/config'
         );
 
         /* for these two projects, the administration routes are in routing_administration files, so load them separately */

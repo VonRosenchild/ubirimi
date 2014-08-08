@@ -1,44 +1,64 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\Organization;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\HelpDesk\Controller\Administration\Organization;
 
-    $emptyName = false;
-    $duplicateOrganization = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\HelpDesk\Organization;
+use Ubirimi\SystemProduct;
+use Ubirimi\Repository\Log;
 
-    $organizationId = $_GET['id'];
-    $organization = Organization::getById($organizationId);
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if (isset($_POST['edit_organization'])) {
+        $emptyName = false;
+        $duplicateOrganization = false;
 
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        $organizationId = $request->get('id');
+        $organization = Organization::getById($organizationId);
 
-        if (empty($name)) {
-            $emptyName = true;
+        if ($request->request->has('edit_organization')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name)) {
+                $emptyName = true;
+            }
+
+            $organizationDuplicate = Organization::getByName(
+                $session->get('client/id'), mb_strtolower($name),
+                $organizationId
+            );
+
+            if ($organizationDuplicate) {
+                $duplicateOrganization = true;
+            }
+
+            if (!$emptyName && !$organizationDuplicate) {
+                $currentDate = Util::getServerCurrentDateTime();
+                Organization::updateById($organizationId, $name, $description, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_HELP_DESK,
+                    $session->get('user/id'),
+                    'UPDATE Organization ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/helpdesk/administration/organizations');
+            }
         }
 
-        $organizationDuplicate = Organization::getByName($clientId, mb_strtolower($name), $organizationId);
+        $menuSelectedCategory = 'helpdesk_organizations';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME. ' / Create Organization';
 
-        if ($organizationDuplicate) {
-            $duplicateOrganization = true;
-        }
-
-        if (!$emptyName && !$organizationDuplicate) {
-
-            $currentDate = Util::getServerCurrentDateTime();
-            Organization::updateById($organizationId, $name, $description, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_HELP_DESK, $loggedInUserId, 'UPDATE Organization ' . $name, $currentDate);
-
-            header('Location: /helpdesk/administration/organizations');
-        }
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/organization/EditOrganization.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'helpdesk_organizations';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME. ' / Create Organization';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/organization/EditOrganization.php';
+}

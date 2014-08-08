@@ -1,73 +1,16 @@
-!!! adauga calendarul default la fiecare proiect de help desk si modifica fiecare goal sa aibe acel calendar default
 
-ALTER TABLE  `user` ADD  `country_id` BIGINT UNSIGNED NULL AFTER  `client_id` ;
+====================== rulate pe live===========================
 
-ALTER TABLE  `yongo_issue` ADD  `user_reported_ip` VARCHAR( 30 ) NULL AFTER  `environment` ;
+ALTER TABLE `project` CHANGE `help_desk_enabled_flag` `help_desk_enabled_flag` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0';
 
-ALTER TABLE `yongo_issue` CHANGE `user_reported_ip` `user_reported_ip` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `client` ADD UNIQUE(`company_domain`);
 
-ALTER TABLE `project` CHANGE `service_desk_enabled_flag` `help_desk_enabled_flag` TINYINT(3) UNSIGNED NULL DEFAULT NULL;
+ALTER TABLE `help_sla_calendar_data` CHANGE `time_from` `time_from` VARCHAR(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 
-ALTER TABLE `help_sla_goal` ADD `help_sla_calendar_id` BIGINT UNSIGNED NOT NULL AFTER `help_sla_id`, ADD INDEX (`help_sla_calendar_id`) ;
+ALTER TABLE `help_sla_calendar_data` CHANGE `time_to` `time_to` VARCHAR(8) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 
-ALTER TABLE `yongo_issue_sla` ADD `value_between_cycles` INT NOT NULL DEFAULT '0' ;
+ALTER TABLE `issue_history` ADD `old_value_id` VARCHAR(250) NULL AFTER `new_value`, ADD `new_value_id` VARCHAR(250) NULL AFTER `old_value_id`;
 
+ALTER TABLE  `workflow_step` CHANGE  `initial_step_flag`  `initial_step_flag` TINYINT( 3 ) UNSIGNED NULL DEFAULT  '0';
 
-CREATE TABLE `field_data` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `field_id` bigint(20) unsigned NOT NULL,
-  `value` varchar(250) NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `field_id` (`field_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `help_sla_calendar` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `project_id` bigint(20) unsigned NOT NULL,
-  `sys_timezone_id` bigint(20) unsigned NOT NULL,
-  `default_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(150) NOT NULL,
-  `description` varchar(250) NOT NULL,
-  `date_created` datetime NOT NULL,
-  `date_updated` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `sys_timezone_id` (`sys_timezone_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `help_sla_calendar_data` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `help_sla_calendar_id` bigint(20) unsigned NOT NULL,
-  `day_number` int(10) unsigned NOT NULL,
-  `time_from` varchar(8) NOT NULL,
-  `time_to` varchar(8) NOT NULL,
-  `not_working_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `date_created` datetime NOT NULL,
-  `date_updated` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `help_calendar_id` (`help_sla_calendar_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-
-ALTER TABLE `help_sla_calendar` CHANGE `client_id` `project_id` BIGINT(20) UNSIGNED NOT NULL;
-
-ALTER TABLE `help_sla_goal` ADD `help_sla_calendar_id` BIGINT UNSIGNED NOT NULL AFTER `help_sla_id`, ADD INDEX (`help_sla_calendar_id`) ;
-
-ALTER TABLE `yongo_issue_sla` ADD `value_between_cycles` INT NOT NULL DEFAULT '0' ;
-
-ALTER TABLE `help_sla_calendar_data` ADD `not_working_flag` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `time_to`;
-
-ALTER TABLE `help_sla_calendar` ADD `default_flag` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sys_timezone_id`;
-ALTER TABLE `help_sla_calendar` CHANGE `client_id` `project_id` BIGINT(20) UNSIGNED NOT NULL;
-
-
-ALTER TABLE `notification_scheme_data` ADD `all_watchers` TINYINT UNSIGNED NULL AFTER `component_lead`;
-
-ALTER TABLE `project` CHANGE `service_desk_enabled_flag` `help_desk_enabled_flag` TINYINT(3) UNSIGNED NULL DEFAULT NULL;
-
-
-INSERT INTO `yongo`.`sys_field_type` (`id`, `name`, `description`, `code`) VALUES ('6', 'Select List (Single Choice)', 'A single select list with a configurable list of options', 'select_list_single');
-
-ALTER TABLE `field_data` ADD `date_updated` DATETIME NULL ;
-
-ALTER TABLE `client` ADD `last_login` DATETIME NULL DEFAULT NULL ;
-ALTER TABLE `user` ADD `last_login` DATETIME NULL DEFAULT NULL ;
+ALTER TABLE  `yongo_issue` CHANGE  `priority_id`  `priority_id` BIGINT( 20 ) UNSIGNED NULL;

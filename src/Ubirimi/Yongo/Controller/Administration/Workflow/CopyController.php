@@ -31,11 +31,14 @@ class CopyController extends UbirimiController
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
+
             $workflowAlreadyExisting = Workflow::getByClientIdAndName($session->get('client/id'), $name);
-            if ($workflowAlreadyExisting)
+            if ($workflowAlreadyExisting) {
                 $duplicateName = true;
+            }
 
             if (!$emptyName && !$workflowAlreadyExisting) {
                 $currentDate = Util::getServerCurrentDateTime();

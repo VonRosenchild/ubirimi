@@ -44,11 +44,10 @@ class IssueEmailService extends UbirimiService
     {
         $smtpSettings = $this->session->get('client/settings/smtp');
 
-        if ($smtpSettings) {
+        Email::$smtpSettings = $smtpSettings;
 
-            Email::$smtpSettings = $smtpSettings;
-            Email::triggerIssueUpdatedNotification($this->session->get('client/id'), $oldIssueData, $this->session->get('user/id'), $fieldChanges);
-        }
+        Email::triggerIssueUpdatedNotification($this->session->get('client/id'), $oldIssueData, $this->session->get('user/id'), $fieldChanges);
+
     }
 
     public function emailIssueDelete($issue, $project, $extraInformation)

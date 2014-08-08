@@ -97,10 +97,7 @@ class SaveController extends UbirimiController
 
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_NEW);
 
-        $issueLogEvent = new LogEvent(
-            SystemProduct::SYS_PRODUCT_YONGO,
-            'ADD Yongo issue ' . $project['code'] . '-' . $issue['nr']
-        );
+        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'ADD Yongo issue ' . $project['code'] . '-' . $issue['nr']);
 
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE, $issueEvent);
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
@@ -110,11 +107,6 @@ class SaveController extends UbirimiController
         $session->remove('array_ids');
         $session->remove('last_search_parameters');
 
-        if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_YONGO) {
-            return new Response(
-                'New Issue Created <a href="/yongo/issue/' . $issue['id'] . '">' . $project['code'] . '-' . $issue['nr'] . '</a>');
-        }
-
-        return new Response('New Issue Created <a href="/helpdesk/customer-portal/ticket/' . $issue['id'] . '">' . $project['code'] . '-' . $newIssueNumber . '</a>');
+        return new Response('New Issue Created <a href="/yongo/issue/' . $issue['id'] . '">' . $project['code'] . '-' . $issue['nr'] . '</a>');
     }
 }

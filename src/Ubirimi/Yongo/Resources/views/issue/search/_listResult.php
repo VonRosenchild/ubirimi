@@ -1,9 +1,9 @@
 <?php
     use Ubirimi\LinkHelper;
     use Ubirimi\Repository\HelpDesk\SLA;
-    use Ubirimi\SystemProduct;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
+    use Ubirimi\Yongo\Repository\Issue\Issue;
 
     $arrayIds = array();
     $selectedProductId = $session->get('selected_product_id');
@@ -16,7 +16,11 @@
         <table class="table table-hover table-condensed">
             <?php echo Util::renderTableHeader($getSearchParameters, $columns); ?>
             <?php while ($issue = $issues->fetch_array(MYSQLI_ASSOC)): ?>
-                <?php $arrayIds[] = $issue['id']; ?>
+                <?php
+                    $arrayIds[] = $issue['id'];
+
+                    $slaData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+                ?>
                 <tr>
                     <?php for ($i = 0; $i < count($columns); $i++): ?>
                         <?php if ($columns[$i] == 'code'): ?>
@@ -80,25 +84,19 @@
                         <?php endif ?>
                         <?php if (substr($columns[$i], 0, 4) == 'sla_'): ?>
                             <?php
-                                $slaId = str_replace('sla_', '', $columns[$i]);
-
-                                // check to see of the SLA is applicable to the issue project
-                                $applicable = SLA::checkSLABelongsToProject($slaId, $issue['issue_project_id']);
-                                $offset = '';
-                                if ($applicable) {
-                                    $SLA = SLA::getById($slaId);
-                                    $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
-                                    $offset = $slaData[0];
-                                }
+                                $slaIds = explode("_", str_replace('sla_', '', $columns[$i]));
                             ?>
                             <td class="issueSLA">
-                                <?php if (isset($offset)): ?>
-                                    <span class="<?php if ($offset < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                                        <?php echo SLA::formatOffset($offset) ?>
-                                    </span>
-                                    &nbsp;
-                                    <img src="/img/clock.png" height="16px" />
-                                <?php endif ?>
+                                <?php for ($j = 0; $j < count($slaIds); $j++): ?>
+                                    <?php $slaId = $slaIds[$j] ?>
+                                    <?php if (isset($slaData[$slaId]['goal'])): ?>
+                                        <span class="<?php if (($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
+                                            <?php echo SLA::formatOffset($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) ?>
+                                        </span>
+                                        &nbsp;
+                                        <img src="/img/clock.png" height="16px" />
+                                    <?php endif ?>
+                                <?php endfor ?>
                             </td>
                         <?php endif ?>
                         <?php if (Util::checkUserIsLoggedIn() && $columns[$i] == 'settings_menu'):  ?>
@@ -109,7 +107,7 @@
                     <?php endfor ?>
                 </tr>
             <?php endwhile ?>
-            <?php $session->set('array_ids', $arrayIds) ?>
+            <?php $session->set('array_ids', $arrayIds); ?>
 
             <?php Util::renderPaginator($getSearchParameters); ?>
         </table>

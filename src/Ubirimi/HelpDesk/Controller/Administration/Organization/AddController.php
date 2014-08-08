@@ -1,37 +1,58 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\Organization;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\HelpDesk\Controller\Administration\Organization;
 
-    $emptyName = false;
-    $statusExists = false;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\HelpDesk\Organization;
+use Ubirimi\SystemProduct;
+use Ubirimi\Repository\Log;
 
-    if (isset($_POST['new_organization'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-        if (empty($name))
-            $emptyName = true;
+        $emptyName = false;
+        $statusExists = false;
 
-        $organization = Organization::getByName($clientId, mb_strtolower($name));
+        if ($request->request->has('new_organization')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-        if ($organization)
-            $statusExists = true;
+            if (empty($name))
+                $emptyName = true;
 
-        if (!$emptyName && !$statusExists) {
-            $currentDate = Util::getServerCurrentDateTime();
-            Organization::create($clientId, $name, $currentDate);
+            $organization = Organization::getByName($session->get('client/id'), mb_strtolower($name));
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_HELP_DESK, $loggedInUserId, 'ADD Organization ' . $name, $currentDate);
+            if ($organization)
+                $statusExists = true;
 
-            header('Location: /helpdesk/administration/organizations');
+            if (!$emptyName && !$statusExists) {
+                $currentDate = Util::getServerCurrentDateTime();
+                Organization::create($session->get('client/id'), $name, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_HELP_DESK,
+                    $session->has('user/id'),
+                    'ADD Organization ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/helpdesk/administration/organizations');
+            }
         }
+
+        $menuSelectedCategory = 'helpdesk_organizations';
+        $sectionPageTitle = $session->get('client/settings/title_name')
+            . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
+            . ' / Create Organization';
+
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/organization/AddOrganization.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'helpdesk_organizations';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME. ' / Create Organization';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/organization/AddOrganization.php';
+}

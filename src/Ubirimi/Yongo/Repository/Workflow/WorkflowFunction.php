@@ -11,8 +11,8 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Project\Project;
 
-class WorkflowFunction {
-
+class WorkflowFunction
+{
     const FUNCTION_SET_ISSUE_FIELD_VALUE = 1;
     const FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP = 2;
     const FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY = 3;
@@ -32,6 +32,16 @@ class WorkflowFunction {
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY) {
                 Issue::updateHistory($issueId, $loggedInUserId, $issueFieldChanges, $currentDate);
+                foreach ($issueFieldChanges as $key => $value) {
+                    if ($value[0] == Field::FIELD_RESOLUTION_CODE) {
+                        if ($value[2]) {
+                            Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
+                        } else {
+                            // clear the resolved date
+                            Issue::updateById($issueId, array('date_resolved' => null), $currentDate);
+                        }
+                    }
+                }
             }
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP) {
@@ -68,9 +78,9 @@ class WorkflowFunction {
                         else
                             $newResolution = null;
 
-                        if ($oldResolution != $newResolution)
+                        if ($oldResolution != $newResolution) {
                             $issueFieldChanges[] = array(Field::FIELD_RESOLUTION_CODE, $oldResolution, $newResolution);
-
+                        }
 
                         if ($updateValue) {
                             Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
@@ -165,10 +175,9 @@ class WorkflowFunction {
                  "and sys_workflow_post_function_id = ? " .
                  "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sii", $value, $workflowDataId, $functionId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sii", $value, $workflowDataId, $functionId);
+        $stmt->execute();
     }
 
     public static function getByWorkflowDataId($workflowDataId) {
@@ -180,15 +189,14 @@ class WorkflowFunction {
                  "where workflow_post_function_data.workflow_data_id = ? " .
                  "order by workflow_post_function_data.id";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $workflowDataId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $workflowDataId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByWorkflowDataIdAndFunctionId($workflowDataId, $functionId) {
@@ -201,53 +209,48 @@ class WorkflowFunction {
                  "and workflow_post_function_data.sys_workflow_post_function_id = ? " .
                  "order by workflow_post_function_data.id";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $workflowDataId, $functionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $workflowDataId, $functionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getAll() {
         $query = "SELECT * from sys_workflow_post_function";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getById($functionId) {
         $query = "SELECT * from sys_workflow_post_function where id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-
-            $stmt->bind_param("i", $functionId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $functionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function addPostFunction($workflowDataId, $functionId, $value) {
         $query = "INSERT INTO workflow_post_function_data(workflow_data_id, sys_workflow_post_function_id, definition_data) " .
                  "VALUES (?, ?, ?)";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
-            $stmt->bind_param("iis", $workflowDataId, $functionId, $value);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iis", $workflowDataId, $functionId, $value);
+        $stmt->execute();
     }
 
     public static function getDataById($workflowPostFunctionDataId) {
@@ -259,16 +262,15 @@ class WorkflowFunction {
                  "left join workflow on workflow.id = workflow_data.workflow_id " .
                  "where workflow_post_function_data.id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $workflowPostFunctionDataId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $workflowPostFunctionDataId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function hasEvent($workflowDataId, $definitionData) {
@@ -278,26 +280,24 @@ class WorkflowFunction {
                         and definition_data = ?
                     limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $functionFireEvent = WorkflowFunction::FUNCTION_FIRE_EVENT;
-            $stmt->bind_param("iii", $workflowDataId, $functionFireEvent, $definitionData);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return true;
-            else
-                return false;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $functionFireEvent = WorkflowFunction::FUNCTION_FIRE_EVENT;
+        $stmt->bind_param("iii", $workflowDataId, $functionFireEvent, $definitionData);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return true;
+        else
+            return false;
     }
 
     public static function deleteByPostFunctionDataId($postFunctionDataId) {
         $query = "delete from workflow_post_function_data " .
                  "where id = ? " .
                  "limit 1";
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $postFunctionDataId);
-            $stmt->execute();
-        }
+        $stmt->bind_param("i", $postFunctionDataId);
+        $stmt->execute();
     }
 }

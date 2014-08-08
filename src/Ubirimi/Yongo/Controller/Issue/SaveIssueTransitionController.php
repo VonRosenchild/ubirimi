@@ -10,6 +10,7 @@
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
     use Ubirimi\Repository\HelpDesk\SLA;
+
     Util::checkUserIsLoggedInAndRedirect();
 
     $issueId = $_POST['issue_id'];
@@ -29,10 +30,11 @@
     $issueCustomFieldsData = array();
 
     for ($i = 0; $i < count($fieldTypesCustom); $i++) {
-        if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '')
+        if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '') {
             $issueCustomFieldsData[$fieldTypesCustom[$i]] = $fieldValuesCustom[$i];
-        else
+        } else {
             $issueCustomFieldsData[$fieldTypesCustom[$i]] = null;
+        }
     }
 
     for ($i = 0; $i < count($attIdsSession); $i++) {
@@ -54,12 +56,22 @@
     if ($canBeExecuted) {
         $currentDate = Util::getServerCurrentDateTime();
 
-        $newIssueSystemFieldsData = array();
+        $newIssueSystemFieldsData = array('issue_project_id' => $issueData['issue_project_id']);
 
         for ($i = 0; $i < count($fieldTypes); $i++) {
             $newIssueSystemFieldsData[$fieldTypes[$i]] = $fieldValues[$i];
         }
-        $fieldChanges = Issue::computeDifference($issueData, $newIssueSystemFieldsData);
+
+        $oldIssueCustomFieldsData = array();
+        foreach ($issueCustomFieldsData as $key => $value) {
+            $keyData = explode("_", $key);
+
+            $oldIssueCustomFieldsData[$keyData[0]] = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            unset($issueCustomFieldsData[$key]);
+            $issueCustomFieldsData[$keyData[0]] = $value;
+        }
+
+        $fieldChanges = Issue::computeDifference($issueData, $newIssueSystemFieldsData, $oldIssueCustomFieldsData, $issueCustomFieldsData);
 
         if (in_array(Field::FIELD_COMMENT_CODE, $fieldTypes)) {
             if ($fieldValues[array_search('comment', $fieldTypes)]) {
@@ -89,9 +101,10 @@
         WorkflowFunction::triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
         $issueData = Issue::getById($issueId, $loggedInUserId);
 
-        // check SLA
-        Issue::updateSLAValue($issueData, $clientId, $clientSettings);
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         echo 'success';
-    } else
+    } else {
         echo 'can_not_be_executed';
+    }

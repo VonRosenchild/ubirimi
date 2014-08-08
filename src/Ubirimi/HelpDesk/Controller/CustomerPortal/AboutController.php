@@ -1,14 +1,26 @@
 <?php
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
-    $clientSettings = $session->get('client/settings');
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $session->set('selected_product_id', -2);
+class AboutController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $menuSelectedCategory = 'ubirimi_about';
+        $clientSettings = $session->get('client/settings');
 
-    $sectionPageTitle = $clientSettings['title_name'] . ' / About Customer Portal';
+        $session->set('selected_product_id', -2);
 
-    require_once __DIR__ . '/../../Resources/views/customer_portal/About.php';
+        $menuSelectedCategory = 'ubirimi_about';
+
+        $sectionPageTitle = $clientSettings['title_name'] . ' / About Customer Portal';
+
+        return $this->render(__DIR__ . '/../../Resources/views/customer_portal/About.php', get_defined_vars());
+    }
+}

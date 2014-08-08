@@ -1124,6 +1124,7 @@ $('document').ready(function () {
             if (window.File && window.FileList && window.FileReader) {
                 initializaFileUpload(issueId);
             }
+            $(".select2Input").select2();
         });
     });
 
@@ -2196,7 +2197,7 @@ $('document').ready(function () {
         $("#modalLinkIssue").load("/yongo/issue/link-dialog/" + projectId + '/' + issueId + '/' + linkPossible, [], function () {
             $("#modalLinkIssue").dialog(options);
             $("#modalLinkIssue").dialog("open");
-            $(".chzn-select").chosen();
+            $(".select2Input").select2();
         });
     });
 
@@ -2795,6 +2796,10 @@ $('document').ready(function () {
                 {
                     text: "Attach",
                     click: function () {
+                        if ($(this).hasClass('disabled')) {
+                            return;
+                        }
+
                         var attachments = $("[id^='attach_']");
                         var attach_ids = [];
                         for (var i = 0; i < attachments.length; i++) {
@@ -2838,12 +2843,11 @@ $('document').ready(function () {
         $("#modalEditIssueAttachFile").load("/yongo/issue/attach-dialog/" + issueId, [], function () {
             $("#modalEditIssueAttachFile").dialog(options);
             $("#modalEditIssueAttachFile").dialog("open");
+
             // call initialization file
             if (window.File && window.FileList && window.FileReader) {
-
                 initializaFileUpload(issueId);
             }
-
         });
     });
 
@@ -3966,7 +3970,7 @@ $('document').ready(function () {
         $("#modalShareIssue").load("/yongo/issue/share-dialog/" + issueId, [], function () {
             $("#modalShareIssue").dialog(options);
             $("#modalShareIssue").dialog("open");
-            $(".chzn-select").chosen({placeholder_text: 'Click to select a user'});
+            $(".select2Input").select2();
         });
     });
 });

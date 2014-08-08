@@ -38,8 +38,8 @@ use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
-class Client {
-
+class Client
+{
     const INSTANCE_TYPE_ON_DEMAND = 1;
     const INSTANCE_TYPE_DOWNLOAD = 2;
 
@@ -58,29 +58,21 @@ class Client {
     }
 
     public static function addProduct($clientId, $productId, $date) {
-
         $query = "INSERT INTO client_product(client_id, sys_product_id, date_created) VALUES (?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("iis", $clientId, $productId, $date);
-            $stmt->execute();
-        } else {
-            throw new \mysqli_sql_exception("Error adding product");
-        }
+        $stmt->bind_param("iis", $clientId, $productId, $date);
+        $stmt->execute();
     }
 
     public static function deleteProduct($clientId, $productId) {
-
         $query = "delete from client_product where client_id = ? and sys_product_id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ii", $clientId, $productId);
-            $stmt->execute();
-        } else {
-            throw new \mysqli_sql_exception("Error adding product");
-        }
+        $stmt->bind_param("ii", $clientId, $productId);
+        $stmt->execute();
     }
 
     public static function getByBaseURL($httpHOST, $resultType = null, $resultColumn = null) {
@@ -89,40 +81,36 @@ class Client {
             "WHERE client.base_url = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("s", $httpHOST);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($resultColumn)
-                            return $data[$resultColumn];
-                        else
-                            return $data;
-                    }
-                } else
-                    return $result;
-
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("s", $httpHOST);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn)
+                        return $data[$resultColumn];
+                    else
+                        return $data;
+                }
             } else
-                return null;
+                return $result;
         }
     }
 
     public static function getYongoSetting($clientId, $settingName) {
         $query = 'SELECT ' . $settingName . ' from client_yongo_settings where client_id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                $data = $result->fetch_array(MYSQLI_ASSOC);
-                return $data[$settingName];
-            } else
-                return null;
-        }
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $data = $result->fetch_array(MYSQLI_ASSOC);
+            return $data[$settingName];
+        } else
+            return null;
     }
 
     public static function getLastMonthActiveClients() {
@@ -136,15 +124,14 @@ class Client {
                  'HAVING log_entries > 10 ' .
                  'ORDER BY log_entries DESC';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("s", $date);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("s", $date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function getSettingsByBaseURL($url) {
@@ -153,15 +140,14 @@ class Client {
             'LEFT JOIN client_settings on client_settings.client_id = client.id ' .
             "WHERE client.base_url = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("s", $url);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result->fetch_array(MYSQLI_ASSOC);
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("s", $url);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else
+            return null;
     }
 
     public static function createDefaultYongoSettings($clientId) {
@@ -169,29 +155,27 @@ class Client {
                   time_tracking_hours_per_day, time_tracking_days_per_week, time_tracking_default_unit)
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $allowUnassignedIssuesFlag = 0;
-            $issuesPerPage = 50;
-            $issueLinkingFlag = 1;
-            $timeTrackingFlag = 1;
-            $timeTrackingHoursPerDay = 8;
-            $timeTrackingDaysPerWeek = 5;
-            $timeTrackingDefaultUnit = 'm';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $allowUnassignedIssuesFlag = 0;
+        $issuesPerPage = 50;
+        $issueLinkingFlag = 1;
+        $timeTrackingFlag = 1;
+        $timeTrackingHoursPerDay = 8;
+        $timeTrackingDaysPerWeek = 5;
+        $timeTrackingDefaultUnit = 'm';
 
-            $stmt->bind_param("iiiiiiis", $clientId, $allowUnassignedIssuesFlag, $issuesPerPage, $issueLinkingFlag, $timeTrackingFlag, $timeTrackingHoursPerDay, $timeTrackingDaysPerWeek, $timeTrackingDefaultUnit);
+        $stmt->bind_param("iiiiiiis", $clientId, $allowUnassignedIssuesFlag, $issuesPerPage, $issueLinkingFlag, $timeTrackingFlag, $timeTrackingHoursPerDay, $timeTrackingDaysPerWeek, $timeTrackingDefaultUnit);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function setInstalledFlag($clientId, $installedFlag) {
         $query = "update client set installed_flag = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $installedFlag, $clientId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $installedFlag, $clientId);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function createDefaultScreenData($clientId, $currentDate) {
@@ -251,14 +235,13 @@ class Client {
     public static function createDefaultNotificationScheme($clientId, $currentDate) {
         $query = "INSERT INTO notification_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Notification Scheme';
-            $description = 'Default Notification Scheme';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Notification Scheme';
+        $description = 'Default Notification Scheme';
 
-            $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
+        $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -266,14 +249,13 @@ class Client {
     public static function createDefaultPermissionScheme($clientId, $currentDate) {
         $query = "INSERT INTO permission_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Permission Scheme';
-            $description = 'Default Permission Scheme';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Permission Scheme';
+        $description = 'Default Permission Scheme';
 
-            $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
+        $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -303,15 +285,14 @@ class Client {
     public static function getAllIssueSettings($type, $clientId) {
         $query = "SELECT id, name, description FROM issue_" . $type . ' WHERE client_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function createDefaultIssueTypes($clientId, $currentDate) {
@@ -326,13 +307,12 @@ class Client {
     public  static function createDefaultIssueTypeScheme($clientId, $type, $currentDate) {
         $query = "INSERT INTO issue_type_scheme(client_id, name, description, type, date_created) VALUES (?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Issue Type Scheme';
-            $description = 'Default Issue Type Scheme';
-            $stmt->bind_param("issss", $clientId, $name, $description, $type, $currentDate);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Issue Type Scheme';
+        $description = 'Default Issue Type Scheme';
+        $stmt->bind_param("issss", $clientId, $name, $description, $type, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -340,14 +320,13 @@ class Client {
     public static function createDefaultIssueTypeScreenScheme($clientId, $currentDate) {
         $query = "INSERT INTO issue_type_screen_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Issue Type Screen Scheme';
-            $description = 'Default Issue Type Screen Scheme';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Issue Type Screen Scheme';
+        $description = 'Default Issue Type Screen Scheme';
 
-            $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
+        $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -384,11 +363,10 @@ class Client {
         $query = "INSERT INTO client(company_name, company_domain, base_url, contact_email, date_created, instance_type) " .
             "VALUES (?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ssssss", $company_name, $companyDomain, $baseURL, $company_email, $date, $instanceType);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ssssss", $company_name, $companyDomain, $baseURL, $company_email, $date, $instanceType);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         $clientId = UbirimiContainer::get()['db.connection']->insert_id;
 
@@ -398,11 +376,10 @@ class Client {
         $operatingMode = 'public';
         $titleName = 'Ubirimi.com';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("issss", $clientId, $operatingMode, $defaultTimezone, $defaultLanguage, $titleName);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("issss", $clientId, $operatingMode, $defaultTimezone, $defaultLanguage, $titleName);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return $clientId;
     }
@@ -420,7 +397,6 @@ class Client {
 
         $workflows = Workflow::getByClientId($clientId);
         while ($workflows && $workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {
-
             Workflow::deleteById($workflow['id']);
         }
         WorkflowScheme::deleteByClientId($clientId);
@@ -451,23 +427,22 @@ class Client {
 
         $issueSecuritySchemes = IssueSecurityScheme::getByClientId($clientId);
         while ($issueSecuritySchemes && $issueSecurityScheme = $issueSecuritySchemes->fetch_array(MYSQLI_ASSOC)) {
-
             IssueSecurityScheme::deleteById($issueSecurityScheme['id']);
         }
 
         $users = Client::getUsers($clientId);
 
         if ($users) {
-            $users_ids_arr = array();
+            $userIdsArray = array();
             while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
-                $users_ids_arr[] = $user['id'];
+                $userIdsArray[] = $user['id'];
 
                 // delete user avatars
                 $spaceBasePath = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, 'user_avatars');
                 Util::deleteDir($spaceBasePath . $user['id']);
 
             }
-            $users_ids_string = implode($users_ids_arr, ', ');
+            $users_ids_string = implode($userIdsArray, ', ');
 
             $query = 'delete from group_data where user_id IN (' . $users_ids_string . ')';
             UbirimiContainer::get()['db.connection']->query($query);
@@ -551,16 +526,15 @@ class Client {
             $query .= ' limit ' . $filters['limit'];
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function getProjects($clientId, $resultType = null, $resultColumn = null, $onlyHelpDeskFlag = false) {
@@ -577,26 +551,25 @@ class Client {
                  $partQuery .
                  'ORDER BY project.id';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($prj = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($resultColumn)
-                            $resultArray[] = $prj[$resultColumn];
-                        else
-                            $resultArray[] = $prj;
-                    }
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($prj = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn)
+                        $resultArray[] = $prj[$resultColumn];
+                    else
+                        $resultArray[] = $prj;
+                }
 
-                    return $resultArray;
-                } else return $result;
-            } else
-                return null;
-        }
+                return $resultArray;
+            } else return $result;
+        } else
+            return null;
     }
 
     public static function getUsers($clientId, $filterGroupId = null, $resultType = null, $includeHelpdeskCustomerUsers = 1) {
@@ -625,23 +598,22 @@ class Client {
         foreach ($paramValue as $key => $value)
             $paramValueRef[$key] = &$paramValue[$key];
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            call_user_func_array(array($stmt, "bind_param"), array_merge(array($paramType), $paramValueRef));
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        call_user_func_array(array($stmt, "bind_param"), array_merge(array($paramType), $paramValueRef));
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($user = $result->fetch_array(MYSQLI_ASSOC)) {
-                        $resultArray[] = $user;
-                    }
-                    return $resultArray;
-                } else return $result;
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($user = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $user;
+                }
+                return $resultArray;
+            } else return $result;
 
-            else
-                return null;
-        }
+        else
+            return null;
     }
 
     public static function updateById($clientId, $company_name, $address_1, $address_2, $city, $district, $contact_email, $countryId) {
@@ -650,25 +622,23 @@ class Client {
             'WHERE id = ? ' .
             'LIMIT 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ssssssii", $company_name, $address_1, $address_2, $city, $district, $contact_email, $countryId, $clientId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ssssssii", $company_name, $address_1, $address_2, $city, $district, $contact_email, $countryId, $clientId);
+        $stmt->execute();
     }
 
     public static function getById($clientId) {
         $query = 'select * from client where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function createDefaultScreens($clientId, $currentDate) {
@@ -682,14 +652,13 @@ class Client {
     public static function createDefaultScreenScheme($clientId, $currentDate) {
         $query = "INSERT INTO screen_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Screen Scheme';
-            $description = 'Default Screen Scheme';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Screen Scheme';
+        $description = 'Default Screen Scheme';
 
-            $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
+        $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -697,14 +666,13 @@ class Client {
     public static function createDefaultWorkflowScheme($clientId, $currentDate) {
         $query = "INSERT INTO workflow_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Workflow Scheme';
-            $description = 'Default Workflow Scheme';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Workflow Scheme';
+        $description = 'Default Workflow Scheme';
 
-            $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
+        $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -712,14 +680,13 @@ class Client {
     public static function createDefaultFieldConfiguration($clientId, $currentDate) {
         $query = "INSERT INTO field_configuration(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Field Configuration';
-            $description = 'Default Field Configuration';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Field Configuration';
+        $description = 'Default Field Configuration';
 
-            $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
+        $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -727,14 +694,13 @@ class Client {
     public static function createDefaultIssueTypeFieldConfiguration($clientId, $currentDate) {
         $query = "INSERT INTO  issue_type_field_configuration(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Field Configuration Scheme';
-            $description = 'Default Field Configuration Scheme';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Field Configuration Scheme';
+        $description = 'Default Field Configuration Scheme';
 
-            $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
+        $stmt->bind_param("isss", $clientId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
@@ -742,11 +708,10 @@ class Client {
     public static function createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $currentDate) {
         $query = "INSERT INTO workflow_scheme_data(workflow_scheme_id, workflow_id, date_created) VALUES (?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iis", $workflowSchemeId, $workflowId, $currentDate);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iis", $workflowSchemeId, $workflowId, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function createDefaultScreenSchemeData($clientId, $screenSchemeId, $currentDate) {
@@ -774,20 +739,19 @@ class Client {
     public static function createDefaultWorkflow($clientId, $issueTypeSchemeId, $currentDate) {
         $query = "INSERT INTO workflow(client_id, issue_type_scheme_id, name, description, date_created) VALUES (?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $name = 'Default Yongo Workflow';
-            $description = 'Default Yongo Workflow';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $name = 'Default Yongo Workflow';
+        $description = 'Default Yongo Workflow';
 
-            $stmt->bind_param("iisss", $clientId, $issueTypeSchemeId, $name, $description, $currentDate);
+        $stmt->bind_param("iisss", $clientId, $issueTypeSchemeId, $name, $description, $currentDate);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultWorkflowData($clientId, $workflowId, $currentDate) {
-
+    public static function createDefaultWorkflowData($clientId, $workflowId, $currentDate)
+    {
         $screenResolutionData = Screen::getByName($clientId, 'Resolve Issue Screen');
         $screenResolutionId = $screenResolutionData['id'];
 
@@ -1012,53 +976,51 @@ class Client {
             "(" . $clientId . ",'Issue Deleted', 9, 'This is the \'issue deleted\' event.', 1, '" . $currentDate . "'), " .
             "(" . $clientId . ",'Work Started on Issue', 10, 'This is the \'work started on issue\' event.', 1, '" . $currentDate . "'), " .
             "(" . $clientId . ",'Work Stopped on Issue', 11, 'This is the \'work stopped on issue\' event.', 1, '" . $currentDate . "'), " .
-            "(" . $clientId . ",'Generic Event', 12, 'This is the \'generic event\' event.', 1, '" . $currentDate . "')";
+            "(" . $clientId . ",'Generic Event', 12, 'This is the \'generic event\' event.', 1, '" . $currentDate . "'), " .
+            "(" . $clientId . ",'Issue Moved', 13, 'This is the \'issue moved\' event.', 1, '" . $currentDate . "')";
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
     public static function getYongoSettings($clientId) {
         $query = 'select * from client_yongo_settings where client_id = ' . $clientId;
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function getSettings($clientId) {
         $query = 'select * from client_settings where client_id = ' . $clientId;
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function getDocumentatorSettings($clientId) {
         $query = 'select * from client_documentator_settings where client_id = ' . $clientId;
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function updateProductSettings($clientId, $targetProduct, $parameters) {
@@ -1089,19 +1051,19 @@ class Client {
         $values[] = $clientId;
         $valuesType .= 'i';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            foreach ($values as $key => $value)
-                $values_ref[$key] = &$values[$key];
+        foreach ($values as $key => $value)
+            $values_ref[$key] = &$values[$key];
 
-            if ($valuesType != '')
-                call_user_func_array(array($stmt, "bind_param"), array_merge(array($valuesType), $values_ref));
-            $stmt->execute();
-            $result = $stmt->get_result();
-        }
+        if ($valuesType != '')
+            call_user_func_array(array($stmt, "bind_param"), array_merge(array($valuesType), $values_ref));
+        $stmt->execute();
+
+        $result = $stmt->get_result();
     }
-    public static function getProjectsByPermission($clientId, $userId, $permissionId, $resultType = null) {
 
+    public static function getProjectsByPermission($clientId, $userId, $permissionId, $resultType = null) {
         // 1. user in permission scheme
         $queryLoggedInUser = 'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, user.first_name, user.last_name, user.id as user_id, ' .
              'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
@@ -1236,17 +1198,15 @@ class Client {
                 'permission_scheme_data.sys_permission_id = ? and ' .
                 'permission_scheme_data.group_id = 0';
 
-            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($queryAnonymousUser)) {
-                $stmt->bind_param("ii", $clientId, $permissionId);
-                $stmt->execute();
-                $result = $stmt->get_result();
-            }
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($queryAnonymousUser);
+            $stmt->bind_param("ii", $clientId, $permissionId);
+            $stmt->execute();
+            $result = $stmt->get_result();
         } else {
-            if ($stmt = UbirimiContainer::get()['db.connection']->prepare($queryLoggedInUser)) {
-                $stmt->bind_param("iiiiiiiiiiiiiiiii", $clientId, $userId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $userId, $clientId, $permissionId, $userId);
-                $stmt->execute();
-                $result = $stmt->get_result();
-            }
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($queryLoggedInUser);
+            $stmt->bind_param("iiiiiiiiiiiiiiiii", $clientId, $userId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $clientId, $permissionId, $userId, $clientId, $permissionId, $userId, $clientId, $permissionId, $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
         }
 
         if ($result->num_rows) {
@@ -1267,16 +1227,15 @@ class Client {
             'from client_product ' .
             'WHERE client_product.client_id = ? and sys_product_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("ii", $clientId, $productId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return true;
-            else
-                return false;
-        }
+        $stmt->bind_param("ii", $clientId, $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return true;
+        else
+            return false;
     }
 
     public static function createDefaultFieldConfigurationData($clientId, $fieldConfigurationId) {
@@ -1336,68 +1295,58 @@ class Client {
         $query = "INSERT INTO sys_permission_global_data(client_id, sys_permission_global_id, group_id) VALUES (?, ?, ?)";
 
         // for Administrators group
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE;
-            $stmt->bind_param("iii", $clientId, $permissionId, $groupAdministratorsId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE;
+        $stmt->bind_param("iii", $clientId, $permissionId, $groupAdministratorsId);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR;
+        $stmt->bind_param("iii", $clientId, $permissionId, $groupAdministratorsId);
 
-            $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR;
-            $stmt->bind_param("iii", $clientId, $permissionId, $groupAdministratorsId);
+        $stmt->execute();
 
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_SYSTEM_ADMINISTRATOR;
+        $stmt->bind_param("iii", $clientId, $permissionId, $groupAdministratorsId);
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-
-            $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_SYSTEM_ADMINISTRATOR;
-            $stmt->bind_param("iii", $clientId, $permissionId, $groupAdministratorsId);
-
-            $stmt->execute();
-        }
+        $stmt->execute();
 
         // for Users group
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE;
-            $stmt->bind_param("iii", $clientId, $permissionId, $groupUsers);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $permissionId = GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE;
+        $stmt->bind_param("iii", $clientId, $permissionId, $groupUsers);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers) {
         $query = "INSERT INTO sys_permission_global_data(client_id, sys_permission_global_id, group_id) VALUES (?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS;
-            $stmt->bind_param("iii", $clientId, $Id, $groupAdministrators['id']);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS;
+        $stmt->bind_param("iii", $clientId, $Id, $groupAdministrators['id']);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS;
-            $stmt->bind_param("iii", $clientId, $Id, $groupAdministrators['id']);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS;
+        $stmt->bind_param("iii", $clientId, $Id, $groupAdministrators['id']);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS;
-            $stmt->bind_param("iii", $clientId, $Id, $groupUsers['id']);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS;
+        $stmt->bind_param("iii", $clientId, $Id, $groupUsers['id']);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE;
-            $stmt->bind_param("iii", $clientId, $Id, $groupUsers['id']);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $Id = GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE;
+        $stmt->bind_param("iii", $clientId, $Id, $groupUsers['id']);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function createDefaultFields($clientId, $date) {
@@ -1424,43 +1373,41 @@ class Client {
     public static function checkAvailableDomain($companyDomain) {
         $query = 'SELECT id from client where company_domain = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("s", $companyDomain);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return false;
-            } else
-                return true;
-        }
+        $stmt->bind_param("s", $companyDomain);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return false;
+        } else
+            return true;
     }
 
     public static function getProducts($clientId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT * from client_product where client_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                if ($resultType == 'array') {
-                    $resultArray = array();
-                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-                        if ($resultColumn)
-                            $resultArray[] = $data[$resultColumn];
-                        else
-                            $resultArray[] = $data;
-                    }
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn)
+                        $resultArray[] = $data[$resultColumn];
+                    else
+                        $resultArray[] = $data;
+                }
 
-                    return $resultArray;
-                } else
-                    return $result;
-
+                return $resultArray;
             } else
-                return null;
-        }
+                return $result;
+
+        } else
+            return null;
     }
 
     public static function createDatabase($sqlDatabaseCreation) {
@@ -1570,18 +1517,17 @@ class Client {
     public static function toggleIssueLinkingFeature($clientId) {
         $query = 'UPDATE client_yongo_settings SET issue_linking_flag = 1 - issue_linking_flag where client_id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
     }
+
     public static function toggleTimeTrackingFeature($clientId) {
         $query = 'UPDATE client_yongo_settings SET time_tracking_flag = 1 - time_tracking_flag where client_id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
     }
 
     public static function createDefaultLinkIssueOptions($clientId, $currentDate) {
@@ -1596,10 +1542,9 @@ class Client {
     public static function updateTimeTrackingSettings($clientId, $hoursPerDay, $daysPerWeek, $defaultUnit) {
         $query = 'UPDATE client_yongo_settings SET time_tracking_hours_per_day = ?, time_tracking_days_per_week = ?, time_tracking_default_unit = ? where client_id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iisi", $hoursPerDay, $daysPerWeek, $defaultUnit, $clientId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iisi", $hoursPerDay, $daysPerWeek, $defaultUnit, $clientId);
+        $stmt->execute();
     }
 
     public static function updateSettings($clientId, $parameters) {
@@ -1620,31 +1565,29 @@ class Client {
         $values[] = $clientId;
         $valuesType .= 'i';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            foreach ($values as $key => $value)
-                $values_ref[$key] = &$values[$key];
+        foreach ($values as $key => $value)
+            $values_ref[$key] = &$values[$key];
 
-            if ($valuesType != '')
-                call_user_func_array(array($stmt, "bind_param"), array_merge(array($valuesType), $values_ref));
-            $stmt->execute();
-            $result = $stmt->get_result();
-        }
+        if ($valuesType != '')
+            call_user_func_array(array($stmt, "bind_param"), array_merge(array($valuesType), $values_ref));
+        $stmt->execute();
+        $result = $stmt->get_result();
     }
 
     public static function getByContactEmailAddress($emailAddress) {
         $query = 'select contact_email from client where LOWER(contact_email) = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("s", $emailAddress);
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("s", $emailAddress);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->num_rows;
-            else
-                return null;
-        }
+        if ($result->num_rows)
+            return $result->num_rows;
+        else
+            return null;
     }
 
     public static function install($clientId) {
@@ -1688,31 +1631,29 @@ class Client {
     public static function addDefaultDocumentatorUserGroups($clientId, $date) {
         $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $group_name_1 = 'Documentador Administrators';
-            $group_name_2 = 'Documentador Users';
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $group_name_1 = 'Documentador Administrators';
+        $group_name_2 = 'Documentador Users';
 
-            $group_descr_1 = 'Documentador Administrators';
-            $group_descr_2 = 'Documentador Users';
+        $group_descr_1 = 'Documentador Administrators';
+        $group_descr_2 = 'Documentador Users';
 
-            $productId = SystemProduct::SYS_PRODUCT_DOCUMENTADOR;
-            $stmt->bind_param("iisssiisss", $clientId, $productId, $group_name_1, $group_descr_1, $date, $clientId, $productId, $group_name_2, $group_descr_2, $date);
+        $productId = SystemProduct::SYS_PRODUCT_DOCUMENTADOR;
+        $stmt->bind_param("iisssiisss", $clientId, $productId, $group_name_1, $group_descr_1, $date, $clientId, $productId, $group_name_2, $group_descr_2, $date);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function addDefaultDocumentatorSettings($clientId) {
         $query = "INSERT INTO client_documentator_settings(client_id, anonymous_use_flag, anonymous_view_user_profile_flag) VALUES (?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $anonymous_use_flag = 0;
-            $anonymous_view_user_profile_flag = 50;
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $anonymous_use_flag = 0;
+        $anonymous_view_user_profile_flag = 50;
 
-            $stmt->bind_param("iii", $clientId, $anonymous_use_flag, $anonymous_view_user_profile_flag);
+        $stmt->bind_param("iii", $clientId, $anonymous_use_flag, $anonymous_view_user_profile_flag);
 
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
 
     public static function getProductById($clientId, $productId) {
@@ -1721,15 +1662,14 @@ class Client {
             "WHERE client_product.client_id = ? and sys_product_id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $productId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result->fetch_array(MYSQLI_ASSOC);
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else
+            return null;
     }
 
     public static function getByProductIdId($clientId, $productId) {
@@ -1738,15 +1678,14 @@ class Client {
             "WHERE client_product.client_id = ? and sys_product_id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $clientId, $productId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result->fetch_array(MYSQLI_ASSOC);
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $productId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else
+            return null;
     }
 
     public static function getAdministrators($clientId, $userId = null) {
@@ -1757,21 +1696,19 @@ class Client {
             $query .= ' and user.id != ' . $userId;
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function deleteYongoIssueTypes($clientId) {
         $query = 'delete from issue_type where client_id = ' . $clientId;
         UbirimiContainer::get()['db.connection']->query($query);
-
     }
 
     public static function deleteYongoIssueStatuses($clientId) {
@@ -1790,7 +1727,6 @@ class Client {
     }
 
     public static function deleteCalendars($clientId) {
-
         $calendars = Calendar::getByClientId($clientId);
         if ($calendars) {
             while ($calendar = $calendars->fetch_array(MYSQLI_ASSOC)) {
@@ -1856,14 +1792,13 @@ class Client {
                         WHERE MONTH(general_payment.date_created) = MONTH(NOW())
                           AND YEAR(general_payment.date_created) = YEAR(NOW()))";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getCountryById($countryId) {
@@ -1872,15 +1807,14 @@ class Client {
             "WHERE id = ? " .
             "limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $countryId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result->fetch_array(MYSQLI_ASSOC);
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $countryId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else
+            return null;
     }
 
     public static function getUsersByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
@@ -1905,15 +1839,14 @@ class Client {
 
         $query .= ' group by user.id';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function getGroupsByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
@@ -1929,15 +1862,14 @@ class Client {
 
         $query .= ' group by `group`.id';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $clientId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows) {
-                return $result;
-            } else
-                return null;
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $clientId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function updateLoginTime($clientId, $datetime)

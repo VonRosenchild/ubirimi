@@ -39,7 +39,6 @@
                     </td>
                     <td></td>
                 </tr>
-
                 <tr>
                     <td></td>
                     <td>
@@ -78,14 +77,14 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input class="radio" type="radio" name="type" id="label_user" value="user">
-                        <label for="label_user">User</label>
+                        <input class="radio" type="radio" name="type" id="label_user_notification" value="user">
+                        <label for="label_user_notification">User</label>
                     </td>
                     <td>
-                        <select name="user" class="inputTextCombo">
+                        <select name="user" class="inputTextCombo" id="not_choose_user">
                             <option value>Choose a user</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
-                            <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                                <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
@@ -93,14 +92,14 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input class="radio" type="radio" name="type" id="label_group" value="group">
-                        <label for="label_group">Group</label>
+                        <input class="radio" type="radio" name="type" id="label_group_notification" value="group">
+                        <label for="label_group_notification">Group</label>
                     </td>
                     <td>
-                        <select name="group" class="inputTextCombo">
+                        <select name="group" class="inputTextCombo" id="not_choose_group">
                             <option value>Choose a group</option>
                             <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>
-                            <option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
+                                <option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
@@ -108,14 +107,14 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input class="radio" type="radio" name="type" id="label_project_role" value="role">
-                        <label for="label_project_role">Project Role</label>
+                        <input class="radio" type="radio" name="type" id="label_project_role_notification" value="role">
+                        <label for="label_project_role_notification">Project Role</label>
                     </td>
                     <td>
-                        <select name="role" class="inputTextCombo">
+                        <select name="role" class="inputTextCombo" id="not_choose_project_role">
                             <option value>Choose a project role</option>
                             <?php while ($role = $roles->fetch_array(MYSQLI_ASSOC)): ?>
-                            <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
+                                <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
@@ -129,6 +128,23 @@
                     <td>
                     </td>
                 </tr>
+                <?php if ($fieldsUserPickerMultipleSelection): ?>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input class="radio" type="radio" name="type" id="label_user_picker_multiple_selection" value="user_picker_multiple_selection">
+                            <label for="label_user_picker_multiple_selection">User Custom Field Value</label>
+                        </td>
+                        <td>
+                            <select name="select_user_picker_multiple_selection" id="not_select_user_picker_multiple_selection" class="inputTextCombo">
+                                <option value>Choose a custom field</option>
+                                <?php while ($field = $fieldsUserPickerMultipleSelection->fetch_array(MYSQLI_ASSOC)): ?>
+                                    <option value="<?php echo $field['id'] ?>"><?php echo $field['name'] ?></option>
+                                <?php endwhile ?>
+                            </select>
+                        </td>
+                    </tr>
+                <?php endif ?>
                 <tr>
                     <td colspan="3">
                         <hr size="1" />

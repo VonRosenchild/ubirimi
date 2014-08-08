@@ -9,6 +9,13 @@
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Yongo\Repository\Project\ProjectComponent;
     use Ubirimi\Yongo\Repository\Project\ProjectVersion;
+    use Ubirimi\Repository\User\User;
+    use Ubirimi\Yongo\Event\IssueEvent as Event;
+    use Ubirimi\Event\LogEvent;
+    use Ubirimi\Container\UbirimiContainer;
+    use Ubirimi\Yongo\Event\YongoEvents;
+    use Ubirimi\Event\UbirimiEvents;
+    use Ubirimi\Yongo\Repository\Field\Field;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -27,10 +34,29 @@
     $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
     if (isset($_POST['move_issue_step_4'])) {
+        $currentDate = Util::getServerCurrentDateTime();
+
+        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+        if ($oldIssueData['component'] == null) {
+            $oldIssueData['component'] = array();
+        }
+        $oldIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        if ($oldIssueData['affects_version'] == null) {
+            $oldIssueData['affects_version'] = array();
+        }
+        $oldIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        if ($oldIssueData['fix_version'] == null) {
+            $oldIssueData['fix_version'] = array();
+        }
 
         IssueComponent::deleteByIssueId($issueId);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+
+        if ($session->has('move_issue/new_assignee')) {
+            Issue::updateAssigneeRaw($issueId, $session->get('move_issue/new_assignee'));
+        }
 
         if (count($session->get('move_issue/new_component'))) {
             Issue::addComponentVersion($issueId, $session->get('move_issue/new_component'), 'issue_component');
@@ -44,10 +70,21 @@
             Issue::addComponentVersion($issueId, $session->get('move_issue/new_affects_version'), 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
+        $newProjectId = $session->get('move_issue/new_project');
+
         // move the issue
-        Issue::move($issueId, $session->get('move_issue/new_project'), $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
+        Issue::move($issueId, $newProjectId, $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
 
         $session->remove('move_issue');
+        $newIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, array(), array());
+        Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
+
+        $issueEvent = new Event(null, null, Event::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
+        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);
+
+        UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
+        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
 
         header('Location: ' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
         die();
@@ -82,5 +119,7 @@
     if (count($session->get('move_issue/new_affects_version'))) {
         $newIssueAffectsVersions = ProjectVersion::getByIds($session->get('move_issue/new_affects_version'));
     }
+
+    $newUserAssignee = User::getById($session->get('move_issue/new_assignee'));
 
     require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep4.php';

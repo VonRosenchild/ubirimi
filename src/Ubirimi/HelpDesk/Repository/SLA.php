@@ -1,58 +1,58 @@
 <?php
 
 namespace Ubirimi\Repository\HelpDesk;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
 
-class SLA {
-
+class SLA
+{
     const CONDITION_CREATE_ISSUE = 'issue_created';
     const CONDITION_RESOLUTION_SET = 'resolution_set';
 
     public static function getByProjectId($projectId) {
         $query = 'SELECT * from help_sla where project_id = ? order by id desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $projectId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getByProjectIds($projectIds) {
         $query = 'SELECT * from help_sla where project_id IN (' . implode(', ', $projectIds) . ') order by id desc';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result;
-            else
-                return null;
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
     }
 
     public static function getById($Id) {
         $query = 'SELECT * from help_sla where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-            $stmt->bind_param("i", $Id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return null;
-        }
+        $stmt->bind_param("i", $Id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 
     public static function getByName($name, $projectId, $slaId = null) {
@@ -61,44 +61,41 @@ class SLA {
             $query .= 'and id != ?';
         }
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            if ($slaId)
-                $stmt->bind_param("isi", $projectId, $name, $slaId);
-            else
-                $stmt->bind_param("is", $projectId, $name);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        if ($slaId)
+            $stmt->bind_param("isi", $projectId, $name, $slaId);
+        else
+            $stmt->bind_param("is", $projectId, $name);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function save($projectId, $name, $description, $startCondition, $stopCondition, $date) {
         $query = "INSERT INTO help_sla(project_id, name, description, start_condition, stop_condition, date_created) VALUES " .
             "(?, ?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("isssss", $projectId, $name, $description, $startCondition, $stopCondition, $date);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("isssss", $projectId, $name, $description, $startCondition, $stopCondition, $date);
+        $stmt->execute();
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function addGoal($slaId, $SLACalendarId, $definition, $definitionSQL, $value) {
         $query = "INSERT INTO help_sla_goal(help_sla_id, help_sla_calendar_id, definition, definition_sql, value) VALUES " .
                  "(?, ?, ?, ?, ?)";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iisss", $slaId, $SLACalendarId, $definition, $definitionSQL, $value);
-            $stmt->execute();
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iisss", $slaId, $SLACalendarId, $definition, $definitionSQL, $value);
+        $stmt->execute();
 
-            return UbirimiContainer::get()['db.connection']->insert_id;
-        }
+        return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
     public static function getGoals($slaId) {
@@ -109,21 +106,19 @@ class SLA {
                  'left join help_sla_calendar on help_sla_calendar.id = help_sla_goal.help_sla_calendar_id ' .
                  'where help_sla_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $slaId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $slaId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function deleteById($Id) {
-
         $query = "delete from help_sla_goal where help_sla_id = ?";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $Id);
@@ -159,8 +154,26 @@ class SLA {
 
         $SLAs = SLA::getByProjectId($projectId);
         while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-            if (stripos(mb_strtolower($value), mb_strtolower($SLA['name'])) !== false) {
-                if ($curentSLA['start_condition'] != $SLA['start_condition']) {
+
+            if (($index = stripos(mb_strtolower($value), mb_strtolower($SLA['name']))) !== false) {
+                $index--;
+                $notApplicable = false;
+
+                while ($index > 0) {
+                    if ($value[$index] == ' ') {
+                        $index--;
+                        continue;
+                    } else if ($value[$index] == '=') {
+                        $notApplicable = true;
+                        break;
+                    }
+                }
+
+                if ($notApplicable) {
+                    continue;
+                }
+
+                if ($curentSLA['id'] != $SLA['id']) {
                     $value = str_ireplace($SLA['name'], '(select value from yongo_issue_sla where yongo_issue_id = ' . $issueId . ' and help_sla_id = ' . $SLA['id'] . ' limit 1) ', $value);
                 } else {
                     $value = str_ireplace($SLA['name'], '(select NULL from yongo_issue_sla where yongo_issue_id = ' . $issueId . ' and help_sla_id = ' . $SLA['id'] . ' limit 1) ', $value);
@@ -211,48 +224,81 @@ class SLA {
 
         for ($i = 0; $i < count($conditions); $i++) {
             if ($conditions[$i] == ($type . '_' . SLA::CONDITION_CREATE_ISSUE)) {
-                if ($issue['date_created'] != $currentSLADate && $issue['date_created'] > $currentSLADate) {
+                if ($issue['date_created'] > $currentSLADate) {
                     $conditionFulfilledDate = $issue['date_created'];
                     break;
                 }
             } else if ($conditions[$i] == $type . '_' . SLA::CONDITION_RESOLUTION_SET) {
                 if ($issue['resolution']) {
-                    if ($currentSLADate != $issue['date_resolved'] && $issue['date_resolved'] > $currentSLADate) {
+                    if ($issue['date_resolved'] > $currentSLADate) {
                         $conditionFulfilledDate = $issue['date_resolved'];
                         break;
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_status_set_') !== false) {
                 if ($issue['status'] == str_replace($type . '_status_set_',  '', $conditions[$i])) {
-                    if ($currentSLADate != $issue['date_updated'] && $issue['date_updated'] > $currentSLADate) {
+                    if ($issue['date_updated'] > $currentSLADate) {
                         $conditionFulfilledDate = $issue['date_updated'];
                         break;
+                    }
+                }
+            } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
+
+                $comments = IssueComment::getByAssigneeOldChangedAfterDate($issue['id'], $currentSLADate);
+                if ($comments) {
+
+                    $comment = $comments->fetch_array(MYSQLI_ASSOC);
+                    if ($conditionFulfilledDate) {
+                        if ($comment['date_created'] > $conditionFulfilledDate) {
+                            $conditionFulfilledDate = $comment['date_created'];
+                        }
+                    } else {
+                        $conditionFulfilledDate = $comment['date_created'];
+                    }
+                } else {
+                    $userAssigneeId = $issue['assignee'];
+                    $comments = IssueComment::getByIssueIdAndUserId($issue['id'], $userAssigneeId);
+
+                    if ($comments) {
+                        $firstComment = $comments->fetch_array(MYSQLI_ASSOC);
+                        $conditionFulfilledDate = $firstComment['date_created'];
+                    }
+                }
+            } else if (strpos($conditions[$i], $type . '_assignee_changed') !== false) {
+                $userAssigneeId = $issue['assignee'];
+
+                // look also in the history
+                $historyList = IssueHistory::getByAssigneeNewChangedAfterDate($issue['id'], $userAssigneeId, $currentSLADate);
+
+                if ($historyList) {
+                    $history = $historyList->fetch_array(MYSQLI_ASSOC);
+                    if ($conditionFulfilledDate) {
+                        if ($history['date_created'] > $conditionFulfilledDate) {
+                            $conditionFulfilledDate = $history['date_created'];
+                        }
+                    } else {
+                        $conditionFulfilledDate = $history['date_created'];
                     }
                 }
             }
         }
 
-        if ($conditionFulfilledDate) {
-            return $conditionFulfilledDate;
-        } else {
-            return $currentSLADate;
-        }
+        return $conditionFulfilledDate;
     }
 
     public static function getSLAData($issueId, $SLAId) {
         $query = 'select * from yongo_issue_sla where yongo_issue_id = ? and help_sla_id = ? limit 1 ';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $issueId, $SLAId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $issueId, $SLAId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 
     public static function getGoalForIssueId($slaId, $issueId, $projectId, $clientId) {
@@ -299,8 +345,6 @@ class SLA {
 
         $stopConditionSLADate = null;
         $startConditionSLADate = null;
-        $currentDate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
-        $currentDate = date_format($currentDate, 'Y-m-d');
 
         if ($issueSLAData['started_date']) {
             $initialDate = new \DateTime($issueSLAData['started_date'], new \DateTimeZone($clientSettings['timezone']));
@@ -315,16 +359,18 @@ class SLA {
 
         $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
         $goalId = $goalData['id'];
+        if ($goalId == null) {
+            return null;
+        }
         $goalValue = $goalData['value'];
 
         $slaCalendarData = SLACalendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
         $intervalMinutes = 0;
+        $startConditionSLADate = $issueSLAData['started_date'];
 
-        // check if this issue has the start condition of the sla true
-        $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start', $issueSLAData['started_date']);
-
-        if (0 == $issueSLAData['started_flag']) {
+        if (0 == $issueSLAData['started_flag'] || (1 == $issueSLAData['started_flag'] && 1 == $issueSLAData['stopped_flag'])) {
+            $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start', $issueSLAData['started_date']);
             if (!$startConditionSLADate) {
                 return null;
             } else {
@@ -332,42 +378,58 @@ class SLA {
                 $issueSLAData['started_date'] = $startConditionSLADate;
                 Issue::updateSLAStarted($issueId, $SLA['id'], $startConditionSLADate);
             }
-        } else {
-            if ($startConditionSLADate != $issueSLAData['started_date'] && $issueSLAData['stopped_flag'] == 1) {
-                Issue::updateSLAStarted($issueId, $SLA['id'], $startConditionSLADate);
-            }
         }
 
         $startConditionSLADate = new \DateTime($startConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
 
+        // check if this issue has the stop condition of the sla true
+        if (0 == $issueSLAData['stopped_flag']) {
+            $dateFrom = $issueSLAData['stopped_date'];
+            if (null == $dateFrom) {
+                $dateFrom = $issueSLAData['started_date'];
+            }
+            $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $dateFrom);
+            if ($stopConditionSLADate) {
+                $stopConditionSLADate = new \DateTime($stopConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
+                $issueSLAData['stopped_flag'] = 1;
+
+                Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
+
+                if ($finalDate > date_format($stopConditionSLADate, 'Y-m-d')) {
+                    $finalDate = date_format($stopConditionSLADate, 'Y-m-d');
+                }
+
+                $intervalMinutes = $issueSLAData['value'];
+                if ($intervalMinutes) {
+                    return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles'], false);
+                }
+            }
+        } else {
+            if ($issueSLAData['value'] || $issueSLAData['value_between_cycles']) {
+                return null;
+            }
+        }
+
         while (date_format($initialDate, 'Y-m-d') <= $finalDate) {
             $dayNumber = date_format($initialDate, 'N');
             for ($i = 0; $i < count($slaCalendarData); $i++) {
-
                 if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
+                    if (date_format($initialDate, 'Y-m-d') > date_format($startConditionSLADate, 'Y-m-d')) {
+                        $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_from'], new \DateTimeZone($clientSettings['timezone']));
+                    }
 
-                    // check if this issue has the stop condition of the sla true
-                    if (0 == $issueSLAData['stopped_flag']) {
-                        $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $issueSLAData['stopped_date']);
-
-                        if (!$stopConditionSLADate) {
-                            if (date_format($initialDate, 'Y-m-d') < $currentDate) {
-                                $stopConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_to'], new \DateTimeZone($clientSettings['timezone']));
-                            } else {
-                                $stopConditionSLADate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
-                            }
-                        } else {
-                            $stopConditionSLADate = new \DateTime($stopConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
-                            $issueSLAData['stopped_flag'] = 1;
-
-                            Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
-                        }
+                    if (date_format($initialDate, 'Y-m-d') < $finalDate) {
+                        $stopConditionSLADateIteration = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_to'], new \DateTimeZone($clientSettings['timezone']));
                     } else {
-                        return null;
+                        if ($stopConditionSLADate && date_format($initialDate, 'Y-m-d') == date_format($stopConditionSLADate, 'Y-m-d')) {
+                            $stopConditionSLADateIteration = $stopConditionSLADate;
+                        } else {
+                            $stopConditionSLADateIteration = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+                        }
                     }
 
                     if ($goalData['value'] && date_format($startConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to'] &&
-                        date_format($stopConditionSLADate, 'H:i:00') >= $slaCalendarData[$i]['time_from']) {
+                        date_format($stopConditionSLADateIteration, 'H:i:00') >= $slaCalendarData[$i]['time_from']) {
 
                         if (date_format($initialDate, 'Y-m-d') > date_format($initialDateOriginal, 'Y-m-d')) {
                             $countStartTime = $slaCalendarData[$i]['time_from'];
@@ -379,13 +441,13 @@ class SLA {
                             }
                         }
 
-                        if (date_format($stopConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to']) {
-                            $countEndTime = date_format($stopConditionSLADate, 'H:i:00');
+                        if (date_format($stopConditionSLADateIteration, 'H:i:00') <= $slaCalendarData[$i]['time_to']) {
+                            $countEndTime = date_format($stopConditionSLADateIteration, 'H:i:00');
                         } else {
                             $countEndTime = $slaCalendarData[$i]['time_to'];
                         }
 
-                        $countStartTimeDateObject = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $countStartTime, new \DateTimeZone($clientSettings['timezone']));
+                        $countStartTimeDateObject = new \DateTime(date_format($startConditionSLADate, 'Y-m-d') . ' ' . $countStartTime, new \DateTimeZone($clientSettings['timezone']));
                         $countEndTimeDateObject = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $countEndTime, new \DateTimeZone($clientSettings['timezone']));
                         $intervalMinutes += floor(($countEndTimeDateObject->getTimestamp() - $countStartTimeDateObject->getTimestamp()) / 60);
                     }
@@ -394,36 +456,30 @@ class SLA {
             date_add($initialDate, date_interval_create_from_date_string('1 days'));
         }
 
-        if ($issueSLAData['value_between_cycles']) {
-            $intervalMinutes += $issueSLAData['value_between_cycles'];
-        }
-
-        return array($intervalMinutes, $goalValue, $goalId);
+        return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles']);
     }
 
     public static function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId) {
-        $query = "update yongo_issue_sla set value = ?, help_sla_goal_id = ? where stopped_flag = 0 and yongo_issue_id = ? and help_sla_id = ? limit 1";
+        $query = "update yongo_issue_sla set value = ?, help_sla_goal_id = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("iiii", $intervalMinutes, $goalId, $issueId, $SLAId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiii", $intervalMinutes, $goalId, $issueId, $SLAId);
+        $stmt->execute();
     }
 
     public static function checkSLABelongsToProject($slaId, $projectId) {
         $query = 'select id from help_sla where id = ? and project_id = ?';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("ii", $slaId, $projectId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $slaId, $projectId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result;
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
     }
 
     public static function transformConditionForView($condition) {
@@ -432,7 +488,8 @@ class SLA {
             $StatusId = str_replace('status_set_', '', $condition);
             $statusName = IssueSettings::getById($StatusId, 'status', 'name');
             $condition = 'Status Set ' . $statusName;
-
+        } else if (substr($condition, 0, 11) == 'comment_by_assignee') {
+            $condition = 'Comment: By Assignee';
         } else {
             $condition = str_replace('_', ' ', $condition);
         }
@@ -443,23 +500,20 @@ class SLA {
     public static function deleteGoalsBySLAId($slaId) {
         $query = "delete from help_sla_goal where help_sla_id = ?";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $slaId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $slaId);
+        $stmt->execute();
     }
 
     public static function updateById($slaId, $name, $description, $startCondition, $stopCondition, $date) {
         $query = "update help_sla set name = ?, description = ?, start_condition = ?, stop_condition = ?, date_updated = ? where id = ? limit 1";
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("sssssi", $name, $description, $startCondition, $stopCondition, $date, $slaId);
-            $stmt->execute();
-        }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("sssssi", $name, $description, $startCondition, $stopCondition, $date, $slaId);
+        $stmt->execute();
     }
 
     public static function formatOffset($value) {
-
         $hours = floor(abs($value) / 60);
         $minutes = (abs($value) % 60);
         $sign = '';
@@ -473,16 +527,15 @@ class SLA {
     public static function getGoalById($goalId) {
         $query = 'select * from help_sla_goal where id = ? limit 1';
 
-        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-            $stmt->bind_param("i", $goalId);
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $goalId);
 
-            $stmt->execute();
-            $result = $stmt->get_result();
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            if ($result->num_rows)
-                return $result->fetch_array(MYSQLI_ASSOC);
-            else
-                return false;
-        }
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return false;
     }
 }

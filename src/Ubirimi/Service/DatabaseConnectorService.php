@@ -16,15 +16,17 @@ class DatabaseConnectorService
             UbirimiContainer::get()['database.name']
         );
 
+        $driver = new \mysqli_driver();
+        $driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+
         if ($connection->connect_errno) {
             throw new \Exception(sprintf('Failed to connect to database (%d). Reason: %s', $connection->connect_errno, $connection->connect_error));
         }
 
         $query = "SET NAMES 'utf8'";
 
-        if ($stmt = $connection->prepare($query)) {
-            $stmt->execute();
-        }
+        $stmt = $connection->prepare($query);
+        $stmt->execute();
 
         return $connection;
     }

@@ -2,8 +2,8 @@
 
 namespace Ubirimi\Yongo\Controller\Chart;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
@@ -39,6 +39,6 @@ class ViewCreatedVsResolvedController extends UbirimiController
             $date = date('Y-m-d', strtotime("+1 day", strtotime($date)));
         }
 
-        return new Response(json_encode($result));
+        return new JsonResponse($result);
     }
 }

@@ -221,17 +221,21 @@
                                                         }
 
                                                         if ($fieldCode) {
+                                                            if (isset(Field::$fieldTranslation[$fieldCode])) {
+                                                                $fieldChanged = Field::$fieldTranslation[$fieldCode];
+                                                            } else {
+                                                                $fieldChanged = $fieldCode;
+                                                            }
                                                             if ($valueField != null)
-                                                                $toDisplay .= '<li>Changed ' . Field::$fieldTranslation[$fieldCode] . ' to ' . $valueField . '</li>';
+                                                                $toDisplay .= '<li>Changed ' . $fieldChanged . ' to ' . $valueField . '</li>';
                                                             else
-                                                                $toDisplay .= '<li>Removed ' . Field::$fieldTranslation[$fieldCode] . '</li>';
+                                                                $toDisplay .= '<li>Removed ' . $fieldChanged . '</li>';
                                                         }
                                                     }
                                                     $toDisplay .= '</ul>';
                                                     $toDisplay .= '</td>';
                                                     $toDisplay .= '</tr>';
                                                 }
-
                                             }
                                         }
                                     }

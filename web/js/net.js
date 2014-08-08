@@ -22,4 +22,6 @@ $(document).ready(function () {
     $(".container.user-sing-up").on("click", "button[name='cancel']", function() {
         document.location = "/";
     });
+
+    setInputFieldFocused('sign-in-username');
 });

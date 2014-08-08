@@ -55,8 +55,12 @@ class ViewController extends UbirimiController
         }
 
         // before going further, check to is if the issue id a valid id
-        if (!$issue || !isset($issueProject) || (isset($issueProject) && $session->get('client/id') != $issueProject['client_id']) || (!$hasBrowsingPermission)) {
+        if (!$issue || !isset($issueProject) || (isset($issueProject) && $session->get('client/id') != $issueProject['client_id'])) {
             $issueValid = false;
+        }
+
+        if ($issueValid && !$hasBrowsingPermission) {
+            Util::checkUserIsLoggedInAndRedirect('?context=/yongo/issue/' . $issueId);
         }
 
         if ($issueValid) {
@@ -110,6 +114,8 @@ class ViewController extends UbirimiController
             }
 
             $customFieldsData = IssueCustomField::getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = IssueCustomField::getUserPickerData($issue['id']);
+
             $subTaskIssueTypes = Project::getSubTasksIssueTypes($projectId);
 
             $attachments = IssueAttachment::getByIssueId($issue['id'], true);
@@ -133,12 +139,15 @@ class ViewController extends UbirimiController
 
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
-            $slasPrintData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
             $atLeastOneSLA = false;
-            foreach ($slasPrintData as $slaData) {
-                if ($slaData['goal']) {
-                    $atLeastOneSLA = true;
-                    break;
+            if ($issueProject['help_desk_enabled_flag']) {
+                $slasPrintData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+
+                foreach ($slasPrintData as $slaData) {
+                    if ($slaData['goal']) {
+                        $atLeastOneSLA = true;
+                        break;
+                    }
                 }
             }
 

@@ -1,54 +1,75 @@
 <?php
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step;
 
-    $workflowId = $_GET['id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $workflowMetadata = Workflow::getMetaDataById($workflowId);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($workflowMetadata['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
-    $workflowSteps = Workflow::getSteps($workflowId);
-    $statuses = IssueSettings::getAllIssueSettings('status', $clientId);
-    $linkedStatuses = Workflow::getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
+        $workflowId = $request->get('id');
 
-    $addStepPossible = true;
-    if (count($linkedStatuses) == $statuses->num_rows)
-        $addStepPossible = false;
+        $workflowMetadata = Workflow::getMetaDataById($workflowId);
 
-    $emptyName = false;
-    $duplicateName = false;
-
-    if (isset($_POST['add_step'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-
-        if (empty($name))
-            $emptyName = true;
-
-        $duplicateStep = Workflow::getStepByWorkflowIdAndName($workflowId, $name);
-        if ($duplicateStep)
-            $duplicateName = true;
-
-        if (!$emptyName && !$duplicateName) {
-            $currentDate = $date = Util::getServerCurrentDateTime();
-            $StatusId = $_POST['linked_status'];
-
-            Workflow::addStep($workflowId, $name, $StatusId, $currentDate);
-
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Step ' . $name, $currentDate);
-
-            header('Location: /yongo/administration/workflow/view-as-text/' . $workflowId);
+        if ($workflowMetadata['client_id'] != $session->get('client/id')) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+
+        $workflowSteps = Workflow::getSteps($workflowId);
+        $statuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
+        $linkedStatuses = Workflow::getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
+
+        $addStepPossible = true;
+        if (count($linkedStatuses) == $statuses->num_rows) {
+            $addStepPossible = false;
+        }
+
+        $emptyName = false;
+        $duplicateName = false;
+
+        if ($request->request->has('add_step')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+
+            if (empty($name)) {
+                $emptyName = true;
+            }
+
+            $duplicateStep = Workflow::getStepByWorkflowIdAndName($workflowId, $name);
+            if ($duplicateStep) {
+                $duplicateName = true;
+            }
+
+            if (!$emptyName && !$duplicateName) {
+                $currentDate = $date = Util::getServerCurrentDateTime();
+                $StatusId = $request->request->get('linked_status');
+
+                Workflow::addStep($workflowId, $name, $StatusId, 0, $currentDate);
+
+                Log::add(
+                    $session->get('client/id'),
+                    SystemProduct::SYS_PRODUCT_YONGO,
+                    $session->get('user/id'),
+                    'ADD Yongo Workflow Step ' . $name,
+                    $currentDate
+                );
+
+                return new RedirectResponse('/yongo/administration/workflow/view-as-text/' . $workflowId);
+            }
+        }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Step';
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/workflow/step/Add.php', get_defined_vars());
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Step';
-
-    require_once __DIR__ . '/../../../../Resources/views/administration/workflow/step/Add.php';
+}

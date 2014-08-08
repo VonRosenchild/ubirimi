@@ -42,8 +42,8 @@ class EditController extends UbirimiController
 
         $emptyName = false;
         $duplicate_name = false;
-        $duplicate_code = false;
-        $empty_code = false;
+        $duplicateCode = false;
+        $emptyCode = false;
 
         if ($request->request->has('confirm_edit_project')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -53,13 +53,12 @@ class EditController extends UbirimiController
             $issueTypeSchemeId = $request->request->get('issue_type_scheme');
             $workflowSchemeId = $request->request->get('workflow_scheme');
             $projectCategoryId = $request->request->get('project_category');
-            $enableForHelpdeskFlag = $request->request->get('enable_for_helpdesk');
 
             if (-1 == $projectCategoryId) {
                 $projectCategoryId = null;
             }
 
-            $lead_id = Util::cleanRegularInputField($request->request->get('lead'));
+            $leadId = Util::cleanRegularInputField($request->request->get('lead'));
 
             if (empty($name)) {
                 $emptyName = true;
@@ -71,20 +70,16 @@ class EditController extends UbirimiController
             }
 
             if (empty($code)) {
-                $empty_code = true;
+                $emptyCode = true;
             } else {
                 $project_exists = Project::getByCode(mb_strtolower($code), $projectId, $session->get('client/id'));
                 if ($project_exists)
-                    $duplicate_code = true;
+                    $duplicateCode = true;
             }
 
-            if (!$emptyName && !$empty_code && !$duplicate_name && !$duplicate_code) {
+            if (!$emptyName && !$emptyCode && !$duplicate_name && !$duplicateCode) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Project::updateById($projectId, $lead_id, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $enableForHelpdeskFlag, $currentDate);
-
-                if ($enableForHelpdeskFlag) {
-                    Project::addDefaultInitialDataForHelpDesk($clientId, $projectId, $loggedInUserId, $currentDate);
-                }
+                Project::updateById($projectId, $leadId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

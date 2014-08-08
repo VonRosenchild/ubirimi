@@ -22,7 +22,7 @@
             $alreadyExists = true;
 
         if (!$emptyName && !$alreadyExists) {
-            $date = Util::getCurrentDateTime($session->get('client/settings/timezone'));
+            $date = Util::getServerCurrentDateTime();
             UserProfileCategory::add($clientId, $name, $description, $date);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD Profile Category ' . $name, $date);

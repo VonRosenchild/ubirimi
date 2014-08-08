@@ -14,14 +14,16 @@ class ContactSendController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $errors = array('empty_email' => false,
+        $errors = array(
+            'empty_email' => false,
             'email_not_valid' => false,
-            'empty_message' => false);
+            'empty_message' => false
+        );
 
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $email = Util::cleanRegularInputField($_POST['email']);
-        $category = Util::cleanRegularInputField($_POST['category']);
-        $message = Util::cleanRegularInputField($_POST['message']);
+        $name = Util::cleanRegularInputField($request->request->get('name'));
+        $email = Util::cleanRegularInputField($request->request->get('email'));
+        $category = Util::cleanRegularInputField($request->request->get('category'));
+        $message = Util::cleanRegularInputField($request->request->get('message'));
 
         if (empty($message)) {
             $errors['empty_message'] = true;
@@ -35,7 +37,13 @@ class ContactSendController extends UbirimiController
         }
 
         if (Util::hasNoErrors($errors)) {
-            $event = new UbirimiEvent(array('name' => $name, 'category' => $category, 'message' => $message, 'email' => $email));
+            $event = new UbirimiEvent(array(
+                'name' => $name,
+                'category' => $category,
+                'message' => $message,
+                'email' => $email
+            ));
+
             UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::CONTACT, $event);
 
             $_POST = array();

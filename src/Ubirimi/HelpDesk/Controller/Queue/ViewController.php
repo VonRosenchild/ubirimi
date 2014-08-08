@@ -27,10 +27,6 @@
 
     $queues = Queue::getByProjectId($projectId);
     if ($queues) {
-
-        // update the SLAs for this project
-        Issue::updateSLADataForProject($clientId, $projectId, $loggedInUserId, $clientSettings);
-
         $whereSQL = Issue::prepareWhereClauseFromQueue($queueSelected['definition'], $loggedInUserId, $projectId, $clientId);
         $whereSQL = 'issue_main_table.project_id = ' . $projectId . ' AND ' . $whereSQL;
 
@@ -38,7 +34,7 @@
         $getSearchParameters['page'] = $page;
         $getSearchParameters['issues_per_page'] = 50;
 
-        $issuesResult = Issue::getByParameters($getSearchParameters, $loggedInUserId, $whereSQL);
+        $issuesResult = Issue::getByParameters($getSearchParameters, $loggedInUserId, $whereSQL, $loggedInUserId);
 
         $issues = $issuesResult[0];
 

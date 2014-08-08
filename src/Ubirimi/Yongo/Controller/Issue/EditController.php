@@ -16,7 +16,9 @@ use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 
 class EditController extends UbirimiController
 {
@@ -33,15 +35,20 @@ class EditController extends UbirimiController
         $fieldTypesCustom = $request->get('field_types_custom');
         $fieldValuesCustom = $request->get('field_values_custom');
 
+        // todo: de ce este aceasta variabila nefolosita
+
         $attachIds = $request->get('attach_ids');
         $attachIdsToBeKept = $request->get('attach_ids');
 
-        if (!is_array($attachIdsToBeKept))
+        if (!is_array($attachIdsToBeKept)) {
             $attachIdsToBeKept = array();
+        }
+
+        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         $newIssueData = array();
+        $newIssueData['issue_project_id'] = $oldIssueData['issue_project_id'];
         $newIssueCustomFieldsData = array();
-        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId, null, $loggedInUserId);
 
         for ($i = 0; $i < count($fieldTypes); $i++) {
             if ($fieldValues[$i] != 'null' && $fieldValues[$i] != '') {
@@ -49,36 +56,47 @@ class EditController extends UbirimiController
                     $fieldValues[$i] = \DateTime::createFromFormat('Y-m-d', $fieldValues[$i])->format('Y-m-d');
                 }
                 $newIssueData[$fieldTypes[$i]] = $fieldValues[$i];
-            } else
+            } else {
                 $newIssueData[$fieldTypes[$i]] = null;
+            }
         }
 
         if ($fieldTypesCustom) {
             for ($i = 0; $i < count($fieldTypesCustom); $i++) {
-                if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '')
+                if ($fieldValuesCustom[$i] != 'null' && $fieldValuesCustom[$i] != '') {
                     $newIssueCustomFieldsData[$fieldTypesCustom[$i]] = $fieldValuesCustom[$i];
-                else
+                } else {
                     $newIssueCustomFieldsData[$fieldTypesCustom[$i]] = null;
+                }
             }
         }
 
         if (array_key_exists(Field::FIELD_ASSIGNEE_CODE, $newIssueData)) {
             // assignee field is placed on screen
-
-            if ($newIssueData[Field::FIELD_ASSIGNEE_CODE] == -1)
+            if ($newIssueData[Field::FIELD_ASSIGNEE_CODE] == -1) {
                 $newIssueData[Field::FIELD_ASSIGNEE_CODE] = null;
+            }
         }
 
-        if (!isset($newIssueData[Field::FIELD_STATUS_CODE]))
+        if (!isset($newIssueData[Field::FIELD_STATUS_CODE])) {
             $newIssueData[Field::FIELD_STATUS_CODE] = $oldIssueData[Field::FIELD_STATUS_CODE];
+        }
 
         $currentDate = Util::getServerCurrentDateTime();
+        Issue::updateById($issueId, $newIssueData, $currentDate);
 
-        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData);
+        $oldIssueCustomFieldsData = array();
+        foreach ($newIssueCustomFieldsData as $key => $value) {
+            $keyData = explode("_", $key);
+
+            $oldIssueCustomFieldsData[$keyData[0]] = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            unset($newIssueCustomFieldsData[$key]);
+            $newIssueCustomFieldsData[$keyData[0]] = $value;
+        }
+
+        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
 
         Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
-
-        Issue::updateById($issueId, $newIssueData, $currentDate);
 
         // check if on the modal there is a comment field
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $newIssueData) && !empty($newIssueData[Field::FIELD_COMMENT_CODE])) {

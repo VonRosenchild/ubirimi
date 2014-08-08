@@ -6,9 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
-use Ubirimi\PasswordHash;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
 
 class ChangePasswordController extends UbirimiController
 {
@@ -21,10 +21,9 @@ class ChangePasswordController extends UbirimiController
         $newPassword = $request->request->get('new_password');
         $confirmPassword = $request->request->get('confirm_password');
 
-        $t_hasher = new PasswordHash(8, FALSE);
         $user = User::getById($userId);
 
-        if (!$t_hasher->CheckPassword($currentPassword, $user['password'])) {
+        if (!UbirimiContainer::get()['password']->check($currentPassword, $user['password'])) {
             return new Response('current_password_wrong');
         } else if ($newPassword != $confirmPassword) {
             return new Response('password_mismatch');
@@ -32,7 +31,7 @@ class ChangePasswordController extends UbirimiController
             return new Response('password_too_short');
         }
 
-        $hash = $t_hasher->HashPassword($newPassword);
+        $hash = UbirimiContainer::get()['password']->hash($newPassword);
         User::updatePassword($userId, $hash);
         return new Response('ok');
     }

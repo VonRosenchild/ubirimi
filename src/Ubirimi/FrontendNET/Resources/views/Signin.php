@@ -14,19 +14,19 @@
             <td>
                 <div>
                     <div class="align-left">
-                        <form name="f_login" method="post" class="standard-form" action="/">
+                        <form name="f_login" method="post" class="standard-form" action="/<?php if (isset($context)) echo '?context=' . $context ?>">
                             <?php if ($isDemo): ?>
                             <p>Log in with demo/demo</p>
                             <?php endif ?>
                             <div class="form-section clearfix sectionFeature blue">
                                 <fieldset>
                                     <label for="sign-in-username">username</label>
-                                    <input id="sign-in-username" type="text" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="username" style="width:240px; "/>
+                                    <input tabindex="1" id="sign-in-username" type="text" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="username" style="width:240px; "/>
                                 </fieldset>
 
                                 <fieldset>
                                     <label for="sign-in-password">password</label>
-                                    <input id="sign-in-password" type="password" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="password" style="width:240px;"/>
+                                    <input tabindex="2  " id="sign-in-password" type="password" value="<?php if ($isDemo): ?>demo<?php endif ?>" name="password" style="width:240px;"/>
                                 </fieldset>
 
                                 <?php if ($signInError): ?>

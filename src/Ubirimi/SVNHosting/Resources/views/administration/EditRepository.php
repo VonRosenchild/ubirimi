@@ -23,10 +23,10 @@
                 <td valign="top">Code <span class="mandatory">*</span></td>
                 <td>
                     <input class="inputText" type="text" value="<?php if (isset($code)) echo $code ?>" name="code"/>
-                    <?php if ($empty_code): ?>
+                    <?php if ($emptyCode): ?>
                         <br />
                         <div class="error">The code of the project can not be empty.</div>
-                    <?php elseif ($duplicate_code): ?>
+                    <?php elseif ($duplicateCode): ?>
                         <br />
                         <div class="error">Duplicate project code. Please choose another code.</div>
                     <?php endif ?>

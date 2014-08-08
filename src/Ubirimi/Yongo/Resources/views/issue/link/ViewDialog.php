@@ -16,7 +16,7 @@
         <tr>
             <td valign="top">Issue</td>
             <td>
-                <select data-placeholder="Select an issue..." id="link_child_issue" name="link_child_issue" multiple="multiple" class="chzn-select" style="width: 400px;">
+                <select data-placeholder="Select an issue..." id="link_child_issue" name="link_child_issue" multiple="multiple" class="select2Input" style="width: 400px;">
                     <?php while ($issue = $issues->fetch_array(MYSQLI_ASSOC)): ?>
                         <?php if ($issue['id'] != $issueId): ?>
                             <option value="<?php echo $issue['id'] ?>"><?php echo $issue['project_code'] . '-' . $issue['nr']; ?></option>

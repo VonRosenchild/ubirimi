@@ -692,7 +692,7 @@
 }
 
 .inputTextLarge {
-    width: 650px;
+    width: 646px;
     height: 19px;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -843,6 +843,11 @@ textarea:required {
 #footer #copyright a, #footer #copyright a:link, #footer #copyright a:visited {
     color: #CCCCCC !important;
     font-size: 11px !important;
+}
+
+.divLikeTable:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
 }
 
 #footer #copyright a:hover {
@@ -1050,4 +1055,12 @@ td.cellCurrentDate {
     line-height: 44px;
     width: 100%;
     display: block;
+}
+
+.select2Input {
+    width: 450px;
+}
+
+.select2InputSmall {
+    width: 250px;
 }

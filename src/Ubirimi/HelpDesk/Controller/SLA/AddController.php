@@ -84,7 +84,7 @@
             $issuesData = Issue::getByParameters(array('project' => $projectId));
             if ($issuesData->num_rows) {
                 while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
-                    Issue::addPlainSLAData($issue['id'], $projectId);
+                    Issue::addPlainSLADataBySLAId($issue['id'], $slaId);
                 }
             }
 

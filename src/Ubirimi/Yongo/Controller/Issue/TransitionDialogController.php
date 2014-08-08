@@ -8,6 +8,8 @@
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Yongo\Repository\Screen\Screen;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
+    use Ubirimi\Repository\User\User;
+    use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -23,6 +25,7 @@
     $workflowData = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
     $screenId = $workflowData['screen_id'];
 
+    $allUsers = User::getByClientId($session->get('client/id'));
     $screenData = Screen::getDataById($screenId);
     $screenMetadata = Screen::getMetaDataById($screenId);
     $resolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
@@ -64,14 +67,6 @@
                     $htmlOutput .= '<input ' . $requiredHTML . ' id="field_type_summary" class="inputTextLarge" style="width: 100%;" type="text" value="" name="' . $field['field_code'] . '" />';
                     break;
 
-//                case Field::FIELD_PRIORITY_CODE:
-//                    $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_priority" name="' . $field['field_code'] . '" class="inputTextCombo">';
-//                    while ($priority = $issuePriorities->fetch_array(MYSQLI_ASSOC)) {
-//                        $htmlOutput .= '<option value="' . $priority['id'] . '">' . $priority['name'] . '</option>';
-//                    }
-//                    $htmlOutput .= '</select>';
-//                    break;
-
                 case Field::FIELD_ASSIGNEE_CODE:
                     $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
@@ -99,7 +94,7 @@
 
                 case Field::FIELD_COMPONENT_CODE:
                     if ($projectComponents) {
-                        $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_component" name="' . $field['field_code'] . '[]" multiple="multiple" class="chzn-select" style="width: 400px;">';
+                        $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_component" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input" style="width: 400px;">';
                         while ($component = $projectComponents->fetch_array(MYSQLI_ASSOC)) {
                             $htmlOutput .= '<option value="' . $component['id'] . '">' . $component['name'] . '</option>';
                         }
@@ -191,6 +186,42 @@
 
                         case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
                             $htmlOutput .= '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
+                            break;
+
+                        case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
+                            $possibleValues = Field::getDataByFieldId($field['field_id']);
+                            $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
+                            $htmlOutput .= '<option value="">None</option>';
+                            while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
+                                $htmlOutput .= '<option value="' . $customValue['id'] . '">' . $customValue['value'] . '</option>';
+                            }
+                            $htmlOutput .= '</select>';
+                            break;
+
+                        case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
+                            $customFieldsDataUserPickerMultipleUserData = IssueCustomField::getUserPickerData($issueId, $field['field_id']);
+                            $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
+
+                            $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';
+                            while ($allUsers && $systemUser = $allUsers->fetch_array(MYSQLI_ASSOC)) {
+                                $userFound = false;
+                                if ($customFieldsDataUserPickerMultipleUser) {
+                                    foreach ($customFieldsDataUserPickerMultipleUser as $fieldUser) {
+                                        if ($fieldUser['user_id'] == $systemUser['id']) {
+                                            $userFound = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                $textSelected = '';
+                                if ($userFound) {
+                                    $textSelected = 'selected="selected"';
+                                }
+                                $htmlOutput .= '<option ' . $textSelected . ' value="' . $systemUser['id'] . '">' . $systemUser['first_name'] . ' ' . $systemUser['last_name'] . '</option>';
+                            }
+                            $htmlOutput .= '</select>';
+                            $allUsers->data_seek(0);
                             break;
                     }
 

@@ -92,8 +92,9 @@ class ProjectsDataController extends UbirimiController
                     break;
                 }
             }
-            if (!$found)
+            if (!$found) {
                 $issueResolutionArray[] = $issueResolution;
+            }
         }
 
         $assignableUsers = Project::getUsersWithPermission($projectIdArray, Permission::PERM_ASSIGNABLE_USER);
@@ -101,10 +102,11 @@ class ProjectsDataController extends UbirimiController
 
         $issueUsersAssignableArray = array();
         if ($allowUnassignedIssuesFlag) {
-            $issueUsersAssignableArray[]['user_id'] = -1;
-            $issueUsersAssignableArray[]['first_name'] = 'No one';
-            $issueUsersAssignableArray[]['last_name'] = '';
+            $issueUsersAssignableArray[0]['user_id'] = -1;
+            $issueUsersAssignableArray[0]['first_name'] = 'No one';
+            $issueUsersAssignableArray[0]['last_name'] = '';
         }
+
         while ($assignableUsers && $issueUser = $assignableUsers->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
             for ($i = 0; $i < count($issueUsersAssignableArray); $i++) {
@@ -114,8 +116,9 @@ class ProjectsDataController extends UbirimiController
                     break;
                 }
             }
-            if (!$found)
+            if (!$found) {
                 $issueUsersAssignableArray[] = $issueUser;
+            }
         }
 
         // components are releases
@@ -133,8 +136,9 @@ class ProjectsDataController extends UbirimiController
                     break;
                 }
             }
-            if (!$found)
+            if (!$found) {
                 $projectComponentsArray[] = $projectComponent;
+            }
         }
 
         $allProjectVersions = Project::getVersions($projectIdArray);
@@ -150,8 +154,9 @@ class ProjectsDataController extends UbirimiController
                     break;
                 }
             }
-            if (!$found)
+            if (!$found) {
                 $projectVersionsArray[] = $projectVersion;
+            }
         }
 
         $result = array(

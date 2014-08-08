@@ -2,6 +2,15 @@ var selected_rows = [];
 var PRODUCT_DOCUMENTADOR = 4;
 var PRODUCT_QUICK_NOTES = 7;
 
+function setInputFieldFocused(id) {
+
+    var SearchInput = $('#' + id);
+    SearchInput.val(SearchInput.val());
+    var strLength = SearchInput.val().length;
+    SearchInput.focus();
+    SearchInput[0].setSelectionRange(strLength, strLength);
+}
+
 function addParameterToURL(url, parameter) {
     url += (url.split('?')[1] ? '&':'?') + parameter;
 
