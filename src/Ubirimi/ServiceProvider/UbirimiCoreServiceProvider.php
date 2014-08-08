@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHa
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Ubirimi\Container\ServiceProviderInterface;
 use Ubirimi\LoginTimeService\LoginTimeService;
+use Ubirimi\Service\BugzillaConnectorService;
 use Ubirimi\Service\ClientService;
 use Ubirimi\Service\WarmUpService;
 use Ubirimi\Service\LogService;
@@ -23,6 +24,12 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
     {
         $pimple['db.connection'] = $pimple->share(function() {
             $databaseConnector = new DatabaseConnectorService();
+
+            return $databaseConnector->getConnection();
+        });
+
+        $pimple['bugzilla.connection'] = $pimple->share(function() {
+            $databaseConnector = new BugzillaConnectorService();
 
             return $databaseConnector->getConnection();
         });
