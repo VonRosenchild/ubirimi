@@ -16,7 +16,7 @@
         }
 
         public static function getByIssueIdAndProjectId($issueId, $projectId) {
-            $query = 'SELECT issue_component.id, project_component.name, project_component_id, parent_id ' .
+            $query = 'SELECT issue_component.id, project_component.name, project_component.description, project_component_id, parent_id ' .
                 'FROM issue_component ' .
                 'LEFT JOIN project_component on issue_component.project_component_id = project_component.id ' .
                 'WHERE issue_id = ? and project_component.project_id = ? ' .
