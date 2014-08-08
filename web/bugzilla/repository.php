@@ -75,12 +75,23 @@ function updateUbirimiBugSeverity($issue_id, $field_id, $value)
     return UbirimiContainer::get()['db.connection']->insert_id;
 }
 
+function updateUbirimiBugOS($issue_id, $field_id, $value)
+{
+    $query = "INSERT INTO issue_custom_field_data(issue_id, field_id, value, date_created)
+                    VALUES ('" . $issue_id. "', '" . $field_id . "', '" . $value . "', NOW())";
+
+    UbirimiContainer::get()['db.connection']->query($query);
+
+    return UbirimiContainer::get()['db.connection']->insert_id;
+}
+
 function getUbirimiIssueIdBasedOnBugzillaBug($shortDesc, $creationTs)
 {
     $query = 'SELECT *
                 FROM yongo_issue
                 WHERE summary = ?
-                  AND date_created = ?';
+                  AND date_created = ?
+                LIMIT 1';
 
     if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
         $stmt->bind_param("ss", $shortDesc, $creationTs);
@@ -91,10 +102,27 @@ function getUbirimiIssueIdBasedOnBugzillaBug($shortDesc, $creationTs)
             echo "\nCould not find Ubirimi issue correspondence\n";
             die();
         }
+
         return $result->fetch_array(MYSQLI_ASSOC);
     }
 
     return null;
+}
+
+function getUbirimiIssueIdBasedOnBugzillaBug2($shortDesc, $creationTs)
+{
+    $query = 'SELECT *
+                FROM yongo_issue
+                WHERE summary = ?
+                  AND date_created = ?
+                LIMIT 1';
+
+    $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+    $stmt->bind_param("ss", $shortDesc, $creationTs);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result->fetch_array(MYSQLI_ASSOC);
 }
 
 function getUbirimiFieldValue($severityConstants, $severityText)
@@ -135,8 +163,9 @@ function getProducts($connection)
 
 function getComponents($connection)
 {
-    $query = 'SELECT *
+    $query = 'SELECT components.*, products.name product_name
                 FROM components
+              LEFT JOIN products on products.id = components.product_id
                 ORDER BY id DESC';
 
     $stmt = $connection->prepare($query);
@@ -217,6 +246,17 @@ function getPriorities($connection)
     $result = $stmt->get_result();
 
     return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+function updateIssueResolution($resolutionId, $issueId)
+{
+    $query = "UPDATE yongo_issue
+                SET resolution_id = ?
+                WHERE id = ?";
+
+    $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+    $stmt->bind_param("ii", $resolutionId, $issueId);
+    $stmt->execute();
 }
 
 function installComponent($valiId, $projectId, $name, $description)

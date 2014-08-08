@@ -50,10 +50,23 @@ try {
         6 => 'major'
     );
 
+    $resolutions = array(
+        'FIXED' => 9796,
+        "WON'T FIX" => 9798,
+        'DUPLICATE' => 9799,
+        'NO RESOLUTION' => 9801,
+        'INVALID' => 9802,
+        'LATER' => 9803,
+        'REMIND' => 9804,
+        'WORKSFORME' => 9805,
+        'MOVED' => 1959,
+        'Waiting Verification' => 1959
+    );
+
     UbirimiContainer::get()['db.connection']->autocommit(false);
 
-//    dropAllTables();
-//    insertMovidiusDatabase();
+    dropAllTables();
+    insertMovidiusDatabase();
 
     /* delete old clients -- start */
 //    foreach (Client::getAll() as $client) {
@@ -123,61 +136,74 @@ try {
     $ubirimiPriorities = getUbirimiPriorities($clientId);
 
     /* install bugs -- start */
-//    $movidiusBugs = getBugs($connectionBugzilla);
-//    foreach ($movidiusBugs as $bug) {
-//            $issue = Issue::addBugzilla(
-//                array(
-//                    'id' => getYongoProjectFromMovidusProject($movidiusProjects, $ubirimiProjects, $bug['product_id'])
-//                ),
-//                $bug['creation_ts'],
-//                array(
-//                    'reporter' => getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $bug['reporter']),
-//                    'resolution' => null,
-//                    'priority' => getYongoPriorityFromMovidiusPriority($ubirimiPriorities, $bug['priority']),
-//                    'type' => 15721, //BUG
-//                    'assignee' => getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $bug['assigned_to']),
-//                    'summary' => $bug['short_desc'],
-//                    'description' => '',
-//                    'environment' => null,
-//                    'due_date' => $bug['deadline']
-//                ),
-//                1,
-//                null,
-//                null,
-//                getYongoStatusId($ubirimiStatuses, $bug['bug_status'])
-//            );
-//
-//            $comments = getComments($connectionBugzilla, $bug['bug_id']);
-//
-//            foreach ($comments as $comment) {
-//                $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
-//
-//                if (null !== $userId) {
-//                    IssueComment::add(
-//                        $issue[0],
-//                        $userId,
-//                        $comment['thetext'],
-//                        $comment['bug_when']
-//                    );
-//                }
-//            }
-//    }
+    $movidiusBugs = getBugs($connectionBugzilla);
+    foreach ($movidiusBugs as $bug) {
+            $issue = Issue::addBugzilla(
+                array(
+                    'id' => getYongoProjectFromMovidusProject($movidiusProjects, $ubirimiProjects, $bug['product_id'])
+                ),
+                $bug['creation_ts'],
+                array(
+                    'reporter' => getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $bug['reporter']),
+                    'resolution' => null,
+                    'priority' => getYongoPriorityFromMovidiusPriority($ubirimiPriorities, $bug['priority']),
+                    'type' => 15721, //BUG
+                    'assignee' => getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $bug['assigned_to']),
+                    'summary' => $bug['short_desc'],
+                    'description' => '',
+                    'environment' => null,
+                    'due_date' => $bug['deadline']
+                ),
+                1,
+                null,
+                null,
+                getYongoStatusId($ubirimiStatuses, $bug['bug_status'])
+            );
+
+            $comments = getComments($connectionBugzilla, $bug['bug_id']);
+
+            foreach ($comments as $comment) {
+                $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
+
+                if (null !== $userId) {
+                    IssueComment::add(
+                        $issue[0],
+                        $userId,
+                        $comment['thetext'],
+                        $comment['bug_when']
+                    );
+                }
+            }
+    }
     /* install bugs -- end */
 
     /* install bug severity field -- start */
+//    $bugs = getBugs($connectionBugzilla);
+//
+//    foreach ($bugs as $bug) {
+//        $ubirimiIssueId = getUbirimiIssueIdBasedOnBugzillaBug($bug['short_desc'], $bug['creation_ts']);
+//
+//        $field_id = 29403;
+//        $value = getUbirimiFieldValue($severityConstants, $bug['bug_severity']);
+//
+//        if (null !== $value) {
+//            updateUbirimiBugSeverity($ubirimiIssueId['id'], $field_id, $value);
+//        }
+//    }
+    /* install bug severity field -- end */
+
+    /* update Ubirimi issue resolution field -- start */
     $bugs = getBugs($connectionBugzilla);
-
     foreach ($bugs as $bug) {
-        $ubirimiIssueId = getUbirimiIssueIdBasedOnBugzillaBug($bug['short_desc'], $bug['creation_ts']);
+        $ubirimiIssue = getUbirimiIssueIdBasedOnBugzillaBug($bug['short_desc'], $bug['creation_ts']);
 
-        $field_id = 29403;
-        $value = getUbirimiFieldValue($severityConstants, $bug['bug_severity']);
+        $resolutionId = isset($resolutions[$bug['resolution']]) ?  $resolutions[$bug['resolution']] : null;
 
-        if (null !== $value) {
-            updateUbirimiBugSeverity($ubirimiIssueId['id'], $field_id, $value);
+        if (null !== $resolutionId) {
+            updateIssueResolution($resolutionId, $ubirimiIssue['id']);
         }
     }
-    /* install bug severity field -- end */
+    /* update Ubirimi issue resolution field -- end */
 
     UbirimiContainer::get()['db.connection']->commit();
 } catch (Exception $e) {

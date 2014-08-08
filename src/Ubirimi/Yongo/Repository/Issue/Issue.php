@@ -413,6 +413,12 @@ class Issue {
             $parameterArray[] = $parameters['date_created_after'];
         }
 
+        if (array_key_exists('date_updated_after', $parameters) && isset($parameters['date_updated_after'])) {
+            $queryWhere .= ' issue_main_table.date_updated >= ? AND ';
+            $parameterType .= 's';
+            $parameterArray[] = $parameters['date_updated_after'];
+        }
+
         if (array_key_exists('date_created_before', $parameters) && isset($parameters['date_created_before'])) {
             $queryWhere .= ' issue_main_table.date_created <= ? AND ';
             $parameterType .= 's';
@@ -745,14 +751,22 @@ class Issue {
         }
     }
 
-    public static function addBugzilla($project, $currentDate, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null, $statusId) {
+    public static function addBugzilla($project, $currentDate, $delta_ts, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null, $statusId) {
+        global $issueNumbers;
 
-        $issueNumber = Issue::getAvailableIssueNumber($project['id']);
+        if (!isset($issueNumbers[$project['id']])) {
+            $issueNumbers[$project['id']] = Issue::getAvailableIssueNumber($project['id']);
+        }
+
+        $issueNumbers[$project['id']] += 1;
+
+        $issueNumber = $issueNumbers[$project['id']];
+
         $workflowUsed = Project::getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
 
-        $query = "INSERT INTO yongo_issue(project_id, resolution_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .
+        $query = "INSERT INTO yongo_issue(date_updated, project_id, resolution_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .
             "summary, description, environment, date_created, date_due, parent_id, security_scheme_level_id, original_estimate, remaining_estimate, helpdesk_flag) " .
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         if (!array_key_exists('reporter', $issueSystemFields) || $issueSystemFields['reporter'] == null) {
             $issueSystemFields['reporter'] = $loggedInUserId;
@@ -791,9 +805,11 @@ class Issue {
 
         if (is_numeric($time_tracking_original_estimate))
             $time_tracking_original_estimate .=  $systemTimeTrackingDefaultUnit;
+
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param(
-                "iiiiiiiisssssiissi",
+                "siiiiiiiisssssiissi",
+                $delta_ts,
                 $project['id'],
                 $issueSystemFields['resolution'],
                 $issueSystemFields['priority'],
@@ -809,8 +825,8 @@ class Issue {
                 $issueSystemFields['due_date'],
                 $parentIssueId,
                 $securityLevel,
-                $time_tracking_remaining_estimate,
                 $time_tracking_original_estimate,
+                $time_tracking_remaining_estimate,
                 $issueSystemFields['helpdesk_flag']
             );
 
