@@ -174,11 +174,12 @@ class Util {
         $clientTimezone = UbirimiContainer::get()['session']->get('client/settings/timezone');
 
         $dateObject = new \DateTime($date, new \DateTimeZone(date_default_timezone_get()));
+
         if ($clientTimezone) {
             $dateObject->setTimezone(new \DateTimeZone($clientTimezone));
         }
 
-        return date('j M Y H:i:s', $dateObject->getTimestamp());
+        return $dateObject->format('j M Y H:i:s');
     }
 
     public static function cleanRegularInputField($value) {
