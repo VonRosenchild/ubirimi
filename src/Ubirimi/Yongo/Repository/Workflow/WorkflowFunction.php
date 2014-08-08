@@ -50,7 +50,7 @@ class WorkflowFunction
 
                 $finalStatusName = IssueSettings::getById($finalStatusId, 'status', 'name');
                 $initialStatusName = IssueSettings::getById($issueData[Field::FIELD_STATUS_CODE], 'status', 'name');
-                $issueFieldChanges[] = array(Field::FIELD_STATUS_CODE, $initialStatusName, $finalStatusName);
+                $issueFieldChanges[] = array(Field::FIELD_STATUS_CODE, $initialStatusName, $finalStatusName, $issueData[Field::FIELD_STATUS_CODE], $finalStatusId);
                 Issue::updateField($issueId, 'status_id', $finalStatusId);
             }
 

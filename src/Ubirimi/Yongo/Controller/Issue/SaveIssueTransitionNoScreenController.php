@@ -30,8 +30,6 @@
         $date = Util::getServerCurrentDateTime();
         WorkflowFunction::triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
 
-        $issue = Issue::getById($issueId);
-
         // update the date_updated field
         Issue::updateById($issueId, array('date_updated' => $date), $date);
 
