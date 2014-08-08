@@ -42,7 +42,7 @@ class IssueComment {
 
     public static function getByIssueId($issueId, $order = false) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created, ' .
-            'user.id as user_id, user.first_name, user.last_name, user.avatar_picture ' .
+            'user.id as user_id, user.first_name, user.last_name, user.avatar_picture, user.email ' .
             'FROM issue_comment ' .
             'LEFT JOIN user on issue_comment.user_id = user.id ' .
             'WHERE issue_id = ? ';
