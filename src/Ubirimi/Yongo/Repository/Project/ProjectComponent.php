@@ -24,6 +24,20 @@ class ProjectComponent {
         }
     }
 
+    public static function getAll()
+    {
+        $query = 'SELECT project_component.*, project.name as project_name
+            FROM project_component
+            LEFT JOIN project on project.id = project_component.project_id
+            order by id asc';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public static function deleteById($componentId)
     {
         $query = 'delete from issue_component where project_component_id = ?';
