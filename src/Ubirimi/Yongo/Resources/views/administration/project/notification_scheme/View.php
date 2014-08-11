@@ -79,6 +79,10 @@
                                             echo '<li> Group (' . $data['group_name'] . ')</li>';
                                         } else if ($data['role_name']) {
                                             echo '<li>Project Role (' . $data['role_name'] . ')</li>';
+                                        } else if ($data['all_watchers']) {
+                                            echo '<li>All Watchers</li>';
+                                        } else if ($data['custom_field_name']) {
+                                            echo '<li>User Custom Field Value (' . $data['custom_field_name'] . ')</li>';
                                         }
                                     }
                                     echo '</ul>';

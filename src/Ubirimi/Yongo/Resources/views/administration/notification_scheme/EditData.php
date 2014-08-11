@@ -72,9 +72,9 @@
                                 } else if ($data['role_name']) {
                                     echo '<li>Project Role (' . $data['role_name'] . ') (' . $link_delete . ')</li>';
                                 } else if ($data['all_watchers']) {
-                                    echo '<li>All Watchers</li>';
+                                    echo '<li>All Watchers (' . $link_delete . ')</li>';
                                 } else if ($data['custom_field_name']) {
-                                    echo '<li>User Custom Field Value (' . $data['custom_field_name'] . ')</li>';
+                                    echo '<li>User Custom Field Value (' . $data['custom_field_name'] . ') (' . $link_delete . ')</li>';
                                 }
                             }
                             echo '</ul>';
