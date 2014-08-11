@@ -207,6 +207,7 @@ class Email {
 
     public static function sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment, $loggedInUser) {
         if (Email::$smtpSettings) {
+
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                 "[Issue] - Issue UPDATED " .
                 $issue['project_code'] . '-' .

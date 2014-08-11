@@ -5,12 +5,15 @@ namespace Ubirimi\Yongo\Controller\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\User;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Email\Email;
+use Ubirimi\Yongo\Repository\Project\Project;
 
 class AssignController extends UbirimiController
 {
@@ -27,10 +30,30 @@ class AssignController extends UbirimiController
         $userAssignedId = $_POST['user_assigned_id'];
         $comment = Util::cleanRegularInputField($_POST['comment']);
 
+        $issueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         Issue::updateAssignee($session->get('client/id'), $issueId, $session->get('user/id'), $userAssignedId, $comment);
 
         // update the date_updated field
         Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
+        $userAssigned = User::getById($userAssignedId);
+        $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];
+        $oldUserAssignedName = $issueData['ua_first_name'] . ' ' . $issueData['ua_last_name'];
+
+        $project = Project::getById($issueData['issue_project_id']);
+
+        $smtpSettings = UbirimiContainer::get()['session']->get('client/settings/smtp');
+
+        Email::$smtpSettings = $smtpSettings;
+        Email::triggerAssignIssueNotification(
+            $clientId,
+            $issueData,
+            $oldUserAssignedName,
+            $newUserAssignedName,
+            $project,
+            $loggedInUserId,
+            $comment
+        );
 
         return new Response('');
     }

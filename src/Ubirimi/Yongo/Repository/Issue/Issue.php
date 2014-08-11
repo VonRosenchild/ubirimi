@@ -1526,11 +1526,6 @@ class Issue
     public static function updateAssignee($clientId, $issueId, $loggedInUserId, $userAssignedId, $comment = null) {
         $issueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
-        $oldUserAssignedName = $issueData['ua_first_name'] . ' ' . $issueData['ua_last_name'];
-
-        $userAssigned = User::getById($userAssignedId);
-        $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];
-
         if ($userAssignedId != -1) {
             Issue::updateField($issueId, 'user_assigned_id', $userAssignedId);
         } else {
@@ -1549,23 +1544,6 @@ class Issue
 
         if (!empty($comment)) {
             IssueComment::add($issueId, $loggedInUserId, $comment, $date);
-        }
-
-        $issueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $project = Project::getById($issueData['issue_project_id']);
-
-        $smtpSettings = UbirimiContainer::get()['session']->get('client/settings/smtp');
-        if ($smtpSettings) {
-            Email::$smtpSettings = $smtpSettings;
-            Email::triggerAssignIssueNotification(
-                $clientId,
-                $issueData,
-                $oldUserAssignedName,
-                $newUserAssignedName,
-                $project,
-                $loggedInUserId,
-                $comment
-            );
         }
     }
 
