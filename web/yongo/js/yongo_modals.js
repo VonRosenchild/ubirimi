@@ -2492,6 +2492,7 @@ $('document').ready(function () {
             });
         });
     });
+
     $(document).on('click', "[id^='delete_work_log_']", function (event) {
         event.preventDefault();
 

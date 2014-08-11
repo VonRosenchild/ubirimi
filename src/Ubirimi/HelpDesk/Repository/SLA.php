@@ -343,6 +343,16 @@ class SLA
         $issueSLAData = SLA::getSLAData($issueId, $SLA['id']);
         $SLA = SLA::getById($SLA['id']);
 
+
+        $historyData = IssueHistory::getByIssueIdAndUserId($issueId, null, 'asc');
+        if ($historyData) {
+            while ($history = $historyData->fetch_array(MYSQLI_ASSOC)) {
+
+            }
+        }
+
+
+
         $stopConditionSLADate = null;
         $startConditionSLADate = null;
 
@@ -391,6 +401,10 @@ class SLA
             $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $dateFrom);
             if ($stopConditionSLADate) {
                 $stopConditionSLADate = new \DateTime($stopConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
+                if ($SLA['id'] == 21) {
+                    var_dump($stopConditionSLADate);
+
+                }
                 $issueSLAData['stopped_flag'] = 1;
 
                 Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
@@ -414,6 +428,8 @@ class SLA
             $dayNumber = date_format($initialDate, 'N');
             for ($i = 0; $i < count($slaCalendarData); $i++) {
                 if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
+
+
                     if (date_format($initialDate, 'Y-m-d') > date_format($startConditionSLADate, 'Y-m-d')) {
                         $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_from'], new \DateTimeZone($clientSettings['timezone']));
                     }

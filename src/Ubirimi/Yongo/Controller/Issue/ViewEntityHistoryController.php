@@ -4,6 +4,7 @@
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
+    use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 
     if (Util::checkUserIsLoggedIn()) {
         $yongoSettings = $session->get('yongo/settings');
@@ -17,7 +18,7 @@
     $issueId = isset($_POST['issue_id']) ? $_POST['issue_id'] : null;
     $userId = isset($_POST['user_id']) ? $_POST['user_id'] : null;
     $projectId = isset($_POST['project_id']) ? $_POST['project_id'] : null;
-    $historyList = Util::getIssueHistory($issueId, $userId, $projectId);
+    $historyList = IssueHistory::getByIssueIdAndUserId($issueId, $userId, $projectId);
     $color = null;
 
     $hoursPerDay = $yongoSettings['time_tracking_hours_per_day'];
