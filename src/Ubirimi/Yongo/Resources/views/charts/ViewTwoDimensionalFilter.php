@@ -9,9 +9,10 @@
     }
 
     $projectIds = array();
-    array_walk($projectIdsNames, function($value, $key, $projectIds) {
+
+    foreach ($projectIdsNames as $key => $value) {
         $projectIds[] = $value[0];
-    });
+    }
 
     $projectIdsString = implode('|', $projectIds);
 ?>
