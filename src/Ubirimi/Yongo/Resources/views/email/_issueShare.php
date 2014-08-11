@@ -18,7 +18,7 @@
 </div>
 <br />
 
-<div style="background-color: #DDDDDD"><?php echo $this->noteContent ?></div>
+<div style="background-color: #DDDDDD"><?php echo str_replace("\n", '<br />', $this->noteContent); ?></div>
 <br />
 <div>
     <a style="text-decoration: none;" href="<?php echo $session->get('client/base_url') ?>/yongo/issue/<?php echo $this->issue['id'] ?>">View Issue</a>
