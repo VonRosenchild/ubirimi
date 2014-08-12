@@ -50,7 +50,7 @@ class IssueHistory
         }
     }
 
-    public static function getByIssueIdAndUserId($issueId = null, $userId = null, $order = null)
+    public static function getByIssueIdAndUserId($issueId = null, $userId = null, $order = null, $resultType = null)
     {
 
         $query = '(select \'history_event\' as source, ' .
@@ -81,9 +81,17 @@ class IssueHistory
 
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows)
-            return $result;
-        else
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $data;
+                }
+                return $resultArray;
+            } else return $result;
+
+        } else {
             return null;
+        }
     }
 }
