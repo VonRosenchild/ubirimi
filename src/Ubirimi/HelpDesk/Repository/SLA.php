@@ -3,6 +3,7 @@
 namespace Ubirimi\Repository\HelpDesk;
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Issue\IssueHistory;
@@ -217,7 +218,7 @@ class SLA
         return $query;
     }
 
-    public static function checkConditionOnIssue($slaCondition, $issue, $type, $currentSLADate) {
+    public static function checkConditionOnIssue($slaCondition, $issue, $historyData, $type, $currentSLADate) {
 
         $conditions = explode("#", $slaCondition);
         $conditionFulfilledDate = null;
@@ -236,10 +237,13 @@ class SLA
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_status_set_') !== false) {
-                if ($issue['status'] == str_replace($type . '_status_set_',  '', $conditions[$i])) {
-                    if ($issue['date_updated'] >= $currentSLADate) {
-                        $conditionFulfilledDate = $issue['date_updated'];
-                        break;
+                if (isset($historyData['field'])) {
+                    if (Field::FIELD_STATUS_CODE == $historyData['field'] && $historyData['new_value_id'] == str_replace($type . '_status_set_',  '', $conditions[$i])) {
+
+                        if ($historyData['date_created'] >= $currentSLADate) {
+                            $conditionFulfilledDate = $historyData['date_created'];
+                            break;
+                        }
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
@@ -351,149 +355,80 @@ class SLA
         $SLA = SLA::getById($SLA['id']);
 
         $historyData = IssueHistory::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
+
         if (!$historyData) {
             $historyData[] = array('date_created' => $issue['date_created']);
         } else {
             array_unshift($historyData, array('date_created' => $issue['date_created']));
         }
-        $startConditionSLADate = null;
-        $stopConditionSLADate = null;
 
-        $initialDate = new \DateTime($issue['date_created'], new \DateTimeZone($clientSettings['timezone']));
-        $initialDateOriginal = new \DateTime($issue['date_created'], new \DateTimeZone($clientSettings['timezone']));
-
-        $finalDate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
-        $finalDate = date_format($finalDate, 'Y-m-d');
-
+        $startConditionSLADates = array();
+        $stopConditionSLADates = array();
         $intervalMinutes = 0;
 
-        while (date_format($initialDate, 'Y-m-d') <= $finalDate) {
-            $dayNumber = date_format($initialDate, 'N');
+        // find start and stop dates
+        foreach ($historyData as $history) {
 
-                foreach ($historyData as $history) {
-                    if (substr($history['date_created'], 0, 10) == date_format($initialDate, 'Y-m-d')) {
+            $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
+            $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
 
+            if ($startConditionSLADate && !in_array($startConditionSLADate, $startConditionSLADates) && $startConditionSLADate > end($stopConditionSLADates)) {
+                if (count($startConditionSLADates) - count($stopConditionSLADates) == 0) {
+                    $startConditionSLADates[] = $startConditionSLADate;
+                }
+            }
 
-//                        if (0 == $issueSLAData['started_flag'] || (1 == $issueSLAData['started_flag'] && 1 == $issueSLAData['stopped_flag'])) {
-                            $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, 'start', $history['date_created']);
-                        if ($SLA['id'] == 17) {
+            if ($stopConditionSLADate && !in_array($stopConditionSLADate, $stopConditionSLADates)) {
+                $stopConditionSLADates[] = $stopConditionSLADate;
+            }
+        }
 
-//                            var_dump($history['date_created']);
-//                            die();
+        for ($i = 0; $i < count($startConditionSLADates); $i++) {
+            $startDate = $startConditionSLADates[$i];
+            if (isset($stopConditionSLADates[$i])) {
+                $stopDate = $stopConditionSLADates[$i];
+            } else {
+                $stopDate = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
+                $stopDate = date_format($stopDate, 'Y-m-d H:i:s');
+            }
 
-                        }
+            $initialDate = new \DateTime($startDate, new \DateTimeZone($clientSettings['timezone']));
+            while (date_format($initialDate, 'Y-m-d') <= substr($stopDate, 0, 10)) {
+                $dayNumber = date_format($initialDate, 'N');
+                for ($j = 0; $j < count($slaCalendarData); $j++) {
+                    if ($slaCalendarData[$j]['day_number'] == $dayNumber && 0 == $slaCalendarData[$j]['not_working_flag']) {
 
-                            if (!$startConditionSLADate) {
-                                return null;
+                        if (date_format($initialDate, 'Y-m-d') > substr($startDate, 0, 10)) {
+                            $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$j]['time_from'], new \DateTimeZone($clientSettings['timezone']));
+                        } else {
+                            if (date_format($initialDate, 'H:i:00') <= $slaCalendarData[$j]['time_from']) {
+                                $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$j]['time_from'], new \DateTimeZone($clientSettings['timezone']));
                             } else {
-                                $issueSLAData['started_flag'] = 1;
-                                $issueSLAData['started_date'] = $startConditionSLADate;
-                                Issue::updateSLAStarted($issueId, $SLA['id'], $startConditionSLADate);
+                                $startConditionSLADate = new \DateTime($startDate, new \DateTimeZone($clientSettings['timezone']));
                             }
-//                        } else {
-//                            $startConditionSLADate = $issueSLAData['started_date'];
-//                        }
-                        $startConditionSLADate = new \DateTime($startConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
-                        if ($SLA['id'] == 17) {
-
-//                            var_dump($startConditionSLADate);
-//                            die();
-
                         }
 
-                        // check if this issue has the stop condition of the sla true
-//                        if (0 == $issueSLAData['stopped_flag']) {
-                            $dateFrom = $issueSLAData['stopped_date'];
-                            if (null == $dateFrom) {
-                                $dateFrom = $issueSLAData['started_date'];
+                        if (date_format($initialDate, 'Y-m-d') < substr($stopDate, 0, 10)) {
+                            $stopConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$j]['time_to'], new \DateTimeZone($clientSettings['timezone']));
+                        } else {
+                            if (date_format($initialDate, 'H:i:00') <= $slaCalendarData[$j]['time_to']) {
+                                $stopConditionSLADate = new \DateTime($stopDate, new \DateTimeZone($clientSettings['timezone']));
+                            } else {
+                                $stopConditionSLADate = new \DateTime(substr($stopDate, 0, 10) . ' ' . $slaCalendarData[$j]['time_to'], new \DateTimeZone($clientSettings['timezone']));
                             }
-                            $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, 'stop', $dateFrom);
-                            if ($SLA['id'] == 17) {
+                        }
 
-//                                var_dump($stopConditionSLADate);
-
-                            }
-                            if ($stopConditionSLADate) {
-                                $stopConditionSLADate = new \DateTime($stopConditionSLADate, new \DateTimeZone($clientSettings['timezone']));
-
-                                $issueSLAData['stopped_flag'] = 1;
-
-                                Issue::updateSLAStopped($issueId, $SLA['id'], $stopConditionSLADate->format('Y-m-d H:i:s'));
-
-                                if ($finalDate > date_format($stopConditionSLADate, 'Y-m-d')) {
-                                    $finalDate = date_format($stopConditionSLADate, 'Y-m-d');
-                                }
-
-                                $intervalMinutes = $issueSLAData['value'];
-                                if ($intervalMinutes) {
-                                    return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles'], false);
-                                }
-                            }
-//                        } else {
-//                            if ($issueSLAData['value'] || $issueSLAData['value_between_cycles']) {
-//                                return null;
-//                            }
-//                        }
-
-                        for ($i = 0; $i < count($slaCalendarData); $i++) {
-                            if ($slaCalendarData[$i]['day_number'] == $dayNumber) {
-
-                                if (date_format($initialDate, 'Y-m-d') > date_format($startConditionSLADate, 'Y-m-d')) {
-                                    $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_from'], new \DateTimeZone($clientSettings['timezone']));
-                                }
-
-                                if (date_format($initialDate, 'Y-m-d') < $finalDate) {
-                                    $stopConditionSLADateIteration = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$i]['time_to'], new \DateTimeZone($clientSettings['timezone']));
-                                } else {
-                                    if ($stopConditionSLADate && date_format($initialDate, 'Y-m-d') == date_format($stopConditionSLADate, 'Y-m-d')) {
-                                        $stopConditionSLADateIteration = $stopConditionSLADate;
-                                    } else {
-                                        $stopConditionSLADateIteration = new \DateTime('now', new \DateTimeZone($clientSettings['timezone']));
-                                    }
-                                }
-                                if ($SLA['id'] == 17) {
-
-//                                    var_dump($startConditionSLADate);
-//                                    var_dump($stopConditionSLADateIteration);
-
-                                }
-
-                                if ($goalData['value'] && date_format($startConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_to'] &&
-                                    date_format($stopConditionSLADateIteration, 'H:i:00') >= $slaCalendarData[$i]['time_from']) {
-
-
-                                    if (date_format($initialDate, 'Y-m-d') > date_format($initialDateOriginal, 'Y-m-d')) {
-                                        $countStartTime = $slaCalendarData[$i]['time_from'];
-                                    } else {
-                                        if (date_format($startConditionSLADate, 'H:i:00') <= $slaCalendarData[$i]['time_from']) {
-                                            $countStartTime = $slaCalendarData[$i]['time_from'];
-                                        } else {
-                                            $countStartTime = date_format($startConditionSLADate, 'H:i:00');
-                                        }
-                                    }
-
-                                    if (date_format($stopConditionSLADateIteration, 'H:i:00') <= $slaCalendarData[$i]['time_to']) {
-                                        $countEndTime = date_format($stopConditionSLADateIteration, 'H:i:00');
-                                    } else {
-                                        $countEndTime = $slaCalendarData[$i]['time_to'];
-                                    }
-
-                                    $countStartTimeDateObject = new \DateTime(date_format($startConditionSLADate, 'Y-m-d') . ' ' . $countStartTime, new \DateTimeZone($clientSettings['timezone']));
-                                    $countEndTimeDateObject = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $countEndTime, new \DateTimeZone($clientSettings['timezone']));
-                                    $intervalMinutes += floor(($countEndTimeDateObject->getTimestamp() - $countStartTimeDateObject->getTimestamp()) / 60);
-                                    if ($SLA['id'] == 17) {
-
-                                        var_dump($countStartTimeDateObject);
-                                        var_dump($countEndTimeDateObject);
-                                    }
-                                }
-                            }
+                        if ($goalData['value']) {
+                            $intervalMinutes += floor(($stopConditionSLADate->getTimestamp() - $startConditionSLADate->getTimestamp()) / 60);
                         }
                     }
                 }
+                date_add($initialDate, date_interval_create_from_date_string('1 days'));
+            }
+        }
 
-
-            date_add($initialDate, date_interval_create_from_date_string('1 days'));
+        if ($SLA['id'] == 26) {
+            var_dump($intervalMinutes);
         }
 
         return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles']);

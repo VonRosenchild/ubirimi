@@ -58,6 +58,8 @@ class IssueHistory
             'issue_history.field as field, ' .
             'issue_history.old_value as old_value, ' .
             'issue_history.new_value as new_value, ' .
+            'issue_history.old_value_id as old_value_id, ' .
+            'issue_history.new_value_id as new_value_id, ' .
             'null as content, ' .
             'user.id as user_id, user.first_name, user.last_name, ' .
             'yongo_issue.nr as nr, ' .
