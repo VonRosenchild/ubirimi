@@ -56,6 +56,12 @@
                 <td><?php echo str_replace("\n",  '<br />', $this->issue['description']) ?></td>
             </tr>
         <?php endif ?>
+        <?php if (!empty($this->issue['environment'])): ?>
+            <tr>
+                <td valign="top" width="80">Description:</td>
+                <td><?php echo str_replace("\n",  '<br />', $this->issue['environment']) ?></td>
+            </tr>
+        <?php endif ?>
         <tr>
             <td>Priority:</td>
             <td><?php echo $this->issue['priority_name'] ?></td>
