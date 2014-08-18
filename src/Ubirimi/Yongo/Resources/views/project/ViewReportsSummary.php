@@ -2,6 +2,8 @@
     use Ubirimi\LinkHelper;
     use Ubirimi\Util;
 
+    $menuProjectCategory = 'reports';
+
     require_once __DIR__ . '/../_header.php';
 ?>
 <body>
@@ -15,15 +17,12 @@
                     <img class="projectIcon" id="project_icon" src="/img/project.png" height="48px"/>
                 </td>
                 <td>
-                    <div class="headerPageText"><?php echo $project['name'] ?> > Issues</div>
+                    <div class="headerPageText"><?php echo $project['name'] ?> > Reports</div>
                 </td>
             </tr>
         </table>
 
-        <?php
-            $menuProjectCategory = 'reports';
-            require_once __DIR__ . '/_summaryMenu.php';
-        ?>
+        <?php require_once __DIR__ . '/_summaryMenu.php'; ?>
 
         <?php if ($hasAdministerProject): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
@@ -38,12 +37,18 @@
         <?php endif ?>
 
         <table width="100%" cellpadding="8" class="table table-hover table-condensed">
-            <tbody>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody class="no-underline">
                 <tr>
                     <td valign="top">
-                        <div class="headerPageText"><a href="/yongo/project/reports/<?php echo $projectId ?>/chart-report">Chart Report</a></div>
-                        <div>A report showing the issues for a project or filter as a pie chart.</div>
+                        <div><a href="/yongo/project/reports/<?php echo $projectId ?>/chart-report">Chart Report</a></div>
                     </td>
+                    <td><div>A report showing the issues for a project or filter as a pie chart.</div></td>
                 </tr>
             </tbody>
         </table>

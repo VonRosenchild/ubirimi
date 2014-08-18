@@ -35,14 +35,26 @@ viewProjectCalendar:
 viewProjectIssueSummary:
   path: /yongo/project/issues/{id}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewIssueSummaryController' }
+  requirements:
+    id:  \d+
 
 viewProjectReportsSummary:
   path: /yongo/project/reports/{id}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewReportsSummaryController' }
+  requirements:
+    id:  \d+
 
 viewProjectReportsSummaryCharReportMain:
   path: /yongo/project/reports/{id}/chart-report
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\Report\ViewChartController' }
+  requirements:
+    id:  \d+
+
+viewProjectReportsSummaryCharReportMainStatType:
+  path: /yongo/project/reports/{id}/chart-report/{statistic_type}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\Report\ViewChartStatisticTypeController' }
+  requirements:
+    id:  \d+
 
 viewProjectComponentSummary:
   path: /yongo/project/component/{id}

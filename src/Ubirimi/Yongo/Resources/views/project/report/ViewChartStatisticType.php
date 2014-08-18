@@ -35,6 +35,7 @@
         <div>Description: A report showing the issues for a project or filter as a chart.</div>
 
         <?php require_once __DIR__ . '/_params.php' ?>
+        datele
     </div>
     <input type="hidden" id="project_id" value="<?php echo $projectId ?>" name="project_id"/>
 
