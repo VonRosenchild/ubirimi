@@ -17,6 +17,9 @@
     <li <?php if ($menuProjectCategory == 'calendar'): ?>class="active" <?php endif ?>>
         <a href="/yongo/project/calendar/<?php echo $projectId ?>/<?php echo $month ?>/<?php echo $year ?>" title="Calendar">Calendar</a>
     </li>
+    <li <?php if ($menuProjectCategory == 'reports'): ?>class="active" <?php endif ?>>
+        <a href="/yongo/project/reports/<?php echo $projectId ?>" title="Reports">Reports</a>
+    </li>
     <li <?php if ($menuProjectCategory == 'versions'): ?>class="active" <?php endif ?>>
         <a href="/yongo/project/versions/<?php echo $projectId ?>" title="Versions">Versions</a>
     </li>

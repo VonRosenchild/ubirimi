@@ -36,6 +36,14 @@ viewProjectIssueSummary:
   path: /yongo/project/issues/{id}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewIssueSummaryController' }
 
+viewProjectReportsSummary:
+  path: /yongo/project/reports/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewReportsSummaryController' }
+
+viewProjectReportsSummaryCharReportMain:
+  path: /yongo/project/reports/{id}/chart-report
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\Report\ViewChartController' }
+
 viewProjectComponentSummary:
   path: /yongo/project/component/{id}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewComponentSummaryController' }
