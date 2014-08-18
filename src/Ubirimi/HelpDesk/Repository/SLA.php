@@ -345,6 +345,7 @@ class SLA
         $issueId = $issue['id'];
         $goalData = SLA::getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
         $goalId = $goalData['id'];
+
         if ($goalId == null) {
             return null;
         }
@@ -427,15 +428,38 @@ class SLA
             }
         }
 
-        if ($SLA['id'] == 26) {
-            var_dump($intervalMinutes);
+        $slaFinished = false;
+        if (end($startConditionSLADates) < end ($stopConditionSLADates)) {
+            $slaFinished = true;
         }
 
-        return array($intervalMinutes, $goalValue, $goalId, $issueSLAData['value_between_cycles']);
+        return array('slaId' => $SLA['id'],
+                     'name' => $SLA['name'],
+                     'intervalMinutes' => $intervalMinutes,
+                     'goalValue' => $goalValue,
+                     'goalId' => $goalId,
+                     'valueBetweenCycles' => $issueSLAData['value_between_cycles'],
+                     'finished' => $slaFinished,
+                     'startDate' => $startConditionSLADates[0],
+                     'endDate' => end($stopConditionSLADates));
     }
 
-    public static function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId) {
-        $query = "update yongo_issue_sla set value = ?, help_sla_goal_id = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
+    public static function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId, $startedDate, $stoppedDate) {
+        $query = "update yongo_issue_sla set `value` = ?, help_sla_goal_id = ? ";
+
+        if ($startedDate) {
+            $query .= ", started_flag = 1, started_date = '" . $startedDate . "' ";
+        } else {
+            $query .= ", started_flag = 0, started_date = NULL ";
+        }
+
+        if ($stoppedDate) {
+            $query .= ", stopped_flag = 1, stopped_date = '" . $startedDate . "' ";
+        } else {
+            $query .= ", stopped_flag = 0, stopped_date = NULL ";
+        }
+
+        $query .= " where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("iiii", $intervalMinutes, $goalId, $issueId, $SLAId);

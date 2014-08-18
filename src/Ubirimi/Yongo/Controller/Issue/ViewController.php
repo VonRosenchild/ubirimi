@@ -139,16 +139,8 @@ class ViewController extends UbirimiController
 
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
-            $atLeastOneSLA = false;
             if ($issueProject['help_desk_enabled_flag']) {
                 $slasPrintData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
-
-                foreach ($slasPrintData as $slaData) {
-                    if ($slaData['goal']) {
-                        $atLeastOneSLA = true;
-                        break;
-                    }
-                }
             }
 
             // voters and watchers

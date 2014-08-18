@@ -9,18 +9,22 @@
 <table width="100%" id="contentDates">
     <?php
         foreach ($slasPrintData as $slaId => $slaData): ?>
-        <?php if ($slaData['goal']): ?>
+        <?php if ($slaData['goalValue']): ?>
             <tr>
                 <td width="200" valign="top">
                     <div class="textLabel"><?php echo $slaData['name'] ?></div>
-                    <div><?php echo 'within ' . $slaData['goal'] ?> minutes</div>
+                    <div><?php echo 'within ' . $slaData['goalValue'] ?> minutes</div>
                 </td>
                 <td valign="top">
-                    <span class="<?php if (($slaData['goal'] - $slaData['offset']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                        <?php echo SLA::formatOffset($slaData['goal'] - $slaData['offset']) ?>
+                    <span class="<?php if (($slaData['goalValue'] - $slaData['intervalMinutes'] - $slaData['valueBetweenCycles']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
+                        <?php echo SLA::formatOffset($slaData['goalValue'] - $slaData['intervalMinutes'] - $slaData['valueBetweenCycles']) ?>
                     </span>
                     &nbsp;
-                    <img src="/img/clock.png" height="16px" />
+                    <?php if ($slaData['endDate']): ?>
+                        <img src="/img/accept.png" />
+                    <?php else: ?>
+                        <img src="/img/clock.png" height="16px" />
+                    <?php endif ?>
                 </td>
             </tr>
         <?php endif ?>

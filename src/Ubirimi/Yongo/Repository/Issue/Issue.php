@@ -1765,36 +1765,9 @@ class Issue
 
                 $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
                 if ($slaData) {
-                    $slasPrintData[$SLA['id']] = array('name' => $SLA['name'],
-                                                       'offset' => $slaData[0],
-                                                       'update' => true,
-                                                       'between_cycles' => $slaData[3],
-                                                       'goal' => $slaData[1],
-                                                       'goal_id' => $slaData[2]);
-                    if (array_key_exists(4, $slaData)) {
-                        $slasPrintData[$SLA['id']]['update'] = false;
-                    }
-
-                } else {
-                    // it is already stored in the database, stopped before recalculation
-                    $slaCalculated = SLA::getSLAData($issue['id'], $SLA['id']);
-                    $goalData = SLA::getGoalForIssueId($SLA['id'], $issue['id'], $issue['issue_project_id'], $clientId);
-
-                    $offsetValue = $slaCalculated['value'] ? $slaCalculated['value'] : $slaCalculated['value_between_cycles'];
-                    $slasPrintData[$slaCalculated['help_sla_id']] = array('name' => $SLA['name'],
-                                                                          'offset' => $offsetValue,
-                                                                          'update' => false,
-                                                                          'between_cycles' => $slaData[3],
-                                                                          'goal' => $goalData['value'],
-                                                                          'goal_id' => $slaCalculated['help_sla_goal_id']);
+                    $slasPrintData[] = $slaData;
+                    SLA::updateDataForSLA($issue['id'], $slaData['slaId'], $slaData['intervalMinutes'], $slaData['goalId'], $slaData['startDate'], $slaData['endDate']);
                 }
-            }
-
-            foreach ($slasPrintData as $slaId => $data) {
-                if ($data['update']) {
-                    SLA::updateDataForSLA($issue['id'], $slaId, $data['offset'], $data['goal_id']);
-                }
-                $slasPrintData[$slaId]['offset'] += $slasPrintData[$slaId]['between_cycles'];
             }
         }
 
