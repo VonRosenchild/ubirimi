@@ -21,7 +21,7 @@
                 <tr>
                     <td width="200">Permission Scheme</td>
                     <td>
-                        <select name="perm_scheme" class="inputTextCombo">
+                        <select name="perm_scheme" class="select2InputMedium">
                             <?php while ($permissionScheme = $permissionSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $permissionScheme['id'] ?>"><?php echo $permissionScheme['name'] ?></option>
                             <?php endwhile ?>

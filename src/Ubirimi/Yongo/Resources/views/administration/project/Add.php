@@ -52,7 +52,7 @@
                 <tr>
                     <td>Project Category</td>
                     <td>
-                        <select name="project_category" class="inputTextCombo">
+                        <select name="project_category" class="select2InputSmall">
                             <option value="-1" selected="selected">None</option>
                             <?php if ($projectCategories): ?>
                                 <?php while ($category = $projectCategories->fetch_array(MYSQLI_ASSOC)): ?>
@@ -65,7 +65,7 @@
                 <tr>
                     <td>Issue Type Scheme</td>
                     <td>
-                        <select name="issue_type_scheme" class="inputTextCombo">
+                        <select name="issue_type_scheme" class="select2InputSmall">
                             <?php while ($scheme = $issueTypeScheme->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></option>
                             <?php endwhile ?>
@@ -75,7 +75,7 @@
                 <tr>
                     <td>Issue Type Screen Scheme</td>
                     <td>
-                        <select name="issue_type_screen_scheme" class="inputTextCombo">
+                        <select name="issue_type_screen_scheme" class="select2InputSmall">
                             <?php while ($screenScheme = $issueTypeScreenScheme->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $screenScheme['id'] ?>"><?php echo $screenScheme['name']; ?></option>
                             <?php endwhile ?>
@@ -85,7 +85,7 @@
                 <tr>
                     <td>Field Configuration Scheme</td>
                     <td>
-                        <select name="field_configuration_scheme" class="inputTextCombo">
+                        <select name="field_configuration_scheme" class="select2InputSmall">
                             <?php while ($fieldConfigurationScheme = $fieldConfigurationSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $fieldConfigurationScheme['id'] ?>"><?php echo $fieldConfigurationScheme['name']; ?></option>
                             <?php endwhile ?>
@@ -95,7 +95,7 @@
                 <tr>
                     <td>Workflow Scheme</td>
                     <td>
-                        <select name="workflow_scheme" class="inputTextCombo">
+                        <select name="workflow_scheme" class="select2InputSmall">
                             <?php while ($scheme = $workflowScheme->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></option>
                             <?php endwhile ?>
@@ -105,7 +105,7 @@
                 <tr>
                     <td>Permission Scheme</td>
                     <td>
-                        <select name="permission_scheme" class="inputTextCombo">
+                        <select name="permission_scheme" class="select2InputSmall">
                             <?php while ($scheme = $permissionScheme->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></option>
                             <?php endwhile ?>
@@ -115,7 +115,7 @@
                 <tr>
                     <td>Notification Scheme</td>
                     <td>
-                        <select name="notification_scheme" class="inputTextCombo">
+                        <select name="notification_scheme" class="select2InputSmall">
                             <?php while ($scheme = $notificationScheme->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></option>
                             <?php endwhile ?>
@@ -125,7 +125,7 @@
                 <tr>
                     <td>Lead</td>
                     <td>
-                        <select name="lead" class="inputTextCombo">
+                        <select name="lead" class="select2InputSmall">
                             <?php while ($user = $leadUsers->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></option>
                             <?php endwhile ?>

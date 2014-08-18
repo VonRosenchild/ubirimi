@@ -34,7 +34,7 @@
                 <tr>
                     <td>Leader</td>
                     <td>
-                        <select name="leader" class="inputTextCombo">
+                        <select name="leader" class="select2InputSmall">
                             <option value="-1">No one</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if (isset($leader) && $leader == $user['id']) echo 'selected="selected"' ?> value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>

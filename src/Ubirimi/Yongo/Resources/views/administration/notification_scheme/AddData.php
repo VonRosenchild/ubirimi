@@ -81,7 +81,7 @@
                         <label for="label_user_notification">User</label>
                     </td>
                     <td>
-                        <select name="user" class="inputTextCombo" id="not_choose_user">
+                        <select name="user" class="select2InputMedium" id="not_choose_user">
                             <option value>Choose a user</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
@@ -96,7 +96,7 @@
                         <label for="label_group_notification">Group</label>
                     </td>
                     <td>
-                        <select name="group" class="inputTextCombo" id="not_choose_group">
+                        <select name="group" class="select2InputMedium" id="not_choose_group">
                             <option value>Choose a group</option>
                             <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
@@ -111,7 +111,7 @@
                         <label for="label_project_role_notification">Project Role</label>
                     </td>
                     <td>
-                        <select name="role" class="inputTextCombo" id="not_choose_project_role">
+                        <select name="role" class="select2InputMedium" id="not_choose_project_role">
                             <option value>Choose a project role</option>
                             <?php while ($role = $roles->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
@@ -136,7 +136,7 @@
                             <label for="label_user_picker_multiple_selection">User Custom Field Value</label>
                         </td>
                         <td>
-                            <select name="select_user_picker_multiple_selection" id="not_select_user_picker_multiple_selection" class="inputTextCombo">
+                            <select name="select_user_picker_multiple_selection" id="not_select_user_picker_multiple_selection" class="select2InputMedium">
                                 <option value>Choose a custom field</option>
                                 <?php while ($field = $fieldsUserPickerMultipleSelection->fetch_array(MYSQLI_ASSOC)): ?>
                                     <option value="<?php echo $field['id'] ?>"><?php echo $field['name'] ?></option>

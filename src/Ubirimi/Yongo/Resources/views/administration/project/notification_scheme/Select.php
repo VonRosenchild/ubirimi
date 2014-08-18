@@ -21,7 +21,7 @@
                 <tr>
                     <td width="200">Notification Scheme</td>
                     <td>
-                        <select name="perm_scheme" class="inputTextCombo">
+                        <select name="perm_scheme" class="select2InputMedium">
                             <?php while ($notificationScheme = $notificationSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($notificationScheme['id'] == $project['notification_scheme_id']) echo 'selected="selected"' ?> value="<?php echo $notificationScheme['id'] ?>"><?php echo $notificationScheme['name'] ?></option>
                             <?php endwhile ?>

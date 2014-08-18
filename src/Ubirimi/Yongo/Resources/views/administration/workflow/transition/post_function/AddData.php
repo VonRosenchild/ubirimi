@@ -23,7 +23,7 @@
                     <tr>
                         <td width="150">Issue Field</td>
                         <td>
-                            <select name="issue_field" class="inputTextCombo">
+                            <select name="issue_field" class="select2InputSmall">
                                 <option value="<?php
                                     echo Field::FIELD_RESOLUTION_CODE ?>">Resolution</option>
                             </select>
@@ -32,7 +32,7 @@
                     <tr>
                         <td>Field Value</td>
                         <td>
-                            <select name="field_value" class="inputTextCombo">
+                            <select name="field_value" class="select2InputSmall">
                                 <option value="-1">Clear Value</option>
                                 <?php while ($resolution = $resolutions->fetch_array(MYSQLI_ASSOC)): ?>
                                     <option value="<?php echo $resolution['id'] ?>"><?php echo $resolution['name'] ?></option>

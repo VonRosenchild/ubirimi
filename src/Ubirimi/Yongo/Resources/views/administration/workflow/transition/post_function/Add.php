@@ -16,11 +16,13 @@
 
         <form name="add_post_function" action="/yongo/administration/workflow/transition-add-post-function/<?php echo $workflowDataId ?>" method="post">
             <table class="table table-hover table-condensed">
-                <tr>
-                    <td width="24"></td>
-                    <td width="150">Name</td>
-                    <td>Description</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th width="24"></th>
+                        <th width="150">Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
                 <?php while ($postFunctions && $function = $postFunctions->fetch_array(MYSQLI_ASSOC)): ?>
                     <?php
                         switch ($function['id']) {

@@ -68,7 +68,7 @@
                         <label for="label_user_permission">User</label>
                     </td>
                     <td>
-                        <select name="user" class="inputTextCombo" id="perm_choose_user">
+                        <select name="user" class="select2InputMedium" id="perm_choose_user">
                             <option value>Choose a user</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
@@ -83,7 +83,7 @@
                         <label for="label_group_permission">Group</label>
                     </td>
                     <td>
-                        <select name="group" class="inputTextCombo" id="perm_choose_group">
+                        <select name="group" class="select2InputMedium" id="perm_choose_group">
                             <option value>Choose a group</option>
                             <option value="0">Anyone</option>
                             <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>
@@ -99,7 +99,7 @@
                         <label for="label_project_role_permission">Project Role</label>
                     </td>
                     <td>
-                        <select name="role" class="inputTextCombo" id="perm_choose_project_role">
+                        <select name="role" class="select2InputMedium" id="perm_choose_project_role">
                             <option value>Choose a project role</option>
                             <?php while ($role = $roles->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>

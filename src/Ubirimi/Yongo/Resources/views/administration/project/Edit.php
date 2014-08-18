@@ -48,7 +48,7 @@
                 <tr>
                     <td>Issue Type Scheme</td>
                     <td>
-                        <select name="issue_type_scheme" class="inputTextCombo">
+                        <select name="issue_type_scheme" class="select2InputSmall">
                             <?php while ($scheme = $issueTypeScheme->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($scheme['id'] == $project['issue_type_scheme_id']) echo 'selected="selected"' ?> value="<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></option>
                             <?php endwhile ?>
@@ -58,7 +58,7 @@
                 <tr>
                     <td>Project Category</td>
                     <td>
-                        <select name="project_category" class="inputTextCombo">
+                        <select name="project_category" class="select2InputSmall">
                             <option <?php if (null == $project['project_category_id']) echo 'selected="selected"' ?> value="-1">None</option>
                             <?php if ($projectCategories): ?>
                                 <?php while ($category = $projectCategories->fetch_array(MYSQLI_ASSOC)): ?>
@@ -71,7 +71,7 @@
                 <tr>
                     <td>Workflow Scheme</td>
                     <td>
-                        <select name="workflow_scheme" class="inputTextCombo">
+                        <select name="workflow_scheme" class="select2InputSmall">
                             <?php while ($scheme = $workflowScheme->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($scheme['id'] == $project['workflow_scheme_id']) echo 'selected="selected"' ?> value="<?php echo $scheme['id'] ?>"><?php echo $scheme['name']; ?></option>
                             <?php endwhile ?>
@@ -81,7 +81,7 @@
                 <tr>
                     <td>Lead</td>
                     <td>
-                        <select name="lead" class="inputTextCombo">
+                        <select name="lead" class="select2InputSmall">
                             <?php while ($user = $leadUsers->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($project['lead_id'] == $user['id']) echo 'selected="selected"' ?>
                                     value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name']; ?></option>
