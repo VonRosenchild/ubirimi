@@ -1914,6 +1914,7 @@ $('document').ready(function () {
             },
             success: function (response) {
                 $('#content_gadget_unresolved_others').html(response);
+                $("select.select2InputMedium").select2();
             }
         });
     });
@@ -1927,6 +1928,7 @@ $('document').ready(function () {
             },
             success: function (response) {
                 $('#content_gadget_two_dimensional_filter').html(response);
+                $("select.select2InputMedium").select2();
             }
         });
     });

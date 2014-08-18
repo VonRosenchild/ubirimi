@@ -19,7 +19,7 @@
 
 <div id="content_gadget_two_dimensional_filter">
     <span>Select Project</span>&nbsp;
-    <select name="gadget_two_dimensional_filter" id="gadget_two_dimensional_filter" class="inputTextCombo">
+    <select name="gadget_two_dimensional_filter" id="gadget_two_dimensional_filter" class="select2InputMedium">
         <option <?php if ($selectedProjectId == -1) echo 'selected="selected"' ?> value="-1">All Projects</div>
         <?php for ($i = 0; $i < count($projectIdsNames); $i++): ?>
             <?php $selectedText = (isset($projectId) && $projectId == $projectIdsNames[$i][0]) ? 'selected="selected"' : '' ?>

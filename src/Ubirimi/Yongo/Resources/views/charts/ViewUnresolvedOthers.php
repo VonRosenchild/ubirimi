@@ -6,7 +6,7 @@
     <div id="content_gadget_unresolved_others">
         <div style="padding: 4px">
             <span>Select Project</span>&nbsp;
-            <select name="gadget_unresolved_others" id="gadget_unresolved_others_project" class="inputTextCombo">
+            <select name="gadget_unresolved_others" id="gadget_unresolved_others_project" class="select2InputMedium">
                 <option <?php if ($selectedProjectId == -1) echo 'selected="selected"' ?> value="-1">All Projects</div>
                 <?php for ($i = 0; $i < count($projectIdsNames); $i++): ?>
                     <option <?php if ($selectedProjectId == $projectIdsNames[$i][0]) echo 'selected="selected"' ?> value="<?php echo $projectIdsNames[$i][0] ?>"><?php echo $projectIdsNames[$i][1] ?></option>

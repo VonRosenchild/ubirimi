@@ -27,7 +27,7 @@
                     <div style="border: 1px solid #d6d6d6; border-top: none; padding: 8px">
                         <?php if (count($projectIdsNames)): ?>
                             <span>Select Project</span>
-                            <select name="chart_project" id="chart_project_created_resolved" class="inputTextCombo">
+                            <select name="chart_project" id="chart_project_created_resolved" class="select2InputMedium">
                                 <option value="-1" selected="selected">All Projects</option>
                                 <?php for ($i = 0; $i < count($projectIdsNames); $i++): ?>
                                     <option value="<?php echo $projectIdsNames[$i][0] ?>"><?php echo $projectIdsNames[$i][1] ?></option>
