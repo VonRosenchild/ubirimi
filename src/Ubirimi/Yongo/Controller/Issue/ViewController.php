@@ -139,6 +139,7 @@ class ViewController extends UbirimiController
 
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
+            $slasPrintData = null;
             if ($issueProject['help_desk_enabled_flag']) {
                 $slasPrintData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
             }
