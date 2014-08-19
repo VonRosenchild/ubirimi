@@ -55,7 +55,7 @@
 
                 case Field::FIELD_REPORTER_CODE:
 
-                    $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo">';
+                    $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="select2Input">';
                     while ($user = $reporterUsers->fetch_array(MYSQLI_ASSOC)) {
                         $htmlOutput .= '<option value="' . $user['user_id'] . '">' . $user['first_name'] . ' ' . $user['last_name'] . '</option>';
                     }
@@ -70,7 +70,7 @@
                 case Field::FIELD_ASSIGNEE_CODE:
                     $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
-                    $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_assignee" name="' . $field['field_code'] . '" class="inputTextCombo">';
+                    $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_assignee" name="' . $field['field_code'] . '" class="select2Input">';
                     if ($allowUnassignedIssuesFlag)
                         $htmlOutput .= '<option value="-1">No one</option>';
 
@@ -107,7 +107,7 @@
 
                 case Field::FIELD_RESOLUTION_CODE:
                     if ($resolutions) {
-                        $htmlOutput .= '<select ' . $requiredHTML . ' class="inputTextCombo" id="field_type_resolution" name="' . $field['field_code'] . '[]">';
+                        $htmlOutput .= '<select ' . $requiredHTML . ' class="select2Input" id="field_type_resolution" name="' . $field['field_code'] . '[]">';
                         while ($resolution = $resolutions->fetch_array(MYSQLI_ASSOC)) {
                             $htmlOutput .= '<option value="' . $resolution['id'] . '">' . $resolution['name'] . '</option>';
                         }

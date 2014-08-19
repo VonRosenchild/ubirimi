@@ -6,7 +6,7 @@
     <tr>
         <td valign="top">Assignee</td>
         <td>
-            <select id="render_assign_issue_field_type_<?php echo Field::FIELD_ASSIGNEE_CODE ?>" name="<?php echo Field::FIELD_ASSIGNEE_CODE ?>" class="inputTextCombo">
+            <select id="render_assign_issue_field_type_<?php echo Field::FIELD_ASSIGNEE_CODE ?>" name="<?php echo Field::FIELD_ASSIGNEE_CODE ?>" class="select2Input">
                 <?php if ($allowUnassignedIssuesFlag): ?>
                     <option value="-1">No one</option>
                 <?php endif ?>
