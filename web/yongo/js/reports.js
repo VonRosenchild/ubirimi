@@ -12,29 +12,54 @@ $('document').ready(function () {
 
         },
         success: function (response) {
-            var chartData = [['Assignees', 'Number of issues']];
-
-
-
+            var chartData = [];
             $.each(response, function(i, item) {
-
                 chartData.push([item.assignee_name, item.issues_count]);
             });
 
-            var data = google.visualization.arrayToDataTable(chartData);
-
-            var options = {
-                title: 'Issues per Assignee',
-                pieHole: 0.2
-            };
-
-            if ('column' == chartType) {
-                var chart = new google.visualization.ColumnChart(document.getElementById('charContainer'));
-            } else if ('pie' == chartType) {
-                var chart = new google.visualization.PieChart(document.getElementById('charContainer'));
-            }
-
-            chart.draw(data, options);
+            $('#chartContainer').highcharts({
+                chart: {
+                    type: chartType
+                },
+                title: {
+                    text: 'Issues per assignee'
+                },
+                xAxis: {
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '# Issues'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: 'Number of issues: <b>{point.y:.1f}</b>'
+                },
+                series: [{
+                    name: 'Population',
+                    data: chartData,
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        align: 'center',
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+            });
         }
     });
 });

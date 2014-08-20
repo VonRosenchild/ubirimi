@@ -43,13 +43,15 @@ class ViewChartStatisticTypeController extends UbirimiController
 
         if ($statisticType == 'assignee') {
             $issuesAssignee = array();
-            $totalIssues = $issues->num_rows;
-            while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                if (!array_key_exists($issue['assignee'], $issuesAssignee)) {
-                    $issuesAssignee[$issue['assignee']] = array('assignee_name' => $issue['ua_first_name'] . ' ' . $issue['ua_last_name'],
-                                                                 'issues_count' => 0);
+            if ($issues) {
+                $totalIssues = $issues->num_rows;
+                while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
+                    if (!array_key_exists($issue['assignee'], $issuesAssignee)) {
+                        $issuesAssignee[$issue['assignee']] = array('assignee_name' => $issue['ua_first_name'] . ' ' . $issue['ua_last_name'],
+                            'issues_count' => 0);
+                    }
+                    $issuesAssignee[$issue['assignee']]['issues_count']++;
                 }
-                $issuesAssignee[$issue['assignee']]['issues_count']++;
             }
         }
 

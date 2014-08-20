@@ -39,7 +39,7 @@
         <br />
 
         <?php if ($issuesAssignee): ?>
-            <div id="charContainer" style="height: 700px;"></div>
+            <div id="chartContainer" style="height: 700px;"></div>
             <table class="table table-hover table-condensed" style="width: 600px;" align="center">
                 <thead>
                     <tr>
@@ -63,6 +63,8 @@
                     <?php endforeach ?>
                 </tbody>
             </table>
+        <?php else: ?>
+            <div class="messageGreen">No available data</div>
         <?php endif ?>
 
     </div>
