@@ -64,12 +64,6 @@
     <link rel="stylesheet" type="text/css" href="/yongo/css/jquery.contextMenu.css"/>
 
     <?php if (!isset($sectionPageTitle)) $sectionPageTitle = ''; ?>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <?php if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_YONGO): ?>
-        <script type="text/javascript">
-            google.load("visualization", "1", {packages:["corechart"]});
-        </script>
-    <?php endif ?>
     <title><?php echo $sectionPageTitle ?></title>
 
     <?php if (UbirimiContainer::get()['deploy.on_demand']): ?>

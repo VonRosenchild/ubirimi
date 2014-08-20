@@ -1868,37 +1868,64 @@ $('document').ready(function () {
                 id: projectId
             },
             success: function (chartData) {
-                var data = [
-                    ['time', 'Created', 'Resolved']
-                ];
 
+                var dates = [];
+                var created = [];
+                var resolved = [];
                 for (var i = 0; i < chartData.length; i++) {
-                    data.push([chartData[i][0], chartData[i][1], chartData[i][2]]);
+                    dates.push(chartData[i][0]);
+                    created.push(chartData[i][1]);
+                    resolved.push(chartData[i][2]);
                 }
-                var data = google.visualization.arrayToDataTable(data);
 
-                var options = {
-                    hAxis: {
-                        allowContainerBoundaryTextCutoff: false
+                $('#chart_created_resolved').highcharts({
+                    title: {
+                        text: 'Created vs Resolved',
+                        x: -20 //center
                     },
-                    chartArea: {
-                        height: 200
-                    },
-                    vAxis: {
-                        gridlines: {
-                            count: 2
+                    xAxis: {
+                        categories: dates,
+                        labels: {
+                            rotation: -45,
+                            style: {
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
                         }
-                    }
-                };
-
-                var chart = new google.visualization.LineChart(document.getElementById('chart_created_resolved'));
-                chart.draw(data, options);
+                    },
+                    tooltip: {
+                        valueSuffix: '°C'
+                    },
+                    yAxis: {
+                        title: {
+                            text: '# Issues'
+                        },
+                        plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }]
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        borderWidth: 0
+                    },
+                    series: [{
+                        name: 'Created',
+                        data: created
+                    }, {
+                        name: 'Resolved',
+                        data: resolved
+                    }]
+                });
             }
         });
     }
 
     if ($('#chart_created_resolved').length) {
-        google.setOnLoadCallback(drawChartCreatedVsResolved);
+        drawChartCreatedVsResolved();
     }
 
     $(document).on('change', '#chart_project_created_resolved', function (event) {
