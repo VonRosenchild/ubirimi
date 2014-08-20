@@ -46,7 +46,7 @@
             <tbody class="no-underline">
                 <tr>
                     <td valign="top">
-                        <div><a href="/yongo/project/reports/<?php echo $projectId ?>/chart-report">Chart Report</a></div>
+                        <div><a href="/yongo/project/reports/<?php echo $projectId ?>/chart-report/assignee/column">Chart Report</a></div>
                     </td>
                     <td><div>A report showing the issues for a project or filter as a pie chart.</div></td>
                 </tr>

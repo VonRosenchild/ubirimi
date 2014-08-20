@@ -38,6 +38,10 @@ viewProjectIssueSummary:
   requirements:
     id:  \d+
 
+getProjectReportData:
+  path: /yongo/project/report/data
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\Report\GetDataController' }
+
 viewProjectReportsSummary:
   path: /yongo/project/reports/{id}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewReportsSummaryController' }
@@ -51,7 +55,7 @@ viewProjectReportsSummaryCharReportMain:
     id:  \d+
 
 viewProjectReportsSummaryCharReportMainStatType:
-  path: /yongo/project/reports/{id}/chart-report/{statistic_type}
+  path: /yongo/project/reports/{id}/chart-report/{statistic_type}/{chart_type}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\Report\ViewChartStatisticTypeController' }
   requirements:
     id:  \d+

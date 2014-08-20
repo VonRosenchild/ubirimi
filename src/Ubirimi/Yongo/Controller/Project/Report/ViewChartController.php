@@ -37,8 +37,9 @@ class ViewChartController extends UbirimiController
 
         if ($request->request->has('show_report')) {
             $statisticType = Util::cleanRegularInputField($request->request->get('statistic_type'));
+            $chartType = Util::cleanRegularInputField($request->request->get('chart_type'));
 
-            return new RedirectResponse('/yongo/project/reports/' . $projectId . '/chart-report/' . $statisticType);
+            return new RedirectResponse('/yongo/project/reports/' . $projectId . '/chart-report/' . $statisticType . '/' . $chartType);
         }
 
         $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2));

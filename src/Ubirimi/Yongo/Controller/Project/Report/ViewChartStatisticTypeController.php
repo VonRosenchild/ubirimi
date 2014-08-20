@@ -35,14 +35,23 @@ class ViewChartStatisticTypeController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        if ($request->request->has('show_report')) {
-            $statisticType = Util::cleanRegularInputField($request->request->get('statistic_type'));
+        $statisticType = Util::cleanRegularInputField($request->get('statistic_type'));
+        $chartType = Util::cleanRegularInputField($request->get('chart_type'));
 
-            return new RedirectResponse('/yongo/project/reports/' . $projectId . '/chart-report/' . $statisticType);
-        }
-
-        $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2));
+        $issueQueryParameters = array('project' => array($projectId));
         $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+
+        if ($statisticType == 'assignee') {
+            $issuesAssignee = array();
+            $totalIssues = $issues->num_rows;
+            while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
+                if (!array_key_exists($issue['assignee'], $issuesAssignee)) {
+                    $issuesAssignee[$issue['assignee']] = array('assignee_name' => $issue['ua_first_name'] . ' ' . $issue['ua_last_name'],
+                                                                 'issues_count' => 0);
+                }
+                $issuesAssignee[$issue['assignee']]['issues_count']++;
+            }
+        }
 
         $hasGlobalAdministrationPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
         $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
