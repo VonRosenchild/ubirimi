@@ -28,7 +28,7 @@ class EditController extends UbirimiController
         if ($event['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $calendars = Calendar::getByUserId($session->get('client/id'), 'array');
+        $calendars = Calendar::getByUserId($session->get('user/id'), 'array');
         $menuSelectedCategory = 'calendars';
 
         if ($request->request->has('edit_event')) {
