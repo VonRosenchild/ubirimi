@@ -46,6 +46,6 @@ class AddGuestController extends UbirimiController
         UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
         UbirimiContainer::get()['dispatcher']->dispatch(CalendarEvents::CALENDAR_EVENT_GUEST, $calendarEvent);
 
-        return new Response('The selected guests have been invited');
+        return new Response('');
     }
 }

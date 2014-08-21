@@ -109,7 +109,27 @@ class CalendarEvent
         $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
                                        "date_to, color, date_created) VALUES ";
         $separator = '';
-        for ($k = 0; $k < count($repeatDates); $k++) {
+        if (count($repeatDates)) {
+            for ($k = 0; $k < count($repeatDates); $k++) {
+                $queryValues = $separator . "(%d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+                $query .= sprintf(
+                    $queryValues,
+                    $calendarId,
+                    $userCreatedId,
+                    $eventId,
+                    $calEventRepeatId,
+                    $name,
+                    $description,
+                    $location,
+                    $repeatDates[$k][0],
+                    $repeatDates[$k][1],
+                    $color,
+                    $currentDate
+                );
+
+                $separator = ',';
+            }
+        } else {
             $queryValues = $separator . "(%d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
             $query .= sprintf(
                 $queryValues,
@@ -120,13 +140,11 @@ class CalendarEvent
                 $name,
                 $description,
                 $location,
-                $repeatDates[$k][0],
-                $repeatDates[$k][1],
+                null,
+                null,
                 $color,
                 $currentDate
             );
-
-            $separator = ',';
         }
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -374,6 +392,22 @@ class CalendarEvent
                 $stmt->bind_param("i", $eventId);
                 $stmt->execute();
         }
+    }
+
+    public static function getGuests($eventId) {
+        $query = "select user.* " .
+            "from cal_event_share " .
+            "left join user on user.id = cal_event_share.user_id " .
+            "where cal_event_share.cal_event_id = ?";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $eventId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
     }
 
     public static function getByText($userId, $query) {

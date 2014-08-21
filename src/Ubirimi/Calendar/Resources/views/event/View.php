@@ -1,6 +1,8 @@
 <?php
     use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
     use Ubirimi\Util;
+    use Ubirimi\LinkHelper;
+    use Ubirimi\SystemProduct;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -57,6 +59,18 @@
                             <br />
                         <?php endwhile ?>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Guests:</td>
+                <td>
+                    <?php if ($guests): ?>
+                        <?php while ($guest = $guests->fetch_array(MYSQLI_ASSOC)): ?>
+                            <?php echo LinkHelper::getUserProfileLink($guest['id'], SystemProduct::SYS_PRODUCT_YONGO, $guest['first_name'], $guest['last_name']); ?>
+                        <?php endwhile ?>
+                    <?php else: ?>
+                        <div>There are no guests.</div>
+                    <?php endif ?>
                 </td>
             </tr>
         </table>

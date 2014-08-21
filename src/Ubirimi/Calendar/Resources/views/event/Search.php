@@ -28,13 +28,11 @@
                                 <a href="/calendar/event/<?php echo $event['id'] ?>?source=/calendar/search?search_query=<?php echo $query ?>"><?php echo $event['name']; ?></a>
                             </td>
                             <td>
-                                <?php
-                                    if ($event['date_from'] == $event['date_to']) {
-                                        echo Util::getFormattedDate($event['date_from']) . ', all day';
-                                    } else {
-                                        echo $event['date_from'] . ' - ' . $event['date_to'];
-                                    }
-                                ?>
+                                <?php if ($event['date_from'] == $event['date_to']): ?>
+                                    <?php echo Util::getFormattedDate($event['date_from']) . ', all day'; ?>
+                                <?php else: ?>
+                                    <?php echo $event['date_from'] . ' - ' . $event['date_to']; ?>
+                                <?php endif ?>
                             </td>
                             <td><?php echo $event['description']; ?></td>
                             <td><?php echo $event['calendar_name'] ?></td>

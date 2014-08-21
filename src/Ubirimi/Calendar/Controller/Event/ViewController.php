@@ -27,6 +27,7 @@ class ViewController extends UbirimiController
 
         // check if the event is a shared event
         $sharedEvent = CalendarEvent::getShareByUserIdAndEventId($session->get('user/id'), $event['id']);
+        $guests = CalendarEvent::getGuests($eventId);
 
         $menuSelectedCategory = 'calendars';
 

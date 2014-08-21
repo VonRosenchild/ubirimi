@@ -111,7 +111,7 @@ $('document').ready(function () {
                                 success: function (response) {
                                     $("#modalAddEvent").dialog('destroy');
                                     $("#modalAddEvent").empty();
-//                                    location.reload();
+                                    location.reload();
                                 }
                             });
                         }
@@ -351,9 +351,7 @@ $('document').ready(function () {
                                 $("#modalAddGuestsToEvent").dialog('destroy');
                                 $("#modalAddGuestsToEvent").empty();
 
-                                $('#topMessageBox').html(response);
-                                $('#topMessageBox').css('box-shadow', '3px 3px 5px rgba(0, 0, 0, 0.5)');
-                                $('#topMessageBox').show();
+                                location.reload();
                             }
                         });
                     }
@@ -375,7 +373,7 @@ $('document').ready(function () {
         $("#modalAddGuestsToEvent").load("/calendar/event/dialog/add-guests/" + eventId, [], function () {
             $("#modalAddGuestsToEvent").dialog(options);
             $("#modalAddGuestsToEvent").dialog("open");
-            $(".select2Input").chosen({placeholder_text: 'Click to select a user'});
+            $(".select2Input").select2({placeholder_text: 'Click to select a user'});
         });
     });
 
