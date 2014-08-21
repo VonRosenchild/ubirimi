@@ -117,6 +117,9 @@ $('document').ready(function () {
         if (2 == repeatType) {
             $('#add_event_repeat_weekly_content').show();
         }
+
+        jQuery("#modalAddEvent").dialog('option', 'position', ['middle','middle']);
+
     });
 
     $(document).on('click', "[id^='event_delete_']", function (event) {
