@@ -117,7 +117,7 @@
                                     </td>
                                 </tr>
                             <?php endif ?>
-                            <?php if ($issue['assignee'] != $session->get('move_issue/new_assignee')): ?>
+                            <?php if ($session->get('move_issue/new_assignee') && $issue['assignee'] != $session->get('move_issue/new_assignee')): ?>
                                 <tr>
                                     <td>Assignee </td>
                                     <td>
