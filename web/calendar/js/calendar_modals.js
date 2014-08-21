@@ -308,7 +308,7 @@ $('document').ready(function () {
         $("#modalShareCalendar").load("/calendar/dialog/share/" + calendarId, [], function () {
             $("#modalShareCalendar").dialog(options);
             $("#modalShareCalendar").dialog("open");
-            $(".select2Input").chosen({placeholder_text: 'Click to select a user'});
+            $(".select2Input").select2();
         });
     });
 
