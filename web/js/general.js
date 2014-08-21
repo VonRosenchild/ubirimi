@@ -360,6 +360,7 @@ $('document').ready(function () {
         $('#btnCopyPermissionScheme').attr('class', classCSS);
         $('#btnCopyFieldConfiguration').attr('class', classCSS);
         $('#btnEditNotificationScheme').attr('class', classCSS);
+        $('#btnEditSLACalendar').attr('class', classCSS);
         $('#btnCopyNotificationScheme').attr('class', classCSS);
         $('#btnEditProjectCategory').attr('class', classCSS);
         $('#btnEditOrganization').attr('class', classCSS);

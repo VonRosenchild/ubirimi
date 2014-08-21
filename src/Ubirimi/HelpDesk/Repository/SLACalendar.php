@@ -66,6 +66,14 @@ class SLACalendar
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
+    public static function deleteDataByCalendarId($calendarId) {
+        $query = "delete from help_sla_calendar_data where help_sla_calendar_id = ?";
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $calendarId);
+        $stmt->execute();
+        $stmt->close();
+    }
+
     public static function deleteById($Id) {
         $query = "delete from help_sla_calendar where id = ? limit 1";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -73,11 +81,7 @@ class SLACalendar
         $stmt->execute();
         $stmt->close();
 
-        $query = "delete from help_sla_calendar_data where help_sla_calendar_id = ?";
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("i", $Id);
-        $stmt->execute();
-        $stmt->close();
+        SLACalendar::deleteDataByCalendarId($Id);
     }
 
     public static function getData($slaCalendarId) {
@@ -96,7 +100,7 @@ class SLACalendar
     }
 
     public static function updateById($slaCalendarId, $timezoneId, $name, $description, $date) {
-        $query = "update help_sla_calendar set name = ?, description = ?, sys_timezoneId = ?, date_updated = ? where id = ? limit 1";
+        $query = "update help_sla_calendar set name = ?, description = ?, sys_timezone_id = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("ssisi", $name, $description, $timezoneId, $date, $slaCalendarId);
@@ -118,18 +122,7 @@ class SLACalendar
             return false;
     }
 
-    public static function addCalendar($projectId, $name, $description, $data, $defaultFlag = 0, $date) {
-
-        $query = "INSERT INTO help_sla_calendar(project_id, name, description, default_flag, date_created) VALUES " .
-            "(?, ?, ?, ?, ?)";
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("issis", $projectId, $name, $description, $defaultFlag, $date);
-        $stmt->execute();
-        $calendarId = UbirimiContainer::get()['db.connection']->insert_id;
-
-        // add the data
-
+    public static function addData($calendarId, $data) {
         for ($i = 1; $i <= 7; $i++) {
             $query = "INSERT INTO help_sla_calendar_data(help_sla_calendar_id, day_number, time_from, time_to, not_working_flag) VALUES " .
                 "(?, ?, ?, ?, ?)";
@@ -146,6 +139,20 @@ class SLACalendar
             $stmt->bind_param("iissi", $calendarId, $i, $startTime, $endTime, $data[$i - 1]['notWorking']);
             $stmt->execute();
         }
+    }
+
+    public static function addCalendar($projectId, $name, $description, $data, $defaultFlag = 0, $date) {
+
+        $query = "INSERT INTO help_sla_calendar(project_id, name, description, default_flag, date_created) VALUES " .
+            "(?, ?, ?, ?, ?)";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("issis", $projectId, $name, $description, $defaultFlag, $date);
+        $stmt->execute();
+        $calendarId = UbirimiContainer::get()['db.connection']->insert_id;
+
+        // add the data
+        SLACalendar::addData($calendarId, $data);
 
         return $calendarId;
     }

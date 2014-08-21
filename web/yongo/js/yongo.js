@@ -1288,6 +1288,12 @@ $('document').ready(function () {
             document.location.href = '/yongo/administration/project/subcomponent/add/' + $('#project_id').val() + '/' + selected_rows[0];
     });
 
+    $('#btnEditSLACalendar').click(function (event) {
+        event.preventDefault();
+        if (selected_rows.length == 1)
+            document.location.href = '/helpdesk/sla/calendar/edit/' + selected_rows[0];
+    });
+
     $('#btnEditIssuePriority').click(function (event) {
         event.preventDefault();
         if (selected_rows.length == 1)

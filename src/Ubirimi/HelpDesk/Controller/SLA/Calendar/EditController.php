@@ -1,4 +1,5 @@
 <?php
+
     use Ubirimi\Repository\HelpDesk\SLACalendar;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
@@ -8,14 +9,17 @@
 
     $menuSelectedCategory = 'help_desk';
     $menuProjectCategory = 'sla_calendar';
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks > Create Calendar';
+    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks > Edit Calendar';
 
     $emptyName = false;
     $duplicateName = false;
 
-    $projectId = $_GET['id'];
+    $calendarId = $_GET['id'];
+    $calendar = SLACalendar::getById($calendarId);
+    $projectId = $calendar['project_id'];
+    $data = SLACalendar::getData($calendarId);
 
-    if (isset($_POST['confirm_new_calendar'])) {
+    if (isset($_POST['confirm_edit_calendar'])) {
 
         $name = Util::cleanRegularInputField($_POST['name']);
         $description = Util::cleanRegularInputField($_POST['description']);
@@ -24,11 +28,10 @@
             $emptyName = true;
         }
 
-        $slaCalendarExisting = SLACalendar::getByName($name, $projectId);
-        if ($slaCalendarExisting) {
+        $existingCalendar = SLACalendar::getByName($name, $projectId, $calendarId);
+        if ($existingCalendar) {
             $duplicateName = true;
         }
-
         if (!$emptyName && !$duplicateName) {
             $dataCalendar = array();
             for ($i = 1; $i <= 7; $i++) {
@@ -43,10 +46,13 @@
 
                 $currentDate = Util::getServerCurrentDateTime();
 
-                SLACalendar::addCalendar($projectId, $name, $description, $dataCalendar, 0, $currentDate);
+                SLACalendar::deleteDataByCalendarId($calendarId);
+                SLACalendar::updateById($calendarId, null, $name, $description, $currentDate);
+                SLACalendar::addData($calendarId, $dataCalendar);
+
                 header('Location: /helpdesk/sla/calendar/' . $projectId);
             }
         }
     }
 
-    require_once __DIR__ . '/../../../Resources/views/sla/calendar/Add.php';
+    require_once __DIR__ . '/../../../Resources/views/sla/calendar/Edit.php';

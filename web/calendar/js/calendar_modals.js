@@ -78,19 +78,19 @@ $('document').ready(function () {
                                 repeatData += '#';
                                 var dayValue = $('#week_on_0').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
-                                var dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
+                                dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
-                                var dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
+                                dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
-                                var dayValue = $('#week_on_2').prop('checked') ? 1 : 0;
+                                dayValue = $('#week_on_2').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
-                                var dayValue = $('#week_on_3').prop('checked') ? 1 : 0;
+                                dayValue = $('#week_on_3').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
-                                var dayValue = $('#week_on_4').prop('checked') ? 1 : 0;
+                                dayValue = $('#week_on_4').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
-                                var dayValue = $('#week_on_5').prop('checked') ? 1 : 0;
+                                dayValue = $('#week_on_5').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
-                                var dayValue = $('#week_on_6').prop('checked') ? 1 : 0;
+                                dayValue = $('#week_on_6').prop('checked') ? 1 : 0;
                                 repeatData += dayValue;
 
                                 return;

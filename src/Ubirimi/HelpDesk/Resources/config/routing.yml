@@ -179,6 +179,12 @@ hdSlaCalendarsAdd:
   requirements:
     id:  \d+
 
+hdSlaCalendarsEdit:
+  path: /helpdesk/sla/calendar/edit/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\EditController' }
+  requirements:
+    id:  \d+
+
 hdDeleteOrganizationDialog:
   path: /helpdesk/administration/organizations/dialog/delete/{id}
   defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Organization\DeleteDialogController' }
