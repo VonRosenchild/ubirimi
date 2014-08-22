@@ -88,14 +88,19 @@
                             ?>
                             <td class="issueSLA">
                                 <?php for ($j = 0; $j < count($slaIds); $j++): ?>
-                                    <?php $slaId = $slaIds[$j] ?>
-                                    <?php if (isset($slaData[$slaId]['goal'])): ?>
-                                        <span class="<?php if (($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                                            <?php echo SLA::formatOffset($slaData[$slaId]['goal'] - $slaData[$slaId]['offset']) ?>
-                                        </span>
-                                        &nbsp;
-                                        <img src="/img/clock.png" height="16px" />
-                                    <?php endif ?>
+                                    <?php $slaId = $slaIds[$j]; ?>
+                                    <?php for ($k = 0; $k < count($slaIds); $k++): ?>
+                                        <?php if ($slaData[$k]['slaId'] == $slaIds[$j]): ?>
+                                            <span class="<?php if (($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes'] - $slaData[$k]['valueBetweenCycles']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
+                                                <?php echo SLA::formatOffset($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes'] - $slaData[$k]['valueBetweenCycles']) ?>
+                                            </span>
+                                            <?php if ($slaData[$k]['endDate']): ?>
+                                                <img src="/img/accept.png" style="position: relative; top: 3px;" />
+                                            <?php else: ?>
+                                                <img src="/img/clock.png" height="16px" style="position: relative; top: 3px;"/>
+                                            <?php endif ?>
+                                        <?php endif ?>
+                                    <?php endfor ?>
                                 <?php endfor ?>
                             </td>
                         <?php endif ?>

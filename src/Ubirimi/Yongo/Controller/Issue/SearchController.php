@@ -89,7 +89,6 @@
         $columns[] = '';
     }
 
-
     $hasGlobalBulkPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE);
     $customFilters = IssueFilter::getAllByUser($loggedInUserId);
 
