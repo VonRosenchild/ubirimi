@@ -57,6 +57,5 @@
         <?php endif ?>
     </div>
     <input type="hidden" id="project_id" value="<?php echo $projectId ?>" name="project_id" />
-    <div id="modalProjectFilters"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

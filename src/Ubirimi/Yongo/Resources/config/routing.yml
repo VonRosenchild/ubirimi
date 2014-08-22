@@ -24,6 +24,12 @@ listProjectComponent:
   requirements:
     id:  \d+
 
+listProjectRoles:
+  path: /yongo/project/roles/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ListRoleController' }
+  requirements:
+    id:  \d+
+
 viewProjectCalendar:
   path: /yongo/project/calendar/{id}/{month}/{year}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewCalendarController' }

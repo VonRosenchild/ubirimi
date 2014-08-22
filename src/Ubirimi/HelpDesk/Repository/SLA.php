@@ -238,6 +238,7 @@ class SLA
                 }
             } else if (strpos($conditions[$i], $type . '_status_set_') !== false) {
                 if (isset($historyData['field'])) {
+
                     if (Field::FIELD_STATUS_CODE == $historyData['field'] && $historyData['new_value_id'] == str_replace($type . '_status_set_',  '', $conditions[$i])) {
 
                         if ($historyData['date_created'] >= $currentSLADate) {

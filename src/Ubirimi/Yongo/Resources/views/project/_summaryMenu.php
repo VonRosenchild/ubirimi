@@ -26,5 +26,8 @@
     <li <?php if ($menuProjectCategory == 'components'):?>class="active"<?php endif ?>>
         <a href="/yongo/project/components/<?php echo $projectId ?>" title="Components">Components</a>
     </li>
+    <li <?php if ($menuProjectCategory == 'roles'):?>class="active"<?php endif ?>>
+        <a href="/yongo/project/roles/<?php echo $projectId ?>" title="Roles">Roles</a>
+    </li>
 </ul>
 

@@ -90,7 +90,7 @@
                                 <?php for ($j = 0; $j < count($slaIds); $j++): ?>
                                     <?php $slaId = $slaIds[$j]; ?>
                                     <?php for ($k = 0; $k < count($slaIds); $k++): ?>
-                                        <?php if ($slaData[$k]['slaId'] == $slaIds[$j]): ?>
+                                        <?php if (isset($slaData[$k]) && $slaData[$k]['slaId'] == $slaIds[$j]): ?>
                                             <span class="<?php if (($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes'] - $slaData[$k]['valueBetweenCycles']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
                                                 <?php echo SLA::formatOffset($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes'] - $slaData[$k]['valueBetweenCycles']) ?>
                                             </span>
