@@ -361,6 +361,7 @@ $('document').ready(function () {
         $('#btnCopyFieldConfiguration').attr('class', classCSS);
         $('#btnEditNotificationScheme').attr('class', classCSS);
         $('#btnEditSLACalendar').attr('class', classCSS);
+        $('#btnDeleteSLACalendar').attr('class', classCSS);
         $('#btnCopyNotificationScheme').attr('class', classCSS);
         $('#btnEditProjectCategory').attr('class', classCSS);
         $('#btnEditOrganization').attr('class', classCSS);

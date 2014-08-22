@@ -108,6 +108,64 @@ $('document').ready(function () {
         });
     });
 
+    $('#btnDeleteSLACalendar').on('click', function (event) {
+        event.preventDefault();
+        var calendarId = selected_rows[0];
+
+        var options = {
+            modal: true,
+            draggable: false,
+            dialogClass: "ubirimi-dialog",
+            width: "auto",
+            stack: true,
+            position: 'center',
+            autoOpen: false,
+            closeOnEscape: true,
+            resizable: false,
+            title: 'Delete SLA Calendar',
+            buttons: [
+                {
+                    text: "Delete",
+                    click: function () {
+                        $.ajax({
+                            type: "POST",
+                            url: '/helpdesk/sla/calendar/delete',
+                            data: {
+                                id: calendarId
+                            },
+                            success: function (response) {
+                                $("#modalDeleteSLACalendar").dialog('destroy');
+                                $("#modalDeleteSLACalendar").empty();
+
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                {
+                    text: "Cancel",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ],
+            close: function () {
+                $("#modalDeleteSLACalendar").dialog('destroy');
+                $("#modalDeleteSLACalendar").empty();
+            }
+        };
+
+        var delete_possible = $('#delete_possible_' + calendarId).val();
+        if (delete_possible == 0) {
+            options.buttons.shift();
+        }
+
+        $("#modalDeleteSLACalendar").load("/helpdesk/sla/calendar/delete/dialog/" + calendarId, [], function () {
+            $("#modalDeleteSLACalendar").dialog(options);
+            $("#modalDeleteSLACalendar").dialog("open");
+        });
+    });
+
     $('#btnDeleteOrganization').on('click', function (event) {
         event.preventDefault();
         var organizationId = selected_rows[0];

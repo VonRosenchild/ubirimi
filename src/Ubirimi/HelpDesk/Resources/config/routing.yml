@@ -49,6 +49,16 @@ hdViewSLACalendars:
   requirements:
     id:  \d+
 
+hdDeleteSLACalendarDialog:
+  path: /helpdesk/sla/calendar/delete/dialog/{id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\DeleteDialogController' }
+  requirements:
+    id:  \d+
+
+hdDeleteSLACalendar:
+  path: /helpdesk/sla/calendar/delete
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\DeleteController' }
+
 hdEditSLA:
   path: /helpdesk/sla/edit/{id}
   defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\EditController' }

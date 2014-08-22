@@ -537,4 +537,23 @@ class SLA
         else
             return false;
     }
+
+    public static function getByCalendarId($clientId, $calendarId) {
+        $query = 'select help_sla.* ' .
+            'from help_sla ' .
+            'left join project on project.id = help_sla.project_id ' .
+            'left join help_sla_goal on help_sla_goal.help_sla_id = help_sla.id ' .
+            'where project.client_id = ? and help_sla_goal.help_sla_calendar_id = ? ';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $clientId, $calendarId);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
+    }
 }

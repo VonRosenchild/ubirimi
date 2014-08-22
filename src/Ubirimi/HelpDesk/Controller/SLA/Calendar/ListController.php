@@ -12,6 +12,7 @@
     $menuProjectCategory = 'sla_calendar';
     $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / SLA Calendars';
 
+    $clientId = $session->get('client/id');
     $projectId = $_GET['id'];
     $project = Project::getById($projectId);
     $calendars = SLACalendar::getByProjectId($projectId);
