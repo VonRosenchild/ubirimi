@@ -51,6 +51,7 @@
         exit;
     } else {
         $getFilter = isset($_GET['filter']) ? $_GET['filter'] : null;
+        $currentSearchPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
         $getSearchParameters = Issue::prepareDataForSearchFromURL($_GET, $issuesPerPage);
 

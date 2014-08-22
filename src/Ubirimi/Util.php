@@ -96,9 +96,14 @@ class Util {
         return date("Y-m-d H:i:s");
     }
 
-    public static function renderPaginator($params, $returnType = null) {
+    public static function renderPaginator($issuesCount, $issuesPerPage, $currentSearchPage, $params, $returnType = null) {
+        $upLimit = $issuesPerPage * ($currentSearchPage - 1) + $issuesPerPage;
+        if ($upLimit > $issuesCount) {
+            $upLimit = $issuesCount;
+        }
         $htmlOutput = '<table width="100%" cellspacing="0" border="0" cellpadding="0">';
         $htmlOutput .= '<tr>';
+        $htmlOutput .= '<td align="left"><b>' . ($issuesPerPage * ($currentSearchPage - 1) + 1) . ' - ' . $upLimit . ' of ' . $issuesCount . '</b></td>';
         $htmlOutput .= '<td align="right">';
 
         $showLeft = false;

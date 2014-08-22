@@ -11,7 +11,7 @@
     <div class="pageContent" style="margin: 0px; border-radius: 0px;">
     <?php if (isset($issuesCount) && $issuesCount > 0): ?>
 
-        <?php Util::renderPaginator($getSearchParameters); ?>
+        <?php Util::renderPaginator($issuesCount, $issuesPerPage, $currentSearchPage, $getSearchParameters); ?>
 
         <table class="table table-hover table-condensed">
             <?php echo Util::renderTableHeader($getSearchParameters, $columns); ?>
@@ -109,7 +109,7 @@
             <?php endwhile ?>
             <?php $session->set('array_ids', $arrayIds); ?>
 
-            <?php Util::renderPaginator($getSearchParameters); ?>
+            <?php Util::renderPaginator($issuesCount, $issuesPerPage, $currentSearchPage, $getSearchParameters); ?>
         </table>
     <?php else: ?>
         <table>
