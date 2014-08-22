@@ -71,8 +71,8 @@
                         </tr>
 
                         <tr class="calendar-row">
-                            <?php for ($x = 1; $x <= $running_day; $x++): ?>
-                                <?php $dayCell = ($daysInPreviousMonth - $running_day + $x) . '_' . $previousMonth . '_' . $previousYear ?>
+                            <?php for ($x = 1; $x <= $runningDay; $x++): ?>
+                                <?php $dayCell = ($daysInPreviousMonth - $runningDay + $x) . '_' . $previousMonth . '_' . $previousYear ?>
                                 <?php
                                     $classCurrentDate = '';
                                     if ($dayCell == date('j_n_Y')) {
@@ -80,12 +80,12 @@
                                     }
                                 ?>
                                 <td valign="top" class="calendar-day calendar-day-np<?php echo ' '. $classCurrentDate ?>" id="calendar_day_<?php echo $dayCell; ?>">
-                                    <div class="day-number"><?php echo ($daysInPreviousMonth - $running_day + $x) ?></div>
+                                    <div class="day-number"><?php echo ($daysInPreviousMonth - $runningDay + $x) ?></div>
                                 </td>
-                                <?php $days_in_this_week++; ?>
+                                <?php $daysInThisWeek++; ?>
                             <?php endfor ?>
 
-                            <?php for ($list_day = 1; $list_day <= $days_in_month; $list_day++): ?>
+                            <?php for ($list_day = 1; $list_day <= $daysInMonth; $list_day++): ?>
                             <?php $dayCell = $list_day . '_' . $month . '_' . $year ?>
                             <?php
                                 $classCurrentDate = '';
@@ -142,7 +142,7 @@
                                                 }
 
                                                 $width = 101;
-                                                if (substr($event['date_to'], 0, 10) == $date || $running_day == 6) {
+                                                if (substr($event['date_to'], 0, 10) == $date || $runningDay == 6) {
                                                     $width = 100;
                                                 }
                                                 $eventData[$event['id']][1] = $width;
@@ -228,24 +228,24 @@
                                     ?>
                                 <?php endif ?>
                             </td>
-                            <?php if ($running_day == 6): ?>
+                            <?php if ($runningDay == 6): ?>
                         </tr>
-                        <?php if (($day_counter + 1) != $days_in_month): ?>
+                        <?php if (($dayCounter + 1) != $daysInMonth): ?>
                         <tr class="calendar-row">
                             <?php endif ?>
                             <?php
-                                $running_day = -1;
-                                $days_in_this_week = 0;
+                                $runningDay = -1;
+                                $daysInThisWeek = 0;
                             ?>
                             <?php endif ?>
                             <?php
-                                $days_in_this_week++;
-                                $running_day++;
-                                $day_counter++;
+                                $daysInThisWeek++;
+                                $runningDay++;
+                                $dayCounter++;
                             ?>
                             <?php endfor ?>
-                            <?php if ($days_in_this_week < 8 && (8 - $days_in_this_week != 7)): ?>
-                                <?php for ($x = 1; $x <= (8 - $days_in_this_week); $x++): ?>
+                            <?php if ($daysInThisWeek < 8 && (8 - $daysInThisWeek != 7)): ?>
+                                <?php for ($x = 1; $x <= (8 - $daysInThisWeek); $x++): ?>
                                     <td class="calendar-day calendar-day-np" id="calendar_day_<?php echo $x ?>_<?php echo ($nextMonth) ?>_<?php echo $nextYear ?>" valign="top">
                                         <div class="day-number"><?php echo $x ?></div>
                                     </td>

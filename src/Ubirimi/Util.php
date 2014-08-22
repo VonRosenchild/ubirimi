@@ -101,52 +101,52 @@ class Util {
         $htmlOutput .= '<tr>';
         $htmlOutput .= '<td align="right">';
 
-        $show_left = false;
-        $show_left_left = false;
-        $show_right = false;
-        $show_right_right = false;
-        $page_start = $params['page'] - 5;
-        $page_end = $params['page'] + 5;
+        $showLeft = false;
+        $showLeftLeft = false;
+        $showRight = false;
+        $showRightRight = false;
+        $pageStart = $params['page'] - 5;
+        $pageEnd = $params['page'] + 5;
 
         if ($params['page'] == $params['count_pages']) {
-            $page_start = $params['count_pages'] - 10;
-            $page_end = $params['count_pages'];
+            $pageStart = $params['count_pages'] - 10;
+            $pageEnd = $params['count_pages'];
         }
 
-        if ($page_start <= 0) {
-            $page_start = 1;
-            $page_end = 10;
+        if ($pageStart <= 0) {
+            $pageStart = 1;
+            $pageEnd = 10;
         }
 
-        if ($page_start >= 2) $show_left = true;
-        if ($page_start >= 3) $show_left_left = true;
+        if ($pageStart >= 2) $showLeft = true;
+        if ($pageStart >= 3) $showLeftLeft = true;
 
-        if ($page_end <= ($params['count_pages'] - 1)) $show_right = true;
-        if ($page_end <= ($params['count_pages'] - 2)) $show_right_right = true;
+        if ($pageEnd <= ($params['count_pages'] - 1)) $showRight = true;
+        if ($pageEnd <= ($params['count_pages'] - 2)) $showRightRight = true;
 
-        if ($page_end > $params['count_pages']) $page_end = $params['count_pages'];
+        if ($pageEnd > $params['count_pages']) $pageEnd = $params['count_pages'];
 
-        if ($show_left_left) {
+        if ($showLeftLeft) {
             $params['page'] = 1;
             $htmlOutput .= LinkHelper::getYongoIssueListPageLink('<<', $params, null, 'nr_page_link');
         }
 
-        if ($show_left) {
-            $params['page'] = $page_start - 1;
+        if ($showLeft) {
+            $params['page'] = $pageStart - 1;
             $htmlOutput .= LinkHelper::getYongoIssueListPageLink('<', $params, null, 'nr_page_link');
         }
 
-        for ($i = $page_start; $i <= $page_end; $i++) {
+        for ($i = $pageStart; $i <= $pageEnd; $i++) {
             $params['page'] = $i;
             $htmlOutput .= LinkHelper::getYongoIssueListPageLink($i, $params, null, 'nr_page_link');
         }
 
-        if ($show_right) {
-            $params['page'] = $page_end + 1;
+        if ($showRight) {
+            $params['page'] = $pageEnd + 1;
             $htmlOutput .= LinkHelper::getYongoIssueListPageLink('>', $params, null, 'nr_page_link');
         }
 
-        if ($show_right_right) {
+        if ($showRightRight) {
             $params['page'] = $params['count_pages'];
             $htmlOutput .= LinkHelper::getYongoIssueListPageLink('>>', $params, null, 'nr_page_link');
         }
@@ -1071,23 +1071,23 @@ class Util {
         $calendar .= '</tr>';
 
         /* days and weeks vars now ... */
-        $running_day = date('w', mktime(0, 0, 0, $month, 1, $year));
-        $days_in_month = date('t', mktime(0, 0, 0, $month, 1, $year));
-        $days_in_this_week = 1;
-        $day_counter = 0;
+        $runningDay = date('w', mktime(0, 0, 0, $month, 1, $year));
+        $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
+        $daysInThisWeek = 1;
+        $dayCounter = 0;
         $dates_array = array();
 
         /* row for week one */
         $calendar .= '<tr class="calendar-row">';
 
         /* print "blank" days until the first of the current week */
-        for ($x = 0; $x < $running_day; $x++) {
+        for ($x = 0; $x < $runningDay; $x++) {
             $calendar .= '<td class="calendar-day-np"> </td>';
-            $days_in_this_week++;
+            $daysInThisWeek++;
         }
 
         /* keep going with days.... */
-        for ($list_day = 1; $list_day <= $days_in_month; $list_day++) {
+        for ($list_day = 1; $list_day <= $daysInMonth; $list_day++) {
             $calendar .= '<td class="calendar-day" valign="top">';
             /* add in the day number */
             $calendar .= '<div class="day-number">' . $list_day . '</div>';
@@ -1117,23 +1117,23 @@ class Util {
             $calendar .= str_repeat('<p> </p>', 2);
 
             $calendar .= '</td>';
-            if ($running_day == 6) {
+            if ($runningDay == 6) {
                 $calendar .= '</tr>';
-                if (($day_counter + 1) != $days_in_month) {
+                if (($dayCounter + 1) != $daysInMonth) {
                     $calendar .= '<tr class="calendar-row">';
                 }
-                $running_day = -1;
-                $days_in_this_week = 0;
+                $runningDay = -1;
+                $daysInThisWeek = 0;
             }
-            $days_in_this_week++;
-            $running_day++;
-            $day_counter++;
+            $daysInThisWeek++;
+            $runningDay++;
+            $dayCounter++;
         }
 
         /* finish the rest of the days in the week */
 
-        if ($days_in_this_week < 8 && (8 - $days_in_this_week != 7)) {
-            for ($x = 1; $x <= (8 - $days_in_this_week); $x++) {
+        if ($daysInThisWeek < 8 && (8 - $daysInThisWeek != 7)) {
+            for ($x = 1; $x <= (8 - $daysInThisWeek); $x++) {
                 $calendar .= '<td class="calendar-day-np"> </td>';
             }
         }

@@ -82,10 +82,10 @@ class ViewController extends UbirimiController
         }
 
         $headings = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-        $running_day = date('w', mktime(0, 0, 0, $month, 1, $year));
-        $days_in_month = date('t', mktime(0, 0, 0, $month, 1, $year));
-        $days_in_this_week = 1;
-        $day_counter = 0;
+        $runningDay = date('w', mktime(0, 0, 0, $month, 1, $year));
+        $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
+        $daysInThisWeek = 1;
+        $dayCounter = 0;
         $maxLevel = 0;
         $eventData = array();
 
