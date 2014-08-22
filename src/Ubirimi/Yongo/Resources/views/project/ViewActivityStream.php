@@ -6,47 +6,54 @@
     use Ubirimi\SystemProduct;
 ?>
 <?php if ($historyList): ?>
-    <table width="100%" cellspacing="0" style="table-layout: fixed">
+    <table cellspacing="0" style="table-layout: fixed">
 
         <?php while ($row = $historyList->fetch_array(MYSQLI_ASSOC)): ?>
 
             <?php if (substr($date, 0, 10) != substr($row['date_created'], 0, 10)): ?>
                 <tr>
-
                     <td colspan="3"><b><?php echo Util::getFormattedDate($row['date_created']) ?></b></td>
                 </tr>
             <?php endif ?>
             <?php if ($date != substr($row['date_created'], 0, 10) || $issueId != $row['issue_id']): ?>
-                <tr>
-                    <td colspan="3" valing="top">
-                        <?php if ($date): ?>
+                <?php if ($date): ?>
+                    <tr>
+                        <td colspan="3">
                             <hr size="1" />
-                        <?php endif ?>
+                        </td>
+                    </tr>
+                <?php endif ?>
+
+                <tr>
+                    <td width="50px" valign="top">
+                        <img src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $row['avatar_picture'],'id' => $row['user_id']), 'big') ?>" />
+                    </td>
+                    <td colspan="2" valing="top">
                         <?php if ($row['event'] == 'event_commented'): ?>
                             <div>
-                                <img width="33px" style="vertical-align: middle;" src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $row['avatar_picture'],'id' => $row['user_id']), 'small') ?>" />
+
                                 <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?> commented on <a href="/yongo/issue/<?php echo $row['issue_id'] ?>"><?php echo $row['code'] . '-' . $row['nr'] ?></a>
                             </div>
                         <?php elseif ($row['event'] == 'event_history'): ?>
-                            <img width="33px" style="vertical-align: middle;" src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $row['avatar_picture'],'id' => $row['user_id']), 'small') ?>" />
+
                             <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?>
                             updated <a href="/yongo/issue/<?php echo $row['issue_id'] ?>"><?php echo $row['code'] . '-' . $row['nr'] ?></a>
 
                         <?php elseif ($row['event'] == 'event_created'): ?>
                             <div>
-                                <img width="33px" style="vertical-align: middle;" src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $row['avatar_picture'],'id' => $row['user_id']), 'small') ?>" />
+
                                 <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?>
                                 created <a href="/yongo/issue/<?php echo $row['issue_id'] ?>"><?php echo $row['code'] . '-' . $row['nr'] ?></a>
                                 at <?php echo date('H:i', strtotime($row['date_created'])) ?>
                             </div>
                         <?php endif ?>
-
                     </td>
                 </tr>
             <?php endif ?>
             <tr>
+                <td></td>
                 <?php if ($row['event'] == 'event_commented'): ?>
-                    <td valign="top" colspan="3" style="word-wrap: break-word;">
+                    <td valign="top" colspan="2" style="word-wrap: break-word;">
                         <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?> commented:
                         <?php echo $row['comment_content'] ?>
                     </td>

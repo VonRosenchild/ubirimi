@@ -298,7 +298,7 @@ class Util {
         return false;
     }
 
-    public static function getProjectHistory($projectId, $helpdeskFlag = 0) {
+    public static function getProjectHistory($projectIds, $helpdeskFlag = 0) {
 
         $queryWherePart = ' ';
         if ($helpdeskFlag) {
@@ -319,7 +319,7 @@ class Util {
             'from yongo_issue ' .
             'left join user on user.id = yongo_issue.user_reported_id ' .
             'left join project on project.id = yongo_issue.project_id ' .
-            'where project.id = ? ' .
+            'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
             'and yongo_issue.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
             'order by date_created desc) ';
@@ -342,7 +342,7 @@ class Util {
             'left join issue_comment on yongo_issue.id = issue_comment.issue_id ' .
             'left join user on user.id = issue_comment.user_id ' .
             'left join project on project.id = yongo_issue.project_id ' .
-            'where project.id = ? ' .
+            'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
             'and issue_comment.issue_id is not null ' .
             'and issue_comment.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
@@ -366,7 +366,7 @@ class Util {
             'left join issue_history on issue_history.issue_id = yongo_issue.id ' .
             'left join user on user.id = issue_history.by_user_id ' .
             'left join project on project.id = yongo_issue.project_id ' .
-            'where project.id = ? ' .
+            'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
             'and issue_history.issue_id is not null ' .
             'and issue_history.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
@@ -374,7 +374,6 @@ class Util {
             'order by date_created desc';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("iii", $projectId, $projectId, $projectId);
 
         $stmt->execute();
         $result = $stmt->get_result();

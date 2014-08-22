@@ -45,9 +45,9 @@ class ProjectsController extends UbirimiController
         }
 
         $selectedProjectMenu = null;
-        if ($selectedProjectId)
+        if ($selectedProjectId) {
             $selectedProjectMenu = Project::getById($selectedProjectId);
-
+        }
         $hasGlobalAdministrationPermission = User::hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),

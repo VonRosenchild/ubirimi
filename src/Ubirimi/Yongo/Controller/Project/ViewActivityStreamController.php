@@ -27,9 +27,9 @@ class ViewActivityStreamController extends UbirimiController
 
         if ($hasBrowsingPermission) {
             if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_HELP_DESK) {
-                $historyList = Util::getProjectHistory($projectId, 1);
+                $historyList = Util::getProjectHistory(array($projectId), 1);
             } else {
-                $historyList = Util::getProjectHistory($projectId, 0);
+                $historyList = Util::getProjectHistory(array($projectId), 0);
             }
 
             $date = null;

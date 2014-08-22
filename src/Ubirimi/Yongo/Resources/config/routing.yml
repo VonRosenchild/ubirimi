@@ -2,6 +2,10 @@ dashboard:
   path: /yongo/my-dashboard
   defaults: { _controller: '\Ubirimi\Yongo\Controller\IndexController' }
 
+ActivitySteam:
+  path: /yongo/activity-stream
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\ActivityStreamController' }
+
 listProject:
   path: /yongo/project/all
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ListController' }

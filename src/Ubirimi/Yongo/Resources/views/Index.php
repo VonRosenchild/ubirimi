@@ -4,13 +4,18 @@
     use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
     require_once __DIR__ . '/_header.php';
+    $section = 'dashboard';
 ?>
 
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
 
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('My Dashboard') ?>
+        <?php Util::renderBreadCrumb('Home > My Dashboard') ?>
+        <?php require_once __DIR__ . '/_home_subtabs.php' ?>
+
+        <br />
+
         <?php if ($allProjects == null && ($hasGlobalAdministrationPermission || $hasGlobalSystemAdministrationPermission)): ?>
             <div class="infoBox" style="margin-top: 4px;">
                 <div>There are no projects created. You can create one by clicking <a class="linkNoUnderline" href="/yongo/administration/project/add"><b>here</b></a>.</div>
