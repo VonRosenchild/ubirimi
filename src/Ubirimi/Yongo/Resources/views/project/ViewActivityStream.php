@@ -18,20 +18,20 @@
             <?php if ($date != substr($row['date_created'], 0, 10) || $issueId != $row['issue_id']): ?>
                 <?php if ($date): ?>
                     <tr>
-                        <td colspan="3">
-                            <hr size="1" />
+                        <td colspan="3" class="sectionDetail">
+
                         </td>
                     </tr>
                 <?php endif ?>
 
                 <tr>
                     <td width="50px" valign="top">
+                        <div style="height: 4px"></div>
                         <img src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $row['avatar_picture'],'id' => $row['user_id']), 'big') ?>" />
                     </td>
-                    <td colspan="2" valing="top">
+                    <td colspan="2" valing="top" style="vertical-align: top">
                         <?php if ($row['event'] == 'event_commented'): ?>
                             <div>
-
                                 <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?> commented on <a href="/yongo/issue/<?php echo $row['issue_id'] ?>"><?php echo $row['code'] . '-' . $row['nr'] ?></a>
                             </div>
                         <?php elseif ($row['event'] == 'event_history'): ?>

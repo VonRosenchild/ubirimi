@@ -77,7 +77,6 @@ class ViewController extends UbirimiController
                 $index = array_search($issueId, $arrayListResultIds);
             }
             $hasCreatePermission = Project::userHasPermission($projectId, Permission::PERM_CREATE_ISSUE, $session->get('user/id'));
-
             $hasEditPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
 
             $hasDeletePermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_ISSUE, $session->get('user/id'));

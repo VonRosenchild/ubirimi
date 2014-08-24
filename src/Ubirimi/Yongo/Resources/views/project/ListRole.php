@@ -40,7 +40,7 @@
                         <tr>
                             <td><?php echo $role['name']; ?></td>
                             <td>
-                                <?php $usersInRole = Project::getUsersInRole($projectId, $role['id']); ?>
+                                <?php $usersInRole = Project::getAllUsersInRole($projectId, $role['id']); ?>
                                 <?php if ($usersInRole): ?>
                                     <?php while ($user = $usersInRole->fetch_array(MYSQLI_ASSOC)): ?>
                                         <?php echo LinkHelper::getUserProfileLink($user['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $user['first_name'], $user['last_name']) ?>

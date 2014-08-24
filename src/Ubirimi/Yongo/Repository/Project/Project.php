@@ -749,6 +749,35 @@ class Project
             return null;
     }
 
+    public static function getAllUsersInRole($projectId, $roleId) {
+        $query = 'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            'FROM project_role_data ' .
+            'left join user on user.id = project_role_data.user_id ' .
+            'where project_role_data.project_id = ? and ' .
+            'project_role_data.permission_role_id = ? and ' .
+            'project_role_data.user_id is not null ' .
+
+            'UNION DISTINCT ' .
+
+                'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            'FROM project_role_data ' .
+            'left join `group` on group.id = project_role_data.group_id ' .
+            'left join `group_data` on group_data.group_id = `group`.id ' .
+            'left join user on user.id = group_data.user_id ' .
+            'where project_role_data.project_id = ? and ' .
+            'project_role_data.permission_role_id = ? and ' .
+            'project_role_data.group_id is not null';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iiii", $projectId, $roleId, $projectId, $roleId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
+    }
+
     public static function getGroupsInRole($projectId, $roleId) {
         $query = 'SELECT group.id as group_id, group.name as group_name ' .
             'FROM project_role_data ' .
