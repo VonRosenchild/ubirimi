@@ -1952,6 +1952,39 @@ $('document').ready(function () {
         });
     });
 
+    $(document).on('click', "[id^='add_project_history_comment_']", function (event) {
+        var issueId = $(this).attr("id").replace('add_project_history_comment_', '').split('_')[0];
+        var index = $(this).attr("id").replace('add_project_history_comment_', '').split('_')[1];
+        $.ajax({
+            type: "POST",
+            url: '/yongo/activity-stream/comment/add/render',
+            data: {
+                id: issueId,
+                index: index
+            },
+            success: function (response) {
+                $('#project_history_comment_' + issueId + '_' + index).html(response);
+            }
+        });
+    });
+
+    $(document).on('click', "[id^='save_comment_project_activity_']", function (event) {
+        var issueId = $(this).attr("id").replace('save_comment_project_activity_', '').split('_')[0];
+        var index = $(this).attr("id").replace('save_comment_project_activity_', '').split('_')[1];
+
+        $.ajax({
+            type: "POST",
+            url: '/yongo/comment/add',
+            data: {
+                id: issueId,
+                content: $('#content_add_comment_project_activity_' + issueId + '_' + index).val()
+            },
+            success: function (response) {
+                $('#project_history_comment_' + issueId + '_' + index).html('Successfully added the comment').css('background-color', '#e2f5c7').fadeOut(2000);
+            }
+        });
+    });
+
     $(document).on('change', '#gadget_two_dimensional_filter', function (event) {
         $.ajax({
             type: "POST",

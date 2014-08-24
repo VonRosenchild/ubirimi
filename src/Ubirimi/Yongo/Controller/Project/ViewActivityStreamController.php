@@ -40,8 +40,9 @@ class ViewActivityStreamController extends UbirimiController
                     'first_name' => $history['first_name'],
                     'last_name' => $history['last_name']);
             }
-
         }
+
+        $index = 0;
 
         return $this->render(__DIR__ . '/../../Resources/views/project/ViewActivityStream.php', get_defined_vars());
     }

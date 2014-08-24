@@ -283,6 +283,10 @@ viewProjectActivityStrem:
   path: /yongo/project/activity-stream
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewActivityStreamController' }
 
+addCommentProjectActivityRender:
+  path: /yongo/activity-stream/comment/add/render
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\RenderAddCommentController' }
+
 viewChartCreatedVsResolved:
   path: /yongo/chart/get/created-vs-resolved
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Chart\ViewCreatedVsResolvedController' }
