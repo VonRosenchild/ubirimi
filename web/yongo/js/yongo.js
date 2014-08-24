@@ -1963,7 +1963,7 @@ $('document').ready(function () {
                 index: index
             },
             success: function (response) {
-                $('#project_history_comment_' + issueId + '_' + index).html(response);
+                $('#project_history_comment_' + issueId + '_' + index).html(response).show().css('background-color', 'white');
             }
         });
     });
@@ -1980,9 +1980,15 @@ $('document').ready(function () {
                 content: $('#content_add_comment_project_activity_' + issueId + '_' + index).val()
             },
             success: function (response) {
-                $('#project_history_comment_' + issueId + '_' + index).html('Successfully added the comment').css('background-color', '#e2f5c7').fadeOut(2000);
+                $('#project_history_comment_' + issueId + '_' + index).html('Successfully added the comment').css('background-color', '#e2f5c7').fadeOut(3000);
             }
         });
+    });
+
+    $(document).on('click', "[id^='cancel_comment_project_activity_']", function (event) {
+        var issueId = $(this).attr("id").replace('cancel_comment_project_activity_', '').split('_')[0];
+        var index = $(this).attr("id").replace('cancel_comment_project_activity_', '').split('_')[1];
+        $('#project_history_comment_' + issueId + '_' + index).hide();
     });
 
     $(document).on('change', '#gadget_two_dimensional_filter', function (event) {
