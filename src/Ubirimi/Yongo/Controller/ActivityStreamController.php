@@ -34,8 +34,14 @@ class ActivityStreamController extends UbirimiController
         $projectIds = Util::array_column($projectsMenu, 'id');
 
         $historyList = Util::getProjectHistory($projectIds, 0);
-        $date = null;
-        $issueId = null;
+        $historyData = array();
+        $userData = array();
+        while ($history = $historyList->fetch_array(MYSQLI_ASSOC)) {
+            $historyData[substr($history['date_created'], 0, 10)][$history['user_id']][$history['date_created']][] = $history;
+            $userData[$history['user_id']] = array('picture' => $history['avatar_picture'],
+                                                   'first_name' => $history['first_name'],
+                                                   'last_name' => $history['last_name']);
+        }
 
         return $this->render(__DIR__ . '/../Resources/views/ActivityStream.php', get_defined_vars());
     }

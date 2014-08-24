@@ -12,7 +12,6 @@
         <?php Util::renderBreadCrumb('Home > Activity Stream') ?>
 
         <?php require_once __DIR__ . '/_home_subtabs.php' ?>
-        <br />
 
         <?php require_once __DIR__ . '/../../Resources/views/project/ViewActivityStream.php'; ?>
     </div>
