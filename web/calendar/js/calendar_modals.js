@@ -75,25 +75,21 @@ $('document').ready(function () {
                                 }
 
                                 repeatData += '#' + $('#add_event_repeat_start_date').val();
-                                repeatData += '#';
-                                var dayValue = $('#week_on_0').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
-                                dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
-                                dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
-                                dayValue = $('#week_on_2').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
-                                dayValue = $('#week_on_3').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
-                                dayValue = $('#week_on_4').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
-                                dayValue = $('#week_on_5').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
-                                dayValue = $('#week_on_6').prop('checked') ? 1 : 0;
-                                repeatData += dayValue;
 
-                                return;
+                                var dayValue = $('#week_on_0').prop('checked') ? 1 : 0;
+                                repeatData += '#' + dayValue;
+                                dayValue = $('#week_on_1').prop('checked') ? 1 : 0;
+                                repeatData += '#' + dayValue;
+                                dayValue = $('#week_on_2').prop('checked') ? 1 : 0;
+                                repeatData += '#' + dayValue;
+                                dayValue = $('#week_on_3').prop('checked') ? 1 : 0;
+                                repeatData += '#' + dayValue;
+                                dayValue = $('#week_on_4').prop('checked') ? 1 : 0;
+                                repeatData += '#' + dayValue;
+                                dayValue = $('#week_on_5').prop('checked') ? 1 : 0;
+                                repeatData += '#' + dayValue;
+                                dayValue = $('#week_on_6').prop('checked') ? 1 : 0;
+                                repeatData += '#' + dayValue;
                             }
                             $.ajax({
                                 type: "POST",
@@ -111,7 +107,7 @@ $('document').ready(function () {
                                 success: function (response) {
                                     $("#modalAddEvent").dialog('destroy');
                                     $("#modalAddEvent").empty();
-                                    location.reload();
+//                                    location.reload();
                                 }
                             });
                         }
@@ -142,6 +138,9 @@ $('document').ready(function () {
                 });
 
                 jscolor.init();
+
+                $(".select2InputSmall").select2();
+                $(".select2InputMedium").select2();
 
                 $('#event_name').focus();
         });

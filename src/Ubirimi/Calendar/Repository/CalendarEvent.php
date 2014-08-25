@@ -67,6 +67,57 @@ class CalendarEvent
                         $pos++;
                     }
                 }
+            } else if (CalendarEventRepeatCycle::REPEAT_WEEKLY == $repeatType) {
+                // $repeatData format
+                // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date#0#1#1#1#1#1#0
+
+                $repeatEvery = $repeatDataArray[1];
+                $endData = $repeatDataArray[2];
+                $repeatStartDate = $repeatDataArray[3];
+                $repeatEndDate = null;
+
+                $repeatEveryXWeeks = $repeatEvery * 7;
+                var_dump($endData[0]);
+                if ('n' == $endData[0]) {
+                    $dateTemporary = date_create($repeatStartDate);
+                    date_add($dateTemporary, date_interval_create_from_date_string('30 years'));
+
+                    $repeatEndDate = date_format($dateTemporary, 'Y-m-d');
+                    $repeatEndDateTemporary = date_create($repeatStartDate);
+
+                    while (date_format($repeatEndDateTemporary, 'Y-m-d') <= $repeatEndDate) {
+
+                        date_add(
+                            $repeatEndDateTemporary,
+                            date_interval_create_from_date_string(intval($repeatEveryXWeeks) . ' days')
+                        );
+
+                        $offsetEndDate = date_add(
+                            $repeatEndDateTemporary,
+                            date_interval_create_from_date_string($daysBetween . ' days')
+                        );
+
+                        $repeatDates[] = array(
+                            date_format($repeatEndDateTemporary, 'Y-m-d'), date_format($offsetEndDate, 'Y-m-d')
+                        );
+                    }
+                } else if ('a' == $endData[0]) {
+
+                    $pos = 1;
+                    $repeatEndDate = $repeatStartDate;
+                    while ($pos < intval($endData[1])) {
+                        $repeatEndDate = date(
+                            'Y-m-d',
+                            strtotime("+" . intval($repeatEveryXWeeks) . ' days', strtotime($repeatEndDate))
+                        );
+
+                        $repeatDates[] = array(
+                            $repeatEndDate,
+                            date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDate)))
+                        );
+                        $pos++;
+                    }
+                }
             }
 
             $query = "INSERT INTO cal_event_repeat(cal_event_repeat_cycle_id, repeat_every, start_date, end_date) VALUES (?, ?, ?, ?)";
@@ -99,17 +150,20 @@ class CalendarEvent
         $stmt->execute();
 
         $eventId = UbirimiContainer::get()['db.connection']->insert_id;
-        // update the cal_event_link_id
-        $query = "update cal_event set cal_event_link_id = ? where id = ? limit 1";
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-
-        $stmt->bind_param("ii", $eventId, $eventId);
-        $stmt->execute();
-
-        $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
-                                       "date_to, color, date_created) VALUES ";
-        $separator = '';
+var_dump($repeatDates);
         if (count($repeatDates)) {
+
+            // update the cal_event_link_id
+            $query = "update cal_event set cal_event_link_id = ? where id = ? limit 1";
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+            $stmt->bind_param("ii", $eventId, $eventId);
+            $stmt->execute();
+
+            $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
+                "date_to, color, date_created) VALUES ";
+            $separator = '';
+
             for ($k = 0; $k < count($repeatDates); $k++) {
                 $queryValues = $separator . "(%d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
                 $query .= sprintf(
@@ -129,26 +183,10 @@ class CalendarEvent
 
                 $separator = ',';
             }
-        } else {
-            $queryValues = $separator . "(%d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
-            $query .= sprintf(
-                $queryValues,
-                $calendarId,
-                $userCreatedId,
-                $eventId,
-                $calEventRepeatId,
-                $name,
-                $description,
-                $location,
-                null,
-                null,
-                $color,
-                $currentDate
-            );
-        }
 
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->execute();
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+            $stmt->execute();
+        }
 
         return $eventId;
     }

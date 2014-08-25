@@ -17,7 +17,7 @@
     <tr>
         <td>Calendar</td>
         <td>
-            <select name="calendar" class="inputTextCombo" id="event_calendar">
+            <select name="calendar" class="select2InputMedium" id="event_calendar">
                 <?php foreach ($calendars as $calendar): ?>
                     <option value="<?php echo $calendar['id'] ?>_<?php echo $calendar['color'] ?>"><?php echo $calendar['name'] ?></option>
                 <?php endforeach ?>
@@ -47,7 +47,7 @@
     <tr>
         <td>Repeats</td>
         <td>
-            <select id="add_event_repeat_type" class="inputTextCombo">
+            <select id="add_event_repeat_type" class="select2InputSmall">
                 <option value="-1">Does not repeat</option>
                 <option value="1">Daily</option>
                 <option value="2">Weekly</option>

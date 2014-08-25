@@ -1,5 +1,9 @@
 $('document').ready(function () {
 
+    $(".select2Input").select2();
+    $(".select2InputSmall").select2();
+    $(".select2InputMedium").select2();
+
     $('#cal_event_edit_date_from, #cal_event_edit_date_to').datetimepicker({
         timeFormat: "hh:mm",
         dateFormat: "yy-mm-dd",
@@ -112,9 +116,11 @@ $('document').ready(function () {
         }
 
         if (1 == repeatType) {
+            $('#add_event_repeat_weekly_content').hide();
             $('#add_event_repeat_daily_content').show();
         }
         if (2 == repeatType) {
+            $('#add_event_repeat_daily_content').hide();
             $('#add_event_repeat_weekly_content').show();
         }
 

@@ -36,7 +36,6 @@ class ViewController extends UbirimiController
 
         // check to see if each calendar belongs to the client
         for ($i = 0; $i < count($calendarIds); $i++) {
-
             $calendarFilter = Calendar::getById($calendarIds[$i]);
 
             if ($calendarFilter['client_id'] != $session->get('client/id')) {
@@ -55,7 +54,7 @@ class ViewController extends UbirimiController
 
         $calendarEvents = CalendarEvent::getByCalendarId(
             implode(', ', $calendarIds),
-            $filterStartDate,
+            '2014-07-01',
             $filterEndDate,
             $defaultCalendarSelected,
             $session->get('user/id'),

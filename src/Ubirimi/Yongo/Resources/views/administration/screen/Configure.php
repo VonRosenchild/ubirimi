@@ -34,7 +34,7 @@
                 <tr>
                     <td>
                         <span>Available screen fields</span>
-                        <select name="field" class="inputTextCombo">
+                        <select name="field" class="select2InputSmall">
                             <option value="-1">Select One Field</option>
                             <?php while ($field = $fields->fetch_array(MYSQLI_ASSOC)): ?>
                                 <?php $found = false; ?>
