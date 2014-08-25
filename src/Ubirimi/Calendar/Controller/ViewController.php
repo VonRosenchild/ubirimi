@@ -43,18 +43,16 @@ class ViewController extends UbirimiController
             }
         }
         $calendar = Calendar::getByIds(implode(', ', $calendarIds));
-        $filterStartDate = $year . '-';
-        if ($month < 10) {
-            $filterStartDate .= '0' . $month;
-        } else {
-            $filterStartDate .= $month;
-        }
-        $filterStartDate .= '-01';
-        $filterEndDate = date("Y-m-t", strtotime($filterStartDate));
+
+        $filterStartDate = new \DateTime("first day of last month");
+        $filterEndDate = new \DateTime("last day of next month");
+
+        $filterStartDate = $filterStartDate->format('Y-m-d');
+        $filterEndDate = $filterEndDate->format('Y-m-d');
 
         $calendarEvents = CalendarEvent::getByCalendarId(
             implode(', ', $calendarIds),
-            '2014-07-01',
+            $filterStartDate,
             $filterEndDate,
             $defaultCalendarSelected,
             $session->get('user/id'),
@@ -113,6 +111,7 @@ class ViewController extends UbirimiController
             $dates[] = $x . '_' . $nextMonth . '_' . $nextYear;
         }
 
+        $weeks = intval(count($dates) / 7);
         return $this->render(__DIR__ . '/../Resources/views/View.php', get_defined_vars());
     }
 }
