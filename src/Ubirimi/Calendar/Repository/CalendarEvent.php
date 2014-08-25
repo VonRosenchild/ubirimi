@@ -71,14 +71,26 @@ class CalendarEvent
                 // $repeatData format
                 // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date#0#1#1#1#1#1#0
 
-                var_dump($repeatDataArray);
                 $repeatEvery = $repeatDataArray[1];
                 $endData = $repeatDataArray[2];
                 $repeatStartDate = $repeatDataArray[3];
                 $repeatEndDate = null;
+                $repeatDay = array();
 
+                $repeatDay[0] = $repeatDataArray[4];
+                $repeatDay[1] = $repeatDataArray[5];
+                $repeatDay[2] = $repeatDataArray[6];
+                $repeatDay[3] = $repeatDataArray[7];
+                $repeatDay[4] = $repeatDataArray[8];
+                $repeatDay[5] = $repeatDataArray[9];
+                $repeatDay[6] = $repeatDataArray[10];
+
+                if (($repeatDay[0] + $repeatDay[1] + $repeatDay[2] + $repeatDay[3] + $repeatDay[4] + $repeatDay[5] + $repeatDay[6]) == 0) {
+                    $dateTemporary = date_create($repeatStartDate);
+                    $repeatDay[date("w", $dateTemporary->getTimestamp())] = 1;
+                }
                 $repeatEveryXWeeks = $repeatEvery * 7;
-                var_dump($endData[0]);
+
                 if ('n' == $endData[0]) {
                     $dateTemporary = date_create($repeatStartDate);
                     date_add($dateTemporary, date_interval_create_from_date_string('30 years'));
@@ -109,17 +121,28 @@ class CalendarEvent
                     while ($pos < intval($endData[1])) {
                         $repeatEndDate = date(
                             'Y-m-d',
-                            strtotime("+" . intval($repeatEveryXWeeks) . ' days', strtotime($repeatEndDate))
+                            strtotime("+1 days", strtotime($repeatEndDate))
                         );
 
-                        $repeatDates[] = array(
-                            $repeatEndDate,
-                            date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDate)))
-                        );
-                        $pos++;
+                        if (0 == count($repeatDates) || (count($repeatDates) && ((date("W", strtotime($repeatEndDate)) - date("W", strtotime(end($repeatDates)[0])) == 0)
+                            || (date("W", strtotime($repeatEndDate)) - date("W", strtotime(end($repeatDates)[0])) == $repeatEvery)))) {
+                            if ($repeatDay[date("w", strtotime($repeatEndDate))]) {
+                                if ($repeatDay[date("w", strtotime($repeatEndDate))]) {
+                                    $repeatDates[] = array(
+                                        $repeatEndDate,
+                                        date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDate)))
+                                    );
+                                    $pos++;
+                                }
+
+                            }
+                        }
+
+
                     }
                 }
             }
+
 
             $query = "INSERT INTO cal_event_repeat(cal_event_repeat_cycle_id, repeat_every, start_date, end_date) VALUES (?, ?, ?, ?)";
             $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -151,7 +174,7 @@ class CalendarEvent
         $stmt->execute();
 
         $eventId = UbirimiContainer::get()['db.connection']->insert_id;
-var_dump($repeatDates);
+
         if (count($repeatDates)) {
 
             // update the cal_event_link_id
