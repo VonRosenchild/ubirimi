@@ -71,6 +71,7 @@ class CalendarEvent
                 // $repeatData format
                 // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date#0#1#1#1#1#1#0
 
+                var_dump($repeatDataArray);
                 $repeatEvery = $repeatDataArray[1];
                 $endData = $repeatDataArray[2];
                 $repeatStartDate = $repeatDataArray[3];

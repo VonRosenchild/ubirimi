@@ -92,6 +92,27 @@ class ViewController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CALENDAR_NAME . ' / ' . $calendar['name'];
 
+        $dates = array();
+        for ($x = 1; $x <= $runningDay; $x++) {
+            $dayCell = ($daysInPreviousMonth - $runningDay + $x) . '_' . $previousMonth . '_' . $previousYear;
+            $dates[] = $dayCell;
+        }
+
+        for ($list_day = 1; $list_day <= $daysInMonth; $list_day++) {
+            $dayCell = $list_day . '_' . $month . '_' . $year;
+            $dates[] = $dayCell;
+        }
+
+        if (count($dates) > 35) {
+            $maximumDays = 42;
+        } else {
+            $maximumDays = 35;
+        }
+        $daysLeft = $maximumDays - count($dates);
+        for ($x = 1; $x <= $daysLeft; $x++) {
+            $dates[] = $x . '_' . $nextMonth . '_' . $nextYear;
+        }
+
         return $this->render(__DIR__ . '/../Resources/views/View.php', get_defined_vars());
     }
 }

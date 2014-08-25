@@ -42,7 +42,7 @@
             <tr>
                 <td>Repeat every</td>
                 <td>
-                    <select id="add_event_repeat_every" class="inputTextCombo" style="width: 50px">
+                    <select id="add_event_repeat_every_weekly" class="inputTextCombo" style="width: 50px">
                         <?php for ($i = 1; $i <= 30; $i++): ?>
                             <option value="<?php echo $i ?>"><?php echo $i ?></option>
                         <?php endfor ?>
@@ -64,26 +64,26 @@
             </tr>
             <tr>
                 <td>Starts on</td>
-                <td><input type="text" id="add_event_repeat_start_date" class="inputText" disabled="disabled" value="<?php echo substr($defaultDate, 0, 10) ?>" style="width: 90px" /></td>
+                <td><input type="text" id="add_event_repeat_start_date_weekly" class="inputText" disabled="disabled" value="<?php echo substr($defaultDate, 0, 10) ?>" style="width: 90px" /></td>
             </tr>
             <tr>
                 <td valign="top">Ends</td>
                 <td>
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_never" value="1" checked="checked" />
-                    <label for="add_event_repeat_end_date">Never</label>
+                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_never_weekly" value="1" checked="checked" />
+                    <label for="add_event_repeat_end_date_never_weekly">Never</label>
                     <br />
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_after_occurrences" />
-                    <label for="add_event_repeat_end_date_after_occurrences">
+                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_after_occurrences_weekly" />
+                    <label for="add_event_repeat_end_date_after_occurrences_weekly">
                         <span>After </span>
                     </label>
-                    <input type="text" class="inputText" style="width: 30px" id="add_event_repeat_after" />
+                    <input type="text" class="inputText" style="width: 30px" id="add_event_repeat_after_weekly" />
                     <span>occurrences</span>
                     <br />
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_on" />
-                    <label for="add_event_repeat_end_date_on">
+                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_on_weekly" />
+                    <label for="add_event_repeat_end_date_on_weekly">
                         <span>On </span>
                     </label>
-                    <input type="text" value="" class="inputText" id="add_event_repeat_end_date_on" style="width: 90px" />
+                    <input type="text" value="" class="inputText" id="add_event_repeat_end_date_on_weekly" style="width: 90px" />
                 </td>
             </tr>
         </table>

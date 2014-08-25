@@ -65,16 +65,16 @@ $('document').ready(function () {
                                 repeatData += '#' + $('#add_event_repeat_start_date').val();
                             } else if (2 == repeatType) {
                                 repeatData += '2';
-                                repeatData += '#' + $('#add_event_repeat_every').val();
-                                if ($('#add_event_repeat_end_date_never').is(':checked')) {
+                                repeatData += '#' + $('#add_event_repeat_every_weekly').val();
+                                if ($('#add_event_repeat_end_date_never_weekly').is(':checked')) {
                                     repeatData += '#n';
-                                } else if ($('#add_event_repeat_end_date_after_occurrences').is(':checked')) {
-                                    repeatData += '#a' + $('#add_event_repeat_after').val();
-                                } else if ($('#add_event_repeat_end_date_on').is(':checked')) {
-                                    repeatData += '#o' + $('#add_event_repeat_end_date_on').val();
+                                } else if ($('#add_event_repeat_end_date_after_occurrences_weekly').is(':checked')) {
+                                    repeatData += '#a' + $('#add_event_repeat_after_weekly').val();
+                                } else if ($('#add_event_repeat_end_date_on_weekly').is(':checked')) {
+                                    repeatData += '#o' + $('#add_event_repeat_end_date_on_weekly').val();
                                 }
 
-                                repeatData += '#' + $('#add_event_repeat_start_date').val();
+                                repeatData += '#' + $('#add_event_repeat_start_date_weekly').val();
 
                                 var dayValue = $('#week_on_0').prop('checked') ? 1 : 0;
                                 repeatData += '#' + dayValue;

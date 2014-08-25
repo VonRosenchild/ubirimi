@@ -61,7 +61,6 @@
                             </tr>
                         <?php endif ?>
                     </table>
-
                 </td>
                 <td width="10px"></td>
                 <td>
