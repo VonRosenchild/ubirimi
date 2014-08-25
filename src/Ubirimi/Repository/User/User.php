@@ -689,43 +689,6 @@ class User
             return false;
     }
 
-    public static function getYongoActivityStream($userId) {
-        $query = '(SELECT issue_history.field, issue_history.old_value, issue_history.new_value, issue_history.date_created, ' .
-                 'user.id as user_id, user.first_name, user.last_name, ' .
-                 'yongo_issue.nr, yongo_issue.id as issue_id, ' .
-                 'project.code, "issue_history" as activity_type ' .
-            'FROM issue_history ' .
-            'left join user on user.id = issue_history.by_user_id ' .
-            'left join yongo_issue on yongo_issue.id = issue_history.issue_id ' .
-            'left join project on project.id = yongo_issue.project_id ' .
-            "WHERE issue_history.by_user_id = ? " .
-            "order by date_created desc) " .
-
-            "UNION " .
-
-            '(SELECT null, null, null, yongo_issue.date_created, ' .
-                'user.id as user_id, user.first_name, user.last_name, ' .
-                'yongo_issue.nr, yongo_issue.id as issue_id, ' .
-                'project.code, "issue_creation" as activity_type ' .
-                'from yongo_issue ' .
-                'left join project on project.id = yongo_issue.project_id ' .
-                'left join user on user.id = yongo_issue.user_reported_id ' .
-                "WHERE yongo_issue.user_reported_id = ? " .
-                "order by yongo_issue.date_created desc) " .
-
-            "order by date_created desc";
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-
-        $stmt->bind_param("ii", $userId, $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows)
-            return $result;
-        else
-            return null;
-    }
-
     public static function getDocumentatorActivityStream($userId) {
         // created pages
         $query = 'select documentator_entity.name, documentator_entity.id, \'created\' as action, documentator_entity.date_created as date ' .

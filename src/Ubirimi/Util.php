@@ -298,11 +298,14 @@ class Util {
         return false;
     }
 
-    public static function getProjectHistory($projectIds, $helpdeskFlag = 0) {
+    public static function getProjectHistory($projectIds, $helpdeskFlag = 0, $userId = null) {
 
         $queryWherePart = ' ';
         if ($helpdeskFlag) {
             $queryWherePart = ' and yongo_issue.helpdesk_flag = 1 ';
+        }
+        if ($userId) {
+            $queryWherePart = ' and user.id = ' . $userId . ' ';
         }
         // issue created events
         $query = '(select ' .

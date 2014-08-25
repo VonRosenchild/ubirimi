@@ -22,7 +22,7 @@ class ViewSummaryController extends UbirimiController
 
         $projectId = $session->get('selected_project_id');
         $userId = $request->get('id');
-        $loggedInUserId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
         $user = User::getById($userId);
 
         if ($user['client_id'] != $session->get('client/id')) {
@@ -47,6 +47,17 @@ class ViewSummaryController extends UbirimiController
 
         $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
         $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');
+
+        $historyList = Util::getProjectHistory($projectIds, 0, $loggedInUserId);
+        $historyData = array();
+        $userData = array();
+        while ($history = $historyList->fetch_array(MYSQLI_ASSOC)) {
+            $historyData[substr($history['date_created'], 0, 10)][$history['user_id']][$history['date_created']][] = $history;
+            $userData[$history['user_id']] = array('picture' => $history['avatar_picture'],
+                'first_name' => $history['first_name'],
+                'last_name' => $history['last_name']);
+        }
+        $index = 0;
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / User: ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Profile';
 
