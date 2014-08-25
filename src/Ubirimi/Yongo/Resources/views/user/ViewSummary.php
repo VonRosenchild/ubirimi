@@ -19,11 +19,15 @@
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
-                <td><a id="btnUserChangePassword" href="#" class="btn ubirimi-btn">Change Password</a></td>
+                <?php if ($userId == $loggedInUserId): ?>
+                    <td><a id="btnUserChangePassword" href="#" class="btn ubirimi-btn">Change Password</a></td>
+                <?php endif ?>
                 <?php if ($hasAdministrationGlobalPermission || $hasSystemAdministrationGlobalPermission): ?>
                     <td><a href="/yongo/administration/user/project-roles/<?php echo $userId ?>" class="btn ubirimi-btn">View Project Roles</a></td>
                 <?php endif ?>
-                <td><a id="btnChangePreferences" href="#" class="btn ubirimi-btn"><i class="icon-edit"></i> Update Preferences</a></td>
+                <?php if ($userId == $loggedInUserId): ?>
+                    <td><a id="btnChangePreferences" href="#" class="btn ubirimi-btn"><i class="icon-edit"></i> Update Preferences</a></td>
+                <?php endif ?>
                 <td>
                     <div class="btn-group">
                         <a href="#" class="btn ubirimi-btn dropdown-toggle" data-toggle="dropdown">

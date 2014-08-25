@@ -22,6 +22,7 @@ class ViewSummaryController extends UbirimiController
 
         $projectId = $session->get('selected_project_id');
         $userId = $request->get('id');
+        $loggedInUserId = $session->get('client/id');
         $user = User::getById($userId);
 
         if ($user['client_id'] != $session->get('client/id')) {
@@ -37,8 +38,9 @@ class ViewSummaryController extends UbirimiController
         $projectsForBrowsing = Client::getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
         $projectIds = array();
 
-        if ($projectsForBrowsing)
+        if ($projectsForBrowsing) {
             $projectIds = Util::array_column($projectsForBrowsing, 'id');
+        }
         $menuSelectedCategory = 'user';
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
