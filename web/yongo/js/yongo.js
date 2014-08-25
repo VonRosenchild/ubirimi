@@ -1899,9 +1899,6 @@ $('document').ready(function () {
                             }
                         }
                     },
-                    tooltip: {
-                        valueSuffix: '°C'
-                    },
                     yAxis: {
                         title: {
                             text: '# Issues'
