@@ -195,10 +195,11 @@ class Issue
 
             if (is_array($parameters['project'])) {
 
-                $queryWhere .= ' issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') AND ';
+                $projectWithAssigneeReporterBrowsePermission = array();
 
                 $queryProjectPartReporter = array();
-                $queryProjectPartRAssignee = array();
+                $queryProjectPartAssignee = array();
+
                 for ($i = 0; $i <count($parameters['project']); $i++) {
                     $permissions = PermissionScheme::getDataByProjectIdAndPermissionId($parameters['project'][$i], Permission::PERM_BROWSE_PROJECTS);
 
@@ -210,24 +211,27 @@ class Issue
                             $parameterArray[] = $loggedInUserId;
                             $parameterArray[] = $parameters['project'][$i];
 
+                            $projectWithAssigneeReporterBrowsePermission[] = $parameters['project'][$i];
                         }
                         if ($permission['current_assignee'] == 1) {
-                            $queryProjectPartRAssignee[] = '(issue_main_table.user_assigned_id = ? and issue_main_table.project_id = ?)';
+                            $queryProjectPartAssignee[] = '(issue_main_table.user_assigned_id = ? and issue_main_table.project_id = ?)';
                             $parameterType .= 'ii';
                             $parameterArray[] = $loggedInUserId;
                             $parameterArray[] = $parameters['project'][$i];
-
+                            $projectWithAssigneeReporterBrowsePermission[] = $parameters['project'][$i];
                         }
                     }
                 }
+
+                $projectWithAssigneeReporterBrowsePermission = array_unique($projectWithAssigneeReporterBrowsePermission);
 
                 $queryWhereReporter = '';
                 $queryWhereAssignee = '';
                 if (count($queryProjectPartReporter)) {
                     $queryWhereReporter = '(' . implode(' OR ', $queryProjectPartReporter) . ')';
                 }
-                if (count($queryProjectPartRAssignee)) {
-                    $queryWhereAssignee = '(' . implode(' OR ', $queryProjectPartRAssignee) . ')';
+                if (count($queryProjectPartAssignee)) {
+                    $queryWhereAssignee = '(' . implode(' OR ', $queryProjectPartAssignee) . ')';
                 }
 
                 $queryPartReporterAssignee = array();
@@ -238,8 +242,13 @@ class Issue
                     $queryPartReporterAssignee[] = $queryWhereAssignee;
                 }
 
-                if (count($queryPartReporterAssignee)) {
-                    $queryWhere .= '(' . implode(' OR ', $queryPartReporterAssignee) . ') AND ';
+                if (count($projectWithAssigneeReporterBrowsePermission)) {
+                    $queryWhere .= ' (issue_main_table.project_id IN (' . implode(',', array_diff($parameters['project'], $projectWithAssigneeReporterBrowsePermission)) . ') OR ';
+                    $queryWhere .= '(' . implode(' OR ', $queryPartReporterAssignee) . ')) ';
+                    $queryWhere .= ' AND ';
+                } else {
+                    $queryWhere .= ' issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') AND ';
+
                 }
             } else {
                 $queryWhere .= ' issue_main_table.project_id = ? AND ';
@@ -587,6 +596,7 @@ class Issue
         if (isset($parameters['page']))
             $query .= ' LIMIT ' . (($parameters['page'] - 1) * $parameters['issues_per_page']) . ', ' . ($parameters['issues_per_page']);
 
+//        echo $query;
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
         if ($queryWhere != '') {
