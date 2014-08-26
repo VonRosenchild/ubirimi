@@ -3,7 +3,7 @@
         <a href="/helpdesk/queues/<?php echo $projectId ?>/<?php if (isset($queueSelected)) echo $queueSelected['id']; else echo '-1'; ?>" title="Queues">Queues</a>
     </li>
     <li <?php if ($menuProjectCategory == 'reports'): ?>class="active"<?php endif ?>>
-        <a href="/helpdesk/reports/<?php echo $projectId ?>/<?php if (isset($queueSelected)) echo $queueSelected['id']; else echo '-1'; ?>" title="Reports">Reports</a>
+        <a href="/helpdesk/report/<?php echo $projectId ?>/<?php if (isset($slaSelected)) echo $slaSelected['id']; else echo '-1'; ?>" title="Reports">Reports</a>
     </li>
     <li <?php if ($menuProjectCategory == 'sla'): ?>class="active" <?php endif ?>>
         <a href="/helpdesk/sla/<?php echo $projectId ?>/<?php if (isset($slaSelected)) echo $slaSelected['id']; else echo '-1'; ?>" title="SLA">SLA</a>

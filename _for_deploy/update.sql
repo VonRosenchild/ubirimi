@@ -1,3 +1,4 @@
+ALTER TABLE `yongo_issue_sla` DROP `value_between_cycles`;
 ALTER TABLE  `help_sla_calendar` CHANGE  `sys_timezone_id`  `sys_timezone_id` BIGINT( 20 ) UNSIGNED NULL;
 
 ====================== rulate pe live===========================
