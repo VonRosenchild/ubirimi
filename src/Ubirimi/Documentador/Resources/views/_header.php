@@ -17,7 +17,6 @@
     <script type="text/javascript" src="/documentador/js/documentator.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/documentador/js/documentator_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/documentador/js/menu.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-    <script type="text/javascript" src="/documentador/js/jquery.dynatree.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/main.css?<?php echo UbirimiContainer::get()['app.version'] ?>" />
     <link rel="stylesheet" type="text/css" href="/css/menu.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
@@ -26,7 +25,6 @@
     <link rel="stylesheet" type="text/css" href="/css/net.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/custom-dialog.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/bootstrap.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
-    <link rel="stylesheet" type="text/css" href="/documentador/css/skin_dynatree/ui.dynatree.css" id="skinSheet">
 
     <link rel="icon" type="image/ico" href="/img/logo_small.png" />
 
