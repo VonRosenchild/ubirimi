@@ -6,7 +6,7 @@
 ?>
 <div style="padding-left: 0px; margin-right: 0px; max-height: 600px;">
     <div>
-        <div id="errosMandatoryFieldsNotPresentOnScreen"></div>
+        <div id="errorsMandatoryFieldsNotPresentOnScreen"></div>
         <table border="0" cellpadding="2" cellspacing="0" id="tableFieldList" class="modal-table">
             <tr>
                 <td>Issue Type</td>

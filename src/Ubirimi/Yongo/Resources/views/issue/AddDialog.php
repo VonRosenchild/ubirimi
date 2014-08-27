@@ -3,8 +3,8 @@
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 ?>
 
-<div style="padding-left: 0px; margin-right: 0px; min-height: 300px;">
-    <div id="errosMandatoryFieldsNotPresentOnScreen"></div>
+<div class="parentDialog" style="padding-left: 0px; margin-right: 0px; min-height: 50px; overflow: auto;">
+    <div id="errorsMandatoryFieldsNotPresentOnScreen"></div>
     <div id="messageIssueCreatedDialog" class="messageGreen" style="padding: 8px; display: none"></div>
     <table border="0" cellpadding="2" cellspacing="0" id="tableFieldList" class="modal-table">
         <tr>
@@ -31,9 +31,8 @@
             <td colspan="2"><hr size="1" /></td>
         </tr>
 
-        <?php
-            require_once __DIR__ . '/_dialogCreate.php';
-        ?>
+        <?php require_once __DIR__ . '/_dialogCreate.php'; ?>
+
     </table>
 </div>
 

@@ -2,9 +2,9 @@
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 ?>
 <body>
-    <div style="padding-left: 0px; margin-right: 0px;">
+    <div class="parentDialog" style="padding-left: 0px; margin-right: 0px; min-height: 300px; overflow: auto;">
         <div>
-            <div id="errosMandatoryFieldsNotPresentOnScreen"></div>
+            <div id="errorsMandatoryFieldsNotPresentOnScreen"></div>
             <?php require_once __DIR__ . '/ViewEditDialog.php' ?>
         </div>
     </div>

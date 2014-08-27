@@ -1,8 +1,18 @@
 // resize the create/edit modals as the users resizes the browser window
 
+function resizeModals() {
+    if ($(".ui-dialog-content").dialog("isOpen")) {
+        var newHeight = ($(window).height() - $(".ui-dialog-content").height()) / 2 + $(".ui-dialog-content").height() - 100;
+        if (newHeight < 200) {
+            newHeight = 200;
+        }
+        console.log(newHeight);
+        $(".ui-dialog-content").css('max-height', newHeight);
+        jQuery(".ui-dialog-content").dialog('option', 'position', ['middle','middle']);
+    }
+}
 $(window).on('resize', function(){
-    $('#modalCreateIssue').css('max-height', $(window).height() - 160);
-    $('#modalEditIssue').css('max-height', $(window).height() - 160);
+    resizeModals();
 });
 
 function createSubtask(issueId, projectId, onSuccess) {
@@ -18,7 +28,7 @@ function createSubtask(issueId, projectId, onSuccess) {
                     // deal with mandatory flags
                     var responseMandatoryFields = dealWithMandatoryFieldsInModals();
                     if (responseMandatoryFields && responseMandatoryFields[1]) {
-                        $('#errosMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
+                        $('#errorsMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
                         return
                     }
 
@@ -186,7 +196,7 @@ function editIssue(issueId) {
                     var responseMandatoryFields = dealWithMandatoryFieldsInModals();
 
                     if (responseMandatoryFields && responseMandatoryFields[1]) {
-                        $('#errosMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
+                        $('#errorsMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
                         return
                     }
 
@@ -312,7 +322,7 @@ function editIssue(issueId) {
             initializaFileUpload(issueId);
         }
 
-        $('#modalEditIssue').css('max-height', $(window).height() - 140);
+        resizeModals();
     });
 }
 
@@ -371,12 +381,13 @@ function createIssue(message) {
             }
 
             $('#modalCreateIssue').find('input').eq(4).focus();
-            $('#modalCreateIssue').css('max-height', $(window).height() - 140);
 
             // call initialization file
             if (window.File && window.FileList && window.FileReader) {
                 initializaFileUpload();
             }
+
+            resizeModals();
         });
     }
 
@@ -471,7 +482,7 @@ function createIssueProcess(doNotCloseDialog) {
 
     var responseMandatoryFields = dealWithMandatoryFieldsInModals();
     if (responseMandatoryFields && responseMandatoryFields[1]) {
-        $('#errosMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
+        $('#errorsMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
         return
     }
 

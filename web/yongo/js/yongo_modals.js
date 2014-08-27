@@ -1084,7 +1084,7 @@ $('document').ready(function () {
                         // deal with mandatory flags
                         var responseMandatoryFields = dealWithMandatoryFieldsInModals();
                         if (responseMandatoryFields && responseMandatoryFields[1]) {
-                            $('#errosMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
+                            $('#errorsMandatoryFieldsNotPresentOnScreen').html(responseMandatoryFields[1]);
                             return
                         }
 
