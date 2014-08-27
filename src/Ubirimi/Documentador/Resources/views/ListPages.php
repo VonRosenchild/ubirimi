@@ -6,12 +6,14 @@
 
     require_once __DIR__ . '/_header.php';
 ?>
-
 <body>
 
     <?php require_once __DIR__ . '/_menu.php'; ?>
 
-        <div class="pageContent">
+    <div id="sidebar">
+    </div>
+
+        <div class="pageContent" id="content">
             <?php if (Util::checkUserIsLoggedIn() || $spaceHasAnonymousAccess): ?>
                 <?php
                     $title = '<a class="linkNoUnderline" href="/documentador/spaces">Spaces</a> > ' . $space['name'] . ' > Pages';
