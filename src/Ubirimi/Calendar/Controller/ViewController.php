@@ -78,8 +78,8 @@ class ViewController extends UbirimiController
             $nextYear = $year + 1;
         }
 
-        $headings = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-        $runningDay = date('w', mktime(0, 0, 0, $month, 1, $year));
+        $headings = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+        $runningDay = date('w', mktime(0, 0, 0, $month, 1, $year)) - 1;
         $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
         $daysInThisWeek = 1;
         $dayCounter = 0;

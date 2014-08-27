@@ -439,7 +439,6 @@ class SLA
                      'intervalMinutes' => $intervalMinutes,
                      'goalValue' => $goalValue,
                      'goalId' => $goalId,
-                     'valueBetweenCycles' => $issueSLAData['value_between_cycles'],
                      'finished' => $slaFinished,
                      'startDate' => $startConditionSLADates[0],
                      'endDate' => end($stopConditionSLADates));

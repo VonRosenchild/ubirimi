@@ -1720,50 +1720,6 @@ class Issue
         }
     }
 
-    public static function updateSLAStopped($issueId, $SLAId, $dateStopped) {
-        // keep the value between cycles if any
-        $query = "update yongo_issue_sla set value_between_cycles = value_between_cycles + value, " .
-                 "stopped_flag = 1, stopped_date = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("sii", $dateStopped, $issueId, $SLAId);
-        $stmt->execute();
-
-        // reset the offset to 0
-        $query = "update yongo_issue_sla set `value` = 0 " .
-                 "where yongo_issue_id = ? and help_sla_id = ? limit 1";
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("ii", $issueId, $SLAId);
-        $stmt->execute();
-    }
-
-    public static function updateSLAStarted($issueId, $SLAId, $dateStarted) {
-        // keep the value between cycles if any
-        $query = "update yongo_issue_sla set value_between_cycles = value_between_cycles + value, started_flag = 1, " .
-                 "started_date = ?, stopped_date = NULL, stopped_flag = 0 where yongo_issue_id = ? and help_sla_id = ? limit 1";
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("sii", $dateStarted, $issueId, $SLAId);
-        $stmt->execute();
-    }
-
-    public static function checkStoppedSLA($issueId, $SLAId) {
-        $query = 'SELECT stopped_flag from yongo_issue_sla where yongo_issue_id = ? AND help_sla_id = ? limit 1';
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("ii", $issueId, $SLAId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows) {
-            $row = $result->fetch_array(MYSQLI_ASSOC);
-
-            return $row['stopped_flag'];
-        }
-
-        return null;
-    }
-
     public static function updateSLAValue($issue, $clientId, $clientSettings) {
         $slasPrintData = array();
         $projectId = $issue['issue_project_id'];

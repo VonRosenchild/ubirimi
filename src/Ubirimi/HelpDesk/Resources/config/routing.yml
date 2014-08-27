@@ -43,6 +43,13 @@ hdViewSLA:
     id:  \d+
     sla_id: \-?\d+
 
+hdViewReport:
+  path: /helpdesk/report/{id}/{sla_id}
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Report\ViewController' }
+  requirements:
+    id:  \d+
+    sla_id: \-?\d+
+
 hdViewSLACalendars:
   path: /helpdesk/sla/calendar/{id}
   defaults: { _controller: '\Ubirimi\HelpDesk\Controller\SLA\Calendar\ListController' }

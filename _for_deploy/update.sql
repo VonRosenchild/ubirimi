@@ -1,3 +1,13 @@
+ALTER TABLE  `cal_event_repeat` ADD  `on_day_0` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `repeat_every` ,
+ADD  `on_day_1` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_0` ,
+ADD  `on_day_2` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_1` ,
+ADD  `on_day_3` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_2` ,
+ADD  `on_day_4` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_3` ,
+ADD  `on_day_5` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_4` ,
+ADD  `on_day_6` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_5`;
+
+
+ALTER TABLE `yongo_issue_sla` DROP `value_between_cycles`;
 ALTER TABLE  `help_sla_calendar` CHANGE  `sys_timezone_id`  `sys_timezone_id` BIGINT( 20 ) UNSIGNED NULL;
 
 ====================== rulate pe live===========================
