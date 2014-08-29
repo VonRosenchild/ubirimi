@@ -16,8 +16,8 @@
                     <div><?php echo 'within ' . $slaData['goalValue'] ?> minutes</div>
                 </td>
                 <td valign="top">
-                    <span class="<?php if (($slaData['goalValue'] - $slaData['intervalMinutes'] - $slaData['valueBetweenCycles']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                        <?php echo SLA::formatOffset($slaData['goalValue'] - $slaData['intervalMinutes'] - $slaData['valueBetweenCycles']) ?>
+                    <span class="<?php if (($slaData['goalValue'] - $slaData['intervalMinutes']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
+                        <?php echo SLA::formatOffset($slaData['goalValue'] - $slaData['intervalMinutes']) ?>
                     </span>
                     &nbsp;
                     <?php if ($slaData['endDate']): ?>
