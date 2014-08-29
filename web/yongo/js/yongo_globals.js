@@ -42,29 +42,32 @@ function createSubtask(issueId, projectId, onSuccess) {
                     var field_values_custom = [];
 
                     // deal with the regular fields
-                    for (var i = 0; i < fields.length; i++) {
-                        var elemId = fields[i].getAttribute('id');
+                    var i, elemId;
+
+                    for (i = 0; i < fields.length; i++) {
+                        elemId = fields[i].getAttribute('id');
                         field_types.push(elemId.replace('field_type_', ''));
                         field_values.push($('#' + elemId).val());
                     }
 
                     // deal with the custom fields
-                    for (var i = 0; i < fieldsCustom.length; i++) {
-                        var elemId = fieldsCustom[i].getAttribute('id');
+                    for (i = 0; i < fieldsCustom.length; i++) {
+                        elemId = fieldsCustom[i].getAttribute('id');
                         field_types_custom.push(elemId.replace('field_custom_type_', ''));
                         field_values_custom.push($('#' + elemId).val());
                     }
 
-                    var attach_ids = []
-                    for (var i = 0; i < attachments.length; i++) {
+                    var attach_ids = [];
+                    for (i = 0; i < attachments.length; i++) {
                         var check_id = attachments[i].getAttribute('id');
                         var checked = ($('#' + check_id).is(':checked'));
                         if (checked)
                             attach_ids.push(attachments[i].getAttribute('id').replace('attach_', ''));
                     }
 
-                    if (!attach_ids.length)
+                    if (!attach_ids.length) {
                         attach_ids = null;
+                    }
                     $.ajax({
                         type: "POST",
                         url: '/yongo/issue/save',
@@ -227,8 +230,9 @@ function editIssue(issueId) {
                     for (i = 0; i < attachments.length; i++) {
                         var check_id = attachments[i].getAttribute('id');
                         var checked = ($('#' + check_id).is(':checked'));
-                        if (checked)
+                        if (checked) {
                             attach_ids.push(attachments[i].getAttribute('id').replace('attach_', ''));
+                        }
                     }
 
                     if (!attach_ids.length) {
@@ -252,7 +256,6 @@ function editIssue(issueId) {
                             location.reload();
                         }
                     });
-
                 }
             },
             {
