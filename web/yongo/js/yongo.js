@@ -2138,6 +2138,25 @@ $('document').ready(function () {
         }
     });
 
+    $(document).on('click', '#get_next_activity', function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        var date = $('#activity_last_date').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/yongo/get-activity-stream-chunk',
+            data: {
+                date: date,
+                project: 'all'
+            },
+            success: function (response) {
+                $('#get_next_activity').parent().children().last().prev().prev().append(response);
+            }
+        });
+    });
+
     function filterUserList() {
         $.ajax({
             type: "POST",

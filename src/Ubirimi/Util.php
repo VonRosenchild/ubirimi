@@ -298,19 +298,30 @@ class Util {
         return false;
     }
 
-    public static function getProjectHistory($projectIds, $helpdeskFlag = 0, $userId = null) {
+    public static function getProjectHistory($projectIds, $helpdeskFlag = 0, $userId = null, $startDate = null, $endDate = null) {
 
         $queryWherePart = ' ';
+        $queryWherePartDateIssueCreated = '';
+        $queryWherePartDateIssueCommented = '';
+        $queryWherePartDateIssueHistory = '';
+
         if ($helpdeskFlag) {
             $queryWherePart = ' and yongo_issue.helpdesk_flag = 1 ';
         }
         if ($userId) {
-            $queryWherePart = ' and user.id = ' . $userId . ' ';
+            $queryWherePart .= ' and user.id = ' . $userId . ' ';
+        }
+
+        if ($startDate) {
+            $queryWherePartDateIssueCreated = " and yongo_issue.date_created >= '" . $startDate . "' and yongo_issue.date_created <= '" . $endDate . "' ";
+            $queryWherePartDateIssueCommented = " and issue_comment.date_created >= '" . $startDate . "' and issue_comment.date_created <= '" . $endDate . "' ";
+            $queryWherePartDateIssueHistory = " and issue_history.date_created >= '" . $startDate . "' and issue_history.date_created <= '" . $endDate . "' ";
+
         }
         // issue created events
         $query = '(select ' .
             "'event_created' as event, " .
-            'yongo_issue.date_created, ' .
+            'yongo_issue.date_created as date_created, ' .
             'null as field, ' .
             'null as new_value, ' .
             'user.id as user_id, user.first_name, user.last_name, ' .
@@ -324,6 +335,7 @@ class Util {
             'left join project on project.id = yongo_issue.project_id ' .
             'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
+            $queryWherePartDateIssueCreated .
             'and yongo_issue.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
             'order by date_created desc) ';
 
@@ -332,7 +344,7 @@ class Util {
 
             '(select ' .
             "'event_commented' as event, " .
-            'issue_comment.date_created, ' .
+            'issue_comment.date_created as date_created, ' .
             'null as field, ' .
             'null as new_value, ' .
             'user.id as user_id, user.first_name, user.last_name, ' .
@@ -347,6 +359,7 @@ class Util {
             'left join project on project.id = yongo_issue.project_id ' .
             'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
+            $queryWherePartDateIssueCommented .
             'and issue_comment.issue_id is not null ' .
             'and issue_comment.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
             'order by date_created desc, user_id) ';
@@ -356,7 +369,7 @@ class Util {
 
             '(select ' .
             "'event_history' as event, " .
-            'issue_history.date_created, ' .
+            'issue_history.date_created as date_created, ' .
             'issue_history.field as field, ' .
             'issue_history.new_value, ' .
             'user.id as user_id, user.first_name as first_name, user.last_name as last_name, ' .
@@ -371,6 +384,7 @@ class Util {
             'left join project on project.id = yongo_issue.project_id ' .
             'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
+            $queryWherePartDateIssueHistory .
             'and issue_history.issue_id is not null ' .
             'and issue_history.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
             'order by date_created desc, user_id) ' .

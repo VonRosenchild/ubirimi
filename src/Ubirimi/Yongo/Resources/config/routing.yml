@@ -283,6 +283,10 @@ viewProjectActivityStrem:
   path: /yongo/project/activity-stream
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ViewActivityStreamController' }
 
+getActivityStremChunk:
+  path: /yongo/get-activity-stream-chunk
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\GetActivityStreamChunkController' }
+
 addCommentProjectActivityRender:
   path: /yongo/activity-stream/comment/add/render
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\RenderAddCommentController' }
