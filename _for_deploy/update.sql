@@ -1,3 +1,10 @@
+UPDATE  `yongo_issue_sla` SET  `help_sla_goal_id` = NULL ,
+  `started_flag` =0,
+  `stopped_flag` =0,
+  `started_date` = NULL ,
+  `stopped_date` = NULL ,
+  `value` = NULL;
+
 ALTER TABLE  `cal_event_repeat` ADD  `on_day_0` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `repeat_every` ,
 ADD  `on_day_1` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_0` ,
 ADD  `on_day_2` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_1` ,

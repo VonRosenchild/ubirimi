@@ -724,9 +724,9 @@ textarea:required {
 
 .inputTextAreaLarge {
     width: 650px;
+    max-width: 650px;
     height: 50px;
     padding: 0;
-    border: 1;
     box-sizing: border-box;
 }
 
