@@ -387,6 +387,7 @@ class SLA
 
         for ($i = 0; $i < count($startConditionSLADates); $i++) {
             $startDate = $startConditionSLADates[$i];
+
             if (isset($stopConditionSLADates[$i])) {
                 $stopDate = $stopConditionSLADates[$i];
             } else {
@@ -397,15 +398,33 @@ class SLA
             $initialDate = new \DateTime($startDate, new \DateTimeZone($clientSettings['timezone']));
             while (date_format($initialDate, 'Y-m-d') <= substr($stopDate, 0, 10)) {
                 $dayNumber = date_format($initialDate, 'N');
+
                 for ($j = 0; $j < count($slaCalendarData); $j++) {
                     if ($slaCalendarData[$j]['day_number'] == $dayNumber && 0 == $slaCalendarData[$j]['not_working_flag']) {
+
+                        if (date_format($initialDate, 'Y-m-d') > $startDate) {
+                            $startCalendarHour = substr($slaCalendarData[$j]['time_from'], 0, 2);
+                            $startCalendarMinute = substr($slaCalendarData[$j]['time_from'], 3, 2);
+                            if ($startCalendarHour[0] == '0') {
+                                $startCalendarHour = substr($startCalendarHour, 1);
+                            }
+
+                            if ($startCalendarMinute[0] == '0') {
+                                $startCalendarMinute = substr($startCalendarHour, 1);
+                            }
+                            $initialDate->setTime($startCalendarHour, $startCalendarMinute, 0);
+                        }
 
                         if (date_format($initialDate, 'Y-m-d') > substr($startDate, 0, 10)) {
                             $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$j]['time_from'], new \DateTimeZone($clientSettings['timezone']));
                         } else {
                             if (date_format($initialDate, 'H:i:00') <= $slaCalendarData[$j]['time_from']) {
                                 $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$j]['time_from'], new \DateTimeZone($clientSettings['timezone']));
-                            } else {
+                            } else if (date_format($initialDate, 'H:i:00') > $slaCalendarData[$j]['time_to']) {
+                                $startConditionSLADate = new \DateTime(date_format($initialDate, 'Y-m-d') . ' ' . $slaCalendarData[$j]['time_to'], new \DateTimeZone($clientSettings['timezone']));
+                            }
+
+                            else {
                                 $startConditionSLADate = new \DateTime($startDate, new \DateTimeZone($clientSettings['timezone']));
                             }
                         }
@@ -425,6 +444,7 @@ class SLA
                         }
                     }
                 }
+
                 date_add($initialDate, date_interval_create_from_date_string('1 days'));
             }
         }
