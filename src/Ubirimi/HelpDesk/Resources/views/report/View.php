@@ -11,7 +11,7 @@
         <?php Util::renderBreadCrumb(sprintf('<a href="/helpdesk/all">Help Desks</a> > %s > Reports > %s', $project['name'], $slaSelected['name'])); ?>
 
         <?php require_once __DIR__ . '/../../views/_topMenu.php'; ?>
-
+        <div style="padding-top: 4px; padding-bottom: 4px"></div>
         <?php if ($SLAs): ?>
             <table width="100%">
                 <tr>
