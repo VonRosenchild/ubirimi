@@ -399,7 +399,7 @@
                 {
                     "name": "Evert Pot",
                     "email": "evert@rooftopsolutions.nl",
-                    "homepage": "http://evertpot.com/",
+                    "homepage": "http://www.rooftopsolutions.nl/",
                     "role": "Developer"
                 }
             ],
@@ -505,12 +505,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Config.git",
-                "reference": "08942167943e0690e302c1c53ce86134c9387e25"
+                "reference": "53da46a5c4272f50e4cbd832010ae81296c10237"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Config/zipball/08942167943e0690e302c1c53ce86134c9387e25",
-                "reference": "08942167943e0690e302c1c53ce86134c9387e25",
+                "url": "https://api.github.com/repos/symfony/Config/zipball/53da46a5c4272f50e4cbd832010ae81296c10237",
+                "reference": "53da46a5c4272f50e4cbd832010ae81296c10237",
                 "shasum": ""
             },
             "require": {
@@ -544,7 +544,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "http://symfony.com",
-            "time": "2014-08-05 09:07:51"
+            "time": "2014-08-28 07:05:14"
         },
         {
             "name": "symfony/debug",
@@ -553,12 +553,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "a0f1676b45b69aada4d630bd9e6317b1e95ed236"
+                "reference": "671aca935d0273a7dc81e2575b68acbbbb916b9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/a0f1676b45b69aada4d630bd9e6317b1e95ed236",
-                "reference": "a0f1676b45b69aada4d630bd9e6317b1e95ed236",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/671aca935d0273a7dc81e2575b68acbbbb916b9c",
+                "reference": "671aca935d0273a7dc81e2575b68acbbbb916b9c",
                 "shasum": ""
             },
             "require": {
@@ -590,19 +590,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-11 15:37:14"
+            "time": "2014-08-25 18:48:35"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -841,12 +839,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "6e775cdd4e32c79bb14e3c760cfdee0182b2aaa7"
+                "reference": "32f45bba9165492e731d87915df024f59e60f28c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/6e775cdd4e32c79bb14e3c760cfdee0182b2aaa7",
-                "reference": "6e775cdd4e32c79bb14e3c760cfdee0182b2aaa7",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/32f45bba9165492e731d87915df024f59e60f28c",
+                "reference": "32f45bba9165492e731d87915df024f59e60f28c",
                 "shasum": ""
             },
             "require": {
@@ -898,7 +896,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-07-28 13:20:53"
+            "time": "2014-08-27 08:36:12"
         },
         {
             "name": "symfony/yaml",

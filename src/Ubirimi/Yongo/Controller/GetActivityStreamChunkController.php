@@ -20,7 +20,7 @@ class GetActivityStreamChunkController extends UbirimiController
             $clientId = Client::getClientIdAnonymous();
             $clientSettings = Client::getSettings($clientId);
         }
-
+        $client = Client::getById($clientId);
         $date = $request->request->get('date');
         $project = $request->request->get('project');
 
@@ -35,13 +35,26 @@ class GetActivityStreamChunkController extends UbirimiController
             $projectIds = Util::array_column($projectsMenu, 'id');
         }
 
+        $historyList = null;
         $endDate = $date;
         $startDate = date_sub(new \DateTime($date, new \DateTimeZone($clientSettings['timezone'])), date_interval_create_from_date_string('2 days'));
 
-        $historyList = Util::getProjectHistory($projectIds, 0, null, date_format($startDate, 'Y-m-d'), $endDate);
+        do {
+            $historyList = Util::getProjectHistory($projectIds, 0, null, date_format($startDate, 'Y-m-d'), $endDate);
+            if (null == $historyList && date_format($startDate, 'Y-m-d H:i:s') == $client['date_created']) {
+                break;
+            }
+            $startDate = date_sub($startDate, date_interval_create_from_date_string('2 days'));
+            $startDate->setTime(0, 0, 0);
+            if (date_format($startDate, 'Y-m-d') < $client['date_created']) {
+                $startDate = new \DateTime($client['date_created'], new \DateTimeZone($clientSettings['timezone']));
+                break;
+            }
+        } while ($historyList == null);
+
         $historyData = array();
         $userData = array();
-        while ($history = $historyList->fetch_array(MYSQLI_ASSOC)) {
+        while ($historyList && $history = $historyList->fetch_array(MYSQLI_ASSOC)) {
             $historyData[substr($history['date_created'], 0, 10)][$history['user_id']][$history['date_created']][] = $history;
             $userData[$history['user_id']] = array('picture' => $history['avatar_picture'],
                 'first_name' => $history['first_name'],

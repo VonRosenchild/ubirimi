@@ -2139,10 +2139,8 @@ $('document').ready(function () {
     });
 
     $(document).on('click', '#get_next_activity', function (event) {
-        event.stopPropagation();
-        event.preventDefault();
 
-        var date = $('#activity_last_date').val();
+        var date = $('.activity_last_date')[$('.activity_last_date').length - 1].value;
 
         $.ajax({
             type: "POST",
@@ -2152,7 +2150,7 @@ $('document').ready(function () {
                 project: 'all'
             },
             success: function (response) {
-                $('#get_next_activity').parent().children().last().prev().prev().append(response);
+                $('.nextActivityChunk')[$('.nextActivityChunk').length - 1].innerHTML = response;
             }
         });
     });

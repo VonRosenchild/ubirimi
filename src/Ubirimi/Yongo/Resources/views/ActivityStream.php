@@ -16,7 +16,6 @@
         <?php require_once __DIR__ . '/../../Resources/views/project/ViewActivityStream.php'; ?>
         <?php if ($historyList): ?>
             <input type="button" id="get_next_activity" class="btn ubirimi-btn" value="Show More..." />
-
         <?php endif ?>
     </div>
     <?php require_once __DIR__ . '/_footer.php' ?>

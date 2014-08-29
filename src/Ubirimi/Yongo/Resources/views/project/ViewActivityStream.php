@@ -62,8 +62,10 @@
                 <?php endforeach ?>
             </table>
         </div>
-        <input type="hidden" value="<?php echo date_format($startDate, 'Y-m-d') ?>" id="activity_last_date" />
     <?php endforeach ?>
+    <input type="hidden" value="<?php echo date_format($startDate, 'Y-m-d') ?>" class="activity_last_date" />
+    <div class="nextActivityChunk"></div>
 <?php else: ?>
+    <div style="padding-top: 4px; padding-bottom: 4px"></div>
     <div class="messageGreen">There is no history yet.</div>
 <?php endif?>
