@@ -21,20 +21,20 @@
                 <span><?php echo ucfirst($fieldChanged) . ': ' . str_replace("\n", '<br />', $this->fieldChanges[$index][1]) ?></span>
             <?php else: ?>
                 <?php
-                    $granularity = new cogpowered\FineDiff\Granularity\Word;
+                    $granularity = new cogpowered\FineDiff\Granularity\Word();
                     $diff = new cogpowered\FineDiff\Diff($granularity);
 
-                    $opCodes = $diff->getOpcodes(str_replace("\n", '<br />', $this->fieldChanges[$index][1]), str_replace('\n', '<br />', $this->fieldChanges[$index][2]));
+                    $fromText = $this->fieldChanges[$index][1];
+                    $toText = $this->fieldChanges[$index][2];
+                    $opCodes = $diff->getOpcodes($fromText, $toText);
 
                     $render = new cogpowered\FineDiff\Render\Html;
-                    $diffHTML = $render->process($this->fieldChanges[$index][1], $opCodes);
+                    $diffHTML = $render->process($fromText, $opCodes);
 
                     $diffHTML = str_replace('<ins>', '<ins style="color: green; background: #dfd; text-decoration: none;">', $diffHTML);
-                    $diffHTML = str_replace('<del>', '&nbsp;<del style="color: red;background: #fdd;	text-decoration: none;">', $diffHTML);
-                    $diffHTML = str_replace('</del><ins', '</del>&nbsp;<ins', $diffHTML);
-
+                    $diffHTML = str_replace('<del>', '&nbsp;<del style="color: red;background: #fdd; text-decoration: none;">', $diffHTML);
                 ?>
-                <span><?php echo ucfirst($fieldChanged) . ': ' . htmlspecialchars_decode($diffHTML) ?></span>
+                <span><?php echo ucfirst($fieldChanged) . ': ' . str_replace("\n", '<br />', htmlspecialchars_decode($diffHTML)) ?></span>
             <?php endif ?>
         </div>
     <?php endfor ?>
