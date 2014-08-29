@@ -573,6 +573,8 @@ class Issue
                     $sortColumn = 'sort_sprint';
                     break;
             }
+        } else {
+            $sortColumn = 'issue_main_table.date_created';
         }
         if ($queryWherePart) {
             $queryWhere .= $queryWherePart;
@@ -587,11 +589,15 @@ class Issue
         if ($securitySchemeUserId)
             $query .= ' HAVING ((security_check1 > 0 or security_check2 > 0 or security_check3 > 0 or security_check4 > 0 or security_check5 > 0 or security_check6 > 0 or security_check7 > 0) ' .
                         ' OR (issue_main_table.security_scheme_level_id is null and security_check1 is null and security_check2 is null and security_check3 is null and security_check4 is null and security_check5 is null and security_check6 is null and security_check7 is null)) ';
-        if ($sortColumn)
+        if ($sortColumn) {
             $query .= 'ORDER BY ' . $sortColumn;
+        }
 
-        if (isset($parameters['sort']) && isset($parameters['sort_order']) && $sortColumn)
+        if (isset($parameters['sort']) && isset($parameters['sort_order']) && $sortColumn) {
             $query .= ' ' . $parameters['sort_order'];
+        } else {
+            $query .= ' DESC';
+        }
 
         if (isset($parameters['page']))
             $query .= ' LIMIT ' . (($parameters['page'] - 1) * $parameters['issues_per_page']) . ', ' . ($parameters['issues_per_page']);
