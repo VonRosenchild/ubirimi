@@ -1646,13 +1646,15 @@ class Issue
     public static function prepareWhereClauseFromQueue($queueDefinition, $userId, $projectId, $clientId) {
 
         $value = mb_strtolower($queueDefinition);
-        $SLAs = SLA::getByProjectId($projectId);
-        while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-            if (stripos($value, $SLA['name'])) {
+        $SLAs = SLA::getByProjectId($projectId, 'array', "LENGTH('name') DESC");
+
+        foreach ($SLAs as $SLA) {
+            if (stripos($value, mb_strtolower($SLA['name'])) !== false) {
                 $slaId = $SLA['id'];
 
-                $sqlQueryPart = '(select value from yongo_issue_sla where yongo_issue_id = issue_main_table.id and help_sla_id = ' . $slaId . ' limit 1)';
-                $value = str_ireplace($SLA['name'], $sqlQueryPart, $value);
+                $sqlQueryPart = '(select value from yongo_issue_sla where yongo_issue_id = issue_main_table.id and help_sla_id = ' . $slaId . ' limit 1) is not null and ';
+                $sqlQueryPart .= '(select value from yongo_issue_sla where yongo_issue_id = issue_main_table.id and help_sla_id = ' . $slaId . ' limit 1)';
+                $value = str_ireplace(mb_strtolower($SLA['name']), $sqlQueryPart, $value);
             }
         }
         $value = str_ireplace('assignee', 'issue_main_table.user_assigned_id', $value);
@@ -1743,23 +1745,21 @@ class Issue
     public static function addPlainSLAData($issueId, $projectId) {
         $SLAs = SLA::getByProjectId($projectId);
         if ($SLAs) {
-            $defaultValue = 0;
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
-                $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) VALUES (?, ?, ?)";
+                $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id) VALUES (?, ?)";
 
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-                $stmt->bind_param("iii", $issueId, $SLA['id'], $defaultValue);
+                $stmt->bind_param("ii", $issueId, $SLA['id']);
                 $stmt->execute();
             }
         }
     }
 
     public static function addPlainSLADataBySLAId($issueId, $SLAId) {
-        $defaultValue = 0;
-        $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) VALUES (?, ?, ?)";
+        $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id) VALUES (?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("iii", $issueId, $SLAId, $defaultValue);
+        $stmt->bind_param("ii", $issueId, $SLAId);
         $stmt->execute();
     }
 

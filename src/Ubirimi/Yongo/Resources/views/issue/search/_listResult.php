@@ -89,7 +89,7 @@
                             <td class="issueSLA">
                                 <?php for ($j = 0; $j < count($slaIds); $j++): ?>
                                     <?php $slaId = $slaIds[$j]; ?>
-                                    <?php for ($k = 0; $k < count($slaIds); $k++): ?>
+                                    <?php for ($k = 0; $k < count($slaData); $k++): ?>
                                         <?php if (isset($slaData[$k]) && $slaData[$k]['slaId'] == $slaIds[$j]): ?>
                                             <span class="<?php if (($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
                                                 <?php echo SLA::formatOffset($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes']) ?>

@@ -15,17 +15,31 @@ class SLA
     const CONDITION_CREATE_ISSUE = 'issue_created';
     const CONDITION_RESOLUTION_SET = 'resolution_set';
 
-    public static function getByProjectId($projectId) {
-        $query = 'SELECT * from help_sla where project_id = ? order by id desc';
+    public static function getByProjectId($projectId, $resultType = null, $order = null) {
+        $query = 'SELECT * from help_sla where project_id = ?';
+
+        if ($order) {
+            $query .= ' order by ' . $order;
+        } else {
+            $query .= ' order by id desc';
+        }
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
         $stmt->bind_param("i", $projectId);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows)
-            return $result;
-        else
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $data;
+                }
+                return $resultArray;
+            } else {
+                return $result;
+            }
+        } else
             return null;
     }
 

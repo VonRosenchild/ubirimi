@@ -40,6 +40,7 @@
 
         $issuesCount = $issuesResult[1];
         $countPages = ceil($issuesCount / $issuesPerPage);
+        $currentSearchPage = 1;
         $getSearchParameters = array();
         $getSearchParameters['page'] = $page;
         $getSearchParameters['count_pages'] = $countPages;
