@@ -43,9 +43,10 @@ class ViewController extends UbirimiController
             }
         }
         $calendar = Calendar::getByIds(implode(', ', $calendarIds));
-
-        $filterStartDate = new \DateTime("first day of last month");
-        $filterEndDate = new \DateTime("last day of next month");
+        
+        $clientSettings = $session->get('client/settings');
+        $filterStartDate = new \DateTime("first day of last month", new \DateTimeZone($clientSettings['timezone']));
+        $filterEndDate = new \DateTime("last day of next month", new \DateTimeZone($clientSettings['timezone']));
 
         $filterStartDate = $filterStartDate->format('Y-m-d');
         $filterEndDate = $filterEndDate->format('Y-m-d');
