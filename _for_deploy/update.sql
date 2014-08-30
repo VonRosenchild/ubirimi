@@ -104,6 +104,9 @@ ALTER TABLE `qn_tag`
 MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 
 
+====================== rulate pe live===========================
+
+
 UPDATE  `yongo_issue_sla` SET  `help_sla_goal_id` = NULL ,
   `started_flag` =0,
   `stopped_flag` =0,
@@ -123,7 +126,9 @@ ADD  `on_day_6` TINYINT UNSIGNED NULL DEFAULT  '0' AFTER  `on_day_5`;
 ALTER TABLE `yongo_issue_sla` DROP `value_between_cycles`;
 ALTER TABLE  `help_sla_calendar` CHANGE  `sys_timezone_id`  `sys_timezone_id` BIGINT( 20 ) UNSIGNED NULL;
 
-====================== rulate pe live===========================
+
+===============================
+
 
 ALTER TABLE `project` CHANGE `help_desk_enabled_flag` `help_desk_enabled_flag` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0';
 
