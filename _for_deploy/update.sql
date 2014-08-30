@@ -1,3 +1,109 @@
+
+CREATE TABLE IF NOT EXISTS `qn_notebook` (
+  `id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `description` varchar(250) NOT NULL,
+  `default_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `qn_notebook_note`
+--
+
+CREATE TABLE IF NOT EXISTS `qn_notebook_note` (
+  `id` bigint(20) unsigned NOT NULL,
+  `qn_notebook_id` bigint(20) unsigned NOT NULL,
+  `summary` varchar(250) NOT NULL,
+  `content` text,
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `qn_notebook_note_tag`
+--
+
+CREATE TABLE IF NOT EXISTS `qn_notebook_note_tag` (
+  `id` bigint(20) unsigned NOT NULL,
+  `qn_notebook_note_id` bigint(20) unsigned NOT NULL,
+  `qn_tag_id` bigint(20) unsigned NOT NULL,
+  `date_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `qn_tag`
+--
+
+CREATE TABLE IF NOT EXISTS `qn_tag` (
+  `id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `date_created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `qn_notebook`
+--
+ALTER TABLE `qn_notebook`
+ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `qn_notebook_note`
+--
+ALTER TABLE `qn_notebook_note`
+ADD PRIMARY KEY (`id`), ADD KEY `qn_notebook_id` (`qn_notebook_id`);
+
+--
+-- Indexes for table `qn_notebook_note_tag`
+--
+ALTER TABLE `qn_notebook_note_tag`
+ADD PRIMARY KEY (`id`), ADD KEY `qn_notebook_note_id` (`qn_notebook_note_id`,`qn_tag_id`);
+
+--
+-- Indexes for table `qn_tag`
+--
+ALTER TABLE `qn_tag`
+ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `qn_notebook`
+--
+ALTER TABLE `qn_notebook`
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `qn_notebook_note`
+--
+ALTER TABLE `qn_notebook_note`
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `qn_notebook_note_tag`
+--
+ALTER TABLE `qn_notebook_note_tag`
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `qn_tag`
+--
+ALTER TABLE `qn_tag`
+MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+
+
 UPDATE  `yongo_issue_sla` SET  `help_sla_goal_id` = NULL ,
   `started_flag` =0,
   `stopped_flag` =0,
