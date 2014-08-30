@@ -74,7 +74,7 @@ class IssueHelper
 
     private static function convertRequired($required)
     {
-        return $required === true ? 'required="1"' : 'required="0"';
+        return ($required === true || $required == 1) ? 'required="1"' : 'required="0"';
     }
 
     private static function convertDisabled($disabled)
