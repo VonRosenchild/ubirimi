@@ -9,6 +9,9 @@ listCalendar:
 viewCalendar:
   path: /calendar/view/{ids}/{month}/{year}
   defaults: { _controller: '\Ubirimi\Calendar\Controller\ViewController' }
+  requirements:
+    month:  \d+
+    year:  \d+
 
 sharedCalendars:
   path: /calendar/shared-with-me-calendars
