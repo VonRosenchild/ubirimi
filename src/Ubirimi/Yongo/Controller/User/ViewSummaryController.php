@@ -48,7 +48,7 @@ class ViewSummaryController extends UbirimiController
         $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
         $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');
 
-        $historyList = Util::getProjectHistory($projectIds, 0, $loggedInUserId);
+        $historyList = Util::getProjectHistory($projectIds, 0, $userId);
         $historyData = array();
         $userData = array();
         while ($history = $historyList->fetch_array(MYSQLI_ASSOC)) {
