@@ -77,4 +77,42 @@ class Payment
 
         return null;
     }
+
+    /**
+     * Gets the payment record for the given $clientId for the previous month.
+     * If no successful payment has been done returns null
+     *
+     * @param $clientId
+     * @return mixed
+     */
+    public static function getPreviousMonthPayment($clientId)
+    {
+        $currentMonth = date('n') - 1;
+        $currentYear = date('Y');
+
+        $query = 'SELECT *
+                    FROM general_payment
+                    WHERE client_id = ?
+                      AND MONTH(date_created) = ?
+                      AND YEAR(date_created) = ?
+                      AND successful_flag = 1
+                    LIMIT 1';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iii", $clientId, $currentMonth, $currentYear);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $resultArray = array();
+            while ($user = $result->fetch_array(MYSQLI_ASSOC)) {
+                $resultArray[] = $user;
+            }
+
+            return $resultArray[0];
+        }
+
+        return null;
+    }
 }

@@ -94,8 +94,8 @@ jQuery(document).ready(function ($) {
             return false;
         }
         var params = {
-            amount_int:     $('#amount').val() * 100 * 3.1,
-            currency:       'RON',
+            amount_int:     $('#amount').val() * 100,
+            currency:       'USD',
             number:         $('.card-number').val(),
             exp_month:      expiry[0],
             exp_year:       expiry[1],

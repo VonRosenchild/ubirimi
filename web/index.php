@@ -1,14 +1,13 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\EventListener\UbirimiKernelViewListener;
+use Ubirimi\EventListener\UbirimiPaymentDueNotifierListener;
 use Ubirimi\UbirimiControllerResolver;
 
 require_once __DIR__ . '/bootstrap.php';
@@ -33,6 +32,7 @@ try {
 
     UbirimiContainer::get()['dispatcher']->addSubscriber(new RouterListener($urlMatcher));
     UbirimiContainer::get()['dispatcher']->addListener(KernelEvents::VIEW, array(new UbirimiKernelViewListener(), 'onKernelView'));
+    UbirimiContainer::get()['dispatcher']->addListener(KernelEvents::RESPONSE, array(new UbirimiPaymentDueNotifierListener(), 'paymentDueNotifier'));
 
     $resolver = new UbirimiControllerResolver();
     $kernel = new HttpKernel(UbirimiContainer::get()['dispatcher'], $resolver);

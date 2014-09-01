@@ -47,8 +47,8 @@ class PaymentTransactionService
             $paymentResponse = $service->create($payment);
 
             $transaction->setPayment($paymentResponse->getId());
-            $transaction->setAmount($amount * 100 * 3.1);
-            $transaction->setCurrency('RON');
+            $transaction->setAmount($amount * 100);
+            $transaction->setCurrency('USD');
             $transaction->setDescription($clientCompanyName);
             $transactionResponse = $service->create($transaction);
 
