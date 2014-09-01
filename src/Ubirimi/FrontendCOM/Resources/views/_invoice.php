@@ -15,7 +15,7 @@ SC Ubirimi 137 SRL <br />
 Mihail Eminescu, no. 97, zip code 307160 <br />
 Dumbravita, Timis <br />
 Romania <br />
-CUI 32759913<br />
+CUI RO32759913<br />
 <br />
 ING Bank Romania <br />
 IBAN RO29INGB0000999904159749
@@ -63,7 +63,7 @@ www.ubirimi.com
 
         <td align="right">
 Customer ID: <?php echo $customerId ?> <br />
-Invoice no.: <?php echo $invoiceNumber ?> <br />
+Invoice no.: UBR<?php echo $invoiceNumber ?> <br />
 Invoice date: <?php echo substr($invoiceDate, 0, 10) ?>
         </td>
     </tr>
