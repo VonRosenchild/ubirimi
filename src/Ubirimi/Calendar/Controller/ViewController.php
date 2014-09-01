@@ -79,8 +79,8 @@ class ViewController extends UbirimiController
             $nextYear = $year + 1;
         }
 
-        $headings = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-        $runningDay = date('w', mktime(0, 0, 0, $month, 1, $year)) - 1;
+        $headings = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+        $runningDay = date('w', mktime(0, 0, 0, $month, 1, $year));
         $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
         $daysInThisWeek = 1;
         $dayCounter = 0;
@@ -113,6 +113,7 @@ class ViewController extends UbirimiController
         }
 
         $weeks = intval(count($dates) / 7);
+
         return $this->render(__DIR__ . '/../Resources/views/View.php', get_defined_vars());
     }
 }

@@ -79,8 +79,8 @@
                     <input type="text" class="inputText" style="width: 30px" id="add_event_repeat_after_weekly" />
                     <span>occurrences</span>
                     <br />
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_on_weekly" />
-                    <label for="add_event_repeat_end_date_on_weekly">
+                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_on_weekly_label" />
+                    <label for="add_event_repeat_end_date_on_weekly_label">
                         <span>On </span>
                     </label>
                     <input type="text" value="" class="inputText" id="add_event_repeat_end_date_on_weekly" style="width: 90px" />

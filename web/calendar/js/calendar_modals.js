@@ -70,7 +70,7 @@ $('document').ready(function () {
                                     repeatData += '#n';
                                 } else if ($('#add_event_repeat_end_date_after_occurrences_weekly').is(':checked')) {
                                     repeatData += '#a' + $('#add_event_repeat_after_weekly').val();
-                                } else if ($('#add_event_repeat_end_date_on_weekly').is(':checked')) {
+                                } else if ($('#add_event_repeat_end_date_on_weekly_label').is(':checked')) {
                                     repeatData += '#o' + $('#add_event_repeat_end_date_on_weekly').val();
                                 }
 

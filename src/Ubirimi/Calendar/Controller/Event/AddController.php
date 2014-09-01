@@ -11,12 +11,15 @@ use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Repository\Client;
 
 class AddController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+        $clientId = $session->get('client/id');
+        $clientSettings = Client::getSettings($clientId);
 
         $name = Util::cleanRegularInputField($_POST['name']);
         $description = $request->request->get('description');
@@ -42,7 +45,8 @@ class AddController extends UbirimiController
                 $end,
                 $color,
                 $date,
-                $repeatData
+                $repeatData,
+                $clientSettings
             );
 
             // add the default reminders

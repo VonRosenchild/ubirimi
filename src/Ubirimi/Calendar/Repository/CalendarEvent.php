@@ -7,7 +7,7 @@ use When;
 
 class CalendarEvent
 {
-    public static function add($calendarId, $userCreatedId, $name, $description, $location, $start, $end, $color, $currentDate, $repeatData = null) {
+    public static function add($calendarId, $userCreatedId, $name, $description, $location, $start, $end, $color, $currentDate, $repeatData = null, $clientSettings) {
         $calEventRepeatId = null;
         $repeatDates = array();
         $repeatDay = array(0, 0, 0, 0, 0, 0, 0);
@@ -29,7 +29,7 @@ class CalendarEvent
                 $repeatEndDate = null;
 
                 if ('n' == $endData[0]) {
-                    $dateTemporary = date_create($repeatStartDate);
+                    $dateTemporary = date_create($repeatStartDate, new \DateTimeZone($clientSettings['timezone']));
                     date_add($dateTemporary, date_interval_create_from_date_string('30 years'));
 
                     $repeatEndDate = date_format($dateTemporary, 'Y-m-d');
@@ -37,15 +37,9 @@ class CalendarEvent
 
                     while (date_format($repeatEndDateTemporary, 'Y-m-d') <= $repeatEndDate) {
 
-                        date_add(
-                            $repeatEndDateTemporary,
-                            date_interval_create_from_date_string(intval($repeatEvery) . ' days')
-                        );
+                        date_add($repeatEndDateTemporary, date_interval_create_from_date_string(intval($repeatEvery) . ' days'));
 
-                        $offsetEndDate = date_add(
-                            $repeatEndDateTemporary,
-                            date_interval_create_from_date_string($daysBetween . ' days')
-                        );
+                        $offsetEndDate = date_add($repeatEndDateTemporary, date_interval_create_from_date_string($daysBetween . ' days'));
 
                         $repeatDates[] = array(
                             date_format($repeatEndDateTemporary, 'Y-m-d'), date_format($offsetEndDate, 'Y-m-d')
@@ -56,10 +50,7 @@ class CalendarEvent
                     $pos = 1;
                     $repeatEndDate = $repeatStartDate;
                     while ($pos < intval($endData[1])) {
-                        $repeatEndDate = date(
-                            'Y-m-d',
-                            strtotime("+" . intval($repeatEvery) . ' days', strtotime($repeatEndDate))
-                        );
+                        $repeatEndDate = date('Y-m-d',strtotime("+" . intval($repeatEvery) . ' days', strtotime($repeatEndDate)));
 
                         $repeatDates[] = array(
                             $repeatEndDate,
@@ -76,6 +67,7 @@ class CalendarEvent
                 $endData = $repeatDataArray[2];
                 $repeatStartDate = $repeatDataArray[3];
                 $repeatEndDate = null;
+                $repeatEndOnDate = null;
 
                 $repeatDay[0] = $repeatDataArray[4];
                 $repeatDay[1] = $repeatDataArray[5];
@@ -87,60 +79,53 @@ class CalendarEvent
 
                 if (($repeatDay[0] + $repeatDay[1] + $repeatDay[2] + $repeatDay[3] + $repeatDay[4] + $repeatDay[5] + $repeatDay[6]) == 0) {
                     $dateTemporary = date_create($repeatStartDate);
-                    $repeatDay[date("w", $dateTemporary->getTimestamp())] = 1;
+                    $repeatDay[date("w", $dateTemporary->getTimestamp()) - 1] = 1;
                 }
-                $repeatEveryXWeeks = $repeatEvery * 7;
 
                 if ('n' == $endData[0]) {
-                    $dateTemporary = date_create($repeatStartDate);
-                    date_add($dateTemporary, date_interval_create_from_date_string('30 years'));
-
-                    $repeatEndDate = date_format($dateTemporary, 'Y-m-d');
-                    $repeatEndDateTemporary = date_create($repeatStartDate);
-
-                    while (date_format($repeatEndDateTemporary, 'Y-m-d') <= $repeatEndDate) {
-
-                        date_add(
-                            $repeatEndDateTemporary,
-                            date_interval_create_from_date_string(intval($repeatEveryXWeeks) . ' days')
-                        );
-
-                        $offsetEndDate = date_add(
-                            $repeatEndDateTemporary,
-                            date_interval_create_from_date_string($daysBetween . ' days')
-                        );
-
-                        $repeatDates[] = array(
-                            date_format($repeatEndDateTemporary, 'Y-m-d'), date_format($offsetEndDate, 'Y-m-d')
-                        );
-                    }
+                    $endAfterOccurrences = 10000;
                 } else if ('a' == $endData[0]) {
+                    $endAfterOccurrences = $endData[1];
+                } else if ('o' == $endData[0]) {
+                    $repeatEndOnDate = substr($endData, 1);
+                    if (10 == strlen($repeatEndOnDate)) {
+                        $repeatEndOnDate .= ' 00:00:00';
+                    }
+                    $endAfterOccurrences = 10000;
+                }
 
-                    $pos = 1;
-                    $repeatEndDate = $repeatStartDate;
-                    $repeatDates[] = array($start, $end);
-                    while ($pos < intval($endData[1])) {
-                        $repeatEndDate = date(
-                            'Y-m-d',
-                            strtotime("+1 days", strtotime($repeatEndDate))
-                        );
+                $pos = 1;
+                $repeatEndDate = $repeatStartDate;
+                $repeatDates[] = array($start, $end);
 
-                        if (0 == count($repeatDates) || (count($repeatDates) && ((date("W", strtotime($repeatEndDate)) - date("W", strtotime(end($repeatDates)[0])) == 0)
-                            || (date("W", strtotime($repeatEndDate)) - date("W", strtotime(end($repeatDates)[0])) == $repeatEvery)))) {
-                            if ($repeatDay[date("w", strtotime($repeatEndDate))]) {
-                                echo count($repeatDates) . ' --- ' . (date("W", strtotime($repeatEndDate)) - date("W", strtotime(end($repeatDates)[0]))) . '---' . $repeatEndDate . '---' . end($repeatDates)[0] . "\n<br />";
-                                if ($repeatDay[date("w", strtotime($repeatEndDate))]) {
-                                    $repeatDates[] = array(
-                                        $repeatEndDate,
-                                        date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDate)))
-                                    );
-                                    $pos++;
-                                }
+                $repeatEveryDays = $repeatEvery * 7;
+
+                while ($pos <= intval($endAfterOccurrences)) {
+                    $repeatEndDate = new \DateTime($repeatEndDate, new \DateTimeZone($clientSettings['timezone']));
+
+                    date_add($repeatEndDate, date_interval_create_from_date_string('1 days'));
+
+                    $lastDate = new \DateTime(end($repeatDates)[0], new \DateTimeZone($clientSettings['timezone']));
+
+                    $repeatEndDateClone = clone $repeatEndDate;
+                    if (date_sub($repeatEndDateClone, date_interval_create_from_date_string($repeatEveryDays . ' days'))->format('Y-m-d H:i:s') == date_format($lastDate, 'Y-m-d H:i:s')) {
+                        if ($repeatDay[date_format($repeatEndDate, "w")]) {
+                            if ($repeatEndOnDate && date_format($repeatEndDate, 'Y-m-d H:i:s') > $repeatEndOnDate) {
+
+                                break;
                             }
+                            $endDateTemporary = new \DateTime(date_format($repeatEndDate, 'Y-m-d H:i:s'), new \DateTimeZone($clientSettings['timezone']));
+                            date_add($endDateTemporary, date_interval_create_from_date_string($daysBetween . ' days'));
+                            $repeatDates[] = array(date_format($repeatEndDate, 'Y-m-d H:i:s'), date_format($endDateTemporary, 'Y-m-d H:i:s'));
+                            $pos++;
                         }
                     }
-                    $repeatDates = array_shift($repeatDates);
+                    if (substr(end($repeatDates)[1], 0, 4) - substr($repeatDates[0][0], 0, 4) >= 30) {
+                        break;
+                    }
+                    $repeatEndDate = date_format($repeatEndDate, 'Y-m-d');
                 }
+                $repeatDates[0] = null;
             }
 
             $query = "INSERT INTO cal_event_repeat(cal_event_repeat_cycle_id, repeat_every, start_date, end_date, on_day_0, on_day_1, on_day_2, on_day_3, on_day_4, on_day_5, on_day_6) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -154,7 +139,7 @@ class CalendarEvent
             $day5 = $repeatDay[5];
             $day6 = $repeatDay[6];
 
-            $stmt->bind_param("iissiiiiiii", $repeatType, $repeatEvery, $repeatStartDate, $repeatEndDate, $day0, $day1, $day2, $day3, $day4, $day5, $day6);
+            $stmt->bind_param("iissiiiiiii", $repeatType, $repeatEvery, $repeatStartDate, $repeatEndOnDate, $day0, $day1, $day2, $day3, $day4, $day5, $day6);
             $stmt->execute();
 
             $calEventRepeatId = UbirimiContainer::get()['db.connection']->insert_id;
@@ -191,33 +176,44 @@ class CalendarEvent
             $stmt->bind_param("ii", $eventId, $eventId);
             $stmt->execute();
 
-            $query = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
+            $queryMain = "INSERT INTO cal_event(cal_calendar_id, user_created_id, cal_event_link_id, cal_event_repeat_id, name, description, location, date_from, " .
                 "date_to, color, date_created) VALUES ";
             $separator = '';
 
+            $query = $queryMain;
+
             for ($k = 0; $k < count($repeatDates); $k++) {
-                $queryValues = $separator . "(%d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
-                $query .= sprintf(
-                    $queryValues,
-                    $calendarId,
-                    $userCreatedId,
-                    $eventId,
-                    $calEventRepeatId,
-                    $name,
-                    $description,
-                    $location,
-                    $repeatDates[$k][0],
-                    $repeatDates[$k][1],
-                    $color,
-                    $currentDate
-                );
 
-                $separator = ',';
+                if (isset($repeatDates[$k])) {
+                    $queryValues = $separator . "(%d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')";
+                    $query .= sprintf(
+                        $queryValues,
+                        $calendarId,
+                        $userCreatedId,
+                        $eventId,
+                        $calEventRepeatId,
+                        $name,
+                        $description,
+                        $location,
+                        $repeatDates[$k][0],
+                        $repeatDates[$k][1],
+                        $color,
+                        $currentDate
+                    );
+
+                    $separator = ',';
+
+                    if ($k % 1000 == 0) {
+                        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+                        $stmt->execute();
+                        $query = $queryMain;
+                        $separator = '';
+                    }
+                }
             }
-
-            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-            $stmt->execute();
         }
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
 
         return $eventId;
     }
