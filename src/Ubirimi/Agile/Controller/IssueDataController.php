@@ -1,41 +1,94 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
-    use Ubirimi\Yongo\Repository\Issue\IssueComment;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueComponent;
-    use Ubirimi\Yongo\Repository\Issue\IssueVersion;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $issueId = $_POST['id'];
-    $close = isset($_POST['close']) ? $_POST['close'] : 0;
-    $issueParameters = array('issue_id' => $issueId);
+namespace Ubirimi\Agile\Controller;
 
-    $issue = Issue::getByParameters($issueParameters, $loggedInUserId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    $projectId = $issue['issue_project_id'];
-    $issueProject = Project::getById($projectId);
+class IssueDataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $issueId = $request->request->get('id');
+        $close = $request->request->get('close', 0);
+        $issueParameters = array('issue_id' => $issueId);
 
-    $comments = IssueComment::getByIssueId($issueId, 'desc');
-    $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
+        $issue = Issue::getByParameters($issueParameters, $session->get('user/id'));
 
-    $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-    $versionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+        $projectId = $issue['issue_project_id'];
+        $issueProject = Project::getById($projectId);
 
-    $hasAddCommentsPermission = Project::userHasPermission($projectId, Permission::PERM_ADD_COMMENTS, $loggedInUserId);
-    $hasDeleteAllComments = Project::userHasPermission($projectId, Permission::PERM_DELETE_ALL_COMMENTS, $loggedInUserId);
-    $hasDeleteOwnComments = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_COMMENTS, $loggedInUserId);
+        $comments = IssueComment::getByIssueId($issueId, 'desc');
+        $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
 
-    $hasEditAllComments = Project::userHasPermission($projectId, Permission::PERM_EDIT_ALL_COMMENTS, $loggedInUserId);
-    $hasEditOwnComments = Project::userHasPermission($projectId, Permission::PERM_EDIT_OWN_COMMENTS, $loggedInUserId);
+        $versionsAffected = IssueVersion::getByIssueIdAndProjectId(
+            $issueId,
+            $projectId,
+            Issue::ISSUE_AFFECTED_VERSION_FLAG
+        );
 
-    $attachments = IssueAttachment::getByIssueId($issue['id']);
-    if ($attachments && $attachments->num_rows) {
-        $hasDeleteOwnAttachmentsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $loggedInUserId);
-        $hasDeleteAllAttachmentsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $loggedInUserId);
+        $versionsTargeted = IssueVersion::getByIssueIdAndProjectId(
+            $issueId,
+            $projectId,
+            Issue::ISSUE_FIX_VERSION_FLAG
+        );
+
+        $hasAddCommentsPermission = Project::userHasPermission(
+            $projectId,
+            Permission::PERM_ADD_COMMENTS,
+            $session->get('user/id')
+        );
+
+        $hasDeleteAllComments = Project::userHasPermission(
+            $projectId,
+            Permission::PERM_DELETE_ALL_COMMENTS,
+            $session->get('user/id')
+        );
+
+        $hasDeleteOwnComments = Project::userHasPermission(
+            $projectId,
+            Permission::PERM_DELETE_OWN_COMMENTS,
+            $session->get('user/id')
+        );
+
+        $hasEditAllComments = Project::userHasPermission(
+            $projectId,
+            Permission::PERM_EDIT_ALL_COMMENTS,
+            $session->get('user/id')
+        );
+
+        $hasEditOwnComments = Project::userHasPermission(
+            $projectId,
+            Permission::PERM_EDIT_OWN_COMMENTS,
+            $session->get('user/id')
+        );
+
+        $attachments = IssueAttachment::getByIssueId($issue['id']);
+        if ($attachments && $attachments->num_rows) {
+            $hasDeleteOwnAttachmentsPermission = Project::userHasPermission(
+                $projectId,
+                Permission::PERM_DELETE_OWN_ATTACHMENTS,
+                $session->get('user/id')
+            );
+
+            $hasDeleteAllAttachmentsPermission = Project::userHasPermission(
+                $projectId,
+                Permission::PERM_DELETE_OWN_ATTACHMENTS,
+                $session->get('user/id')
+            );
+        }
+        $childrenIssues = Issue::getByParameters(array('parent_id' => $issueId), $session->get('user/id'));
+
+        return $this->render(__DIR__ . '/../Resources/views/IssueData.php', get_defined_vars());
     }
-    $childrenIssues = Issue::getByParameters(array('parent_id' => $issueId), $loggedInUserId);
-
-    require_once __DIR__ . '/../Resources/views/IssueData.php';
+}

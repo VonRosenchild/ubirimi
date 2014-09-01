@@ -1,12 +1,25 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Transition;
 
-    $workflowId = $_POST['workflow_id'];
-    $StatusId = $_POST['status_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $step = Workflow::getStepByWorkflowIdAndStatusId($workflowId, $StatusId);
+class GetStepByWorkflowAndStatusController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    echo json_encode($step);
+        $workflowId = $request->request->get('workflow_id');
+        $StatusId = $request->request->get('status_id');
+
+        $step = Workflow::getStepByWorkflowIdAndStatusId($workflowId, $StatusId);
+
+        return new Response(json_encode($step));
+    }
+}

@@ -1,27 +1,45 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Agile\Controller\Transition;
 
-    $workflowId = $_POST['workflow_id'];
-    $stepIdFrom = $_POST['step_id_from'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $issueId = $_POST['issue_id'];
-    $projectId = $_POST['project_id'];
+class GetOutTransitionsController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $issueQueryParameters = array('issue_id' => $issueId);
-    $issue = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+        $workflowId = $request->request->get('workflow_id');
+        $stepIdFrom = $request->request->get('step_id_from');
 
-    $transitions = Workflow::getOutgoingTransitionsForStep($workflowId, $stepIdFrom, 'array');
+        $issueId = $request->request->get('issue_id');
+        $projectId = $request->request->get('project_id');
 
-    // for each transition determine if the conditions allow it to be executed
-    $transitionsToBeExecuted = array();
-    for ($i = 0; $i < count($transitions); $i++) {
-        $canBeExecuted = Workflow::checkConditionsByTransitionId($transitions[$i]['id'], $loggedInUserId, $issue);
-        if ($canBeExecuted)
-            $transitionsToBeExecuted[] = $transitions[$i];
+        $issueQueryParameters = array('issue_id' => $issueId);
+        $issue = Issue::getByParameters($issueQueryParameters, $session->get('user/id'));
+
+        $transitions = Workflow::getOutgoingTransitionsForStep($workflowId, $stepIdFrom, 'array');
+
+        // for each transition determine if the conditions allow it to be executed
+        $transitionsToBeExecuted = array();
+        for ($i = 0; $i < count($transitions); $i++) {
+            $canBeExecuted = Workflow::checkConditionsByTransitionId(
+                $transitions[$i]['id'],
+                $session->get('user/id'),
+                $issue
+            );
+
+            if ($canBeExecuted)
+                $transitionsToBeExecuted[] = $transitions[$i];
+        }
+
+        return new Response(json_encode($transitionsToBeExecuted));
     }
-
-    echo json_encode($transitionsToBeExecuted);
+}
