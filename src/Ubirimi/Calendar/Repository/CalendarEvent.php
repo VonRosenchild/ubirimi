@@ -98,9 +98,9 @@ class CalendarEvent
                 $repeatEndDate = $repeatStartDate;
                 $repeatDates[] = array($start, $end);
 
-                $repeatEveryDays = $repeatEvery * 7;
+                $repeatEveryDays = $repeatEvery * 7 - 1;
 
-                while ($pos <= intval($endAfterOccurrences)) {
+                while ($pos < intval($endAfterOccurrences)) {
                     $repeatEndDate = new \DateTime($repeatEndDate, new \DateTimeZone($clientSettings['timezone']));
 
                     date_add($repeatEndDate, date_interval_create_from_date_string('1 days'));
@@ -108,10 +108,11 @@ class CalendarEvent
                     $lastDate = new \DateTime(end($repeatDates)[0], new \DateTimeZone($clientSettings['timezone']));
 
                     $repeatEndDateClone = clone $repeatEndDate;
-                    if (date_sub($repeatEndDateClone, date_interval_create_from_date_string($repeatEveryDays . ' days'))->format('Y-m-d H:i:s') == date_format($lastDate, 'Y-m-d H:i:s')) {
+
+                    $sameWeek = date_format($repeatEndDate, "W") === date_format($lastDate, "W");
+                    if ($sameWeek || date_sub($repeatEndDateClone, date_interval_create_from_date_string($repeatEveryDays . ' days'))->format('Y-m-d H:i:s') == date_format($lastDate, 'Y-m-d H:i:s')) {
                         if ($repeatDay[date_format($repeatEndDate, "w")]) {
                             if ($repeatEndOnDate && date_format($repeatEndDate, 'Y-m-d H:i:s') > $repeatEndOnDate) {
-
                                 break;
                             }
                             $endDateTemporary = new \DateTime(date_format($repeatEndDate, 'Y-m-d H:i:s'), new \DateTimeZone($clientSettings['timezone']));
