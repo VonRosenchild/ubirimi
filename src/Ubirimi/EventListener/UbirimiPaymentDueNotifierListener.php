@@ -12,10 +12,14 @@ class UbirimiPaymentDueNotifierListener
     {
         $response = $event->getResponse();
         $clientId = $event->getRequest()->getSession()->get('client/id');
+        $isPayable = $event->getRequest()->getSession()->get('client/is_payable');
+
+        if (0 == $isPayable) {
+            return true;
+        }
 
         if (!($response instanceof RedirectResponse)) {
             /* check if the client had a successful payment for the previous month */
-
             if (null !== Payment::getCurrentMonthPayment($clientId) ||
                 null !== Payment::getPreviousMonthPayment($clientId)) {
 

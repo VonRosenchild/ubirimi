@@ -1,3 +1,4 @@
+ALTER TABLE `client` ADD `is_payable` INT NOT NULL DEFAULT '1' AFTER `last_login`;
 
 CREATE TABLE IF NOT EXISTS `qn_notebook` (
   `id` bigint(20) unsigned NOT NULL,
