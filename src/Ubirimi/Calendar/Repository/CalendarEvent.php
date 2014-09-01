@@ -27,8 +27,13 @@ class CalendarEvent
                 $endData = $repeatDataArray[2];
                 $repeatStartDate = $repeatDataArray[3];
                 $repeatEndDate = null;
+                $repeatEndOnDate = null;
 
-                if ('n' == $endData[0]) {
+                if ('o' == $endData[0]) {
+                    $repeatEndOnDate = substr($endData, 1);
+                }
+
+                if ('n' == $endData[0] || 'o' == $endData[0]) {
                     $dateTemporary = date_create($repeatStartDate, new \DateTimeZone($clientSettings['timezone']));
                     date_add($dateTemporary, date_interval_create_from_date_string('30 years'));
 
@@ -38,27 +43,25 @@ class CalendarEvent
                     while (date_format($repeatEndDateTemporary, 'Y-m-d') <= $repeatEndDate) {
 
                         date_add($repeatEndDateTemporary, date_interval_create_from_date_string(intval($repeatEvery) . ' days'));
-
                         $offsetEndDate = date_add($repeatEndDateTemporary, date_interval_create_from_date_string($daysBetween . ' days'));
 
-                        $repeatDates[] = array(
-                            date_format($repeatEndDateTemporary, 'Y-m-d'), date_format($offsetEndDate, 'Y-m-d')
-                        );
+                        if ($repeatEndOnDate && date_format($repeatEndDateTemporary, 'Y-m-d') > $repeatEndOnDate) {
+                            break;
+                        }
+                        $repeatDates[] = array(date_format($repeatEndDateTemporary, 'Y-m-d'), date_format($offsetEndDate, 'Y-m-d'));
                     }
                 } else if ('a' == $endData[0]) {
 
                     $pos = 1;
                     $repeatEndDate = $repeatStartDate;
                     while ($pos < intval($endData[1])) {
-                        $repeatEndDate = date('Y-m-d',strtotime("+" . intval($repeatEvery) . ' days', strtotime($repeatEndDate)));
+                        $repeatEndDate = date('Y-m-d', strtotime("+" . intval($repeatEvery) . ' days', strtotime($repeatEndDate)));
 
-                        $repeatDates[] = array(
-                            $repeatEndDate,
-                            date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDate)))
-                        );
+                        $repeatDates[] = array($repeatEndDate, date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDate))));
                         $pos++;
                     }
                 }
+
             } else if (CalendarEventRepeatCycle::REPEAT_WEEKLY == $repeatType) {
                 // $repeatData format
                 // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date#0#1#1#1#1#1#0
@@ -96,9 +99,9 @@ class CalendarEvent
 
                 $pos = 1;
                 $repeatEndDate = $repeatStartDate;
-                $repeatDates[] = array($start, $end);
+                $repeatDates[] = array($start . ':00', $end . ':00');
 
-                $repeatEveryDays = $repeatEvery * 7 - 1;
+                $repeatEveryDays = $repeatEvery * 7;
 
                 while ($pos < intval($endAfterOccurrences)) {
                     $repeatEndDate = new \DateTime($repeatEndDate, new \DateTimeZone($clientSettings['timezone']));
@@ -109,8 +112,18 @@ class CalendarEvent
 
                     $repeatEndDateClone = clone $repeatEndDate;
 
-                    $sameWeek = date_format($repeatEndDate, "W") === date_format($lastDate, "W");
-                    if ($sameWeek || date_sub($repeatEndDateClone, date_interval_create_from_date_string($repeatEveryDays . ' days'))->format('Y-m-d H:i:s') == date_format($lastDate, 'Y-m-d H:i:s')) {
+                    $sameWeek = (date_format($repeatEndDate, "W") === date_format($lastDate, "W"));
+
+                    $found = false;
+                    date_sub($repeatEndDateClone, date_interval_create_from_date_string($repeatEveryDays . ' days'));
+                    for ($i = count($repeatDates) - 1; $i >= 0; $i--) {
+                        if ($repeatEndDateClone->format('Y-m-d H:i:s') == $repeatDates[$i][0]) {
+                            $found = true;
+                            break;
+                        }
+                    }
+
+                    if ($sameWeek || $found) {
                         if ($repeatDay[date_format($repeatEndDate, "w")]) {
                             if ($repeatEndOnDate && date_format($repeatEndDate, 'Y-m-d H:i:s') > $repeatEndOnDate) {
                                 break;

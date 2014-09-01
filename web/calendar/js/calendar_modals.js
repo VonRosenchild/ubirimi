@@ -12,6 +12,22 @@ $('document').ready(function () {
         $('#mouseTracker').val(-1);
     });
 
+    $(document).on('click', "#add_event_repeat_after_weekly", function (event) {
+        $('#add_event_repeat_end_date_after_occurrences_weekly').prop('checked', true);
+    });
+
+    $(document).on('click', "#add_event_repeat_after_daily", function (event) {
+        $('#add_event_repeat_end_date_after_occurrences_daily').prop('checked', true);
+    });
+
+    $(document).on('click', "#add_event_repeat_end_date_on_weekly", function (event) {
+        $('#add_event_repeat_end_date_on_weekly_label').prop('checked', true);
+    });
+
+    $(document).on('click', "#add_event_repeat_end_date_on_daily", function (event) {
+        $('#add_event_repeat_end_date_on_label').prop('checked', true);
+    });
+
     $("[id^='calendar_day_']").on('click', function (event) {
 
         event.preventDefault();
@@ -56,10 +72,10 @@ $('document').ready(function () {
                                 repeatData += '#' + $('#add_event_repeat_every').val();
                                 if ($('#add_event_repeat_end_date_never').is(':checked')) {
                                     repeatData += '#n';
-                                } else if ($('#add_event_repeat_end_date_after_occurrences').is(':checked')) {
-                                    repeatData += '#a' + $('#add_event_repeat_after').val();
-                                } else if ($('#add_event_repeat_end_date_on').is(':checked')) {
-                                    repeatData += '#o' + $('#add_event_repeat_end_date_on').val();
+                                } else if ($('#add_event_repeat_end_date_after_occurrences_daily').is(':checked')) {
+                                    repeatData += '#a' + $('#add_event_repeat_after_daily').val();
+                                } else if ($('#add_event_repeat_end_date_on_label').is(':checked')) {
+                                    repeatData += '#o' + $('#add_event_repeat_end_date_on_daily').val();
                                 }
 
                                 repeatData += '#' + $('#add_event_repeat_start_date').val();
@@ -105,8 +121,8 @@ $('document').ready(function () {
                                     repeat_data: repeatData
                                 },
                                 success: function (response) {
-                                    $("#modalAddEvent").dialog('destroy');
-                                    $("#modalAddEvent").empty();
+//                                    $("#modalAddEvent").dialog('destroy');
+//                                    $("#modalAddEvent").empty();
 //                                    location.reload();
                                 }
                             });
@@ -133,6 +149,11 @@ $('document').ready(function () {
 
                 $('#event_start_date, #event_end_date').datetimepicker({
                     timeFormat: "hh:mm",
+                    dateFormat: "yy-mm-dd",
+                    ampm: false
+                });
+
+                $('#add_event_repeat_end_date_on_daily, #add_event_repeat_end_date_on_weekly').datepicker({
                     dateFormat: "yy-mm-dd",
                     ampm: false
                 });
