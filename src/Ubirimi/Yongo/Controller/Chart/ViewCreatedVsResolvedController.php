@@ -13,6 +13,8 @@ class ViewCreatedVsResolvedController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
+        $clientId = $session->get('client/id');
+
         $helpdeskFlag = 0;
         $loggedInUser = Util::checkUserIsLoggedIn();
         if ($loggedInUser) {
@@ -31,8 +33,8 @@ class ViewCreatedVsResolvedController extends UbirimiController
 
         $result = array();
         while (strtotime($date) <= strtotime($currentDate)) {
-            $countAllIssues = Project::getTotalIssuesPreviousDate($projectId, $date, $helpdeskFlag);
-            $resolvedCount = Project::getTotalIssuesResolvedOnDate($projectId, $date, $helpdeskFlag);
+            $countAllIssues = Project::getTotalIssuesPreviousDate($clientId, $projectId, $date, $helpdeskFlag);
+            $resolvedCount = Project::getTotalIssuesResolvedOnDate($clientId, $projectId, $date, $helpdeskFlag);
 
             $result[] = array($dateWithoutYear, $countAllIssues, $resolvedCount);
             $dateWithoutYear = date('d M', strtotime("+1 day", strtotime($date)));

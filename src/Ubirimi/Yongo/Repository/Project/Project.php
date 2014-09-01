@@ -1692,13 +1692,18 @@ class Project
             return false;
     }
 
-    public static function getTotalIssuesPreviousDate($projectId, $date, $helpdeskFlag = 0) {
-        $query = 'SELECT id, resolution_id
+    public static function getTotalIssuesPreviousDate($clientId, $projectId, $date, $helpdeskFlag = 0) {
+
+        $query = 'SELECT yongo_issue.id, resolution_id
             FROM yongo_issue
-            WHERE DATE(date_created) <= ?';
+            left join project on project.id = yongo_issue.project_id
+            left join client on client.id = project.client_id
+            WHERE DATE(yongo_issue.date_created) <= ?';
 
         if (-1 != $projectId) {
             $query .= ' AND yongo_issue.project_id = ?';
+        } else {
+            $query .= ' AND client.id = ' . $clientId;
         }
 
         if ($helpdeskFlag) {
@@ -1723,13 +1728,17 @@ class Project
         return 0;
     }
 
-    public static function getTotalIssuesResolvedOnDate($projectId, $date, $helpdeskFlag = 0) {
-        $query = 'SELECT id, resolution_id
+    public static function getTotalIssuesResolvedOnDate($clientId, $projectId, $date, $helpdeskFlag = 0) {
+        $query = 'SELECT yongo_issue.id, resolution_id
                 FROM yongo_issue
-                WHERE DATE(date_updated) <= ? AND resolution_id IS NOT NULL';
+                left join project on project.id = yongo_issue.project_id
+                left join client on client.id = project.client_id
+                WHERE DATE(yongo_issue.date_updated) <= ? AND resolution_id IS NOT NULL';
 
         if (-1 != $projectId) {
             $query .= ' AND yongo_issue.project_id = ?';
+        } else {
+            $query .= ' AND client.id = ' . $clientId;
         }
 
         if ($helpdeskFlag) {

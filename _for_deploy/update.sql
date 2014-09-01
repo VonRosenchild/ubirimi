@@ -1,5 +1,3 @@
-ALTER TABLE `client` ADD `is_payable` INT NOT NULL DEFAULT '1' AFTER `last_login`;
-
 CREATE TABLE IF NOT EXISTS `qn_notebook` (
   `id` bigint(20) unsigned NOT NULL,
   `user_id` bigint(20) unsigned NOT NULL,
@@ -106,7 +104,7 @@ MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 
 
 ====================== rulate pe live===========================
-
+ALTER TABLE `client` ADD `is_payable` INT NOT NULL DEFAULT '1' AFTER `last_login`;
 
 UPDATE  `yongo_issue_sla` SET  `help_sla_goal_id` = NULL ,
   `started_flag` =0,
