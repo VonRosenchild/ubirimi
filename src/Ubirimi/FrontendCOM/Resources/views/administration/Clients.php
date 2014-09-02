@@ -50,12 +50,12 @@
                     <strong>
                         <?php
                             $users = User::getByClientId($client['id']);
-                            echo null !== $users ? count($users) : '0';
+                            echo $users === null ? '0' : $users->num_rows;
                         ?></strong>U
                     <strong>
                     <?php
                         $issues = Issue::getByParameters(array('client_id' => $client['id']));
-                        echo null !== $issues ? count($issues->fetch_all(MYSQLI_ASSOC)) : '0';
+                        echo $issues === null ? '0' : $issues->num_rows;
                     ?></strong>I
                 </td>
                 <td><?php echo $client['company_domain'] ?><br /></td>
