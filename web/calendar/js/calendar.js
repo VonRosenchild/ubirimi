@@ -109,7 +109,12 @@ $('document').ready(function () {
         }
     });
 
-    $(document).on('change', '#add_event_repeat_type', function (event) {
+    // in case we are in edit context show the correct repeat partial template
+    if ($('#event_id').val()) {
+        updateRepeatEventContentVisibility();
+    }
+
+    function updateRepeatEventContentVisibility() {
         var repeatType = $('#add_event_repeat_type').val();
         if (-1 == repeatType) {
             $('#add_event_repeat_daily_content').hide();
@@ -123,6 +128,11 @@ $('document').ready(function () {
             $('#add_event_repeat_daily_content').hide();
             $('#add_event_repeat_weekly_content').show();
         }
+
+    }
+
+    $(document).on('change', '#add_event_repeat_type', function (event) {
+        updateRepeatEventContentVisibility();
 
         jQuery("#modalAddEvent").dialog('option', 'position', ['middle','middle']);
 

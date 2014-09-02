@@ -324,7 +324,7 @@ class CalendarEvent
 
     public static function getById($eventId, $resultType = null) {
         $query = "SELECT cal_event.id, cal_event.user_created_id, cal_event.date_from, cal_event.date_to, cal_event.name, cal_event.description, cal_event.color, cal_event.location, " .
-            "cal_event.cal_event_link_id, " .
+            "cal_event.cal_event_link_id, cal_event.cal_event_repeat_id, " .
             "cal_calendar.name as calendar_name, cal_calendar.id as calendar_id, " .
             "user.client_id " .
             "FROM cal_event " .
@@ -344,8 +344,9 @@ class CalendarEvent
             } else {
                 return $result;
             }
-        } else
+        } else {
             return null;
+        }
     }
 
     public static function updateById($eventId, $calendarId, $name, $description, $location, $dateFrom, $dateTo, $color, $dateUpdated) {
@@ -561,6 +562,22 @@ class CalendarEvent
         $result = $stmt->get_result();
         if ($result->num_rows) {
             return $result;
+        } else
+            return null;
+    }
+
+    public static function getRepeatDataById($id) {
+        $query = "select * " .
+            "from cal_event_repeat " .
+            "where id = ? " .
+            "limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
         } else
             return null;
     }

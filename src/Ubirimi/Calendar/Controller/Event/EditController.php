@@ -23,6 +23,10 @@ class EditController extends UbirimiController
         $eventId = $request->get('id');
         $sourcePageLink = $request->get('source');
         $event = CalendarEvent::getById($eventId, 'array');
+        $eventRepeatData = CalendarEvent::getRepeatDataById($event['cal_event_repeat_id']);
+
+        $defaultEventStartDate = $eventRepeatData['start_date'];
+        $defaultEventRepeatCycle = $eventRepeatData['cal_event_repeat_cycle_id'];
 
         $eventReminders = CalendarEvent::getReminders($eventId);
         if ($event['client_id'] != $session->get('client/id')) {
@@ -32,6 +36,7 @@ class EditController extends UbirimiController
         $menuSelectedCategory = 'calendars';
 
         if ($request->request->has('edit_event')) {
+
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $description = Util::cleanRegularInputField($request->request->get('description'));
             $location = Util::cleanRegularInputField($request->request->get('location'));
@@ -43,6 +48,7 @@ class EditController extends UbirimiController
             $dateFrom .= ':00';
             $dateTo .= ':00';
             $date = Util::getServerCurrentDateTime();
+
             CalendarEvent::updateById(
                 $eventId,
                 $calendarId,
@@ -71,13 +77,7 @@ class EditController extends UbirimiController
                 }
             }
 
-            Log::add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_CALENDAR,
-                $session->get('user/id'),
-                'UPDATE EVENTS event ' . $name,
-                $date
-            );
+            Log::add($session->get('client/id'), SystemProduct::SYS_PRODUCT_CALENDAR, $session->get('user/id'),'UPDATE EVENTS event ' . $name, $date);
 
             return new RedirectResponse($sourcePageLink);
         }

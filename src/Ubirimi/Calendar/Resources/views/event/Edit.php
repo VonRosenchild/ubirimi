@@ -2,6 +2,7 @@
     use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
     use Ubirimi\Calendar\Repository\CalendarReminderType;
     use Ubirimi\Util;
+    use Ubirimi\Calendar\Repository\CalendarEventRepeatCycle;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -60,7 +61,22 @@
                         <input class="inputText color {hash:true}" style="width: 100px" name="color" value="<?php echo $event['color'] ?>"/>
                     </td>
                 </tr>
-
+                <tr>
+                    <td colspan="2">
+                        <hr size="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Repeats</td>
+                    <td>
+                        <select id="add_event_repeat_type" class="select2InputSmall">
+                            <option value="-1">Does not repeat</option>
+                            <option <?php if (CalendarEventRepeatCycle::REPEAT_DAILY == $defaultEventRepeatCycle) echo 'selected="selected"' ?> value="1">Daily</option>
+                            <option <?php if (CalendarEventRepeatCycle::REPEAT_WEEKLY == $defaultEventRepeatCycle) echo 'selected="selected"' ?> value="2">Weekly</option>
+                        </select>
+                    </td>
+                </tr>
+                <?php require_once __DIR__ . '/AddRepeatSettings.php' ?>
                 <tr>
                     <td colspan="2">
                         <hr size="1" />
@@ -114,7 +130,9 @@
                     </td>
                 </tr>
             </table>
+            <input type="hidden" value="<?php echo $eventId ?>" id="event_id" />
         </form>
     </div>
+
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

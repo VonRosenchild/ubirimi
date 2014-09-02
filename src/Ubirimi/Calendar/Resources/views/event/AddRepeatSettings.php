@@ -15,7 +15,7 @@
             </tr>
             <tr>
                 <td>Starts on</td>
-                <td><input type="text" id="add_event_repeat_start_date" class="inputText" disabled="disabled" value="<?php echo substr($defaultDate, 0, 10) ?>" style="width: 90px" /></td>
+                <td><input type="text" id="add_event_repeat_start_date" class="inputText" disabled="disabled" value="<?php echo substr($defaultEventStartDate, 0, 10) ?>" style="width: 90px" /></td>
             </tr>
             <tr>
                 <td valign="top">Ends</td>
@@ -64,7 +64,7 @@
             </tr>
             <tr>
                 <td>Starts on</td>
-                <td><input type="text" id="add_event_repeat_start_date_weekly" class="inputText" disabled="disabled" value="<?php echo substr($defaultDate, 0, 10) ?>" style="width: 90px" /></td>
+                <td><input type="text" id="add_event_repeat_start_date_weekly" class="inputText" disabled="disabled" value="<?php echo substr($defaultEventStartDate, 0, 10) ?>" style="width: 90px" /></td>
             </tr>
             <tr>
                 <td valign="top">Ends</td>

@@ -28,7 +28,7 @@ class AddConfirmController extends UbirimiController
         if ($defaultMonth < 10) {
             $defaultMonth = '0' . $defaultMonth;
         }
-        $defaultDate = $defaultYear . '-' . $defaultMonth . '-' . $defaultDay . ' 00:00';
+        $defaultEventStartDate = $defaultYear . '-' . $defaultMonth . '-' . $defaultDay . ' 00:00';
 
         $startDate = new \DateTime($defaultYear . '-' . $defaultMonth . '-' . $defaultDay, new \DateTimeZone($clientSettings['timezone']));
         $dayInWeek = date_format($startDate, 'w');
