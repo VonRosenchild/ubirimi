@@ -27,9 +27,9 @@
     <tr>
         <td>Interval</td>
         <td>
-            <input style="width: 120px" class="inputText" type="text" id="event_start_date" value="<?php echo $defaultDate ?>" />
+            <input style="width: 120px" class="inputText" type="text" id="event_start_date" value="<?php echo $defaultEventStartDate ?>" />
             <span>to</span>
-            <input style="width: 120px" class="inputText" type="text" id="event_end_date" value="<?php echo $defaultDate ?>" />
+            <input style="width: 120px" class="inputText" type="text" id="event_end_date" value="<?php echo $defaultEventStartDate ?>" />
         </td>
     </tr>
     <tr>

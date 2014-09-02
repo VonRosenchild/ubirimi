@@ -76,7 +76,7 @@
                         </select>
                     </td>
                 </tr>
-                <?php require_once __DIR__ . '/AddRepeatSettings.php' ?>
+                <?php require_once __DIR__ . '/EditRepeatSettings.php' ?>
                 <tr>
                     <td colspan="2">
                         <hr size="1" />

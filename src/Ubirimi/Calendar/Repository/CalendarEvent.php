@@ -159,6 +159,7 @@ class CalendarEvent
             if (10000 == $endAfterOccurrences) {
                 $endAfterOccurrences = null;
             }
+            var_dump($repeatEndOnDate);
             $stmt->bind_param("iiissiiiiiii", $repeatType, $repeatEvery, $endAfterOccurrences, $repeatStartDate, $repeatEndOnDate, $day0, $day1, $day2, $day3, $day4, $day5, $day6);
             $stmt->execute();
 

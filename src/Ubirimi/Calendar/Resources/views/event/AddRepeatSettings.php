@@ -30,11 +30,11 @@
                     <input type="text" class="inputText" style="width: 30px" id="add_event_repeat_after_daily" />
                     <span>occurrences</span>
                     <br />
-                    <input type="radio" id="add_event_repeat_end_date_on_label" />
+                    <input type="radio" name ="repeat_data_daily" id="add_event_repeat_end_date_on_label" />
                     <label for="add_event_repeat_end_date_on_label">
                         <span>On </span>
                     </label>
-                    <input type="text" name="repeat_data_daily" value="" class="inputText" id="add_event_repeat_end_date_on_daily" style="width: 90px" />
+                    <input type="text" value="" class="inputText" id="add_event_repeat_end_date_on_daily" style="width: 90px" />
                 </td>
             </tr>
         </table>
