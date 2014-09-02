@@ -20,11 +20,14 @@
                     <?php while ($defaultReminders && $defaultReminder = $defaultReminders->fetch_array(MYSQLI_ASSOC)): ?>
                         <div id="reminder_content_<?php echo $defaultReminder['id'] ?>">
                             <span>By default, remind me via</span>
-                            <select name="reminder_type_<?php echo $defaultReminder['id'] ?>" class="inputTextCombo">
+                            <br />
+                            <select name="reminder_type_<?php echo $defaultReminder['id'] ?>" class="select2InputSmall">
                                 <option value="<?php echo CalendarReminderType::REMINDER_EMAIL ?>">Email</option>
                             </select>
+                            &nbsp;
                             <input type="text" value="<?php echo $defaultReminder['value'] ?>" name="value_reminder_<?php echo $defaultReminder['id'] ?>" style="width: 50px;" />
-                            <select name="reminder_period_<?php echo $defaultReminder['id'] ?>" class="inputTextCombo">
+                            &nbsp;
+                            <select name="reminder_period_<?php echo $defaultReminder['id'] ?>" class="select2InputSmall">
                                 <option <?php
                                     if ($defaultReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_MINUTE) echo 'selected="selected"' ?> value="<?php echo CalendarEventReminderPeriod::PERIOD_MINUTE ?>">minutes</option>
                                 <option <?php if ($defaultReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_HOUR) echo 'selected="selected"' ?> value="<?php echo CalendarEventReminderPeriod::PERIOD_HOUR ?>">hours</option>
@@ -33,7 +36,7 @@
                                 <option <?php if ($defaultReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_WEEK) echo 'selected="selected"' ?> value="<?php
                                     echo CalendarEventReminderPeriod::PERIOD_WEEK ?>">weeks</option>
                             </select>
-                            <span>before each event</span>
+
                             <img src="/img/delete.png" id="delete_calendar_reminder_<?php echo $defaultReminder['id'] ?>" title="Delete reminder" />
                             <br />
                         </div>
