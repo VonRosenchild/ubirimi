@@ -121,9 +121,9 @@ $('document').ready(function () {
                                     repeat_data: repeatData
                                 },
                                 success: function (response) {
-//                                    $("#modalAddEvent").dialog('destroy');
-//                                    $("#modalAddEvent").empty();
-//                                    location.reload();
+                                    $("#modalAddEvent").dialog('destroy');
+                                    $("#modalAddEvent").empty();
+                                    location.reload();
                                 }
                             });
                         }

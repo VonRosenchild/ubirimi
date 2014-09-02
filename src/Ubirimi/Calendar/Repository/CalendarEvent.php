@@ -11,6 +11,7 @@ class CalendarEvent
         $calEventRepeatId = null;
         $repeatDates = array();
         $repeatDay = array(0, 0, 0, 0, 0, 0, 0);
+        $endAfterOccurrences = null;
 
         if ($repeatData) {
             $repeatDataArray = explode("#", $repeatData);
@@ -43,9 +44,10 @@ class CalendarEvent
                     while (date_format($repeatEndDateTemporary, 'Y-m-d') <= $repeatEndDate) {
 
                         date_add($repeatEndDateTemporary, date_interval_create_from_date_string(intval($repeatEvery) . ' days'));
-                        $offsetEndDate = date_add($repeatEndDateTemporary, date_interval_create_from_date_string($daysBetween . ' days'));
+                        $offsetEndDate = clone $repeatEndDateTemporary;
+                        date_add($offsetEndDate, date_interval_create_from_date_string($daysBetween . ' days'));
 
-                        if ($repeatEndOnDate && date_format($repeatEndDateTemporary, 'Y-m-d') > $repeatEndOnDate) {
+                        if ($repeatEndOnDate && date_format($offsetEndDate, 'Y-m-d') > $repeatEndOnDate) {
                             break;
                         }
                         $repeatDates[] = array(date_format($repeatEndDateTemporary, 'Y-m-d'), date_format($offsetEndDate, 'Y-m-d'));
@@ -53,8 +55,9 @@ class CalendarEvent
                 } else if ('a' == $endData[0]) {
 
                     $pos = 1;
+                    $endAfterOccurrences = intval($endData[1]);
                     $repeatEndDate = $repeatStartDate;
-                    while ($pos < intval($endData[1])) {
+                    while ($pos < $endAfterOccurrences) {
                         $repeatEndDate = date('Y-m-d', strtotime("+" . intval($repeatEvery) . ' days', strtotime($repeatEndDate)));
 
                         $repeatDates[] = array($repeatEndDate, date('Y-m-d', strtotime("+" . $daysBetween . ' days', strtotime($repeatEndDate))));
@@ -142,7 +145,7 @@ class CalendarEvent
                 $repeatDates[0] = null;
             }
 
-            $query = "INSERT INTO cal_event_repeat(cal_event_repeat_cycle_id, repeat_every, start_date, end_date, on_day_0, on_day_1, on_day_2, on_day_3, on_day_4, on_day_5, on_day_6) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO cal_event_repeat(cal_event_repeat_cycle_id, repeat_every, end_after_occurrences, start_date, end_date, on_day_0, on_day_1, on_day_2, on_day_3, on_day_4, on_day_5, on_day_6) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
             $day0 = $repeatDay[0];
@@ -153,7 +156,10 @@ class CalendarEvent
             $day5 = $repeatDay[5];
             $day6 = $repeatDay[6];
 
-            $stmt->bind_param("iissiiiiiii", $repeatType, $repeatEvery, $repeatStartDate, $repeatEndOnDate, $day0, $day1, $day2, $day3, $day4, $day5, $day6);
+            if (10000 == $endAfterOccurrences) {
+                $endAfterOccurrences = null;
+            }
+            $stmt->bind_param("iiissiiiiiii", $repeatType, $repeatEvery, $endAfterOccurrences, $repeatStartDate, $repeatEndOnDate, $day0, $day1, $day2, $day3, $day4, $day5, $day6);
             $stmt->execute();
 
             $calEventRepeatId = UbirimiContainer::get()['db.connection']->insert_id;
