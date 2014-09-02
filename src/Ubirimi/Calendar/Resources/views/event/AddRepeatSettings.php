@@ -20,21 +20,21 @@
             <tr>
                 <td valign="top">Ends</td>
                 <td>
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_never" value="1" checked="checked" />
-                    <label for="add_event_repeat_end_date">Never</label>
+                    <input type="radio" name="repeat_data_daily" id="add_event_repeat_end_date_never_daily" value="1" checked="checked" />
+                    <label for="add_event_repeat_end_date_never_daily">Never</label>
                     <br />
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_after_occurrences_daily" />
+                    <input type="radio" name="repeat_data_daily" id="add_event_repeat_end_date_after_occurrences_daily" />
                     <label for="add_event_repeat_end_date_after_occurrences_daily">
                         <span>After </span>
                     </label>
                     <input type="text" class="inputText" style="width: 30px" id="add_event_repeat_after_daily" />
                     <span>occurrences</span>
                     <br />
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_on_label" />
+                    <input type="radio" id="add_event_repeat_end_date_on_label" />
                     <label for="add_event_repeat_end_date_on_label">
                         <span>On </span>
                     </label>
-                    <input type="text" value="" class="inputText" id="add_event_repeat_end_date_on_daily" style="width: 90px" />
+                    <input type="text" name="repeat_data_daily" value="" class="inputText" id="add_event_repeat_end_date_on_daily" style="width: 90px" />
                 </td>
             </tr>
         </table>
@@ -69,17 +69,17 @@
             <tr>
                 <td valign="top">Ends</td>
                 <td>
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_never_weekly" value="1" checked="checked" />
+                    <input type="radio" name="repeat_data_weekly" id="add_event_repeat_end_date_never_weekly" value="1" checked="checked" />
                     <label for="add_event_repeat_end_date_never_weekly">Never</label>
                     <br />
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_after_occurrences_weekly" />
+                    <input type="radio" name="repeat_data_weekly" id="add_event_repeat_end_date_after_occurrences_weekly" />
                     <label for="add_event_repeat_end_date_after_occurrences_weekly">
                         <span>After </span>
                     </label>
                     <input type="text" class="inputText" style="width: 30px" id="add_event_repeat_after_weekly" />
                     <span>occurrences</span>
                     <br />
-                    <input type="radio" name="add_event_repeat_end_date" id="add_event_repeat_end_date_on_weekly_label" />
+                    <input type="radio" name="repeat_data_weekly" id="add_event_repeat_end_date_on_weekly_label" />
                     <label for="add_event_repeat_end_date_on_weekly_label">
                         <span>On </span>
                     </label>

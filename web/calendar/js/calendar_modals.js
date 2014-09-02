@@ -70,7 +70,7 @@ $('document').ready(function () {
                             if (1 == repeatType) { // daily
                                 repeatData += '1';
                                 repeatData += '#' + $('#add_event_repeat_every').val();
-                                if ($('#add_event_repeat_end_date_never').is(':checked')) {
+                                if ($('#add_event_repeat_end_date_never_daily').is(':checked')) {
                                     repeatData += '#n';
                                 } else if ($('#add_event_repeat_end_date_after_occurrences_daily').is(':checked')) {
                                     repeatData += '#a' + $('#add_event_repeat_after_daily').val();
