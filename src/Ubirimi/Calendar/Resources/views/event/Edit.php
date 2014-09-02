@@ -18,7 +18,7 @@
                 <tr>
                     <td>Calendar:</td>
                     <td>
-                        <select name="calendar" class="inputTextCombo">
+                        <select name="calendar" class="select2Input">
                             <?php foreach ($calendars as $calendar): ?>
                                 <option <?php if ($event['calendar_id'] == $calendar['id'])
                                     echo 'selected="selected"' ?> value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
@@ -73,12 +73,14 @@
 
                             <?php while ($eventReminders && $eventReminder = $eventReminders->fetch_array(MYSQLI_ASSOC)): ?>
                                 <div id="reminder_content_<?php echo $eventReminder['id'] ?>">
-                                    <select name="reminder_type_<?php echo $eventReminder['id'] ?>" class="inputTextCombo">
+                                    <select name="reminder_type_<?php echo $eventReminder['id'] ?>" class="select2InputSmall">
                                         <option value="<?php
                                             echo CalendarReminderType::REMINDER_EMAIL ?>">Email</option>
                                     </select>
+                                    &nbsp;
                                     <input type="text" value="<?php echo $eventReminder['value'] ?>" name="value_reminder_<?php echo $eventReminder['id'] ?>" style="width: 50px;" />
-                                    <select name="reminder_period_<?php echo $eventReminder['id'] ?>" class="inputTextCombo">
+                                    &nbsp;
+                                    <select name="reminder_period_<?php echo $eventReminder['id'] ?>" class="select2InputSmall">
                                         <option <?php
                                             if ($eventReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_MINUTE) echo 'selected="selected"' ?> value="<?php echo CalendarEventReminderPeriod::PERIOD_MINUTE ?>">minutes</option>
                                         <option <?php

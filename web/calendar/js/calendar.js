@@ -201,6 +201,7 @@ $('document').ready(function () {
             },
             success: function (response) {
                 $("#content_event_reminders").append(response);
+                $('select.select2InputSmall').select2();
             }
         });
     });
