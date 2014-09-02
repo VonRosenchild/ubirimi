@@ -1,3 +1,12 @@
+
+INSERT INTO  `yongo`.`cal_event_repeat_cycle` (
+  `id` ,
+  `name`
+)
+VALUES (
+  '2',  'weekly'
+);
+
 CREATE TABLE IF NOT EXISTS `qn_notebook` (
   `id` bigint(20) unsigned NOT NULL,
   `user_id` bigint(20) unsigned NOT NULL,
