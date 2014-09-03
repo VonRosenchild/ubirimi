@@ -1,15 +1,29 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\HelpDesk\Controller;
 
-    $projects = Client::getProjects($clientId, null, null, true);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $menuSelectedCategory = 'help_desk';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Help Desks';
+        $projects = Client::getProjects($session->get('client/id'), null, null, true);
 
-    require_once __DIR__ . '/../Resources/views/List.php';
+        $menuSelectedCategory = 'help_desk';
+
+        $sectionPageTitle = $clientSettings['title_name']
+            . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME
+            . ' / Help Desks';
+
+        return $this->render(__DIR__ . '/../Resources/views/List.php', get_defined_vars());
+    }
+}
