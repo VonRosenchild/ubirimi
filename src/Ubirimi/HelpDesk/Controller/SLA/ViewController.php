@@ -1,33 +1,47 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\Queue;
-    use Ubirimi\Repository\HelpDesk\SLA;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\HelpDesk\Controller\SLA;
 
-    $projectId = $_GET['id'];
-    $slaSelectedId = $_GET['sla_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Repository\HelpDesk\Queue;
 
-    $project = Project::getById($projectId);
-    $SLAs = SLA::getByProjectId($projectId);
+class ViewController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    $menuSelectedCategory = 'help_desk';
-    $menuProjectCategory = 'sla';
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks';
+        $projectId = $request->get('id');
+        $slaSelectedId = $request->get('sla_id');
 
-    $queues = Queue::getByProjectId($projectId);
-    if ($queues) {
-        $queueSelected = $queues->fetch_array(MYSQLI_ASSOC);
+        $project = Project::getById($projectId);
+        $SLAs = SLA::getByProjectId($projectId);
+
+        $menuSelectedCategory = 'help_desk';
+        $menuProjectCategory = 'sla';
+        $sectionPageTitle = $clientSettings['title_name']
+            . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
+            . ' / Help Desks';
+
+        $queues = Queue::getByProjectId($projectId);
+        if ($queues) {
+            $queueSelected = $queues->fetch_array(MYSQLI_ASSOC);
+        }
+        $slaSelected = SLA::getById($slaSelectedId);
+
+        $startConditions = explode("#", $slaSelected['start_condition']);
+        $stopConditions = explode("#", $slaSelected['stop_condition']);
+
+        $goals = SLA::getGoals($slaSelectedId);
+        $allRemainingIssuesDefinitionFound = false;
+
+        return $this->render(__DIR__ . '/../../Resources/views/sla/View.php', get_defined_vars());
     }
-    $slaSelected = SLA::getById($slaSelectedId);
-
-    $startConditions = explode("#", $slaSelected['start_condition']);
-    $stopConditions = explode("#", $slaSelected['stop_condition']);
-
-    $goals = SLA::getGoals($slaSelectedId);
-    $allRemainingIssuesDefinitionFound = false;
-
-    require_once __DIR__ . '/../../Resources/views/sla/View.php';
+}

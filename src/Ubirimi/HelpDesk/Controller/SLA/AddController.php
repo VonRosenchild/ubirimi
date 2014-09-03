@@ -1,95 +1,124 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\SLA;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-    use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Repository\HelpDesk\SLACalendar;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\HelpDesk\Controller\SLA;
 
-    $projectId = $_GET['project_id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Repository\HelpDesk\SLACalendar;
 
-    $project = Project::getById($projectId);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    $menuSelectedCategory = 'help_desk';
-    $menuProjectCategory = 'sla';
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks';
+        $projectId = $request->get('project_id');
 
-    $emptyName = false;
-    $duplicateName = false;
+        $project = Project::getById($projectId);
 
-    $SLAs = SLA::getByProjectId($projectId);
-    if ($SLAs) {
-        $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
-    }
-    $slaCalendars = SLACalendar::getByProjectId($projectId);
+        $menuSelectedCategory = 'help_desk';
+        $menuProjectCategory = 'sla';
+        $sectionPageTitle = $clientSettings['title_name']
+            . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
+            . ' / Help Desks';
 
-    $availableStatuses = IssueSettings::getAllIssueSettings('status', $clientId);
-    if (isset($_POST['confirm_new_sla'])) {
+        $emptyName = false;
+        $duplicateName = false;
 
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
-
-        if (empty($name))
-            $emptyName = true;
-
-        $slaExists = SLA::getByName(mb_strtolower($name), $projectId);
-        if ($slaExists)
-            $duplicateName = true;
-
-        // get start conditions
-        $startCondition = '';
-        $keys = array();
-        foreach ($_POST as $key => $value) {
-            if (substr($key, 0, 6) == 'start_') {
-                $keys[] = $key;
-            }
+        $SLAs = SLA::getByProjectId($projectId);
+        if ($SLAs) {
+            $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
         }
-        $startCondition = implode('#', $keys);
+        $slaCalendars = SLACalendar::getByProjectId($projectId);
 
-        // get end conditions
-        $stopCondition = '';
-        $keys = array();
-        foreach ($_POST as $key => $value) {
-            if (substr($key, 0, 5) == 'stop_') {
-                $keys[] = $key;
+        $availableStatuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
+
+        if ($request->request->has('confirm_new_sla')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
+
+            if (empty($name))
+                $emptyName = true;
+
+            $slaExists = SLA::getByName(mb_strtolower($name), $projectId);
+            if ($slaExists)
+                $duplicateName = true;
+
+            // get start conditions
+            $startCondition = '';
+            $keys = array();
+            foreach ($request->request as $key => $value) {
+                if (substr($key, 0, 6) == 'start_') {
+                    $keys[] = $key;
+                }
             }
-        }
-        $stopCondition = implode('#', $keys);
+            $startCondition = implode('#', $keys);
 
-        if (!$emptyName && !$duplicateName) {
+            // get end conditions
+            $stopCondition = '';
+            $keys = array();
+            foreach ($request->request as $key => $value) {
+                if (substr($key, 0, 5) == 'stop_') {
+                    $keys[] = $key;
+                }
+            }
+            $stopCondition = implode('#', $keys);
 
-            $currentDate = Util::getServerCurrentDateTime();
+            if (!$emptyName && !$duplicateName) {
 
-            $slaId = SLA::save($projectId, $name, $description, $startCondition, $stopCondition, $currentDate);
+                $currentDate = Util::getServerCurrentDateTime();
 
-            // add the goals of the sla
-            foreach ($_POST as $key => $value) {
-                if (substr($key, 0, 16) == 'goal_definition_') {
-                    $index = str_replace('goal_definition_', '', $key);
+                $slaId = SLA::save(
+                    $projectId,
+                    $name,
+                    $description,
+                    $startCondition,
+                    $stopCondition,
+                    $currentDate
+                );
 
-                    if ($_POST['goal_value_' . $index]) {
-                        if ($value == '') {
-                            $value = 'all_remaining_issues';
+                // add the goals of the sla
+                foreach ($request->request as $key => $value) {
+                    if (substr($key, 0, 16) == 'goal_definition_') {
+                        $index = str_replace('goal_definition_', '', $key);
+
+                        if ($request->request->has('goal_value_' . $index)) {
+                            if ($value == '') {
+                                $value = 'all_remaining_issues';
+                            }
+
+                            SLA::addGoal(
+                                $slaId,
+                                $request->request->get('goal_calendar_' . $index),
+                                $value,
+                                $value,
+                                $request->request->get('goal_value_' . $index)
+                            );
                         }
-                        SLA::addGoal($slaId, $_POST['goal_calendar_' . $index], $value, $value, $_POST['goal_value_' . $index]);
                     }
                 }
-            }
 
-            // for every issue in this project add an empty line in yongo_issue_sla
-            $issuesData = Issue::getByParameters(array('project' => $projectId));
-            if ($issuesData->num_rows) {
-                while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
-                    Issue::addPlainSLADataBySLAId($issue['id'], $slaId);
+                // for every issue in this project add an empty line in yongo_issue_sla
+                $issuesData = Issue::getByParameters(array('project' => $projectId));
+                if ($issuesData->num_rows) {
+                    while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
+                        Issue::addPlainSLADataBySLAId($issue['id'], $slaId);
+                    }
                 }
+
+                return new RedirectResponse('/helpdesk/sla/' . $projectId . '/' . $slaId);
             }
-
-            header('Location: /helpdesk/sla/' . $projectId . '/' . $slaId);
         }
-    }
 
-    require_once __DIR__ . '/../../Resources/views/sla/Add.php';
+        return $this->render(__DIR__ . '/../../Resources/views/sla/Add.php', get_defined_vars());
+    }
+}
