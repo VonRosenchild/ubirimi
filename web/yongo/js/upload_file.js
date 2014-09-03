@@ -126,7 +126,7 @@ function UploadFile(file, index, issueId, finishedUpload) {
             xhrFileUpload.open("POST", '/yongo/upload-attachement?issue_id=' + issueId, true);
         }
 
-        xhrFileUpload.setRequestHeader("X_FILENAME", file.name);
+        xhrFileUpload.setRequestHeader("X_FILENAME", encodeURIComponent(file.name));
         xhrFileUpload.send(file);
     }
 }

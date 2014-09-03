@@ -2,12 +2,11 @@
     use Nyholm\ZebraImage\ZebraImage;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 
     Util::checkUserIsLoggedInAndRedirect();
     $filenameData = apache_request_headers();
-    $filename = $filenameData['X_FILENAME'];
+    $filename = rawurldecode($filenameData['X_FILENAME']);
 
     $issueId = isset($_GET['issue_id']) ? $_GET['issue_id'] : null;
 
