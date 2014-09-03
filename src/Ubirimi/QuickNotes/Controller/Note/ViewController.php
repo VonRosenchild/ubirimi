@@ -1,32 +1,47 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Note;
-    use Ubirimi\QuickNotes\Repository\Notebook;
-    use Ubirimi\QuickNotes\Repository\Tag;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\QuickNotes\Controller\Note;
 
-    $menuSelectedCategory = 'notes';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\QuickNotes\Repository\Note;
+use Ubirimi\QuickNotes\Repository\Notebook;
+use Ubirimi\QuickNotes\Repository\Tag;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Quick Notes';
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
+class ViewController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    $notebooks = Notebook::getByUserId($loggedInUserId, 'array');
-    $noteId = $_GET['note_id'];
-    $notebookId = $_GET['notebook_id'];
-    $notebook = Notebook::getById($notebookId);
-    $notes = Notebook::getNotesByNotebookId($notebookId, $loggedInUserId, null, 'array');
+        $menuSelectedCategory = 'notes';
 
-    $allTags = Tag::getAll($loggedInUserId);
+        $sectionPageTitle = $clientSettings['title_name']
+            . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME
+            . ' / Quick Notes';
 
-    if ($noteId != -1) {
-        $note = Note::getById($noteId);
-        $tags = Note::getTags($noteId);
-    } else {
-        $note = null;
-        $tags = null;
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
+
+        $notebooks = Notebook::getByUserId($session->get('user/id'), 'array');
+        $noteId = $request->get('note_id');
+        $notebookId = $request->get('notebook_id');
+        $notebook = Notebook::getById($notebookId);
+        $notes = Notebook::getNotesByNotebookId($notebookId, $session->get('user/id'), null, 'array');
+
+        $allTags = Tag::getAll($session->get('user/id'));
+
+        if ($noteId != -1) {
+            $note = Note::getById($noteId);
+            $tags = Note::getTags($noteId);
+        } else {
+            $note = null;
+            $tags = null;
+        }
+
+        return $this->render(__DIR__ . '/../../Resources/views/Note/View.php', get_defined_vars());
     }
-
-    require_once __DIR__ . '/../../Resources/views/Note/View.php';
+}

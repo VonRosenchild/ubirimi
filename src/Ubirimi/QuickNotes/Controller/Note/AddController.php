@@ -1,19 +1,32 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Notebook;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\QuickNotes\Controller\Note;
 
-    $date = Util::getServerCurrentDateTime();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\QuickNotes\Repository\Notebook;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $notebookId = $_POST['notebook_id'];
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    if ($notebookId == -1) {
-        $notebookDefault = Notebook::getDefaultByUserId($loggedInUserId);
-        $notebookId = $notebookDefault['id'];
+        $date = Util::getServerCurrentDateTime();
+
+        $notebookId = $request->request->get('notebook_id');
+
+        if (-1 == $notebookId) {
+            $notebookDefault = Notebook::getDefaultByUserId($session->get('user/id'));
+            $notebookId = $notebookDefault['id'];
+        }
+
+        $noteId = Notebook::addNote($notebookId, $date);
+
+        return new Response($notebookId . '/' . $noteId);
     }
-
-    $noteId = Notebook::addNote($notebookId, $date);
-
-    echo $notebookId . '/' . $noteId;
+}

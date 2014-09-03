@@ -1,16 +1,36 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Notebook;
-    use Ubirimi\QuickNotes\Repository\Tag;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\QuickNotes\Controller\Tag;
 
-    $tagId = $_POST['id'];
-    $tag = Tag::getById($tagId);
-    $date = Util::getServerCurrentDateTime();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\QuickNotes\Repository\Tag;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    Tag::deleteById($tagId);
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_QUICK_NOTES, $loggedInUserId, 'DELETE QUICK NOTES tag  ' . $tag['name'], $date);
+        $tagId = $request->request->get('id');
+        $tag = Tag::getById($tagId);
+        $date = Util::getServerCurrentDateTime();
+
+        Tag::deleteById($tagId);
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_QUICK_NOTES,
+            $session->get('user/id'),
+            'DELETE QUICK NOTES tag  ' . $tag['name'],
+            $date
+        );
+
+        return new Response('');
+    }
+}

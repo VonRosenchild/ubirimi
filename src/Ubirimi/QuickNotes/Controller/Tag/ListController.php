@@ -1,14 +1,28 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Tag;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\QuickNotes\Controller\Tag;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
-    $menuSelectedCategory = 'tags';
-    $tags = Tag::getByUserId($loggedInUserId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\QuickNotes\Repository\Tag;
+use Ubirimi\SystemProduct;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_QUICK_NOTES_NAME . ' / tags';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    require_once __DIR__ . '/../../Resources/views/Tag/List.php';
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
+        $menuSelectedCategory = 'tags';
+        $tags = Tag::getByUserId($session->get('user/id'));
+
+        $sectionPageTitle = $session->get('client/settings/title_name')
+            . ' / ' . SystemProduct::SYS_PRODUCT_QUICK_NOTES_NAME
+            . ' / tags';
+
+        return $this->render(__DIR__ . '/../../Resources/views/Tag/List.php', get_defined_vars());
+    }
+}

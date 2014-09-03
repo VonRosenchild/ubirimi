@@ -1,25 +1,38 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Note;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\QuickNotes\Controller\Note;
 
-    $date = Util::getServerCurrentDateTime();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\QuickNotes\Repository\Note;
 
-    $noteId = $_POST['id'];
-    $notebookSelectedId = $_POST['notebook_selected_id'];
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    $note = Note::getById($noteId);
-    Note::deleteById($noteId);
+        $date = Util::getServerCurrentDateTime();
 
-    $notePrevious = Note::getPreviousNoteInNotebook($notebookSelectedId, $noteId);
-    $noteFollowing = Note::getFollowingNoteInNotebook($notebookSelectedId, $noteId);
+        $noteId = $request->request->get('id');
+        $notebookSelectedId = $request->request->get('notebook_selected_id');
 
-    if ($notePrevious) {
-        echo $notebookSelectedId . '/' . $notePrevious['id'];
-    } else if ($noteFollowing) {
-        echo $notebookSelectedId . '/' . $noteFollowing['id'];
-    } else {
-        echo $note['qn_notebook_id'] . '/' . "-1";
+        $note = Note::getById($noteId);
+        Note::deleteById($noteId);
+
+        $notePrevious = Note::getPreviousNoteInNotebook($notebookSelectedId, $noteId);
+        $noteFollowing = Note::getFollowingNoteInNotebook($notebookSelectedId, $noteId);
+
+        if ($notePrevious) {
+            return new Response($notebookSelectedId . '/' . $notePrevious['id']);
+        } else if ($noteFollowing) {
+            return new Response($notebookSelectedId . '/' . $noteFollowing['id']);
+        }
+
+        return new Response($note['qn_notebook_id'] . '/' . "-1");
     }
+}

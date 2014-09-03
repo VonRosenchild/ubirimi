@@ -1,16 +1,37 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Notebook;
-    use Ubirimi\Repository\Log;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\QuickNotes\Controller\Notebook;
 
-    $notebookId = $_POST['id'];
-    $notebook = Notebook::getById($notebookId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\QuickNotes\Repository\Notebook;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
 
-    $date = Util::getServerCurrentDateTime();
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    Notebook::deleteById($notebookId);
+        $notebookId = $request->request->get('id');
+        $notebook = Notebook::getById($notebookId);
 
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_QUICK_NOTES, $loggedInUserId, 'DELETE QUICK NOTES notebook ' . $notebook['name'], $date);
+        $date = Util::getServerCurrentDateTime();
+
+        Notebook::deleteById($notebookId);
+
+        Log::add(
+            $session->get('client/id'),
+            SystemProduct::SYS_PRODUCT_QUICK_NOTES,
+            $session->get('user/id'),
+            'DELETE QUICK NOTES notebook ' . $notebook['name'],
+            $date
+        );
+
+        return new Response('');
+    }
+}

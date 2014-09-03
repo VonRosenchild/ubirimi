@@ -1,15 +1,29 @@
 <?php
-    use Ubirimi\Calendar\Repository\Calendar;
-    use Ubirimi\QuickNotes\Repository\Notebook;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\QuickNotes\Controller\Notebook;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
-    $menuSelectedCategory = 'notebooks';
-    $notebooks = Notebook::getByUserId($loggedInUserId);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\QuickNotes\Repository\Notebook;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\SystemProduct;
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_QUICK_NOTES_NAME . ' / My Notebooks';
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    require_once __DIR__ . '/../../Resources/views/Notebook/List.php';
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
+        $menuSelectedCategory = 'notebooks';
+        $notebooks = Notebook::getByUserId($session->get('user/id'));
+
+        $sectionPageTitle = $session->get('client/settings/title_name')
+            . ' / ' . SystemProduct::SYS_PRODUCT_QUICK_NOTES_NAME
+            . ' / My Notebooks';
+
+        return $this->render(__DIR__ . '/../../Resources/views/Notebook/List.php', get_defined_vars());
+    }
+}

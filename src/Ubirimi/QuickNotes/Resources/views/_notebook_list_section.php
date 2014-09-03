@@ -15,12 +15,14 @@
         </table>
     </div>
 
+    <?php if (!empty($notebooks)): ?>
     <?php foreach ($notebooks as $notebookInList): ?>
         <?php $firstNote = Note::getFirstByNotebookId($notebookInList['id']) ?>
         <div style="padding-left: 4px;<?php if ($notebookInList['id'] == $notebookId) echo 'background-color: #EEEEEE;' ?>">
             <a href="/quick-notes/note/<?php echo $notebookInList['id'] ?>/<?php if ($firstNote) echo $firstNote['id']; else echo '-1' ?>"><?php echo $notebookInList['name'] ?></a>
         </div>
     <?php endforeach ?>
+    <?php endif ?>
 </div>
 <div>
     <div style="padding-left: 4px; border-bottom: 1px solid #DDDDDD; background-color: #DDDDDD">

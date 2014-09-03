@@ -1,22 +1,34 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Note;
-    use Ubirimi\QuickNotes\Repository\Tag;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\QuickNotes\Controller\Tag;
 
-    $date = Util::getServerCurrentDateTime();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\QuickNotes\Repository\Tag;
 
-    $name = $_POST['name'];
-    $description = $_POST['description'];
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    // check for duplicates in the user space
-    $tagUserExists = Tag::getByNameAndUserId($loggedInUserId, mb_strtolower($name));
+        $date = Util::getServerCurrentDateTime();
 
-    if (!$tagUserExists) {
-        $tagId = Tag::add($loggedInUserId, $name, $date);
-        echo "1";
-    } else {
-        echo "0";
+        $name = $request->request->get('name');
+        $description = $request->request->get('description');
+
+        // check for duplicates in the user space
+        $tagUserExists = Tag::getByNameAndUserId($session->get('user/id'), mb_strtolower($name));
+
+        if (!$tagUserExists) {
+            $tagId = Tag::add($session->get('user/id'), $name, $date);
+            return new Response('1');
+        }
+
+        return new Response('0');
     }
+}

@@ -1,30 +1,45 @@
 <?php
-    use Ubirimi\QuickNotes\Repository\Note;
-    use Ubirimi\QuickNotes\Repository\Tag;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+namespace Ubirimi\QuickNotes\Controller\Tag;
 
-    $date = Util::getServerCurrentDateTime();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\QuickNotes\Repository\Tag;
+use Ubirimi\QuickNotes\Repository\Note;
 
-    $value = $_POST['value'];
-    $noteId = $_POST['id'];
+class NoteAddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    // check for duplicates in the user space
-    $tagUserExists = Tag::getByNameAndUserId($loggedInUserId, mb_strtolower($value));
+        $date = Util::getServerCurrentDateTime();
 
-    if ($tagUserExists) {
-        // check if it is already added to the note
-        $tagNoteExists = Note::getTagByTagIdAndNoteId($noteId, $tagUserExists['id']);
-        if (!$tagNoteExists) {
-            Note::addTag($noteId, $tagUserExists['id'], $date);
-            echo "1";
-            die();
+        $value = $request->request->get('value');
+        $noteId = $request->request->get('id');
+
+        // check for duplicates in the user space
+        $tagUserExists = Tag::getByNameAndUserId($session->get('user/id'), mb_strtolower($value));
+
+        if ($tagUserExists) {
+            // check if it is already added to the note
+            $tagNoteExists = Note::getTagByTagIdAndNoteId($noteId, $tagUserExists['id']);
+            if (!$tagNoteExists) {
+                Note::addTag($noteId, $tagUserExists['id'], $date);
+
+                return new Response('1');
+            }
+
+            return new Response('0');
         }
-        echo "0";
-    } else {
-        $tagId = Tag::add($loggedInUserId, $value, $date);
+
+        $tagId = Tag::add($session->get('user/id'), $value, $date);
         Note::addTag($noteId, $tagId, $date);
-        echo "1";
+
+        return new Response('1');
     }
+}
