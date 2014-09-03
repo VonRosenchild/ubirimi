@@ -25,7 +25,7 @@
                             <?php while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)): ?>
                                 <tr>
                                     <td <?php if ($SLA['id'] == $slaSelectedId) echo 'style="background-color: #f5f5f5;"' ?>>
-                                        <a href="/helpdesk/sla/<?php echo $projectId ?>/<?php echo $SLA['id'] ?>"><?php echo $SLA['name'] ?></a>
+                                        <a href="/helpdesk/report/<?php echo $projectId ?>/<?php echo $SLA['id'] ?>"><?php echo $SLA['name'] ?></a>
                                     </td>
                                 </tr>
                             <?php endwhile ?>

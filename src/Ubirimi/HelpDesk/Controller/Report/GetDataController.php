@@ -20,7 +20,7 @@ class GetDataController extends UbirimiController
 
         $dateTo = date('Y-m-d');
         $dateFrom = new \DateTime($dateTo, new \DateTimeZone($clientSettings['timezone']));
-        $dateFrom = date_sub($dateFrom, date_interval_create_from_date_string('60 days'));
+        $dateFrom = date_sub($dateFrom, date_interval_create_from_date_string('90 days'));
 
         $issues = SLA::getIssues($slaId, $dateFrom->format('Y-m-d'), $dateTo);
 
@@ -36,8 +36,6 @@ class GetDataController extends UbirimiController
         }
 
         while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-
-            if ($issue['stopped_date'] == null && end($dates) == date('Y-m-d'))
             if ($issue['sla_value'] >= 0) {
                 $succeeded[substr($issue['stopped_date'], 0, 10)]++;
             } else {

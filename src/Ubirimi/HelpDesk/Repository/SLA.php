@@ -597,7 +597,7 @@ class SLA
                  'left join help_sla_goal on help_sla_goal.help_sla_id = yongo_issue_sla.help_sla_id ' .
                  'left join yongo_issue on yongo_issue.id = yongo_issue_sla.yongo_issue_id ' .
                  'where yongo_issue_sla.help_sla_id = ? and ' .
-                 '(yongo_issue_sla.stopped_date >= ? and yongo_issue_sla.stopped_date <= ?) or yongo_issue_sla.stopped_date';
+                 '(yongo_issue_sla.stopped_date >= ? and yongo_issue_sla.stopped_date <= ?)';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("iss", $slaId, $dateFrom, $dateTo);

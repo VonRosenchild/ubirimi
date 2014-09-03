@@ -54,11 +54,13 @@ $('document').ready(function () {
                         borderWidth: 0
                     },
                     series: [{
-                        name: 'Succeeded',
-                        data: succeeded
-                    }, {
                         name: 'Breached',
+                        color: 'red',
                         data: breached
+                    }, {
+                        name: 'Succeeded',
+                        color: 'green',
+                        data: succeeded
                     }]
                 });
             }
