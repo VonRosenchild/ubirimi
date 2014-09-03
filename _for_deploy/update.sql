@@ -8,6 +8,9 @@ VALUES (
   '2',  'weekly'
 );
 
+ALTER TABLE `qn_tag` ADD `description` VARCHAR(255) NOT NULL AFTER `name`;
+ALTER TABLE `qn_tag` ADD `date_updated` DATETIME NOT NULL AFTER `date_created`;
+
 CREATE TABLE IF NOT EXISTS `qn_notebook` (
   `id` bigint(20) unsigned NOT NULL,
   `user_id` bigint(20) unsigned NOT NULL,
