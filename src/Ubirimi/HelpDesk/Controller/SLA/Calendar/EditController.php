@@ -1,58 +1,72 @@
 <?php
 
-    use Ubirimi\Repository\HelpDesk\SLACalendar;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+namespace Ubirimi\HelpDesk\Controller\SLA\Calendar;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $clientSettings = $session->get('client/settings');
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\SystemProduct;
+use Ubirimi\Repository\HelpDesk\SLACalendar;
 
-    $menuSelectedCategory = 'help_desk';
-    $menuProjectCategory = 'sla_calendar';
-    $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks > Edit Calendar';
+class EditController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = $session->get('client/settings');
 
-    $emptyName = false;
-    $duplicateName = false;
+        $menuSelectedCategory = 'help_desk';
+        $menuProjectCategory = 'sla_calendar';
+        $sectionPageTitle = $clientSettings['title_name']
+            . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
+            . ' / Help Desks > Edit Calendar';
 
-    $calendarId = $_GET['id'];
-    $calendar = SLACalendar::getById($calendarId);
-    $projectId = $calendar['project_id'];
-    $data = SLACalendar::getData($calendarId);
+        $emptyName = false;
+        $duplicateName = false;
 
-    if (isset($_POST['confirm_edit_calendar'])) {
+        $calendarId = $request->get('id');
+        $calendar = SLACalendar::getById($calendarId);
+        $projectId = $calendar['project_id'];
+        $data = SLACalendar::getData($calendarId);
 
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+        if ($request->request->has('confirm_edit_calendar')) {
 
-        if (empty($name)) {
-            $emptyName = true;
-        }
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-        $existingCalendar = SLACalendar::getByName($name, $projectId, $calendarId);
-        if ($existingCalendar) {
-            $duplicateName = true;
-        }
-        if (!$emptyName && !$duplicateName) {
-            $dataCalendar = array();
-            for ($i = 1; $i <= 7; $i++) {
-                $dataCalendar[$i - 1]['from_hour'] = $_POST['from_' . $i . '_hour'];
-                $dataCalendar[$i - 1]['from_minute'] = $_POST['from_' . $i . '_minute'];
-                $dataCalendar[$i - 1]['to_hour'] = $_POST['to_' . $i . '_hour'];
-                $dataCalendar[$i - 1]['to_minute'] = $_POST['to_' . $i . '_minute'];
-                $dataCalendar[$i - 1]['notWorking'] = isset($_POST['not_working_day_' . $i]) ? $_POST['not_working_day_' . $i] : 0;
+            if (empty($name)) {
+                $emptyName = true;
             }
 
+            $existingCalendar = SLACalendar::getByName($name, $projectId, $calendarId);
+            if ($existingCalendar) {
+                $duplicateName = true;
+            }
             if (!$emptyName && !$duplicateName) {
+                $dataCalendar = array();
+                for ($i = 1; $i <= 7; $i++) {
+                    $dataCalendar[$i - 1]['from_hour'] = $request->request->get('from_' . $i . '_hour');
+                    $dataCalendar[$i - 1]['from_minute'] = $request->request->get('from_' . $i . '_minute');
+                    $dataCalendar[$i - 1]['to_hour'] = $request->request->get('to_' . $i . '_hour');
+                    $dataCalendar[$i - 1]['to_minute'] = $request->request->get('to_' . $i . '_minute');
+                    $dataCalendar[$i - 1]['notWorking'] = $request->request->get('not_working_day_' . $i, 0);
+                }
 
-                $currentDate = Util::getServerCurrentDateTime();
+                if (!$emptyName && !$duplicateName) {
 
-                SLACalendar::deleteDataByCalendarId($calendarId);
-                SLACalendar::updateById($calendarId, null, $name, $description, $currentDate);
-                SLACalendar::addData($calendarId, $dataCalendar);
+                    $currentDate = Util::getServerCurrentDateTime();
 
-                header('Location: /helpdesk/sla/calendar/' . $projectId);
+                    SLACalendar::deleteDataByCalendarId($calendarId);
+                    SLACalendar::updateById($calendarId, null, $name, $description, $currentDate);
+                    SLACalendar::addData($calendarId, $dataCalendar);
+
+                    return new RedirectResponse('/helpdesk/sla/calendar/' . $projectId);
+                }
             }
         }
-    }
 
-    require_once __DIR__ . '/../../../Resources/views/sla/calendar/Edit.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/sla/calendar/Edit.php', get_defined_vars());
+    }
+}
