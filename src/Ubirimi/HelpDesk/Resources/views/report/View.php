@@ -34,7 +34,7 @@
                     <td width="10px"></td>
                     <td valign="top">
                         <div class="headerPageText"><?php echo $slaSelected['name'] ?></div>
-
+                        <div id="chartContainer" style="height: 700px;"></div>
                     </td>
                 </tr>
             </table>
@@ -43,7 +43,7 @@
         <?php endif ?>
     </div>
     <div id="modalDeleteSLA"></div>
-    <input type="hidden" value="<?php echo $slaSelectedId ?>" id="sla_id" />
+    <input type="hidden" value="<?php echo $slaSelectedId ?>" id="sla_id_for_report" />
     <input type="hidden" value="<?php echo $projectId ?>" id="project_id" />
 
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_footer.php' ?>

@@ -1,6 +1,70 @@
 var elementId = null;
 $('document').ready(function () {
 
+    if ($('#sla_id_for_report').length) {
+        $.ajax({
+            type: "POST",
+            url: '/helpdesk/report/data',
+            dataType: 'json',
+            data: {
+                id: $('#sla_id_for_report').val()
+            },
+            success: function (chartData) {
+
+                var dates = [];
+                var succeeded = [];
+                var breached = [];
+                console.log(chartData.breached);
+                for (var i = 0; i < chartData.dates.length; i++) {
+                    dates.push(chartData.dates[i]);
+                    succeeded.push(chartData.succeeded[chartData.dates[i]]);
+                    breached.push(chartData.breached[chartData.dates[i]]);
+                }
+
+                $('#chartContainer').highcharts({
+                    title: {
+                        text: 'Succeeded / Breached',
+                        x: -20 //center
+                    },
+                    xAxis: {
+                        categories: dates,
+                        labels: {
+                            rotation: -45,
+                            step: 2,
+                            style: {
+                                fontSize: '13px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: '# Issues'
+                        },
+                        plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
+                        }]
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        borderWidth: 0
+                    },
+                    series: [{
+                        name: 'Succeeded',
+                        data: succeeded
+                    }, {
+                        name: 'Breached',
+                        data: breached
+                    }]
+                });
+            }
+        });
+    }
+
     $.fn.selectRange = function(start, end) {
         if (!end) end = start;
         return this.each(function() {

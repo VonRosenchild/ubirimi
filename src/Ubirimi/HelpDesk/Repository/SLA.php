@@ -590,4 +590,24 @@ class SLA
         else
             return false;
     }
+
+    public static function getIssues($slaId, $dateFrom, $dateTo) {
+        $query = 'select yongo_issue.id, yongo_issue.date_created, (help_sla_goal.value - yongo_issue_sla.value) as sla_value, yongo_issue_sla.stopped_date ' .
+                 'from yongo_issue_sla ' .
+                 'left join help_sla_goal on help_sla_goal.help_sla_id = yongo_issue_sla.help_sla_id ' .
+                 'left join yongo_issue on yongo_issue.id = yongo_issue_sla.yongo_issue_id ' .
+                 'where yongo_issue_sla.help_sla_id = ? and ' .
+                 '(yongo_issue_sla.stopped_date >= ? and yongo_issue_sla.stopped_date <= ?) or yongo_issue_sla.stopped_date';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iss", $slaId, $dateFrom, $dateTo);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result;
+        else
+            return false;
+    }
 }

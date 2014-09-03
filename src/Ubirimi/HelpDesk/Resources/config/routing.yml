@@ -211,3 +211,7 @@ hdDeleteOrganizationDialog:
 hdDeleteOrganization:
   path: /helpdesk/administration/organizations/delete
   defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Administration\Organization\DeleteController' }
+
+hdGetSLAReport:
+  path: /helpdesk/report/data
+  defaults: { _controller: '\Ubirimi\HelpDesk\Controller\Report\GetDataController' }
