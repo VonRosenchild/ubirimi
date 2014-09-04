@@ -34,6 +34,12 @@
                     <td width="10px"></td>
                     <td valign="top">
                         <div class="headerPageText"><?php echo $slaSelected['name'] ?></div>
+                        <div>
+                            <span>Start Date</span>
+                            <input type="text" class="inputText" style="width: 80px" value="<?php echo $dateFrom ?>" id="sla_report_start_date" />
+                            <span>End Date</span>
+                            <input type="text" class="inputText" style="width: 80px" value="<?php echo $dateTo ?>" id="sla_report_end_date"/>
+                        </div>
                         <div id="chartContainer" style="height: 700px;"></div>
                     </td>
                 </tr>

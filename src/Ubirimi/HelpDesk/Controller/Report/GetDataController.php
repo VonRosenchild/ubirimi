@@ -18,21 +18,22 @@ class GetDataController extends UbirimiController
 
         $slaId = $request->get('id');
 
-        $dateTo = date('Y-m-d');
-        $dateFrom = new \DateTime($dateTo, new \DateTimeZone($clientSettings['timezone']));
-        $dateFrom = date_sub($dateFrom, date_interval_create_from_date_string('90 days'));
+        $dateFrom = $request->get('date_from');
+        $dateTo = $request->get('date_to');
 
-        $issues = SLA::getIssues($slaId, $dateFrom->format('Y-m-d'), $dateTo);
+        $issues = SLA::getIssues($slaId, $dateFrom, $dateTo);
 
         $dates = array();
         $succeeded = array();
         $breached = array();
 
-        while (date_format($dateFrom, 'Y-m-d') <= $dateTo) {
-            $dates[] = date_format($dateFrom, 'Y-m-d');
+
+        $dateTemporary = new \DateTime($dateFrom, new \DateTimeZone($clientSettings['timezone']));
+        while (date_format($dateTemporary, 'Y-m-d') <= $dateTo) {
+            $dates[] = date_format($dateTemporary, 'Y-m-d');
             $succeeded[end($dates)] = 0;
             $breached[end($dates)] = 0;
-            date_add($dateFrom, date_interval_create_from_date_string('1 days'));
+            date_add($dateTemporary, date_interval_create_from_date_string('1 days'));
         }
 
         while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {

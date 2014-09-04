@@ -39,6 +39,10 @@ class ViewController extends UbirimiController
 
         $slaSelected = SLA::getById($slaSelectedId);
 
+        $dateTo = date('Y-m-d');
+        $dateFrom = new \DateTime($dateTo, new \DateTimeZone($clientSettings['timezone']));
+        $dateFrom = date_sub($dateFrom, date_interval_create_from_date_string('1 months'))->format('Y-m-d');
+
         return $this->render(__DIR__ . '/../../Resources/views/report/View.php', get_defined_vars());
     }
 }
