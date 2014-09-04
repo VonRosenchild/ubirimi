@@ -30,7 +30,7 @@
                                                 <?php if ($event['new_value'] == 'NULL' || $event['new_value'] == null): ?>
                                                     cleared <?php echo Field::$fieldTranslation[$event['field']] ?>
                                                 <?php else: ?>
-                                                    updated the <?php echo Field::$fieldTranslation[$event['field']] ?>
+                                                    updated the <?php if (isset(Field::$fieldTranslation[$event['field']])) echo Field::$fieldTranslation[$event['field']]; else echo $event['field'] ?>
                                                     to <?php echo $event['new_value'] ?>
                                                 <?php endif ?>
                                             </li>
