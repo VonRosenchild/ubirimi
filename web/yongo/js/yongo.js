@@ -901,7 +901,7 @@ $('document').ready(function () {
                 $.each(obj.type_arr, function (key, value) {
                     $('#field_type_type').append($('<option></option>').val(value.id).html(value.name));
                 });
-                $('#field_type_type option:first-child').attr("selected", "selected");
+                $('#field_type_type').select2('val', $("#field_type_type option:first").val());
 
                 $.ajax({
                     type: "POST",
@@ -1624,29 +1624,28 @@ $('document').ready(function () {
                 $.each(obj.type_arr, function (key, value) {
                     $('#search_issue_type').append($('<option></option>').val(value.id).html(value.name));
                 });
-
-                $('#search_issue_type option:first-child').attr("selected", "selected");
+                $('#search_issue_type').select2('val', $("#search_issue_type option:first").val());
 
                 $('#search_issue_status').find('option').remove();
                 $('#search_issue_status').append($('<option></option>').val(-1).html('Any'));
                 $.each(obj.status_arr, function (key, value) {
                     $('#search_issue_status').append($('<option></option>').val(value.id).html(value.name));
                 });
-                $('#search_issue_status option:first-child').attr("selected", "selected");
+                $('#search_issue_status').select2('val', $("#search_issue_status option:first").val());
 
                 $('#search_issue_priority').find('option').remove();
                 $('#search_issue_priority').append($('<option></option>').val(-1).html('Any'));
                 $.each(obj.priority_arr, function (key, value) {
                     $('#search_issue_priority').append($('<option></option>').val(value.id).html(value.name));
                 });
-                $('#search_issue_priority option:first-child').attr("selected", "selected")
+                $('#search_issue_priority').select2('val', $("#search_issue_priority option:first").val());
 
                 $('#search_issue_resolution').find('option').remove();
                 $('#search_issue_resolution').append($('<option></option>').val(-1).html('Any'));
                 $.each(obj.resolution_arr, function (key, value) {
                     $('#search_issue_resolution').append($('<option></option>').val(value.id).html(value.name));
                 });
-                $('#search_issue_resolution option:first-child').attr("selected", "selected")
+                $('#search_issue_resolution').select2('val', $("#search_issue_resolution option:first").val());
 
                 $('#search_assignee').find('option').remove();
                 $('#search_reporter').find('option').remove();
@@ -1658,8 +1657,8 @@ $('document').ready(function () {
                     $('#search_reporter').append($('<option></option>').val(value.user_id).html(value.first_name + ' ' + value.last_name));
                 });
 
-                $('#search_assignee option:first-child').attr("selected", "selected");
-                $('#search_reporter option:first-child').attr("selected", "selected");
+                $('#search_assignee').select2('val', $("#search_assignee option:first").val());
+                $('#search_reporter').select2('val', $("#search_reporter option:first").val());
 
                 // project components
                 $('#search_component').find('option').remove();
@@ -1667,7 +1666,7 @@ $('document').ready(function () {
                 $.each(obj.project_component_arr, function (key, value) {
                     $('#search_component').append($('<option></option>').val(value.id).html(value.name));
                 });
-                $('#search_component option:first-child').attr("selected", "selected");
+                $('#search_component').select2('val', $("#search_component option:first").val());
 
                 // project fix version
                 $('#search_fix_version').find('option').remove();
@@ -1675,7 +1674,7 @@ $('document').ready(function () {
                 $.each(obj.project_version_arr, function (key, value) {
                     $('#search_fix_version').append($('<option></option>').val(value.id).html(value.name));
                 });
-                $('#search_fix_version option:first-child').attr("selected", "selected");
+                $('#search_fix_version').select2('val', $("#search_fix_version option:first").val());
 
                 // project affects version
                 $('#search_affects_version').find('option').remove();
@@ -1683,8 +1682,7 @@ $('document').ready(function () {
                 $.each(obj.project_version_arr, function (key, value) {
                     $('#search_affects_version').append($('<option></option>').val(value.id).html(value.name));
                 });
-                $('#search_affects_version option:first-child').attr("selected", "selected");
-
+                $('#search_affects_version').select2('val', $("#search_affects_version option:first").val());
             }
         });
     });
@@ -2094,6 +2092,7 @@ $('document').ready(function () {
                 $('#move_to_issue_type').find('option').remove();
                 $.each(obj, function (key, value) {
                     $('#move_to_issue_type').append($('<option></option>').val(value.id).html(value.name));
+                    $('#move_to_issue_type').select2('val', $("#move_to_issue_type option:first").val());
                 });
             }
         });
