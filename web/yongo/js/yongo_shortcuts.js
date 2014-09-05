@@ -7,7 +7,6 @@ $('document').ready(function () {
 
             if (focused) {
                 if (focused.is("input") || focused.is("textarea")) {
-                    alert('da');
                     return false;
                 }
             }
