@@ -1439,14 +1439,14 @@ class Issue
                                 }
                             }
 
-                            $fieldChanges[] = array($fieldName, implode(', ', $oldUsersArray), implode(', ', $newUsersArray));
+                            $fieldChanges[] = array($fieldName, implode(', ', $oldUsersArray), implode(', ', $newUsersArray), null, null, $fieldTypeId);
                         }
 
                         break;
                 }
             } else {
                 if ($newIssueCustomFieldsData[$key] != $oldIssueCustomFieldsData[$key]) {
-                    $fieldChanges[] = array($fieldName, $oldIssueCustomFieldsData[$key], $newIssueCustomFieldsData[$key]);
+                    $fieldChanges[] = array($fieldName, $oldIssueCustomFieldsData[$key], $newIssueCustomFieldsData[$key], null, null, $fieldTypeId);
                 }
             }
         }
