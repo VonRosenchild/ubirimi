@@ -22,9 +22,9 @@ class Field {
     const FIELD_RESOLUTION_CODE = 'resolution';
     const FIELD_COMMENT_CODE = 'comment';
     const FIELD_STATUS_CODE = 'status';
-    const FIELD_ISSUE_SECURITY_LEVEL = 'security_level';
-    const FIELD_ISSUE_TIME_TRACKING = 'time_tracking';
-    const FIELD_PROJECT = 'project_name';
+    const FIELD_ISSUE_SECURITY_LEVEL_CODE = 'security_level';
+    const FIELD_ISSUE_TIME_TRACKING_CODE = 'time_tracking';
+    const FIELD_PROJECT_CODE = 'project_name';
 
     const CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE = 'small_text_field';
     const CUSTOM_FIELD_TYPE_BIG_TEXT_CODE = 'big_text_field';
@@ -56,12 +56,12 @@ class Field {
         Field::FIELD_AFFECTS_VERSION_CODE => 'Affected versions',
         Field::FIELD_RESOLUTION_CODE => 'Resolution',
         Field::FIELD_DUE_DATE_CODE => 'Due Date',
-        Field::FIELD_ISSUE_SECURITY_LEVEL => 'Security Level',
+        Field::FIELD_ISSUE_SECURITY_LEVEL_CODE => 'Security Level',
         'time_spent' => 'Time Spent',
         'remaining_estimate' => 'Remaining Estimate',
         'worklog_time_spent' => 'Worklog Time Spent',
         Field::FIELD_ATTACHMENT_CODE => 'Attachment',
-        Field::FIELD_PROJECT => 'Project'
+        Field::FIELD_PROJECT_CODE => 'Project'
     );
 
     public static function getByClient($clientId) {

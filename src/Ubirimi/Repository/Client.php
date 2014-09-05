@@ -212,7 +212,7 @@ class Client
         $attachmentField = Field::getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
         Screen::addData($screen['id'], $attachmentField['id'], 12, $currentDate);
 
-        $timeTrackingField = Field::getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING);
+        $timeTrackingField = Field::getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
         Screen::addData($screen['id'], $timeTrackingField['id'], 13, $currentDate);
 
         $screen = Screen::getByName($clientId, 'Resolve Issue Screen');
@@ -1281,7 +1281,7 @@ class Client
         $field = Field::getByCode($clientId, Field::FIELD_SUMMARY_CODE);
 
         FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
-        $field = Field::getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING);
+        $field = Field::getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
         FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
     }
 

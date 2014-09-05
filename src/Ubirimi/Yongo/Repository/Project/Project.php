@@ -1629,7 +1629,7 @@ class Project
 
         for ($i = 0; $i < count($issueIdsLevel); $i++) {
 
-            Issue::updateById($issueIdsLevel[$i][0], array(Field::FIELD_ISSUE_SECURITY_LEVEL => $issueIdsLevel[$i][1]), $date);
+            Issue::updateById($issueIdsLevel[$i][0], array(Field::FIELD_ISSUE_SECURITY_LEVEL_CODE => $issueIdsLevel[$i][1]), $date);
         }
     }
 

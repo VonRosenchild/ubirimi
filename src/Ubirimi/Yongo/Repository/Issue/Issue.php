@@ -830,8 +830,8 @@ class Issue
         }
 
         $securityLevel = null;
-        if (isset($issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL])) {
-            $securityLevel = $issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL];
+        if (isset($issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL_CODE])) {
+            $securityLevel = $issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL_CODE];
             if ($securityLevel == -1)
                 $securityLevel = null;
         }
@@ -909,8 +909,8 @@ class Issue
         }
 
         $securityLevel = null;
-        if (isset($issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL])) {
-            $securityLevel = $issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL];
+        if (isset($issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL_CODE])) {
+            $securityLevel = $issueSystemFields[Field::FIELD_ISSUE_SECURITY_LEVEL_CODE];
             if ($securityLevel == -1)
                 $securityLevel = null;
         }
@@ -1108,13 +1108,13 @@ class Issue
                     $paramValues[] = $data['summary'];
                     break;
 
-                case Field::FIELD_ISSUE_SECURITY_LEVEL:
+                case Field::FIELD_ISSUE_SECURITY_LEVEL_CODE:
                     $query .= 'security_scheme_level_id = ?,';
                     $paramType .= 'i';
-                    if ($data[FIELD::FIELD_ISSUE_SECURITY_LEVEL] == -1)
+                    if ($data[FIELD::FIELD_ISSUE_SECURITY_LEVEL_CODE] == -1)
                         $paramValues[] = null;
                     else
-                        $paramValues[] = $data[FIELD::FIELD_ISSUE_SECURITY_LEVEL];
+                        $paramValues[] = $data[FIELD::FIELD_ISSUE_SECURITY_LEVEL_CODE];
                     break;
 
                 case Field::FIELD_DESCRIPTION_CODE:
@@ -1227,10 +1227,10 @@ class Issue
                                     $newIssueData[Field::FIELD_SUMMARY_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_PROJECT, $oldIssueData, $newIssueData)) {
-            $fieldChanges[] = array(Field::FIELD_PROJECT,
-                                    $oldIssueData[Field::FIELD_PROJECT],
-                                    $newIssueData[Field::FIELD_PROJECT],
+        if (Issue::issueFieldChanged(Field::FIELD_PROJECT_CODE, $oldIssueData, $newIssueData)) {
+            $fieldChanges[] = array(Field::FIELD_PROJECT_CODE,
+                                    $oldIssueData[Field::FIELD_PROJECT_CODE],
+                                    $newIssueData[Field::FIELD_PROJECT_CODE],
                                     $oldIssueData['issue_project_id'],
                                     $newIssueData['issue_project_id']);
         }

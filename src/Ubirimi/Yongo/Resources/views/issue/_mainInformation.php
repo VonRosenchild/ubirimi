@@ -96,7 +96,7 @@
                     </td>
                 </tr>
 
-                <?php if ($issue[Field::FIELD_ISSUE_SECURITY_LEVEL]): ?>
+                <?php if ($issue[Field::FIELD_ISSUE_SECURITY_LEVEL_CODE]): ?>
                     <tr>
                         <td>
                             <div class="textLabel">Security Level:</div>

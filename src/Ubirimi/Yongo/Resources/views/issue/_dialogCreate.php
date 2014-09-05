@@ -46,13 +46,13 @@
             continue;
         }
 
-        if ($field['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
+        if ($field['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING_CODE) {
             $fieldsPlacedOnScreen[] = $field['field_id'];
             $timeTrackingFieldId = $field['field_id'];
             continue;
         }
 
-        if (!$userHasSetSecurityLevelPermission && $field['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL) {
+        if (!$userHasSetSecurityLevelPermission && $field['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL_CODE) {
             continue;
         }
 
@@ -93,7 +93,7 @@
                             echo IssueHelper::renderInput(Field::FIELD_SUMMARY_CODE, $arrayData['required_flag']);
                             break;
 
-                        case Field::FIELD_ISSUE_SECURITY_LEVEL:
+                        case Field::FIELD_ISSUE_SECURITY_LEVEL_CODE:
                             if ($userHasSetSecurityLevelPermission) {
 
                                 echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo mousetrap">';
@@ -267,7 +267,7 @@
     for ($i = 0; $i < count($fieldData); $i++) {
 
         if (!in_array($fieldData[$i]['field_id'], $fieldsPlacedOnScreen) && $fieldData[$i]['required_flag']) {
-            if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL) {
+            if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL_CODE) {
                 /* if it is not placed on screen check if there is a default level set.
                  * if there is a default level set do nothing. if not add it to the warnings
                  */
@@ -282,7 +282,7 @@
                     }
                     echo '</td>';
                 echo '</tr>';
-            } elseif ($fieldData[$i]['field_code'] != Field::FIELD_ISSUE_TIME_TRACKING) {
+            } elseif ($fieldData[$i]['field_code'] != Field::FIELD_ISSUE_TIME_TRACKING_CODE) {
                 echo '<tr>';
                     echo '<td>';
                         echo '<input type="hidden" description="' . Field::$fieldTranslation[$fieldData[$i]['field_code']] . '" required="1" id="field_type_' . $fieldData[$i]['field_code'] . '" name="' . $fieldData[$i]['field_code'] . '" />';

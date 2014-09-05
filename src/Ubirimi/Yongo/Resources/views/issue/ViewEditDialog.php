@@ -75,10 +75,10 @@
     $fieldCodeNULL = null;
     while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
 
-        if (!$userHasSetSecurityLevelPermission && $field['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL)
+        if (!$userHasSetSecurityLevelPermission && $field['field_code'] == Field::FIELD_ISSUE_SECURITY_LEVEL_CODE)
             continue;
 
-        if ($field['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
+        if ($field['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING_CODE) {
             $fieldsPlacedOnScreen[] = $field['field_id'];
             $timeTrackingFieldId = $field['field_id'];
             continue;
@@ -132,13 +132,13 @@
 
                             echo '<input ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" class="inputTextLarge mousetrap" type="text" value="' . htmlspecialchars($issueData['summary'], ENT_QUOTES) . '" name="' . $field['field_code'] . '" />';
                             break;
-                        case Field::FIELD_ISSUE_SECURITY_LEVEL:
+                        case Field::FIELD_ISSUE_SECURITY_LEVEL_CODE:
                             if ($userHasSetSecurityLevelPermission) {
                                 echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '" class="inputTextCombo">';
                                 echo '<option value="-1">None</option>';
                                 while ($issueSecuritySchemeLevel = $issueSecuritySchemeLevels->fetch_array(MYSQLI_ASSOC)) {
                                     $text = '';
-                                    if ($issueSecuritySchemeLevel['id'] == $issueData[Field::FIELD_ISSUE_SECURITY_LEVEL])
+                                    if ($issueSecuritySchemeLevel['id'] == $issueData[Field::FIELD_ISSUE_SECURITY_LEVEL_CODE])
                                         $text = 'selected="selected"';
 
                                     echo '<option ' . $text . ' value="' . $issueSecuritySchemeLevel['id'] . '">' . $issueSecuritySchemeLevel['name'] . '</option>';
@@ -340,7 +340,7 @@
         if (in_array($timeTrackingFieldId, $fieldsPlacedOnScreen)) {
             // deal with the time tracking fields
             for ($i = 0; $i < count($fieldData); $i++) {
-                if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING) {
+                if ($fieldData[$i]['field_code'] == Field::FIELD_ISSUE_TIME_TRACKING_CODE) {
 
                     $arrayData = Util::checkKeyAndValueInArray('field_id', $fieldData[$i]['field_id'], $fieldData);
                     $mandatoryStarHTML = '';
@@ -372,7 +372,7 @@
     }
 
     for ($i = 0; $i < count($fieldData); $i++) {
-        if ($fieldData[$i]['field_code'] != Field::FIELD_ISSUE_TIME_TRACKING) {
+        if ($fieldData[$i]['field_code'] != Field::FIELD_ISSUE_TIME_TRACKING_CODE) {
             if (!in_array($fieldData[$i]['field_id'], $fieldsPlacedOnScreen) && $fieldData[$i]['required_flag']) {
                 echo '<input type="hidden" description="' . Field::$fieldTranslatio[$fieldData[$i]['field_code']] . '" required="1" id="field_type_' . $fieldData[$i]['field_code'] . '" name="' . $fieldData[$i]['field_code'] . '" />';
             }
