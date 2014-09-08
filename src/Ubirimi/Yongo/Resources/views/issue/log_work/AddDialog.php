@@ -12,7 +12,7 @@
 <table class="modal-table">
     <?php if ($mode != 'delete'): ?>
         <tr>
-            <td valign="top">Time Spent <span class="error">*</span></td>
+            <td width="150px" valign="top">Time Spent <span class="error">*</span></td>
             <td>
                 <input type="text" value="<?php if ($workLog) echo $workLog['time_spent'] ?>" required="1" style="width: 100px" id="log_work_time_spent" /> (eg. 3w 4d 12h)
                 <div class="error" id="error_time_spent"></div>
