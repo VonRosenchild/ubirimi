@@ -12,7 +12,7 @@
                 <div>New type for matching issues: </div>
             </td>
             <td>
-                <select id="modal_delete_type" class="inputTextCombo">
+                <select class="ubirimiModalDialog" id="modal_delete_type" class="inputTextCombo">
                     <?php while ($type = $types->fetch_array(MYSQLI_ASSOC)): ?>
                         <?php if ($type['id'] != $Id): ?>
                             <option value="<?php echo $type['id'] ?>"><?php echo $type['name'] ?></option>

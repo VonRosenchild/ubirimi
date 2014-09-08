@@ -75,8 +75,8 @@
             </tr>
         </table>
     </div>
-    <div id="modalAddGuestsToEvent"></div>
-    <div id="modalDeleteEvent"></div>
+    <div class="ubirimiModalDialog" id="modalAddGuestsToEvent"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteEvent"></div>
     <input type="hidden" value="<?php echo $event['id'] ?>" id="event_id" />
     <input type="hidden" value="<?php echo 'calendar/view/' . $event['calendar_id'] . '/' . $month . '/' . $year ?>" id="calendar_link" />
     <?php require_once __DIR__ . '/../_footer.php' ?>

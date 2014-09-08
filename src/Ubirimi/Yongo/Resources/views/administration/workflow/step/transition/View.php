@@ -54,7 +54,7 @@
         </table>
         <input type="hidden" value="<?php echo $workflowData['id'] ?>" id="transition_id" />
         <input type="hidden" value="<?php echo $workflow['id'] ?>" id="workflow_id" />
-        <div id="deleteWorkflowTransitionModal"></div>
+        <div id="deleteWorkflowTransitionModal" class="ubirimiModalDialog"></div>
     </div>
     <?php require_once __DIR__ . '/../../../_footer.php' ?>
 </body>

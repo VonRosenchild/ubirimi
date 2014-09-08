@@ -59,7 +59,7 @@
                         <?php endwhile ?>
                     </tbody>
                 </table>
-                <div id="modalDeleteSpace"></div>
+                <div class="ubirimiModalDialog" id="modalDeleteSpace"></div>
             <?php else: ?>
                 <div class="infoBox">There are no spaces defined.</div>
             <?php endif ?>

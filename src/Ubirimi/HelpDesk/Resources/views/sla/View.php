@@ -112,7 +112,7 @@
             <div>There are no SLAs created.</div>
         <?php endif ?>
     </div>
-    <div id="modalDeleteSLA"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteSLA"></div>
     <input type="hidden" value="<?php echo $slaSelectedId ?>" id="sla_id" />
     <input type="hidden" value="<?php echo $projectId ?>" id="project_id" />
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_footer.php' ?>

@@ -81,6 +81,6 @@
         </tr>
     </table>
 </div>
-<div id="modalSendFeedback"></div>
-<div id="modalCreateCalendar"></div>
+<div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalCreateCalendar"></div>
 <div id="topMessageBox" align="center" class="topMessageBox"></div>

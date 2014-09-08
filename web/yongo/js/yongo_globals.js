@@ -6,7 +6,7 @@ function resizeModals() {
         if (newHeight < 200) {
             newHeight = 200;
         }
-        console.log(newHeight);
+
         $(".ui-dialog-content").css('max-height', newHeight);
         jQuery(".ui-dialog-content").dialog('option', 'position', ['middle','middle']);
     }

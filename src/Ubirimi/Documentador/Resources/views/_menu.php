@@ -109,7 +109,7 @@
     </div>
 <?php endif ?>
 
-<div id="modalSendFeedback"></div>
-<div id="modalNewPage"></div>
-<div id="modalNewPageDetails"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalNewPage"></div>
+<div class="ubirimiModalDialog" id="modalNewPageDetails"></div>
 <div id="topMessageBox" align="center" class="topMessageBox"></div>

@@ -79,6 +79,6 @@
             </tbody>
         </table>
     </div>
-    <div id="modalDeleteEvent"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteEvent"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

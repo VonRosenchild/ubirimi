@@ -57,7 +57,7 @@
             <?php else: ?>
                 <div class="messageGreen">There are no issue priorities defined.</div>
             <?php endif ?>
-            <div id="modalDeleteIssuePriority"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteIssuePriority"></div>
         <?php else: ?>
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>

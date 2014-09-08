@@ -64,7 +64,7 @@
     <?php endif ?>
 </div>
 
-    <div id="modalDeleteSVNAdministrator"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteSVNAdministrator"></div>
 <input type="hidden" value="<?php if ($svnAdministrators && $svnAdministrators->num_rows == 1) echo '0'; else echo "1" ?>" id="delete_possible" />
 <?php else: ?>
     <div class="infoBox">You do not have the privileges to access this page.</div>

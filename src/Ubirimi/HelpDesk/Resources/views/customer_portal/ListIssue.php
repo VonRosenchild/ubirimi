@@ -83,7 +83,7 @@
 
     <?php if ($projectsForBrowsing): ?>
         <div id="contentMenuIssueSearchOptions"></div>
-        <div id="modalEditIssue"></div>
+        <div class="ubirimiModalDialog" id="modalEditIssue"></div>
     <?php endif ?>
     <input type="hidden" value="context_search" id="context_search" />
 </body>

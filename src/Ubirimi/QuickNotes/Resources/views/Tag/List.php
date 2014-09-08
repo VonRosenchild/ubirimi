@@ -49,8 +49,8 @@
         <?php endif ?>
     </div>
 
-    <div id="modalDeleteTag"></div>
-    <div id="modalCreateTag"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteTag"></div>
+    <div class="ubirimiModalDialog" id="modalCreateTag"></div>
 
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

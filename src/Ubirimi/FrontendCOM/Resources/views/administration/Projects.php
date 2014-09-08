@@ -56,7 +56,7 @@
             <?php endwhile ?>
             </tbody>
         </table>
-        <div id="modalDeleteClient"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteClient"></div>
     <?php else: ?>
         <div style="height: 2px"></div>
         <div class="messageGreen">There are no projects yet.</div>

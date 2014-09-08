@@ -102,7 +102,7 @@
         </tr>
     </table>
 </div>
-<div id="modalSendFeedback"></div>
-<div id="modalCreateIssue"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalCreateIssue"></div>
 
 <input type="hidden" id="can_create_issue_in_projects" value="1" />

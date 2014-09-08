@@ -87,7 +87,7 @@
                 </tr>
             <?php endwhile ?>
         </table>
-        <div id="deleteNotificationDataModal"></div>
+        <div id="deleteNotificationDataModal" class="ubirimiModalDialog"></div>
     </div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

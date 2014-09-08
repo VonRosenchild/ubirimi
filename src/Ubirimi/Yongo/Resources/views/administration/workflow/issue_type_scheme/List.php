@@ -76,7 +76,7 @@
             <?php else: ?>
                 <div class="messageGreen">There are no workflow issue type schemes defined.</div>
             <?php endif ?>
-            <div id="modalDeleteWorkflowIssueTypeScheme"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteWorkflowIssueTypeScheme"></div>
         <?php else: ?>
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>

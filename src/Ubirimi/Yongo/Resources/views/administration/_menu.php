@@ -296,7 +296,7 @@
     </table>
 </div>
 
-<div id="modalKeyboardShortcuts"></div>
-<div id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalKeyboardShortcuts"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>
 
 <input type="hidden" value="<?php echo $menuSelectedCategory ?>" id="menu_selected" />

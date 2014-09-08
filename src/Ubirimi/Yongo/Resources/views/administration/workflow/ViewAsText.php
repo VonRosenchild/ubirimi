@@ -58,7 +58,7 @@
         </table>
     </div>
 
-    <div id="modalDeleteWorkflowStep"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteWorkflowStep"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>
 </html>

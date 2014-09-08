@@ -64,8 +64,8 @@
 
         <input type="hidden" value="<?php echo $entityId ?>" id="entity_id"/> <input type="hidden" value="<?php echo $spaceId ?>" id="space_id"/>
 
-        <div id="modalRemovePage"></div>
-        <div id="modalDeleteAttachment"></div>
+        <div class="ubirimiModalDialog" id="modalRemovePage"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteAttachment"></div>
     </div>
     <?php require_once __DIR__ . '/../../_footer.php' ?>
 </body>

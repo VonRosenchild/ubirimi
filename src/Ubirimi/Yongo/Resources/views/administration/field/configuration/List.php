@@ -77,7 +77,7 @@
             <div class="messageGreen">There are no field configurations defined.</div>
         <?php endif ?>
     </div>
-    <div id="modalDeleteFieldConfiguration"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteFieldConfiguration"></div>
     <?php require_once __DIR__ . '/../../_footer.php' ?>
 </body>
 </html>

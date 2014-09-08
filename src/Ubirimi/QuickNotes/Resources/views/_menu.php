@@ -98,6 +98,6 @@
 
 <input type="hidden" value="<?php echo $menuSelectedCategory ?>" id="menu_selected" />
 
-<div id="modalSendFeedback"></div>
-<div id="modalCreateNotebook"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalCreateNotebook"></div>
 <div id="topMessageBox" align="center" class="topMessageBox"></div>

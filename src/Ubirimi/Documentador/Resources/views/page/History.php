@@ -77,8 +77,8 @@
         <?php else: ?>
             <div class="infoBox">There are no revisions for this page.</div>
         <?php endif ?>
-        <div id="modalRemoveRevision"></div>
-        <div id="modalRestoreRevision"></div>
+        <div class="ubirimiModalDialog" id="modalRemoveRevision"></div>
+        <div class="ubirimiModalDialog" id="modalRestoreRevision"></div>
         <input type="hidden" value="<?php echo $entityId ?>" id="entity_id" />
     </div>
     <?php require_once __DIR__ . '/../_footer.php' ?>

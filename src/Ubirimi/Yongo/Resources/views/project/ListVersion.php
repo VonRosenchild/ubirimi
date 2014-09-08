@@ -40,12 +40,12 @@
                 <?php endwhile ?>
                 </tbody>
             </table>
-            <div id="modalDeleteProjectRelease"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteProjectRelease"></div>
         <?php else: ?>
             <div class="messageGreen">There are no versions for this project yet.</div>
         <?php endif ?>
     </div>
     <input type="hidden" id="project_id" value="<?php echo $projectId ?>" name="project_id" />
-    <div id="modalProjectFilters"></div>
+    <div class="ubirimiModalDialog" id="modalProjectFilters"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

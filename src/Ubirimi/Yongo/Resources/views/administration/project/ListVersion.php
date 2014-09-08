@@ -65,7 +65,7 @@
                 <?php endwhile ?>
             </tbody>
         </table>
-        <div id="modalDeleteProjectRelease"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteProjectRelease"></div>
         <?php else: ?>
         <div class="messageGreen">There are no releases for this project yet.</div>
         <?php endif ?>

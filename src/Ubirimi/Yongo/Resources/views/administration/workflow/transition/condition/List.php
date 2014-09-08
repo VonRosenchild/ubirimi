@@ -47,7 +47,7 @@
             <div class="messageGreen">There are no conditions associated with this transition.</div>
         <?php endif ?>
         <input type="hidden" value="<?php echo $workflowDataId ?>" id="transition_id" />
-        <div id="modalDeleteAllConditions"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteAllConditions"></div>
     </div>
     <?php require_once __DIR__ . '/../../../_footer.php' ?>
 </body>

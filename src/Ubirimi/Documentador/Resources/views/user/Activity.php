@@ -53,7 +53,7 @@
             <div class="infoBox">There is no activity for this user.</div>
         <?php endif ?>
         <input type="hidden" id="user_id" value="<?php echo $userId ?>"/>
-        <div id="modalChangePassword"></div>
+        <div class="ubirimiModalDialog" id="modalChangePassword"></div>
     </div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

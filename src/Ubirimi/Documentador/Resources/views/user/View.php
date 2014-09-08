@@ -61,6 +61,6 @@
 
         <input type="hidden" id="user_id" value="<?php echo $userId ?>"/>
     </div>
-    <div id="modalChangePassword"></div>
+    <div class="ubirimiModalDialog" id="modalChangePassword"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

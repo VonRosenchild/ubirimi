@@ -177,8 +177,8 @@
             </tr>
         </table>
 
-        <div id="modalChangePassword"></div>
-        <div id="modalChangePreferences"></div>
+        <div class="ubirimiModalDialog" id="modalChangePassword"></div>
+        <div class="ubirimiModalDialog" id="modalChangePreferences"></div>
         <input type="hidden" id="user_id" value="<?php echo $userId ?>"/>
     </div>
     <?php require_once __DIR__ . '/../_footer.php' ?>

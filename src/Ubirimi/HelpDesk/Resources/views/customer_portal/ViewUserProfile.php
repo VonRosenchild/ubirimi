@@ -78,6 +78,6 @@
             </tr>
         </table>
         <input type="hidden" id="user_id" value="<?php echo $userId ?>"/>
-        <div id="modalChangePassword"></div>
+        <div class="ubirimiModalDialog" id="modalChangePassword"></div>
     </div>
 </body>

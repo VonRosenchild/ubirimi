@@ -82,6 +82,6 @@
             <div>There are no Calendars created.</div>
         <?php endif ?>
     </div>
-    <div id="modalDeleteSLACalendar"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteSLACalendar"></div>
     <?php require_once __DIR__ . '/../../../../../Yongo/Resources/views/_footer.php' ?>
 </body>

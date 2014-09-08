@@ -46,7 +46,7 @@
             </tr>
         </table>
     </div>
-    <div id="modalDeleteSpace"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteSpace"></div>
     <input id="space_id" type="hidden" value="<?php echo $spaceId ?>" />
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

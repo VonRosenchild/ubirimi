@@ -72,6 +72,6 @@
         </table>
     </div>
     <input type="hidden" value="<?php echo $projectId ?>" id="project_id" />
-    <div id="modalProjectFilters"></div>
+    <div class="ubirimiModalDialog" id="modalProjectFilters"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

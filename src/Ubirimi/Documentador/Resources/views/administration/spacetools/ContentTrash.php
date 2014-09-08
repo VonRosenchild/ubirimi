@@ -76,9 +76,9 @@
             <div class="infoBox">There are currently no items in the trash.</div>
         <?php endif ?>
         <input type="hidden" value="<?php echo $spaceId ?>" id="space_id" />
-        <div id="modalPurgeAll"></div>
-        <div id="modalPageRestore"></div>
-        <div id="modalPagePurge"></div>
+        <div class="ubirimiModalDialog" id="modalPurgeAll"></div>
+        <div class="ubirimiModalDialog" id="modalPageRestore"></div>
+        <div class="ubirimiModalDialog" id="modalPagePurge"></div>
     </div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

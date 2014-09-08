@@ -88,8 +88,8 @@
     <div id="agileModalTransitionWithScreen"></div>
     <div id="agileModalUpdateParent"></div>
     <div id="agileCompleteSprint"></div>
-    <div id="modalAddSubTask"></div>
-    <div id="modalEditIssueAssign"></div>
+    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddSubTask"></div>
+    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
 
     <input type="hidden" value="<?php echo $boardId ?>" id="board_id"/> <input type="hidden" value="<?php echo $sprintId ?>" id="sprint_id"/> <input type="hidden" value="<?php echo count($columns); ?>" id="count_columns"/>
     <input type="hidden" value="<?php echo $index; ?>" id="max_index_section"/> <input type="hidden" value="<?php echo $swimlaneStrategy; ?>" id="agile_swimlane_strategy"/>

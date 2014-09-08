@@ -85,7 +85,7 @@
                 <?php else: ?>
                     <div class="infoBox">There are no pages defined in this space.</div>
                 <?php endif ?>
-                <div id="modalDeleteSpace"></div>
+                <div class="ubirimiModalDialog" id="modalDeleteSpace"></div>
             <?php else: ?>
                 <?php Util::renderContactSystemAdministrator() ?>
             <?php endif ?>
@@ -95,5 +95,5 @@
     <input type="hidden" id="page_tree_browser_visible" value="1" />
     <input type="hidden" value="<?php echo $spaceId ?>" id="space_id" />
 
-    <div id="modalRemovePage"></div>
+    <div class="ubirimiModalDialog" id="modalRemovePage"></div>
 </body>

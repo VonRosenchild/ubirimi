@@ -68,7 +68,7 @@
             <div class="messageGreen">There are no screen schemes defined</div>
         <?php endif ?>
     </div>
-        <div id="modalDeleteScreenScheme"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteScreenScheme"></div>
     <?php else: ?>
         <?php Util::renderContactSystemAdministrator() ?>
     <?php endif ?>

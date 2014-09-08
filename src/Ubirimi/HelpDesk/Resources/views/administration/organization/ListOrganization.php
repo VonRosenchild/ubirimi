@@ -48,7 +48,7 @@
                     <?php endwhile ?>
                 </tbody>
             </table>
-            <div id="modalDeleteOrganization"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteOrganization"></div>
         <?php else: ?>
             <div class="infoBox">There are no organizations defined.</div>
         <?php endif ?>

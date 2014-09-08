@@ -68,7 +68,7 @@
             <div class="messageGreen">There are no issue security schemes defined.</div>
         <?php endif ?>
     </div>
-        <div id="modalDeleteIssueSecurityScheme"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteIssueSecurityScheme"></div>
     <?php else: ?>
         <?php Util::renderContactSystemAdministrator() ?>
     <?php

@@ -105,8 +105,8 @@
         </form>
         <input id="board_id" value="<?php echo $boardId ?>" type="hidden"/>
 
-        <div id="modalAddAgileColumn"></div>
-        <div id="modalDeleteAgileColumn"></div>
+        <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddAgileColumn"></div>
+        <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalDeleteAgileColumn"></div>
         <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_footer.php' ?>
     </div>
 </body>

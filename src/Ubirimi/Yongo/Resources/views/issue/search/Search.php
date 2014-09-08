@@ -100,7 +100,7 @@
                     </td>
                 </tr>
             </table>
-            <div id="saveFilterModal"></div>
+            <div id="saveFilterModal" class="ubirimiModalDialog"></div>
             <input type="hidden" value="<?php echo $getFilter ?>" id="entity_id"/>
             <input type="hidden" value="<?php echo $projectIds[0] ?>" id="project_id"/>
             <input type="hidden" value="<?php echo urldecode($query) ?>" id="filter_url"/>
@@ -121,8 +121,8 @@
 
     <?php if ($projectsForBrowsing): ?>
         <div id="contentMenuIssueSearchOptions"></div>
-        <div id="duplicateIssueModal"></div>
-        <div id="modalEditIssue"></div>
+        <div id="duplicateIssueModal" class="ubirimiModalDialog"></div>
+        <div class="ubirimiModalDialog" id="modalEditIssue"></div>
     <?php endif ?>
     <input type="hidden" value="context_search" id="context_search" />
 </body>

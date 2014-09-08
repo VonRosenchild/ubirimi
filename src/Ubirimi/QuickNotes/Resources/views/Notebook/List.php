@@ -59,7 +59,7 @@
     <?php endif ?>
 </div>
 
-<div id="modalDeleteNotebook"></div>
+<div class="ubirimiModalDialog" id="modalDeleteNotebook"></div>
 
 <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

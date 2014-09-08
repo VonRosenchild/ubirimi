@@ -89,4 +89,4 @@
     </table>
 </div>
 
-<div id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>

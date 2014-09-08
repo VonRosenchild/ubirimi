@@ -63,7 +63,7 @@
         <input type="hidden" value="<?php echo $queueId ?>" id="queue_id" />
         <input type="hidden" value="1" id="queue_context" />
         <input type="hidden" value="<?php echo $projectId ?>" id="project_id" />
-        <div id="modalDeleteQueue"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteQueue"></div>
     </div>
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_footer.php' ?>
 </body>

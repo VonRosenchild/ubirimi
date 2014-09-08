@@ -48,6 +48,6 @@
             <div class="messageGreen">There are no properties defined for this step.</div>
         <?php endif ?>
     </div>
-    <div id="modalDeleteStepProperty"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteStepProperty"></div>
     <?php require_once __DIR__ . '/../../../_footer.php' ?>
 </body>

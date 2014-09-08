@@ -39,7 +39,7 @@
         <?php else: ?>
             <div class="messageGreen">There are no custom field values defined.</div>
         <?php endif ?>
-        <div id="modalDeleteCustomFieldValue"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteCustomFieldValue"></div>
     </div>
     <?php require_once __DIR__ . '/../../_footer.php' ?>
 </body>

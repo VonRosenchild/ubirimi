@@ -199,6 +199,6 @@
         </tr>
     </table>
 </div>
-<div id="modalSendFeedback"></div>
-<div id="modalKeyboardShortcuts"></div>
-<div id="modalCreateIssue"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalKeyboardShortcuts"></div>
+<div class="ubirimiModalDialog" id="modalCreateIssue"></div>

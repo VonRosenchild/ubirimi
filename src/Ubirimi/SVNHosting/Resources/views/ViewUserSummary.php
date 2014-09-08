@@ -62,9 +62,9 @@
 </div>
 
 <div id="deleteSvnUser"></div>
-<div id="modalSVNPermissionsUser"></div>
-<div id="modalSVNChangePassword"></div>
-<div id="modalSVNImportUsers"></div>
+<div class="ubirimiModalDialog" id="modalSVNPermissionsUser"></div>
+<div class="ubirimiModalDialog" id="modalSVNChangePassword"></div>
+<div class="ubirimiModalDialog" id="modalSVNImportUsers"></div>
 <input type="hidden" id="repo_id" value="<?php echo $session->get('selected_svn_repo_id') ?>" />
 <input type="hidden" id="user_id" value="<?php echo $loggedInUserId ?>" />
 <?php require_once __DIR__ . '/_footer.php' ?>

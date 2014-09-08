@@ -67,7 +67,7 @@
                         <?php endwhile ?>
                     </tbody>
                 </table>
-                <div id="modalDeleteIssueType"></div>
+                <div class="ubirimiModalDialog" id="modalDeleteIssueType"></div>
             <?php else: ?>
                 <div class="messageGreen">There are no issue types defined.</div>
             <?php endif ?>

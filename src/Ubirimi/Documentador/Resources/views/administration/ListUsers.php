@@ -41,8 +41,8 @@
                 <?php endwhile ?>
             </tbody>
         </table>
-        <div id="modalDeleteUser"></div>
-        <div id="modalAssignUserToGroup"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteUser"></div>
+        <div class="ubirimiModalDialog" id="modalAssignUserToGroup"></div>
         <input type="hidden" value="<?php echo SystemProduct::SYS_PRODUCT_DOCUMENTADOR ?>" id="product_id" />
     <?php else: ?>
         <div class="infoBox">Unauthorized access. Please contact the system administrator.</div>

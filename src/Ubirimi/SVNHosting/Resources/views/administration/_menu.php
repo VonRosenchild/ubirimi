@@ -60,6 +60,6 @@
         </tr>
     </table>
 </div>
-<div id="modalSendFeedback"></div>
-<div id="modalKeyboardShortcuts"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalKeyboardShortcuts"></div>
 <div id="topMessageBox" align="center" class="topMessageBox"></div>

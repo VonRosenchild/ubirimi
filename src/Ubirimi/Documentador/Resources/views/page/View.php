@@ -115,9 +115,9 @@
 
                 <input type="hidden" value="<?php echo $entityId ?>" id="entity_id" />
                 <input type="hidden" value="<?php echo $spaceId ?>" id="space_id" />
-                <div id="modalDeleteComment"></div>
-                <div id="modalRemovePage"></div>
-                <div id="modalDeleteFile"></div>
+                <div class="ubirimiModalDialog" id="modalDeleteComment"></div>
+                <div class="ubirimiModalDialog" id="modalRemovePage"></div>
+                <div class="ubirimiModalDialog" id="modalDeleteFile"></div>
             <?php endif ?>
         <?php else: ?>
             <div class="infoBox">This page does not exist.</div>

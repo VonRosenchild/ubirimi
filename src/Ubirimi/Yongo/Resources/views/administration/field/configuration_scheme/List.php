@@ -79,7 +79,7 @@
             <div class="messageGreen">There are no field configuration schemes defined.</div>
         <?php endif ?>
     </div>
-    <div id="modalDeleteFieldConfigurationScheme"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteFieldConfigurationScheme"></div>
     <?php require_once __DIR__ . '/../../_footer.php' ?>
 </body>
 </html>

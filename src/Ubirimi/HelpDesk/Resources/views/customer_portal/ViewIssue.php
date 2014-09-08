@@ -103,22 +103,22 @@
         <input type="hidden" value="<?php if (isset($hasEditPermission)) echo "1"; ?>" id="has_edit_permission" />
     <?php endif ?>
 
-    <div id="deleteIssueModal"></div>
-    <div id="transitionIssueModal"></div>
+    <div id="deleteIssueModal" class="ubirimiModalDialog"></div>
+    <div id="transitionIssueModal" class="ubirimiModalDialog"></div>
     <div id="deleteComment"></div>
-    <div id="addCommentModal"></div>
-    <div id="editCommentModal"></div>
+    <div id="addCommentModal" class="ubirimiModalDialog"></div>
+    <div id="editCommentModal" class="ubirimiModalDialog"></div>
     <div id="deleteAttachment"></div>
-    <div id="modalAddSubTask"></div>
-    <div id="modalEditIssue"></div>
-    <div id="modalEditIssueAssign"></div>
-    <div id="modalEditIssueAttachFile"></div>
-    <div id="duplicateIssueModal"></div>
-    <div id="modalProjectFilters"></div>
-    <div id="modalLinkIssue"></div>
-    <div id="modalLinkIssueDelete"></div>
-    <div id="modalLogWork"></div>
-    <div id="modalLogWorkEdit"></div>
-    <div id="modalLogWorkDelete"></div>
-    <div id="modalShareIssue"></div>
+    <div class="ubirimiModalDialog" id="modalAddSubTask"></div>
+    <div class="ubirimiModalDialog" id="modalEditIssue"></div>
+    <div class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
+    <div class="ubirimiModalDialog" id="modalEditIssueAttachFile"></div>
+    <div id="duplicateIssueModal" class="ubirimiModalDialog"></div>
+    <div class="ubirimiModalDialog" id="modalProjectFilters"></div>
+    <div class="ubirimiModalDialog" id="modalLinkIssue"></div>
+    <div class="ubirimiModalDialog" id="modalLinkIssueDelete"></div>
+    <div class="ubirimiModalDialog" id="modalLogWork"></div>
+    <div class="ubirimiModalDialog" id="modalLogWorkEdit"></div>
+    <div class="ubirimiModalDialog" id="modalLogWorkDelete"></div>
+    <div class="ubirimiModalDialog" id="modalShareIssue"></div>
 </body>

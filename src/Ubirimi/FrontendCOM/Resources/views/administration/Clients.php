@@ -68,6 +68,6 @@
         </tbody>
     </table>
 
-    <div id="modalDeleteClient"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteClient"></div>
 </div>
 </body>

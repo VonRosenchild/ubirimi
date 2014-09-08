@@ -55,7 +55,7 @@
         <?php else: ?>
             <div class="messageGreen">There are no profile categories defined.</div>
         <?php endif ?>
-        <div id="modalDeleteUserProfileCategory"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteUserProfileCategory"></div>
     </div>
     <?php require_once __DIR__ . '/_footer.php' ?>
 </body>

@@ -1,5 +1,9 @@
 $('document').ready(function () {
 
+    $(".ubirimiModalDialog" ).on( "dialogopen", function(event, ui) {
+        resizeModals();
+    });
+
     $('#btnDeleteIssueStatus').on('click', function (event) {
         event.preventDefault();
 

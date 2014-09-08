@@ -50,7 +50,7 @@
             <div class="messageGreen">There are no issue resolutions defined.</div>
         <?php endif ?>
     </div>
-        <div id="modalDeleteIssueResolution"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteIssueResolution"></div>
     <?php else: ?>
         <?php Util::renderContactSystemAdministrator() ?>
     <?php

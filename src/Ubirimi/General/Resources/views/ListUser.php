@@ -69,7 +69,7 @@
                 <?php endwhile ?>
             </tbody>
         </table>
-        <div id="modalDeleteUser"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteUser"></div>
     </div>
     <?php require_once __DIR__ . '/_footer.php' ?>
 </body>

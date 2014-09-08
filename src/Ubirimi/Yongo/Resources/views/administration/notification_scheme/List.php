@@ -71,7 +71,7 @@
                 <div class="messageGreen">There are no notification schemes defined.</div>
             <?php endif ?>
         </div>
-            <div id="modalDeleteNotificationScheme"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteNotificationScheme"></div>
         <?php else: ?>
             <?php Util::renderContactSystemAdministrator() ?>
         <?php

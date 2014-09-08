@@ -56,6 +56,6 @@
             <div class="infoBox">Issue linking is currently deactivated.</div>
         <?php endif ?>
     </div>
-    <div id="modalDeleteLinkType"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteLinkType"></div>
     <?php require_once __DIR__ . '/../../_footer.php' ?>
 </body>

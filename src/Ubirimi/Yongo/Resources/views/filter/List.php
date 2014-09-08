@@ -51,6 +51,6 @@
         <div class="messageGreen">There are no filters defined.</div>
         <?php endif ?>
     </div>
-    <div id="deleteFilterModal"></div>
+    <div id="deleteFilterModal" class="ubirimiModalDialog"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

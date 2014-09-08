@@ -98,7 +98,7 @@
 
             </table>
         </form>
-        <div id="deleteScreenFieldModal"></div>
+        <div id="deleteScreenFieldModal" class="ubirimiModalDialog"></div>
     </div>
     <?php require_once __DIR__ . '/../../_footer.php' ?>
 </body>

@@ -94,8 +94,8 @@
             <div class="messageGreen">There are no issue security levels defined for this scheme.</div>
         <?php endif ?>
     </div>
-        <div id="modalDeleteIssueSecuritySchemeLevel"></div>
-        <div id="modalDeleteIssueSecuritySchemeLevelData"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteIssueSecuritySchemeLevel"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteIssueSecuritySchemeLevelData"></div>
     <?php else: ?>
         <?php Util::renderContactSystemAdministrator() ?>
     <?php

@@ -91,7 +91,7 @@
             <?php else: ?>
                 <div class="messageGreen">There are no screens defined defined.</div>
             <?php endif ?>
-            <div id="modalDeleteScreen"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteScreen"></div>
         <?php else: ?>
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>

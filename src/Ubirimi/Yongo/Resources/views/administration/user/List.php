@@ -44,8 +44,8 @@
         <div id="contentListUsers">
             <?php require_once __DIR__ . '/../../../views/administration/user/_list_user.php' ?>
         </div>
-        <div id="modalDeleteUser"></div>
-        <div id="modalAssignUserToGroup"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteUser"></div>
+        <div class="ubirimiModalDialog" id="modalAssignUserToGroup"></div>
         <input type="hidden" value="<?php echo SystemProduct::SYS_PRODUCT_YONGO ?>" id="product_id" />
         <?php else: ?>
         <div class="infoBox">Unauthorized access. Please contact the system administrator.</div>

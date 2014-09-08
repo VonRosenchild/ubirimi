@@ -63,7 +63,7 @@
                     <?php Project::renderTreeComponents($components, 0) ?>
                 </tbody>
             </table>
-            <div id="modalDeleteProjectComponent"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteProjectComponent"></div>
         <?php else: ?>
             <div class="messageGreen">There are no components defined for this project.</div>
         <?php endif ?>

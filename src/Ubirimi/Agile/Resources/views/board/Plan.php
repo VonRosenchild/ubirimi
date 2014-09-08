@@ -162,9 +162,9 @@
     <input type="hidden" value="agile" id="contextList"/> <input type="hidden" value="<?php if ($sprintsNotStarted || $currentStartedSprint)
         echo '1'; else echo '0'; ?>" id="add_to_sprint_possible"/> <input type="hidden" value="<?php echo $boardId ?>" id="board_id"/>
 
-    <div id="modalAddSprint"></div>
-    <div id="modalDeletePlannedSprint"></div>
-    <div id="modalSprintStart"></div>
-    <div id="modalAddSubTask"></div>
-    <div id="modalEditIssueAssign"></div>
+    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddSprint"></div>
+    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalDeletePlannedSprint"></div>
+    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalSprintStart"></div>
+    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddSubTask"></div>
+    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
 </body>

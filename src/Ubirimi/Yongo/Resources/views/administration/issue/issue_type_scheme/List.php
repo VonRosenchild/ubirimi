@@ -83,7 +83,7 @@
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>
     </div>
-    <div id="modalDeleteIssueTypeScheme"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteIssueTypeScheme"></div>
     <?php require_once __DIR__ . '/../../_footer.php' ?>
 </body>
 </html>

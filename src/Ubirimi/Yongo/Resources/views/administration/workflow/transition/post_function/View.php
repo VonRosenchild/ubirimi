@@ -56,6 +56,6 @@
         <?php endif ?>
     </div>
 
-    <div id="modalDeletePostFunction"></div>
+    <div class="ubirimiModalDialog" id="modalDeletePostFunction"></div>
     <?php require_once __DIR__ . '/../../../_footer.php' ?>
 </body>

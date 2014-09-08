@@ -71,7 +71,7 @@
             <div class="messageGreen">There are no permission schemes defined.</div>
         <?php endif ?>
     </div>
-        <div id="modalDeletePermissionScheme"></div>
+        <div class="ubirimiModalDialog" id="modalDeletePermissionScheme"></div>
     <?php else: ?>
         <?php Util::renderContactSystemAdministrator() ?>
     <?php

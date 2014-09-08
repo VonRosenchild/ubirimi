@@ -58,8 +58,8 @@
 </div>
 
 <div id="deleteSvnUser"></div>
-<div id="modalSVNPermissionsUser"></div>
-<div id="modalSVNChangePassword"></div>
+<div class="ubirimiModalDialog" id="modalSVNPermissionsUser"></div>
+<div class="ubirimiModalDialog" id="modalSVNChangePassword"></div>
 
 <input type="hidden" id="repo_id" value="<?php echo $svnRepoId ?>" />
 <input type="hidden" id="svn_from_user_perspective" value="1" />

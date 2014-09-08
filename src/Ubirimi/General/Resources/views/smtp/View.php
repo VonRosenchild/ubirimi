@@ -76,7 +76,7 @@
                 <div class="infoBox">There is no SMTP Server configured.</div>
             <?php endif ?>
             <input type="hidden" value="<?php echo $smtpSettings['id'] ?>" id="smtp_id" />
-            <div id="modalDeleteSMTPServer"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteSMTPServer"></div>
         <?php else: ?>
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>

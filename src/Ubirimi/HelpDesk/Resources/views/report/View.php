@@ -48,7 +48,7 @@
             <div>There are no SLAs created.</div>
         <?php endif ?>
     </div>
-    <div id="modalDeleteSLA"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteSLA"></div>
     <input type="hidden" value="<?php echo $slaSelectedId ?>" id="sla_id_for_report" />
     <input type="hidden" value="<?php echo $projectId ?>" id="project_id" />
 

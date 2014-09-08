@@ -67,7 +67,7 @@
                 <?php endwhile ?>
                 </tbody>
             </table>
-            <div id="modalDeleteUser"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteUser"></div>
         <?php else: ?>
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>

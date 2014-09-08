@@ -168,5 +168,5 @@
         </tr>
     </table>
 </div>
-<div id="modalSendFeedback"></div>
+<div class="ubirimiModalDialog" id="modalSendFeedback"></div>
 <input type="hidden" value="<?php echo $menuSelectedCategory ?>" id="menu_selected" />

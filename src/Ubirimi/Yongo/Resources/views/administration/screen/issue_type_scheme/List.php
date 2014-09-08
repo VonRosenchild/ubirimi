@@ -69,7 +69,7 @@
             <div class="messageGreen">There are no issue type screen schemes defined.</div>
         <?php endif ?>
     </div>
-        <div id="modalDeleteIssueTypeScreenScheme"></div>
+        <div class="ubirimiModalDialog" id="modalDeleteIssueTypeScreenScheme"></div>
     <?php else: ?>
         <?php Util::renderContactSystemAdministrator() ?>
     <?php endif ?>

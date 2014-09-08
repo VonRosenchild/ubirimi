@@ -89,7 +89,7 @@
             <?php else: ?>
                 <div class="messageGreen">There are no workflows defined</div>
             <?php endif ?>
-            <div id="modalDeleteWorkflow"></div>
+            <div class="ubirimiModalDialog" id="modalDeleteWorkflow"></div>
         <?php else: ?>
             <?php Util::renderContactSystemAdministrator() ?>
         <?php endif ?>
