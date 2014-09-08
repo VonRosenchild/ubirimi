@@ -8,7 +8,7 @@ function resizeModals() {
         }
 
         $(".ui-dialog-content").css('max-height', newHeight);
-        jQuery(".ui-dialog-content").dialog('option', 'position', ['middle','middle']);
+        jQuery(".ui-dialog-content").dialog('option', 'position', ['center','center']);
     }
 }
 $(window).on('resize', function(){
@@ -180,15 +180,7 @@ function dealWithMandatoryFieldsInModals() {
 function editIssue(issueId) {
 
     var options = {
-
-
         dialogClass: "ubirimi-dialog",
-
-
-
-
-
-
         title: 'Edit Issue',
         buttons: [
             {
@@ -416,14 +408,6 @@ function createIssue(message) {
         $('#menuIssues').css('background-color', '#6A8EB2');
 
     var options = {
-
-
-
-
-
-
-
-
         title: 'Create Issue',
         dialogClass: "ubirimi-dialog",
         buttons: [
