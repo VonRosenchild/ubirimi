@@ -4,11 +4,11 @@
 ?>
 <div style="margin: 10px;" align="center">
     Customer Portal
-    <span> | </span>
+    <span> &middot; </span>
     <a target="_blank" href="https://support.ubirimi.net/">Support</a>
-    <span> | </span>
+    <span> &middot; </span>
     <a id="send_feedback" href="#">Send Feedback</a>
-    <span> | </span>
+    <span> &middot; </span>
     Version: <?php echo UbirimiContainer::get()['app.version'] ?>
 </div>
 <div align="center">
