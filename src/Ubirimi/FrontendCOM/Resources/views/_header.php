@@ -45,7 +45,7 @@
     <?php endif ?>
     <meta name="viewport" content="width=device-width">
 
-    <script type="text/javascript" src="/js/vendor/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="/js/vendor/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/js/main.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fancybox.pack.js?v=2.1.5"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fancybox-buttons.js?v=1.0.5"></script>
