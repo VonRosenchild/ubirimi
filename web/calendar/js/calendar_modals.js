@@ -46,15 +46,7 @@ $('document').ready(function () {
         var defaultYear = dataValues[2];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Add Event',
             buttons: [
                 {
@@ -177,15 +169,7 @@ $('document').ready(function () {
         var calendarId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Calendar',
             buttons: [
                 {
@@ -234,15 +218,7 @@ $('document').ready(function () {
         var eventId = $(this).attr("id").replace('event_link_delete_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Recurring Event',
             buttons: [
                 {
@@ -274,15 +250,7 @@ $('document').ready(function () {
         var calendarId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Share Calendar',
             buttons: [
                 {
@@ -338,15 +306,7 @@ $('document').ready(function () {
         var eventId = $('#event_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Add Guests to Event',
             buttons: [
                 {
@@ -403,15 +363,7 @@ $('document').ready(function () {
         var eventId = $('#event_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Event',
             buttons: [
                 {

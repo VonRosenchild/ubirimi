@@ -204,15 +204,7 @@ $('document').ready(function () {
         var notebookId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Notebook',
             buttons: [
                 {

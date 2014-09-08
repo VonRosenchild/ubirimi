@@ -35,15 +35,15 @@ $(function () {
             if (key == 'screen_transition') {
 
                 var options = {
-                    modal: true,
-                    draggable: false,
+
+
                     dialogClass: "ubirimi-dialog",
-                    width: "auto",
-                    stack: true,
-                    position: 'center',
-                    autoOpen: false,
-                    closeOnEscape: true,
-                    resizable: false,
+
+
+
+
+
+
                     title: 'Set transition settings',
                     buttons: [
                         {
@@ -115,15 +115,15 @@ $(function () {
             } else if (key == 'edit_post_functions') {
 
                 var options = {
-                    modal: true,
-                    draggable: false,
+
+
                     dialogClass: "ubirimi-dialog",
-                    width: "auto",
-                    stack: true,
-                    position: 'center',
-                    autoOpen: false,
-                    closeOnEscape: true,
-                    resizable: false,
+
+
+
+
+
+
                     title: 'Done',
                     buttons: [
                         {

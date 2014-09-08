@@ -5,7 +5,7 @@ $('document').ready(function () {
 
         var elementClass = $(this).attr('class');
         if (elementClass.indexOf('disabled', 0) > -1)
-            return
+            return;
 
         var svnId = selected_rows[0];
         if (null == svnId) {
@@ -13,21 +13,13 @@ $('document').ready(function () {
         }
 
         if (null == svnId)
-            return
+            return;
 
         if (selected_rows[0] && selected_rows.length != 1)
-            return
+            return;
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete SVN Repository',
             buttons: [
                 {
@@ -72,18 +64,10 @@ $('document').ready(function () {
         event.preventDefault();
 
         if ($(this).hasClass('disabled'))
-            return
+            return;
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete SVN User Repository',
             buttons: [
                 {
@@ -132,23 +116,15 @@ $('document').ready(function () {
             userId = $('#user_id').val();
 
         if (!userId)
-            return
+            return;
 
         if ($(this).hasClass('disabled'))
-            return
+            return;
 
         var repoId = $('#repo_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Set SVN permissions for selected user',
             buttons: [
                 {
@@ -195,7 +171,7 @@ $('document').ready(function () {
         event.preventDefault();
 
         if ($(this).hasClass('disabled'))
-            return
+            return;
 
         var userId = $('#user_id').val();
         if (userId == undefined) {
@@ -204,15 +180,7 @@ $('document').ready(function () {
         var repoId = $('#repo_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Set SVN password for the selected uer',
             buttons: [
                 {
@@ -324,18 +292,10 @@ $('document').ready(function () {
         event.preventDefault();
 
         if (selected_rows.length != 1)
-            return
+            return;
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete SVN Administrator',
             buttons: [
                 {
@@ -382,4 +342,4 @@ $('document').ready(function () {
             $("#modalDeleteSVNAdministrator").dialog("open");
         });
     });
-})
+});

@@ -164,15 +164,15 @@ $('document').ready(function () {
         event.preventDefault();
 
         var options = {
-            modal: true,
-            draggable: false,
+
+
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
+
+
+
+
+
+
             title: 'We appreciate you feedback',
             buttons: [
                 {

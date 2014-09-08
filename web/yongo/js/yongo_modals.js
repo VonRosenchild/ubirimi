@@ -14,15 +14,7 @@ $('document').ready(function () {
 
         if (deletePossible == 0) {
             var options = {
-                modal: true,
-                draggable: false,
                 dialogClass: "ubirimi-dialog",
-                width: "auto",
-                stack: true,
-                position: 'center',
-                autoOpen: false,
-                closeOnEscape: true,
-                resizable: false,
                 title: 'Delete Issue Status Not Possible',
                 buttons: [
                     {
@@ -46,15 +38,7 @@ $('document').ready(function () {
             return;
         } else {
             var options = {
-                modal: true,
-                draggable: false,
                 dialogClass: "ubirimi-dialog",
-                width: "auto",
-                stack: true,
-                position: 'center',
-                autoOpen: false,
-                closeOnEscape: true,
-                resizable: false,
                 title: 'Delete Issue Status Confirmation',
                 buttons: [
                     {
@@ -104,15 +88,7 @@ $('document').ready(function () {
         var linkTypeId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Link Type',
             buttons: [
                 {
@@ -163,15 +139,7 @@ $('document').ready(function () {
         var customFieldValueId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Custom Field Value',
             buttons: [
                 {
@@ -220,15 +188,7 @@ $('document').ready(function () {
         var issueSecuritySchemeId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Issue Security Scheme',
             buttons: [
                 {
@@ -282,15 +242,7 @@ $('document').ready(function () {
         var eventId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Event',
             buttons: [
                 {
@@ -344,15 +296,7 @@ $('document').ready(function () {
         var issueSecuritySchemeLevelId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Issue Security Scheme Level',
             buttons: [
                 {
@@ -399,15 +343,7 @@ $('document').ready(function () {
         var transitionId = $('#transition_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete All Conditions',
             buttons: [
                 {
@@ -455,15 +391,7 @@ $('document').ready(function () {
         var categoryId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Project Category',
             buttons: [
                 {
@@ -512,15 +440,7 @@ $('document').ready(function () {
         var workflowId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Workflow',
             buttons: [
                 {
@@ -574,15 +494,7 @@ $('document').ready(function () {
         var versionId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Project Version',
             buttons: [
                 {
@@ -631,15 +543,7 @@ $('document').ready(function () {
         var componentId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Project Component',
             buttons: [
                 {
@@ -680,15 +584,7 @@ $('document').ready(function () {
 
     function deleteProject(projectId, locationURL) {
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete project',
             buttons: [
                 {
@@ -756,15 +652,7 @@ $('document').ready(function () {
         var propertyId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Workflow Step Property',
             buttons: [
                 {
@@ -810,15 +698,7 @@ $('document').ready(function () {
         var att_id = $(this).attr("id").replace('list_att_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Confirm Delete Attachment',
             buttons: [
                 {
@@ -885,15 +765,7 @@ $('document').ready(function () {
         var comment_id = $(this).attr("id").replace('comment_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Confirm delete comment',
             buttons: [
                 {
@@ -949,15 +821,7 @@ $('document').ready(function () {
         var commentId = $(this).attr("id").replace('edit_comment_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Edit Comment',
             buttons: [
                 {
@@ -1016,15 +880,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Screen Field',
             buttons: [
                 {
@@ -1080,7 +936,7 @@ $('document').ready(function () {
 
         var options = {
             title: title,
-            position: 'center',
+
             buttons: [
                 {
                     text: title,
@@ -1141,15 +997,7 @@ $('document').ready(function () {
         var stepId = selected_rows[0];
         var deletePossible = $('#delete_workflow_step_possible_' + stepId).val();
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Workflow Step',
             buttons: [
                 {
@@ -1194,15 +1042,7 @@ $('document').ready(function () {
         $('#menu_more_actions').hide();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Duplicate Issue',
             buttons: [
                 {
@@ -1275,15 +1115,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign role users',
             buttons: [
                 {
@@ -1338,15 +1170,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign role users',
             buttons: [
                 {
@@ -1402,15 +1226,7 @@ $('document').ready(function () {
         }
         var projectId = $('#project_id').val();
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign role users',
             buttons: [
                 {
@@ -1468,15 +1284,7 @@ $('document').ready(function () {
         }
         var projectId = $('#project_id').val();
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign role users',
             buttons: [
                 {
@@ -1533,15 +1341,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign group users',
             buttons: [
                 {
@@ -1597,15 +1397,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete user group',
             buttons: [
                 {
@@ -1654,15 +1446,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete permission role',
             buttons: [
                 {
@@ -1710,15 +1494,7 @@ $('document').ready(function () {
         var notification_scheme_data_id = $(this).attr("id").replace('delete_notification_data_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Notification Scheme Data Confirmation',
             buttons: [
                 {
@@ -1765,15 +1541,7 @@ $('document').ready(function () {
         var permission_scheme_data_id = $(this).attr("id").replace('perm_delete_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Permission Data Confirmation',
             buttons: [
                 {
@@ -1820,15 +1588,7 @@ $('document').ready(function () {
         var security_scheme_data_id = $(this).attr("id").replace('delete_security_data_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Security Level Data',
             buttons: [
                 {
@@ -1876,15 +1636,7 @@ $('document').ready(function () {
         var workflowId = $('#workflow_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Transition',
             buttons: [
                 {
@@ -1932,15 +1684,7 @@ $('document').ready(function () {
         var workflowId = $('#workflow_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Outgoing Transitions',
             buttons: [
                 {
@@ -1996,15 +1740,7 @@ $('document').ready(function () {
         }
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: dialogTitle,
             buttons: [
                 {
@@ -2067,15 +1803,7 @@ $('document').ready(function () {
         var filterId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete report',
             buttons: [
                 {
@@ -2142,15 +1870,7 @@ $('document').ready(function () {
         var projectId = $('#project_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Link',
             buttons: [
                 {
@@ -2221,15 +1941,7 @@ $('document').ready(function () {
 
     function commentIssue(issueId) {
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Comment on Issue',
             buttons: [
                 {
@@ -2286,15 +1998,7 @@ $('document').ready(function () {
         var userAssignedId = $('#issue_ua_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign Issue',
             buttons: [
                 {
@@ -2377,15 +2081,7 @@ $('document').ready(function () {
         var idSelectedSubTab = $('#is_tab_work_log').parent().children().filter('.active').attr('id');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Edit Work Log',
             buttons: [
                 {
@@ -2506,15 +2202,7 @@ $('document').ready(function () {
         var idSelectedSubTab = $('#is_tab_work_log').parent().children().filter('.active').attr('id');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Work Log',
             buttons: [
                 {
@@ -2603,15 +2291,7 @@ $('document').ready(function () {
         var issueId = $('#issue_id').val();
         var idSelectedSubTab = $('#is_tab_work_log').parent().children().filter('.active').attr('id');
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Log Work',
             buttons: [
                 {
@@ -2733,15 +2413,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Custom Field',
             buttons: [
                 {
@@ -2788,15 +2460,7 @@ $('document').ready(function () {
         var issueId = $('#issue_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Attach File',
             buttons: [
                 {
@@ -2863,15 +2527,7 @@ $('document').ready(function () {
         var projectId = $('#project_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Project Filters',
             buttons: [
                 {
@@ -2904,15 +2560,7 @@ $('document').ready(function () {
         var resolutionId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Confirm Delete Issue Resolution',
             buttons: [
                 {
@@ -2963,15 +2611,7 @@ $('document').ready(function () {
         var priorityId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Confirm Delete Issue Priority',
             buttons: [
                 {
@@ -3023,15 +2663,7 @@ $('document').ready(function () {
         var typeId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Confirm Delete Issue Type',
             buttons: [
                 {
@@ -3080,15 +2712,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Field Configuration',
             buttons: [
                 {
@@ -3145,15 +2769,7 @@ $('document').ready(function () {
         var notificationSchemeId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Notification Scheme',
             buttons: [
                 {
@@ -3208,15 +2824,7 @@ $('document').ready(function () {
         var permissionSchemeId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Permission Scheme',
             buttons: [
                 {
@@ -3269,15 +2877,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Issue Type Scheme',
             buttons: [
                 {
@@ -3332,15 +2932,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Field Configuration Scheme',
             buttons: [
                 {
@@ -3395,15 +2987,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Screen',
             buttons: [
                 {
@@ -3458,15 +3042,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Screen Scheme',
             buttons: [
                 {
@@ -3521,15 +3097,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Issue Type Screen Scheme',
             buttons: [
                 {
@@ -3584,15 +3152,7 @@ $('document').ready(function () {
             return
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Workflow Scheme',
             buttons: [
                 {
@@ -3647,15 +3207,7 @@ $('document').ready(function () {
             return;
         }
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Workflow Issue Type Scheme',
             buttons: [
                 {
@@ -3709,15 +3261,7 @@ $('document').ready(function () {
         var linkId = $(this).attr("id").replace('deleteIssueLink_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Link',
             buttons: [
                 {
@@ -3765,15 +3309,7 @@ $('document').ready(function () {
 
         var userId = $('#user_id').val();
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Update User Preferences',
             buttons: [
                 {
@@ -3825,15 +3361,7 @@ $('document').ready(function () {
         var deletable = parseInt($('#post_function_deletable_' + postFunctionDataId).val());
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Workflow Post Function',
             buttons: [
                 {
@@ -3882,14 +3410,6 @@ $('document').ready(function () {
         event.preventDefault();
 
         var options = {
-            modal: true,
-            draggable: false,
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             dialogClass: "ubirimi-dialog",
             title: 'Keyboard Shortcuts',
             buttons: [
@@ -3919,15 +3439,7 @@ $('document').ready(function () {
         var issueId = $('#issue_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Share Issue',
             buttons: [
                 {

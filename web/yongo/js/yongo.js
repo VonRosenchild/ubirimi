@@ -89,15 +89,15 @@ function updateIssueAgileElementMetaData(param) {
                 if (response != 'no') {
 
                     var options = {
-                        modal: true,
-                        draggable: false,
+
+
                         dialogClass: "ubirimi-dialog",
-                        width: "auto",
-                        stack: true,
-                        position: 'center',
-                        autoOpen: false,
-                        closeOnEscape: true,
-                        resizable: false,
+
+
+
+
+
+
                         title: 'Update Parent Issue',
                         buttons: [
                             {
@@ -121,15 +121,15 @@ function updateIssueAgileElementMetaData(param) {
                                         }
 
                                         var options = {
-                                            modal: true,
-                                            draggable: false,
+
+
                                             dialogClass: "ubirimi-dialog",
-                                            width: "auto",
-                                            stack: true,
-                                            position: 'center',
-                                            autoOpen: false,
-                                            closeOnEscape: true,
-                                            resizable: false,
+
+
+
+
+
+
                                             title: transitionName,
                                             buttons: [
                                                 {
@@ -479,15 +479,15 @@ $('document').ready(function () {
 
                                             if (obj.screen_id) {
                                                 var options = {
-                                                    modal: true,
-                                                    draggable: false,
+
+
                                                     dialogClass: "ubirimi-dialog",
-                                                    width: "auto",
-                                                    stack: true,
-                                                    position: 'center',
-                                                    autoOpen: false,
-                                                    closeOnEscape: true,
-                                                    resizable: false,
+
+
+
+
+
+
                                                     title: transitionName,
                                                     buttons: [
                                                         {
@@ -797,15 +797,15 @@ $('document').ready(function () {
     function deleteIssue() {
 
         var options = {
-            modal: true,
-            draggable: false,
+
+
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
+
+
+
+
+
+
             title: 'Delete Issue Confirmation',
             buttons: [
                 {

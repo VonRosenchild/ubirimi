@@ -3,15 +3,7 @@ $('document').ready(function () {
     function deleteSpace(spaceId, locationHref) {
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Space',
             buttons: [
                 {
@@ -188,15 +180,7 @@ $('document').ready(function () {
         var pageId = $('#entity_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Restore Revision',
             buttons: [
                 {
@@ -241,15 +225,7 @@ $('document').ready(function () {
         event.preventDefault();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Select Space and Type for Page',
             buttons: [
                 {
@@ -281,15 +257,7 @@ $('document').ready(function () {
                             $("#modalNewPage").empty();
 
                             var options = {
-                                modal: true,
-                                draggable: false,
                                 dialogClass: "ubirimi-dialog",
-                                width: "auto",
-                                stack: true,
-                                position: 'center',
-                                autoOpen: false,
-                                closeOnEscape: true,
-                                resizable: false,
                                 title: 'Create File List',
                                 buttons: [
                                     {
@@ -366,15 +334,7 @@ $('document').ready(function () {
         var groupId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete User Group',
             buttons: [
                 {
@@ -421,15 +381,7 @@ $('document').ready(function () {
         var spaceId = $('#space_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Purge All',
             buttons: [
                 {
@@ -475,15 +427,7 @@ $('document').ready(function () {
         var fileId = $(this).attr("id").replace('delete_doc_file_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete File Revision',
             buttons: [
                 {
@@ -529,15 +473,7 @@ $('document').ready(function () {
         var attachmentId = $(this).attr("id").replace('delete_doc_attachment_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Attachment',
             buttons: [
                 {
@@ -587,15 +523,7 @@ $('document').ready(function () {
         var pageId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Restore Page',
             buttons: [
                 {
@@ -645,15 +573,7 @@ $('document').ready(function () {
         var pageId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Purge Page',
             buttons: [
                 {
@@ -703,15 +623,7 @@ $('document').ready(function () {
         var groupId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign Users to Group',
             buttons: [
                 {

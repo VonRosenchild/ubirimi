@@ -6,15 +6,7 @@ $('document').ready(function () {
         var userId = $('#user_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Change Password',
             buttons: [
                 {
@@ -73,21 +65,13 @@ $('document').ready(function () {
         event.preventDefault();
 
         if (selected_rows.length != 1)
-            return
+            return;
 
         var userId = selected_rows[0];
         var productId = $('#product_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign User to Group',
             buttons: [
                 {

@@ -5,15 +5,7 @@ $('document').ready(function () {
         var boardId = $('#board_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Add Column',
             buttons: [
                 {
@@ -62,15 +54,7 @@ $('document').ready(function () {
         var sprintId = $(this).attr("id").replace('delete_sprint_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Sprint',
             buttons: [
                 {
@@ -122,15 +106,7 @@ $('document').ready(function () {
         var columnId = $(this).attr("id").replace('deleteAgileColumn_', '');
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Column Confirmation',
             buttons: [
                 {
@@ -176,15 +152,7 @@ $('document').ready(function () {
 
         var boardId = $('#board_id').val();
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Add Sprint',
             buttons: [
                 {
@@ -239,15 +207,7 @@ $('document').ready(function () {
         var boardId = $('#board_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Start Sprint',
             buttons: [
                 {
@@ -322,15 +282,7 @@ $('document').ready(function () {
         var boardId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Agile Board',
             buttons: [
                 {
@@ -375,15 +327,7 @@ $('document').ready(function () {
         var boardId = $('#board_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Complete Sprint',
             buttons: [
                 {
@@ -436,15 +380,7 @@ $('document').ready(function () {
         }
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Assign Issue',
             buttons: [
                 {

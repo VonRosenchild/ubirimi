@@ -180,15 +180,15 @@ function dealWithMandatoryFieldsInModals() {
 function editIssue(issueId) {
 
     var options = {
-        modal: true,
-        draggable: false,
+
+
         dialogClass: "ubirimi-dialog",
-        width: "auto",
-        stack: true,
-        position: 'center',
-        autoOpen: false,
-        closeOnEscape: true,
-        resizable: false,
+
+
+
+
+
+
         title: 'Edit Issue',
         buttons: [
             {
@@ -416,14 +416,14 @@ function createIssue(message) {
         $('#menuIssues').css('background-color', '#6A8EB2');
 
     var options = {
-        modal: true,
-        draggable: false,
-        width: "auto",
-        stack: true,
-        position: 'center',
-        autoOpen: false,
-        closeOnEscape: true,
-        resizable: false,
+
+
+
+
+
+
+
+
         title: 'Create Issue',
         dialogClass: "ubirimi-dialog",
         buttons: [

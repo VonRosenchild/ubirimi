@@ -20,7 +20,11 @@ $.extend($.ui.dialog.prototype.options, {
     width: "auto",
     height: "auto",
     stack: true,
-
+    position: {
+        my: "center",
+        at: "center",
+        of: window
+    },
     open: function(event, ui) {
         applyStylesDialog();
         $('.ui-dialog').focus();

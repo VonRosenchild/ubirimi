@@ -5,15 +5,7 @@ $('document').ready(function () {
         var slaId = $('#sla_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete SLA',
             buttons: [
                 {
@@ -59,15 +51,7 @@ $('document').ready(function () {
         var queueId = $('#queue_id').val();
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Queue',
             buttons: [
                 {
@@ -113,15 +97,7 @@ $('document').ready(function () {
         var calendarId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete SLA Calendar',
             buttons: [
                 {
@@ -171,15 +147,7 @@ $('document').ready(function () {
         var organizationId = selected_rows[0];
 
         var options = {
-            modal: true,
-            draggable: false,
             dialogClass: "ubirimi-dialog",
-            width: "auto",
-            stack: true,
-            position: 'center',
-            autoOpen: false,
-            closeOnEscape: true,
-            resizable: false,
             title: 'Delete Organization',
             buttons: [
                 {
