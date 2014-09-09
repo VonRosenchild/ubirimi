@@ -2,8 +2,6 @@
 
 namespace Ubirimi\Repository\Documentador;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Documentador\EntityAttachment;
-use Ubirimi\Repository\Documentador\EntityComment;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;

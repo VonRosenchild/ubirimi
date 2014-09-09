@@ -1,7 +1,6 @@
 <?php
     use Ubirimi\Repository\User\User;
     use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
     $styleSelectedMenu = 'style="background-color: #EEEEEE;';
 ?>

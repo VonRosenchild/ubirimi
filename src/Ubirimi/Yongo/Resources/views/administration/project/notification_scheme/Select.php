@@ -1,7 +1,5 @@
 <?php
-
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
     require_once __DIR__ . '/../../_header.php';
 ?>

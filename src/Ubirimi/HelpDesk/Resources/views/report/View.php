@@ -1,5 +1,4 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\SLA;
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';

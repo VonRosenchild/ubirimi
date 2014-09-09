@@ -3,7 +3,6 @@
 namespace Ubirimi\Service;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Component\ApiClient\ApiClient;
 
 class UbirimiService
 {

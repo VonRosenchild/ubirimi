@@ -1,13 +1,11 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
-    use Ubirimi\Yongo\Repository\Issue\IssueHistory;
+
+use Ubirimi\Repository\User\User;
+
+use Ubirimi\Util;
+
+
+use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 
 //    require_once __DIR__ . '/../web/bootstrap_cli.php';
 

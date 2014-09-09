@@ -3,7 +3,6 @@
 namespace Ubirimi\Yongo\Service;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Component\ApiClient\ApiClient;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Service\UbirimiService;

@@ -1,6 +1,3 @@
-<?php
-    use Ubirimi\Calendar\Repository\CalendarEventRepeatCycle;
-?>
 <tr>
     <td></td>
     <td>

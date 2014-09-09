@@ -16,9 +16,7 @@ use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 
 class EditController extends UbirimiController
 {

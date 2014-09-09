@@ -1,6 +1,5 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Container\UbirimiContainer;
 ?>
 
 <div class="home-products">

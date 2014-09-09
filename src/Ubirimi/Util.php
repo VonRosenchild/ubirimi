@@ -2,20 +2,14 @@
 
 namespace Ubirimi;
 
-use Sabre\VObject\Property\ICalendar\DateTime;
-use Symfony\Component\HttpFoundation\Cookie;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\Repository\ServerSettings;
 use Ubirimi\Repository\SMTPServer;
-use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
-use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
-use Ubirimi\Yongo\Repository\Permission\Permission;
 use ZipArchive;
 
 class Util {

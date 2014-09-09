@@ -10,8 +10,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\HelpDesk\SLA;
-use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Yongo\Repository\Project\Project;
 

@@ -1,9 +1,9 @@
 <?php
     use Ubirimi\LinkHelper;
     use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Project\Project;
+
     $selectedProductId = $session->get('selected_product_id');
 ?>
 <table width="100%" id="contentDetails">

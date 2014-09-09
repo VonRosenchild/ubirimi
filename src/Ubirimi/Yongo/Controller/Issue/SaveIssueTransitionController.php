@@ -9,7 +9,6 @@
     use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
-    use Ubirimi\Repository\HelpDesk\SLA;
 
     Util::checkUserIsLoggedInAndRedirect();
 

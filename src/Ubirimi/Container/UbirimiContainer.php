@@ -2,8 +2,6 @@
 
 namespace Ubirimi\Container;
 
-use Ubirimi\Container\ServiceProviderInterface;
-
 class UbirimiContainer
 {
     public static function get()

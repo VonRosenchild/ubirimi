@@ -1,7 +1,6 @@
 <?php
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 
     Util::checkUserIsLoggedInAndRedirect();

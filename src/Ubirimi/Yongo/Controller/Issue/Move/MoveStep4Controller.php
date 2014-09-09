@@ -15,7 +15,6 @@
     use Ubirimi\Container\UbirimiContainer;
     use Ubirimi\Yongo\Event\YongoEvents;
     use Ubirimi\Event\UbirimiEvents;
-    use Ubirimi\Yongo\Repository\Field\Field;
 
     Util::checkUserIsLoggedInAndRedirect();
 

@@ -1,6 +1,5 @@
 <?php
     use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 
 ?>

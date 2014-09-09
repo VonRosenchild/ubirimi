@@ -3,7 +3,6 @@
 namespace Ubirimi\SVNHosting\Service;
 
 use Ubirimi\Container\ServiceProviderInterface;
-use Ubirimi\SVNHosting\Service\EmailService;
 
 class SVNHostingServiceProvider implements ServiceProviderInterface
 {

@@ -1,8 +1,5 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Repository\User\User;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 
     require_once __DIR__ . '/../_header.php';
 ?>

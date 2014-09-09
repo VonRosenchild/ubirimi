@@ -1,9 +1,7 @@
 <?php
     use Ubirimi\LinkHelper;
     use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Field;
 
     require_once __DIR__ . '/../_header.php';
 ?>

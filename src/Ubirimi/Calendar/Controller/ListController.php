@@ -3,7 +3,6 @@
 namespace Ubirimi\Calendar\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\SystemProduct;

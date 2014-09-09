@@ -4,17 +4,10 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
-use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 use Ubirimi\Yongo\Repository\Project\Project;
