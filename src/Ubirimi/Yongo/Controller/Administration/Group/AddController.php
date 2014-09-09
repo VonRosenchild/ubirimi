@@ -22,8 +22,9 @@ class AddController extends UbirimiController
 
         if ($request->request->has('new_group')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
             if (!$emptyName) {
                 $groupAlreadyExists = Group::getByNameAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $name);

@@ -24,8 +24,3 @@ class DeleteDialogController extends UbirimiController
         return new Response('This event can not be deleted.<div>It is associated with a permission scheme or workflow.</div>');
     }
 }
-
-
-
-
-

@@ -111,8 +111,7 @@ class AddDataController extends UbirimiController
                             $currentDate
                         );
 
-                        Log::add($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $session->get('user/id'), 'ADD Yongo Notification Scheme Data', $currentDate
-                        );
+                        Log::add($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $session->get('user/id'), 'ADD Yongo Notification Scheme Data', $currentDate);
                     }
                 }
             }

@@ -11,8 +11,8 @@
             <?php $allUsers->data_seek(0); ?>
             <select name="all_users" size="10" id="all_users" class="inputTextCombo">
                 <?php while ($user = $allUsers->fetch_array(MYSQLI_ASSOC)): ?>
-                <?php if (array_search($user['id'], $group_users_arr_ids) === false): ?>
-                <option <?php if ($first_selected) { echo 'selected="selected"'; $first_selected = false; } ?> value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                <?php if (array_search($user['id'], $groupUsersArrayIds) === false): ?>
+                <option <?php if ($firstSelected) { echo 'selected="selected"'; $firstSelected = false; } ?> value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
                 <?php endif ?>
                 <?php endwhile ?>
             </select>

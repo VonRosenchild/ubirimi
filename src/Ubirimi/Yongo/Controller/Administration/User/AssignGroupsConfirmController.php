@@ -30,7 +30,7 @@ class AssignGroupsConfirmController extends UbirimiController
         if ($userGroups)
             $userGroups->data_seek(0);
 
-        $first_selected = true;
+        $firstSelected = true;
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/user/AssignGroupsConfirm.php', get_defined_vars());
     }

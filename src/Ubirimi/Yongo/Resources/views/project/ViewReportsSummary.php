@@ -1,7 +1,4 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Util;
-
     $menuProjectCategory = 'reports';
 
     require_once __DIR__ . '/../_header.php';

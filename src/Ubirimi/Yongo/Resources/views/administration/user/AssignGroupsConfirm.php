@@ -11,7 +11,7 @@
             <select name="all_groups" size="10" id="all_groups" class="inputTextCombo">
                 <?php while ($allProductGroups && $group = $allProductGroups->fetch_array(MYSQLI_ASSOC)): ?>
                     <?php if (array_search($group['id'], $user_groups_ids_arr) === false): ?>
-                        <option <?php if ($first_selected) { echo 'selected="selected"'; $first_selected = false; } ?> value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
+                        <option <?php if ($firstSelected) { echo 'selected="selected"'; $firstSelected = false; } ?> value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
                     <?php endif ?>
                 <?php endwhile ?>
             </select>

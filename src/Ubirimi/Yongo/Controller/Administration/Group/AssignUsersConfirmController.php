@@ -21,17 +21,17 @@ class AssignUsersConfirmController extends UbirimiController
         $allUsers = Client::getUsers($session->get('client/id'));
         $groupUsers = Group::getDataByGroupId($groupId);
 
-        $group_users_arr_ids = array();
+        $groupUsersArrayIds = array();
 
         while ($groupUsers && $user = $groupUsers->fetch_array(MYSQLI_ASSOC)) {
-            $group_users_arr_ids[] = $user['user_id'];
+            $groupUsersArrayIds[] = $user['user_id'];
         }
 
         if ($groupUsers) {
             $groupUsers->data_seek(0);
         }
 
-        $first_selected = true;
+        $firstSelected = true;
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/group/AssignUsersConfirm.php', get_defined_vars());
     }
