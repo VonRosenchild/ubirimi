@@ -120,6 +120,33 @@
                         <hr size="1"/>
                     </td>
                 </tr>
+                <?php if ($repeatDaily || $repeatWeekly): ?>
+                    <tr>
+                        <td valign="top">
+                            <span>Apply this change to</span>
+                        </td>
+                        <td>
+                            <input type="radio" name="change_event" value="this_event" checked="checked">
+                            <span>Only this event</span>
+                            <br />
+                            <div>All other events in the series will remain the same.</div>
+                            <input type="radio" name="change_event" value="following_events">
+                            <span>Following events</span>
+                            <br />
+                            <div>This and all the following events will be changed.</div>
+                            <div>Any changes to future events will be lost.</div>
+                            <input type="radio" name="change_event" value="all_events">
+                            <span>All events</span>
+                            <br />
+                            <div>All events in the series will be changed.</div>
+                        </td>
+                    </tr>
+                <?php endif ?>
+                <tr>
+                    <td colspan="2">
+                        <hr size="1"/>
+                    </td>
+                </tr>
                 <tr>
                     <td></td>
                     <td align="left">

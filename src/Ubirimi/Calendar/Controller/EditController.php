@@ -32,11 +32,11 @@ class EditController extends UbirimiController
             $description = Util::cleanRegularInputField($request->request->get('description'));
             $color = Util::cleanRegularInputField($request->request->get('color'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
             // check for duplication
-
             $calendarDuplicate = Calendar::getByName($session->get('user/id'), mb_strtolower($name), $calendarId);
             if ($calendarDuplicate) {
                 $calendarExists = true;

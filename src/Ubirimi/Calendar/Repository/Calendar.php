@@ -286,4 +286,28 @@ class Calendar
         $stmt->bind_param("i", $reminderId);
         $stmt->execute();
     }
+
+    public static function getEventsByLinkId($eventLinkId) {
+        $query = "select cal_event.* " .
+            "from cal_event " .
+            "where cal_event.cal_event_link_id = ? " .
+            "order by id asc";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $eventLinkId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else
+            return null;
+    }
+
+    public static function updateEventsLinkByLinkId($oldLinkId, $newLinkId) {
+        $query = "update cal_event set cal_event_link_id = ? where cal_event_link_id = ?";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $newLinkId, $oldLinkId);
+        $stmt->execute();
+    }
 }

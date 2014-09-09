@@ -582,4 +582,12 @@ class CalendarEvent
         } else
             return null;
     }
+
+    public static function updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo) {
+        $query = "update cal_event set cal_event_repeat_id = NULL, cal_event_link_id = NULL, date_from = ?, date_to = ? where id = ? limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ssi", $dateFrom, $dateTo, $eventId);
+        $stmt->execute();
+    }
 }

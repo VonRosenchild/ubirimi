@@ -5,7 +5,6 @@
     require_once __DIR__ . '/_header.php';
 ?>
 <body>
-
     <?php require_once __DIR__ . '/_menu.php'; ?>
     <div class="pageContent">
         <form name="edit_status" action="/calendar/edit/<?php echo $calendarId ?>" method="post">

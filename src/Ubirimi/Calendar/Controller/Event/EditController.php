@@ -52,34 +52,51 @@ class EditController extends UbirimiController
             $dateTo = Util::cleanRegularInputField($request->request->get('date_to'));
             $color = Util::cleanRegularInputField($request->request->get('color'));
 
+            $changeType = Util::cleanRegularInputField($request->request->get('change_event'));
             $dateFrom .= ':00';
             $dateTo .= ':00';
             $date = Util::getServerCurrentDateTime();
 
-            CalendarEvent::updateById(
-                $eventId,
-                $calendarId,
-                $name,
-                $description,
-                $location,
-                $dateFrom,
-                $dateTo,
-                $color,
-                $date
-            );
-            CalendarEvent::deleteReminders($eventId);
+            if (isset($changeType)) {
+                if ('this_event' == $changeType) {
+                    /*
+                     * check to see if other events are linked to this event.
+                     * if yes update those events to be linked to the following event in the series
+                     * update current event and remove the repeat and link information
+                     */
+                    $eventsLinked = Calendar::getEventsByLinkId($event['cal_event_link_id']);
+                    if ($eventsLinked) {
+                        $nextEvent = $eventsLinked->fetch_array(MYSQLI_ASSOC);
+                        Calendar::updateEventsLinkByLinkId($event['cal_event_link_id'], $nextEvent['cal_event_link_id']);
+                    }
+                    CalendarEvent::updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo);
+                }
+            } else {
+                CalendarEvent::updateById(
+                    $eventId,
+                    $calendarId,
+                    $name,
+                    $description,
+                    $location,
+                    $dateFrom,
+                    $dateTo,
+                    $color,
+                    $date
+                );
+                CalendarEvent::deleteReminders($eventId);
 
-            // reminder information
-            foreach ($request->request as $key => $value) {
-                if (strpos($key, 'reminder_type_') !== false) {
-                    $indexReminder = str_replace('reminder_type_', '', $key);
-                    $reminderType = Util::cleanRegularInputField($request->request->get($key));
-                    $reminderValue = $request->request->get('value_reminder_' . $indexReminder);
-                    $reminderPeriod = $request->request->get('reminder_period_' . $indexReminder);
+                // reminder information
+                foreach ($request->request as $key => $value) {
+                    if (strpos($key, 'reminder_type_') !== false) {
+                        $indexReminder = str_replace('reminder_type_', '', $key);
+                        $reminderType = Util::cleanRegularInputField($request->request->get($key));
+                        $reminderValue = $request->request->get('value_reminder_' . $indexReminder);
+                        $reminderPeriod = $request->request->get('reminder_period_' . $indexReminder);
 
-                    // add the reminder
-                    if (is_numeric($reminderValue)) {
-                        CalendarEvent::addReminder($eventId, $reminderType, $reminderPeriod, $reminderValue);
+                        // add the reminder
+                        if (is_numeric($reminderValue)) {
+                            CalendarEvent::addReminder($eventId, $reminderType, $reminderPeriod, $reminderValue);
+                        }
                     }
                 }
             }

@@ -4,58 +4,57 @@
 <tr>
     <td></td>
     <td>
-
-            <table id="add_event_repeat_daily_content" style="display: none;">
-                <tr>
-                    <td>Repeat every</td>
-                    <td>
-                        <select id="add_event_repeat_every" class="inputTextCombo" style="width: 50px">
-                            <?php for ($i = 1; $i <= 30; $i++): ?>
-                                <option <?php if ($repeatDaily && $defaultEventRepeatEvery == $i) echo 'selected="selected"' ?> value="<?php echo $i ?>"><?php echo $i ?></option>
-                            <?php endfor ?>
-                        </select>
-                        days
-                    </td>
-                </tr>
-                <tr>
-                    <td>Starts on</td>
-                    <td><input type="text" id="add_event_repeat_start_date" class="inputText" disabled="disabled" value="<?php echo substr($defaultEventStartDate, 0, 10) ?>" style="width: 90px" /></td>
-                </tr>
-                <tr>
-                    <td valign="top">Ends</td>
-                    <td>
-                        <input type="radio" name="repeat_data_daily" id="add_event_repeat_end_date_never_daily" value="1" checked="checked" />
-                        <label for="add_event_repeat_end_date_never_daily">Never</label>
-                        <br />
-                        <input type="radio"
-                               name="repeat_data_daily"
-                               <?php if ($repeatDaily && $defaultEventEndAfterOccurrences) echo 'checked="checked"'; ?>
-                               id="add_event_repeat_end_date_after_occurrences_daily" />
-                        <label for="add_event_repeat_end_date_after_occurrences_daily">
-                            <span>After </span>
-                        </label>
-                        <input value="<?php if ($repeatDaily && $defaultEventEndAfterOccurrences) echo $defaultEventEndAfterOccurrences ?>"
-                               type="text"
-                               class="inputText"
-                               style="width: 30px"
-                               id="add_event_repeat_after_daily" />
-                        <span>occurrences</span>
-                        <br />
-                        <input type="radio"
-                               name="repeat_data_daily"
-                               <?php if ($repeatDaily && $defaultEventEndDate) echo 'checked="checked"' ?>
-                               id="add_event_repeat_end_date_on_label" />
-                        <label for="add_event_repeat_end_date_on_label">
-                            <span>On </span>
-                        </label>
-                        <input value="<?php if ($repeatDaily && $defaultEventEndDate) echo $defaultEventEndDate ?>"
-                               type="text"
-                               value="" class="inputText"
-                               id="add_event_repeat_end_date_on_daily"
-                               style="width: 90px" />
-                    </td>
-                </tr>
-            </table>
+        <table id="add_event_repeat_daily_content" style="display: none;">
+            <tr>
+                <td>Repeat every</td>
+                <td>
+                    <select id="add_event_repeat_every" class="inputTextCombo" style="width: 50px">
+                        <?php for ($i = 1; $i <= 30; $i++): ?>
+                            <option <?php if ($repeatDaily && $defaultEventRepeatEvery == $i) echo 'selected="selected"' ?> value="<?php echo $i ?>"><?php echo $i ?></option>
+                        <?php endfor ?>
+                    </select>
+                    days
+                </td>
+            </tr>
+            <tr>
+                <td>Starts on</td>
+                <td><input type="text" id="add_event_repeat_start_date" class="inputText" disabled="disabled" value="<?php echo substr($defaultEventStartDate, 0, 10) ?>" style="width: 90px" /></td>
+            </tr>
+            <tr>
+                <td valign="top">Ends</td>
+                <td>
+                    <input type="radio" name="repeat_data_daily" id="add_event_repeat_end_date_never_daily" value="1" checked="checked" />
+                    <label for="add_event_repeat_end_date_never_daily">Never</label>
+                    <br />
+                    <input type="radio"
+                           name="repeat_data_daily"
+                           <?php if ($repeatDaily && $defaultEventEndAfterOccurrences) echo 'checked="checked"'; ?>
+                           id="add_event_repeat_end_date_after_occurrences_daily" />
+                    <label for="add_event_repeat_end_date_after_occurrences_daily">
+                        <span>After </span>
+                    </label>
+                    <input value="<?php if ($repeatDaily && $defaultEventEndAfterOccurrences) echo $defaultEventEndAfterOccurrences ?>"
+                           type="text"
+                           class="inputText"
+                           style="width: 30px"
+                           id="add_event_repeat_after_daily" />
+                    <span>occurrences</span>
+                    <br />
+                    <input type="radio"
+                           name="repeat_data_daily"
+                           <?php if ($repeatDaily && $defaultEventEndDate) echo 'checked="checked"' ?>
+                           id="add_event_repeat_end_date_on_label" />
+                    <label for="add_event_repeat_end_date_on_label">
+                        <span>On </span>
+                    </label>
+                    <input value="<?php if ($repeatDaily && $defaultEventEndDate) echo $defaultEventEndDate ?>"
+                           type="text"
+                           value="" class="inputText"
+                           id="add_event_repeat_end_date_on_daily"
+                           style="width: 90px" />
+                </td>
+            </tr>
+        </table>
 
         <table id="add_event_repeat_weekly_content" style="display: none;">
             <tr>
