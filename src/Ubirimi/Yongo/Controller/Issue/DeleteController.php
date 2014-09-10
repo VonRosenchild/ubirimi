@@ -15,10 +15,6 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
-use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class DeleteController extends UbirimiController
@@ -39,20 +35,10 @@ class DeleteController extends UbirimiController
 
         Issue::deleteById($issueId);
 
-
         // also delete the substaks
         $childrenIssues = Issue::getByParameters(array('parent_id' => $issueId), $loggedInUserId);
         while ($childrenIssues && $childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)) {
             Issue::deleteById($childIssue['id']);
-            IssueAttachment::deleteByIssueId($childIssue['id']);
-            IssueCustomField::deleteCustomFieldsData($childIssue['id']);
-            IssueWorkLog::deleteByIssueId($childIssue['id']);
-
-            // delete SLA related data
-            Issue::deleteSLADataByIssueId($childIssue['id']);
-
-            // delete the watchers
-            IssueWatcher::deleteByIssueId($childIssue['id']);
         }
 
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr']);
