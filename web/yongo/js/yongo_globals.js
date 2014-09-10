@@ -1,7 +1,7 @@
 // resize the create/edit modals as the users resizes the browser window
 function resizeModals() {
     if ($(".ui-dialog-content").dialog("isOpen")) {
-        var newHeight = ($(window).height() - $(".ui-dialog-content").height()) / 2 + $(".ui-dialog-content").height() - 100;
+        var newHeight = ($(window).height() - $(".ui-dialog-content").height()) / 2 + $(".ui-dialog-content").height() - 150;
         if (newHeight < 200) {
             newHeight = 200;
         }

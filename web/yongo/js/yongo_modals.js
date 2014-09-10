@@ -1,6 +1,6 @@
 $('document').ready(function () {
 
-    $(".ubirimiModalDialog" ).on( "dialogopen", function(event, ui) {
+    $(".ubirimiModalDialog" ).on("dialogopen", function(event, ui) {
         resizeModals();
     });
 

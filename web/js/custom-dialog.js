@@ -19,7 +19,6 @@ $.extend($.ui.dialog.prototype.options, {
     closeOnEscape: true,
     width: "auto",
     height: "auto",
-    maxHeight: $(window).height() - 50,
     stack: true,
     position: {
         my: "center",
