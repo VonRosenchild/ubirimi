@@ -381,22 +381,6 @@ class CalendarEvent
         $stmt->execute();
     }
 
-    public static function updateEventOffset($eventId, $offset) {
-        $event = CalendarEvent::getById($eventId, 'array');
-        $startDateEvent = $event['date_from'];
-
-        if ($startDateEvent < $offset) {
-            $query = "update cal_event set date_from = DATE_ADD(date_from, INTERVAL DATEDIFF(?, date_from) DAY), " .
-                "date_to = DATE_ADD(date_to, INTERVAL DATEDIFF(?, date_to) DAY) " .
-                "where id = ? limit 1";
-        }
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-
-        $stmt->bind_param("ssi", $offset, $offset, $eventId);
-        $stmt->execute();
-    }
-
     public static function shareWithUsers($eventId, $userIds, $date) {
         // first delete the users we try to add to avoid duplicated
         $query = "delete from cal_event_share where cal_event_id = ? and user_id IN (" . implode(', ', $userIds) . ');';
