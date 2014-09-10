@@ -8,10 +8,11 @@ function resizeModals() {
         }
 
         $(".ui-dialog-content").css('max-height', newHeight);
-        jQuery(".ui-dialog-content").dialog('option', 'position', ['center','center']);
+        jQuery(".ui-dialog-content").dialog('option', 'position', ['middle','middle']);
     }
 }
-$(window).on('resize', function(){
+
+$(window).on('resize', function() {
     resizeModals();
 });
 
