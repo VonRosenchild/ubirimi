@@ -34,8 +34,6 @@ $('document').ready(function () {
                 $("#deleteIssueStatus").dialog(options);
                 $("#deleteIssueStatus").dialog("open");
             });
-
-            return;
         } else {
             var options = {
                 dialogClass: "ubirimi-dialog",
