@@ -36,7 +36,7 @@
                 <tbody>
                     <?php while ($calendar = $calendars->fetch_array(MYSQLI_ASSOC)): ?>
                         <tr id="table_row_<?php echo $calendar['id'] ?>">
-                            <td width="22">
+                            <td width="20px">
                                 <input type="checkbox" value="1" id="el_check_<?php echo $calendar['id'] ?>"/>
                             </td>
                             <td>
