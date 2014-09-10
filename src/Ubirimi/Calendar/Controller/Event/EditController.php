@@ -70,6 +70,8 @@ class EditController extends UbirimiController
                         Calendar::updateEventsLinkByLinkId($event['cal_event_link_id'], $nextEvent['cal_event_link_id']);
                     }
                     CalendarEvent::updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo);
+                } else if ("following_events" == $changeType) {
+
                 }
             } else {
                 CalendarEvent::updateById(
