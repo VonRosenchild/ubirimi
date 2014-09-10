@@ -1,0 +1,1 @@
+Are you sure you want to delete this issue?<br />All the information linked to it will be also deleted.
