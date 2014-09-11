@@ -1,5 +1,4 @@
 <?php
-
     use Ubirimi\Util;
 
     require_once __DIR__ . '/_header.php';
@@ -11,7 +10,6 @@
             $breadCrumb = 'Calendars';
             Util::renderBreadCrumb($breadCrumb);
         ?>
-
         <?php require_once __DIR__ . '/_buttonsBar.php' ?>
 
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -29,7 +27,6 @@
                                     <input <?php if (in_array($calendar['id'], $calendarIds)) echo 'checked="checked"' ?> type="checkbox" value="<?php echo $calendar['id'] ?>" id="select_calendar_<?php echo $calendar['id'] ?>" />
                                 </td>
                                 <td valign="top" width="250px" align="left">
-                                    &nbsp;
                                     <span style="width: 28px; background-color: <?php echo $calendar['color'] ?>">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <?php echo mb_substr($calendar['name'], 0, 20) ?>
                                 </td>
