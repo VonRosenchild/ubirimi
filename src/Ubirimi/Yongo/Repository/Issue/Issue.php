@@ -6,7 +6,7 @@ use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\Repository\User\User;
-use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
