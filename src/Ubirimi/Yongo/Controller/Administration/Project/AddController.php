@@ -20,7 +20,6 @@ use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 use Ubirimi\Entity\Yongo\Project as ProjectEntity;
-use Ubirimi\Yongo\Controller\Administration\Service\ProjectService;
 
 class AddController extends UbirimiController
 {

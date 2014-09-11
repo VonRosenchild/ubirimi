@@ -3,7 +3,6 @@
 namespace Ubirimi\Calendar\Repository;
 
 use Ubirimi\Container\UbirimiContainer;
-use When;
 
 class CalendarEvent
 {
