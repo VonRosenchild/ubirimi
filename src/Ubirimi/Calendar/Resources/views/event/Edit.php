@@ -69,7 +69,7 @@
                 <tr>
                     <td>Repeats</td>
                     <td>
-                        <select id="add_event_repeat_type" class="select2InputSmall">
+                        <select id="add_event_repeat_type" name="add_event_repeat_type" class="select2InputSmall">
                             <option value="-1">Does not repeat</option>
                             <option <?php if (CalendarEventRepeatCycle::REPEAT_DAILY == $defaultEventRepeatCycle) echo 'selected="selected"' ?> value="1">Daily</option>
                             <option <?php if (CalendarEventRepeatCycle::REPEAT_WEEKLY == $defaultEventRepeatCycle) echo 'selected="selected"' ?> value="2">Weekly</option>

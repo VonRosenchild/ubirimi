@@ -5,7 +5,7 @@
             <tr>
                 <td>Repeat every</td>
                 <td>
-                    <select id="add_event_repeat_every" class="inputTextCombo" style="width: 50px">
+                    <select id="add_event_repeat_every" name="add_event_repeat_every" class="inputTextCombo" style="width: 50px">
                         <?php for ($i = 1; $i <= 30; $i++): ?>
                             <option <?php if ($repeatDaily && $defaultEventRepeatEvery == $i) echo 'selected="selected"' ?> value="<?php echo $i ?>"><?php echo $i ?></option>
                         <?php endfor ?>
@@ -15,15 +15,28 @@
             </tr>
             <tr>
                 <td>Starts on</td>
-                <td><input type="text" id="add_event_repeat_start_date" class="inputText" disabled="disabled" value="<?php echo substr($defaultEventStartDate, 0, 10) ?>" style="width: 90px" /></td>
+                <td>
+                    <input type="text"
+                           id="add_event_repeat_start_date"
+                           name="add_event_repeat_start_date"
+                           class="inputText"
+                           readonly="readonly"
+                           value="<?php echo substr($defaultEventStartDate, 0, 10) ?>"
+                           style="width: 90px" />
+                </td>
             </tr>
             <tr>
                 <td valign="top">Ends</td>
                 <td>
-                    <input type="radio" name="repeat_data_daily" id="add_event_repeat_end_date_never_daily" value="1" checked="checked" />
+                    <input type="radio"
+                           name="repeat_data_daily"
+                           id="add_event_repeat_end_date_never_daily"
+                           value="never"
+                           checked="checked" />
                     <label for="add_event_repeat_end_date_never_daily">Never</label>
                     <br />
                     <input type="radio"
+                           value="after"
                            name="repeat_data_daily"
                            <?php if ($repeatDaily && $defaultEventEndAfterOccurrences) echo 'checked="checked"'; ?>
                            id="add_event_repeat_end_date_after_occurrences_daily" />
@@ -34,10 +47,12 @@
                            type="text"
                            class="inputText"
                            style="width: 30px"
+                           name="add_event_repeat_after_daily"
                            id="add_event_repeat_after_daily" />
                     <span>occurrences</span>
                     <br />
                     <input type="radio"
+                           value="on"
                            name="repeat_data_daily"
                            <?php if ($repeatDaily && $defaultEventEndDate) echo 'checked="checked"' ?>
                            id="add_event_repeat_end_date_on_label" />
@@ -46,8 +61,10 @@
                     </label>
                     <input value="<?php if ($repeatDaily && $defaultEventEndDate) echo $defaultEventEndDate ?>"
                            type="text"
-                           value="" class="inputText"
+                           value=""
+                           class="inputText"
                            id="add_event_repeat_end_date_on_daily"
+                           name="add_event_repeat_end_date_on_daily"
                            style="width: 90px" />
                 </td>
             </tr>

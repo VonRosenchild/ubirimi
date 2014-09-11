@@ -573,4 +573,17 @@ class CalendarEvent
         $stmt->bind_param("ssi", $dateFrom, $dateTo, $eventId);
         $stmt->execute();
     }
+
+    public static function deleteEventAndFollowingByLinkId($eventId) {
+        $event = CalendarEvent::getById($eventId, 'array');
+        $linkId = $event['cal_event_link_id'];
+
+        $query = "delete from " .
+            "cal_event " .
+            "where cal_event.cal_event_link_id = ? and id >= ?";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("ii", $linkId, $eventId);
+        $stmt->execute();
+    }
 }

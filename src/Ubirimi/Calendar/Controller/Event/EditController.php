@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Calendar\Repository\CalendarEvent;
+use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -18,6 +19,8 @@ class EditController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+        $clientId = $session->get('client/id');
+        $clientSettings = Client::getSettings($clientId);
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
 
@@ -50,7 +53,8 @@ class EditController extends UbirimiController
             $calendarId = Util::cleanRegularInputField($request->request->get('calendar'));
             $dateFrom = Util::cleanRegularInputField($request->request->get('date_from'));
             $dateTo = Util::cleanRegularInputField($request->request->get('date_to'));
-            $color = Util::cleanRegularInputField($request->request->get('color'));
+            $color = str_replace("#", '' , Util::cleanRegularInputField($request->request->get('color')));
+            $eventRepeatType = Util::cleanRegularInputField($request->request->get('add_event_repeat_type'));
 
             $changeType = Util::cleanRegularInputField($request->request->get('change_event'));
             $dateFrom .= ':00';
@@ -71,6 +75,50 @@ class EditController extends UbirimiController
                     }
                     CalendarEvent::updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo);
                 } else if ("following_events" == $changeType) {
+
+                    $repeatData = '';
+                    // create repeat information string
+                    if ($eventRepeatType != -1) {
+
+                        switch ($eventRepeatType) {
+                            case CalendarEventRepeatCycle::REPEAT_DAILY:
+                                $repeatData .= '1';
+                                $repeatData .= '#' . $request->request->get('add_event_repeat_every');
+
+                                if ('never' == $request->request->get('repeat_data_daily')) {
+                                    $repeatData .= '#n';
+                                } else if ('after' == $request->request->get('repeat_data_daily')) {
+                                    $repeatData .= '#a' . $request->request->get('add_event_repeat_after_daily');
+                                } else if ('on' == $request->request->get('repeat_data_daily')) {
+                                    $repeatData .= '#o' . $request->request->get('add_event_repeat_end_date_on_daily');
+                                }
+                                break;
+                        }
+
+                        $repeatData .= '#' . $dateFrom;
+                    }
+
+                    if ($repeatData) {
+                        /*
+                         * delete all following events
+                         * add this new event as a stand alone event
+                         */
+
+                        CalendarEvent::deleteEventAndFollowingByLinkId($eventId);
+                        CalendarEvent::add(
+                            $calendarId,
+                            $session->get('user/id'),
+                            $name,
+                            $description,
+                            $location,
+                            $dateFrom,
+                            $dateTo,
+                            $color,
+                            $date,
+                            $repeatData,
+                            $clientSettings
+                        );
+                    }
 
                 }
             } else {

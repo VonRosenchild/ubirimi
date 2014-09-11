@@ -60,13 +60,7 @@ class AddController extends UbirimiController
                 );
             }
 
-            Log::add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_CALENDAR,
-                $session->get('user/id'),
-                'ADD EVENTS event ' . $name,
-                $date
-            );
+            Log::add($session->get('client/id'), SystemProduct::SYS_PRODUCT_CALENDAR, $session->get('user/id'),'ADD EVENTS event ' . $name, $date);
         }
 
         return new Response('');
