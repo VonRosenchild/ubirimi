@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-    $("select").customSelect();
-
     $(".cycle-slideshow").cycle("goto", 0);
 
     $(".compare-items a").on("click", function () {
@@ -144,6 +142,35 @@ $(document).ready(function () {
                 $('form').replaceWith(response);
             }
         });
+    });
+
+    $(document).on('change', '#number_users', function (event) {
+        var noOfUsers = parseInt($(this).val());
+
+        var amount = 10;
+
+        switch (noOfUsers) {
+            case 15:
+                amount = 45;
+                break;
+            case 25:
+                amount = 90;
+                break;
+            case 50:
+                amount = 190;
+                break;
+            case 100:
+                amount = 290;
+                break;
+            case 500:
+                amount = 490;
+                break;
+            case 1000:
+                amount = 990;
+                break;
+        }
+
+        $('#pay_amount').val(amount + ' $');
     });
 });
 

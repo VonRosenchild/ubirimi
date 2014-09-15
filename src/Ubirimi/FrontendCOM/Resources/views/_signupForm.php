@@ -4,9 +4,24 @@
         Done. Check your email in a few minutes for further details.
     </div>
     <?php endif ?>
-
-
-    <table>
+    <table align="center">
+        <tr>
+            <td colspan="3">
+                <h1>Create your account</h1>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <a class="button_hp blue" href="#">Free for first month</a>
+                <a class="button_hp blue" href="#">Cancel at any time</a>
+                <a class="button_hp blue" href="#">Free updates forever</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div>&nbsp;</div>
+            </td>
+        </tr>
         <tr>
             <td valign="top">
                 <div class="form-section clearfix">
@@ -174,17 +189,17 @@
 
                             <select name="number_users" id="number_users" style="width: 100px">
                                 <option value="10">10</option>
-                                <option value="20">20</option>
+                                <option value="15">15</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
                             </select>
-
-                            <?php if ($errors['empty_card_number']): ?>
-                                <br />
-                                <p class="error">The card number can not be empty</p>
-                            <?php endif ?>
                         </fieldset>
                         <fieldset>
-                            <label for="number_users">Amount to pay</label>
-                            <input style="width: 100px" type="text" readonly="readonly" value="10 $" />
+                            <label>Amount to pay</label>
+                            <input id="pay_amount" style="width: 100px" type="text" disabled="disabled" value="10 $" /> <label style="display: block; width: 10px"></label> <label>/ month</label>
                         </fieldset>
                     </div>
                 </div>
