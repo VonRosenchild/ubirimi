@@ -66,6 +66,8 @@ class SignupController extends UbirimiController
             $cardName = Util::cleanRegularInputField($request->request->get('card_name'));
             $cardSecurity = Util::cleanRegularInputField($request->request->get('card_security'));
 
+            $numberUsers = Util::cleanRegularInputField($request->request->get('number_users'));
+
             $agreeTerms = $request->request->has('agree_terms') ?
                 Util::cleanRegularInputField($request->request->get('agree_terms')) :
                 false;
@@ -181,6 +183,53 @@ class SignupController extends UbirimiController
                 )));
 
                 $session->set('client_account_created', true);
+
+                switch ($numberUsers) {
+                    case 10:
+                        $amount = 10;
+                        break;
+                    case 15:
+                        $amount = 45;
+                        break;
+                    case 25:
+                        $amount = 90;
+                        break;
+                    case 50:
+                        $amount = 190;
+                        break;
+                    case 100:
+                        $amount = 290;
+                        break;
+                    case 500:
+                        $amount = 490;
+                        break;
+                    case 1000:
+                        $amount = 990;
+                        break;
+                }
+
+                $VAT = $amount * 24 / 100;
+
+                $dateSubscriptionStart = date_create(Util::getServerCurrentDateTime());
+                date_add($dateSubscriptionStart, date_interval_create_from_date_string('1 months'));
+
+                $requestPaymill = new Paymill\Request(UbirimiContainer::get()['paymill.private_key']);
+                $client = new Paymill\Models\Request\Client();
+                $client->setEmail($admin_email);
+                $client->setDescription($company_name . '_' . $companyDomain . '_' . $admin_first_name . '_' . $admin_last_name);
+
+                $clientResponse = $requestPaymill->create($client);
+
+                $subscription = new Paymill\Models\Request\Subscription();
+                $subscription->setClient($clientResponse->getId());
+                $subscription->setAmount(($amount + $VAT) * 100);
+                $subscription->setPayment($clientResponse->getPayment()->getId());
+                $subscription->setCurrency('USD');
+                $subscription->setInterval('1 month');
+                $subscription->setName('Ubirimi product suite for ' . $numberUsers . ' users');
+                $subscription->setPeriodOfValidity('20 YEAR');
+                $subscription->setStartAt($dateSubscriptionStart->getTimestamp());
+
                 $request->request->replace(array());
 
                 $clientCreated = true;

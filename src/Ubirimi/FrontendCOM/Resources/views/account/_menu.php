@@ -1,21 +1,16 @@
-<?php
-    use Ubirimi\Util;
-?>
-
-<div class="submenu">
-    <a href="home" <?php if ('account_home' == $page): ?>class="selected"<?php endif ?>>Home</a>
-    <a href="profile" <?php if ('account_profile' == $page): ?>class="selected"<?php endif ?>>Profile</a>
-
-    <?php if (Util::runsOnLocalhost()): ?>
-        <a href="https://support.ubirimi_net.lan">Support</a>
-    <?php else: ?>
-        <a href="https://support.ubirimi.net/yongo/project/all">Support</a>
-    <?php endif ?>
-
-    <a href="/account/pay" <?php if ('account_pay' == $page): ?>class="selected"<?php endif ?>>Pay</a>
-    <a href="/account/invoices" <?php if ('account_invoice' == $page): ?>class="selected"<?php endif ?>>Invoices</a>
-
+<ul class="nav nav-tabs" style="padding: 0px;">
+    <li <?php if ($page == 'account_home'): ?>class="active"<?php endif ?>>
+        <a href="/account/home" title="Summary">Summary</a>
+    </li>
+    <li <?php if ($page == 'account_profile'): ?>class="active" <?php endif ?>>
+        <a href="/account/profile" title="Issues">Profile</a>
+    </li>
+    <li <?php if ($page == 'account_invoice'): ?>class="active" <?php endif ?>>
+        <a href="/account/invoices" title="invoices">Invoices</a>
+    </li>
     <?php if ($session->get('user/super_user_flag')): ?>
-        <a href="/administration">Administration</a>
+        <li>
+            <a href="/administration" title="Administration">Administration</a>
+        </li>
     <?php endif ?>
-</div>
+</ul>
