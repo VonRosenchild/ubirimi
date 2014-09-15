@@ -50,7 +50,6 @@
     <script type="text/javascript" src="/js/vendor/jquery.fancybox.pack.js?v=2.1.5"></script>
     <script type="text/javascript" src="/js/vendor/jquery.fancybox-buttons.js?v=1.0.5"></script>
     <script type="text/javascript" src="/js/vendor/jquery.cycle2.min.js"></script>
-    <script type="text/javascript" src="/js/vendor/jquery.customSelect.min.js"></script>
 
     <link rel="stylesheet" href="/css/normalize.min.css">
 

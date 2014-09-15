@@ -95,7 +95,6 @@
 </footer>
 <br />
 <script type="text/javascript" src="/js/vendor/jquery.cycle2.min.js"></script>
-<script type="text/javascript" src="/js/vendor/jquery.customSelect.min.js"></script>
 
 <script src="/js/plugins.js"></script>
 
