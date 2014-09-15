@@ -29,10 +29,10 @@
                     <div class="section-left align-left sectionFeature blue">
                         <fieldset>
                             <label for="domain">Company domain</label>
-                            <div class="field-extension-container">
-                                <span class="field-extension">.ubirimi.net</span>
-                                <input id="domain" type="text" name="company_domain" value="<?php if (isset($_POST['company_domain'])) echo $_POST['company_domain'] ?>" />
-                            </div>
+
+                                <input style="width: 100px" id="domain" type="text" name="company_domain" value="<?php if (isset($_POST['company_domain'])) echo $_POST['company_domain'] ?>" />
+                                <label style="display: block; width: 10px;"> </label>
+                                <label style="background-color: #e8e8e8; border: 1px solid #d9d9d9; padding: 3px;">.ubirimi.net</label>
                             <?php if ($errors['empty_company_domain']): ?>
                                 <br />
                                 <p class="error">The domain can not be empty</p>
@@ -205,7 +205,10 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td colspan="3">
+                <button type="submit" class="button_hp blue" name="add_company">Create Account</button>
+            </td>
+        </tr>
     </table>
-
-    <button type="submit" class="button_hp blue" name="add_company">Create Account</button>
 </form>

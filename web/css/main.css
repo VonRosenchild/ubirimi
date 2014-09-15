@@ -1040,7 +1040,7 @@ footer ul li.last p {
 
 .standard-form fieldset input[type="text"],
 .standard-form fieldset input[type="password"] {
-    padding: 5px;
+    padding: 3px;
     height: 28px;
     width: 288px;
 }
