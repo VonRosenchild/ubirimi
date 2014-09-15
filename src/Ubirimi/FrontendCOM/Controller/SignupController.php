@@ -5,10 +5,15 @@ namespace Ubirimi\FrontendCOM\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\GeneralTaskQueue;
 use Ubirimi\Repository\User\User;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Paymill\Request as PaymillRequest;
+use Paymill\Models\Request\Client as PaymillClient;
+use Paymill\Models\Request\Subscription as PaymillSubscription;
+use Paymill\Models\Request\Payment as PaymillPayment;
 
 class SignupController extends UbirimiController
 {
@@ -213,16 +218,29 @@ class SignupController extends UbirimiController
                 $dateSubscriptionStart = date_create(Util::getServerCurrentDateTime());
                 date_add($dateSubscriptionStart, date_interval_create_from_date_string('1 months'));
 
-                $requestPaymill = new Paymill\Request(UbirimiContainer::get()['paymill.private_key']);
-                $client = new Paymill\Models\Request\Client();
+
+                $requestPaymill = new PaymillRequest(UbirimiContainer::get()['paymill.private_key']);
+
+                $client = new PaymillClient();
                 $client->setEmail($admin_email);
                 $client->setDescription($company_name . '_' . $companyDomain . '_' . $admin_first_name . '_' . $admin_last_name);
-
                 $clientResponse = $requestPaymill->create($client);
 
-                $subscription = new Paymill\Models\Request\Subscription();
+                $payment = new PaymillPayment();
+                $payment->setClient($clientResponse->getId());
+                $payment->setToken(UbirimiContainer::get()['paymill.private_key']);
+
+                $paymentResponse = $requestPaymill->create($payment);
+
+                $paymentResponse->setExpireMonth($cardExpirationMonth);
+                $paymentResponse->setExpireYear($cardExpirationYear);
+                $paymentResponse->setCardHolder($cardName);
+                $paymentResponse->setCode($cardSecurity);
+
+                $subscription = new PaymillSubscription();
                 $subscription->setClient($clientResponse->getId());
                 $subscription->setAmount(($amount + $VAT) * 100);
+
                 $subscription->setPayment($clientResponse->getPayment()->getId());
                 $subscription->setCurrency('USD');
                 $subscription->setInterval('1 month');
