@@ -39,6 +39,12 @@ class SignupController extends UbirimiController
         $errors['not_agree_terms'] = false;
         $errors['invalid_username'] = false;
 
+        $errors['empty_card_number'] = false;
+        $errors['card_exp_month'] = false;
+        $errors['card_exp_year'] = false;
+        $errors['empty_card_name'] = false;
+        $errors['empty_card_security'] = false;
+
         $countries = Util::getCountries();
 
         $clientCreated = false;
@@ -51,7 +57,14 @@ class SignupController extends UbirimiController
             $admin_email = Util::cleanRegularInputField($request->request->get('admin_email'));
             $adminUsername = $request->request->get('admin_username');
             $admin_pass_1 = Util::cleanRegularInputField($request->request->get('admin_pass_1'));
+
             $admin_pass_2 = Util::cleanRegularInputField($request->request->get('admin_pass_2'));
+
+            $cardNumber = Util::cleanRegularInputField($request->request->get('card_number'));
+            $cardExpirationMonth = Util::cleanRegularInputField($request->request->get('card_exp_month'));
+            $cardExpirationYear = Util::cleanRegularInputField($request->request->get('card_exp_year'));
+            $cardName = Util::cleanRegularInputField($request->request->get('card_name'));
+            $cardSecurity = Util::cleanRegularInputField($request->request->get('card_security'));
 
             $agreeTerms = $request->request->has('agree_terms') ?
                 Util::cleanRegularInputField($request->request->get('agree_terms')) :
@@ -61,11 +74,33 @@ class SignupController extends UbirimiController
 
             // check data for integrity
 
-            if (empty($company_name))
-                $errors['empty_company_name'] = true;
+            if (empty($cardNumber)) {
+                $errors['empty_card_number'] = true;
+            }
 
-            if (empty($companyDomain))
+            if (empty($cardExpirationMonth)) {
+                $errors['card_exp_month'] = true;
+            }
+
+            if (empty($cardExpirationYear)) {
+                $errors['card_exp_year'] = true;
+            }
+
+            if (empty($cardName)) {
+                $errors['empty_card_name'] = true;
+            }
+
+            if (empty($cardSecurity)) {
+                $errors['empty_card_security'] = true;
+            }
+
+            if (empty($company_name)) {
+                $errors['empty_company_name'] = true;
+            }
+
+            if (empty($companyDomain)) {
                 $errors['empty_company_domain'] = true;
+            }
 
             if (!$errors['empty_company_domain']) {
                 if (!preg_match('/^[a-z]+$/', $companyDomain)) {
@@ -74,47 +109,59 @@ class SignupController extends UbirimiController
                 if (!$errors['company_domain_not_valid']) {
 
                     $domainAvailable = Client::checkAvailableDomain($companyDomain);
-                    if (!$domainAvailable)
+                    if (!$domainAvailable) {
                         $errors['company_domain_not_unique'] = true;
+                    }
                 }
             }
 
-            if (!Util::validateUsername($adminUsername))
+            if (!Util::validateUsername($adminUsername)) {
                 $errors['invalid_username'] = true;
+            }
 
-            if (empty($admin_first_name))
+            if (empty($admin_first_name)) {
                 $errors['empty_admin_first_name'] = true;
+            }
 
-            if (empty($admin_last_name))
+            if (empty($admin_last_name)) {
                 $errors['empty_admin_last_name'] = true;
+            }
 
-            if (empty($admin_email))
+            if (empty($admin_email)) {
                 $errors['empty_admin_email'] = true;
+            }
 
-            if (empty($adminUsername))
+            if (empty($adminUsername)) {
                 $errors['empty_admin_username'] = true;
+            }
 
-            if (empty($admin_pass_1))
+            if (empty($admin_pass_1)) {
                 $errors['empty_admin_pass_1'] = true;
+            }
 
-            if ($admin_pass_1 != $admin_pass_2)
+            if ($admin_pass_1 != $admin_pass_2) {
                 $errors['passwords_do_not_match'] = true;
+            }
 
-            if (!Util::isValidEmail($admin_email))
+            if (!Util::isValidEmail($admin_email)) {
                 $errors['admin_email_not_valid'] = true;
+            }
 
-            if (!$agreeTerms)
+            if (!$agreeTerms) {
                 $errors['not_agree_terms'] = true;
-
+            }
             $emailResult = User::getByEmailAddressAndIsClientAdministrator(mb_strtolower($admin_email));
 
-            if ($emailResult)
+            if ($emailResult) {
                 $errors['admin_email_already_exists'] = true;
+            }
 
             $problemFound = false;
-            foreach ($errors as $error)
-                if ($error)
+            foreach ($errors as $error) {
+                if ($error) {
                     $problemFound = true;
+                }
+            }
 
             if (!$problemFound) {
                 // prepare the data
