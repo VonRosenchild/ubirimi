@@ -1410,7 +1410,7 @@ footer ul li.last p {
 }
 
 
-footer a {
+.footer a {
     text-decoration: none;
     color: #666666;
 }
