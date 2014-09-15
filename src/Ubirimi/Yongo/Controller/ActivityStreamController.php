@@ -32,6 +32,8 @@ class ActivityStreamController extends UbirimiController
             'array'
         );
 
+        $menuSelectedCategory = 'home';
+
         $projectIds = Util::array_column($projectsMenu, 'id');
 
         $endDate = Util::getServerCurrentDateTime();
