@@ -32,6 +32,8 @@ class GetActivityStreamChunkController extends UbirimiController
             );
 
             $projectIds = Util::array_column($projectsMenu, 'id');
+        } else {
+            $projectIds = array($project);
         }
 
         $historyList = null;

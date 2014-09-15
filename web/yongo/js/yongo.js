@@ -2140,13 +2140,16 @@ $('document').ready(function () {
     $(document).on('click', '#get_next_activity', function (event) {
 
         var date = $('.activity_last_date')[$('.activity_last_date').length - 1].value;
-
+        var project = 'all';
+        if ($('#menu_selected').val() == 'project') {
+            project = $('#project_id').val();
+        }
         $.ajax({
             type: "POST",
             url: '/yongo/get-activity-stream-chunk',
             data: {
                 date: date,
-                project: 'all'
+                project: project
             },
             success: function (response) {
                 $('.nextActivityChunk')[$('.nextActivityChunk').length - 1].innerHTML = response;
