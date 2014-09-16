@@ -89,15 +89,7 @@ function updateIssueAgileElementMetaData(param) {
                 if (response != 'no') {
 
                     var options = {
-
-
                         dialogClass: "ubirimi-dialog",
-
-
-
-
-
-
                         title: 'Update Parent Issue',
                         buttons: [
                             {
@@ -121,15 +113,7 @@ function updateIssueAgileElementMetaData(param) {
                                         }
 
                                         var options = {
-
-
                                             dialogClass: "ubirimi-dialog",
-
-
-
-
-
-
                                             title: transitionName,
                                             buttons: [
                                                 {
@@ -479,15 +463,7 @@ $('document').ready(function () {
 
                                             if (obj.screen_id) {
                                                 var options = {
-
-
                                                     dialogClass: "ubirimi-dialog",
-
-
-
-
-
-
                                                     title: transitionName,
                                                     buttons: [
                                                         {
@@ -797,15 +773,7 @@ $('document').ready(function () {
     function deleteIssue() {
 
         var options = {
-
-
             dialogClass: "ubirimi-dialog",
-
-
-
-
-
-
             title: 'Delete Issue Confirmation',
             buttons: [
                 {
@@ -839,7 +807,6 @@ $('document').ready(function () {
                                 }
                             }
                         });
-
                     }
                 },
                 {
@@ -859,8 +826,6 @@ $('document').ready(function () {
         $("#deleteIssueModal").html('Are you sure you want to delete this issue?<br />All the information linked to it will be also deleted.');
         $("#deleteIssueModal").dialog(options);
         $("#deleteIssueModal").dialog('open');
-
-        return
     }
 
     $('#btnDeleteIssueDetail').on('click', function (event) {
@@ -1743,7 +1708,6 @@ $('document').ready(function () {
                         $('.toggle_watch_issue').attr('data', 'remove');
                     }
                 }
-
             }
         });
     });

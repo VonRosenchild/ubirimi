@@ -442,6 +442,7 @@ $('document').ready(function () {
         $("#modalEditIssueAssign").load("/yongo/issue/assign-dialog/" + issueId + '/' + projectId, [], function () {
             $("#modalEditIssueAssign").dialog(options);
             $("#modalEditIssueAssign").dialog("open");
+            $(".select2Input").select2();
         });
     });
 });

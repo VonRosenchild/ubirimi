@@ -31,6 +31,10 @@ function getVisibleHeightOfElement(container) {
 
 $('document').ready(function () {
 
+    $(".select2Input").select2();
+    $(".select2InputSmall").select2();
+    $(".select2InputMedium").select2();
+
     $('#agile_wrapper_planning').css('height', $(window).height() - 215);
     $('#agile_wrapper_work').css('height', $(window).height() - 187);
     $('#agileIssueContent').css('height', $(window).height() - 215);
