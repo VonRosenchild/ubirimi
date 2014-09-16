@@ -379,6 +379,8 @@ $('document').ready(function () {
             showCloseButton = 1;
         }
 
+        var modalEditIssueAssign = $("#modalEditIssueAssign");
+
         var options = {
             dialogClass: "ubirimi-dialog",
             title: 'Assign Issue',
@@ -419,8 +421,8 @@ $('document').ready(function () {
                                             }
                                         }
                                     });
-                                    $("#modalEditIssueAssign").dialog('destroy');
-                                    $("#modalEditIssueAssign").empty();
+                                    modalEditIssueAssign.dialog('destroy');
+                                    modalEditIssueAssign.empty();
                                 }
                             }
                         });
@@ -434,14 +436,14 @@ $('document').ready(function () {
                 }
             ],
             close: function () {
-                $("#modalEditIssueAssign").dialog('destroy');
-                $("#modalEditIssueAssign").empty();
+                modalEditIssueAssign.dialog('destroy');
+                modalEditIssueAssign.empty();
             }
         };
 
-        $("#modalEditIssueAssign").load("/yongo/issue/assign-dialog/" + issueId + '/' + projectId, [], function () {
-            $("#modalEditIssueAssign").dialog(options);
-            $("#modalEditIssueAssign").dialog("open");
+        modalEditIssueAssign.load("/yongo/issue/assign-dialog/" + issueId + '/' + projectId, [], function () {
+            modalEditIssueAssign.dialog(options);
+            modalEditIssueAssign.dialog("open");
             $(".select2Input").select2();
         });
     });
