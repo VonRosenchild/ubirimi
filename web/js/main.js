@@ -144,6 +144,14 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('change', '#country', function (event) {
+        if ($(this).val() == 143) {
+            $('#vat_container').show();
+        } else {
+            $('#vat_container').hide();
+        }
+    });
+
     $(document).on('change', '#number_users', function (event) {
         var noOfUsers = parseInt($(this).val());
 
@@ -170,7 +178,7 @@ $(document).ready(function () {
                 break;
         }
 
-        $('#pay_amount').val(amount + ' $');
+        $('#pay_amount').val(amount);
     });
 });
 

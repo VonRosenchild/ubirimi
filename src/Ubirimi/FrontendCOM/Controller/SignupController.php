@@ -8,12 +8,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\GeneralTaskQueue;
+use Ubirimi\Repository\Payment;
 use Ubirimi\Repository\User\User;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Paymill\Request as PaymillRequest;
 use Paymill\Models\Request\Client as PaymillClient;
 use Paymill\Models\Request\Subscription as PaymillSubscription;
 use Paymill\Models\Request\Payment as PaymillPayment;
+use Ubirimi\PaymentUtil;
 
 class SignupController extends UbirimiController
 {
@@ -53,7 +55,8 @@ class SignupController extends UbirimiController
         $countries = Util::getCountries();
 
         $clientCreated = false;
-        if ($request->request->has('add_company')) {
+
+        if ($request->request->has('paymillToken')) {
             $company_name = Util::cleanRegularInputField($request->request->get('company_name'));
             $companyDomain = Util::cleanRegularInputField($request->request->get('company_domain'));
 
@@ -62,8 +65,9 @@ class SignupController extends UbirimiController
             $admin_email = Util::cleanRegularInputField($request->request->get('admin_email'));
             $adminUsername = $request->request->get('admin_username');
             $admin_pass_1 = Util::cleanRegularInputField($request->request->get('admin_pass_1'));
-
             $admin_pass_2 = Util::cleanRegularInputField($request->request->get('admin_pass_2'));
+            $vatNumber = Util::cleanRegularInputField($request->request->get('vat_number'));
+            $country = Util::cleanRegularInputField($request->request->get('country'));
 
             $cardNumber = Util::cleanRegularInputField($request->request->get('card_number'));
             $cardExpirationMonth = Util::cleanRegularInputField($request->request->get('card_exp_month'));
@@ -184,7 +188,9 @@ class SignupController extends UbirimiController
                     'adminLastName' => $admin_last_name,
                     'adminUsername' => $adminUsername,
                     'adminPass' => $admin_pass_1,
-                    'adminEmail' => $admin_email
+                    'adminEmail' => $admin_email,
+                    'country' => $country,
+                    'vatNumber' => $vatNumber
                 )));
 
                 $session->set('client_account_created', true);
@@ -213,11 +219,15 @@ class SignupController extends UbirimiController
                         break;
                 }
 
-                $VAT = $amount * 24 / 100;
+                $VAT = 0;
+                if (in_array($country, array_keys(PaymentUtil::$VATValuePerCountry))) {
+                    $VAT = $amount * PaymentUtil::$VATValuePerCountry[$country] / 100;
+                }
+
+                $token = $request->request->get('paymillToken');
 
                 $dateSubscriptionStart = date_create(Util::getServerCurrentDateTime());
                 date_add($dateSubscriptionStart, date_interval_create_from_date_string('1 months'));
-
 
                 $requestPaymill = new PaymillRequest(UbirimiContainer::get()['paymill.private_key']);
 
@@ -228,7 +238,7 @@ class SignupController extends UbirimiController
 
                 $payment = new PaymillPayment();
                 $payment->setClient($clientResponse->getId());
-                $payment->setToken(UbirimiContainer::get()['paymill.private_key']);
+                $payment->setToken($token);
 
                 $paymentResponse = $requestPaymill->create($payment);
 
@@ -240,13 +250,14 @@ class SignupController extends UbirimiController
                 $subscription = new PaymillSubscription();
                 $subscription->setClient($clientResponse->getId());
                 $subscription->setAmount(($amount + $VAT) * 100);
-
-                $subscription->setPayment($clientResponse->getPayment()->getId());
+                $subscription->setPayment($paymentResponse->getId());
                 $subscription->setCurrency('USD');
                 $subscription->setInterval('1 month');
                 $subscription->setName('Ubirimi product suite for ' . $numberUsers . ' users');
                 $subscription->setPeriodOfValidity('20 YEAR');
                 $subscription->setStartAt($dateSubscriptionStart->getTimestamp());
+
+                $subscriptionResponse = $requestPaymill->create($subscription);
 
                 $request->request->replace(array());
 

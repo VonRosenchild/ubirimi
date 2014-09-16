@@ -359,12 +359,12 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function create($company_name, $companyDomain, $baseURL, $company_email, $instanceType, $date) {
-        $query = "INSERT INTO client(company_name, company_domain, base_url, contact_email, date_created, instance_type) " .
-            "VALUES (?, ?, ?, ?, ?, ?)";
+    public static function create($company_name, $companyDomain, $baseURL, $companyEmail, $countryId, $vatNumber = null, $instanceType, $date) {
+        $query = "INSERT INTO client(company_name, company_domain, base_url, contact_email, date_created, instance_type, sys_country_id, vat_number) " .
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("ssssss", $company_name, $companyDomain, $baseURL, $company_email, $date, $instanceType);
+        $stmt->bind_param("ssssssii", $company_name, $companyDomain, $baseURL, $companyEmail, $date, $instanceType, $countryId, $vatNumber);
 
         $stmt->execute();
 

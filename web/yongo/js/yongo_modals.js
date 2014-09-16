@@ -2033,6 +2033,7 @@ $('document').ready(function () {
             close: function () {
                 $("#modalEditIssueAssign").dialog('destroy');
                 $("#modalEditIssueAssign").empty();
+
             }
         };
 

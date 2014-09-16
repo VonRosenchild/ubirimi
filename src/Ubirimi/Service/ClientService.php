@@ -22,6 +22,9 @@ class ClientService
                 $data['companyDomain'],
                 $data['baseURL'],
                 $data['adminEmail'],
+                $data['adminEmail'],
+                $data['country'],
+                $data['vatNumber'],
                 Client::INSTANCE_TYPE_ON_DEMAND,
                 Util::getServerCurrentDateTime()
             );

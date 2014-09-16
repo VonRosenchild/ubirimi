@@ -14,6 +14,39 @@ class PaymentUtil
      * @param $clientId
      * @return int the value of the monthly subscription
      */
+    public static $VATValuePerCountry = array(143 => 24, // Romania
+                                       10 => 20,  // Austria
+                                       17 => 21,   // Belgium
+                                       17 => 21,   // Bulgaria
+                                       17 => 21,   // Cyprus
+                                       17 => 21,   // Cehia
+                                       17 => 21,   // Croatia
+                                       17 => 21,   // Danemarca
+                                       17 => 21,   // Estonia
+                                       17 => 21,   // Finland
+                                       17 => 21,   // germany
+                                       17 => 21,   // Greece
+                                       17 => 21,   // Hungary
+                                       17 => 21,   // Ireland
+                                       17 => 21,   // Italy
+                                       17 => 21,   // latvia
+                                       17 => 21,   // Lithuania
+                                       17 => 21,   // Luxembourg
+                                       17 => 21,   // Malta
+                                       17 => 21,   // Netherlands
+                                       17 => 21,   // Poland
+                                       17 => 21,   // Portugal
+                                       17 => 21,   // Madeira
+                                       17 => 21,   // Azores
+                                       17 => 21,   // Slovakia
+                                       17 => 21,   // Slovenia
+                                       17 => 21,   // Spain
+                                       17 => 21,   // Canary Islands
+                                       17 => 21,   // Sweden
+                                       17 => 21,   // United Kingdom
+                                       17 => 21    // Isle of man
+                                       );
+
     public function getAmount($clientId)
     {
         $amount = 0;

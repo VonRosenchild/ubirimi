@@ -44,7 +44,6 @@ class LinkHelper {
             return $link . $link2 . $link3;
         else
             return $link2;
-
     }
 
 
@@ -63,8 +62,9 @@ class LinkHelper {
                 break;
         }
         $cssClassHTML = '';
-        if ($CSSClass)
+        if ($CSSClass) {
             $cssClassHTML = 'class="' . $CSSClass . '"';
+        }
         $link = '<a ' . $cssClassHTML . ' href="' . $prefix . $userId . '">' . $firstName . ' ' . $lastName . '</a>';
 
         return $link;

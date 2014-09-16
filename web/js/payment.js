@@ -48,6 +48,7 @@ jQuery(document).ready(function ($) {
             var form = $("#payment-form");
             // Token
             var token = result.token;
+            alert('a');
             form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
             form.get(0).submit();
         }
@@ -55,6 +56,7 @@ jQuery(document).ready(function ($) {
     }
 
     $("#payment-form").submit(function (event) {
+
         $('.submit-button').attr("disabled", "disabled");
 
         if (false === paymill.validateHolder($('.card-holdername').val())) {

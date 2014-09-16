@@ -64,7 +64,6 @@
     </tr>
 </table>
 
-
 <script type="text/javascript" src="/js/payment.js"></script>
 <script type="text/javascript">
     var VALIDATE_CVC = true;

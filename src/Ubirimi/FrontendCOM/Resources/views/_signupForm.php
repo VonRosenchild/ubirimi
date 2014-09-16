@@ -1,4 +1,4 @@
-<form class="standard-form horizontal" method="post" name="client-sign-up" autocomplete="off" action="/sign-up">
+<form class="standard-form horizontal" method="post" name="client-sign-up" autocomplete="off" id="signUp-form" action="/sign-up">
     <?php if ($session->has('client_account_created')): ?>
     <div class="global-msg confirmation">
         Done. Check your email in a few minutes for further details.
@@ -119,6 +119,18 @@
                             <input id="cpassword" type="password" name="admin_pass_2" value="<?php if (isset($_POST['admin_pass_2'])) echo $_POST['admin_pass_2'] ?>" />
                         </fieldset>
                         <fieldset>
+                            <label for="country">Country</label>
+                            <select id="country" name="country" style="width: 296px">
+                                <?php while ($country = $countries->fetch_array(MYSQLI_ASSOC)): ?>
+                                    <option value="<?php echo $country['id'] ?>"><?php echo $country['name'] ?></option>
+                                <?php endwhile ?>
+                            </select>
+                        </fieldset>
+                        <fieldset style="display: none" id="vat_container">
+                            <label for="country">VAT Number</label>
+                            <input id="vat_number" type="text" name="var_number" value="<?php if (isset($_POST['vat_number'])) echo $_POST['vat_number'] ?>" />
+                        </fieldset>
+                        <fieldset>
                             <label class="checkbox-container">
                                 <label>
                                     <span class="checkbox"></span>
@@ -131,7 +143,6 @@
                                 </label>
                             </label>
                         </fieldset>
-
                     </div>
                 </div>
             </td>
@@ -141,9 +152,9 @@
                     <h3>3. Payment details</h3>
                     <div class="section-left align-left sectionFeature blue">
                         <fieldset>
-                            <label for="card-number">Card number</label>
+                            <label for="card_number">Card number</label>
                             <div class="field-extension-container">
-                                <input id="card-number" type="text" name="card_number" value="<?php if (isset($_POST['card_number'])) echo $_POST['card_number'] ?>" />
+                                <input id="card_number" type="text" name="card_number" value="<?php if (isset($_POST['card_number'])) echo $_POST['card_number'] ?>" />
                             </div>
                             <?php if ($errors['empty_card_number']): ?>
                                 <br />
@@ -199,7 +210,7 @@
                         </fieldset>
                         <fieldset>
                             <label>Amount to pay</label>
-                            <input id="pay_amount" style="width: 100px" type="text" disabled="disabled" value="10 $" /> <label style="display: block; width: 10px"></label> <label>/ month</label>
+                            <input id="pay_amount" style="width: 100px" type="text" disabled="disabled" value="10" /> <label style="display: block; width: 10px"> </label> <label>$ / month</label>
                         </fieldset>
                     </div>
                 </div>

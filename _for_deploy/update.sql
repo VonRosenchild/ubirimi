@@ -1,3 +1,5 @@
+ALTER TABLE `client` ADD `vat_number` VARCHAR(50) NULL AFTER `district`;
+
 ALTER TABLE  `cal_event_repeat` ADD  `end_after_occurrences` INT UNSIGNED NULL AFTER  `repeat_every`;
 
 INSERT INTO  `yongo`.`cal_event_repeat_cycle` (

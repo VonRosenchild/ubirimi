@@ -74,6 +74,6 @@
                     <option value="<?php echo $country['id'] ?>"><?php echo $country['name'] ?></option>
                 <?php endwhile ?>
             </select>
-
         </fieldset>
+
     </div>
