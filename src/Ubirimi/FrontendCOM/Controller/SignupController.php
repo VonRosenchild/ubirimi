@@ -34,6 +34,7 @@ class SignupController extends UbirimiController
         $errors['empty_country'] = false;
         $errors['empty_admin_email'] = false;
         $errors['empty_admin_username'] = false;
+        $errors['admin_username_already_exists'] = false;
         $errors['empty_admin_pass_1'] = false;
         $errors['passwords_do_not_match'] = false;
         $errors['empty_admin_first_name'] = false;
@@ -56,12 +57,12 @@ class SignupController extends UbirimiController
         $clientCreated = false;
 
         if ($request->request->has('paymillToken')) {
-            $company_name = Util::cleanRegularInputField($request->request->get('company_name'));
+            $companyName = Util::cleanRegularInputField($request->request->get('company_name'));
             $companyDomain = Util::cleanRegularInputField($request->request->get('company_domain'));
 
-            $admin_first_name = Util::cleanRegularInputField($request->request->get('admin_first_name'));
-            $admin_last_name = Util::cleanRegularInputField($request->request->get('admin_last_name'));
-            $admin_email = Util::cleanRegularInputField($request->request->get('admin_email'));
+            $adminFirstName = Util::cleanRegularInputField($request->request->get('admin_first_name'));
+            $adminLastName = Util::cleanRegularInputField($request->request->get('admin_last_name'));
+            $adminEmailAddress = Util::cleanRegularInputField($request->request->get('admin_email'));
             $adminUsername = $request->request->get('admin_username');
             $admin_pass_1 = Util::cleanRegularInputField($request->request->get('admin_pass_1'));
             $admin_pass_2 = Util::cleanRegularInputField($request->request->get('admin_pass_2'));
@@ -104,7 +105,7 @@ class SignupController extends UbirimiController
                 $errors['empty_card_security'] = true;
             }
 
-            if (empty($company_name)) {
+            if (empty($companyName)) {
                 $errors['empty_company_name'] = true;
             }
 
@@ -129,20 +130,26 @@ class SignupController extends UbirimiController
                 $errors['invalid_username'] = true;
             }
 
-            if (empty($admin_first_name)) {
+            if (empty($adminFirstName)) {
                 $errors['empty_admin_first_name'] = true;
             }
 
-            if (empty($admin_last_name)) {
+            if (empty($adminLastName)) {
                 $errors['empty_admin_last_name'] = true;
             }
 
-            if (empty($admin_email)) {
+            if (empty($adminEmailAddress)) {
                 $errors['empty_admin_email'] = true;
             }
 
             if (empty($adminUsername)) {
                 $errors['empty_admin_username'] = true;
+            }
+
+            $usernameResult = User::getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminUsername));
+
+            if ($usernameResult) {
+                $errors['admin_email_already_exists'] = true;
             }
 
             if (empty($admin_pass_1)) {
@@ -153,14 +160,14 @@ class SignupController extends UbirimiController
                 $errors['passwords_do_not_match'] = true;
             }
 
-            if (!Util::isValidEmail($admin_email)) {
+            if (!Util::isValidEmail($adminEmailAddress)) {
                 $errors['admin_email_not_valid'] = true;
             }
 
             if (!$agreeTerms) {
                 $errors['not_agree_terms'] = true;
             }
-            $emailResult = User::getByEmailAddressAndIsClientAdministrator(mb_strtolower($admin_email));
+            $emailResult = User::getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminEmailAddress));
 
             if ($emailResult) {
                 $errors['admin_email_already_exists'] = true;
@@ -191,8 +198,8 @@ class SignupController extends UbirimiController
                 $requestPaymill = new PaymillRequest(UbirimiContainer::get()['paymill.private_key']);
 
                 $client = new PaymillClient();
-                $client->setEmail($admin_email);
-                $client->setDescription($company_name . '_' . $companyDomain . '_' . $admin_first_name . '_' . $admin_last_name);
+                $client->setEmail($adminEmailAddress);
+                $client->setDescription($companyName . '_' . $companyDomain . '_' . $adminFirstName . '_' . $adminLastName);
                 $clientResponse = $requestPaymill->create($client);
 
                 $clientPaymillId = $clientResponse->getId();
@@ -221,14 +228,14 @@ class SignupController extends UbirimiController
 
                 /* save data to the general task queue */
                 GeneralTaskQueue::savePendingClientData(json_encode(array(
-                    'companyName' => $company_name,
+                    'companyName' => $companyName,
                     'companyDomain' => $companyDomain,
                     'baseURL' => 'https://' . $companyDomain . '.ubirimi.net',
-                    'adminFirstName' => $admin_first_name,
-                    'adminLastName' => $admin_last_name,
+                    'adminFirstName' => $adminFirstName,
+                    'adminLastName' => $adminLastName,
                     'adminUsername' => $adminUsername,
                     'adminPass' => $admin_pass_1,
-                    'adminEmail' => $admin_email,
+                    'adminEmail' => $adminEmailAddress,
                     'country' => $country,
                     'vatNumber' => $vatNumber,
                     'paymillId' => $clientPaymillId

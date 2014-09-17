@@ -99,6 +99,8 @@
                                 <p class="error-msg">The administrator username can not be empty</p>
                             <?php elseif ($errors['invalid_username']): ?>
                                 <p class="error">The username is not valid.</p>
+                            <?php elseif ($errors['admin_email_already_exists']): ?>
+                                <p class="error">The username is not available.</p>
                             <?php endif ?>
                         </fieldset>
 
