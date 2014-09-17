@@ -22,7 +22,6 @@ class ClientService
                 $data['companyDomain'],
                 $data['baseURL'],
                 $data['adminEmail'],
-                $data['adminEmail'],
                 $data['country'],
                 $data['vatNumber'],
                 $data['paymillId'],

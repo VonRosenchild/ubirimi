@@ -743,6 +743,21 @@ class User
         }
     }
 
+    public static function getByUsernameAndIsClientAdministrator($username) {
+        $query = 'select username, id from user where client_administrator_flag = 1 and LOWER(username) = ? limit 1';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows)
+            return $result->num_rows;
+        else {
+            return null;
+        }
+    }
+
     public static function getUserByClientIdAndEmailAddress($clientId, $email) {
         $query = 'select email, id from user where client_id = ? and LOWER(email) = ? limit 1';
 

@@ -75,7 +75,7 @@ comAccountSettings:
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\SettingsController' }
 
 comAccountSettingsDelete:
-  path: //account/settings/delete
+  path: /account/settings/delete
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\DeleteController' }
 
 comPaymentProcess:

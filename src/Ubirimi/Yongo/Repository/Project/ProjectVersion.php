@@ -32,7 +32,7 @@ class ProjectVersion
         }
     }
 
-    public static function deleteVById($versionId)
+    public static function deleteById($versionId)
     {
         $query = 'delete from issue_version where project_version_id = ?';
 
