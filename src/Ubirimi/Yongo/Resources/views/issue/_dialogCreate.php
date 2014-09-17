@@ -188,7 +188,7 @@
                             // deal with the custom fields
                             switch ($field['type_code']) {
                                 case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
-                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="" style="width: 650px;" name="' . $field['type_code'] . '" />';
+                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="" style="width: 646px;" name="' . $field['type_code'] . '" />';
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_BIG_TEXT_CODE:
@@ -204,7 +204,7 @@
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
-                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="mousetrap" name="' . $field['field_code'] . '" type="text" value="" />';
+                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="mousetrap" name="' . $field['field_code'] . '" style="width: 646px;" type="text" value="" />';
                                     break;
                                 case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
