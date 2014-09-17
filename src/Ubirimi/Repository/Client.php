@@ -8,7 +8,6 @@ use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
 use Ubirimi\Calendar\Repository\CalendarReminderType;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Documentador\Space;
-
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
 use ubirimi\svn\SVNRepository;
@@ -37,6 +36,8 @@ use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Paymill\Models\Request\Client as PaymillClient;
+use Paymill\Request as PaymillRequest;
 
 class Client
 {
@@ -359,12 +360,12 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function create($company_name, $companyDomain, $baseURL, $companyEmail, $countryId, $vatNumber = null, $instanceType, $date) {
-        $query = "INSERT INTO client(company_name, company_domain, base_url, contact_email, date_created, instance_type, sys_country_id, vat_number) " .
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public static function create($company_name, $companyDomain, $baseURL, $companyEmail, $countryId, $vatNumber = null, $paymillId, $instanceType, $date) {
+        $query = "INSERT INTO client(company_name, company_domain, base_url, contact_email, date_created, instance_type, sys_country_id, vat_number, paymill_id) " .
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("ssssssii", $company_name, $companyDomain, $baseURL, $companyEmail, $date, $instanceType, $countryId, $vatNumber);
+        $stmt->bind_param("ssssssiis", $company_name, $companyDomain, $baseURL, $companyEmail, $date, $instanceType, $countryId, $vatNumber, $paymillId);
 
         $stmt->execute();
 
@@ -386,6 +387,7 @@ class Client
 
     public static function deleteById($clientId) {
 
+        $clientData = Client::getById($clientId);
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
@@ -502,6 +504,13 @@ class Client
 
         $query = 'delete from client where id = ' . $clientId . ' limit 1';
         UbirimiContainer::get()['db.connection']->query($query);
+
+        // also delete paymill information
+        $client = new PaymillClient();
+        $client->setId($clientData['paymill_id']);
+
+        $requestPaymill = new PaymillRequest(UbirimiContainer::get()['paymill.private_key']);
+        $response = $requestPaymill->delete($client);
 
         $query = "SET FOREIGN_KEY_CHECKS = 1;";
         UbirimiContainer::get()['db.connection']->query($query);

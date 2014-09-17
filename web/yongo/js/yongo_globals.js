@@ -112,8 +112,10 @@ function createSubtask(issueId, projectId, onSuccess) {
             }
         ],
         close: function () {
-            $("#modalAddSubTask").dialog('destroy');
-            $("#modalAddSubTask").empty();
+            var modalAddSubTask = $("#modalAddSubTask");
+            modalAddSubTask.dialog('destroy');
+            modalAddSubTask.empty();
+            $(".select2Input").select2();
         }
     };
 

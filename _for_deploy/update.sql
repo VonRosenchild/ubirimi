@@ -1,3 +1,5 @@
+ALTER TABLE  `client` ADD  `paymill_id` VARCHAR( 250 ) NULL AFTER  `sys_country_id`;
+
 ALTER TABLE `client` ADD `vat_number` VARCHAR(50) NULL AFTER `district`;
 
 ALTER TABLE  `cal_event_repeat` ADD  `end_after_occurrences` INT UNSIGNED NULL AFTER  `repeat_every`;

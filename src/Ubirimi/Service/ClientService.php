@@ -25,6 +25,7 @@ class ClientService
                 $data['adminEmail'],
                 $data['country'],
                 $data['vatNumber'],
+                $data['paymillId'],
                 Client::INSTANCE_TYPE_ON_DEMAND,
                 Util::getServerCurrentDateTime()
             );

@@ -47,7 +47,35 @@ class PaymentUtil
                                        17 => 21    // Isle of man
                                        );
 
-    public function getAmount($clientId)
+    public function getAmountByUsersCount($usersCount) {
+        switch ($usersCount) {
+            case $usersCount <= 10:
+                $amount = 10;
+                break;
+            case $usersCount <= 15;
+                $amount = 45;
+                break;
+            case $usersCount <= 25;
+                $amount = 90;
+                break;
+            case $usersCount <= 50;
+                $amount = 190;
+                break;
+            case $usersCount <= 100;
+                $amount = 290;
+                break;
+            case $usersCount <= 500;
+                $amount = 490;
+                break;
+            case $usersCount <= 1000;
+                $amount = 990;
+                break;
+        }
+
+        return $amount;
+    }
+
+    public function getAmountByClientId($clientId)
     {
         $amount = 0;
         $users = count(Client::getUsers($clientId, null, 'array'));

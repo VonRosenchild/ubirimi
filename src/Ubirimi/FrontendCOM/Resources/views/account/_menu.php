@@ -11,7 +11,7 @@
     <li <?php if ($page == 'billing'): ?>class="active" <?php endif ?>>
         <a href="/account/billing" title="Billing">Billing</a>
     </li>
-    <li <?php if ($page == 'settings'): ?>class="active" <?php endif ?>>
+    <li <?php if ($page == 'account_settings'): ?>class="active" <?php endif ?>>
         <a href="/account/settings" title="Settings">Settings</a>
     </li>
     <?php if ($session->get('user/super_user_flag')): ?>

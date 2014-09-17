@@ -36,7 +36,7 @@ class PaymentTransactionService
         try {
             UbirimiContainer::get()['db.connection']->autocommit(false);
 
-            $amount = $paymentUtil->getAmount($clientId);
+            $amount = $paymentUtil->getAmountByClientId($clientId);
 
             $client->setEmail($clientContactEmail);
             $client->setDescription($clientCompanyName);

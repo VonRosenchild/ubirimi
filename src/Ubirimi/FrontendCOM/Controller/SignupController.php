@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\GeneralTaskQueue;
-use Ubirimi\Repository\Payment;
 use Ubirimi\Repository\User\User;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Paymill\Request as PaymillRequest;
@@ -175,49 +174,9 @@ class SignupController extends UbirimiController
             }
 
             if (!$problemFound) {
-                // prepare the data
-                $currentDate = Util::getServerCurrentDateTime();
-                $baseURL = 'https://' . $companyDomain . '.ubirimi.net';
+                $paymentUtil = new PaymentUtil();
 
-                /* save data to the general task queue */
-                GeneralTaskQueue::savePendingClientData(json_encode(array(
-                    'companyName' => $company_name,
-                    'companyDomain' => $companyDomain,
-                    'baseURL' => $baseURL,
-                    'adminFirstName' => $admin_first_name,
-                    'adminLastName' => $admin_last_name,
-                    'adminUsername' => $adminUsername,
-                    'adminPass' => $admin_pass_1,
-                    'adminEmail' => $admin_email,
-                    'country' => $country,
-                    'vatNumber' => $vatNumber
-                )));
-
-                $session->set('client_account_created', true);
-
-                switch ($numberUsers) {
-                    case 10:
-                        $amount = 10;
-                        break;
-                    case 15:
-                        $amount = 45;
-                        break;
-                    case 25:
-                        $amount = 90;
-                        break;
-                    case 50:
-                        $amount = 190;
-                        break;
-                    case 100:
-                        $amount = 290;
-                        break;
-                    case 500:
-                        $amount = 490;
-                        break;
-                    case 1000:
-                        $amount = 990;
-                        break;
-                }
+                $amount = $paymentUtil->getAmountByUsersCount($numberUsers);
 
                 $VAT = 0;
                 if (in_array($country, array_keys(PaymentUtil::$VATValuePerCountry))) {
@@ -236,8 +195,9 @@ class SignupController extends UbirimiController
                 $client->setDescription($company_name . '_' . $companyDomain . '_' . $admin_first_name . '_' . $admin_last_name);
                 $clientResponse = $requestPaymill->create($client);
 
+                $clientPaymillId = $clientResponse->getId();
                 $payment = new PaymillPayment();
-                $payment->setClient($clientResponse->getId());
+                $payment->setClient($clientPaymillId);
                 $payment->setToken($token);
 
                 $paymentResponse = $requestPaymill->create($payment);
@@ -248,7 +208,7 @@ class SignupController extends UbirimiController
                 $paymentResponse->setCode($cardSecurity);
 
                 $subscription = new PaymillSubscription();
-                $subscription->setClient($clientResponse->getId());
+                $subscription->setClient($clientPaymillId);
                 $subscription->setAmount(($amount + $VAT) * 100);
                 $subscription->setPayment($paymentResponse->getId());
                 $subscription->setCurrency('USD');
@@ -258,6 +218,24 @@ class SignupController extends UbirimiController
                 $subscription->setStartAt($dateSubscriptionStart->getTimestamp());
 
                 $subscriptionResponse = $requestPaymill->create($subscription);
+
+                /* save data to the general task queue */
+                GeneralTaskQueue::savePendingClientData(json_encode(array(
+                    'companyName' => $company_name,
+                    'companyDomain' => $companyDomain,
+                    'baseURL' => 'https://' . $companyDomain . '.ubirimi.net',
+                    'adminFirstName' => $admin_first_name,
+                    'adminLastName' => $admin_last_name,
+                    'adminUsername' => $adminUsername,
+                    'adminPass' => $admin_pass_1,
+                    'adminEmail' => $admin_email,
+                    'country' => $country,
+                    'vatNumber' => $vatNumber,
+                    'paymillId' => $clientPaymillId
+                )));
+
+                $session->set('client_account_created', true);
+
 
                 $request->request->replace(array());
 

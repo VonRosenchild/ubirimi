@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Payment as PaymentRepository;
+use Ubirimi\PaymentUtil;
 
 class PayController extends UbirimiController
 {
@@ -22,8 +23,8 @@ class PayController extends UbirimiController
         if (null !== $payment) {
             $content = 'account/payment/PaymentDone.php';
         } else {
-            $paymentUtil = new \Ubirimi\PaymentUtil();
-            $amount = $paymentUtil->getAmount($session->get('client/id'));
+            $paymentUtil = new PaymentUtil();
+            $amount = $paymentUtil->getAmountByClientId($session->get('client/id'));
             $content = 'account/payment/Pay.php';
         }
 
