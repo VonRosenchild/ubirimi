@@ -39,7 +39,7 @@ jQuery(document).ready(function ($) {
 
 
     function PaymillResponseHandler(error, result) {
-console.log(error);
+
         if (error) {
             $(".payment_errors").text(translation["en"]["error"][error.apierror]);
             $(".payment_errors").css("display", "inline-block");
@@ -58,43 +58,38 @@ console.log(error);
 
     $("#signUp-form").submit(function (event) {
 
-        //$('.submit-button').attr("disabled", "disabled");
+        if (false === paymill.validateHolder($('#card_name').val())) {
+            $(".payment_errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
+            $(".payment_errors").css("display", "inline-block");
+            return false;
+        }
 
-        //if (false === paymill.validateHolder($('.card-holdername').val())) {
-        //    $(".payment_errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
-        //    $(".payment_errors").css("display", "inline-block");
-        //    $(".submit-button").removeAttr("disabled");
-        //    return false;
-        //}
-        //
-        //if ((false === paymill.validateCvc($('.card-cvc').val()))) {
-        //    if (VALIDATE_CVC) {
-        //        $(".payment_errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
-        //        $(".payment_errors").css("display", "inline-block");
-        //        $(".submit-button").removeAttr("disabled");
-        //        return false;
-        //    } else {
-        //        $('.card-cvc').val("000");
-        //    }
-        //}
-        //
-        //if (false === paymill.validateCardNumber($('.card-number').val())) {
-        //    $(".payment_errors").text(translation[formlang]["error"]["invalid-card-number"]);
-        //    $(".payment_errors").css("display", "inline-block");
-        //    $(".submit-button").removeAttr("disabled");
-        //    return false;
-        //}
+        if ((false === paymill.validateCvc($('#card_security').val()))) {
+            if (VALIDATE_CVC) {
+                $(".payment_errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
+                $(".payment_errors").css("display", "inline-block");
+                return false;
+            } else {
+                $('#card_security').val("000");
+            }
+        }
+
+        if (false === paymill.validateCardNumber($('#card_number').val())) {
+            $(".payment_errors").text(translation[formlang]["error"]["invalid-card-number"]);
+            $(".payment_errors").css("display", "inline-block");
+            return false;
+        }
 
         var expiry = [];
         expiry[0] = $('#card_exp_month').val();
         expiry[1] = $('#card_exp_year').val();
 
-        //if (false === paymill.validateExpiry(expiry[0], expiry[1])) {
-        //    $(".payment_errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
-        //    $(".payment_errors").css("display", "inline-block");
-        //    $(".submit-button").removeAttr("disabled");
-        //    return false;
-        //}
+        if (false === paymill.validateExpiry(expiry[0], expiry[1])) {
+            $(".payment_errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
+            $(".payment_errors").css("display", "inline-block");
+            return false;
+        }
+
         var params = {
             amount_int: $('#pay_amount').val() * 100,
             currency: 'USD',
@@ -104,9 +99,6 @@ console.log(error);
             cvc: $('#card_security').val(),
             cardholder: $('#card_name').val()
         };
-
-
-        //$('#paymill-submit-button').addClass('disabled');
 
         paymill.createToken(params, PaymillResponseHandler);
         return false;
