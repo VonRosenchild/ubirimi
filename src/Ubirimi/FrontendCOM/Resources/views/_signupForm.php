@@ -190,7 +190,7 @@
                                 <p class="error">The security code can not be empty</p>
                             <?php endif ?>
                         </fieldset>
-                        <div class="payment_errors"></div>
+                        <div class="payment_errors error"></div>
                     </div>
 
                 </div>
