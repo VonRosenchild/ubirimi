@@ -8,14 +8,29 @@ use Ubirimi\Repository\Invoice;
 
 class InvoiceUtil
 {
-    public function generate($paymentId)
-    {
-        $invoice = Invoice::getByPaymentId($paymentId);
 
-        $invoiceNumber = $invoice['number'];
-        $invoiceDate = $invoice['date_created'];
-        $invoiceAmount = $invoice['amount'];
-        $customerId = $invoice['client_id'];
+    public function getLastByClientIdAndMonth($clientId, $month) {
+        $query = 'SELECT * ' .
+            'FROM general_invoice ' .
+            "WHERE client_id = ? and MONTH(date_created) = ? " .
+            "order by id desc " .
+            "limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $clientId, $month);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else {
+            return null;
+        }
+    }
+
+    public function generate($clientId, $invoiceAmount, $invoiceNumber, $invoiceDate)
+    {
+
+        $customerId = $clientId;
 
         $client = Client::getById($customerId);
         $clientCountry = Client::getCountryById($client['sys_country_id']);
@@ -43,5 +58,24 @@ class InvoiceUtil
         $pdf->writeHTML($invoiceContent, true, false, false, false, '');
 
         $pdf->Output(UbirimiContainer::get()['invoice.path'] . '/' . sprintf('Ubirimi_%d.pdf', $invoiceNumber), 'F');
+
+        $invoice = new Invoice();
+        $invoice->save($clientId, $invoiceAmount, $invoiceNumber, $invoiceDate);
+    }
+
+    public function getLast() {
+        $query = 'SELECT * ' .
+            'FROM general_invoice ' .
+            "order by id desc " .
+            "limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result->fetch_array(MYSQLI_ASSOC);
+        } else {
+            return null;
+        }
     }
 }

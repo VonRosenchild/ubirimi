@@ -31,7 +31,6 @@ class PaymentTransactionService
         $transaction = new \Paymill\Models\Request\Transaction();
 
         $paymentUtil = new \Ubirimi\PaymentUtil();
-        $invoiceUtil = new \Ubirimi\InvoiceUtil();
 
         try {
             UbirimiContainer::get()['db.connection']->autocommit(false);
@@ -60,8 +59,6 @@ class PaymentTransactionService
 
             UbirimiContainer::get()['db.connection']->commit();
 
-            /* generate an invoice file */
-            $invoiceUtil->generate($paymentDbRecord['id']);
         } catch (\Paymill\Services\PaymillException $e) {
             UbirimiContainer::get()['db.connection']->rollback();
 

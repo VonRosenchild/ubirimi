@@ -1,23 +1,19 @@
 Dear <?php echo $this->clientAdministrator ?>,
 <br />
 <br />
-<div>We would like to remind you that the payment for the <strong>current month</strong> is outstanding.</div>
-<br />
-<div>We fully appreciate that our customers are very busy and that you might have forgotten to pay your subscription. <br />
-We should be grateful if you can settle the outstanding subscription at your earliest convenience.
+<div>
+    <div>Enclosed you will find your current invoice UBR  in PDF format.</div>
+    <br />
+    <div>The invoice amount will soon be debited from your credit card.</div>
+
+    <div>You can view and print the invoice with the freely available PDF readers from <a href="http://www.pdfreaders.org">http://www.pdfreaders.org</a> or the Adobe Reader <a href="http://adobe.com/reader">http://adobe.com/reader</a>.</div>
+
+    <div>For any queries please do not hesitate to contact us on <a href="maiilto:contact@ubirimi.com">contact@ubirimi.com</a>.</div>
+    <br />
+    <div>Best regards,</div>
+
+    <div>Your Ubirimi Team</div>
 </div>
-<br />
-<div>Since you are the main contact for the license associated with <strong><?php echo $this->clientDomain ?></strong>,<br />
-we want to make sure that you continue using our products, receive software updates and technical support without interruption.</div>
-<br />
-<div>You can renew your license at the link below</div>
-<a href="<?php echo $this->baseUrl ?>"><?php echo $this->baseUrl ?></a>
-
-<br /><br />
-
-Thank you,
-<br />
-Ubirimi
 
 
 

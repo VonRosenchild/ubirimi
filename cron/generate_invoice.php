@@ -23,6 +23,6 @@ while ($client = $clients->fetch_array(MYSQLI_ASSOC)) {
         $lastInvoice = $invoiceUtil->getLast();
         $lastNumber = $lastInvoice['number'];
         $lastNumber++;
-        $invoiceUtil->generate($client['id'], $paymentUtil->getAmountByClientId($client['id']), $currentDate, $lastNumber);
+        $invoiceUtil->generate($client['id'], $paymentUtil->getAmountByClientId($client['id']), $lastNumber, $currentDate);
     }
 }

@@ -14,12 +14,12 @@ class Invoice
      * @param $date
      * @return mixed
      */
-    public static function save($paymentId, $number, $date)
+    public static function save($clientId, $amount, $number, $date)
     {
-        $query = "INSERT INTO general_invoice(general_payment_id, number, date_created) VALUES (?, ?, ?)";
+        $query = "INSERT INTO general_invoice(client_id, amount, number, date_created) VALUES (?, ?, ?, ?)";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        $stmt->bind_param("iis", $paymentId, $number, $date);
+        $stmt->bind_param("iiis", $clientId, $amount, $number, $date);
         $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
