@@ -16,13 +16,24 @@ $clients = \Ubirimi\Repository\Client::getAll();
 $invoiceUtil = new \Ubirimi\InvoiceUtil();
 $paymentUtil = new \Ubirimi\PaymentUtil();
 
-$currentDate = date('Y-m-d');
 while ($client = $clients->fetch_array(MYSQLI_ASSOC)) {
-    $lastInvoice = $invoiceUtil->getLastByClientIdAndMonth($client['id'], date('m'));
-    if (!$lastInvoice) {
-        $lastInvoice = $invoiceUtil->getLast();
-        $lastNumber = $lastInvoice['number'];
-        $lastNumber++;
-        $invoiceUtil->generate($client['id'], $paymentUtil->getAmountByClientId($client['id']), $lastNumber, $currentDate);
+    $dayClientCreated = substr($client['date_created'], 8, 2);
+
+    // do not generate an invoice in the first month of usage
+    if (substr($client['date_created'], 0, 7) != date('Y-m')) {
+        $lastInvoice = $invoiceUtil->getLastByClientIdAndMonthAndYear($client['id'], date('m'), date('Y'));
+        if (!$lastInvoice) {
+            $lastInvoice = $invoiceUtil->getLast();
+            $lastNumber = $lastInvoice['number'];
+            $lastNumber++;
+
+            if (checkdate(date('n'), $dayClientCreated, date('Y'))) {
+                $invoiceDate = date('Y-m') . '-' . $dayClientCreated;
+            } else {
+                $dayClientCreated--;
+                $invoiceDate = date('Y-m') . '-' . $dayClientCreated;
+            }
+            $invoiceUtil->generate($client['id'], $paymentUtil->getAmountByClientId($client['id']), $lastNumber, $invoiceDate);
+        }
     }
 }

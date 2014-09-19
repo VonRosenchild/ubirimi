@@ -9,15 +9,15 @@ use Ubirimi\Repository\Invoice;
 class InvoiceUtil
 {
 
-    public function getLastByClientIdAndMonth($clientId, $month) {
+    public function getLastByClientIdAndMonthAndYear($clientId, $month, $year) {
         $query = 'SELECT * ' .
             'FROM general_invoice ' .
-            "WHERE client_id = ? and MONTH(date_created) = ? " .
+            "WHERE client_id = ? and MONTH(date_created) = ? and YEAR(date_created) = ? " .
             "order by id desc " .
             "limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("is", $clientId, $month);
+        $stmt->bind_param("isi", $clientId, $month, $year);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows) {
