@@ -1,23 +1,23 @@
 <?php
 
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Email\Email;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
+use Ubirimi\SystemProduct;
+
 
 /* check locking mechanism */
 if (file_exists('announce_payment.lock')) {
     $fp = fopen('announce_payment.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
-        echo "Unable to obtain lock for announce_payment_approaches task.\n";
+        echo "Unable to obtain lock for announce_payment task.\n";
         exit(-1);
     }
 }
 
 require_once __DIR__ . '/../web/bootstrap_cli.php';
 
-$clients = Client::getCurrentMonthUnpayingCustomers();
+$clients = Client::getCurrentMonthPayingCustomers();
 /**
  * send the email to every client administrator
  * also send the email to the company contact email address.
@@ -25,8 +25,9 @@ $clients = Client::getCurrentMonthUnpayingCustomers();
 */
 
 while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
+    $clientId = $client['id'];
 
-    $emailSubject = 'Payment reminder for Ubirimi';
+    $emailSubject = 'Ubirimi Invoice UBR';
     $clientAdministrators = Client::getAdministrators($client['id']);
 
     $clientAdministratorsEmailAddresses = array();
@@ -49,13 +50,7 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
         try {
             $mailer->send($message);
         } catch (Exception $e) {
-            Log::add(
-                $client['id'],
-                \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO,
-                $client['id'],
-                'Could not send announce payment email',
-                \Ubirimi\Util::getServerCurrentDateTime()
-            );
+            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $client['id'], 'Could not send announce payment email', Util::getServerCurrentDateTime());
         }
     }
 
@@ -75,13 +70,7 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
         try {
             $mailer->send($message);
         } catch (Exception $e) {
-            Log::add(
-                $client['id'],
-                \Ubirimi\SystemProduct::SYS_PRODUCT_YONGO,
-                $client['id'],
-                'Could not send announce payment email',
-                \Ubirimi\Util::getServerCurrentDateTime()
-            );
+            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $client['id'], 'Could not send announce payment email', Util::getServerCurrentDateTime());
         }
     }
 }

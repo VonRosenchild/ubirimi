@@ -1789,17 +1789,16 @@ class Client
         Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, CalendarEventReminderPeriod::PERIOD_MINUTE, 30);
     }
 
-    public static function getCurrentMonthUnpayingCustomers() {
+    public static function getCurrentMonthPayingCustomers() {
         $query = "SELECT client.company_domain,
                          client.contact_email,
                          client.base_url,
                          client.id
                     FROM client
-                    WHERE client.id NOT IN
-                      (SELECT general_payment.client_id
-                        FROM  general_payment
-                        WHERE MONTH(general_payment.date_created) = MONTH(NOW())
-                          AND YEAR(general_payment.date_created) = YEAR(NOW()))";
+                    left join general_invoice on general_invoice.client_id = client.id
+                    WHERE general_invoice.client_id is not null
+                    and MONTH(general_invoice.date_created) = MONTH(NOW())
+                    AND YEAR(general_invoice.date_created) = YEAR(NOW()))";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();
