@@ -17,7 +17,7 @@ if (file_exists('announce_payment.lock')) {
 
 require_once __DIR__ . '/../web/bootstrap_cli.php';
 
-$clients = Client::getCurrentMonthPayingCustomers();
+$clients = Client::getCurrentMonthAndDayPayingCustomers();
 /**
  * send the email to every client administrator
  * also send the email to the company contact email address.
@@ -59,7 +59,9 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
 
         $emailBody = Util::getTemplate('_announce_payment.php', array(
             'clientAdministrator' => $client['company_domain'],
-            'clientDomain' => $client['company_domain'])
+            'clientDomain' => $client['company_domain'],
+            'invoiceNumber' => $client['invoice_nr'],
+            'invoiceAmount' => $client['invoice_amount'])
         );
 
         $message = Swift_Message::newInstance($emailSubject)
