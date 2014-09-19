@@ -2,11 +2,11 @@
 
 <table width="100%" class="headerPageBackground">
     <tr>
-        <td width="48px">
+        <td width="48px" valign="top">
             <img class="projectIcon" id="project_icon" src="/img/project.png" height="48px"/>
         </td>
         <td>
-            <div class="headerPageText">
+            <div class="headerPageText" style="white-space: normal">
                 <?php if (SystemProduct::SYS_PRODUCT_HELP_DESK == $session->get('selected_product_id')): ?>
                     <a class="linkNoUnderline" href="/helpdesk/customer-portal/project/<?php echo $projectId ?>"><?php echo $issueProject['name'] ?></a> /
                 <?php else: ?>
