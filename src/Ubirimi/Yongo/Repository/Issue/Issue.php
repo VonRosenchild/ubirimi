@@ -2122,4 +2122,23 @@ class Issue
         $stmt->bind_param("ii", $userAssigneeId, $issueId);
         $stmt->execute();
     }
+
+    public static function getIssuesWithDueDateReminder() {
+        $query = "select yongo_issue.id, yongo_issue.summary, user.id as user_id, user.first_name, user.last_name, " .
+                 "user.client_id " .
+                 "from user " .
+                 "left join (yongo_issue.user_assigned_id = on user.id and datediff(yongo_issue.date_due, NOW()) >= user.remind_days_before_due_date) " .
+                 "where yongo_issue.date_due > NOW() " .
+                 "and user.yongo_issue.user_assigned_id is not null " .
+                 "order by user.id";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            return $result;
+        } else {
+            return null;
+        }
+    }
 }
