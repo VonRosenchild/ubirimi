@@ -17,92 +17,83 @@
     </div>
 
     <h2>with a fixed price for the entire package</h2>
+    <table align="center" width="1100px">
+        <tr>
+            <td>
+                <img src="/img/site/bg.home.logos.y.png" width="100px"">
+            </td>
+            <td>
+                <img src="/img/site/bg.home.logos.a.png" width="100px"">
+            </td>
+            <td>
+                <img src="/img/site/bg.home.logos.h.png" width="100px"">
+            </td>
+            <td>
+                <img src="/img/site/bg.home.logos.d.png" width="100px"">
+            </td>
+            <td>
+                <img src="/img/site/bg.home.logos.s.png" width="100px"">
+            </td>
+            <td>
+                <img src="/img/site/bg.home.logos.e.png" width="100px"">
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <p align="center" style="width: 150px">Track and manage the issues, bugs, tasks, deadlines, code, hours.</p>
 
-    <ul class="product-list clearfix">
-        <li class="product yongo" itemscope itemtype="http://schema.org/IndividualProduct">
-            <h3 itemprop="name">Yongo</h3>
+            </td>
+            <td align="center">
+                <p align="center" style="width: 150px">The power of Agile: planning, estimating and visualizing team activity.</p>
 
-            <p itemprop="description">Track and manage the issues, bugs, tasks, deadlines, code, hours.</p>
-            <a itemprop="url" href="https://www.ubirimi.com/product/yongo" class="button_hp gray" data-slide="0">Learn more</a>
-        </li>
-        <li class="product agile" itemscope itemtype="http://schema.org/IndividualProduct">
-            <h3 itemprop="name">Agile</h3>
+            </td>
+            <td align="center">
+                <p align="center" style="width: 150px">Powerful solution for any organization. Keep in touch with your customers.</p>
 
-            <p itemprop="description">Unlocking the power of Agile: planning, estimating and visualizing team activity.</p>
-            <a itemprop="url" href="https://www.ubirimi.com/product/agile" class="button_hp gray" data-slide="1">Learn more</a>
-        </li>
-        <li class="product helpdesk" itemscope itemtype="http://schema.org/IndividualProduct">
-            <h3 itemprop="name">Helpdesk</h3>
+            </td>
+            <td align="center">
+                <p align="center" style="width: 150px">Content Creation, Collaboration & Knowledge Sharing software for teams.</p>
 
-            <p itemprop="description">Powerful helpdesk solution for any organization. Keep in touch with your customers.</p>
-            <a itemprop="url" href="https://www.ubirimi.com/product/helpdesk" class="button_hp gray" data-slide="1">Learn more</a>
-        </li>
+            </td>
+            <td align="center">
+                <p align="center" style="width: 150px">Reliable, private hosting for your projects with unlimited users.</p>
 
-        <li class="product documentador" itemscope itemtype="http://schema.org/IndividualProduct" style="margin-top: 20px;">
-            <h3 itemprop="name">Documentador</h3>
+            </td>
+            <td align="center">
+                <p align="center" style="width: 150px">Plan and keep track of people, projects and events. A complete calendar application.</p>
 
-            <p itemprop="description">Content Creation, Collaboration & Knowledge Sharing software for teams.</p>
-            <a itemprop="url" href="https://www.ubirimi.com/product/documentador" class="button_hp gray" data-slide="2">Learn more</a>
-        </li>
-        <li class="product svn" itemscope itemtype="http://schema.org/IndividualProduct" style="margin-top: 20px;">
-            <h3 itemprop="name">Svn</h3>
-
-            <p itemprop="description">Reliable, private hosting for your projects with unlimited users.</p>
-            <a itemprop="url" href="https://www.ubirimi.com/product/svn-hosting" class="button_hp gray" data-slide="3">Learn more</a>
-        </li>
-
-        <li class="product events" itemscope itemtype="http://schema.org/IndividualProduct" style="margin-top: 20px;">
-            <h3 itemprop="name">Events</h3>
-
-            <p itemprop="description">Plan and keep track of people, projects and events. A complete calendar application.</p>
-            <a itemprop="url" href="https://www.ubirimi.com/product/events" class="button_hp gray" data-slide="3">Learn more</a>
-        </li>
-    </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a itemprop="url" href="https://www.ubirimi.com/product/yongo" class="button_hp gray" data-slide="0">Learn more</a>
+            </td>
+            <td>
+                <a itemprop="url" href="https://www.ubirimi.com/product/agile" class="button_hp gray" data-slide="1">Learn more</a>
+            </td>
+            <td>
+                <a itemprop="url" href="https://www.ubirimi.com/product/helpdesk" class="button_hp gray" data-slide="1">Learn more</a>
+            </td>
+            <td>
+                <a itemprop="url" href="https://www.ubirimi.com/product/documentador" class="button_hp gray" data-slide="2">Learn more</a>
+            </td>
+            <td>
+                <a itemprop="url" href="https://www.ubirimi.com/product/svn-hosting" class="button_hp gray" data-slide="3">Learn more</a>
+            </td>
+            <td>
+                <a itemprop="url" href="https://www.ubirimi.com/product/events" class="button_hp gray" data-slide="3">Learn more</a>
+            </td>
+        </tr>
+    </table>
 </div>
 
-<div align="center"><h2>fair pricing / free updates forever / free support</h2></div>
+<div align="center"><h2>fair pricing &bullet; free updates forever &bullet; free support</h2></div>
 <hr size="1" />
 
 <table align="center">
     <tr>
         <td>
-            <div class="compare-container">
-                <div align="center">
-                    <h2>Compare with your current solution<sup style="font-size: 20px">*</sup></h2>
-                </div>
-                <div align="center">
-                    <div class="compare-items">
-                        <a href="#" class="yongo" data-slide="0"><span>Yongo</span></a>
-                        <a href="#" class="agile" data-slide="1"><span>Agile</span></a>
-                        <a href="#" class="documentador" data-slide="2"> <span>Documentador</span> </a>
-                        <a href="#" class="svn" data-slide="3"> <span>SVN Hosting</span> </a>
-                        <a href="#" class="events" data-slide="4"> <span>Events</span> </a>
-                    </div>
-                    <div class="marker-container">
-                        <span class="marker"></span>
-                    </div>
 
-                    <div class="cycle-slideshow" data-cycle-fx="scrollHorz" data-cycle-timeout="0" data-cycle-slides="> div">
-                        <div>
-                            <?php require_once __DIR__ . '/_comparative_table_yongo.php' ?>
-                        </div>
-                        <div>
-                            <?php require_once __DIR__ . '/_comparative_table_agile.php' ?>
-                        </div>
-                        <div>
-                            <?php require_once __DIR__ . '/_comparative_table_documentador.php' ?>
-                        </div>
-                        <div>
-                            <?php require_once __DIR__ . '/_comparative_table_svn.php' ?>
-                        </div>
-                        <div>
-                            <?php require_once __DIR__ . '/_comparative_table_events.php' ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="font-size:14px;"><br />* The comparison is made on the most basic plan (where applicable)</div>
-            </div>
 
             <div align="center"><h2>Our company at your service</h2></div>
 

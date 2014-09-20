@@ -1,4 +1,5 @@
 /*---------------------------------------------------
+/*---------------------------------------------------
     LESS Elements 0.9
   ---------------------------------------------------
     A set of useful LESS mixins
@@ -45,20 +46,23 @@ h3 {
     font-size: 80px;
     font-weight: normal;
     color: white;
-    font-family: 'Titillium Web', sans-serif bold;
+    font-family: 'TitilliumWeb-Bold', sans-serif;
     width: 1000px;
-    padding-top: 80px;
+    padding-top: 98px;
     font-weight: bold;
 }
 .splash_small {
     color: #222222;
     font-size: 30px;
-
     color: white;
-
     width: 1000px;
     padding-top: 20px;
     font-weight: bold;
+}
+.hp_product_name {
+    font-family: 'TitilliumWeb-Bold', sans-serif;
+    color: #222222;
+    font-size: 30px;
 }
 
 h4 {
@@ -343,12 +347,13 @@ footer ul li.last p {
 }
 
 .button_hp {
+    min-width: 120px;
     behavior: url(/css/PIE.htc);
     border: none;
     color: #ffffff;
     display: inline-block;
     font-size: 16px;
-    padding: 10px;
+    padding: 6px;
     text-align: center;
     text-decoration: none;
 }
@@ -1452,8 +1457,18 @@ footer ul li.last p {
     font-size: 24px;
 }
 
+.link_footer_header {
+    font-family: "Helvetica Neue",Helvetica,arial,sans-serif
+    font-size: 19px;
+    color: #ffffff;
+    line-height: 16px;
+    margin-bottom: 9px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
 
 .footer a {
     text-decoration: none;
-    color: #666666;
+    color: #579ABD;
 }
