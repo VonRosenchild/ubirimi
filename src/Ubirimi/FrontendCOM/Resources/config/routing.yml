@@ -97,6 +97,10 @@ comPaymentBillingUpdate:
   path: /account/billing/update
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\BillingUpdateController' }
 
+comPaymentBillingUpdateDo:
+  path: /account/billing/update/do
+  defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\BillingUpdateDoController' }
+
 comPrivacy:
   path: /privacy
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\PrivacyController' }

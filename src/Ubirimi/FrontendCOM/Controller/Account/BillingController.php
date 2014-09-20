@@ -32,10 +32,12 @@ class BillingController extends UbirimiController
                 $paymillClient = new PaymillClient();
                 $requestPaymill = new PaymillRequest(UbirimiContainer::get()['paymill.private_key']);
 
-
                 $paymillClient->setId($client['paymill_id']);
                 $response = $requestPaymill->getOne($paymillClient);
-                $currentCardData = $response->getPayment()[0];
+
+                if (count($response->getPayment())) {
+                    $currentCardData = $response->getPayment()[0];
+                }
             }
         }
 

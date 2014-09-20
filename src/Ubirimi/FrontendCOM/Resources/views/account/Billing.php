@@ -12,6 +12,8 @@
             <div>Card number: xxxx xxxx xxxx <?php echo $currentCardData->getLastFour() ?></div>
             <div>Card holder: <?php echo $currentCardData->getCardHolder() ?></div>
             <div>Expires on: <?php echo $currentCardData->getExpireMonth() ?> / <?php echo $currentCardData->getExpireYear() ?></div>
+        <?php else: ?>
+            <div>Currently you do not have any payment methods set. Please set one by clicking the button bellow.</div>
         <?php endif ?>
         <br />
         <a itemprop="url" class="button_hp_small blue" href="/account/billing/update">Update Payment Method</a>

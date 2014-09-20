@@ -1891,4 +1891,12 @@ class Client
         $stmt->bind_param("si", $datetime, $clientId);
         $stmt->execute();
     }
+
+    public static function updatePaymillId($clientPaymillId, $clientId) {
+        $query = "UPDATE client SET paymill_id = ? WHERE id = ? limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("si", $clientPaymillId, $clientId);
+        $stmt->execute();
+    }
 }

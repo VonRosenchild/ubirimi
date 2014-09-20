@@ -25,24 +25,26 @@ jQuery(document).ready(function ($) {
 
 
     function PaymillResponseHandler(error, result) {
-        if (error) {
+
+        if (error && error.apierror != 'field_invalid_amount') {
             $(".payment_errors").text(translation["en"]["error"][error.apierror]);
             $(".payment_errors").css("display", "inline-block");
         } else {
-            $(".payment_errors").html("&nbsp;");
             var form = $("#signUp-form");
             if (!form.length) {
                 form = $("#update-billing-form");
             }
 
+            console.log(form);
             // Token
             var token = result.token;
+
             form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
             form.get(0).submit();
         }
     }
 
-    $("#signUp-form, #update-billing-form").submit(function (event) {
+    $("#update-billing-form").submit(function (event) {
 
         var paymentErrors = $(".payment_errors");
         if (false === paymill.validateHolder($('#card_name').val())) {
@@ -78,7 +80,6 @@ jQuery(document).ready(function ($) {
         }
 
         var params = {
-            amount_int: $('#pay_amount').val() * 100,
             currency: 'USD',
             number: $('#card_number').val(),
             exp_month: expiry[0],
