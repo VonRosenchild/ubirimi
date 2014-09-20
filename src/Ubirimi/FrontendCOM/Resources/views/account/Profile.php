@@ -4,8 +4,5 @@
     </p>
 
     <?php require_once __DIR__ . '/_profileForm.php' ?>
-
-    <button type="button" class="button_hp blue" style="margin-left: 0px; width: 200px;" name="update_company">Update Information</button>
-    <img id="loader" src="/img/loader.gif" style="display: none;"/>
 </div>
 <br />

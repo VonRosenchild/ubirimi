@@ -65,6 +65,7 @@
             <?php endif ?>
         </div>
         <div style="width: 100%; height: 2px; background: #ffffff url('/img/site/bg.page.png') 0 0 repeat-x scroll;"></div>
+        <div style="width: 100%; height: 2px; background: #ffffff url('/img/site/bg.page.png') 0 0 repeat-x scroll;"></div>
     </header>
 
     <table align="center" style="width: 1000px">

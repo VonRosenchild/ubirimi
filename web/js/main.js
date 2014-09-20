@@ -106,26 +106,6 @@ $(document).ready(function () {
         });
     });
 
-    /* process profile */
-    $(".container.profile").on("click", "button", function() {
-        $('div .container button').hide();
-        $('#loader').show();
-
-        $.ajax({
-            type: "POST",
-            url: "/account/profile/save",
-            data: $("form[name='profile']").serialize(),
-            success: function(response) {
-                $('div .container button').show();
-                $('#loader').hide();
-
-                $('form').replaceWith(response);
-
-                window.scrollTo(0, 0);
-            }
-        });
-    });
-
     /* process recover password */
     $(".container.recover-account-panel").on("click", "button", function() {
         $('div .container button').hide();

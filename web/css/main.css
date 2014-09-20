@@ -326,11 +326,27 @@ footer ul li.last p {
     text-decoration: none;
 }
 
+
+.button_hp_small {
+    behavior: url(/css/PIE.htc);
+    border: none;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 16px;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+}
+
 .button_hp a {
     text-decoration: none;
 }
 
 .button_hp.blue {
+    background-color: #2cb9e8;
+}
+
+.button_hp_small.blue {
     background-color: #2cb9e8;
 }
 

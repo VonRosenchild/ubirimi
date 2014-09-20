@@ -88,6 +88,15 @@ comPaymentInvoices:
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\Payment\InvoiceController' }
   methods:  [GET]
 
+comPaymentBilling:
+  path: /account/billing
+  defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\BillingController' }
+  methods:  [GET]
+
+comPaymentBillingUpdate:
+  path: /account/billing/update
+  defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\BillingUpdateController' }
+
 comPrivacy:
   path: /privacy
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\PrivacyController' }

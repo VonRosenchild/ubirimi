@@ -33,6 +33,11 @@ jQuery(document).ready(function ($) {
         } else {
             $(".payment_errors").html("&nbsp;");
             var form = $("#signUp-form");
+            if (!form.length) {
+                form = $("#update-billing-form");
+            }
+
+            console.log(form);
             // Token
             var token = result.token;
 
@@ -42,7 +47,7 @@ jQuery(document).ready(function ($) {
         $(".submit-button").removeAttr("disabled");
     }
 
-    $("#signUp-form").submit(function (event) {
+    $("#signUp-form, #update-billing-form").submit(function (event) {
 
         var paymentErrors = $(".payment_errors");
         if (false === paymill.validateHolder($('#card_name').val())) {

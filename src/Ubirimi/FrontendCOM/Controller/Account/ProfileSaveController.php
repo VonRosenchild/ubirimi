@@ -14,6 +14,9 @@ class ProfileSaveController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $content = 'account/Profile.php';
+        $page = 'account_profile';
+
         $countries = Util::getCountries();
 
         $errors = array(
@@ -75,6 +78,6 @@ class ProfileSaveController extends UbirimiController
             $session->remove('profile_updated');
         }
 
-        return $this->render(__DIR__ . '/../../Resources/views/account/_profileForm.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../Resources/views/_main.php', get_defined_vars());
     }
 }

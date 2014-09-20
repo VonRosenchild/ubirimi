@@ -1,4 +1,4 @@
-<form class="standard-form horizontal" name="profile" method="post">
+<form class="standard-form horizontal" name="profile" method="post" action="/account/profile/save">
 
     <?php if ($session->has('profile_updated')): ?>
         <div class="global-msg confirmation">
@@ -89,4 +89,5 @@
             </fieldset>
         </div>
     </div>
+    <button type="submit" class="button_hp_small blue" name="update_company_profile">Update Information</button>
 </form>
