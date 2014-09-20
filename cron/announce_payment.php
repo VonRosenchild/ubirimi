@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
@@ -27,7 +28,8 @@ $clients = Client::getCurrentMonthAndDayPayingCustomers();
 while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
     $clientId = $client['id'];
 
-    $emailSubject = 'Ubirimi Invoice UBR';
+    $emailSubject = 'Ubirimi - Invoice UBR ' . $client['invoice_nr'];
+
     $clientAdministrators = Client::getAdministrators($client['id']);
 
     $clientAdministratorsEmailAddresses = array();
@@ -39,13 +41,16 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
         $emailBody = Util::getTemplate('_announce_payment.php', array(
             'clientAdministrator' => $clientAdministrator['first_name'] . ' ' . $clientAdministrator['last_name'],
             'clientDomain' => $client['company_domain'],
-            'baseUrl' => $client['base_url'])
+            'invoiceNumber' => $client['invoice_nr'],
+            'invoiceAmount' => $client['invoice_amount'])
         );
 
         $message = Swift_Message::newInstance($emailSubject)
             ->setFrom(array('contact@ubirimi.com'))
             ->setTo($clientAdministrator['email'])
-            ->setBody($emailBody, 'text/html');
+            ->setSubject($emailSubject)
+            ->setBody($emailBody, 'text/html')
+            ->attach(Swift_Attachment::fromPath(UbirimiContainer::get()['invoice.path'] . '/' . sprintf('Ubirimi_%d.pdf', $client['invoice_nr'])));
 
         try {
             $mailer->send($message);
@@ -67,7 +72,9 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
         $message = Swift_Message::newInstance($emailSubject)
             ->setFrom(array('contact@ubirimi.com'))
             ->setTo($client['contact_email'])
-            ->setBody($emailBody, 'text/html');
+            ->setSubject($emailSubject)
+            ->setBody($emailBody, 'text/html')
+            ->attach(Swift_Attachment::fromPath(UbirimiContainer::get()['invoice.path'] . '/' . sprintf('Ubirimi_%d.pdf', $client['invoice_nr'])));
 
         try {
             $mailer->send($message);
