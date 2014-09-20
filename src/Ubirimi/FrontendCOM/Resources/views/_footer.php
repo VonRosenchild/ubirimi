@@ -33,6 +33,8 @@
                 <br/>
                 <a itemprop="url" href="/product/agile">Agile</a>
                 <br/>
+                <a itemprop="url" href="/product/helpdesk">Helpdesk</a>
+                <br />
                 <a itemprop="url" href="/product/svn-hosting">SVN Hosting</a>
                 <br/>
                 <a itemprop="url" href="/product/documentador">Documentador</a>
