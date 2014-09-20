@@ -178,7 +178,7 @@ p {
 header {
     background-color: #f6f6f6;
     height: 55px;
-    padding-top: 15px;
+    padding-top: 7px;
 }
 
 header.inverse {
@@ -329,7 +329,7 @@ footer ul li.last p {
     font-weight: bold;
     font-size: 30px;
     height: 50px;
-    margin-top: -4px;
+    margin-top: -2px;
     padding-left: 50px;
     padding-top: -4px;
     text-decoration: none;
