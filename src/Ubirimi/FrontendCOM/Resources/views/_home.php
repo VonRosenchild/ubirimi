@@ -10,8 +10,8 @@
     ?>
 
     <body>
-        <header class="inverse" itemscope itemtype="http://schema.org/WPHeader">
-            <div class="container clearfix" style="width: 1000px">
+        <header class="inverse" itemscope itemtype="http://schema.org/WPHeader" style="background-color: background-color: rgba(44, 185, 232, 0.46);">
+            <div class="container clearfix" style="width: 1000px;">
                 <nav class="buttons_hp align-right">
                     <?php if (Util::runsOnLocalhost()): ?>
                         <a class="button_hp gray" href="http://demo.ubirimi_net.lan/">Fast try</a>
@@ -63,6 +63,14 @@
             <div style="width: 100%; height: 2px; background: #ffffff url('/img/site/bg.page.png') 0 0 repeat-x scroll;"></div>
 
         </header>
+
+        <?php if ($page == 'index'): ?>
+            <div style="width: 100%; margin-top: 4px; height: 500px; background-color: rgba(44, 185, 232, 0.46); vertical-align: middle" align="center">
+                <div class="splash">Fast, most affordable productivity tools</div>
+                <div class="splash_small">Plan, work together, organize, stay in touch</div>
+            </div>
+        <?php endif ?>
+
 
         <div class="gray-bg">
             <div class="container page-container" style="width: 1420px">

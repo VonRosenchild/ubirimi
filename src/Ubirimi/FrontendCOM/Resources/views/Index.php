@@ -3,7 +3,6 @@
 ?>
 
 <div class="home-products">
-    <h1>Fast, most affordable productivity tools</h1>
 
     <div class="buttons_hp clearfix" style="margin-bottom: 20px">
 
