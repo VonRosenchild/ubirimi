@@ -26,7 +26,11 @@ class SigninController extends UbirimiController
 
         $clientSettings = Client::getSettingsByBaseURL($httpHOST);
         $clientId = $clientSettings['id'];
-
+        $client = Client::getById($clientId);
+        if ($client['is_payable'] && !$client['paymill_id']) {
+            return new RedirectResponse($httpHOST . '/setup-payment');
+            die();
+        }
         if ($session->has('user') && Util::getSubdomain() == $session->get('client/company_domain')) {
             return new RedirectResponse($httpHOST . '/yongo/my-dashboard');
         }

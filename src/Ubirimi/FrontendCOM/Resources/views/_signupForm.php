@@ -148,7 +148,7 @@
                     </div>
                 </div>
             </td>
-            <td width="40px"></td>
+            <td width="50px"></td>
             <td valign="top">
                 <div class="form-section clearfix">
                     <h3>3. Payment details</h3>

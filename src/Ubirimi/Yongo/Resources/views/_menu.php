@@ -87,9 +87,7 @@
                     <?php else: ?>
                         <td style="height:44px; border-left: 1px #9c9c9c solid;" width="100px" class="product-menu" align="center" valign="middle">
                             <div>
-                                <a href="<?php echo Util::getHttpHost() ?>" title="Log In">
-                                    Log In
-                                </a>
+                                <a href="<?php echo Util::getHttpHost() ?>" title="Log In">Log In</a>
                             </div>
                         </td>
                     <?php endif ?>

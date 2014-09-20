@@ -37,3 +37,11 @@ netRecoverPasswordDO:
   requirements:
     domain: ubirimi_net.lan|ubirimi.net
     subdomain: .*
+
+netSetupPayment:
+  path:     /setup-payment
+  host:     "{subdomain}.{domain}"
+  defaults: { _controller: '\Ubirimi\FrontendNET\Controller\SetupPaymentController' }
+  requirements:
+    domain: ubirimi_net.lan|ubirimi.net
+    subdomain: .*

@@ -132,7 +132,7 @@ p {
 .container {
     margin: 0 auto;
     padding: 10px;
-    width: 1200px;
+    width: 1000px;
 }
 
 .container.page-container {
@@ -1212,7 +1212,7 @@ footer ul li.last p {
 }
 
 .standard-form .form-section .section-left {
-    width: 466px;
+    width: 460px;
 }
 
 .standard-form .form-section .section-right {

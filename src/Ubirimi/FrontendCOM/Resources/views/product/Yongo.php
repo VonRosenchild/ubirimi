@@ -317,24 +317,5 @@
 
     <input type="hidden" id="last_menu_selected" value="issues" />
 </div>
-
-<div class="container page-container" align="right">
-
-    <div class="g-plusone" data-size="medium"></div>
-
-    <!-- Place this tag after the last +1 button tag. -->
-    <script type="text/javascript">
-        (function() {
-            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-            po.src = 'https://apis.google.com/js/plusone.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
-    </script>
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="ubirimi">Tweet</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    <script src="//platform.linkedin.com/in.js" type="text/javascript">
-        lang: en_US
-    </script>
-    <script type="IN/Share" data-counter="right"></script>
-    <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
-</div>
+<br />
+<br />
