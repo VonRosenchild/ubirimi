@@ -139,6 +139,8 @@ function closeOpenMenus() {
 
 $('document').ready(function () {
 
+    $('.filter-date-regular').datepicker({dateFormat: "yy-mm-dd"});
+
     $('#ubirimi_quick_search, #calendar_quick_search').on('click', function (event) {
         $(this).val('');
     });

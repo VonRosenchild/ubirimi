@@ -39,6 +39,7 @@
     <script type="text/javascript" src="/helpdesk/js/help_desk_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
 
     <link rel="stylesheet" href="/css/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/vendor/bootstrap.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/main.css?<?php echo UbirimiContainer::get()['app.version'] ?>" />
     <link rel="stylesheet" type="text/css" href="/css/menu.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/general.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
@@ -52,7 +53,7 @@
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.fancybox.css?v=2.1.5" media="screen" />
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.fancybox-buttons.css?v=1.0.5" media="screen" />
 
-    <link rel="stylesheet" type="text/css" href="/css/vendor/bootstrap.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
+
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.fileupload.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
 
     <link rel="stylesheet" type="text/css" href="/css/print.css?<?php echo UbirimiContainer::get()['app.version'] ?>" media="print"/>

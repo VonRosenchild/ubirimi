@@ -1874,4 +1874,33 @@ class Project
         $stmt->bind_param("i", $projectId);
         $stmt->execute();
     }
+
+    public static function getWorkDoneDistributition($projectId, $dateFrom, $dateTo, $resultType = null) {
+        $query = 'SELECT issue_type.name as type_name, user.first_name, user.last_name, COUNT(yongo_issue.id) as total ' .
+                 'FROM yongo_issue ' .
+                 'LEFT JOIN user ON user.id = yongo_issue.user_assigned_id ' .
+                 'LEFT JOIN issue_type ON issue_type.id = yongo_issue.type_id ' .
+                 'WHERE yongo_issue.project_id = ? ' .
+                 'and yongo_issue.resolution_id is not null ' .
+                 'and yongo_issue.date_resolved >= ? and yongo_issue.date_resolved <= ? ' .
+                 'GROUP BY type_id, user_assigned_id ';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iss", $projectId, $dateFrom, $dateTo);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultData = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultData[] = $data;
+                }
+                return $resultData;
+            } else {
+                return $result;
+            }
+        } else
+            return 0;
+    }
 }

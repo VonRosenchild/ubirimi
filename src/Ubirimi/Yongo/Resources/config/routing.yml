@@ -64,6 +64,12 @@ viewProjectReportsSummaryCharReportMain:
   requirements:
     id:  \d+
 
+viewProjectReportsSummaryWorkDoneDistribution:
+  path: /yongo/project/reports/{id}/work-done-distribution/{date_from}/{date_to}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\Report\WorkDoneDistributionController' }
+  requirements:
+    id:  \d+
+
 viewProjectReportsSummaryCharReportMainStatType:
   path: /yongo/project/reports/{id}/chart-report/{statistic_type}/{chart_type}
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\Report\ViewChartStatisticTypeController' }
