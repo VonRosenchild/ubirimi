@@ -24,7 +24,7 @@ require_once __DIR__ . '/../web/bootstrap_cli.php';
 $issues = Issue::getIssuesWithDueDateReminder();
 
 
-$emailSubject = ''
+$emailSubject = '';
 while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
 
     Email::$smtpSettings = SMTPServer::getByClientId($issue['client_id']);
