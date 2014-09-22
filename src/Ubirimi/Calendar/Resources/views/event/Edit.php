@@ -126,7 +126,7 @@
                             <span>Apply this change to</span>
                         </td>
                         <td>
-                            <input type="radio" name="change_event" value="this_event" checked="checked">
+                            <input type="radio" name="change_event" id="event_recurring_this_event" value="this_event" checked="checked">
                             <span>Only this event</span>
                             <br />
                             <div>All other events in the series will remain the same.</div>
@@ -135,7 +135,7 @@
                             <br />
                             <div>This and all the following events will be changed.</div>
                             <div>Any changes to future events will be lost.</div>
-                            <input type="radio" name="change_event" value="all_events">
+                            <input type="radio" name="change_event" id="event_recurring_all_events" value="all_events">
                             <span>All events</span>
                             <br />
                             <div>All events in the series will be changed.</div>
@@ -158,6 +158,8 @@
                 </tr>
             </table>
             <input type="hidden" value="<?php echo $eventId ?>" id="event_id" />
+            <input type="hidden" id="initial_cal_event_edit_date_from" value="<?php echo date('Y-m-d H:i', strtotime($event['date_from'])); ?>"/>
+            <input type="hidden" id="initial_cal_event_edit_date_to" value="<?php echo date('Y-m-d H:i', strtotime($event['date_to'])); ?>"/>
         </form>
     </div>
 

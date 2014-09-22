@@ -61,6 +61,28 @@ class EditController extends UbirimiController
             $dateTo .= ':00';
             $date = Util::getServerCurrentDateTime();
 
+            $repeatData = '';
+            // create repeat information string
+            if ($eventRepeatType != -1) {
+
+                switch ($eventRepeatType) {
+                    case CalendarEventRepeatCycle::REPEAT_DAILY:
+                        $repeatData .= '1';
+                        $repeatData .= '#' . $request->request->get('add_event_repeat_every');
+
+                        if ('never' == $request->request->get('repeat_data_daily')) {
+                            $repeatData .= '#n';
+                        } else if ('after' == $request->request->get('repeat_data_daily')) {
+                            $repeatData .= '#a' . $request->request->get('add_event_repeat_after_daily');
+                        } else if ('on' == $request->request->get('repeat_data_daily')) {
+                            $repeatData .= '#o' . $request->request->get('add_event_repeat_end_date_on_daily');
+                        }
+                        break;
+                }
+
+                $repeatData .= '#' . $dateFrom;
+            }
+
             if (isset($changeType)) {
                 if ('this_event' == $changeType) {
                     /*
@@ -76,28 +98,6 @@ class EditController extends UbirimiController
                     CalendarEvent::updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo);
                 } else if ("following_events" == $changeType) {
 
-                    $repeatData = '';
-                    // create repeat information string
-                    if ($eventRepeatType != -1) {
-
-                        switch ($eventRepeatType) {
-                            case CalendarEventRepeatCycle::REPEAT_DAILY:
-                                $repeatData .= '1';
-                                $repeatData .= '#' . $request->request->get('add_event_repeat_every');
-
-                                if ('never' == $request->request->get('repeat_data_daily')) {
-                                    $repeatData .= '#n';
-                                } else if ('after' == $request->request->get('repeat_data_daily')) {
-                                    $repeatData .= '#a' . $request->request->get('add_event_repeat_after_daily');
-                                } else if ('on' == $request->request->get('repeat_data_daily')) {
-                                    $repeatData .= '#o' . $request->request->get('add_event_repeat_end_date_on_daily');
-                                }
-                                break;
-                        }
-
-                        $repeatData .= '#' . $dateFrom;
-                    }
-
                     if ($repeatData) {
                         /*
                          * delete all following events
@@ -105,6 +105,7 @@ class EditController extends UbirimiController
                          */
 
                         CalendarEvent::deleteEventAndFollowingByLinkId($eventId);
+
                         CalendarEvent::add(
                             $calendarId,
                             $session->get('user/id'),
@@ -119,7 +120,30 @@ class EditController extends UbirimiController
                             $clientSettings
                         );
                     }
+                } else if ("all_events" == $changeType) {
+                    $eventLink = CalendarEvent::getById($event['cal_event_link_id'], 'array');
 
+                    $repeatDataPieces = explode('#', $repeatData);
+                    array_pop($repeatDataPieces);
+                    $repeatDataPieces[] = $eventLink['date_from'];
+                    $repeatData = implode("#", $repeatDataPieces);
+
+                    // delete current event and create new one
+                    CalendarEvent::deleteById($eventId, 'all_series');
+
+                    CalendarEvent::add(
+                        $calendarId,
+                        $session->get('user/id'),
+                        $name,
+                        $description,
+                        $location,
+                        $eventLink['date_from'],
+                        $eventLink['date_to'],
+                        $color,
+                        $date,
+                        $repeatData,
+                        $clientSettings
+                    );
                 }
             } else {
                 CalendarEvent::updateById(

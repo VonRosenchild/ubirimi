@@ -10,6 +10,18 @@ $('document').ready(function () {
         ampm: false
     });
 
+    $(document).on('change', "#cal_event_edit_date_from, #cal_event_edit_date_to", function (event) {
+
+        if ($('#cal_event_edit_date_from').val() != $('#initial_cal_event_edit_date_from').val() || $('#cal_event_edit_date_to').val() != $('#initial_cal_event_edit_date_to').val()) {
+            if ($('#event_recurring_all_events').prop('checked')) {
+                $('#event_recurring_this_event').prop('checked', 'checked');
+                $('#event_recurring_all_events').prop('disabled', 'disabled');
+            }
+        } else {
+            $('#event_recurring_all_events').prop('disabled', '');
+        }
+    });
+
     $('#btnEditCalendar').click(function (event) {
         event.preventDefault();
         if (selected_rows.length == 1)

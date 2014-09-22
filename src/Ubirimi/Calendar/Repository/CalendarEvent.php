@@ -437,6 +437,7 @@ class CalendarEvent
         switch ($recurringType) {
             case 'all_following':
                 $event = CalendarEvent::getById($eventId, 'array');
+                // todo: delete shares and reminders also
                 $query = "delete from cal_event where id >= ? and cal_event_link_id = ?";
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
                 $stmt->bind_param("ii", $eventId, $event['cal_event_link_id']);
@@ -446,6 +447,7 @@ class CalendarEvent
 
             case 'all_series':
                 $event = CalendarEvent::getById($eventId, 'array');
+                // todo: delete shares and reminders also
                 $query = "delete from cal_event where id = ? or cal_event_link_id = ?";
 
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
