@@ -49,7 +49,7 @@
                 </tr>
                 <tr>
                     <td valign="top">
-                        <div><a href="/yongo/project/reports/<?php echo $projectId ?>/work-done-distribution">Work done distribution</a></div>
+                        <div><a href="/yongo/project/reports/<?php echo $projectId ?>/work-done-distribution/<?php echo $dateFrom ?>/<?php echo $dateTo ?>">Work done distribution</a></div>
                     </td>
                     <td>
                         <div>A report showing the issues for a project grouped by issue type and assignee.</div>

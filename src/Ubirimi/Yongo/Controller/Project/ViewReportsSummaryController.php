@@ -35,6 +35,14 @@ class ViewReportsSummaryController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
+        $currentDate = Util::getServerCurrentDateTime();
+
+        $dateFrom = date_create(Util::getServerCurrentDateTime());
+        $dateTo = date_format(date_create(Util::getServerCurrentDateTime()), 'Y-m-d');
+
+        date_sub($dateFrom, date_interval_create_from_date_string('1 months'));
+        $dateFrom = date_format($dateFrom, 'Y-m-d');
+
         $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2));
         $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
