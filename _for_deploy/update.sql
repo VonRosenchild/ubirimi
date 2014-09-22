@@ -1,5 +1,3 @@
-ALTER TABLE  `user` ADD  `remind_days_before_due_date` TINYINT UNSIGNED NULL AFTER  `issues_per_page`;
-
 ALTER TABLE  `general_invoice` ADD  `amount` BIGINT UNSIGNED NOT NULL AFTER  `client_id`;
 
 ALTER TABLE  `general_invoice` ADD  `email_sent_flag` TINYINT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `number`;
