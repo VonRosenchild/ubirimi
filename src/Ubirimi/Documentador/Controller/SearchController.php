@@ -1,29 +1,43 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Documentador\Space;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
 
-    if (Util::checkUserIsLoggedIn()) {
+namespace Ubirimi\Documentador\Controller;
 
-        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Search';
-    } else {
-        $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-        $loggedInUserId = null;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\Documentador\Space;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-        $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Search';
+class SearchController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        if (Util::checkUserIsLoggedIn()) {
+            $sectionPageTitle = $session->get('client/settings/title_name')
+                . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME
+                . ' / Search';
+        } else {
+            $httpHOST = Util::getHttpHost();
+            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $loggedInUserId = null;
+
+            $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME . ' / Search';
+        }
+
+        if ($request->request->has('search')) {
+            $searchQuery = $request->request->get('keyword');
+
+            return new RedirectResponse('/documentador/search?search_query=' . $searchQuery);
+        }
+
+        $searchQuery = $request->get('search_query');
+        $menuSelectedCategory = 'documentator';
+
+        $pages = Space::searchForPages($session->get('client/id'), $searchQuery);
+
+        return $this->render(__DIR__ . '/../Resources/views/Search.php', get_defined_vars());
     }
-
-    if (isset($_POST['search'])) {
-        $searchQuery = $_POST['keyword'];
-
-        header('Location: /documentador/search?search_query=' . $searchQuery);
-    }
-
-    $searchQuery = $_GET['search_query'];
-    $menuSelectedCategory = 'documentator';
-
-    $pages = Space::searchForPages($clientId, $searchQuery);
-
-    require_once __DIR__ . '/../Resources/views/Search.php';
+}
