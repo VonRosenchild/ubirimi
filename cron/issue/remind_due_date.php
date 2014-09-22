@@ -19,7 +19,7 @@ if (file_exists('remind_due_date.lock')) {
     }
 }
 
-require_once __DIR__ . '/../web/bootstrap_cli.php';
+require_once __DIR__ . '/../../web/bootstrap_cli.php';
 
 $issues = Issue::getIssuesWithDueDateReminder();
 
