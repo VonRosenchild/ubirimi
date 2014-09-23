@@ -119,7 +119,7 @@
                         <li>
                             <h3>Do you keep developing Ubirimi?</h3>
                             <p>
-                                Yes. We have a busy roadmap ahead of us with new products and new functionality for ou existing products. All future updates will
+                                Yes. We have a busy roadmap ahead of us with new products and new functionality for our existing products. All future updates will
                                 remain to be free. We have a short cycle of minor releases in which we fix/improve existing functionality.
                             </p>
                         </li>
