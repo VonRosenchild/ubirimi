@@ -236,12 +236,16 @@ class Issue
                 }
 
                 if (count($projectWithAssigneeReporterBrowsePermission)) {
-                    $queryWhere .= ' (issue_main_table.project_id IN (' . implode(',', array_diff($parameters['project'], $projectWithAssigneeReporterBrowsePermission)) . ') OR ';
+                    if (Util::array_equal($parameters['project'], $projectWithAssigneeReporterBrowsePermission)) {
+                        $queryWhere .= ' (issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') OR ';
+                    } else {
+                        $queryWhere .= ' (issue_main_table.project_id IN (' . implode(',', array_diff($parameters['project'], $projectWithAssigneeReporterBrowsePermission)) . ') OR ';
+                    }
+
                     $queryWhere .= '(' . implode(' OR ', $queryPartReporterAssignee) . ')) ';
                     $queryWhere .= ' AND ';
                 } else {
                     $queryWhere .= ' issue_main_table.project_id IN (' . implode(',', $parameters['project']) . ') AND ';
-
                 }
             } else {
                 $queryWhere .= ' issue_main_table.project_id = ? AND ';
