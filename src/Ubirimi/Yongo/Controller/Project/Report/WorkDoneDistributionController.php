@@ -36,8 +36,10 @@ class WorkDoneDistributionController extends UbirimiController
         $workData = Project::getWorkDoneDistributition($projectId, $dateFrom, $dateTo, 'array');
         $workDataPrepared = array();
 
-        foreach ($workData as $data) {
-            $workDataPrepared[$data['first_name'] . ' ' . $data['last_name']][$data['type_name']] = $data['total'];
+        if ($workData) {
+            foreach ($workData as $data) {
+                $workDataPrepared[$data['first_name'] . ' ' . $data['last_name']][$data['type_name']] = $data['total'];
+            }
         }
 
         $issueTypes = Project::getIssueTypes($projectId, true, 'array');
