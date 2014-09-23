@@ -3,7 +3,7 @@
 ?>
 <div style="width: 100%; height: 2px; background: #ffffff url('/img/site/bg.page.png') 0 0 repeat-x scroll;"></div>
 <div style="width: 100%; height: 2px; background: #ffffff url('/img/site/bg.page.png') 0 0 repeat-x scroll;"></div>
-<div style="background-color: #205081; position: absolute; width: 100%;" id="footerCOM">
+<div style="background-color: #205081;" id="footerCOM">
     <br />
     <table align="center" cellspacing="0px" cellpadding="0px" class="footer">
         <tr>

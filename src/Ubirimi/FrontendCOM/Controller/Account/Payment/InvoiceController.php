@@ -23,4 +23,3 @@ class InvoiceController extends UbirimiController
         return $this->render(__DIR__ . '/../../../Resources/views/_main.php', get_defined_vars());
     }
 }
-

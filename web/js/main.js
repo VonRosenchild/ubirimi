@@ -1,5 +1,13 @@
 $(document).ready(function () {
-    
+
+    // make the footer stretch to the bottom of the page
+    if ($("body").height() < $(window).height()) {
+        $('#footerCOM').height(function(index, height) {
+            return window.innerHeight - $(this).offset().top;
+        });
+
+    }
+
     $(".cycle-slideshow").cycle("goto", 0);
 
     $(".compare-items a").on("click", function () {
