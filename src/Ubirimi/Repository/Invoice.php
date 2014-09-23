@@ -61,11 +61,9 @@ class Invoice
      */
     public static function last12($clientId)
     {
-        $query = 'SELECT gi.*, gp.*
+        $query = 'SELECT gi.*
                     FROM general_invoice gi
-                    LEFT JOIN general_payment gp ON gi.general_payment_id = gp.id
-                    WHERE gp.client_id = ?
-                      AND successful_flag = 1
+                    WHERE gi.client_id = ?
                   LIMIT 12';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -80,29 +78,5 @@ class Invoice
         }
 
         return $resultArray;
-    }
-
-    /**
-     * Get invoice and payment data for the given paymentId
-     *
-     * @param $paymentId
-     */
-    public static function getByPaymentId($paymentId)
-    {
-        $query = 'SELECT general_invoice.id, general_invoice.number, general_invoice.date_created, general_payment.amount,
-                    general_payment.client_id
-                    FROM general_invoice
-                    LEFT JOIN general_payment ON general_payment.id = general_invoice.general_payment_id
-                    WHERE general_invoice.general_payment_id = ?
-                  LIMIT 1';
-
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("i", $paymentId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $invoice = $result->fetch_array(MYSQLI_ASSOC);
-
-        return $invoice;
     }
 }

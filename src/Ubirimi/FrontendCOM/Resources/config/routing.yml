@@ -66,10 +66,6 @@ comAccountProfileSave:
   path: /account/profile/save
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\ProfileSaveController' }
 
-comPaymentView:
-  path: /account/pay
-  defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\Payment\PayController' }
-
 comAccountSettings:
   path: /account/settings
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\SettingsController' }
@@ -77,11 +73,6 @@ comAccountSettings:
 comAccountSettingsDelete:
   path: /account/settings/delete
   defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\DeleteController' }
-
-comPaymentProcess:
-  path: /account/payment/process
-  defaults: { _controller: '\Ubirimi\FrontendCOM\Controller\Account\Payment\ProcessController' }
-  methods:  [POST]
 
 comPaymentInvoices:
   path: /account/invoices

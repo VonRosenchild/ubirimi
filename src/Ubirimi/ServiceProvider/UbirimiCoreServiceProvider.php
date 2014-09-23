@@ -59,10 +59,6 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             return new EmailService($pimple['session']);
         });
 
-        $pimple['payment.transaction'] = $pimple->share(function($pimple) {
-            return new \PaymentTransactionService($pimple['paymill.private_key']);
-        });
-
         $pimple['client'] = $pimple->share(function($pimple) {
             return new ClientService();
         });

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    
     $(".cycle-slideshow").cycle("goto", 0);
 
     $(".compare-items a").on("click", function () {
