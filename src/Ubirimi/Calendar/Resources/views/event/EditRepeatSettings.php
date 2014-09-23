@@ -61,7 +61,6 @@
                     </label>
                     <input value="<?php if ($repeatDaily && $defaultEventEndDate) echo $defaultEventEndDate ?>"
                            type="text"
-                           value=""
                            class="inputText"
                            id="add_event_repeat_end_date_on_daily"
                            name="add_event_repeat_end_date_on_daily"
@@ -85,13 +84,13 @@
             <tr>
                 <td>Repeat on</td>
                 <td>
-                    <input <?php if (0 == $dayInWeek) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_0" /> S
-                    <input <?php if (1 == $dayInWeek) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_1" /> M
-                    <input <?php if (2 == $dayInWeek) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_2" /> T
-                    <input <?php if (3 == $dayInWeek) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_3" /> W
-                    <input <?php if (4 == $dayInWeek) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_4" /> T
-                    <input <?php if (5 == $dayInWeek) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_5" /> F
-                    <input <?php if (6 == $dayInWeek) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_6" /> S
+                    <input <?php if ($eventRepeatData['on_day_0']) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_0" name="week_on_0" /> S
+                    <input <?php if ($eventRepeatData['on_day_1']) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_1" name="week_on_1"/> M
+                    <input <?php if ($eventRepeatData['on_day_2']) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_2" name="week_on_2"/> T
+                    <input <?php if ($eventRepeatData['on_day_3']) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_3" name="week_on_3"/> W
+                    <input <?php if ($eventRepeatData['on_day_4']) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_4" name="week_on_4"/> T
+                    <input <?php if ($eventRepeatData['on_day_5']) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_5" name="week_on_5"/> F
+                    <input <?php if ($eventRepeatData['on_day_6']) echo 'checked="checked"' ?> type="checkbox" value="1" id="week_on_6" name="week_on_6"/> S
                 </td>
             </tr>
             <tr>
@@ -108,22 +107,37 @@
             <tr>
                 <td valign="top">Ends</td>
                 <td>
-                    <input type="radio" name="repeat_data_weekly" id="add_event_repeat_end_date_never_weekly" value="1" checked="checked" />
+                    <input type="radio"
+                           name="repeat_data_weekly"
+                           id="add_event_repeat_end_date_never_weekly"
+                           value="1"
+                           checked="checked" />
                     <label for="add_event_repeat_end_date_never_weekly">Never</label>
                     <br />
-                    <input type="radio" name="repeat_data_weekly" id="add_event_repeat_end_date_after_occurrences_weekly" />
+                    <input type="radio"
+                           name="repeat_data_weekly"
+                           <?php if ($repeatWeekly && $defaultEventEndAfterOccurrences) echo 'checked="checked"'; ?>
+                           id="add_event_repeat_end_date_after_occurrences_weekly" />
                     <label for="add_event_repeat_end_date_after_occurrences_weekly">
                         <span>After </span>
                     </label>
-                    <input type="text" class="inputText" style="width: 30px" id="add_event_repeat_after_weekly" name="add_event_repeat_after_weekly" />
+                    <input type="text"
+                           value="<?php if ($repeatWeekly && $defaultEventEndAfterOccurrences) echo $defaultEventEndAfterOccurrences ?>
+                           class="inputText"
+                           style="width: 30px"
+                           id="add_event_repeat_after_weekly"
+                           name="add_event_repeat_after_weekly" />
                     <span>occurrences</span>
                     <br />
-                    <input type="radio" name="repeat_data_weekly" id="add_event_repeat_end_date_on_weekly_label" />
+                    <input type="radio"
+                           name="repeat_data_weekly"
+                           <?php if ($repeatWeekly && $defaultEventEndDate) echo 'checked="checked"' ?>
+                           id="add_event_repeat_end_date_on_weekly_label" />
                     <label for="add_event_repeat_end_date_on_weekly_label">
                         <span>On </span>
                     </label>
                     <input type="text"
-                           value=""
+                           value="<?php if ($repeatWeekly && $defaultEventEndDate) echo $defaultEventEndDate ?>"
                            class="inputText"
                            id="add_event_repeat_end_date_on_weekly"
                            name="add_event_repeat_end_date_on_weekly"
