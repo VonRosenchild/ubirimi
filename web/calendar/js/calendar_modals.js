@@ -61,7 +61,7 @@ $('document').ready(function () {
                             var repeatType = $('#add_event_repeat_type').val();
                             if (1 == repeatType) { // daily
                                 repeatData += '1';
-                                repeatData += '#' + $('#add_event_repeat_every').val();
+                                repeatData += '#' + $('#add_event_repeat_every_daily').val();
                                 if ($('#add_event_repeat_end_date_never_daily').is(':checked')) {
                                     repeatData += '#n';
                                 } else if ($('#add_event_repeat_end_date_after_occurrences_daily').is(':checked')) {
@@ -152,7 +152,9 @@ $('document').ready(function () {
 
                 jscolor.init();
 
-                $(".select2InputSmall").select2();
+                $(".select2InputSmall").select2({
+                    minimumResultsForSearch: -1
+                });
                 $(".select2InputMedium").select2();
 
                 $('#event_name').focus();

@@ -5,7 +5,7 @@
             <tr>
                 <td>Repeat every</td>
                 <td>
-                    <select id="add_event_repeat_every" class="inputTextCombo" style="width: 50px">
+                    <select id="add_event_repeat_every_daily" class="select2InputSmall" style="width: 60px">
                         <?php for ($i = 1; $i <= 30; $i++): ?>
                             <option value="<?php echo $i ?>"><?php echo $i ?></option>
                         <?php endfor ?>
@@ -42,7 +42,7 @@
             <tr>
                 <td>Repeat every</td>
                 <td>
-                    <select id="add_event_repeat_every_weekly" class="inputTextCombo" style="width: 50px">
+                    <select id="add_event_repeat_every_weekly" class="select2InputSmall" style="width: 60px">
                         <?php for ($i = 1; $i <= 30; $i++): ?>
                             <option value="<?php echo $i ?>"><?php echo $i ?></option>
                         <?php endfor ?>

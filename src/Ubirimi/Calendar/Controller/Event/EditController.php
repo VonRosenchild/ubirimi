@@ -68,7 +68,7 @@ class EditController extends UbirimiController
                 switch ($eventRepeatType) {
                     case CalendarEventRepeatCycle::REPEAT_DAILY:
                         $repeatData .= '1';
-                        $repeatData .= '#' . $request->request->get('add_event_repeat_every');
+                        $repeatData .= '#' . $request->request->get('add_event_repeat_every_daily');
 
                         if ('never' == $request->request->get('repeat_data_daily')) {
                             $repeatData .= '#n';
@@ -77,10 +77,33 @@ class EditController extends UbirimiController
                         } else if ('on' == $request->request->get('repeat_data_daily')) {
                             $repeatData .= '#o' . $request->request->get('add_event_repeat_end_date_on_daily');
                         }
+                        $repeatData .= '#' . $dateFrom;
+                        break;
+
+                    case CalendarEventRepeatCycle::REPEAT_WEEKLY:
+                        $repeatData .= '2';
+                        $repeatData .= $request->request->get('add_event_repeat_every_weekly');
+
+                        if ('never' == $request->request->get('repeat_data_weekly')) {
+                            $repeatData .= '#n';
+                        } else if ('after' == $request->request->get('repeat_data_weekly')) {
+                            $repeatData .= '#a' . $request->request->get('add_event_repeat_after_weekly');
+                        } else if ('on' == $request->request->get('repeat_data_weekly')) {
+                            $repeatData .= '#o' . $request->request->get('add_event_repeat_end_date_on_weekly');
+                        }
+
+                        $repeatData .= $request->request->get('add_event_repeat_start_date_weekly');
+                        for ($i = 0; $i <= 6; $i++) {
+                            $fieldName = 'week_on_' . $i;
+                            if ($request->request->has($fieldName)) {
+                                $repeatData .= '#1';
+                            } else {
+                                $repeatData .= '#0';
+                            }
+                        }
+
                         break;
                 }
-
-                $repeatData .= '#' . $dateFrom;
             }
 
             if (isset($changeType)) {
