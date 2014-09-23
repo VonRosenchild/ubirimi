@@ -4,6 +4,7 @@ namespace Ubirimi\Repository\HelpDesk;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
@@ -261,10 +262,10 @@ class SLA
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
+                $assigneeID = Issue::getAssigneeOnDate($issue['id'], $currentSLADate);
 
-                $comments = IssueComment::getByAssigneeOldChangedAfterDate($issue['id'], $currentSLADate);
+                $comments = IssueComment::getByUserIdAfterDate($issue['id'], $assigneeID, $currentSLADate);
                 if ($comments) {
-
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
                         if ($comment['date_created'] >= $conditionFulfilledDate) {
@@ -366,7 +367,6 @@ class SLA
         $goalValue = $goalData['value'];
         $slaCalendarData = SLACalendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
-        $issueSLAData = SLA::getSLAData($issueId, $SLA['id']);
         $SLA = SLA::getById($SLA['id']);
 
         $historyData = IssueHistory::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
@@ -383,7 +383,6 @@ class SLA
 
         // find start and stop dates
         foreach ($historyData as $history) {
-
             $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
             $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
 
@@ -394,7 +393,16 @@ class SLA
             }
 
             if ($stopConditionSLADate && !in_array($stopConditionSLADate, $stopConditionSLADates)) {
-                $stopConditionSLADates[] = $stopConditionSLADate;
+                for ($i = 0; $i < count($slaCalendarData); $i++) {
+                    if (date("N", strtotime($stopConditionSLADate)) == $slaCalendarData[$i]['day_number'] && $slaCalendarData[$i]['not_working_flag'] == 0) {
+                        $timeFrom = $slaCalendarData[$i]['time_from'] . ':00';
+                        $timeTo = $slaCalendarData[$i]['time_to'] . ':00';
+                        $timeSectionInStopDate = substr($stopConditionSLADate, 11);
+                        if ($timeSectionInStopDate >= $timeFrom && $timeSectionInStopDate <= $timeTo) {
+                            $stopConditionSLADates[] = $stopConditionSLADate;
+                        }
+                    }
+                }
             }
         }
 

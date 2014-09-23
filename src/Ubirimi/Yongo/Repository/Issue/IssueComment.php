@@ -129,26 +129,16 @@ class IssueComment
             return null;
     }
 
-    public static function getByAssigneeOldChangedAfterDate($issueId, $date) {
+    public static function getByUserIdAfterDate($issueId, $userId, $date) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created ' .
-            'from issue_history ' .
-            'LEFT JOIN issue_comment on (issue_comment.issue_id = issue_history.issue_id and (issue_comment.user_id = issue_history.old_value_id)) ' .
-            'WHERE issue_history.issue_id = ? ' .
-            "and issue_history.field = 'assignee' " .
-            "and issue_comment.id is not null ";
-        if ($date) {
-            $query .= "and issue_comment.date_created >= ? ";
-        }
-
-        $query .= 'order by issue_comment.id asc';
+            'from issue_comment ' .
+            'WHERE issue_comment.user_id = ? ' .
+            "and issue_comment.issue_id = ? " .
+            "and issue_comment.date_created >= ? " .
+            "order by issue_comment.id asc";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        if ($date) {
-            $stmt->bind_param("is", $issueId, $date);
-        } else {
-            $stmt->bind_param("i", $issueId);
-        }
-
+        $stmt->bind_param("iis", $userId, $issueId, $date);
         $stmt->execute();
 
         $result = $stmt->get_result();

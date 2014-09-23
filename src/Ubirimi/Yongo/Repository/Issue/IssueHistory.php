@@ -79,6 +79,28 @@ class IssueHistory
         }
         $query .= 'order by date_created ' . $order . ', user_id) ';
 
+        $query .= ' UNION (select ' .
+        "'event_commented' as source, " .
+        'issue_comment.date_created as date_created, ' .
+        'null as field, ' .
+        'null as old_value, ' .
+        'null as new_value, ' .
+        'null as old_value_id, ' .
+        'null as new_value_id, ' .
+        'null as content, ' .
+        'user.id as user_id, user.first_name, user.last_name, ' .
+        'yongo_issue.nr as nr, ' .
+        'project.code as code, ' .
+        'yongo_issue.id as issue_id ' .
+        'from yongo_issue ' .
+        'left join issue_comment on yongo_issue.id = issue_comment.issue_id ' .
+        'left join user on user.id = issue_comment.user_id ' .
+        'left join project on project.id = yongo_issue.project_id ' .
+        'where yongo_issue.id = ' . $issueId . ' ' .
+        'and issue_comment.issue_id is not null ' .
+
+        'order by date_created ' . $order . ', user_id) ';
+
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
         $stmt->execute();

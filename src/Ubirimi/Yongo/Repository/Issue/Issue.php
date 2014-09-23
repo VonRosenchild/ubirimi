@@ -2141,4 +2141,45 @@ class Issue
             return null;
         }
     }
+
+    public static function getAssigneeOnDate($issueId, $date) {
+        $query = 'SELECT issue_history.new_value_id ' .
+            'from issue_history ' .
+            'WHERE issue_history.issue_id = ? ' .
+            "and issue_history.field = 'assignee' " .
+            "and issue_history.date_created <= ? " .
+            "order by issue_history.id desc " .
+            "limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("is", $issueId, $date);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $data = $result->fetch_array(MYSQLI_ASSOC);
+            return $data['new_value_id'];
+        } else {
+            $query = 'SELECT issue_history.old_value_id ' .
+                'from issue_history ' .
+                'WHERE issue_history.issue_id = ? ' .
+                "and issue_history.field = 'assignee' " .
+                "and issue_history.date_created > ? " .
+                "order by issue_history.id asc " .
+                "limit 1";
+
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+            $stmt->bind_param("is", $issueId, $date);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            if ($result->num_rows) {
+                $data = $result->fetch_array(MYSQLI_ASSOC);
+                return $data['old_value_id'];
+            } else {
+                $issue = Issue::getByIdSimple($issueId);
+                return $issue['user_assigned_id'];
+            }
+        }
+    }
 }
