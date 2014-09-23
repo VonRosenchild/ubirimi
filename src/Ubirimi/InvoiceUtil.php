@@ -51,7 +51,7 @@ class InvoiceUtil
         $pdf->SetFont('helvetica', '', 8);
 
         ob_start();
-        require_once __DIR__ . '/FrontendCOM/Resources/views/_invoice.php';
+        require __DIR__ . '/FrontendCOM/Resources/views/_invoice.php';
         $invoiceContent = ob_get_contents();
         ob_end_clean();
 

@@ -1,5 +1,8 @@
 <?php
 
+use Ubirimi\PaymentUtil;
+use Ubirimi\Repository\Client;
+
 /* check locking mechanism */
 if (file_exists('generate_invoice.lock')) {
     $fp = fopen('generate_invoice.lock', 'w+');
@@ -11,16 +14,17 @@ if (file_exists('generate_invoice.lock')) {
 
 require_once __DIR__ . '/../web/bootstrap_cli.php';
 
-$clients = \Ubirimi\Repository\Client::getAll();
+$clients = Client::getAll();
 
 $invoiceUtil = new \Ubirimi\InvoiceUtil();
-$paymentUtil = new \Ubirimi\PaymentUtil();
+$paymentUtil = new PaymentUtil();
 
 while ($client = $clients->fetch_array(MYSQLI_ASSOC)) {
     $dayClientCreated = substr($client['date_created'], 8, 2);
 
     // do not generate an invoice in the first month of usage
     if (substr($client['date_created'], 0, 7) != date('Y-m')) {
+        // get last invoice for the current month
         $lastInvoice = $invoiceUtil->getLastByClientIdAndMonthAndYear($client['id'], date('m'), date('Y'));
         if (!$lastInvoice) {
             $lastInvoice = $invoiceUtil->getLast();
@@ -33,7 +37,14 @@ while ($client = $clients->fetch_array(MYSQLI_ASSOC)) {
                 $dayClientCreated--;
                 $invoiceDate = date('Y-m') . '-' . $dayClientCreated;
             }
-            $invoiceUtil->generate($client['id'], $paymentUtil->getAmountByClientId($client['id']), $lastNumber, $invoiceDate);
+            $amount = $paymentUtil->getAmountByClientId($client['id']);
+            $VAT = 0;
+            if (in_array($client['sys_country_id'], array_keys(PaymentUtil::$VATValuePerCountry))) {
+                $VAT = $amount * PaymentUtil::$VATValuePerCountry[$client['sys_country_id']] / 100;
+            }
+            $totalToBeCharged = $amount + $VAT;
+
+            $invoiceUtil->generate($client['id'], $totalToBeCharged, $lastNumber, $invoiceDate);
         }
     }
 }

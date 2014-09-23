@@ -33,7 +33,7 @@
 
                 <fieldset>
                     <label>Amount to pay</label>
-                    <input id="pay_amount" style="width: 100px" type="text" disabled="disabled" value="<?php echo $totalToBeCharged ?>" /> <label style="display: block; width: 10px"> </label> <label>$ / month</label>
+                    <input id="pay_amount" style="width: 100px" type="text" disabled="disabled" value="<?php echo $totalToBeCharged ?>" /> <label style="display: block; width: 10px"> </label> <label>$ / month (may include taxes)</label>
                 </fieldset>
                 <div class="payment_errors error"></div>
             </div>

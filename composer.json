@@ -34,7 +34,7 @@
         "paymill/paymill": "dev-master",
         "sabre/vobject": "3.1.2",
         "swiftmailer/swiftmailer": "v5.0.2",
-        "tecnick.com/tcpdf": "6.0.025",
+        "tecnick.com/tcpdf": "dev-master",
         "nyholm/zebra-image": "1.0.1"
     }
 }
