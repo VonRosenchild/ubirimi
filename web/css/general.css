@@ -1088,6 +1088,10 @@ td.cellCurrentDate {
     width: 450px;
 }
 
+.select2InputLarge {
+    width: 650px;
+}
+
 .table-hover tbody tr:hover > td,
 .table-hover tbody tr:hover > th {
     background-color: #ebebeb;

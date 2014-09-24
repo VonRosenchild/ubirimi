@@ -18,7 +18,6 @@ class ConfirmShareController extends UbirimiController
         $calendarId = $request->get('id');
         $users = User::getByClientId($session->get('client/id'));
         $sharedWithUsers = Calendar::getSharedUsers($calendarId, 'array');
-
         return $this->render(__DIR__ . '/../Resources/views/ConfirmShare.php', get_defined_vars());
     }
 }

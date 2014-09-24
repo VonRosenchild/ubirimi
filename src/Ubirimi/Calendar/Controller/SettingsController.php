@@ -29,6 +29,7 @@ class SettingsController extends UbirimiController
         if ($request->request->has('edit_calendar_settings')) {
             $date = Util::getServerCurrentDateTime();
             Calendar::deleteReminders($calendarId);
+            Calendar::deleteSharesByCalendarId($calendarId);
 
             // reminder information
             foreach ($request->request as $key => $value) {

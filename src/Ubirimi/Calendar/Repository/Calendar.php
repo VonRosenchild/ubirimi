@@ -159,13 +159,17 @@ class Calendar
         $stmt->execute();
     }
 
-    public static function deleteById($calendarId) {
-        // if calendar is shared delete the shares
+    public static function deleteSharesByCalendarId($calendarId) {
         $query = 'delete from cal_calendar_share WHERE cal_calendar_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $calendarId);
         $stmt->execute();
+    }
+
+    public static function deleteById($calendarId) {
+        // if calendar is shared delete the shares
+        Calendar::deleteSharesByCalendarId($calendarId);
 
         $events = CalendarEvent::getAllByCalendarId($calendarId);
         if ($events) {

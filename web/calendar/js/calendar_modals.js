@@ -260,11 +260,6 @@ $('document').ready(function () {
                     click: function () {
                         var users = $('#user_to_share').val();
 
-                        if (users == null) {
-                            $('#share_no_user_selected').html('Please select a user to share with');
-                            return
-                        }
-
                         $.ajax({
                             type: "POST",
                             url: '/calendar/share',
@@ -276,7 +271,7 @@ $('document').ready(function () {
                             success: function (response) {
                                 $("#modalShareCalendar").dialog('destroy');
                                 $("#modalShareCalendar").empty();
-                                location.reload();
+                                //location.reload();
                             }
                         });
                     }

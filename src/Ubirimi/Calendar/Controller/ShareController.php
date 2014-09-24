@@ -27,24 +27,26 @@ class ShareController extends UbirimiController
         $userIds = $request->request->get('user_id');
 
         $currentDate = Util::getServerCurrentDateTime();
-        Calendar::shareWithUsers($calendarId, $userIds, $currentDate);
-
-        $userThatShares = User::getById($session->get('user/id'));
+        Calendar::deleteSharesByCalendarId($calendarId);
         $calendar = Calendar::getById($calendarId);
+        $userThatShares = User::getById($session->get('user/id'));
 
-        $calendarEvent = new CalendarEvent(
-            $calendar,
-            array(
-                'userThatShares' => $userThatShares,
-                'usersToShareWith' => $userIds,
-                'noteContent' => $noteContent
-            )
-        );
+        if ($userIds) {
+            Calendar::shareWithUsers($calendarId, $userIds, $currentDate);
+            $calendarEvent = new CalendarEvent(
+                $calendar,
+                array(
+                    'userThatShares' => $userThatShares,
+                    'usersToShareWith' => $userIds,
+                    'noteContent' => $noteContent
+                )
+            );
 
-        $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Share Calendar ' . $calendar['name']);
+            UbirimiContainer::get()['dispatcher']->dispatch(CalendarEvents::CALENDAR_SHARE, $calendarEvent);
 
-        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
-        UbirimiContainer::get()['dispatcher']->dispatch(CalendarEvents::CALENDAR_SHARE, $calendarEvent);
+            $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Share Calendar ' . $calendar['name']);
+            UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
+        }
 
         return new Response('');
     }

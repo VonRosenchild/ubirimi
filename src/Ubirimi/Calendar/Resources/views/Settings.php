@@ -46,7 +46,6 @@
                 <?php endif ?>
             </div>
             <a href="#" id="event_add_reminder">Add a reminder</a>
-
             <hr size="1" />
             <button type="submit" name="edit_calendar_settings" class="btn ubirimi-btn"><i class="icon-edit"></i> Update Settings</button>
             <a class="btn ubirimi-btn" href="/calendar/calendars">Cancel</a>
