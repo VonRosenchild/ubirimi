@@ -42,7 +42,7 @@
 
                             <?php foreach ($calendarsSharedWithMe as $calendar): ?>
                                 <tr>
-                                    <td width="24px" valign="top">
+                                    <td width="24px" valign="middle">
                                         <input <?php if (in_array($calendar['id'], $calendarIds)) echo 'checked="checked"' ?> type="checkbox" value="<?php echo $calendar['id'] ?>" id="select_calendar_<?php echo $calendar['id'] ?>" />
                                     </td>
                                     <td valign="top">

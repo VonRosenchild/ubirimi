@@ -143,11 +143,6 @@
                     </tr>
                 <?php endif ?>
                 <tr>
-                    <td colspan="2">
-                        <hr size="1"/>
-                    </td>
-                </tr>
-                <tr>
                     <td></td>
                     <td align="left">
                         <div align="left">

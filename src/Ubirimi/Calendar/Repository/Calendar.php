@@ -55,6 +55,30 @@ class Calendar
             return null;
     }
 
+    public static function getSharedUsers($calendarId, $resultType = null) {
+        $query = "select user.id, user.first_name, user.last_name " .
+            "from cal_calendar_share " .
+            "left join user on user.id = cal_calendar_share.user_id " .
+            "where cal_calendar_share.cal_calendar_id = ?";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $calendarId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($board = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $board;
+                }
+
+                return $resultArray;
+            } else
+                return $result;
+        } else
+            return null;
+    }
+
     public static function save($userId, $name, $description, $color, $date, $defaultFlag = null) {
         $query = "INSERT INTO cal_calendar(user_id, name, description, color, default_flag, date_created) VALUES (?, ?, ?, ?, ?, ?)";
 
