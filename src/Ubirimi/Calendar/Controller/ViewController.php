@@ -20,8 +20,19 @@ class ViewController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
 
         $myCalendarIds = Calendar::getByUserId($session->get('user/id'), 'array', 'id');
+        $sharedCalendarsIds = Calendar::getSharedWithUserId($session->get('user/id'), 'array', 'id');
+        if (!$sharedCalendarsIds) {
+            $sharedCalendarsIds = array();
+        }
         $calendarIdsString = $request->get('ids');
         $calendarIds = explode('|', $calendarIdsString);
+
+        // remove those IDs that are not mine or shared with me
+        for ($i = 0; $i < count($calendarIds); $i++) {
+            if (!in_array($calendarIds[$i], $myCalendarIds) && (!in_array($calendarIds[$i], $sharedCalendarsIds))) {
+                unset($calendarIds[$i]);
+            }
+        }
 
         $month = $request->get('month');
         $year = $request->get('year');
