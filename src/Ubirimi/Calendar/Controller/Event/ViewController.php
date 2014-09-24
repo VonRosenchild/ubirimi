@@ -5,6 +5,7 @@ namespace Ubirimi\Calendar\Controller\Event;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Calendar\Repository\CalendarEvent;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -21,12 +22,12 @@ class ViewController extends UbirimiController
         $eventId = $request->get('id');
 
         $event = CalendarEvent::getById($eventId, 'array');
+        $myCalendarIds = Calendar::getByUserId($session->get('user/id'), 'array', 'id');
+        $myEvent = in_array($event['calendar_id'], $myCalendarIds) ? true : false;
         if ($event['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        // check if the event is a shared event
-        $sharedEvent = CalendarEvent::getShareByUserIdAndEventId($session->get('user/id'), $event['id']);
         $guests = CalendarEvent::getGuests($eventId);
 
         $menuSelectedCategory = 'calendars';

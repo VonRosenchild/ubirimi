@@ -240,8 +240,8 @@ class CalendarEvent
 
     public static function getByCalendarId($calendarId, $filterStartDate, $filterEndDate, $defaultCalendarSelected = null, $userId = null, $resultType = null) {
         $query = "SELECT cal_event.id, cal_event.user_created_id, cal_event.date_from, cal_event.date_to, cal_event.name, cal_event.description, cal_event.color, cal_event.location, " .
-            "cal_calendar.name as calendar_name, 1 as own_event, TIMESTAMPDIFF(SECOND, cal_event.date_from, cal_event.date_to) as timediff, cal_calendar.color as calendar_color, " .
-            "cal_event.cal_event_repeat_id, cal_event.cal_event_link_id " .
+            "cal_calendar.name as calendar_name, TIMESTAMPDIFF(SECOND, cal_event.date_from, cal_event.date_to) as timediff, cal_calendar.color as calendar_color, " .
+            "cal_event.cal_event_repeat_id, cal_event.cal_event_link_id, cal_calendar.id as calendar_id " .
             "FROM cal_event " .
             "left join cal_calendar on cal_calendar.id = cal_event.cal_calendar_id " .
             "WHERE " .
@@ -253,8 +253,8 @@ class CalendarEvent
         if ($defaultCalendarSelected) {
             $query .= ' UNION ' .
                 "SELECT cal_event.id, cal_event.user_created_id, cal_event.date_from, cal_event.date_to, cal_event.name, cal_event.description, cal_event.color, cal_event.location, " .
-                "cal_calendar.name as calendar_name, 0 as own_event, TIMESTAMPDIFF(SECOND, cal_event.date_from, cal_event.date_to) as timediff, cal_calendar.color as calendar_color, " .
-                "cal_event.cal_event_repeat_id, cal_event.cal_event_link_id " .
+                "cal_calendar.name as calendar_name, TIMESTAMPDIFF(SECOND, cal_event.date_from, cal_event.date_to) as timediff, cal_calendar.color as calendar_color, " .
+                "cal_event.cal_event_repeat_id, cal_event.cal_event_link_id, cal_calendar.id as calendar_id " .
                 "FROM cal_event_share " .
                 "left join cal_event on cal_event.id = cal_event_share.cal_event_id " .
                 "left join cal_calendar on cal_calendar.id = cal_event.cal_calendar_id " .

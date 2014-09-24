@@ -16,11 +16,11 @@
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <td><a href="<?php echo $sourcePageLink ?>" class="btn ubirimi-btn">Go Back</a></td>
-                <?php if (null == $sharedEvent): ?>
+                <?php if ($myEvent): ?>
                     <td><a href="/calendar/edit/event/<?php echo $eventId ?>?source=<?php echo $sourcePageLink ?>" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit</a></td>
+                    <td><a id="btnEventDelete" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a></td>
+                    <td><a id="btnEventAddGuests" class="btn ubirimi-btn">Add Guests</a></td>
                 <?php endif ?>
-                <td><a id="btnEventDelete" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</a></td>
-                <td><a id="btnEventAddGuests" class="btn ubirimi-btn">Add Guests</a></td>
             </tr>
         </table>
 

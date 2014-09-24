@@ -74,8 +74,9 @@
                                         <?php $dayNr = explode("_", $dates[($weekNumber -1) * 7 + $dayInWeek - 1])[0]; ?>
                                         <div class="day-number"><?php echo $dayNr ?></div>
                                         <?php
-                                            if ($dayNr < 10)
+                                            if ($dayNr < 10) {
                                                 $dayNr = '0' . $dayNr;
+                                            }
                                             $month2Digits = explode("_", $dates[($weekNumber -1) * 7 + $dayInWeek - 1])[1];
                                             if ($month2Digits < 10) {
                                                 $month2Digits = '0' . $month2Digits;
@@ -154,11 +155,12 @@
                                                             echo '<div class="headerPageText"><a href="/calendar/event/' . $event['id'] . '?source=/calendar/view/' . $calendarIdsString . '/' . $month . '/' . $year . '">' . $event['name'] . '</a></div>';
                                                             echo '<div>' . date("l, F Y", strtotime($event['date_from'])) . ' - ' . date('l, F Y', strtotime($event['date_to'])) . '</div>';
                                                             echo '<div>Calendar: ' . $event['calendar_name'] . '</div>';
+
                                                             echo '<div>Description: ' . $event['description'] . '</div>';
                                                             echo '<div>Location: ' . $event['location'] . '</div>';
                                                             echo '<hr size="1" />';
                                                             echo '<a href="/calendar/event/' . $event['id'] . '?source=/calendar/view/' . $calendarIdsString . '/' . $month . '/' . $year . '">View Full Event</a>';
-                                                            if ($event['own_event']) {
+                                                            if (in_array($event['calendar_id'], $myCalendarIds)) {
                                                                 echo ' | ';
                                                                 echo '<a href="/calendar/edit/event/' . $event['id'] . '?source=/calendar/view/' . $calendarIdsString . '/' . $month . '/' . $year . '">Edit</a>';
                                                                 echo ' | ';

@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Calendar
 {
-    public static function getByUserId($userId, $resultType = null) {
+    public static function getByUserId($userId, $resultType = null, $resultColumn = null) {
         $query = "select cal_calendar.id, cal_calendar.name, cal_calendar.description, cal_calendar.date_created, cal_calendar.default_flag, " .
                  "cal_calendar.color " .
             "from cal_calendar " .
@@ -20,13 +20,17 @@ class Calendar
         if ($result->num_rows) {
             if ($resultType == 'array') {
                 $resultArray = array();
-                while ($board = $result->fetch_array(MYSQLI_ASSOC)) {
-                    $resultArray[] = $board;
+                while ($record = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn)
+                        $resultArray[] = $record[$resultColumn];
+                    else
+                        $resultArray[] = $record;
                 }
 
                 return $resultArray;
-            } else
+            } else {
                 return $result;
+            }
         } else
             return null;
     }

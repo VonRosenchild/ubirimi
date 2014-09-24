@@ -19,6 +19,7 @@ class ViewController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
 
+        $myCalendarIds = Calendar::getByUserId($session->get('user/id'), 'array', 'id');
         $calendarIdsString = $request->get('ids');
         $calendarIds = explode('|', $calendarIdsString);
 
@@ -61,6 +62,7 @@ class ViewController extends UbirimiController
         );
 
         $calendars = Calendar::getByUserId($session->get('user/id'), 'array');
+
 
         $calendarsSharedWithMe = Calendar::getSharedWithUserId($session->get('user/id'), 'array');
 
