@@ -1,8 +1,9 @@
 <?php
     use Ubirimi\Agile\Repository\AgileBoard;
     use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 
@@ -35,8 +36,16 @@
                         <?php $boards = AgileBoard::getByFilterId($filter['id']) ?>
                         <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $filter['id'] ?>" /></td>
                         <td><a href="/yongo/issue/search?filter=<?php echo $filter['id'] ?>&<?php echo $filter['definition'] ?>"><?php echo $filter['name'] ?></a></td>
-                        <td><?php echo $filter['name'] ?></td>
                         <td><?php echo $filter['description'] ?></td>
+                        <td>
+                            <?php
+                                $isFavourite = IssueFilter::checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
+                                if ($isFavourite)
+                                    echo '<img id="toggle_filter_favourite_' . $filter['id'] . '" title="Remove Filter from Favourites" src="/img/favourite_full.png" />';
+                                else
+                                    echo '<img id="toggle_filter_favourite_' . $filter['id'] . '" title="Add Filter to Favourites" src="/img/favourite_empty.png" />';
+                            ?>
+                        </td>
                         <td><?php echo Util::getFormattedDate($filter['date_created']) ?></td>
                         <?php if ($boards): ?>
                             <input type="hidden" value="0" id="delete_filter_possible_<?php echo $filter['id'] ?>" />
@@ -48,7 +57,7 @@
             </tbody>
         </table>
         <?php else: ?>
-        <div class="messageGreen">There are no filters defined.</div>
+            <div class="messageGreen">There are no filters defined.</div>
         <?php endif ?>
     </div>
     <div id="deleteFilterModal" class="ubirimiModalDialog"></div>

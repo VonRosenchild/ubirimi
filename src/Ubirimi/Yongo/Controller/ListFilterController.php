@@ -23,6 +23,7 @@ class ListFilterController extends UbirimiController
             $filters = IssueFilter::getAllByClientId($clientId);
         }
 
+        $loggedInUserId = $session->get('user/id');
         $menuSelectedCategory = 'filters';
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Filters';

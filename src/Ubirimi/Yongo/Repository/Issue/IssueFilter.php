@@ -77,4 +77,51 @@ class IssueFilter
         $stmt->bind_param("i", $filterId);
         $stmt->execute();
     }
+
+    public static function checkFilterIsFavouriteForUserId($filterId, $userId) {
+        $query = "SELECT filter_favourite.id " .
+            "FROM filter_favourite " .
+            "where filter_favourite.user_id = ? and " .
+            "filter_favourite.filter_id = ? " .
+            "limit 1";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("ii", $userId, $filterId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows)
+                return $result;
+            else
+                return null;
+        }
+    }
+
+    public static function deleteFavouriteByFilterIdAndUserId($userId, $filterId) {
+        $query = 'delete from filter_favourite where user_id = ? and filter_id = ? limit 1 ';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->bind_param("ii", $userId, $filterId);
+        $stmt->execute();
+    }
+
+    public static function addFavourite($userId, $filterId, $date) {
+        $query = "INSERT INTO filter_favourite(user_id, filter_id, date_created) VALUES (?, ?, ?)";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iis", $userId, $filterId, $date);
+
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
+    }
+
+    public static function toggleFavourite($userId, $filterId, $date) {
+        $isFavourite = IssueFilter::checkFilterIsFavouriteForUserId($filterId, $userId);
+        if ($isFavourite) {
+            IssueFilter::deleteFavouriteByFilterIdAndUserId($userId, $filterId);
+        } else {
+            IssueFilter::addFavourite($userId, $filterId, $date);
+        }
+    }
 }

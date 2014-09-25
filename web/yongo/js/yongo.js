@@ -2156,4 +2156,19 @@ $('document').ready(function () {
             }
         });
     });
+
+    $("[id^='toggle_filter_favourite_']").click(function (event) {
+
+        var filterId = $(this).attr("id").replace('toggle_filter_favourite_', '');
+        $.ajax({
+            type: "POST",
+            url: '/yongo/filter/favourite/toggle',
+            data: {
+                id: filterId
+            },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    });
 });

@@ -477,3 +477,8 @@ removeIssueWatcher:
 addIssueWatcher:
   path: /issue/watchers/add
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Watcher\AddController' }
+
+toggleFilterFavourite:
+  path: /yongo/filter/favourite/toggle
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\ToggleFavouriteController' }
+

@@ -1,3 +1,20 @@
+CREATE TABLE `filter_favourite` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `filter_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `filter_subscription` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `period` bigint(20) unsigned NOT NULL,
+  `email_when_empty_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 ALTER TABLE  `client` ADD  `paymill_id` VARCHAR( 250 ) NULL AFTER  `sys_country_id`;
 
 ALTER TABLE `client` ADD `vat_number` VARCHAR(50) NULL AFTER `district`;
