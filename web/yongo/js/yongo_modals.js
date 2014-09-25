@@ -3490,4 +3490,51 @@ $('document').ready(function () {
             $(".select2Input").select2();
         });
     });
+
+    $("[id^='add_filter_subscription_']").on('click', function (event) {
+        event.preventDefault();
+
+        var filterId = $(this).attr("id").replace('add_filter_subscription_', '');
+
+        var options = {
+            dialogClass: "ubirimi-dialog",
+            title: 'Add Filter Subscription',
+            buttons: [
+                {
+                    text: "Add",
+                    click: function () {
+
+                        $.ajax({
+                            type: "POST",
+                            url: '/yongo/filter/subscription/add',
+                            data: {
+                                id: linkId
+                            },
+                            success: function (response) {
+                                $("#addFilterSubscriptionModal").dialog('destroy');
+                                $("#addFilterSubscriptionModal").empty();
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                {
+                    text: "Cancel",
+                    click: function () {
+                        $("#addFilterSubscriptionModal").dialog('destroy');
+                        $("#addFilterSubscriptionModal").empty();
+                    }
+                }
+            ],
+            close: function () {
+                $("#addFilterSubscriptionModal").dialog('destroy');
+                $("#addFilterSubscriptionModal").empty();
+            }
+        };
+
+        $("#addFilterSubscriptionModal").load("/yongo/filter/subscription/add/dialog", [], function () {
+            $("#addFilterSubscriptionModal").dialog(options);
+            $("#addFilterSubscriptionModal").dialog("open");
+        });
+    });
 });

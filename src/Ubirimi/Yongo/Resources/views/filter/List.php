@@ -27,6 +27,7 @@ require_once __DIR__ . '/../_header.php';
                     <th>Name</th>
                     <th>Description</th>
                     <th>Favorite</th>
+                    <th>Subscriptions</th>
                     <th>Created on</th>
                 </tr>
             </thead>
@@ -40,11 +41,18 @@ require_once __DIR__ . '/../_header.php';
                         <td>
                             <?php
                                 $isFavourite = IssueFilter::checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
+                                $subscriptions = IssueFilter::getSubscriptions($filter['id']);
                                 if ($isFavourite)
                                     echo '<img id="toggle_filter_favourite_' . $filter['id'] . '" title="Remove Filter from Favourites" src="/img/favourite_full.png" />';
                                 else
                                     echo '<img id="toggle_filter_favourite_' . $filter['id'] . '" title="Add Filter to Favourites" src="/img/favourite_empty.png" />';
                             ?>
+                        </td>
+                        <td>
+                            <?php if ($subscriptions): ?>
+                            <?php else: ?>
+                                <div>None <a id="add_filter_subscription_<?php echo $filter['id'] ?>" href="#">Add</a></div>
+                            <?php endif ?>
                         </td>
                         <td><?php echo Util::getFormattedDate($filter['date_created']) ?></td>
                         <?php if ($boards): ?>
@@ -61,5 +69,6 @@ require_once __DIR__ . '/../_header.php';
         <?php endif ?>
     </div>
     <div id="deleteFilterModal" class="ubirimiModalDialog"></div>
+    <div id="addFilterSubscriptionModal" class="ubirimiModalDialog"></div>
     <?php require_once __DIR__ . '/../_footer.php' ?>
 </body>

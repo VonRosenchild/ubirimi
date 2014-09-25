@@ -6,18 +6,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
-class ToggleFavouriteController extends UbirimiController
+class AddSubscriptionDialogController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $filterId = $request->request->get('id');
-        $userId = $session->get('user/id');
 
-        $currentDate = Util::getServerCurrentDateTime();
+        return $this->render(__DIR__ . '/../../../Resources/views/filter/AddSubscriptionDialog.php', get_defined_vars());
 
-        IssueFilter::toggleFavourite($userId, $filterId, $currentDate);
+
     }
 }

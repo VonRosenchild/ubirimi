@@ -482,3 +482,7 @@ toggleFilterFavourite:
   path: /yongo/filter/favourite/toggle
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\ToggleFavouriteController' }
 
+addFilterSubscriptionDialog:
+  path: /yongo/filter/subscription/add/dialog
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\AddSubscriptionDialogController' }
+

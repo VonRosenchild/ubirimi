@@ -2171,4 +2171,36 @@ $('document').ready(function () {
             }
         });
     });
+
+    // filter crontab
+    $(document).on('click', '#minute_chooser_choose', function (event) {
+        $('#cron_minute').prop('disabled', false);
+    });
+    $(document).on('click', '#minute_chooser_every', function (event) {
+        $('#cron_minute').prop('disabled', 'disabled');
+    });
+    $(document).on('click', '#hour_chooser_choose', function (event) {
+        $('#cron_hour').prop('disabled', false);
+    });
+    $(document).on('click', '#hour_chooser_every', function (event) {
+        $('#cron_hour').prop('disabled', 'disabled');
+    });
+    $(document).on('click', '#day_chooser_choose', function (event) {
+        $('#cron_day').prop('disabled', false);
+    });
+    $(document).on('click', '#day_chooser_every', function (event) {
+        $('#cron_day').prop('disabled', 'disabled');
+    });
+    $(document).on('click', '#month_chooser_choose', function (event) {
+        $('#cron_month').prop('disabled', false);
+    });
+    $(document).on('click', '#month_chooser_every', function (event) {
+        $('#cron_month').prop('disabled', 'disabled');
+    });
+    $(document).on('click', '#weekday_chooser_choose', function (event) {
+        $('#cron_weekday').prop('disabled', false);
+    });
+    $(document).on('click', '#weekday_chooser_every', function (event) {
+        $('#cron_weekday').prop('disabled', 'disabled');
+    });
 });

@@ -124,4 +124,22 @@ class IssueFilter
             IssueFilter::addFavourite($userId, $filterId, $date);
         }
     }
+
+    public static function getSubscriptions($filterId) {
+        $query = "SELECT filter_subscription.id " .
+            "FROM filter_subscription " .
+            "where " .
+            "filter_subscription.filter_id = ? " .
+            "limit 1";
+
+        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
+            $stmt->bind_param("i", $filterId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows)
+                return $result;
+            else
+                return null;
+        }
+    }
 }
