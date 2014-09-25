@@ -1,12 +1,13 @@
 <form id="crontab_data">
     <table style="width: 700px">
         <tr>
-            <td>Recipients</td>
-            <td>
-                <select name="recipient">
+            <td colspan="5">
+                <span>Recipients</span>
+                <select id="recipient" class="select2Input">
                     <option value="u<?php echo $userId ?>">Personal Subscription</option>
                 </select>
             </td>
+
         </tr>
         <tr>
             <td>
@@ -132,6 +133,12 @@
                     <option value="5">Friday</option>
                     <option value="6">Saturday</option>
                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="checkbox" id="email_when_empty" />
+                Email this filter, even if there are no issues found
             </td>
         </tr>
     </table>

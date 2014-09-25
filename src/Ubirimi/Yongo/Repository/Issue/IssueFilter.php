@@ -147,7 +147,7 @@ class IssueFilter
         $query = "INSERT INTO filter_subscription(filter_id, user_id, group_id, period, email_when_empty_flag, date_created) VALUES (?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("iisis", $filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date);
+        $stmt->bind_param("iiisis", $filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date);
 
         $stmt->execute();
 

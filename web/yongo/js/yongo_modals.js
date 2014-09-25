@@ -3533,15 +3533,21 @@ $('document').ready(function () {
 
                         postData.id = filterId;
                         postData.recipient_id = $('#recipient').val();
+                        var emailWhenEmptyFlag = 0;
+
+                        if ($('#email_when_empty').prop('checked')) {
+                            emailWhenEmptyFlag = 1;
+                        }
+                        postData.email_when_empty = emailWhenEmptyFlag;
 
                         $.ajax({
                             type: "POST",
                             url: '/yongo/filter/subscription/add',
                             data: postData,
                             success: function (response) {
-                                //$("#addFilterSubscriptionModal").dialog('destroy');
-                                //$("#addFilterSubscriptionModal").empty();
-                                //location.reload();
+                                $("#addFilterSubscriptionModal").dialog('destroy');
+                                $("#addFilterSubscriptionModal").empty();
+                                location.reload();
                             }
                         });
                     }
@@ -3563,6 +3569,7 @@ $('document').ready(function () {
         $("#addFilterSubscriptionModal").load("/yongo/filter/subscription/add/dialog", [], function () {
             $("#addFilterSubscriptionModal").dialog(options);
             $("#addFilterSubscriptionModal").dialog("open");
+            $('.select2Input').select2();
         });
     });
 });

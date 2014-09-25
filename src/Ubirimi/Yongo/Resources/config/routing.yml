@@ -490,3 +490,6 @@ addFilterSubscription:
   path: /yongo/filter/subscription/add
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\AddSubscriptionController' }
 
+listFilterSubscriptions:
+  path: /yongo/filter/{id}/subscription
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\ListSubscriptionController' }

@@ -50,6 +50,7 @@ require_once __DIR__ . '/../_header.php';
                         </td>
                         <td>
                             <?php if ($subscriptions): ?>
+                                <a href="/yongo/filter/<?php echo $filter['id'] ?>/subscription"><?php echo $subscriptions->num_rows ?> subscriptions</a>
                             <?php else: ?>
                                 <div>None <a id="add_filter_subscription_<?php echo $filter['id'] ?>" href="#">Add</a></div>
                             <?php endif ?>

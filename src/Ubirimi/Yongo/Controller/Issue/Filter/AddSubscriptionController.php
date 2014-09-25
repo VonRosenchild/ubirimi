@@ -23,6 +23,7 @@ class AddSubscriptionController extends UbirimiController
 
         $filterId = $request->request->get('id');
         $recipientId = $request->request->get('recipient_id');
+        $emailWhenEmptyFlag = $request->request->get('email_when_empty');
 
         $userId = null;
         $groupId = null;
@@ -35,8 +36,8 @@ class AddSubscriptionController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        IssueFilter::addSubscription($filterId, $userId, $groupId, $cronExpression, 0, $currentDate);
+        IssueFilter::addSubscription($filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $currentDate);
 
-        return new Response($cronExpression);
+        return new Response('');
     }
 }
