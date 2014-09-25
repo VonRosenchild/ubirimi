@@ -142,4 +142,15 @@ class IssueFilter
                 return null;
         }
     }
+
+    public static function addSubscription($filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date) {
+        $query = "INSERT INTO filter_subscription(filter_id, user_id, group_id, period, email_when_empty_flag, date_created) VALUES (?, ?, ?, ?, ?, ?)";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("iisis", $filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date);
+
+        $stmt->execute();
+
+        return UbirimiContainer::get()['db.connection']->insert_id;
+    }
 }

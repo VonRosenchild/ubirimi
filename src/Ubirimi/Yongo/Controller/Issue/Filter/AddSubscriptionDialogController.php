@@ -12,9 +12,8 @@ class AddSubscriptionDialogController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+        $userId = $session->get('user/id');
 
         return $this->render(__DIR__ . '/../../../Resources/views/filter/AddSubscriptionDialog.php', get_defined_vars());
-
-
     }
 }

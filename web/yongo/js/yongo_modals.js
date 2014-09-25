@@ -3504,16 +3504,44 @@ $('document').ready(function () {
                     text: "Add",
                     click: function () {
 
+                        var postData = {};
+                        if ($('#minute_chooser_choose').prop('checked')) {
+                            postData.minute = $('#cron_minute').val();
+                        } else {
+                            postData.minute = ['*'];
+                        }
+                        if ($('#hour_chooser_choose').prop('checked')) {
+                            postData.hour = $('#cron_hour').val();
+                        } else {
+                            postData.hour = ['*'];
+                        }
+                        if ($('#day_chooser_choose').prop('checked')) {
+                            postData.day = $('#cron_day').val();
+                        } else {
+                            postData.day = ['*'];
+                        }
+                        if ($('#month_chooser_choose').prop('checked')) {
+                            postData.month = $('#cron_month').val();
+                        } else {
+                            postData.month = ['*'];
+                        }
+                        if ($('#weekday_chooser_choose').prop('checked')) {
+                            postData.weekday = $('#cron_weekday').val();
+                        } else {
+                            postData.weekday = ['*'];
+                        }
+
+                        postData.id = filterId;
+                        postData.recipient_id = $('#recipient').val();
+
                         $.ajax({
                             type: "POST",
                             url: '/yongo/filter/subscription/add',
-                            data: {
-                                id: linkId
-                            },
+                            data: postData,
                             success: function (response) {
-                                $("#addFilterSubscriptionModal").dialog('destroy');
-                                $("#addFilterSubscriptionModal").empty();
-                                location.reload();
+                                //$("#addFilterSubscriptionModal").dialog('destroy');
+                                //$("#addFilterSubscriptionModal").empty();
+                                //location.reload();
                             }
                         });
                     }

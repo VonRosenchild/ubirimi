@@ -486,3 +486,7 @@ addFilterSubscriptionDialog:
   path: /yongo/filter/subscription/add/dialog
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\AddSubscriptionDialogController' }
 
+addFilterSubscription:
+  path: /yongo/filter/subscription/add
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\AddSubscriptionController' }
+
