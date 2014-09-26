@@ -57,7 +57,7 @@ class IssueFilter
         $query = 'SELECT filter.id, user_id, filter.name, description, definition, filter.date_created ' .
                  'from filter ' .
                  'left join user on user.id = filter.user_id ' .
-                 'where user.client_id = ? ';
+                 'where user.client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $clientId);
@@ -126,11 +126,16 @@ class IssueFilter
     }
 
     public static function getSubscriptions($filterId) {
-        $query = "SELECT filter_subscription.id " .
+        $query = "SELECT filter_subscription.id, filter_subscription.period, " .
+            "user.id as user_id, user.first_name, user.last_name, " .
+            "user_created.id as user_created_id, user_created.first_name as created_first_name, user_created.last_name as created_last_name, " .
+            "`group`.id as group_id, `group`.name as group_name " .
             "FROM filter_subscription " .
+            "left join user on user.id = filter_subscription.user_id " .
+            "left join user as user_created on user_created.id = filter_subscription.user_created_id " .
+            "left join `group` on `group`.id = filter_subscription.group_id " .
             "where " .
-            "filter_subscription.filter_id = ? " .
-            "limit 1";
+            "filter_subscription.filter_id = ?";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $filterId);
@@ -143,14 +148,39 @@ class IssueFilter
         }
     }
 
-    public static function addSubscription($filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date) {
-        $query = "INSERT INTO filter_subscription(filter_id, user_id, group_id, period, email_when_empty_flag, date_created) VALUES (?, ?, ?, ?, ?, ?)";
+    public static function addSubscription($filterId, $userCreatedId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date) {
+        $query = "INSERT INTO filter_subscription(filter_id, user_created_id, user_id, group_id, period, email_when_empty_flag, date_created) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("iiisis", $filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date);
+        $stmt->bind_param("iiiisis", $filterId, $userCreatedId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date);
 
         $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;
+    }
+
+    public static function deleteSubscriptionById($subscriptionId) {
+        $query = "delete from filter_subscription where id = ?";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $subscriptionId);
+
+        $stmt->execute();
+    }
+
+    public static function getSubscriptionById($subscriptionId) {
+        $query = 'SELECT * ' .
+            'from filter_subscription ' .
+            'where id = ? ' .
+            "limit 1";
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $subscriptionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result->fetch_array(MYSQLI_ASSOC);
+        else
+            return null;
     }
 }

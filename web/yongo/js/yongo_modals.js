@@ -3491,10 +3491,8 @@ $('document').ready(function () {
         });
     });
 
-    $("[id^='add_filter_subscription_']").on('click', function (event) {
-        event.preventDefault();
-
-        var filterId = $(this).attr("id").replace('add_filter_subscription_', '');
+    function addFilterModal(filterId) {
+        var addFilterSubscriptionModal = $("#addFilterSubscriptionModal");
 
         var options = {
             dialogClass: "ubirimi-dialog",
@@ -3545,8 +3543,8 @@ $('document').ready(function () {
                             url: '/yongo/filter/subscription/add',
                             data: postData,
                             success: function (response) {
-                                $("#addFilterSubscriptionModal").dialog('destroy');
-                                $("#addFilterSubscriptionModal").empty();
+                                addFilterSubscriptionModal.dialog('destroy');
+                                addFilterSubscriptionModal.empty();
                                 location.reload();
                             }
                         });
@@ -3555,21 +3553,38 @@ $('document').ready(function () {
                 {
                     text: "Cancel",
                     click: function () {
-                        $("#addFilterSubscriptionModal").dialog('destroy');
-                        $("#addFilterSubscriptionModal").empty();
+                        addFilterSubscriptionModal.dialog('destroy');
+                        addFilterSubscriptionModal.empty();
                     }
                 }
             ],
             close: function () {
-                $("#addFilterSubscriptionModal").dialog('destroy');
-                $("#addFilterSubscriptionModal").empty();
+                addFilterSubscriptionModal.dialog('destroy');
+                addFilterSubscriptionModal.empty();
             }
         };
 
-        $("#addFilterSubscriptionModal").load("/yongo/filter/subscription/add/dialog", [], function () {
-            $("#addFilterSubscriptionModal").dialog(options);
-            $("#addFilterSubscriptionModal").dialog("open");
+        addFilterSubscriptionModal.load("/yongo/filter/subscription/add/dialog", [], function () {
+
+            addFilterSubscriptionModal.dialog(options);
+            addFilterSubscriptionModal.dialog("open");
             $('.select2Input').select2();
         });
+    }
+
+    $("[id^='add_filter_subscription_']").on('click', function (event) {
+        event.preventDefault();
+
+        var filterId = $(this).attr("id").replace('add_filter_subscription_', '');
+
+        addFilterModal(filterId);
+    });
+
+    $("#btnNewFilterSubscription").on('click', function (event) {
+        event.preventDefault();
+
+        var filterId = $('#filter_id').val();
+
+        addFilterModal(filterId);
     });
 });

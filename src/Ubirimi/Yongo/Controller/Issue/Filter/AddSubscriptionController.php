@@ -15,6 +15,8 @@ class AddSubscriptionController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $loggedInUserId = $session->get('user/id');
+
         $minute = $request->request->get('minute');
         $hour = $request->request->get('hour');
         $day = $request->request->get('day');
@@ -36,7 +38,7 @@ class AddSubscriptionController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        IssueFilter::addSubscription($filterId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $currentDate);
+        IssueFilter::addSubscription($filterId, $loggedInUserId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $currentDate);
 
         return new Response('');
     }

@@ -493,3 +493,11 @@ addFilterSubscription:
 listFilterSubscriptions:
   path: /yongo/filter/{id}/subscription
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\ListSubscriptionController' }
+  requirements:
+    id:  \d+
+
+deleteFilterSubscriptions:
+  path: /yongo/filter/subscription/delete/{id}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\DeleteSubscriptionController' }
+  requirements:
+    id:  \d+

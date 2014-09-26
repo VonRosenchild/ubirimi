@@ -9,14 +9,15 @@ CREATE TABLE `filter_favourite` (
 CREATE TABLE `filter_subscription` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `filter_id` bigint(20) unsigned NOT NULL,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `group_id` bigint(20) unsigned NOT NULL,
-  `period` bigint(20) unsigned NOT NULL,
+  `user_created_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `group_id` bigint(20) unsigned DEFAULT NULL,
+  `period` varchar(200) NOT NULL,
   `email_when_empty_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `date_created` datetime NOT NULL,
   `date_updated` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 ALTER TABLE  `client` ADD  `paymill_id` VARCHAR( 250 ) NULL AFTER  `sys_country_id`;
 
