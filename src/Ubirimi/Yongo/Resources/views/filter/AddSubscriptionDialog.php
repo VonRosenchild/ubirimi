@@ -1,5 +1,5 @@
 <form id="crontab_data">
-    <table style="width: 700px">
+    <table style="width: 700px" cellpadding="2px">
         <tr>
             <td colspan="5">
                 <span>Recipients</span>
