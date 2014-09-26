@@ -928,6 +928,12 @@ $('document').ready(function () {
             document.location.href = '/agile/board/edit/' + selected_rows[0];
     });
 
+    $('#btnDeleteFilterSubscription').click(function (event) {
+        event.preventDefault();
+        if (selected_rows.length == 1)
+            document.location.href = '/yongo/filter/subscription/delete/' + selected_rows[0];
+    });
+
     $('#btnEditEvent').click(function (event) {
         event.preventDefault();
         if (selected_rows.length == 1)

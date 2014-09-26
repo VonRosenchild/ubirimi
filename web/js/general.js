@@ -381,6 +381,7 @@ $('document').ready(function () {
         $('#btnDesignWorkflow').attr('class', classCSS);
         $('#btnPermissions').attr('class', classCSS);
         $('#btnAssignUserInGroupDocumentator').attr('class', classCSS);
+        $('#btnDeleteFilterSubscription').attr('class', classCSS);
 
         if ($("[id^='el_check_']:checked").length) {
             if (parseInt(addToSprintPossible)) {
