@@ -27,15 +27,20 @@
     <tr>
         <td>Interval</td>
         <td>
-            <input style="width: 120px" class="inputText" type="text" id="event_start_date" value="<?php echo $defaultEventStartDate ?>" />
+            <input style="width: 134px"
+                   class="inputText" type="text"
+                   id="event_start_date" value="<?php echo $defaultEventStartDate ?>" />
             <span>to</span>
-            <input style="width: 120px" class="inputText" type="text" id="event_end_date" value="<?php echo $defaultEventStartDate ?>" />
+            <input style="width: 134px"
+                   class="inputText" type="text"
+                   id="event_end_date" value="<?php echo $defaultEventStartDate ?>" />
         </td>
     </tr>
     <tr>
         <td>Color</td>
         <td>
-            <input id="color_event_parent" class="inputText color {valueElement:'event_color'}" style="width: 20px; cursor: pointer" name="color" value="" />
+            <input id="color_event_parent" class="inputText color {valueElement:'event_color'}"
+                   style="width: 30px; cursor: pointer" name="color" value="" />
             <input type="hidden" id="event_color" value="<?php echo $firstCalendar['color'] ?>" />
         </td>
     </tr>

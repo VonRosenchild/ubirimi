@@ -1,18 +1,3 @@
-// resize the create/edit modals as the users resizes the browser window
-function resizeModals() {
-    if ($(".ui-dialog-content").dialog("isOpen")) {
-        var newHeight = ($(window).height() - $(".ui-dialog-content").height()) / 2 + $(".ui-dialog-content").height() - 150;
-        if (newHeight < 200) {
-            newHeight = 200;
-        }
-
-        $(".ui-dialog-content").css('max-height', newHeight);
-
-        $(".ui-dialog").css('left', ($(window).width() - $(".ui-dialog").width()) / 2);
-        $(".ui-dialog").css('top', ($(window).height() - $(".ui-dialog").height()) / 2);
-    }
-}
-
 $(window).on('resize', function() {
     resizeModals();
 });

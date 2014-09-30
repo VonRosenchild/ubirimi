@@ -2,8 +2,7 @@
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 ?>
-
-<div class="parentDialog" style="padding-left: 0px; margin-right: 0px; min-height: 50px; overflow: auto;">
+<div class="parentDialog" style="padding-left: 0; margin-right: 0; min-height: 50px; overflow: auto;">
     <div id="errorsMandatoryFieldsNotPresentOnScreen"></div>
     <div id="messageIssueCreatedDialog" class="messageGreen" style="padding: 8px; display: none"></div>
     <table border="0" cellpadding="2" cellspacing="0" id="tableFieldList" class="modal-table">

@@ -141,14 +141,12 @@ $('document').ready(function () {
             $('#add_event_repeat_daily_content').hide();
             $('#add_event_repeat_weekly_content').show();
         }
-
     }
 
     $(document).on('change', '#add_event_repeat_type', function (event) {
         updateRepeatEventContentVisibility();
-
-        jQuery("#modalAddEvent").dialog('option', 'position', ['middle','middle']);
-
+        resizeModals();
+        $(".ui-dialog").css('width', '770px');
     });
 
     $(document).on('click', "[id^='event_delete_']", function (event) {
