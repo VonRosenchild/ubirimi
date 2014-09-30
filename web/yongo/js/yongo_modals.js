@@ -1920,6 +1920,7 @@ $('document').ready(function () {
             $("#modalLinkIssue").dialog(options);
             $("#modalLinkIssue").dialog("open");
             $(".select2Input").select2();
+            $(".select2InputSmall").select2();
         });
     });
 
@@ -2040,7 +2041,7 @@ $('document').ready(function () {
         $("#modalEditIssueAssign").load("/yongo/issue/assign-dialog/" + issueId + '/' + projectId, [], function () {
             $("#modalEditIssueAssign").dialog(options);
             $("#modalEditIssueAssign").dialog("open");
-            $(".select2Input").select2();
+            $(".select2InputMedium").select2();
         });
     }
 

@@ -188,7 +188,7 @@
                             // deal with the custom fields
                             switch ($field['type_code']) {
                                 case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
-                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="" style="width: 646px;" name="' . $field['type_code'] . '" />';
+                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge mousetrap" type="text" value="" name="' . $field['type_code'] . '" />';
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_BIG_TEXT_CODE:
@@ -204,7 +204,7 @@
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
-                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="mousetrap" name="' . $field['field_code'] . '" style="width: 646px;" type="text" value="" />';
+                                    echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="mousetrap" name="' . $field['field_code'] . '" type="text" value="" />';
                                     break;
                                 case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
@@ -247,7 +247,7 @@
                 echo '<tr>';
                     echo '<td valign="top">Original Estimate</td>';
                     echo '<td>';
-                        echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="" /> ';
+                        echo '<input class="inputText" style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="" /> ';
                         echo '<span>(eg. 3w 4d 12h)</span>';
                         echo '<div class="smallDescription">The original estimate of how much work is involved in resolving this issue.</div>';
                     echo '</td>';
@@ -255,7 +255,7 @@
                 echo '<tr>';
                     echo '<td valign="top">Remaining Estimate</td>';
                     echo '<td>';
-                        echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="" /> ';
+                        echo '<input class="inputText" style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="" /> ';
                         echo '<span>(eg. 3w 4d 12h)</span>';
                         echo '<div class="smallDescription">An estimate of how much work remains until this issue will be resolved.</div>';
                     echo '</td>';

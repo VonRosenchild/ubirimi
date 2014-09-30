@@ -5,7 +5,7 @@
         <tr>
             <td width="100px">This issue</td>
             <td>
-                <select id="link_type" class="inputTextCombo">
+                <select id="link_type" class="select2InputSmall">
                     <?php while ($linkType = $types->fetch_array(MYSQLI_ASSOC)): ?>
                         <option value="<?php echo $linkType['id'] ?>_outward"><?php echo $linkType['outward_description'] ?></option>
                         <option value="<?php echo $linkType['id'] ?>_inward"><?php echo $linkType['inward_description'] ?></option>

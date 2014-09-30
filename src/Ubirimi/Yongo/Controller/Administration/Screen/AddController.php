@@ -17,7 +17,7 @@ class AddController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-
+        $menuSelectedCategory = 'issue';
         $emptyName = false;
 
         $fields = Field::getByClient($session->get('client/id'));

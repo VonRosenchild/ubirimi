@@ -119,7 +119,7 @@
 
                 case Field::FIELD_AFFECTS_VERSION_CODE:
                     if ($projectVersions) {
-                        $htmlOutput .= '<select ' . $requiredHTML . ' class="inputTextCombo" id="field_type_affects_version" name="' . $field['field_code'] . '">';
+                        $htmlOutput .= '<select ' . $requiredHTML . ' class="select2Input" id="field_type_affects_version" name="' . $field['field_code'] . '">';
                         while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                             $htmlOutput .= '<option value="' . $version['id'] . '">' . $version['name'] . '</option>';
                         }
@@ -132,7 +132,7 @@
                 case Field::FIELD_FIX_VERSION_CODE:
                     if ($projectVersions) {
                         $projectVersions->data_seek(0);
-                        $htmlOutput .= '<select ' . $requiredHTML . ' class="inputTextCombo" id="field_type_fix_version" name="' . $field['field_code'] . '">';
+                        $htmlOutput .= '<select ' . $requiredHTML . ' class="select2Input" id="field_type_fix_version" name="' . $field['field_code'] . '">';
                         while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                             $htmlOutput .= '<option value="' . $version['id'] . '">' . $version['name'] . '</option>';
                         }
