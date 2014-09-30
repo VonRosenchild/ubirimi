@@ -993,3 +993,11 @@ td.cellCurrentDate {
     padding-bottom: 6px;
     vertical-align: top;
 }
+form table tr td {
+    padding-bottom: 6px;
+    vertical-align: top;
+}
+
+form hr {
+    margin: 0;
+}
