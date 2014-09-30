@@ -73,7 +73,7 @@
 
 
         <div class="gray-bg">
-            <div class="container page-container" style="width: 1420px">
+            <div class="container page-container" style="width: 1320px">
                 <?php require_once __DIR__ . '/' . $content ?>
             </div>
         </div>

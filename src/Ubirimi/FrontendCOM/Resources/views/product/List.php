@@ -2,7 +2,7 @@
 <div align="center">
     <h1>Our product line</h1>
 </div>
-<div class="home-products" style="width: 1420px">
+<div class="home-products" style="width: 1320px">
     <ul class="product-list clearfix">
         <li class="product yongo" itemscope itemtype="http://schema.org/IndividualProduct">
             <h3 itemprop="name">Yongo</h3>

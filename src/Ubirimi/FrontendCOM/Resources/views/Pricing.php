@@ -32,8 +32,8 @@
     </table>
 </div>
 
-<div style="width: 1442px" align="center">
-    <table>
+<div align="center">
+    <table align="center">
         <tr>
             <td align="center">
                 <h2>All plans include</h2>
