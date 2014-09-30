@@ -13,13 +13,8 @@
                         </td>
                     </tr>
                 </table>
+                <div class="infoBox">Allow 2 minutes for your repository to become active</div>
                 <table width="100%">
-                    <tr>
-                        <td colspan="2">
-                            <div class="infoBox">Allow 2 minutes for your repository to become active</div>
-                        </td>
-                    </tr>
-
                     <tr>
                         <td valign="top" width="200">Name <span class="mandatory">*</span></td>
                         <td>
