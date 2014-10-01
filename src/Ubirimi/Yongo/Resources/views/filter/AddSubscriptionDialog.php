@@ -13,20 +13,24 @@
             <td>
                 <div>Minute</div>
                 <label for="minute_chooser_every" class="label label-primary">Every Minute</label>
-                <input type="radio" name="minute_chooser" id="minute_chooser_every" class="chooser" value="0"
+                <input type="radio" name="minute_chooser"
+                       id="minute_chooser_every" class="chooser" value="0"
                        checked="checked">
                 <br />
 
                 <label for="minute_chooser_choose" class="label label-primary">Choose</label>
-                <input type="radio" name="minute_chooser" id="minute_chooser_choose" class="chooser"
+                <input type="radio"
+                       name="minute_chooser" id="minute_chooser_choose" class="chooser"
                        value="1">
                 <br />
 
-                <select name="minute" id="cron_minute" multiple="multiple" disabled="disabled" style="width: 100%"
+                <select name="minute" id="cron_minute"
+                        multiple="multiple"
+                        disabled="disabled" style="width: 100%"
                         size="8">
                     <?php for ($i = 0; $i <= 59; $i++): ?>
                         <option value="<?php echo $i ?>"><?php echo $i ?></option>
-                    <? endfor ?>
+                    <?php endfor ?>
                 </select>
             </td>
             <td>
@@ -39,7 +43,8 @@
                 <label for="hour_chooser_choose" class="label label-primary">Choose</label>
                 <input type="radio" name="hour_chooser" id="hour_chooser_choose" class="chooser" value="1"><br>
 
-                <select name="hour" id="cron_hour" multiple="multiple" disabled="disabled" style="width: 100%"
+                <select name="hour" id="cron_hour" multiple="multiple"
+                        disabled="disabled" style="width: 100%"
                         size="8">
                     <option value="0">12 Midnight</option>
                     <option value="1">1 AM</option>
@@ -80,7 +85,7 @@
                         size="8">
                     <?php for ($i = 1; $i <= 30; $i++): ?>
                         <option value="<?php echo $i ?>"><?php echo $i ?></option>
-                    <? endfor ?>
+                    <?php endfor ?>
                 </select>
             </td>
             <td>

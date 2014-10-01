@@ -1,4 +1,3 @@
-<div>Fill the filter's details</div>
 <table class="modal-table">
     <tr>
         <td>Name</td>

@@ -1,7 +1,8 @@
 <tr>
     <td align="left">
         <span>Search</span>
-        <input id="search_query" class="inputTextSmall" type="text"
+        <input id="search_query" class="inputText" type="text"
+               style="width: 200px"
                value="<?php if (isset($getSearchParameters['search_query'])) echo $getSearchParameters['search_query'] ?>"
                name="query"/>
         <br/>

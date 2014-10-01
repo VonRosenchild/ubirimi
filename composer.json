@@ -17,13 +17,13 @@
         "classmap": ["src/"]
     },
     "require": {
-        "symfony/event-dispatcher": "2.6.*@dev",
-        "symfony/http-foundation": "2.6.*@dev",
-        "symfony/http-kernel": "2.5.*@dev",
-        "symfony/routing": "2.6.*@dev",
-        "symfony/config": "2.6.*@dev",
-        "symfony/yaml": "2.6.*@dev",
-        "symfony/debug": "2.6.*@dev",
+        "symfony/event-dispatcher": "2.4.10",
+        "symfony/http-foundation": "2.4.10",
+        "symfony/http-kernel": "2.4.10",
+        "symfony/routing": "2.4.10",
+        "symfony/config": "2.4.10",
+        "symfony/yaml": "2.4.10",
+        "symfony/debug": "2.4.10",
 
         "pimple/pimple": "1.1",
         "guzzle/guzzle": "3.7.*",
