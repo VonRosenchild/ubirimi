@@ -42,6 +42,7 @@ while ($client = $clients->fetch_array(MYSQLI_ASSOC)) {
                     $dayClientCreated--;
                     $invoiceDate = date('Y-m') . '-' . $dayClientCreated;
                 }
+
                 $amount = $paymentUtil->getAmountByClientId($client['id']);
                 $VAT = 0;
                 if (in_array($client['sys_country_id'], array_keys(PaymentUtil::$VATValuePerCountry))) {
