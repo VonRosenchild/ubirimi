@@ -1,5 +1,6 @@
 $('document').ready(function () {
 
+    $('.select2Input').select2();
     $('#doc_view_page_add_comment_content').click(function (event) {
         event.preventDefault();
 

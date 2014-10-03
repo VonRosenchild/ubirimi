@@ -26,7 +26,8 @@
                 <tr>
                     <td valign="top">Description</td>
                     <td>
-                        <textarea class="inputTextAreaLarge" name="description"><?php echo $SLA['description'] ?></textarea>
+                        <textarea class="inputTextAreaLarge"
+                                  name="description"><?php echo $SLA['description'] ?></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -47,12 +48,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td align="left">
+                                <td align="left" style="vertical-align: middle">
                                     <?php $prefixElementName = 'start'; ?>
                                     <?php require __DIR__ . '/../../views/sla/_startStopConditions.php' ?>
                                 </td>
                                 <td></td>
-                                <td align="left">
+                                <td align="left" style="vertical-align: middle">
                                     <?php
                                         $prefixElementName = 'stop';
                                         $availableStatuses->data_seek(0);
@@ -77,7 +78,7 @@
                                     <th width="200">Issues (YQL)</th>
                                     <th>Goal</th>
                                     <th>Calendar</th>
-                                    <th>Options</th>
+                                    <th style="width: 110px">Options</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,37 +98,43 @@
                                             <?php endif ?>
                                         </td>
 
-                                        <td valign="top">
+                                        <td style="vertical-align: top">
                                             <input size="5"
                                                    type="text"
+                                                   class="inputText"
+                                                   style="width: 110px"
                                                    value="<?php echo $goal['value'] ?>"
                                                    name="goal_value_<?php echo $goal['id'] ?>" /> minutes
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: top">
                                             <?php $slaCalendars->data_seek(0); ?>
-                                            <select name="goal_calendar_<?php echo $goal['id'] ?>" class="inputTextCombo">
+                                            <select name="goal_calendar_<?php echo $goal['id'] ?>" class="select2InputSmall">
                                                 <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
                                                     <option <?php if ($goal['help_sla_calendar_id'] == $calendar['id']) echo 'selected="selected"' ?> value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
                                                 <?php endwhile ?>
                                             </select>
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: top">
                                             <button type="button" id="delete_goal_<?php echo $goal['id'] ?>" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete</button>
                                         </td>
                                     </tr>
                                 <?php endwhile ?>
                                 <?php if (!$allRemainingIssuesDefinitionFound): ?>
                                     <tr>
-                                        <td>
+                                        <td style="vertical-align: top">
                                             All remaining issues
                                             <input type="hidden" value="all_remaining_issues" name="goal_definition_0" />
                                         </td>
                                         <td valign="top">
-                                            <input size="5" type="text" value="" name="goal_value_0" /> minutes
+                                            <input size="5"
+                                                   class="inputText"
+                                                   type="text"
+                                                   style="width: 110px"
+                                                   value="" name="goal_value_0" /> minutes
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: top">
                                             <?php $slaCalendars->data_seek(0) ?>
-                                            <select name="goal_calendar_0<?php echo $goal['value'] ?>" class="inputTextCombo">
+                                            <select name="goal_calendar_0<?php echo $goal['value'] ?>" class="select2InputSmall">
                                                 <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
                                                     <option <?php if ($goal['help_sla_calendar_id'] == $calendar['id']) echo 'selected="selected"' ?> value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
                                                 <?php endwhile ?>

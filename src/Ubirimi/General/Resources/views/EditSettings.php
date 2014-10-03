@@ -27,7 +27,7 @@
                         <td width="250" align="right" valign="top">Mode</td>
                         <td width="10"></td>
                         <td>
-                            <select name="mode" class="inputTextCombo" style="width: 100px">
+                            <select name="mode" class="select2InputSmall" style="width: 100px">
                                 <option value="private" <?php if ($clientSettings['operating_mode'] == 'private') echo 'selected="selected"' ?>>Private</option>
                                 <option value="public" <?php if ($clientSettings['operating_mode'] == 'public') echo 'selected="selected"' ?>>Public</option>
                             </select>
@@ -57,8 +57,7 @@
                         <tr>
                             <td width="250" align="right">Default Language</td>
                             <td>
-
-                                <select name="language" class="inputTextCombo">
+                                <select name="language" class="select2InputSmall">
                                     <option value="english">English</option>
                                 </select>
                             </td>
@@ -67,7 +66,7 @@
                             <td width="250" align="right">Default user time zone</td>
                             <td>
                                 <span>Region</span>
-                                <select name="continent" class="inputTextCombo" id="continent_time_zone">
+                                <select name="continent" class="select2InputSmall" id="continent_time_zone">
                                     <option value="1" <?php if ($timezoneContinent == 'Africa') echo 'selected="selected"' ?>>Africa</option>
                                     <option value="2" <?php if ($timezoneContinent == 'America') echo 'selected="selected"' ?>>America</option>
                                     <option value="4" <?php if ($timezoneContinent == 'Antarctica') echo 'selected="selected"' ?>>Antarctica</option>
@@ -80,20 +79,20 @@
                                     <option value="512" <?php if ($timezoneContinent == 'Pacific') echo 'selected="selected"' ?>>Pacific</option>
                                 </select>
                                 <span>Timezone</span>
-                                <select name="zone" class="inputTextCombo" id="general_settings_zone">
+                                <select name="zone" class="select2InputSmall" id="general_settings_zone">
                                     <?php
-                                    $zones = DateTimeZone::listIdentifiers($timeZoneContinents[$timezoneContinent]);
-                                    for ($i = 0; $i < count($zones); $i++) {
-                                        $dateTimeZone0 = new DateTimeZone($zones[$i]);
-                                        $dateTime0 = new DateTime("now", $dateTimeZone0);
-                                        $timeOffset = $dateTimeZone0->getOffset($dateTime0);
-                                        $prefix = ($timeOffset > 0) ? '+' : '';
-                                        $offset = (($timeOffset / 60 / 60));
-                                        $textSelected = '';
-                                        if ($zones[$i] == $timezoneContinent . '/' . $timeZoneCountry)
-                                            $textSelected = 'selected="selected"';
-                                        echo '<option ' . $textSelected . ' value="' . $zones[$i] . '">' . str_replace(array("Africa/", "_"), array("", " "), $zones[$i]) . ' (GMT ' . $prefix . $offset . 'h)</option>';
-                                    }
+                                        $zones = DateTimeZone::listIdentifiers($timeZoneContinents[$timezoneContinent]);
+                                        for ($i = 0; $i < count($zones); $i++) {
+                                            $dateTimeZone0 = new DateTimeZone($zones[$i]);
+                                            $dateTime0 = new DateTime("now", $dateTimeZone0);
+                                            $timeOffset = $dateTimeZone0->getOffset($dateTime0);
+                                            $prefix = ($timeOffset > 0) ? '+' : '';
+                                            $offset = (($timeOffset / 60 / 60));
+                                            $textSelected = '';
+                                            if ($zones[$i] == $timezoneContinent . '/' . $timeZoneCountry)
+                                                $textSelected = 'selected="selected"';
+                                            echo '<option ' . $textSelected . ' value="' . $zones[$i] . '">' . str_replace(array("Africa/", "_"), array("", " "), $zones[$i]) . ' (GMT ' . $prefix . $offset . 'h)</option>';
+                                        }
                                     ?>
                                 </select>
                             </td>

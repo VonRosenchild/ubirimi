@@ -34,7 +34,7 @@
                 <tr>
                     <td>Homepage</td>
                     <td>
-                        <select name="homepage" class="inputTextCombo">
+                        <select name="homepage" class="select2Input">
                             <?php while ($pages && $page = $pages->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($space['home_entity_id'] == $page['id']) echo 'selected="selected"' ?> value="<?php echo $page['id'] ?>"><?php echo $page['name'] ?></option>
                             <?php endwhile ?>

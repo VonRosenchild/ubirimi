@@ -220,6 +220,7 @@ $('document').ready(function () {
             success: function (response) {
                 $('#slaGoals tbody').children().last().prev().after(response);
                 applyGoaldAutocomplete();
+                $('select.select2InputSmall').select2();
             }
         });
     });

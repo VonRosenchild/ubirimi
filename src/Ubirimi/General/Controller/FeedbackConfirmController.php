@@ -20,7 +20,7 @@
     <tr>
         <td width="260px">Rate the overall product experience</td>
         <td>
-            <select id="feedback_experience" class="inputTextCombo">
+            <select id="feedback_experience" class="select2Small">
                 <option value="Great">Awesome</option>
                 <option value="Good">Good</option>
                 <option value="Acceptable">Acceptable</option>

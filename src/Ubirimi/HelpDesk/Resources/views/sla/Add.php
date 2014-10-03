@@ -26,7 +26,8 @@
                 <tr>
                     <td valign="top">Description</td>
                     <td>
-                        <textarea class="inputTextAreaLarge" name="description"><?php if (isset($description)) echo $description ?></textarea>
+                        <textarea class="inputTextAreaLarge"
+                                  name="description"><?php if (isset($description)) echo $description ?></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -76,42 +77,56 @@
                                     <th>Issues (YQL)</th>
                                     <th>Goal</th>
                                     <th>Calendar</th>
+                                    <th width="110px;">Options</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
+                                    <td style="vertical-align: top">
                                         <textarea class="inputTextAreaLarge goal_autocomplete"
                                                   id="goal_definition_1"
                                                   name="goal_definition_1"></textarea>
                                     </td>
-                                    <td valign="top">
-                                        <input size="5" type="text" value="" name="goal_value_1" /> minutes
+                                    <td style="vertical-align: top">
+                                        <input size="5"
+                                               type="text"
+                                               value=""
+                                               style="width: 110px"
+                                               class="inputText"
+                                               name="goal_value_1" /> minutes
                                     </td>
-                                    <td>
-                                        <select name="goal_calendar_1" class="inputTextCombo">
+                                    <td style="vertical-align: top">
+                                        <select name="goal_calendar_1" class="select2InputSmall">
                                             <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
                                                 <option value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
                                             <?php endwhile ?>
                                         </select>
                                     </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td style="vertical-align: top">
                                         All remaining issues
-                                        <input type="hidden" value="" name="goal_definition_0" />
+                                        <input type="hidden" 
+                                               value=""
+                                               name="goal_definition_0" />
                                     </td>
-                                    <td valign="top">
-                                        <input size="5" type="text" value="" name="goal_value_0" /> minutes
+                                    <td style="vertical-align: top">
+                                        <input size="5" type="text"
+                                               style="width: 110px"
+                                               value=""
+                                               class="inputText"
+                                               name="goal_value_0" /> minutes
                                     </td>
                                     <?php $slaCalendars->data_seek(0) ?>
-                                    <td>
-                                        <select name="goal_calendar_0" class="inputTextCombo">
+                                    <td style="vertical-align: top">
+                                        <select name="goal_calendar_0" class="select2InputSmall">
                                             <?php while ($calendar = $slaCalendars->fetch_array(MYSQLI_ASSOC)): ?>
                                                 <option value="<?php echo $calendar['id'] ?>"><?php echo $calendar['name'] ?></option>
                                             <?php endwhile ?>
                                         </select>
                                     </td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

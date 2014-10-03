@@ -42,7 +42,7 @@
                     <tr>
                         <td valign="top">Organization</td>
                         <td>
-                            <select name="organization" class="inputTextCombo">
+                            <select name="organization" class="select2InputMedium">
                                 <option value="-1">None</option>
                                 <?php if ($organizations): ?>
                                     <?php while ($organization = $organizations->fetch_array(MYSQLI_ASSOC)): ?>

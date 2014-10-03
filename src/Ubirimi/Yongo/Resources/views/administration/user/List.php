@@ -27,7 +27,7 @@
                 <td><input class="inputText" type="text" id="username_filter" /></td>
                 <td><input class="inputText" type="text" id="fullname_filter" /></td>
                 <td>
-                    <select id="group_filter" class="inputTextCombo">
+                    <select id="group_filter" class="select2Input">
                         <option value="-1">All Groups</option>
                         <?php if ($allGroups): ?>
                             <?php while ($group = $allGroups->fetch_array(MYSQLI_ASSOC)): ?>

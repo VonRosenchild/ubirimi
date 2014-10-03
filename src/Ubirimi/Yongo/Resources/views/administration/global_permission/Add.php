@@ -13,7 +13,7 @@
                 <tr>
                     <td width="100">Permission</td>
                     <td>
-                        <select class="inputTextCombo" name="permission">
+                        <select class="select2Input" name="permission">
                             <?php while ($permission = $globalPermissions->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $permission['id'] ?>"><?php echo $permission['name'] ?></option>
                             <?php endwhile ?>
@@ -23,7 +23,7 @@
                 <tr>
                     <td>Group</td>
                     <td>
-                        <select class="inputTextCombo" name="group">
+                        <select class="select2Input" name="group">
                             <?php while ($group = $allGroups->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
                             <?php endwhile ?>

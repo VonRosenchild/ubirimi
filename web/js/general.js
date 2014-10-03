@@ -46,9 +46,9 @@ function resizeModals() {
 }
 
 // close open menus when you click outside
-$(document).mouseup(function (e)
-{
+$(document).mouseup(function (e) {
 
+    $('.select2InputSmall').select2();
     var contentToClose = ['#contentMenuHome', '#contentMenuIssues', '#contentMenuProjects', '#contentMenuAgile',
         '#contentMenuMailGeneral', '#contentMenuUsersGeneral', '#contentUserHomeGeneral', '#menu_add_to_sprint',
         '#contentMenuSVN', '#contentMenuFilters', '#contentMenuAdminProjects', '#contentMenuAdminUsers', '#contentMenuAdminIssues', '#contentMenuAdminSystem',
@@ -184,15 +184,7 @@ $('document').ready(function () {
         event.preventDefault();
 
         var options = {
-
-
             dialogClass: "ubirimi-dialog",
-
-
-
-
-
-
             title: 'We appreciate you feedback',
             buttons: [
                 {
@@ -237,6 +229,7 @@ $('document').ready(function () {
         $("#modalSendFeedback").load("/send-feedback-dialog", [], function () {
             $("#modalSendFeedback").dialog(options);
             $("#modalSendFeedback").dialog("open");
+            $('.select2Small').select2();
         });
     });
 

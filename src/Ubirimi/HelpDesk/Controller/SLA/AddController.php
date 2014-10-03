@@ -46,12 +46,14 @@ class AddController extends UbirimiController
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
             $slaExists = SLA::getByName(mb_strtolower($name), $projectId);
-            if ($slaExists)
+            if ($slaExists) {
                 $duplicateName = true;
+            }
 
             // get start conditions
             $startCondition = '';
