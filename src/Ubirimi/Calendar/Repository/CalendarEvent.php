@@ -54,7 +54,7 @@ class CalendarEvent
                 } else if ('a' == $endData[0]) {
 
                     $pos = 1;
-                    $endAfterOccurrences = intval($endData[1]);
+                    $endAfterOccurrences = intval(substr($endData, 1));
                     $repeatEndDate = $repeatStartDate;
                     while ($pos < $endAfterOccurrences) {
                         $repeatEndDate = date('Y-m-d', strtotime("+" . intval($repeatEvery) . ' days', strtotime($repeatEndDate)));
@@ -90,7 +90,7 @@ class CalendarEvent
                 if ('n' == $endData[0]) {
                     $endAfterOccurrences = 10000;
                 } else if ('a' == $endData[0]) {
-                    $endAfterOccurrences = $endData[1];
+                    $endAfterOccurrences = substr($endData, 1);
                 } else if ('o' == $endData[0]) {
                     $repeatEndOnDate = substr($endData, 1);
                     if (10 == strlen($repeatEndOnDate)) {
@@ -158,7 +158,6 @@ class CalendarEvent
             if (10000 == $endAfterOccurrences) {
                 $endAfterOccurrences = null;
             }
-            var_dump($repeatEndOnDate);
             $stmt->bind_param("iiissiiiiiii", $repeatType, $repeatEvery, $endAfterOccurrences, $repeatStartDate, $repeatEndOnDate, $day0, $day1, $day2, $day3, $day4, $day5, $day6);
             $stmt->execute();
 

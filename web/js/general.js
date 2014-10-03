@@ -47,8 +47,6 @@ function resizeModals() {
 
 // close open menus when you click outside
 $(document).mouseup(function (e) {
-
-    $('.select2InputSmall').select2();
     var contentToClose = ['#contentMenuHome', '#contentMenuIssues', '#contentMenuProjects', '#contentMenuAgile',
         '#contentMenuMailGeneral', '#contentMenuUsersGeneral', '#contentUserHomeGeneral', '#menu_add_to_sprint',
         '#contentMenuSVN', '#contentMenuFilters', '#contentMenuAdminProjects', '#contentMenuAdminUsers', '#contentMenuAdminIssues', '#contentMenuAdminSystem',
@@ -153,7 +151,7 @@ function closeOpenMenus() {
 }
 
 $('document').ready(function () {
-
+    $('.select2InputSmall').select2();
     $('.filter-date-regular').datepicker({
         dateFormat: "yy-mm-dd",
         selectOtherMonths: true
