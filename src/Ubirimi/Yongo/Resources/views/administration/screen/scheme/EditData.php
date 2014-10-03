@@ -26,7 +26,7 @@
                 <tr>
                     <td>Screen</td>
                     <td>
-                        <select name="screen" class="inputTextCombo">
+                        <select name="screen" class="select2InputSmall">
                             <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($selectedScreenId == $screen['id']): ?>selected="selected"<?php endif ?> value="<?php echo $screen['id'] ?>"><?php echo $screen['name'] ?></option>
                             <?php endwhile ?>

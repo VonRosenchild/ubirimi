@@ -29,7 +29,7 @@
                 <tr>
                     <td><div>Destination Step:</div></td>
                     <td>
-                        <select name="step" class="inputTextCombo">
+                        <select name="step" class="select2InputSmall">
                             <?php while ($step = $steps->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($step['id'] == $workflowData['destination_step_id']) echo 'selected="selected"' ?> value="<?php echo $step['id'] ?>"><?php echo $step['step_name'] ?></option>
                             <?php endwhile ?>
@@ -39,7 +39,7 @@
                 <tr>
                     <td><div>Transition Screen:</div></td>
                     <td>
-                        <select name="screen" class="inputTextCombo">
+                        <select name="screen" class="select2InputSmall">
                             <option value="-1">No Screen</option>
                             <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($screen['id'] == $workflowData['screen_id']) echo 'selected="selected"' ?> value="<?php echo $screen['id'] ?>"><?php echo $screen['name'] ?></option>

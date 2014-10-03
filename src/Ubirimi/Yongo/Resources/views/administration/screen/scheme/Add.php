@@ -29,7 +29,7 @@
                 <tr>
                     <td valign="top">Default Screen</td>
                     <td>
-                        <select name="screen" class="inputTextCombo">
+                        <select name="screen" class="select2InputSmall">
                             <?php while ($screen = $allScreens->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $screen['id'] ?>"><?php echo ucfirst($screen['name']) ?></option>
                             <?php endwhile ?>

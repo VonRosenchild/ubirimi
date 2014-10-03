@@ -14,9 +14,7 @@
     $workflowDataId = $workflowData['id'];
 
     $postFunctions = WorkflowFunction::getByWorkflowDataId($workflowDataId);
-
 ?>
-
 <?php if ($postFunctions): ?>
     <?php $index = 1 ?>
     <div>Already added post functions: </div>

@@ -27,7 +27,7 @@
                 <tr>
                     <td>Screen Scheme</td>
                     <td>
-                        <select name="screen_scheme" class="inputTextCombo">
+                        <select name="screen_scheme" class="select2InputSmall">
                             <?php while ($screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $screenScheme['id'] ?>"><?php echo $screenScheme['name'] ?></option>
                             <?php endwhile ?>

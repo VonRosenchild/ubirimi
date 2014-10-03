@@ -26,7 +26,7 @@
                 <tr>
                     <td>Field Configuration</td>
                     <td>
-                        <select name="field_configuration" class="inputTextCombo">
+                        <select name="field_configuration" class="select2InputSmall">
                             <?php while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $fieldConfiguration['id'] ?>"><?php echo $fieldConfiguration['name'] ?></option>
                             <?php endwhile ?>

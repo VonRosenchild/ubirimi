@@ -12,8 +12,12 @@
             <table width="100%">
                 <?php while ($type = $types->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr>
-                        <td width="20">
-                            <input class="radio" type="radio" name="type" id="label_<?php echo $type['code'] ?>" value="<?php echo $type['code'] ?>">
+                        <td width="20" style="vertical-align: middle">
+                            <input class="radio"
+                                   type="radio"
+                                   name="type"
+                                   id="label_<?php echo $type['code'] ?>"
+                                   value="<?php echo $type['code'] ?>">
                         </td>
                         <td>
                             <label for="label_<?php echo $type['code'] ?>">
