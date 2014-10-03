@@ -17,7 +17,7 @@
                 <?php endwhile ?>
             </select>
         </td>
-        <td align="center" valign="middle">
+        <td align="center" style="vertical-align: middle">
             <a id="assign_user_btn" style="text-align: center;" href="#" class="btn ubirimi-btn">&nbsp;<img border="0" height="10" src="/img/br_next.png" alt=""/>&nbsp;</a>
             <div></div>
             <a id="remove_user_btn" style="text-align: center;" href="#" class="btn ubirimi-btn">&nbsp;<img border="0" height="10" src="/img/br_prev.png" alt=""/>&nbsp;</a>

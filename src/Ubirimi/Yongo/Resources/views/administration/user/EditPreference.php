@@ -18,13 +18,17 @@
                 <tr>
                     <td width="400">Number of issues displayed per Issue navigator page</td>
                     <td>
-                        <input type="text" value="<?php echo $settings['issues_per_page'] ?>" name="issues_per_page" />
+                        <input type="text"
+                               class="inputText"
+                               style="width: 50px;"
+                               value="<?php echo $settings['issues_per_page'] ?>"
+                               name="issues_per_page" />
                     </td>
                 </tr>
                 <tr>
                     <td width="400">Notify users of their own changes?</td>
                     <td>
-                        <select class="inputTextCombo" style="width: 60px" name="notify_own_changes">
+                        <select class="select2InputSmall" style="width: 60px" name="notify_own_changes">
                             <option <?php if ($settings['notify_own_changes_flag']) echo 'selected="selected"' ?> value="1">YES</option>
                             <option <?php if (!$settings['notify_own_changes_flag']) echo 'selected="selected"' ?> value="0">NO</option>
                         </select>
