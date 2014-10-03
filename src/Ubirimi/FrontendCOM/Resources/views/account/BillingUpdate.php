@@ -43,7 +43,6 @@
     </form>
 
     <script type="text/javascript" src="/js/lang/translation.js"></script>
-    <script type="text/javascript" src="/js/signup_payment.js"></script>
     <script type="text/javascript">
         var VALIDATE_CVC = true;
         var PAYMILL_PUBLIC_KEY = '<?php echo UbirimiContainer::get()['paymill.public_key'] ?>';

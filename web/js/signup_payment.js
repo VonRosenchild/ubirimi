@@ -16,14 +16,6 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $('.card-expiry').keyup(function () {
-        if (/^\d\d$/.test($('.card-expiry').val())) {
-            text = $('.card-expiry').val();
-            $('.card-expiry').val(text += "/");
-        }
-    });
-
-
     function PaymillResponseHandler(error, result) {
         if (error) {
             $(".payment_errors").text(translation["en"]["error"][error.apierror]);
@@ -45,6 +37,7 @@ jQuery(document).ready(function ($) {
     $("#signUp-form, #update-billing-form").submit(function (event) {
 
         var paymentErrors = $(".payment_errors");
+        paymentErrors.text('');
         if (false === paymill.validateHolder($('#card_name').val())) {
             paymentErrors.text(translation[formlang]["error"]["invalid-card-holdername"]);
             paymentErrors.css("display", "inline-block");
