@@ -1,3 +1,6 @@
+v 2.13
+  - include select2 library in svn hosting module
+
 v 2.12
   - Possibility to mark a filter as favourite
   - Create/Edit recurrent events: daily, weekly
