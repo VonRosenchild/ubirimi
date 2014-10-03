@@ -517,8 +517,9 @@ class Client
     }
 
     public static function getAll($filters = array()) {
-        $query = 'select client.id, company_name, company_domain, address_1, address_2, city, district, contact_email, date_created, installed_flag, last_login, ' .
-                 'sys_country.name as country_name ' .
+        $query = 'select client.id, company_name, company_domain, address_1, address_2, city, district, contact_email, ' .
+                 'date_created, installed_flag, last_login, is_payable, paymill_id, ' .
+                 'sys_country.name as country_name, sys_country_id ' .
                  'from client ' .
                  'left join sys_country on sys_country.id = client.sys_country_id
                  where 1 = 1';

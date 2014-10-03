@@ -29,7 +29,6 @@ class InvoiceUtil
 
     public function generate($clientId, $invoiceAmount, $invoiceNumber, $invoiceDate)
     {
-
         $customerId = $clientId;
 
         $client = Client::getById($customerId);
