@@ -47,7 +47,7 @@
                 <tr>
                     <td valign="top" width="150px">Base Swimlanes on</td>
                     <td>
-                        <select name="swimlane" id="swimlane_strategy" class="inputTextCombo">
+                        <select name="swimlane" id="swimlane_strategy" class="select2InputSmall">
                             <option <?php if ($board['swimlane_strategy'] == 'story')
                                 echo 'selected="selected"' ?> value="story">Stories
                             </option>
