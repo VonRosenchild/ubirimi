@@ -6,7 +6,6 @@ use Ubirimi\Util;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
-
 /* check locking mechanism */
 if (file_exists('announce_payment.lock')) {
     $fp = fopen('announce_payment.lock', 'w+');

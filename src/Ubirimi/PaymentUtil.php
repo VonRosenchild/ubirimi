@@ -15,36 +15,34 @@ class PaymentUtil
      * @return int the value of the monthly subscription
      */
     public static $VATValuePerCountry = array(143 => 24, // Romania
-                                       10 => 20,  // Austria
+                                       10 => 20,   // Austria
                                        17 => 21,   // Belgium
-                                       17 => 21,   // Bulgaria
-                                       17 => 21,   // Cyprus
-                                       17 => 21,   // Cehia
-                                       17 => 21,   // Croatia
-                                       17 => 21,   // Danemarca
-                                       17 => 21,   // Estonia
-                                       17 => 21,   // Finland
-                                       17 => 21,   // germany
-                                       17 => 21,   // Greece
-                                       17 => 21,   // Hungary
-                                       17 => 21,   // Ireland
-                                       17 => 21,   // Italy
+                                       17 => 20,   // Bulgaria
+                                       17 => 19,   // Cyprus
+                                       17 => 21,   // Check republic
+                                       17 => 25,   // Croatia
+                                       17 => 25,   // Denmark
+                                       17 => 20,   // Estonia
+                                       17 => 24,   // Finland,
+                                       17 => 20,   // France
+                                       17 => 19,   // Germany
+                                       17 => 23,   // Greece
+                                       17 => 27,   // Hungary
+                                       17 => 23,   // Ireland
+                                       17 => 22,   // Italy
                                        17 => 21,   // latvia
                                        17 => 21,   // Lithuania
-                                       17 => 21,   // Luxembourg
-                                       17 => 21,   // Malta
+                                       17 => 15,   // Luxembourg
+                                       17 => 18,   // Malta
                                        17 => 21,   // Netherlands
-                                       17 => 21,   // Poland
-                                       17 => 21,   // Portugal
-                                       17 => 21,   // Madeira
-                                       17 => 21,   // Azores
-                                       17 => 21,   // Slovakia
-                                       17 => 21,   // Slovenia
+                                       17 => 23,   // Poland
+                                       17 => 23,   // Portugal
+                                       17 => 20,   // Slovakia
+                                       17 => 22,   // Slovenia
                                        17 => 21,   // Spain
                                        17 => 21,   // Canary Islands
-                                       17 => 21,   // Sweden
-                                       17 => 21,   // United Kingdom
-                                       17 => 21    // Isle of man
+                                       17 => 25,   // Sweden
+                                       17 => 20    // United Kingdom
                                        );
 
     public function getAmountByUsersCount($usersCount) {
