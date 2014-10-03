@@ -1,9 +1,9 @@
-v next
+v 2.12
   - Possibility to mark a filter as favourite
   - Create/Edit recurrent events: daily, weekly
   - Users can not edit events that are shared with them
   - Implement current assignee in get project by permission
   - SLA start/stop condition fixes when used: Comment by Assignee
   - update the time picker library
-
-v 2.11.2
+  - more beautiful UI (CSS improvements)
+  - Agile module fixes for Work tab: correction for parent, assignee swimlane
