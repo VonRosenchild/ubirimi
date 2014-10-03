@@ -352,7 +352,7 @@
                         echo '<tr>';
                             echo '<td valign="top">Original Estimate ' . $mandatoryStarHTML . '</td>';
                             echo '<td>';
-                                echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="' . $issueData['original_estimate'] . '" /> ';
+                                echo '<input class="inputText" style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_original_estimate" type="text" name="field_type_time_tracking_original_estimate" value="' . $issueData['original_estimate'] . '" /> ';
                                 echo '<span>(eg. 3w 4d 12h)</span>';
                                 echo '<div class="smallDescription">The original estimate of how much work is involved in resolving this issue.</div>';
                             echo '</td>';
@@ -360,7 +360,7 @@
                         echo '<tr>';
                             echo '<td valign="top">Remaining Estimate ' . $mandatoryStarHTML . '</td>';
                             echo '<td>';
-                                echo '<input style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="' . $issueData['remaining_estimate'] . '" /> ';
+                                echo '<input class="inputText" style="width: 100px" ' . $requiredHTML . ' id="field_type_time_tracking_remaining_estimate" type="text" name="field_type_time_tracking_remaining_estimate" value="' . $issueData['remaining_estimate'] . '" /> ';
                                 echo '<span>(eg. 3w 4d 12h)</span>';
                                 echo '<div class="smallDescription">An estimate of how much work remains until this issue will be resolved.</div>';
                             echo '</td>';

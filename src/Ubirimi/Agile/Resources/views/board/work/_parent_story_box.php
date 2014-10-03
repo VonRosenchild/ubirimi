@@ -3,8 +3,10 @@
         <div style="position: inherit; background-color: #f1f1f1; padding: 3px; border: 1px solid #acacac">
             <img border="0" src="/img/br_down.png" style="padding-bottom: 2px;" />
                 <span>
-                    <a href="#"><?php echo $user['first_name'] . ' ' . $user['last_name'] . '</a> ' . $issuesOfAssignee->num_rows . ' issues' ?>
+                    <a href="#" id="agile_issue_<?php echo $issue['id'] ?>"><?php echo $issue['project_code'] . ' ' . $issue['nr'] ?></a>
                 </span>
+            <span><?php echo $strategyIssue->num_rows ?> sub-task<?php if ($strategyIssue->num_rows > 1) echo 's' ?></span>
+            <span><?php echo $issue['summary'] ?></span>
         </div>
     </td>
 </tr>

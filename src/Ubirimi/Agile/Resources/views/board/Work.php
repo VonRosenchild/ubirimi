@@ -62,7 +62,7 @@
                             } else if ($swimlaneStrategy == 'assignee' && $sprint) {
                                 require_once __DIR__ . '/work/_swimlaneAssignee.php';
                             } else if ($swimlaneStrategy == 'no_swimlane' && $sprint) {
-                                require_once __DIR__ . '/work/_swimlane_default.php';
+                                require_once __DIR__ . '/work/_swimlaneDefault.php';
                             }
                         ?>
                     </div>

@@ -46,7 +46,7 @@ class Issue
 
             $query .= 'issue_parent.status_id as parent_status_id, issue_parent.user_assigned_id as parent_assignee, ' .
                       'issue_parent.nr as parent_nr, issue_parent.summary as parent_summary, project_parent.code as parent_project_code, ' .
-                      'CONCAT(coalesce(issue_parent.id, \'\'), issue_main_table.id) as sort_sprint, ';
+                      'CONCAT(coalesce(issue_parent.id, \'z\'), issue_main_table.id) as sort_sprint, ';
         }
 
         if ($securitySchemeUserId) {

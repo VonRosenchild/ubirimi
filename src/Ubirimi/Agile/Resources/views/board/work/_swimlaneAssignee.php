@@ -1,33 +1,33 @@
 <?php
-
-        use Ubirimi\Agile\Repository\AgileBoard;
+    use Ubirimi\Agile\Repository\AgileBoard;
     use Ubirimi\Agile\Repository\AgileSprint;
     use Ubirimi\Yongo\Repository\Issue\Issue;
 
     // get all the assignees of the issues in this sprint
-
     $allAssignees = AgileSprint::getAssigneesBySprintId($sprintId);
 
     while ($allAssignees && $user = $allAssignees->fetch_array(MYSQLI_ASSOC)) {
 
         $assignee = $user['id'];
-        if ($onlyMyIssuesFlag && $assignee != $loggedInUserId)
-            $issuesOfAssignee = null; else
-            $issuesOfAssignee = Issue::getByParameters(array('assignee' => $assignee, 'sprint' => $sprintId, 'sort' => 'sprint'), $loggedInUserId);
+        if ($onlyMyIssuesFlag && $assignee != $loggedInUserId) {
+            $issuesOfAssignee = null;
+        } else {
+            $queryParameters = array('assignee' => $assignee,
+                                     'sprint' => $sprintId,
+                                     'sort' => 'sprint');
+            $strategyIssue = Issue::getByParameters($queryParameters, $loggedInUserId);
+        }
+        if ($strategyIssue) {
 
-        if ($issuesOfAssignee) {
-            echo '<table width="100%" cellpadding="0px" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-
-            require '_parent_assignee.php.tpl';
-            AgileBoard::renderIssues($issuesOfAssignee, $columns, $index, 'assignee');
-            echo '</table>';
+            require '_strategy_body.php';
             $index++;
         }
     }
 
     $allUnassignedIssues = null;
-    if (!$onlyMyIssuesFlag)
+    if (!$onlyMyIssuesFlag) {
         $allUnassignedIssues = Issue::getByParameters(array('assignee' => 0, 'sprint' => $sprintId, 'sort' => 'sprint'), $loggedInUserId);
+    }
 
     if ($allUnassignedIssues) {
 

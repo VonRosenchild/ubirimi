@@ -365,6 +365,7 @@ $('document').ready(function () {
             $("#agileCompleteSprint").dialog("open");
         });
     });
+
     $(document).on('click', "[id^='agile_plan_assign_other_']", function (event) {
 
         event.preventDefault();
@@ -444,7 +445,7 @@ $('document').ready(function () {
         modalEditIssueAssign.load("/yongo/issue/assign-dialog/" + issueId + '/' + projectId, [], function () {
             modalEditIssueAssign.dialog(options);
             modalEditIssueAssign.dialog("open");
-            $(".select2Input").select2();
+            $(".select2InputMedium").select2();
         });
     });
 });

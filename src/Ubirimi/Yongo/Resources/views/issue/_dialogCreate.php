@@ -128,7 +128,7 @@
                             break;
 
                         case Field::FIELD_DUE_DATE_CODE:
-                            echo IssueHelper::renderInput(Field::FIELD_DUE_DATE_CODE, $arrayData['required_flag']);
+                            echo IssueHelper::renderInput(Field::FIELD_DUE_DATE_CODE, $arrayData['required_flag'], 'width: 110px');
                             break;
 
                         case Field::FIELD_COMPONENT_CODE:

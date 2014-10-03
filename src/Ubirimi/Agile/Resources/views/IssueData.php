@@ -148,6 +148,7 @@
         <tr>
             <td colspan="2">
                 <div id="contentDescription"><?php echo str_replace("\n", '<br />', $issue['description']) ?></div>
+                <br />
             </td>
         </tr>
         <tr>
@@ -158,6 +159,7 @@
         <tr>
             <td colspan="2">
                 <div id="contentDescription"><?php echo str_replace("\n", '<br />', $issue['environment']) ?></div>
+                <br />
             </td>
         </tr>
         <tr>

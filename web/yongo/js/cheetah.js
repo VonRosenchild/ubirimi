@@ -37,6 +37,8 @@ $('document').ready(function () {
 
     $(document).on('click', "[id^='agile_create_subtask_']", function (event) {
 
+        event.preventDefault();
+
         var issueId = $(this).attr("id").replace('agile_create_subtask_', '').split('_')[0];
         var projectId = $(this).attr("id").replace('agile_create_subtask_', '').split('_')[1];
 

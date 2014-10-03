@@ -4,11 +4,16 @@ namespace Ubirimi\Yongo\Helper;
 
 class IssueHelper
 {
-    public static function renderInput($id, $required = false)
+    public static function renderInput($id, $required = false, $style = null)
     {
+        $inputStyle = '';
+        if ($style) {
+            $inputStyle = 'style="' . $style . '" ';
+        }
         return '<input ' . self::convertRequired($required) .
-            '" id="field_type_' . $id .
-            '" class="inputTextLarge mousetrap" type="text" value="" name="' . $id . '" />';
+            '" id="field_type_' . $id . '" ' .
+            $inputStyle .
+            'class="inputTextLarge mousetrap" type="text" value="" name="' . $id . '" />';
     }
 
     public static function renderUserSelect($id, $users, $selectedId, $disabled = false, $required = false, $hasEmpty = false)

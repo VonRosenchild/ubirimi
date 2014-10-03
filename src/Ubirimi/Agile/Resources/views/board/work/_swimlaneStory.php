@@ -10,17 +10,21 @@
 
     while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fetch_array(MYSQLI_ASSOC)) {
         $parameters = array('parent_id' => $issue['id']);
-        if ($onlyMyIssuesFlag)
+        if ($onlyMyIssuesFlag) {
             $parameters['assignee'] = $loggedInUserId;
-
-        $childrenIssue = Issue::getByParameters($parameters, $loggedInUserId);
+        }
+        $strategyIssue = Issue::getByParameters($parameters, $loggedInUserId);
         $parentChildrenIssueIds[] = $issue['id'];
 
-        if ($childrenIssue) {
-            echo '<table width="100%" cellpadding="0px" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-            require '_parent_issue_box.php.tpl';
-            AgileBoard::renderIssues($childrenIssue, $columns, $index);
-            echo '</table>';
+        if ($strategyIssue) {
+
+            require '_strategy_body.php';
+            $index++;
+
+//            echo '<table width="100%" cellpadding="0px" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
+//            require '_parent_story_box.php';
+//            AgileBoard::renderIssues($childrenIssue, $columns, $index);
+//            echo '</table>';
             $index++;
         }
     }

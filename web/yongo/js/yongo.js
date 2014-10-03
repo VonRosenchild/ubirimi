@@ -142,6 +142,7 @@ function updateIssueAgileElementMetaData(param) {
                                             if (window.File && window.FileList && window.FileReader) {
                                                 initializaFileUpload(parentId);
                                             }
+                                            $('.select2Input').select2();
                                         });
 
                                     } else {
@@ -504,6 +505,7 @@ $('document').ready(function () {
                                                     if (window.File && window.FileList && window.FileReader) {
                                                         initializaFileUpload(issueId);
                                                     }
+                                                    $('.select2Input').select2();
                                                 });
                                             } else {
                                                 doTransitionWithoutScreen(issueId, stepIdFrom, stepIdTo, workflowId, updateIssueAgileElementMetaData, [issueDraggableElement, stepIdTo, columnId, indexSection, parentId, issueId]);
