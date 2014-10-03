@@ -17,6 +17,9 @@ if (file_exists('announce_payment.lock')) {
 
 require_once __DIR__ . '/../web/bootstrap_cli.php';
 
+/*
+ * this cronjob sends an email to the client notifying him that an invoice has been generated.
+ */
 $clients = Client::getCurrentMonthAndDayPayingCustomers();
 /**
  * send the email to every client administrator

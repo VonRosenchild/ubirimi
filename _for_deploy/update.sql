@@ -23,13 +23,14 @@ ALTER TABLE  `client` ADD  `paymill_id` VARCHAR( 250 ) NULL AFTER  `sys_country_
 
 ALTER TABLE `client` ADD `vat_number` VARCHAR(50) NULL AFTER `district`;
 
+ALTER TABLE  `general_invoice` CHANGE  `general_payment_id`  `client_id` BIGINT( 20 ) UNSIGNED NOT NULL;
 ALTER TABLE  `general_invoice` ADD  `amount` BIGINT UNSIGNED NOT NULL AFTER  `client_id`;
 
 ALTER TABLE  `general_invoice` ADD  `email_sent_flag` TINYINT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `number`;
 
 drop TABLE general_payment;
 
-ALTER TABLE  `general_invoice` CHANGE  `general_payment_id`  `client_id` BIGINT( 20 ) UNSIGNED NOT NULL;
+
 
 ALTER TABLE  `cal_event_repeat` ADD  `end_after_occurrences` INT UNSIGNED NULL AFTER  `repeat_every`;
 

@@ -14,6 +14,10 @@ if (file_exists('generate_invoice.lock')) {
 
 require_once __DIR__ . '/../web/bootstrap_cli.php';
 
+/*
+ * this cronjob generates a pdf invoice for every paying client
+ */
+
 $clients = Client::getAll();
 
 $invoiceUtil = new \Ubirimi\InvoiceUtil();
