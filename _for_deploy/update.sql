@@ -1,34 +1,17 @@
-CREATE TABLE `filter_favourite` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `filter_id` bigint(20) unsigned NOT NULL,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `filter_subscription` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `filter_id` bigint(20) unsigned NOT NULL,
-  `user_created_id` bigint(20) unsigned NOT NULL,
-  `user_id` bigint(20) unsigned DEFAULT NULL,
-  `group_id` bigint(20) unsigned DEFAULT NULL,
-  `period` varchar(200) NOT NULL,
-  `email_when_empty_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `date_created` datetime NOT NULL,
-  `date_updated` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+====================== rulate pe live===========================
+
+ALTER TABLE  `general_invoice` ADD  `email_sent_flag` TINYINT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `number`;
+
+
+ALTER TABLE  `general_invoice` ADD  `amount` BIGINT UNSIGNED NOT NULL AFTER  `client_id`;
+
+ALTER TABLE  `general_invoice` CHANGE  `general_payment_id`  `client_id` BIGINT( 20 ) UNSIGNED NOT NULL;
 
 ALTER TABLE  `client` ADD  `paymill_id` VARCHAR( 250 ) NULL AFTER  `sys_country_id`;
 
 ALTER TABLE `client` ADD `vat_number` VARCHAR(50) NULL AFTER `district`;
-
-ALTER TABLE  `general_invoice` CHANGE  `general_payment_id`  `client_id` BIGINT( 20 ) UNSIGNED NOT NULL;
-ALTER TABLE  `general_invoice` ADD  `amount` BIGINT UNSIGNED NOT NULL AFTER  `client_id`;
-
-ALTER TABLE  `general_invoice` ADD  `email_sent_flag` TINYINT UNSIGNED NOT NULL DEFAULT  '0' AFTER  `number`;
-
-drop TABLE general_payment;
 
 ALTER TABLE  `cal_event_repeat` ADD  `end_after_occurrences` INT UNSIGNED NULL AFTER  `repeat_every`;
 
@@ -40,8 +23,14 @@ VALUES (
   '2',  'weekly'
 );
 
+drop TABLE general_payment;
+
+
 ALTER TABLE `qn_tag` ADD `description` VARCHAR(255) NOT NULL AFTER `name`;
 ALTER TABLE `qn_tag` ADD `date_updated` DATETIME NOT NULL AFTER `date_created`;
+
+
+
 
 CREATE TABLE IF NOT EXISTS `qn_notebook` (
   `id` bigint(20) unsigned NOT NULL,
@@ -147,8 +136,27 @@ MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 ALTER TABLE `qn_tag`
 MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 
+CREATE TABLE `filter_favourite` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `filter_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `date_created` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-====================== rulate pe live===========================
+CREATE TABLE `filter_subscription` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `filter_id` bigint(20) unsigned NOT NULL,
+  `user_created_id` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `group_id` bigint(20) unsigned DEFAULT NULL,
+  `period` varchar(200) NOT NULL,
+  `email_when_empty_flag` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
 ALTER TABLE `client` ADD `is_payable` INT NOT NULL DEFAULT '1' AFTER `last_login`;
 
 UPDATE  `yongo_issue_sla` SET  `help_sla_goal_id` = NULL ,
