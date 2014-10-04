@@ -23,66 +23,32 @@ require_once __DIR__ . '/../web/bootstrap_cli.php';
 $clients = Client::getCurrentMonthAndDayPayingCustomers();
 /**
  * send the email to every client administrator
- * also send the email to the company contact email address.
- * if this address is the same with one of the client administrators then do not send it again
 */
 
 while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
     $clientId = $client['id'];
-
-    $emailSubject = 'Ubirimi - Invoice UBR ' . $client['invoice_nr'];
-
-    $clientAdministrators = Client::getAdministrators($client['id']);
-
-    $clientAdministratorsEmailAddresses = array();
+    $emailSubject = 'Ubirimi - Invoice UBR ' . $client['invoice_number'];
     $mailer = Util::getUbirmiMailer('contact');
+    $clientAdministrators = Client::getAdministrators($clientId);
+    $clientAdministrator = $clientAdministrators->fetch_array(MYSQLI_ASSOC);
+    $emailBody = Util::getTemplate('_announce_payment.php', array(
+        'clientAdministrator' => $clientAdministrator['first_name'] . ' ' . $clientAdministrator['last_name'],
+        'clientDomain' => $client['company_domain'],
+        'invoiceNumber' => $client['invoice_number'],
+        'invoiceAmount' => $client['invoice_amount'])
+    );
 
-    while ($clientAdministrators && $clientAdministrator = $clientAdministrators->fetch_array(MYSQLI_ASSOC)) {
-        $clientAdministratorsEmailAddresses[] = $clientAdministrator['email'];
+    $message = Swift_Message::newInstance($emailSubject)
+        ->setFrom(array('contact@ubirimi.com'))
+        ->setTo($client['contact_email'])
+        ->setSubject($emailSubject)
+        ->setBody($emailBody, 'text/html')
+        ->attach(Swift_Attachment::fromPath(UbirimiContainer::get()['invoice.path'] . '/' . sprintf('Ubirimi_%d.pdf', $client['invoice_number'])));
 
-        $emailBody = Util::getTemplate('_announce_payment.php', array(
-            'clientAdministrator' => $clientAdministrator['first_name'] . ' ' . $clientAdministrator['last_name'],
-            'clientDomain' => $client['company_domain'],
-            'invoiceNumber' => $client['invoice_nr'],
-            'invoiceAmount' => $client['invoice_amount'])
-        );
-
-        $message = Swift_Message::newInstance($emailSubject)
-            ->setFrom(array('contact@ubirimi.com'))
-            ->setTo($clientAdministrator['email'])
-            ->setSubject($emailSubject)
-            ->setBody($emailBody, 'text/html')
-            ->attach(Swift_Attachment::fromPath(UbirimiContainer::get()['invoice.path'] . '/' . sprintf('Ubirimi_%d.pdf', $client['invoice_nr'])));
-
-        try {
-            $mailer->send($message);
-        } catch (Exception $e) {
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $client['id'], 'Could not send announce payment email', Util::getServerCurrentDateTime());
-        }
-    }
-
-    // send the email also to the client company contact email address if necessary
-    if (!in_array($client['contact_email'], $clientAdministratorsEmailAddresses)) {
-
-        $emailBody = Util::getTemplate('_announce_payment.php', array(
-            'clientAdministrator' => $client['company_domain'],
-            'clientDomain' => $client['company_domain'],
-            'invoiceNumber' => $client['invoice_nr'],
-            'invoiceAmount' => $client['invoice_amount'])
-        );
-
-        $message = Swift_Message::newInstance($emailSubject)
-            ->setFrom(array('contact@ubirimi.com'))
-            ->setTo($client['contact_email'])
-            ->setSubject($emailSubject)
-            ->setBody($emailBody, 'text/html')
-            ->attach(Swift_Attachment::fromPath(UbirimiContainer::get()['invoice.path'] . '/' . sprintf('Ubirimi_%d.pdf', $client['invoice_nr'])));
-
-        try {
-            $mailer->send($message);
-        } catch (Exception $e) {
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $client['id'], 'Could not send announce payment email', Util::getServerCurrentDateTime());
-        }
+    try {
+        $mailer->send($message);
+    } catch (Exception $e) {
+        Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $client['id'], 'Could not send announce payment email', Util::getServerCurrentDateTime());
     }
 }
 

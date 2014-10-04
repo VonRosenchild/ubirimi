@@ -1816,14 +1816,14 @@ class Client
                          client.contact_email,
                          client.base_url,
                          client.id,
-                         general_invoice.nr as invoice_number,
+                         general_invoice.number as invoice_number,
                          general_invoice.amount as invoice_amount
                     FROM client
                     left join general_invoice on general_invoice.client_id = client.id
                     WHERE general_invoice.client_id is not null
                     and DAY(general_invoice.date_created) = DAY(NOW())
                     and MONTH(general_invoice.date_created) = MONTH(NOW())
-                    AND YEAR(general_invoice.date_created) = YEAR(NOW()))";
+                    AND YEAR(general_invoice.date_created) = YEAR(NOW())";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();
