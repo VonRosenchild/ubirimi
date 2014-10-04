@@ -982,8 +982,8 @@ $('document').ready(function () {
             if (window.File && window.FileList && window.FileReader) {
                 initializaFileUpload(issueId);
             }
-            $(".select2Input").select2();
-            $(".select2InputMedium").select2();
+            $(".ui-dialog-content .select2Input").select2();
+            $(".ui-dialog-content .select2InputMedium").select2();
         });
     });
 
@@ -1920,8 +1920,8 @@ $('document').ready(function () {
         $("#modalLinkIssue").load("/yongo/issue/link-dialog/" + projectId + '/' + issueId + '/' + linkPossible, [], function () {
             $("#modalLinkIssue").dialog(options);
             $("#modalLinkIssue").dialog("open");
-            $(".select2Input").select2();
-            $(".select2InputSmall").select2();
+            $(".ui-dialog-content .select2Input").select2();
+            $(".ui-dialog-content .select2InputSmall").select2();
         });
     });
 
@@ -2042,7 +2042,7 @@ $('document').ready(function () {
         $("#modalEditIssueAssign").load("/yongo/issue/assign-dialog/" + issueId + '/' + projectId, [], function () {
             $("#modalEditIssueAssign").dialog(options);
             $("#modalEditIssueAssign").dialog("open");
-            $(".select2InputMedium").select2();
+            $(".ui-dialog-content .select2InputMedium").select2();
         });
     }
 
@@ -3350,8 +3350,8 @@ $('document').ready(function () {
         $("#modalChangePreferences").load("/user/update-preferences-dialog/" + userId, [], function () {
             $("#modalChangePreferences").dialog(options);
             $("#modalChangePreferences").dialog("open");
-            $('.select2InputSmall').select2();
-            $('.select2InputMedium').select2();
+            $('.ui-dialog-content .select2InputSmall').select2();
+            $('.ui-dialog-content .select2InputMedium').select2();
         });
     });
 
@@ -3491,7 +3491,7 @@ $('document').ready(function () {
         $("#modalShareIssue").load("/yongo/issue/share-dialog/" + issueId, [], function () {
             $("#modalShareIssue").dialog(options);
             $("#modalShareIssue").dialog("open");
-            $(".select2Input").select2();
+            $(".ui-dialog-content .select2Input").select2();
         });
     });
 
@@ -3572,7 +3572,7 @@ $('document').ready(function () {
 
             addFilterSubscriptionModal.dialog(options);
             addFilterSubscriptionModal.dialog("open");
-            $('.select2Input').select2();
+            $('.ui-dialog-content .select2Input').select2();
         });
     }
 

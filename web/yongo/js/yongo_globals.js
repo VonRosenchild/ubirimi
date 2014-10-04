@@ -100,7 +100,7 @@ function createSubtask(issueId, projectId, onSuccess) {
             var modalAddSubTask = $("#modalAddSubTask");
             modalAddSubTask.dialog('destroy');
             modalAddSubTask.empty();
-            $(".select2Input").select2();
+            $(".ui-dialog-content .select2Input").select2();
         }
     };
 
@@ -110,7 +110,7 @@ function createSubtask(issueId, projectId, onSuccess) {
 
         // call initialization file
         if (window.File && window.FileList && window.FileReader) {
-            $(".select2Input").select2();
+            $(".ui-dialog-content .select2Input").select2();
             if ($("#field_type_component").children().length) {
                 $("#field_type_component").select2();
                 $("#field_type_component").change(function() {
@@ -266,8 +266,8 @@ function editIssue(issueId) {
         $("#modalEditIssue").dialog(options);
         $("#modalEditIssue").dialog("open");
 
-        $(".select2Input").select2();
-        $(".select2InputMedium").select2();
+        $(".ui-dialog-content .select2Input").select2();
+        $(".ui-dialog-content .select2InputMedium").select2();
 
         $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
             $(this).text($(this).text().replace(/^\s+/,""));
@@ -327,8 +327,8 @@ function createIssue(message) {
 
             applyStylesDialog();
 
-            $(".select2Input").select2();
-            $(".select2InputMedium").select2();
+            $(".ui-dialog-content .select2Input").select2();
+            $(".ui-dialog-content .select2InputMedium").select2();
 
             if ($("#field_type_component").children().length) {
                 $("#field_type_component").select2();
