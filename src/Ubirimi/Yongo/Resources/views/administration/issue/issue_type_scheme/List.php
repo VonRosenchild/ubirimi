@@ -39,12 +39,12 @@
                     <tbody>
                         <?php while ($scheme = $issueTypeSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                             <tr id="table_row_<?php echo $scheme['id'] ?>">
-                                <td style="vertical-align: top">
+                                <td>
                                     <input type="checkbox" value="1" id="el_check_<?php echo $scheme['id'] ?>" />
                                     <?php echo $scheme['name'] ?>
                                     <div class="smallDescription" style="padding-left: 25px;"><?php echo $scheme['description'] ?></div>
                                 </td>
-                                <td style="vertical-align: top">
+                                <td>
                                     <?php
                                         $dataIssueTypeScheme = IssueTypeScheme::getDataById($scheme['id']);
                                         if ($dataIssueTypeScheme) {
@@ -57,7 +57,7 @@
                                         }
                                     ?>
                                 </td>
-                                <td valign="top">
+                                <td>
                                     <?php
                                         $projects = Project::getByIssueTypeScheme($scheme['id']);
                                         if ($projects) {
