@@ -108,4 +108,7 @@
         $extraParametersURL = implode('&', $extraParameters);
     }
 
+    $urlIssuePrefix = '/yongo/issue/';
+    $selectedProductId = $session->get('selected_product_id');
+
     require_once __DIR__ . '/../../Resources/views/issue/search/Search.php';

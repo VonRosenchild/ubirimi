@@ -61,6 +61,7 @@ foreach ($usersToNotify as $user) {
         $subject,
         Util::getTemplate('_filterSubscription.php', array(
                 'issues' => $issues,
+                'userId' => $user['id'],
                 'client_domain' => $client['company_domain'])
         ),
         Util::getServerCurrentDateTime());

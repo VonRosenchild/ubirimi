@@ -81,6 +81,8 @@ class ListIssueController extends UbirimiController
             $columns[] = '';
         }
 
+        $selectedProductId = $session->get('selected_product_id');
+
         return $this->render(__DIR__ . '/../../Resources/views/customer_portal/ListIssue.php', get_defined_vars());
     }
 }

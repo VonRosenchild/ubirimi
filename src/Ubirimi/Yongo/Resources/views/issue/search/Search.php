@@ -94,8 +94,8 @@
                     </td>
                     <td width="80%" valign="top">
                         <?php
-                            $urlIssuePrefix = '/yongo/issue/';
-                            require_once __DIR__ . '/_listResult.php'
+
+                            require_once __DIR__ . '/_listResult.php';
                         ?>
                     </td>
                 </tr>

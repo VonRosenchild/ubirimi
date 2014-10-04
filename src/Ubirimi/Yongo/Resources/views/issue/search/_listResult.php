@@ -6,7 +6,6 @@
     use Ubirimi\Yongo\Repository\Issue\Issue;
 
     $arrayIds = array();
-    $selectedProductId = $session->get('selected_product_id');
 ?>
     <div class="pageContent" style="margin: 0px; border-radius: 0px;">
     <?php if (isset($issuesCount) && $issuesCount > 0): ?>
