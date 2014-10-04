@@ -46,7 +46,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <?php echo Util::getFormattedDate($page['date_created']) ?>
+                                    <?php echo Util::getFormattedDate($page['date_created'], $clientSettings['timezone']) ?>
                                 </td>
                                 <td>
                                     <?php echo LinkHelper::getUserProfileLink($page['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $page['first_name'], $page['last_name']) ?>
@@ -63,7 +63,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <?php echo Util::getFormattedDate($page['date_created']) ?>
+                                        <?php echo Util::getFormattedDate($page['date_created'], $clientSettings['timezone']) ?>
                                     </td>
                                     <td>
                                         <?php echo LinkHelper::getUserProfileLink($revision['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $page['first_name'], $page['last_name']) ?>

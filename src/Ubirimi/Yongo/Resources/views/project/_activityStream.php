@@ -53,7 +53,7 @@
 
                                 <?php endforeach ?>
 
-                                <div><?php echo Util::getFormattedDate($dateEvent) ?> &nbsp; <a href="#" id="add_project_history_comment_<?php echo $eventDatas[0]['issue_id'] . '_' . $index ?>">Comment</a></div>
+                                <div><?php echo Util::getFormattedDate($dateEvent, $clientSettings['timezone']) ?> &nbsp; <a href="#" id="add_project_history_comment_<?php echo $eventDatas[0]['issue_id'] . '_' . $index ?>">Comment</a></div>
                                 <div id="project_history_comment_<?php echo $eventDatas[0]['issue_id'] ?>_<?php echo $index ?>"></div>
                                 <div style="width: 100%; height: 1px; display: block" class="sectionDetail"></div>
                             <?php endforeach ?>

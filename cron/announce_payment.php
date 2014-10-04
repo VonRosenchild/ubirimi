@@ -7,7 +7,7 @@ use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
 /* check locking mechanism */
-if (file_exists('announce_payment.lock')) {
+if (file_exists(__DIR__ . '/announce_payment.lock')) {
     $fp = fopen('announce_payment.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
         echo "Unable to obtain lock for announce_payment task.\n";

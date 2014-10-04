@@ -168,14 +168,11 @@ class Util {
         return preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $email);
     }
 
-    public static function getFormattedDate($date) {
-
-        $clientTimezone = UbirimiContainer::get()['session']->get('client/settings/timezone');
-
+    public static function getFormattedDate($date, $timezone) {
         $dateObject = new \DateTime($date, new \DateTimeZone(date_default_timezone_get()));
 
-        if ($clientTimezone) {
-            $dateObject->setTimezone(new \DateTimeZone($clientTimezone));
+        if ($timezone) {
+            $dateObject->setTimezone(new \DateTimeZone($timezone));
         }
 
         return $dateObject->format('j M Y H:i:s');
@@ -648,7 +645,7 @@ class Util {
         return $content;
     }
 
-    public static function renderIssueTables($params, $columns) {
+    public static function renderIssueTables($params, $columns, $clientSettings) {
         $htmlOutput = '';
         $htmlOutput .= '<div>';
         $issues = $params['issues'];
@@ -706,11 +703,11 @@ class Util {
                     if ($columns[$indexColumn] == 'status')
                         $htmlOutput .= '<td class=" issueStatus">' . $issue['status_name'] . '</td>';
                     if ($columns[$indexColumn] == 'date_created')
-                        $htmlOutput .= '<td class="issueDC">' . Util::getFormattedDate($issue['date_created']) . "</td>\n";
+                        $htmlOutput .= '<td class="issueDC">' . Util::getFormattedDate($issue['date_created'], $clientSettings['timezone']) . "</td>\n";
                     if ($columns[$indexColumn] == 'date_updated') {
                         $htmlOutput .= '<td class="issueDU">';
                         if ($issue['date_updated'])
-                            $htmlOutput .= Util::getFormattedDate($issue['date_updated']);
+                            $htmlOutput .= Util::getFormattedDate($issue['date_updated'], $clientSettings['timezone']);
                         $htmlOutput .= '</td>';
                     }
                     if ($columns[$indexColumn] == 'reporter')
@@ -729,10 +726,8 @@ class Util {
                         $htmlOutput .= '<td>' . $issue['date_created'] . '</td>';
                     }
                 }
-
                 $htmlOutput .= '</tr>';
             }
-
             $htmlOutput .= '</table>';
         }
         $htmlOutput .= '</div>';

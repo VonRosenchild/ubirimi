@@ -18,9 +18,11 @@ class ListPagesController extends UbirimiController
     {
         if (Util::checkUserIsLoggedIn()) {
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+            $clientSettings = $session->get('client/settings');
         } else {
             $httpHOST = Util::getHttpHost();
             $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientSettings = Client::getSettings($clientId);
             $loggedInUserId = null;
         }
 

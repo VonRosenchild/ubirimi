@@ -25,6 +25,7 @@ class PrintController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
             $issue = Issue::getById($Id, $loggedInUserId);
             $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'];
+            $clientSettings = $session->get('client/settings');
         } else {
             $httpHOST = Util::getHttpHost();
             $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');

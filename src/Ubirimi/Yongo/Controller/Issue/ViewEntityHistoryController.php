@@ -8,10 +8,12 @@
 
     if (Util::checkUserIsLoggedIn()) {
         $yongoSettings = $session->get('yongo/settings');
+        $clientId = $session->get('client/id');
+        $clientSettings = $session->get('client/settings');
     } else {
         $httpHOST = Util::getHttpHost();
         $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-
+        $clientSettings = Client::getSettings($clientId);
         $yongoSettings = Client::getYongoSettings($clientId);
     }
 
@@ -44,7 +46,7 @@
                         <span style="top: 24px; vertical-align: middle; display: table-cell">
                             <img src="/img/small_user.png" height="20px" style="vertical-align: middle" />
                             <span style="vertical-align: bottom;">
-                                <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?> made the following changes <?php echo Util::getFormattedDate($row['date_created']) ?>
+                                <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?> made the following changes <?php echo Util::getFormattedDate($row['date_created'], $clientSettings['timezone']) ?>
                             </span>
                         </span>
 

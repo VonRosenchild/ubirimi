@@ -44,7 +44,7 @@
             <?php
                 $renderParameters = array('issues' => $issues, 'render_checkbox' => false, 'show_header' => true);
                 $renderColumns = array('code', 'summary', 'priority', 'assignee', 'reporter', 'created');
-                $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns);
+                $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns, $clientSettings);
             ?>
             <?php if ($issuesResult[1] > 10): ?>
                 <a href="/yongo/issue/search?project=<?php echo $projectId ?>&version=<?php echo $versionId ?>&resolution=-2">View All Issues</a>
@@ -62,7 +62,7 @@
             <?php
                 $renderParameters = array('issues' => $issuesUpdatedRecently, 'render_checkbox' => false, 'show_header' => true);
                 $renderColumns = array('code', 'summary', 'priority', 'assignee', 'reporter', 'updated');
-                $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns);
+                $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns, $clientSettings);
             ?>
             <?php if ($issuesResultUpdatedRecently[1] > 10): ?>
                 <a href="/yongo/issue/search?project=<?php echo $projectId ?>&version=<?php echo $versionId ?>&resolution=-2&sort=updated&order=desc">View All Issues</a>

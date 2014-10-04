@@ -53,7 +53,7 @@
                                 <?php echo LinkHelper::getUserProfileLink($space['user_created_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $space['first_name'], $space['last_name']) ?>
                             </td>
                             <td>
-                                <?php echo Util::getFormattedDate($space['date_created']) ?>
+                                <?php echo Util::getFormattedDate($space['date_created'], $clientSettings['timezone']) ?>
                             </td>
                             <?php if (Util::checkUserIsLoggedIn()): ?>
                                 <td width="150px" align="center">

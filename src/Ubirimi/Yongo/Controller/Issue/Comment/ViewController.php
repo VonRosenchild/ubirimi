@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Issue\Comment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Permission\Permission;
@@ -18,6 +19,11 @@ class ViewController extends UbirimiController
 
         if (false === Util::checkUserIsLoggedIn()) {
             $loggedInUserId = null;
+            $httpHOST = Util::getHttpHost();
+            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientSettings = Client::getSettings($clientId);
+        } else {
+            $clientSettings = $session->get('client/settings');
         }
 
         $projectData = Project::getByIssueId($Id);

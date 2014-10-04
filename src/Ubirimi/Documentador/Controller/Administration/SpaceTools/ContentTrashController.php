@@ -1,18 +1,20 @@
 <?php
-    use Ubirimi\Repository\Documentador\Space;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $menuSelectedCategory = 'doc_spaces';
+use Ubirimi\Repository\Documentador\Space;
+use Ubirimi\Util;
 
-    $spaceId = $_GET['id'];
-    $space = Space::getById($spaceId);
+Util::checkUserIsLoggedInAndRedirect();
+$menuSelectedCategory = 'doc_spaces';
 
-    if ($space['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
+$spaceId = $_GET['id'];
+$space = Space::getById($spaceId);
 
-    $deletedPages = Space::getDeletedPages($spaceId);
+if ($space['client_id'] != $clientId) {
+    header('Location: /general-settings/bad-link-access-denied');
+    die();
+}
+$clientSettings = \Ubirimi\Repository\Client::getSettings($clientId);
 
-    require_once __DIR__ . '/../../../Resources/views/administration/spacetools/ContentTrash.php';
+$deletedPages = Space::getDeletedPages($spaceId);
+
+require_once __DIR__ . '/../../../Resources/views/administration/spacetools/ContentTrash.php';

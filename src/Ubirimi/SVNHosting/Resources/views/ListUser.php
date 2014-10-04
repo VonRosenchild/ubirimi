@@ -31,7 +31,7 @@
                         <td><?php echo $repo['code']; ?></td>
                         <td><?php echo $repo['description']; ?></td>
                         <td><?php echo LinkHelper::getUserProfileLink($repo['user_created_id'], SystemProduct::SYS_PRODUCT_YONGO, $repo['first_name'], $repo['last_name']); ?></td>
-                        <td><?php echo Util::getFormattedDate($repo['date_created']) ?></td>
+                        <td><?php echo Util::getFormattedDate($repo['date_created'], $clientSettings['timezone']) ?></td>
                     </tr>
                 <?php endforeach ?>
                 </tbody>

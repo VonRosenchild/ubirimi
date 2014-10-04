@@ -37,13 +37,13 @@
                     <tr>
                         <td>
                             <?php if ($activity['action'] == 'created'): ?>
-                                <?php echo LinkHelper::getDocumentatorPageLink($activity['id'], $activity['name']) . ' created on ' . Util::getFormattedDate($activity['date']) ?>
+                                <?php echo LinkHelper::getDocumentatorPageLink($activity['id'], $activity['name']) . ' created on ' . Util::getFormattedDate($activity['date'], $clientSettings['timezone']) ?>
                             <?php elseif ($activity['action'] == 'created_space'): ?>
-                                <a href="/documentador/pages/<?php echo $activity['id'] ?>"><?php echo $activity['name'] ?></a> created on <?php echo Util::getFormattedDate($activity['date']) ?>
+                                <a href="/documentador/pages/<?php echo $activity['id'] ?>"><?php echo $activity['name'] ?></a> created on <?php echo Util::getFormattedDate($activity['date'], $clientSettings['timezone']) ?>
                             <?php elseif ($activity['action'] == 'edited'): ?>
-                                <?php echo LinkHelper::getDocumentatorPageLink($activity['id'], $activity['name']) . ' updated on ' . Util::getFormattedDate($activity['date']) ?>
+                                <?php echo LinkHelper::getDocumentatorPageLink($activity['id'], $activity['name']) . ' updated on ' . Util::getFormattedDate($activity['date'], $clientSettings['timezone']) ?>
                             <?php elseif ($activity['action'] == 'comment'): ?>
-                                <?php echo LinkHelper::getDocumentatorPageLink($activity['id'], $activity['name']) . ' commented on ' . Util::getFormattedDate($activity['date']) ?>
+                                <?php echo LinkHelper::getDocumentatorPageLink($activity['id'], $activity['name']) . ' commented on ' . Util::getFormattedDate($activity['date'], $clientSettings['timezone']) ?>
                             <?php endif ?>
                         </td>
                     </tr>

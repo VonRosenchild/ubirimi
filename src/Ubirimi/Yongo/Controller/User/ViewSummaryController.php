@@ -28,6 +28,7 @@ class ViewSummaryController extends UbirimiController
         if ($user['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
+        $clientSettings = Client::getSettings($session->get('client/id'));
 
         $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $stats = Statistic::getUnresolvedIssuesByProjectForUser($userId);
@@ -54,10 +55,11 @@ class ViewSummaryController extends UbirimiController
         while ($historyList && $history = $historyList->fetch_array(MYSQLI_ASSOC)) {
             $historyData[substr($history['date_created'], 0, 10)][$history['user_id']][$history['date_created']][] = $history;
             $userData[$history['user_id']] = array('picture' => $history['avatar_picture'],
-                'first_name' => $history['first_name'],
-                'last_name' => $history['last_name']);
+                                                   'first_name' => $history['first_name'],
+                                                   'last_name' => $history['last_name']);
         }
         $index = 0;
+        $startDate = date_sub(new \DateTime(Util::getServerCurrentDateTime(), new \DateTimeZone($clientSettings['timezone'])), date_interval_create_from_date_string('1 months'));
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / User: ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Profile';
 

@@ -110,5 +110,5 @@
 
     $urlIssuePrefix = '/yongo/issue/';
     $selectedProductId = $session->get('selected_product_id');
-
+    $cliMode = false;
     require_once __DIR__ . '/../../Resources/views/issue/search/Search.php';

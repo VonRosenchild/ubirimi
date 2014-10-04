@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Repository\Client;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,7 +19,7 @@ class PlanController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-
+        $clientSettings = Client::getSettings($session->get('client/id'));
         $boardId = $request->get('id');
         $searchQuery = $request->get('q');
         $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;

@@ -20,7 +20,7 @@ class IndexController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
             $clientId = $session->get('client/id');
             $issuesPerPage = $session->get('user/issues_per_page');
-            $clientSettings = $session->get('client/settings');;
+            $clientSettings = $session->get('client/settings');
         } else {
             $clientId = Client::getClientIdAnonymous();
             $issuesPerPage = 25;

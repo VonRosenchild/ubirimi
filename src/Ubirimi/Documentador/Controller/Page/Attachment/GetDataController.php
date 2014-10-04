@@ -12,6 +12,7 @@
     $entity = Entity::getById($attachment['documentator_entity_id']);
     $spaceId = $entity['space_id'];
     $revisions = Entity::getRevisionsByAttachmentId($attachmentId);
+    $clientSettings = $session->get('client/settings');
 
     $index = 0;
     echo '<td></td>';
@@ -33,7 +34,7 @@
                         echo 'Modified by ';
                     echo LinkHelper::getUserProfileLink($revision['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $revision['first_name'], $revision['last_name']);
                     echo '</td>';
-                    echo '<td style="border: none;">' . Util::getFormattedDate($revision['date_created']) . '</td>';
+                    echo '<td style="border: none;">' . Util::getFormattedDate($revision['date_created'], $clientSettings['timezone']) . '</td>';
                 echo '</tr>';
                 $index++;
             }

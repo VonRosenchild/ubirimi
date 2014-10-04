@@ -70,7 +70,7 @@
                                                                 <?php echo LinkHelper::getUserProfileLink($page['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $page['first_name'], $page['last_name']) ?>
                                                             </td>
                                                             <td>
-                                                                <?php echo Util::getFormattedDate($page['date_created']) ?>
+                                                                <?php echo Util::getFormattedDate($page['date_created'], $clientSettings['timezone']) ?>
                                                             </td>
                                                         </tr>
                                                     <?php endwhile ?>

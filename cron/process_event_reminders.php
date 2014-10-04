@@ -6,7 +6,7 @@ use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Util;
 
 /* check locking mechanism */
-if (file_exists('process_event_reminders.lock')) {
+if (file_exists(__DIR__ . '/process_event_reminders.lock')) {
     $fp = fopen('process_event_reminders.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
         echo "Unable to obtain lock for process_event_reminders task.\n";

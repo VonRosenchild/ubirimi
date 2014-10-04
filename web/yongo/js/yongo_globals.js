@@ -267,6 +267,7 @@ function editIssue(issueId) {
         $("#modalEditIssue").dialog("open");
 
         $(".select2Input").select2();
+        $(".select2InputMedium").select2();
 
         $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
             $(this).text($(this).text().replace(/^\s+/,""));
@@ -327,6 +328,7 @@ function createIssue(message) {
             applyStylesDialog();
 
             $(".select2Input").select2();
+            $(".select2InputMedium").select2();
 
             if ($("#field_type_component").children().length) {
                 $("#field_type_component").select2();

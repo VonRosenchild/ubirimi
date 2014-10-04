@@ -25,6 +25,8 @@
         }
     }
 
+    $clientSettings = Client::getById($clientId);
+
     $userId = $_GET['id'];
     $user = User::getById($userId);
 

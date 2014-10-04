@@ -4,7 +4,7 @@ use Ubirimi\PaymentUtil;
 use Ubirimi\Repository\Client;
 
 /* check locking mechanism */
-if (file_exists('generate_invoice.lock')) {
+if (file_exists(__DIR__ .'/generate_invoice.lock')) {
     $fp = fopen('generate_invoice.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
         echo "Unable to obtain lock for generate_invoice task.\n";

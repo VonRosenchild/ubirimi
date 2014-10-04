@@ -14,7 +14,7 @@
             <div class="textLabel">Due:</div>
         </td>
         <td>
-            <?php if ($issue[Field::FIELD_DUE_DATE_CODE]) echo Util::getFormattedDate($issue[Field::FIELD_DUE_DATE_CODE]) ?>
+            <?php if ($issue[Field::FIELD_DUE_DATE_CODE]) echo Util::getFormattedDate($issue[Field::FIELD_DUE_DATE_CODE], $clientSettings['timezone']) ?>
         </td>
     </tr>
 
@@ -22,19 +22,19 @@
         <td width="120">
             <div class="textLabel">Created:</div>
         </td>
-        <td><?php if ($issue['date_created']) echo Util::getFormattedDate($issue['date_created']) ?></td>
+        <td><?php if ($issue['date_created']) echo Util::getFormattedDate($issue['date_created'], $clientSettings['timezone']) ?></td>
     </tr>
     <tr>
         <td>
             <div class="textLabel">Updated:</div>
         </td>
         <td><?php if ($issue['date_updated'])
-                echo Util::getFormattedDate($issue['date_updated']) ?></td>
+                echo Util::getFormattedDate($issue['date_updated'], $clientSettings['timezone']) ?></td>
     </tr>
     <tr>
         <td>
             <div class="textLabel">Resolved:</div>
         </td>
-        <td><?php if ($issue['date_resolved']) echo Util::getFormattedDate($issue['date_resolved']) ?></td>
+        <td><?php if ($issue['date_resolved']) echo Util::getFormattedDate($issue['date_resolved'], $clientSettings['timezone']) ?></td>
     </tr>
 </table>

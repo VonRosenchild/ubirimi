@@ -14,7 +14,7 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 /* check locking mechanism */
-if (file_exists('run_filter_subscription.lock')) {
+if (file_exists(__DIR__ . '/run_filter_subscription.lock')) {
     $fp = fopen('run_filter_subscription.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
         echo "Unable to obtain lock for run_filter_subscription task.\n";
@@ -36,6 +36,8 @@ foreach ($searchParametersInFilter as $searchParameter) {
 }
 $user = User::getById($filter['user_id']);
 $smtpSettings = SMTPServer::getByClientId($user['client_id']);
+$clientSettings = Client::getSettings($user['client_id']);
+
 $client = Client::getById($user['client_id']);
 $subject = $smtpSettings['email_prefix'] . " Filter - " . $filter['name'];
 
@@ -54,6 +56,8 @@ if ($filterSubscription['user_id']) {
 foreach ($usersToNotify as $user) {
     $issues = Issue::getByParameters($searchParameters, $filterSubscription['user_id'], null, $filterSubscription['user_id']);
 
+    $columns = explode('#', $user['issues_display_columns']);
+
     EmailQueue::add($user['client_id'],
         $smtpSettings['from_address'],
         $user['email'],
@@ -61,7 +65,12 @@ foreach ($usersToNotify as $user) {
         $subject,
         Util::getTemplate('_filterSubscription.php', array(
                 'issues' => $issues,
+                'searchParameters' => $searchParameters,
+                'clientSettings' => $clientSettings,
+                'columns' => $columns,
                 'userId' => $user['id'],
+                'clientId' => $user['client_id'],
+                'cliMode' => true,
                 'client_domain' => $client['company_domain'])
         ),
         Util::getServerCurrentDateTime());

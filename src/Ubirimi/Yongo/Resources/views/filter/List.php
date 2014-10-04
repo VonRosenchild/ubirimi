@@ -55,7 +55,7 @@ require_once __DIR__ . '/../_header.php';
                                 <div>None <a id="add_filter_subscription_<?php echo $filter['id'] ?>" href="#">Add</a></div>
                             <?php endif ?>
                         </td>
-                        <td><?php echo Util::getFormattedDate($filter['date_created']) ?></td>
+                        <td><?php echo Util::getFormattedDate($filter['date_created'], $clientSettings['timezone']) ?></td>
                         <?php if ($boards): ?>
                             <input type="hidden" value="0" id="delete_filter_possible_<?php echo $filter['id'] ?>" />
                         <?php else: ?>

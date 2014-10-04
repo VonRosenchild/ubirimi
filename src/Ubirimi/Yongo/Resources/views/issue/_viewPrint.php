@@ -41,7 +41,7 @@
                 <?php endif ?>
             </td>
             <td>Created on</td>
-            <td><?php echo Util::getFormattedDate($issue['date_created']) ?></td>
+            <td><?php echo Util::getFormattedDate($issue['date_created'], $clientSettings['timezone']) ?></td>
         </tr>
         <tr>
             <td>Type</td>
@@ -59,7 +59,7 @@
                 <?php endif ?>
             </td>
             <td>Updated on</td>
-            <td><?php echo Util::getFormattedDate($issue['date_updated']) ?></td>
+            <td><?php echo Util::getFormattedDate($issue['date_updated'], $clientSettings['timezone']) ?></td>
         </tr>
         <tr>
             <td>Status</td>
@@ -75,7 +75,7 @@
                 <?php endif ?>
             </td>
             <td>Resolved on</td>
-            <td><?php echo Util::getFormattedDate($issue['date_resolved']) ?></td>
+            <td><?php echo Util::getFormattedDate($issue['date_resolved'], $clientSettings['timezone']) ?></td>
         </tr>
         <tr>
             <td colspan="8">Description</td>

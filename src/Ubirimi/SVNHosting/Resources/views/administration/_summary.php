@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <td><span class="textLabel">Created at:</span></td>
-                    <td><?php echo Util::getFormattedDate($svnRepo['date_created']) ?></td>
+                    <td><?php echo Util::getFormattedDate($svnRepo['date_created'], $clientSettings['timezone'], $clientSettings['timezone']) ?></td>
                 </tr>
                 <tr>
                     <td><span class="textLabel">Code:</span></td>

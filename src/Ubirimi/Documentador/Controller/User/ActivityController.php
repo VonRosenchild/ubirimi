@@ -1,38 +1,39 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\Repository\Client;
+use Ubirimi\Repository\User\User;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    if (Util::checkUserIsLoggedIn()) {
+if (Util::checkUserIsLoggedIn()) {
+    $clientSettings = $session->get('client/settings');
+    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+} else {
+    $httpHOST = Util::getHttpHost();
+    $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+    $clientSettings = Client::getById($clientId);
+    $loggedInUserId = null;
 
-        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-    } else {
-        $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-        $loggedInUserId = null;
+    $settingsDocumentator = Client::getDocumentatorSettings($clientId);
 
-        $settingsDocumentator = Client::getDocumentatorSettings($clientId);
+    $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
+    $documentatorAnonymousViewUserProfiles = $settingsDocumentator['anonymous_view_user_profile_flag'];
 
-        $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
-        $documentatorAnonymousViewUserProfiles = $settingsDocumentator['anonymous_view_user_profile_flag'];
-
-        if (!($documentatorUseAnonymous && $documentatorAnonymousViewUserProfiles)) {
-            Util::signOutAndRedirect();
-            die();
-        }
-    }
-
-    $userId = $_GET['id'];
-    $user = User::getById($userId);
-    if ($user['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
+    if (!($documentatorUseAnonymous && $documentatorAnonymousViewUserProfiles)) {
+        Util::signOutAndRedirect();
         die();
     }
+}
 
-    $menuSelectedCategory = 'documentator';
+$userId = $_GET['id'];
+$user = User::getById($userId);
+if ($user['client_id'] != $clientId) {
+    header('Location: /general-settings/bad-link-access-denied');
+    die();
+}
 
-    $activities = User::getDocumentatorActivityStream($userId);
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Activity';
+$menuSelectedCategory = 'documentator';
 
-    require_once __DIR__ . '/../../Resources/views/user/Activity.php';
+$activities = User::getDocumentatorActivityStream($userId);
+$sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Activity';
+
+require_once __DIR__ . '/../../Resources/views/user/Activity.php';

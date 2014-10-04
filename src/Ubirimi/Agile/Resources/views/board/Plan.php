@@ -88,7 +88,7 @@
                                     $renderCheckboxDisabled = true;
 
                                     $params = array('issues' => $issues, 'render_checkbox' => true, 'checkbox_disabled' => $renderCheckboxDisabled, 'show_header' => false);
-                                    Util::renderIssueTables($params, $columns);
+                                    Util::renderIssueTables($params, $columns, $clientSettings);
                                 ?>
                             </div>
                         <?php endif ?>
@@ -130,7 +130,7 @@
                                         $renderCheckboxDisabled = true;
 
                                     $params = array('issues' => $issues, 'render_checkbox' => true, 'checkbox_disabled' => $renderCheckboxDisabled, 'show_header' => false);
-                                    Util::renderIssueTables($params, $columns);
+                                    Util::renderIssueTables($params, $columns, $clientSettings);
                                     echo '<div style="padding-bottom: 4px"></div>';
                                 } else {
                                     echo '<div class="messageGreen">There are no issues for this sprint.</div>';
@@ -142,7 +142,7 @@
                             $params = array('issues' => $issues, 'render_checkbox' => true, 'show_header' => false, 'in_backlog' => true);
                             echo '<div class="headerPageText" style="padding-bottom: 4px; padding-top: 4px">Backlog</div>';
                             if (isset($issues) && $issues->num_rows > 0) {
-                                Util::renderIssueTables($params, $columns);
+                                Util::renderIssueTables($params, $columns, $clientSettings);
                             } else {
                                 echo '<div class="messageGreen">There are no issues for the backlog.</div>';
                             }

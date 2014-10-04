@@ -20,7 +20,7 @@
                 </td>
                 <td valign="top" <?php if ($first) echo 'style="border-top: none;"' ?>>
                     <span>
-                        <?php echo LinkHelper::getUserProfileLink($comment['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $comment['first_name'], $comment['last_name']) ?> added a comment on <?php echo Util::getFormattedDate($comment['date_created']) ?>
+                        <?php echo LinkHelper::getUserProfileLink($comment['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $comment['first_name'], $comment['last_name']) ?> added a comment on <?php echo Util::getFormattedDate($comment['date_created'], $clientSettings['timezone']) ?>
                     </span>
                     <br />
                     <span><?php echo str_replace("\n", "<br />", htmlentities($comment['content'])) ?></span>

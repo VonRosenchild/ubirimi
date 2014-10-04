@@ -38,7 +38,7 @@
         <?php
             $renderParameters = array('issues' => $issues, 'show_header' => true, 'render_checkbox' => false, 'sorting' => false);
             $renderColumns = array('code', 'summary', 'assignee', 'reporter', 'priority', 'status', 'resolution', 'date_created', 'date_updated');
-            $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns);
+            $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns, $clientSettings);
         ?>
         <?php endif ?>
 

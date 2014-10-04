@@ -29,7 +29,7 @@
                             </td>
                             <td>
                                 <?php if ($event['date_from'] == $event['date_to']): ?>
-                                    <?php echo Util::getFormattedDate($event['date_from']) . ', all day'; ?>
+                                    <?php echo Util::getFormattedDate($event['date_from'], $clientSettings['timezone']) . ', all day'; ?>
                                 <?php else: ?>
                                     <?php echo $event['date_from'] . ' - ' . $event['date_to']; ?>
                                 <?php endif ?>

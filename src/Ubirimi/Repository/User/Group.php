@@ -141,7 +141,8 @@ class Group
     }
 
     public static function getDataByGroupId($groupId) {
-        $query = 'select group_data.id, group_data.user_id, user.first_name, user.last_name ' .
+        $query = 'select group_data.id, group_data.user_id, user.first_name, user.last_name, ' .
+                 'user.issues_display_columns ' .
             'from group_data ' .
             'left join user on user.id = group_data.user_id ' .
             'where group_data.group_id = ? ' .

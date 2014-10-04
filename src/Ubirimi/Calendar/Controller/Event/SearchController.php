@@ -16,8 +16,9 @@ class SearchController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
-        $menuSelectedCategory = 'calendars';
+        $clientSettings = $session->get('client/settings');
 
+        $menuSelectedCategory = 'calendars';
         $query = $request->get('search_query');
         $events = CalendarEvent::getByText($session->get('user/id'), $query);
 

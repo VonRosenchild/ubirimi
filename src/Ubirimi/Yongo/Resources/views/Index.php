@@ -56,7 +56,7 @@
 
                                     $renderParameters = array('issues' => $issues, 'render_checkbox' => false, 'show_header' => true);
                                     $renderColumns = array('code', 'summary', 'priority');
-                                    $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns);
+                                    $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns, $clientSettings);
                                     if (!$issuesRendered) {
                                         echo '<div style="padding: 8px;">There are no unresolved issues assigned to you.</div>';
                                     }

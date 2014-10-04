@@ -4,7 +4,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
-
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\EventListener\UbirimiKernelViewListener;
 use Ubirimi\UbirimiControllerResolver;

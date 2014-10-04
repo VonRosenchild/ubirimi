@@ -267,15 +267,15 @@
                                 case Field::CUSTOM_FIELD_TYPE_DATE_PICKER_CODE:
                                     $stringDate = '';
                                     if ($fieldValue['value'])
-                                        $stringDate = Util::getFormattedDate($fieldValue['value']);
-                                    echo '<input ' . $requiredHTML . ' value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
+                                        $stringDate = Util::getFormattedDate($fieldValue['value'], $clientSettings['timezone']);
+                                    echo '<input ' . $requiredHTML . ' class="inputText" value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE:
                                     $stringDate = '';
                                     if ($fieldValue['value'])
-                                        $stringDate = Util::getFormattedDate($fieldValue['value']);
-                                    echo '<input ' . $requiredHTML . ' value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
+                                        $stringDate = Util::getFormattedDate($fieldValue['value'], $clientSettings['timezone']);
+                                    echo '<input ' . $requiredHTML . ' class="inputText" value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
@@ -286,7 +286,7 @@
 
                                     $possibleValues = Field::getDataByFieldId($field['field_id']);
 
-                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                                     echo '<option value="">None</option>';
                                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
                                         $selectedHTML = '';

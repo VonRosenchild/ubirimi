@@ -17,7 +17,7 @@
             <?php
                 $renderParameters = array('issues' => $issuesUnresolvedOthers, 'render_checkbox' => false, 'show_header' => true);
                 $renderColumns = array('code', 'summary', 'priority', 'assignee');
-                $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns);
+                $issuesRendered = Util::renderIssueTables($renderParameters, $renderColumns, $clientSettings);
             ?>
             <?php if (!$issuesRendered): ?>
                 <div>There are no unresolved issues assigned to others than you.</div>

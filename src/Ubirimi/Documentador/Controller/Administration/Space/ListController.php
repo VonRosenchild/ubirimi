@@ -12,6 +12,7 @@
     } else {
         $spaces = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
     }
+    $clientSettings = $session->get('client/settings');
 
     $menuSelectedCategory = 'doc_spaces';
 

@@ -39,12 +39,12 @@
                         <tr>
                             <td id="svn_activity_stream">
                                 <?php
-                                $log = null;
-                                try {
-                                    $log = SVNLog::log(UbirimiContainer::get()['subversion.path'] . Util::slugify($session->get('client/company_domain')) . '/' . Util::slugify($svnRepo['name']));
-                                } catch (Exception $e) {
+                                    $log = null;
+                                    try {
+                                        $log = SVNLog::log(UbirimiContainer::get()['subversion.path'] . Util::slugify($session->get('client/company_domain')) . '/' . Util::slugify($svnRepo['name']));
+                                    } catch (Exception $e) {
 
-                                }
+                                    }
                                 ?>
 
                                 <table>

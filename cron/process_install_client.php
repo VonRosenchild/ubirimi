@@ -3,7 +3,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\GeneralTaskQueue;
 
 /* check locking mechanism */
-if (file_exists('process_install_client.lock')) {
+if (file_exists(__DIR__ . '/process_install_client.lock')) {
     $fp = fopen('process_install_client.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
         echo "Unable to obtain lock for process_install_client task.\n";

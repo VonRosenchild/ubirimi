@@ -10,15 +10,16 @@
     <div class="pageContent" style="margin: 0px; border-radius: 0px;">
     <?php if (isset($issuesCount) && $issuesCount > 0): ?>
 
-        <?php Util::renderPaginator($issuesCount, $issuesPerPage, $currentSearchPage, $getSearchParameters); ?>
-
+        <?php if ($cliMode == false): ?>
+            <?php Util::renderPaginator($issuesCount, $issuesPerPage, $currentSearchPage, $getSearchParameters); ?>
+        <?php endif ?>
         <table class="table table-hover table-condensed">
             <?php echo Util::renderTableHeader($getSearchParameters, $columns); ?>
             <?php while ($issue = $issues->fetch_array(MYSQLI_ASSOC)): ?>
                 <?php
                     $arrayIds[] = $issue['id'];
 
-                    $slaData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+                    $slaData = Issue::updateSLAValue($issue, $clientId, $clientSettings);
                 ?>
                 <tr>
                     <?php for ($i = 0; $i < count($columns); $i++): ?>
@@ -59,14 +60,14 @@
 
                         <?php if ($columns[$i] == 'created'): ?>
                             <td class="issueDC">
-                                <?php echo Util::getFormattedDate($issue['date_created']) ?>
+                                <?php echo Util::getFormattedDate($issue['date_created'], $clientSettings['timezone']) ?>
                             </td>
                         <?php endif ?>
 
                         <?php if ($columns[$i] == 'updated'): ?>
                             <td class="issueDU">
                                 <?php if ($issue['date_updated']): ?>
-                                    <?php echo Util::getFormattedDate($issue['date_updated']) ?>
+                                    <?php echo Util::getFormattedDate($issue['date_updated'], $clientSettings['timezone']) ?>
                                 <?php endif ?>
                             </td>
                         <?php endif ?>
@@ -103,7 +104,7 @@
                                 <?php endfor ?>
                             </td>
                         <?php endif ?>
-                        <?php if (Util::checkUserIsLoggedIn() && $columns[$i] == 'settings_menu'):  ?>
+                        <?php if ($columns[$i] == 'settings_menu' && Util::checkUserIsLoggedIn()):  ?>
                             <td width="20px" align="center">
                                 <img id="issue_search_<?php echo $issue['id'] ?>" width="20px" src="/img/settings.png" />
                             </td>
@@ -111,9 +112,10 @@
                     <?php endfor ?>
                 </tr>
             <?php endwhile ?>
-            <?php $session->set('array_ids', $arrayIds); ?>
-
-            <?php Util::renderPaginator($issuesCount, $issuesPerPage, $currentSearchPage, $getSearchParameters); ?>
+            <?php if ($cliMode == false): ?>
+                <?php $session->set('array_ids', $arrayIds); ?>
+                <?php Util::renderPaginator($issuesCount, $issuesPerPage, $currentSearchPage, $getSearchParameters); ?>
+            <?php endif ?>
         </table>
     <?php else: ?>
         <table>

@@ -4,7 +4,7 @@ use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Util;
 
 /* check locking mechanism */
-if (file_exists('process_mail_queue.lock')) {
+if (file_exists(__DIR__ . '/process_mail_queue.lock')) {
     $fp = fopen('process_mail_queue.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
         echo "Unable to obtain lock for process_mail_queue task.\n";

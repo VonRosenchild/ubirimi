@@ -4,6 +4,7 @@ namespace Ubirimi\Agile\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
@@ -19,6 +20,8 @@ class IssueDataController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
+        $clientSettings = Client::getSettings($session->get('client/id'));
         $issueId = $request->request->get('id');
         $close = $request->request->get('close', 0);
         $issueParameters = array('issue_id' => $issueId);

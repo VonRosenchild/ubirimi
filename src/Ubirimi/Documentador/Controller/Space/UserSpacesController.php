@@ -9,9 +9,11 @@
         $spaces = Space::getByClientId($clientId);
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';
+        $clientSettings = $session->get('client/settings');
     } else {
         $httpHOST = Util::getHttpHost();
         $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+        $clientSettings = Client::getSettings($clientId);
         $spaces = Space::getByClientIdAndAnonymous($clientId);
         $loggedInUserId = null;
         $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';

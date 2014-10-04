@@ -3,7 +3,7 @@
 use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 /* check locking mechanism */
-if (file_exists('update_filter_subscription.lock')) {
+if (file_exists(__DIR__ . '/update_filter_subscription.lock')) {
     $fp = fopen('update_filter_subscription.lock', 'w+');
     if (!flock($fp, LOCK_EX | LOCK_NB)) {
         echo "Unable to obtain lock for update_filter_subscription task.\n";
