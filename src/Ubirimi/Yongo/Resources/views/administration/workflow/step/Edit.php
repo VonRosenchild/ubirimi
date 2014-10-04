@@ -26,7 +26,7 @@
                 <tr>
                     <td>Linked Status</td>
                     <td>
-                        <select name="status" class="inputTextCombo">
+                        <select name="status" class="select2InputSmall">
                             <?php while ($status = $statuses->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($status['id'] == $step['linked_issue_status_id']) echo 'selected="selected"' ?> value="<?php echo $status['id'] ?>"><?php echo $status['name'] ?></option>
                             <?php endwhile ?>

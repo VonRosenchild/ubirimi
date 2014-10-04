@@ -28,7 +28,7 @@
                 <tr>
                     <td width="400">Notify users of their own changes?</td>
                     <td>
-                        <select class="select2InputSmall" style="width: 60px" name="notify_own_changes">
+                        <select class="select2InputSmall" style="width: 80px" name="notify_own_changes">
                             <option <?php if ($settings['notify_own_changes_flag']) echo 'selected="selected"' ?> value="1">YES</option>
                             <option <?php if (!$settings['notify_own_changes_flag']) echo 'selected="selected"' ?> value="0">NO</option>
                         </select>
