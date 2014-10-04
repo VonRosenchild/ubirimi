@@ -38,9 +38,17 @@
             <form name="from_work_distribution" method="post" action="/yongo/project/reports/<?php echo $projectId ?>/work-done-distribution/<?php echo $dateFrom ?>/<?php echo $dateTo ?>">
                 <span>Interval</span>
                 <span>From</span>
-                <input type="text" value="<?php echo $dateFrom ?>" style="width: 100px" class="filter-date-regular" name="filter_from_date" />
+                <input type="text"
+                       value="<?php echo $dateFrom ?>"
+                       style="width: 100px"
+                       class="filter-date-regular inputText"
+                       name="filter_from_date" />
                 <span>To</span>
-                <input type="text" value="<?php echo $dateTo ?>" style="width: 100px" class="filter-date-regular" name="filter_to_date" />
+                <input type="text"
+                       value="<?php echo $dateTo ?>"
+                       style="width: 100px"
+                       class="filter-date-regular inputText"
+                       name="filter_to_date" />
                 <input type="submit" value="Show Report" class="btn ubirimi-btn" name="filter" />
             </form>
         </div>

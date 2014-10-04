@@ -14,9 +14,18 @@
                 <tr>
                     <td valign="middle">
                         <span>From: </span>
-                        <input type="text" id="log_filter_from_date" style="width: 80px" value="<?php if (isset($from)) echo $from ?>" name="log_filter_from_date" />
+                        <input type="text"
+                               id="log_filter_from_date"
+                               class="inputText"
+                               style="width: 80px" value="<?php if (isset($from)) echo $from ?>"
+                               name="log_filter_from_date" />
                         <span>To: </span>
-                        <input type="text" id="log_filter_to_date" style="width: 80px" value="<?php if (isset($to)) echo $to ?>" name="log_filter_to_date" />
+                        <input type="text"
+                               id="log_filter_to_date"
+                               style="width: 80px"
+                               class="inputText"
+                               value="<?php if (isset($to)) echo $to ?>"
+                               name="log_filter_to_date" />
                         <a style="margin-top: -4px;" id="btnFilterLog" href="#" class="btn ubirimi-btn">Filter</a>
                     </td>
                 </tr>
