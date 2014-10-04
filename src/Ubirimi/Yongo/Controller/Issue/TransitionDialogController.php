@@ -174,14 +174,14 @@
                             $stringDate = '';
                             if ($fieldValue['value'])
                                 $stringDate = date('Y-m-d', strtotime($fieldValue['value']));
-                            $htmlOutput .= '<input ' . $requiredHTML . ' value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
+                            $htmlOutput .= '<input ' . $requiredHTML . ' value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" class="inputText" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
                             break;
 
                         case Field::CUSTOM_FIELD_TYPE_DATE_TIME_PICKER_CODE:
                             $stringDate = '';
                             if ($fieldValue['value'])
                                 $stringDate = date('Y-m-d H:i', strtotime($fieldValue['value']));
-                            $htmlOutput .= '<input ' . $requiredHTML . ' value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
+                            $htmlOutput .= '<input ' . $requiredHTML . ' value="' . $stringDate . '" name="' . $field['field_code'] . '" type="text" class="inputText" value="" id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" />';
                             break;
 
                         case Field::CUSTOM_FIELD_TYPE_NUMBER_CODE:
@@ -190,7 +190,7 @@
 
                         case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
                             $possibleValues = Field::getDataByFieldId($field['field_id']);
-                            $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap inputTextCombo">';
+                            $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                             $htmlOutput .= '<option value="">None</option>';
                             while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
                                 $htmlOutput .= '<option value="' . $customValue['id'] . '">' . $customValue['value'] . '</option>';

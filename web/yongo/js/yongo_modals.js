@@ -983,6 +983,7 @@ $('document').ready(function () {
                 initializaFileUpload(issueId);
             }
             $(".select2Input").select2();
+            $(".select2InputMedium").select2();
         });
     });
 

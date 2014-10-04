@@ -67,6 +67,8 @@ class ListIssueController extends UbirimiController
 
                     $issues = $issuesResult[0];
                     $issuesCount = $issuesResult[1];
+                    $issuesPerPage = $session->get('user/issues_per_page');
+                    $currentSearchPage = isset($_GET['page']) ? $_GET['page'] : 1;
                     $countPages = ceil($issuesCount / 30);
                     $getSearchParameters['count_pages'] = $countPages;
                     $getSearchParameters['link_to_page'] = '/helpdesk/customer-portal/tickets';
