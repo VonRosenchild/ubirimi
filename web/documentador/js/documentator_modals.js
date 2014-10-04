@@ -122,8 +122,9 @@ $('document').ready(function () {
     $('#btnRemoveRevision').on('click', function (event) {
         event.preventDefault();
 
-        if (selected_rows.length != 1)
+        if (selected_rows.length != 1) {
             return;
+        }
 
         var revisionId = selected_rows[0];
         var revisionNR = $('#revision_' + revisionId).val();
@@ -172,8 +173,9 @@ $('document').ready(function () {
     $('#btnRestoreRevision').on('click', function (event) {
         event.preventDefault();
 
-        if (selected_rows.length != 1)
+        if (selected_rows.length != 1) {
             return;
+        }
 
         var revisionId = selected_rows[0];
         var revisionNR = $('#revision_' + revisionId).val();
@@ -317,19 +319,22 @@ $('document').ready(function () {
         };
 
         var defaultSpaceId = $('#space_id').val();
-        if (defaultSpaceId == undefined)
-            defaultSpaceId = 0
+        if (defaultSpaceId == undefined) {
+            defaultSpaceId = 0;
+        }
         $("#modalNewPage").load("/documentador/new-page-dialog/" + defaultSpaceId, [], function () {
             $("#modalNewPage").dialog(options);
             $("#modalNewPage").dialog("open");
+            $('.select2InputMedium').select2();
         });
     });
 
     $('#btnDeleteGroupDocumentator').on('click', function (event) {
         event.preventDefault();
 
-        if (selected_rows.length != 1)
+        if (selected_rows.length != 1) {
             return;
+        }
 
         var groupId = selected_rows[0];
 
@@ -517,8 +522,9 @@ $('document').ready(function () {
     $('#btnPageRestore').on('click', function (event) {
         event.preventDefault();
 
-        if ($(this).hasClass('disabled'))
+        if ($(this).hasClass('disabled')) {
             return;
+        }
 
         var pageId = selected_rows[0];
 
@@ -567,8 +573,9 @@ $('document').ready(function () {
     $('#btnPagePurge').on('click', function (event) {
         event.preventDefault();
 
-        if ($(this).hasClass('disabled'))
+        if ($(this).hasClass('disabled')) {
             return;
+        }
 
         var pageId = selected_rows[0];
 

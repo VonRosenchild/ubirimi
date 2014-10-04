@@ -18,7 +18,7 @@
     </tr>
     <tr>
         <td>
-            <select class="inputTextCombo" id="new_page_space">
+            <select class="select2InputMedium" id="new_page_space">
                 <?php while ($space = $spaces->fetch_array(MYSQLI_ASSOC)): ?>
                     <option <?php if ($space['space_id'] == $spaceId) echo 'selected="selected"' ?> value="<?php echo $space['space_id'] ?>"><?php echo $space['name'] ?></option>
                 <?php endwhile ?>
