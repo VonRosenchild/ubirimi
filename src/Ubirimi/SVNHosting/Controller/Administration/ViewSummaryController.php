@@ -5,6 +5,7 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Client;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -15,6 +16,7 @@ class ViewSummaryController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+        $clientSettings = Client::getSettings($session->get('client/id'));
 
         $menuSelectedCategory = 'svn';
 

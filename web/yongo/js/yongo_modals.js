@@ -3350,6 +3350,8 @@ $('document').ready(function () {
         $("#modalChangePreferences").load("/user/update-preferences-dialog/" + userId, [], function () {
             $("#modalChangePreferences").dialog(options);
             $("#modalChangePreferences").dialog("open");
+            $('.select2InputSmall').select2();
+            $('.select2InputMedium').select2();
         });
     });
 
