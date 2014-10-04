@@ -1045,6 +1045,17 @@ class Util {
                              'tls_flag' => true,
                              'port' => 587);
                 break;
+
+            case 'notification':
+                return array('smtp_protocol' => SMTPServer::PROTOCOL_SECURE_SMTP,
+                    'email_prefix' => '',
+                    'username' => 'notification@ubirimi.com',
+                    'from_address' => 'notification@ubirimi.com',
+                    'password' => 'scumpamea',
+                    'hostname' => 'smtp.gmail.com',
+                    'tls_flag' => true,
+                    'port' => 587);
+                break;
         }
     }
 
