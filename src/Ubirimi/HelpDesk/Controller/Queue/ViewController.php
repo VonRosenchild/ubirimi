@@ -73,7 +73,7 @@ class ViewController extends UbirimiController
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME . ' / Help Desks';
 
         $selectedProductId = $session->get('selected_product_id');
-
+        $cliMode = false;
         return $this->render(__DIR__ . '/../../Resources/views/queue/View.php', get_defined_vars());
     }
 }

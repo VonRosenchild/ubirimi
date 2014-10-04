@@ -1,9 +1,5 @@
 <?php
     require_once __DIR__ . '/_header.php';
-
-    $parseURLData = parse_url($_SERVER['REQUEST_URI']);
-    $query = isset($parseURLData['query']) ? $parseURLData['query'] : '';
-
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
@@ -72,13 +68,7 @@
             <input type="hidden" value="<?php echo urldecode($query) ?>" id="filter_url"/>
             <?php endif ?>
     </div>
-    <?php
-        $parseData = parse_url($_SERVER['REQUEST_URI']);
-        if (isset($parseData['query']))
-            $session->set('last_search_parameters', $parseData['query']);
-        else
-            $session->remove('last_search_parameters');
-    ?>
+
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/issue/search/_chooseDisplayColumns.php' ?>
 
     <?php if ($projectsForBrowsing): ?>

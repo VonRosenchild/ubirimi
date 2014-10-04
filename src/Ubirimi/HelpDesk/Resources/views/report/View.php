@@ -39,6 +39,7 @@
                             <span>End Date</span>
                             <input type="text" class="inputText" style="width: 80px" value="<?php echo $dateTo ?>" id="sla_report_end_date"/>
                         </div>
+                        <br />
                         <div id="chartContainer" style="height: 700px;"></div>
                     </td>
                 </tr>

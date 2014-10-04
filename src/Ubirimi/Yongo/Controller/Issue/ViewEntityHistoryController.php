@@ -54,7 +54,7 @@
                         <span style="top: 24px; vertical-align: middle; display: table-cell">
                             <img src="/img/small_user.png" height="20px" />
                         </span>
-                        <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?> commented on <a href="./issue_detail.php?id=<?php echo $row['issue_id'] ?>"><?php echo $row['code'] . '-' . $row['nr'] ?></a> <?php echo Util::getFormattedDate($row['date_created']) ?>
+                        <?php echo LinkHelper::getUserProfileLink($row['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $row['first_name'], $row['last_name']) ?> commented on <a href="./issue_detail.php?id=<?php echo $row['issue_id'] ?>"><?php echo $row['code'] . '-' . $row['nr'] ?></a> <?php echo Util::getFormattedDate($row['date_created'], $clientSettings['timezone']) ?>
                     <?php endif ?>
             <?php endif ?>
             <?php if ($row['source'] == 'history_event') : ?>

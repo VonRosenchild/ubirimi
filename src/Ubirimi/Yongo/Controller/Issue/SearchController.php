@@ -21,8 +21,11 @@
         $clientSettings = Client::getSettings($clientId);
     }
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
     $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Search';
+
+    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
+    $selectedProductId = $session->get('selected_product_id');
+    $cliMode = false;
 
     $projectsForBrowsing = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
 
@@ -109,6 +112,14 @@
     }
 
     $urlIssuePrefix = '/yongo/issue/';
-    $selectedProductId = $session->get('selected_product_id');
-    $cliMode = false;
+
+    $parseData = parse_url($_SERVER['REQUEST_URI']);
+    $query = isset($parseData['query']) ? $parseData['query'] : '';
+
+    if (isset($query)) {
+        $session->set('last_search_parameters', $parseData['query']);
+    } else {
+        $session->remove('last_search_parameters');
+    }
+
     require_once __DIR__ . '/../../Resources/views/issue/search/Search.php';
