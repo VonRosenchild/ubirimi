@@ -183,4 +183,17 @@ class IssueFilter
         else
             return null;
     }
+
+    public static function getAllSubscriptions() {
+        $query = 'SELECT * ' .
+            'from filter_subscription';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows)
+            return $result;
+        else
+            return null;
+    }
 }

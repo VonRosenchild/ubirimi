@@ -1,10 +1,6 @@
 <?php
 
-use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
-use Ubirimi\Util;
-use Ubirimi\Repository\Log;
-use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 /* check locking mechanism */
 if (file_exists('update_filter_subscription.lock')) {
@@ -16,8 +12,13 @@ if (file_exists('update_filter_subscription.lock')) {
 }
 
 require_once __DIR__ . '/../../web/bootstrap_cli.php';
+$filterSubscriptions = IssueFilter::getAllSubscriptions();
+$crontabLines = '*/10 * * * * /usr/bin/php /home/ubirimi-web/cron/issue/update_filter_subscription.php' . "\n";
 
-
+while ($filterSubscriptions && $filterSubscription = $filterSubscriptions->fetch_array(MYSQLI_ASSOC)) {
+    $crontabLines .= $filterSubscription['period'] . ' /usr/bin/php /home/ubirimi_web/cron/issue/run_filter_subscription.php ' . $filterSubscription['id'] . "\n";
+}
+system('echo ' . $crontabLines . " | crontab");
 if (null !== $fp) {
     fclose($fp);
 }
