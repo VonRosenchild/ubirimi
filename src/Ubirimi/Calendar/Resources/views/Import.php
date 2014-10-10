@@ -6,12 +6,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb("Import Calendar"); ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = 'Import Calendar';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
-
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <td><a href="/calendar/calendars" class="btn ubirimi-btn">Go Back</a></td>

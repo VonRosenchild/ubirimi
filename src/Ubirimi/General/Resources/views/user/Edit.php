@@ -6,11 +6,13 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-
+    <?php if (Util::userHasClientAdministrationPermission()): ?>
+        <?php Util::renderBreadCrumb('<a href="/general-settings/users" class="linkNoUnderline">Users</a> > Edit User') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
             <form id="form_edit_user" name="edit_user" action="/general-settings/users/edit/<?php echo $userId ?>?location=<?php echo $location ?>" method="post">
-                <?php Util::renderBreadCrumb('<a href="/general-settings/users" class="linkNoUnderline">Users</a> > Edit User') ?>
+
                 <table width="100%">
                     <tr>
                         <td id="sectDetails" class="sectionDetail" colspan="2"><span class="sectionDetailTitleNoPicture headerPageTextSmall">Details</span></td>

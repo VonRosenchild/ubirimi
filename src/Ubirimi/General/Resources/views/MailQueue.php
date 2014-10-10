@@ -6,6 +6,9 @@
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
 
+    <?php if (Util::userHasClientAdministrationPermission()): ?>
+        <?php Util::renderBreadCrumb('Mail > Mail Queue') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
             <?php Util::renderBreadCrumb('Mail > Mail Queue') ?>

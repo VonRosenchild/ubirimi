@@ -1,17 +1,16 @@
 <?php
-
     use Ubirimi\Util;
 
     require_once __DIR__ . '/_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
-    <div class="pageContent">
-        <?php
-            $breadCrumb = 'Shared With Me Calendars';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
+    <?php
+        $breadCrumb = 'Shared With Me Calendars';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
 
+    <div class="pageContent">
         <?php if ($calendarsSharedWithMe): ?>
             <table class="table table-hover table-condensed">
                 <thead>

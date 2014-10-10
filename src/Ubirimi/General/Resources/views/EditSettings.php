@@ -5,10 +5,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('General Settings > Update') ?>
 
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
-            <?php Util::renderBreadCrumb('General Settings > Update') ?>
+
 
             <form name="edit_configuration" method="post" action="/general-settings/edit-general">
 

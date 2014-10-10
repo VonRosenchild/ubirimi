@@ -1,17 +1,14 @@
 <?php
-
     use Ubirimi\Util;
 
     require_once __DIR__ . '/_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php
+        Util::renderBreadCrumb("My Calendars");
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = 'My Calendars';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
-
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <td><a href="/calendar/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create New Calendar</a></td>

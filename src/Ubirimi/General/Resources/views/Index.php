@@ -6,9 +6,9 @@
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
 
-    <div class="pageContent">
+    <?php Util::renderBreadCrumb('General Settings') ?>
 
-        <?php Util::renderBreadCrumb('General Settings') ?>
+    <div class="pageContent">
         <table width="100%">
             <?php if (Util::userHasClientAdministrationPermission()): ?>
                 <tr>

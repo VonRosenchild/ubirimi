@@ -1,21 +1,14 @@
 <?php
-    require_once __DIR__ . '/_header.php';
+use Ubirimi\Util;
+
+require_once __DIR__ . '/_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/_menu.php'; ?>
-
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/calendar/calendars">Calendars</a> > Create Calendar') ?>
     <div class="pageContent">
         <form name="add_calendar" action="/calendar/add" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/calendar/calendars">Calendars</a> > Create Calendar
-                        </div>
-                    </td>
-                </tr>
-            </table>
             <table width="100%">
                 <tr>
                     <td valign="top" width="200">Name <span class="mandatory">*</span></td>

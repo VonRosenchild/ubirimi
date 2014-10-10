@@ -8,9 +8,9 @@
 <body>
 
     <?php require_once __DIR__ . '/_menu.php'; ?>
-    <div class="pageContent">
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/calendar/calendars">Calendars</a> > ' . $calendar['name'] . ' > Settings') ?>
 
-        <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/calendar/calendars">Calendars</a> > ' . $calendar['name'] . ' > Settings') ?>
+    <div class="pageContent">
         <div class="headerPageText">Default Reminders</div>
         <hr size="1" />
         <form name="edit_status" action="/calendar/settings/<?php echo $calendarId ?>" method="post">
@@ -25,7 +25,11 @@
                                 <option value="<?php echo CalendarReminderType::REMINDER_EMAIL ?>">Email</option>
                             </select>
                             &nbsp;
-                            <input type="text" value="<?php echo $defaultReminder['value'] ?>" name="value_reminder_<?php echo $defaultReminder['id'] ?>" style="width: 50px;" />
+                            <input type="text"
+                                   class="inputText"
+                                   value="<?php echo $defaultReminder['value'] ?>"
+                                   name="value_reminder_<?php echo $defaultReminder['id'] ?>"
+                                   style="width: 50px;" />
                             &nbsp;
                             <select name="reminder_period_<?php echo $defaultReminder['id'] ?>" class="select2InputSmall">
                                 <option <?php

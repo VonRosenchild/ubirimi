@@ -7,9 +7,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
-    <div class="pageContent">
+    <?php Util::renderBreadCrumb('Users') ?>
 
-        <?php Util::renderBreadCrumb('Users') ?>
+    <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>

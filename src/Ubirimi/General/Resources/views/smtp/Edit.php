@@ -5,11 +5,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-
+    <?php if (Util::userHasClientAdministrationPermission()): ?>
+        <?php Util::renderBreadCrumb('Mail > ' . $smtpServer['name'] . ' > Update SMTP Settings') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
-            <?php Util::renderBreadCrumb('Mail > ' . $smtpServer['name'] . ' > Update SMTP Settings') ?>
-
             <form name="edit_smtp_server" action="/general-settings/smtp-settings/edit/<?php echo $smtpServerId ?>" method="post">
                 <div class="infoBox">Use this page to add a new SMTP mail server. This server will be used to send all outgoing mail from Ubirimi.</div>
                 <table width="100%">

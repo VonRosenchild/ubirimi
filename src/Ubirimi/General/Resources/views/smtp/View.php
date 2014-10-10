@@ -5,10 +5,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Mail > SMTP Settings') ?>
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
-            <?php Util::renderBreadCrumb('Mail > SMTP Settings') ?>
-
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
                     <?php if ($smtpSettings): ?>

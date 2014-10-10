@@ -6,10 +6,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('General Settings > Manage Applications') ?>
 
     <div class="pageContent">
-
-        <?php Util::renderBreadCrumb('General Settings > Manage Applications') ?>
         <table width="100%">
             <?php if (Util::userHasClientAdministrationPermission()): ?>
                 <tr>

@@ -6,10 +6,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php if (Util::userHasClientAdministrationPermission()): ?>
+        <?php Util::renderBreadCrumb('Logs') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
-            <?php Util::renderBreadCrumb('Logs') ?>
-
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
                     <td valign="middle">

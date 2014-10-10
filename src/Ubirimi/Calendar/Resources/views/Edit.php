@@ -6,9 +6,10 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/calendar/calendars">Calendars</a> > Edit') ?>
+
     <div class="pageContent">
         <form name="edit_status" action="/calendar/edit/<?php echo $calendarId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/calendar/calendars">Calendars</a> > Edit') ?>
             <table width="100%">
                 <tr>
                     <td valign="top">Name <span class="error">*</span></td>

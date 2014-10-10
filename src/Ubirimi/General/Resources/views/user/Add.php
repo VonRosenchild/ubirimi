@@ -6,14 +6,14 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/general-settings/users">Users</a> > Create User';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
 
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
             <form id="form_add_user" name="add_user" action="/general-settings/users/add" method="post">
-                <?php
-                    $breadCrumb = '<a class="linkNoUnderline" href="/general-settings/users">Users</a> > Create User';
-                    Util::renderBreadCrumb($breadCrumb);
-                ?>
                 <table width="100%">
                     <tr>
                         <td valign="top" width="150">Username <span class="mandatory">*</span></td>
