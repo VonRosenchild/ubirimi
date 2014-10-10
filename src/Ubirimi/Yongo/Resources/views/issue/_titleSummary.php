@@ -1,6 +1,7 @@
 <?php use Ubirimi\SystemProduct; ?>
 
-<table width="100%" class="headerPageBackground">
+<div class="headerPageBackground">
+<table width="100%">
     <tr>
         <td width="48px" valign="top">
             <img class="projectIcon" id="project_icon" src="/img/project.png" height="48px"/>
@@ -24,3 +25,4 @@
         </td>
     </tr>
 </table>
+</div>

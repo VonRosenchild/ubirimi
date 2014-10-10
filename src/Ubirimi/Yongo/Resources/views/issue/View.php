@@ -8,12 +8,14 @@
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
+    <?php require_once __DIR__ . '/_titleSummary.php' ?>
+
     <div class="pageContent">
         <?php if (!$issueValid): ?>
             <div class="infoBox">This issue does not exist or you do not have the permission to view it.</div>
         <?php else: ?>
 
-            <?php require_once __DIR__ . '/_titleSummary.php' ?>
+
 
             <?php require_once __DIR__ . '/_topButtons.php' ?>
 

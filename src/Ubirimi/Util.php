@@ -847,20 +847,21 @@ class Util {
     }
 
     public static function renderBreadCrumb($htmlBreadCrumb, $iconRight = null, $link = null) {
-        $html = '<table width="100%" class="headerPageBackground">';
-            $html .= '<tr>';
-                $html .= '<td>';
-                    $html .= '<div class="headerPageText">' . $htmlBreadCrumb . '</div>';
-                $html .= '</td>';
-                if ($iconRight) {
-                    $html .= '<td align="right">';
-                        if ($iconRight == 'help')
-                            $html .= '<a target="_blank" href="' . $link . '"><img src="/img/help_browser.png" /></a>';
+        $html = '<div class="headerPageBackground">';
+            $html .= '<table width="100%">';
+                $html .= '<tr>';
+                    $html .= '<td>';
+                        $html .= '<div class="headerPageText">' . $htmlBreadCrumb . '</div>';
                     $html .= '</td>';
-                }
-            $html .= '</tr>';
-        $html .= '</table>';
-
+                    if ($iconRight) {
+                        $html .= '<td align="right">';
+                            if ($iconRight == 'help')
+                                $html .= '<a target="_blank" href="' . $link . '"><img src="/img/help_browser.png" /></a>';
+                        $html .= '</td>';
+                    }
+                $html .= '</tr>';
+            $html .= '</table>';
+        $html .= '</div>';
         echo $html;
     }
 

@@ -9,9 +9,10 @@
 
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Home > My Dashboard') ?>
 
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Home > My Dashboard') ?>
+
         <?php require_once __DIR__ . '/_home_subtabs.php' ?>
         <div style="padding-top: 4px; padding-bottom: 4px"></div>
         <?php if ($allProjects == null && ($hasGlobalAdministrationPermission || $hasGlobalSystemAdministrationPermission)): ?>

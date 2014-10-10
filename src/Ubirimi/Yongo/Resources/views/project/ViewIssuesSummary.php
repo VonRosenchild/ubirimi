@@ -8,7 +8,7 @@
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
-    <div class="pageContent">
+    <div class="headerPageBackground">
         <table width="100%" class="headerPageBackground">
             <tr>
                 <td width="48px">
@@ -19,7 +19,9 @@
                 </td>
             </tr>
         </table>
+    </div>
 
+    <div class="pageContent">
         <?php
             $menuProjectCategory = 'issues';
             require_once __DIR__ . '/_summaryMenu.php';
