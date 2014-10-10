@@ -77,7 +77,7 @@ if ($canBeExecuted) {
         if ($fieldValues[array_search('comment', $fieldTypes)]) {
             $commentText = $fieldValues[array_search('comment', $fieldTypes)];
 
-            Comment::add($issueId, $loggedInUserId, $commentText, $currentDate);
+            UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $commentText, $currentDate);
             $fieldChanges[] = array('comment', $commentText);
         }
     }

@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Comment
 {
-    public static function deleteById($commentId) {
+    public function deleteById($commentId) {
         $query = 'delete from issue_comment where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -14,7 +14,7 @@ class Comment
         $stmt->execute();
     }
 
-    public static function deleteByIssueId($issueId) {
+    public function deleteByIssueId($issueId) {
         $query = 'DELETE FROM issue_comment WHERE issue_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -22,7 +22,7 @@ class Comment
         $stmt->execute();
     }
 
-    public static function getById($commentId) {
+    public function getById($commentId) {
         $query = 'select issue_comment.id, issue_comment.content, issue_comment.date_created, ' .
                  'user.first_name, user.last_name, user.id as user_id ' .
                  'from issue_comment ' .
@@ -40,7 +40,7 @@ class Comment
             return null;
     }
 
-    public static function getByIssueId($issueId, $order = false) {
+    public function getByIssueId($issueId, $order = false) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created, ' .
             'user.id as user_id, user.first_name, user.last_name, user.avatar_picture, user.email ' .
             'FROM issue_comment ' .
@@ -64,7 +64,7 @@ class Comment
             return null;
     }
 
-    public static function getByIssueIdAndUserId($issueId, $userId) {
+    public function getByIssueIdAndUserId($issueId, $userId) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created, ' .
             'user.id as user_id, user.first_name, user.last_name, user.avatar_picture ' .
             'FROM issue_comment ' .
@@ -84,7 +84,7 @@ class Comment
             return null;
     }
 
-    public static function updateById($commentId, $content, $userId, $date) {
+    public function updateById($commentId, $content, $userId, $date) {
         $query = 'update issue_comment set content = ?, user_id = ?, date_updated = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -92,7 +92,7 @@ class Comment
         $stmt->execute();
     }
 
-    public static function add($issueId, $userId, $content, $date_created) {
+    public function add($issueId, $userId, $content, $date_created) {
         $query = "INSERT INTO issue_comment(issue_id, user_id, content, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -100,7 +100,7 @@ class Comment
         $stmt->execute();
     }
 
-    public static function getByAssigneeFromHistoryAfterDate($issueId, $date) {
+    public function getByAssigneeFromHistoryAfterDate($issueId, $date) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created ' .
             'from issue_history ' .
             'LEFT JOIN issue_comment on (issue_comment.issue_id = issue_history.issue_id and (issue_comment.user_id = issue_history.old_value_id or issue_comment.user_id = issue_history.new_value_id)) ' .
@@ -129,7 +129,7 @@ class Comment
             return null;
     }
 
-    public static function getByUserIdAfterDate($issueId, $userId, $date) {
+    public function getByUserIdAfterDate($issueId, $userId, $date) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created ' .
             'from issue_comment ' .
             'WHERE issue_comment.user_id = ? ' .

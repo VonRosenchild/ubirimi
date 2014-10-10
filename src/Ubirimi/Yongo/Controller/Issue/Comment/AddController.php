@@ -32,7 +32,7 @@ class AddController extends UbirimiController
 
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $project = Project::getById($issue['issue_project_id']);
-        Comment::add($issueId, $session->get('user/id'), $content, $date);
+        UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $session->get('user/id'), $content, $date);
 
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $content);
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'ADD Yongo issue comment ' . $issue['project_code'] . '-' . $issue['nr']);

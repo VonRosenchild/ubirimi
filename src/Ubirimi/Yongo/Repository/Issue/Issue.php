@@ -757,7 +757,7 @@ class Issue
     }
 
     public function deleteById($issueId) {
-        Comment::deleteByIssueId($issueId);
+        UbirimiContainer::getRepository('yongo.issue.comment')->deleteByIssueId($issueId);
         IssueHistory::deleteByIssueId($issueId);
         Component::deleteByIssueId($issueId);
         IssueVersion::deleteByIssueId($issueId);
@@ -765,7 +765,7 @@ class Issue
         IssueWatcher::deleteByIssueId($issueId);
         Issue::deleteSLADataByIssueId($issueId);
         IssueWorkLog::deleteByIssueId($issueId);
-        Attachment::deleteByIssueId($issueId);
+        UbirimiContainer::getRepository('yongo.issue.attachment')->deleteByIssueId($issueId);
         CustomField::deleteCustomFieldsData($issueId);
 
         AgileBoard::deleteIssuesFromSprints(array($issueId));
@@ -1556,7 +1556,7 @@ class Issue
         Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $oldAssignee['id'], $newAssignee['id'], $date);
 
         if (!empty($comment)) {
-            Comment::add($issueId, $loggedInUserId, $comment, $date);
+            UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $comment, $date);
         }
     }
 

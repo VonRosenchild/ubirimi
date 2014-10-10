@@ -98,7 +98,7 @@ class EditController extends UbirimiController
 
         // check if on the modal there is a comment field
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $newIssueData) && !empty($newIssueData[Field::FIELD_COMMENT_CODE])) {
-            Comment::add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
+            UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
         }
 
         // update the custom fields value

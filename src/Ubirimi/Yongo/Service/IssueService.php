@@ -57,7 +57,7 @@ class IssueService extends UbirimiService
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $issueSystemFieldsData)) {
             $comment = Util::cleanRegularInputField($issueSystemFieldsData[Field::FIELD_COMMENT_CODE]);
             if (!empty($comment)) {
-                Comment::add($newIssueId, $loggedInUserId, $comment, $currentDate);
+                UbirimiContainer::getRepository('yongo.issue.comment')->add($newIssueId, $loggedInUserId, $comment, $currentDate);
             }
         }
 

@@ -32,7 +32,7 @@ class IssueDataController extends UbirimiController
         $projectId = $issue['issue_project_id'];
         $issueProject = Project::getById($projectId);
 
-        $comments = Comment::getByIssueId($issueId, 'desc');
+        $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($issueId, 'desc');
         $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
 
         $versionsAffected = IssueVersion::getByIssueIdAndProjectId(

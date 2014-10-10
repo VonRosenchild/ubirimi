@@ -121,7 +121,7 @@ function processNewBugzillaBug($newIssue)
     $issueVersion = IssueVersion::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $project = Project::getById($newIssue['issue_project_id']);
     $severity = CustomField::getCustomFieldsDataByFieldId($newIssue['id'], 29403);
-    $comments = Comment::getByIssueId($newIssue['id']);
+    $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($newIssue['id']);
 
     if (null !== $issueComponent) {
         $issueComponent = $issueComponent->fetch_array(MYSQLI_ASSOC);

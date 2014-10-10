@@ -15,7 +15,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $commentId = $request->request->get('id');
-        Comment::deleteById($commentId);
+        UbirimiContainer::getRepository('yongo.issue.comment')->deleteById($commentId);
 
         return new Response('');
     }
