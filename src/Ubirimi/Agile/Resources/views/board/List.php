@@ -1,20 +1,15 @@
 <?php
     use Ubirimi\LinkHelper;
     use Ubirimi\SystemProduct;
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
 
     require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Manage Boards') ?>
     <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
-            <tr>
-                <td>
-                    <div class="headerPageText">Manage Boards</div>
-                </td>
-            </tr>
-        </table>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

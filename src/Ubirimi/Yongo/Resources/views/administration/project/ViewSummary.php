@@ -4,9 +4,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td width="48px">
                     <img class="projectIcon" src="/img/project.png" height="48px"/>
@@ -19,6 +18,8 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="pageContent">
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li class="active"><a href="/yongo/administration/project/<?php echo $projectId ?>">Summary</a></li>

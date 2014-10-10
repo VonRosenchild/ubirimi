@@ -7,9 +7,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
-    <div class="pageContent">
-        <?php Util::renderBreadCrumb(sprintf('<a href="/helpdesk/all">Help Desks</a> > %s > SLA', $project['name'])); ?>
+    <?php Util::renderBreadCrumb(sprintf('<a href="/helpdesk/all">Help Desks</a> > %s > SLA', $project['name'])); ?>
 
+    <div class="pageContent">
         <?php require_once __DIR__ . '/../../views/_topMenu.php'; ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">

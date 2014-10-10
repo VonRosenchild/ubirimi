@@ -1,4 +1,5 @@
 $('document').ready(function () {
+    $('.doc-left-side').css('height', ($(document).height() - 123 - 137) + 'px');
 
     $('.select2Input').select2();
     $('#doc_view_page_add_comment_content').click(function (event) {

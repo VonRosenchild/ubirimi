@@ -10,9 +10,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../Resources/views/_menu.php'; ?>
-    <div class="pageContent">
-        <?php Util::renderBreadCrumb('Spaces'); ?>
+    <?php Util::renderBreadCrumb('Spaces'); ?>
 
+    <div class="pageContent">
         <?php if (Util::checkUserIsLoggedIn()): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>

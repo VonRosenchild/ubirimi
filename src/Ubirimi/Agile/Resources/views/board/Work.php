@@ -7,20 +7,18 @@
 <body>
 
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/agile/boards">Agile Boards</a> > ' . $board['name'] . ' > Sprint: ';
+        if ($sprint) {
+            $breadCrumb .= $sprint['name'];
+        } else {
+            $breadCrumb .= 'No Active Sprint';
+        }
 
+        $breadCrumb .= ' > Work View';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/agile/boards">Agile Boards</a> > ' . $board['name'] . ' > Sprint: ';
-            if ($sprint) {
-                $breadCrumb .= $sprint['name'];
-            } else {
-                $breadCrumb .= 'No Active Sprint';
-            }
-
-            $breadCrumb .= ' > Work View';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
-
         <ul class="nav nav-tabs" style="padding: 0px; float: right;">
             <li><a href="/agile/board/plan/<?php echo $boardId ?>" title="Plan">Plan</a></li>
             <li class="active"><a href="/agile/board/work/<?php echo $sprintId ?>/<?php echo $boardId ?>" title="Work">Work</a></li>

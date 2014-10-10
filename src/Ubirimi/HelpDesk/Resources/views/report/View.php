@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
-    <div class="pageContent">
-        <?php Util::renderBreadCrumb(sprintf('<a href="/helpdesk/all">Help Desks</a> > %s > Reports > %s', $project['name'], $slaSelected['name'])); ?>
+    <?php Util::renderBreadCrumb(sprintf('<a href="/helpdesk/all">Help Desks</a> > %s > Reports > %s', $project['name'], $slaSelected['name'])); ?>
 
+    <div class="pageContent">
         <?php require_once __DIR__ . '/../../views/_topMenu.php'; ?>
         <div style="padding-top: 4px; padding-bottom: 4px"></div>
         <?php if ($SLAs): ?>

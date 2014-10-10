@@ -18,6 +18,7 @@
     <script type="text/javascript" src="/documentador/js/documentator_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/documentador/js/menu.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
 
+    <link rel="stylesheet" type="text/css" href="/documentador/css/main.css?<?php echo UbirimiContainer::get()['app.version'] ?>" />
     <link rel="stylesheet" type="text/css" href="/css/main.css?<?php echo UbirimiContainer::get()['app.version'] ?>" />
     <link rel="stylesheet" type="text/css" href="/css/menu.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/general.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>

@@ -7,7 +7,7 @@
 
     $arrayIds = array();
 ?>
-    <div class="pageContent" style="margin: 0px; border-radius: 0px;">
+    <div class="pageContent" style="border-bottom: 0; margin: 0; border-radius: 0;">
     <?php if (isset($issuesCount) && $issuesCount > 0): ?>
 
         <?php if ($cliMode == false): ?>

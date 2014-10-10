@@ -1,25 +1,17 @@
 <?php
     use Ubirimi\LinkHelper;
     use Ubirimi\SystemProduct;
+    use Ubirimi\Util;
 
     require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/agile/boards">Agile Boards</a> > ' . $board['name'] . ' > Configure') ?>
 
     <div class="pageContent">
         <form name="add_board" action="/agile/board/add" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/agile/boards">Agile Boards</a> > <?php echo $board['name'] ?> > Configure
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
             <table cellspacing="4px">
                 <tr>
                     <td>Name</td>

@@ -10,18 +10,26 @@ use Ubirimi\Repository\Documentador\EntityComment;
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <div class="pageContent" style="overflow: hidden;">
+    <?php
+        if ($page) {
+            $breadCrumb = '<a href="/documentador/spaces" class="linkNoUnderline">Spaces</a> > ' . $page['space_name'] . ' > ' .
+                '<a class="linkNoUnderline" href="/documentador/pages/' . $spaceId . '">Pages</a> > ';
+
+            if ($parentPage)
+                $breadCrumb .= LinkHelper::getDocumentatorPageLink($parentPage['id'], $parentPage['name'], 'linkNoUnderline') . ' > ';
+
+            $breadCrumb .= $page['name'];
+            Util::renderBreadCrumb($breadCrumb);
+        }
+    ?>
+    <div id="sticky-anchor"></div>
+    <div class="doc-left-side">
+        dasdasdas
+    </div>
+
+    <div class="pageContent" style="overflow: hidden; margin-left: 285px">
         <?php if ($page): ?>
-            <?php
-                $breadCrumb = '<a href="/documentador/spaces" class="linkNoUnderline">Spaces</a> > ' . $page['space_name'] . ' > ' .
-                              '<a class="linkNoUnderline" href="/documentador/pages/' . $spaceId . '">Pages</a> > ';
 
-                if ($parentPage)
-                    $breadCrumb .= LinkHelper::getDocumentatorPageLink($parentPage['id'], $parentPage['name'], 'linkNoUnderline') . ' > ';
-
-                $breadCrumb .= $page['name'];
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
 
             <?php if (Util::checkUserIsLoggedIn()): ?>
                 <?php require_once __DIR__ . '/_buttons.php' ?>

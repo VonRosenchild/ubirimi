@@ -116,7 +116,7 @@
     $parseData = parse_url($_SERVER['REQUEST_URI']);
     $query = isset($parseData['query']) ? $parseData['query'] : '';
 
-    if (isset($query)) {
+    if (isset($query) && $query != '') {
         $session->set('last_search_parameters', $parseData['query']);
     } else {
         $session->remove('last_search_parameters');

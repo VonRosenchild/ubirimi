@@ -1,20 +1,17 @@
 <?php
-    require_once __DIR__ . '/../_header.php';
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../_header.php';
     $administrationView = true;
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php if ($accessToPage): ?>
+        <?php Util::renderBreadCrumb('Projects') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if ($accessToPage): ?>
-            <table width="100%" class="headerPageBackground" style="">
-                <tr>
-                    <td>
-                        <div class="headerPageText">Projects</div>
-                    </td>
-                </tr>
-            </table>
-
             <?php if ($hasGlobalAdministrationPermission || $hasGlobalSystemAdministrationPermission): ?>
                 <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                     <tr>

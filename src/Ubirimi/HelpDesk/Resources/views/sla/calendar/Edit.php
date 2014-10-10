@@ -5,13 +5,12 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../../../Yongo/Resources/views/_menu.php'; ?>
-
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="">SLAs</a> > Calendars > ' . $calendar['name'] . ' > Edit';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <form name="add_sla_calendar" action="/helpdesk/sla/calendar/edit/<?php echo $calendarId ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="">SLAs</a> > Calendars > ' . $calendar['name'] . ' > Edit';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
             <table width="100%">
                 <tr>
                     <td valign="top" width="200">Name <span class="mandatory">*</span></td>

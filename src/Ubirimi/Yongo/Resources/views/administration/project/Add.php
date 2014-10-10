@@ -7,15 +7,17 @@
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
+    <?php
+        if ($forHelpDesk) {
+            Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > Create Helpdesk Project');
+        } else {
+            Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > Create Project');
+        }
+    ?>
+
     <div class="pageContent">
         <form name="add_project" action="/yongo/administration/project/add<?php if ($forHelpDesk) echo '?helpdesk=true' ?>" method="post">
-            <?php
-                if ($forHelpDesk) {
-                    Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > Create Helpdesk Project');
-                } else {
-                    Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > Create Project');
-                }
-            ?>
+
             <table width="100%">
                 <tr>
                     <td valign="top" width="200">Name <span class="mandatory">*</span></td>

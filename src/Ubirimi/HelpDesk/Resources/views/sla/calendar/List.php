@@ -8,9 +8,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../../../../Yongo/Resources/views/_menu.php'; ?>
-    <div class="pageContent">
-        <?php Util::renderBreadCrumb('<a href="/helpdesk/all">Help Desks</a> > ' . $project['name'] . ' > SLA Calendars'); ?>
+    <?php Util::renderBreadCrumb('<a href="/helpdesk/all">Help Desks</a> > ' . $project['name'] . ' > SLA Calendars'); ?>
 
+    <div class="pageContent">
         <?php require_once __DIR__ . '/../../../views/_topMenu.php'; ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">

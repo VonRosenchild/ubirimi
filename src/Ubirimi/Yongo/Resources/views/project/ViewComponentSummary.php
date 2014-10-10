@@ -9,8 +9,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td>
                     <div class="headerPageText">
@@ -19,7 +19,8 @@
                 </td>
             </tr>
         </table>
-
+    </div>
+    <div class="pageContent">
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li class="active"><a href="/yongo/project/component/<?php echo $componentId ?>">Details</a></li>
             <li><a href="/yongo/project/component/issues/<?php echo $componentId ?>" title="New">Issues</a></li>

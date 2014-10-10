@@ -1,21 +1,16 @@
 <?php
-    require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
 
 <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
 
+<?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/agile/boards">Agile Boards</a> > Create Board') ?>
 <div class="pageContent">
     <form name="add_board" action="/agile/board/add" method="post">
-        <table width="100%" class="headerPageBackground">
-            <tr>
-                <td>
-                    <div class="headerPageText">
-                        <a class="linkNoUnderline" href="/agile/boards">Agile Boards</a> > Create Board
-                    </div>
-                </td>
-            </tr>
-        </table>
+
         <table width="100%">
             <tr>
                 <td valign="top" width="200">Name <span class="mandatory">*</span></td>

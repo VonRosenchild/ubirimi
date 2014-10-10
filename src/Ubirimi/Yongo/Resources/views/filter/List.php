@@ -3,14 +3,13 @@
     use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
-require_once __DIR__ . '/../_header.php';
+    require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Filters') ?>
     <div class="pageContent">
-
-        <?php Util::renderBreadCrumb('Filters') ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

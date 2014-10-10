@@ -8,10 +8,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Issue Type Schemes') ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Issue Type Schemes') ?>
-
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li><a href="/yongo/administration/issue-types">Issue Types</a></li>
                 <li class="active"><a href="/yongo/administration/issue-type-schemes">Issue Type Schemes</a></li>

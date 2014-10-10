@@ -8,9 +8,9 @@
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
 
-    <div class="pageContent">
-        <?php Util::renderBreadCrumb('Home > Activity Stream') ?>
+    <?php Util::renderBreadCrumb('Home > Activity Stream') ?>
 
+    <div class="pageContent">
         <?php require_once __DIR__ . '/_home_subtabs.php' ?>
 
         <?php require_once __DIR__ . '/../../Resources/views/project/_activityStream.php'; ?>

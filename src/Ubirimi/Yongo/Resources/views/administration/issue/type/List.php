@@ -7,10 +7,10 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Issue Types') ?>
+
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Issue Types') ?>
-
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li class="active">
                     <a href="/yongo/administration/issue-types">Issue Types</a>

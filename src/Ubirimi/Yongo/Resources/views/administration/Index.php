@@ -7,10 +7,10 @@
 
     <?php require_once __DIR__ . '/_menu.php'; ?>
 
+    <?php Util::renderBreadCrumb('Administration') ?>
+
     <div class="pageContent">
         <?php if ($hasYongoGlobalAdministrationPermission || $hasYongoGlobalSystemAdministrationPermission || $hasYongoAdministerProjectsPermission): ?>
-            <?php Util::renderBreadCrumb('Administration') ?>
-
             <table width="100%">
                 <tr>
                     <td width="40%">

@@ -8,8 +8,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../Yongo/Resources/views/_menu.php'; ?>
+    <?php Util::renderBreadCrumb("Help Desks") ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb("Help Desks") ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

@@ -8,13 +8,12 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $title = $user['first_name'] . ' ' . $user['last_name'] . ' > Profile';
+        Util::renderBreadCrumb($title);
+    ?>
 
     <div class="pageContent">
-        <?php
-            $title = $user['first_name'] . ' ' . $user['last_name'] . ' > Profile';
-            Util::renderBreadCrumb($title);
-        ?>
-
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <?php if ($userId == $loggedInUserId): ?>

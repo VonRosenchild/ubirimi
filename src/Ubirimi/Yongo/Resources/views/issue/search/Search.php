@@ -1,8 +1,12 @@
 <?php
-    require_once __DIR__ . '/../../_header.php';
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+
+    <?php Util::renderBreadCrumb('Search') ?>
 
     <div class="pageContent">
 
@@ -31,7 +35,7 @@
                 </tr>
                 <tr>
                     <td width="10%" valign="top">
-                        <div class="pageContent" style="padding: 0px; margin: 0px; margin-right: 10px; border: 0px;">
+                        <div class="pageContent" style="border-bottom: 0; padding: 0; margin: 0; margin-right: 10px;">
                             <table width="100%" class="table table-hover table-condensed">
                                 <tr>
                                     <td>
@@ -54,7 +58,7 @@
                         </div>
                     </td>
                     <td width="10%" valign="top">
-                        <div class="pageContent" style="padding: 10px; margin: 0px; margin-right: 10px; border-radius: 0px;">
+                        <div class="pageContent" style="border-bottom: 0; padding: 10px; margin: 0; margin-right: 10px; border-radius: 0;">
                             <form name="search_form" action="/yongo/issue/search<?php if ($extraParametersURL) echo '?' . $extraParametersURL; ?>" method="post">
                                 <table cellpadding="0" cellspacing="2" border="0" width="200px">
                                     <?php require_once __DIR__ . '/_filterMain.php' ?>

@@ -4,9 +4,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Dashboard'); ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Dashboard'); ?>
-
         <?php if (Util::checkUserIsLoggedIn()): ?>
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li <?php if ('spaces' == $type): ?>class="active"<?php endif ?>>

@@ -6,9 +6,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/helpdesk/queues/' . $projectId . '/' . $selectedQueueId . '">Queues</a> > Create Queue') ?>
+
     <div class="pageContent">
         <form name="add_queue" action="/helpdesk/queue/add/<?php echo $projectId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/helpdesk/queues/' . $projectId . '/' . $selectedQueueId . '">Queues</a> > Create Queue') ?>
+
             <table width="100%">
                 <tr>
                     <td valign="top" width="200">Name <span class="error">*</span></td>

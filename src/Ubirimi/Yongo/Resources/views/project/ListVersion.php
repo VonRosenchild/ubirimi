@@ -4,9 +4,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td width="48px">
                     <img class="projectIcon" id="project_icon" src="/img/project.png" height="48px" />
@@ -16,7 +15,8 @@
                 </td>
             </tr>
         </table>
-
+    </div>
+    <div class="pageContent">
         <?php
             $menuProjectCategory = 'versions';
             require_once __DIR__ . '/_summaryMenu.php';

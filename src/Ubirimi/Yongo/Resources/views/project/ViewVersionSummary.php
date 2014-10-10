@@ -8,16 +8,13 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = LinkHelper::getYongoProjectLink($projectId, $project['name']) .
+                      ' > <a class="linkNoUnderline" href="/yongo/project/versions/' . $projectId .'">Versions</a> > ' .
+                      $version['name'];
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
-            <tr>
-                <td>
-                    <div class="headerPageText">
-                        <?php echo LinkHelper::getYongoProjectLink($projectId, $project['name']) ?> > <a class="linkNoUnderline" href="/yongo/project/versions/<?php echo $projectId ?>">Versions</a> > <?php echo $version['name'] ?>
-                    </div>
-                </td>
-            </tr>
-        </table>
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li class="active"><a href="/yongo/project/version/<?php echo $versionId ?>">Details</a></li>

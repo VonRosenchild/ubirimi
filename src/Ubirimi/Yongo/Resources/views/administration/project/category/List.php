@@ -1,18 +1,14 @@
 <?php
-    require_once __DIR__ . '/../../_header.php';
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
 
+    <?php Util::renderBreadCrumb("Project Categories") ?>
     <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
-            <tr>
-                <td>
-                    <div class="headerPageText">Project Categories</div>
-                </td>
-            </tr>
-        </table>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

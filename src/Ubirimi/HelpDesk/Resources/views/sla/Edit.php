@@ -5,10 +5,10 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="">SLAs</a> > Update SLA > ' . $SLA['name']) ?>
 
     <div class="pageContent">
         <form name="update_sla" action="/helpdesk/sla/edit/<?php echo $slaId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="">SLAs</a> > Update SLA > ' . $SLA['name']) ?>
             <table width="100%">
                 <tr>
                     <td valign="top" width="200">Name <span class="mandatory">*</span></td>
