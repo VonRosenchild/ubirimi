@@ -1989,63 +1989,6 @@ $('document').ready(function () {
         commentIssue($('#issue_id').val());
     });
 
-    function assignIssue(event) {
-        if (event)
-            event.preventDefault();
-
-        var issueId = $('#issue_id').val();
-        var projectId = $('#project_id').val();
-        var userAssignedId = $('#issue_ua_id').val();
-
-        var options = {
-            dialogClass: "ubirimi-dialog",
-            title: 'Assign Issue',
-            buttons: [
-                {
-                    text: "Assign",
-                    click: function () {
-
-                        if (userAssignedId == $('#render_assign_issue_field_type_assignee').val()) {
-                            $('#issue_new_ua_id_error').html('The issue is already assigned to this user.');
-                            return
-                        }
-                        $.ajax({
-                            type: "POST",
-                            url: '/yongo/issue/assign',
-                            data: {
-                                issue_id: issueId,
-                                user_assigned_id: $('#render_assign_issue_field_type_assignee').val(),
-                                comment: $('#render_assign_issue_field_type_comment').val()
-                            },
-                            success: function (response) {
-                                $("#modalEditIssueAssign").dialog('destroy');
-                                $("#modalEditIssueAssign").empty();
-                                location.reload();
-                            }
-                        });
-                    }
-                },
-                {
-                    text: "Cancel",
-                    click: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            ],
-            close: function () {
-                $("#modalEditIssueAssign").dialog('destroy');
-                $("#modalEditIssueAssign").empty();
-
-            }
-        };
-
-        $("#modalEditIssueAssign").load("/yongo/issue/assign-dialog/" + issueId + '/' + projectId, [], function () {
-            $("#modalEditIssueAssign").dialog(options);
-            $("#modalEditIssueAssign").dialog("open");
-            $(".ui-dialog-content .select2InputMedium").select2();
-        });
-    }
-
     $('#btnEditIssueAssign').click(function (event) {
         assignIssue(event);
     });
