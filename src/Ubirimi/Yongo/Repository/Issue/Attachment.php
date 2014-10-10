@@ -6,9 +6,9 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
-class IssueAttachment
+class Attachment
 {
-    public static function getAll() {
+    public function getAll() {
         $query = 'select id, issue_id, name, size from issue_attachment';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -21,7 +21,7 @@ class IssueAttachment
             return null;
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = 'select id, issue_id, name, size from issue_attachment where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -35,7 +35,7 @@ class IssueAttachment
             return null;
     }
 
-    public static function getByIssueId($issueId, $fetchAll = false) {
+    public function getByIssueId($issueId, $fetchAll = false) {
         $query = 'SELECT issue_attachment.id, issue_id, name, size, issue_attachment.date_created,' .
             'user.id as user_id, user.first_name, user.last_name ' .
             'FROM issue_attachment ' .
@@ -59,7 +59,7 @@ class IssueAttachment
         }
     }
 
-    public static function deleteById($attachmentId) {
+    public function deleteById($attachmentId) {
         $query = "DELETE FROM issue_attachment WHERE id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -67,8 +67,8 @@ class IssueAttachment
         $stmt->execute();
     }
 
-    public static function deleteByIssueId($issueId) {
-        $attachments = IssueAttachment::getByIssueId($issueId);
+    public function deleteByIssueId($issueId) {
+        $attachments = Attachment::getByIssueId($issueId);
 
         if ($attachments) {
             while ($attachment = $attachments->fetch_array(MYSQLI_ASSOC)) {
@@ -89,7 +89,7 @@ class IssueAttachment
         }
     }
 
-    public static function updateByIdAndIssueId($attachmentId, $issueId) {
+    public function updateByIdAndIssueId($attachmentId, $issueId) {
         $query = 'UPDATE issue_attachment SET issue_id = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -97,7 +97,7 @@ class IssueAttachment
         $stmt->execute();
     }
 
-    public static function add($issueId, $name, $userId, $date) {
+    public function add($issueId, $name, $userId, $date) {
         $query = "INSERT INTO issue_attachment(issue_id, user_id, name, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -107,7 +107,7 @@ class IssueAttachment
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function updateSizeById($attachmentId, $size) {
+    public function updateSizeById($attachmentId, $size) {
         $query = "UPDATE issue_attachment SET size = ? WHERE id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

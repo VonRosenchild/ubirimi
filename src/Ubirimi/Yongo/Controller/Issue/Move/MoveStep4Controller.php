@@ -3,7 +3,7 @@
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+    use Ubirimi\Yongo\Repository\Issue\Component;
     use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Issue\IssueVersion;
     use Ubirimi\Yongo\Repository\Project\Project;
@@ -20,7 +20,7 @@
 
     $issueId = $_GET['id'];
     $issueQueryParameters = array('issue_id' => $issueId);
-    $issue = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+    $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
     $projectId = $issue['issue_project_id'];
     $issueProject = Project::getById($projectId);
 
@@ -35,8 +35,8 @@
     if (isset($_POST['move_issue_step_4'])) {
         $currentDate = Util::getServerCurrentDateTime();
 
-        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $oldIssueData['component'] = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+        $oldIssueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData['component'] = Component::getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
         if ($oldIssueData['component'] == null) {
             $oldIssueData['component'] = array();
         }
@@ -49,7 +49,7 @@
             $oldIssueData['fix_version'] = array();
         }
 
-        IssueComponent::deleteByIssueId($issueId);
+        Component::deleteByIssueId($issueId);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
         IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
@@ -75,7 +75,7 @@
         Issue::move($issueId, $newProjectId, $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
 
         $session->remove('move_issue');
-        $newIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $newIssueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, array(), array());
         Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
@@ -99,7 +99,7 @@
     $newProject = Project::getById($session->get('move_issue/new_project'));
     $newTypeName = IssueSettings::getById($session->get('move_issue/new_type'), 'type', 'name');
 
-    $issueComponents = IssueComponent::getByIssueIdAndProjectId($issue['id'], $projectId);
+    $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
     $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
     $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 

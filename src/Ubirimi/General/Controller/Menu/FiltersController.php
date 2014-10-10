@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Client;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class FiltersController extends UbirimiController
@@ -34,7 +34,7 @@ class FiltersController extends UbirimiController
             $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
         }
 
-        $customFilters = IssueFilter::getAllByUser($session->get('user/id'));
+        $customFilters = Filter::getAllByUser($session->get('user/id'));
 
         return $this->render(__DIR__ . '/../../Resources/views/menu/Filters.php', get_defined_vars());
     }

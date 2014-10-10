@@ -1,28 +1,28 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Repository\Client;
+use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
 
-    $issueId = $_POST['id'];
+$issueId = $_POST['id'];
 
-    $issueData = Issue::getByIdSimple($issueId);
+$issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByIdSimple($issueId);
 
-    $watchers = IssueWatcher::getByIssueId($issueId);
-    // todo: users watchers de aici trebuie sa fie useri ce au permisiune de browsing la proiectul acesta
-    $users = Client::getUsers($clientId);
-    $watcherArray = array();
+$watchers = IssueWatcher::getByIssueId($issueId);
+// todo: users watchers de aici trebuie sa fie useri ce au permisiune de browsing la proiectul acesta
+$users = Client::getUsers($clientId);
+$watcherArray = array();
 
-    if ($watchers) {
-        while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)) {
-            $watcherArray[] = $watcher['id'];
-        }
-        $watchers->data_seek(0);
+if ($watchers) {
+    while ($watchers && $watcher = $watchers->fetch_array(MYSQLI_ASSOC)) {
+        $watcherArray[] = $watcher['id'];
     }
+    $watchers->data_seek(0);
+}
 
-    $hasViewVotersAndWatchersPermission = Project::userHasPermission($issueData['project_id'], Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $loggedInUserId);
-    $hasManageWatchersPermission = Project::userHasPermission($issueData['project_id'], Permission::PERM_MANAGE_WATCHERS, $loggedInUserId);
+$hasViewVotersAndWatchersPermission = Project::userHasPermission($issueData['project_id'], Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $loggedInUserId);
+$hasManageWatchersPermission = Project::userHasPermission($issueData['project_id'], Permission::PERM_MANAGE_WATCHERS, $loggedInUserId);
 ?>
 <?php if ($hasViewVotersAndWatchersPermission): ?>
     <?php if ($hasManageWatchersPermission): ?>

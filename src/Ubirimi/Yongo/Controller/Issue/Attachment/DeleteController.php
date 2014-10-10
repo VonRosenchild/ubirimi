@@ -1,15 +1,15 @@
 <?php
     use Ubirimi\Container\UbirimiContainer;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+    use Ubirimi\Yongo\Repository\Issue\Attachment;
 
     Util::checkUserIsLoggedInAndRedirect();
 
     $attachmentId = $_POST['att_id'];
 
-    $attachment = IssueAttachment::getById($attachmentId);
+    $attachment = Attachment::getById($attachmentId);
 
-    IssueAttachment::deleteById($attachmentId);
+    Attachment::deleteById($attachmentId);
 
     $pathToAttachment = UbirimiContainer::get()['asset.root_folder'] . UbirimiContainer::get()['asset.yongo_issue_attachments'];
 

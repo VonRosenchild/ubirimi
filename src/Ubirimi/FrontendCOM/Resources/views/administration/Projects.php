@@ -1,8 +1,9 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    require_once __DIR__ . '/_header.php';
+require_once __DIR__ . '/_header.php';
 ?>
 <body>
 
@@ -39,7 +40,7 @@
                     <td><?php echo $project['name']; ?></td>
                     <td>
                         <?php
-                            $issuesResult = Issue::getByParameters(array('project' => $project['id']));
+                            $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $project['id']));
                             if ($issuesResult) {
                                 echo $issuesResult->num_rows;
                             } else {

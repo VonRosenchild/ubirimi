@@ -3,7 +3,7 @@
 namespace Ubirimi\Yongo\Repository\Notification;
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 
 class NotificationScheme
 {
@@ -236,25 +236,25 @@ class NotificationScheme
     }
 
     public static function addDefaultNotifications($clientId, $notificationSchemeId) {
-        $eventCreatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE, 'id');
+        $eventCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
 
-        $eventUpdatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_UPDATED_CODE, 'id');
-        $eventAssignedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_ASSIGNED_CODE, 'id');
+        $eventUpdatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_UPDATED_CODE, 'id');
+        $eventAssignedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_ASSIGNED_CODE, 'id');
 
-        $eventResolvedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_RESOLVED_CODE, 'id');
+        $eventResolvedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_RESOLVED_CODE, 'id');
 
-        $eventClosedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CLOSED_CODE, 'id');
-        $eventCommentedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_COMMENTED_CODE, 'id');
+        $eventClosedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CLOSED_CODE, 'id');
+        $eventCommentedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_COMMENTED_CODE, 'id');
 
-        $eventCommentEditedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_COMMENT_EDITED_CODE, 'id');
-        $eventReopenedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_REOPENED_CODE, 'id');
-        $eventWorkStartedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_WORK_STARTED_CODE, 'id');
+        $eventCommentEditedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_COMMENT_EDITED_CODE, 'id');
+        $eventReopenedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_REOPENED_CODE, 'id');
+        $eventWorkStartedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_WORK_STARTED_CODE, 'id');
 
-        $eventWorkStoppedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
-        $eventDeletedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_DELETED_CODE, 'id');
+        $eventWorkStoppedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
+        $eventDeletedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_DELETED_CODE, 'id');
 
-        $eventMovedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_MOVED_CODE, 'id');
-        $eventGenericId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_GENERIC_CODE, 'id');
+        $eventMovedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_MOVED_CODE, 'id');
+        $eventGenericId = Event::getByClientIdAndCode($clientId, Event::EVENT_GENERIC_CODE, 'id');
 
         $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, reporter) VALUES " .
             "(" . $notificationSchemeId. "," . $eventCreatedId . ', 1),' .

@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
@@ -29,7 +29,7 @@ class ViewController extends UbirimiController
 
         $notificationSchemeId = $project['notification_scheme_id'];
         $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
-        $events = IssueEvent::getByClient($session->get('client/id'));
+        $events = Event::getByClient($session->get('client/id'));
 
         $hasGlobalAdministrationPermission = User::hasGlobalPermission(
             $session->get('client/id'),

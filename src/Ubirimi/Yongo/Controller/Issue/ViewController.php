@@ -4,15 +4,16 @@ namespace Ubirimi\Yongo\Controller\Issue;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\Repository\Client;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+use Ubirimi\Yongo\Repository\Issue\Attachment;
+use Ubirimi\Yongo\Repository\Issue\Component;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
@@ -30,7 +31,7 @@ class ViewController extends UbirimiController
         $issueId = $request->get('id');
 
         if (Util::checkUserIsLoggedIn()) {
-            $issue = Issue::getById($issueId, $session->get('user/id'));
+            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
             $clientSettings = $session->get('client/settings');
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
         } else {
@@ -38,7 +39,7 @@ class ViewController extends UbirimiController
             $session->set('client/id', $clientId);
             $session->set('user/id', null);
             $clientSettings = Client::getSettings($session->get('client/id'));
-            $issue = Issue::getById($issueId, $session->get('user/id'));
+            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
             $session->set('yongo/settings', Client::getYongoSettings($session->get('client/id')));
         }
 
@@ -67,7 +68,7 @@ class ViewController extends UbirimiController
 
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
 
-            $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
+            $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
             $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
             $versionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 
@@ -107,17 +108,17 @@ class ViewController extends UbirimiController
             $childrenIssues = null;
             $parentIssue = null;
             if ($issue['parent_id'] == null) {
-                $childrenIssues = Issue::getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
+                $childrenIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
             } else {
-                $parentIssue = Issue::getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
+                $parentIssue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
             }
 
-            $customFieldsData = IssueCustomField::getCustomFieldsData($issue['id']);
-            $customFieldsDataUserPickerMultipleUser = IssueCustomField::getUserPickerData($issue['id']);
+            $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = CustomField::getUserPickerData($issue['id']);
 
             $subTaskIssueTypes = Project::getSubTasksIssueTypes($projectId);
 
-            $attachments = IssueAttachment::getByIssueId($issue['id'], true);
+            $attachments = UbirimiContainer::getRepository('yongo.issue.attachment')->getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
             if ($countAttachments) {
                 $hasDeleteOwnAttachmentsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
@@ -140,7 +141,7 @@ class ViewController extends UbirimiController
 
             $slasPrintData = null;
             if ($issueProject['help_desk_enabled_flag']) {
-                $slasPrintData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+                $slasPrintData = UbirimiContainer::getRepository('yongo.issue.issue')->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
             }
 
             // voters and watchers

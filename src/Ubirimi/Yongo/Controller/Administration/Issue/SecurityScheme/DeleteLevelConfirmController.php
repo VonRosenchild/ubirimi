@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
@@ -20,7 +21,7 @@ class DeleteLevelConfirmController extends UbirimiController
         $issueSecuritySchemeId = $issueSecuritySchemeLevel['issue_security_scheme_id'];
         $allLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
 
-        $issues = Issue::getByParameters(
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
             array(
                 'client_id' => $session->get('client/id'),
                 'security_scheme_level' => $issueSecuritySchemeLevelId

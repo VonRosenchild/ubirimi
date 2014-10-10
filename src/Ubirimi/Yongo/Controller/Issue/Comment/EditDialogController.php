@@ -5,7 +5,7 @@ namespace Ubirimi\Yongo\Controller\Issue\Comment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 
 class EditDialogController extends UbirimiController
 {
@@ -15,7 +15,7 @@ class EditDialogController extends UbirimiController
 
         $commentId = $request->get('id');
 
-        $comment = IssueComment::getById($commentId);
+        $comment = Comment::getById($commentId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/comment/editDialog.php', get_defined_vars());
     }

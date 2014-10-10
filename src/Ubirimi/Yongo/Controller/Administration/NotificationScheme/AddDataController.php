@@ -13,7 +13,7 @@ use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Repository\Log;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Notification\Notification;
 use Ubirimi\Yongo\Repository\Permission\PermissionRole;
 
@@ -30,7 +30,7 @@ class AddDataController extends UbirimiController
 
         $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
 
-        $events = IssueEvent::getByClient($session->get('client/id'));
+        $events = Event::getByClient($session->get('client/id'));
 
         $users = User::getByClientId($session->get('client/id'));
         $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);

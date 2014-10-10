@@ -7,7 +7,7 @@ use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
@@ -317,7 +317,7 @@ class AgileBoard
     public static function getBacklogIssues($clientId, $boardData, $onlyMyIssuesFlag, $loggedInUserId, $searchText, $completeStatuses) {
         $filterId = $boardData['filter_id'];
 
-        $filterData = IssueFilter::getById($filterId);
+        $filterData = Filter::getById($filterId);
         $definition = $filterData['definition'];
         $definitionArray = explode('&', $definition);
         $searchParameters = array();
@@ -342,7 +342,7 @@ class AgileBoard
 
         $searchParameters['not_status'] = $completeStatuses;
 
-        return Issue::getByParameters($searchParameters, $loggedInUserId);
+        return UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($searchParameters, $loggedInUserId);
     }
 
     public static function deleteIssuesFromSprints($issueIdArray) {

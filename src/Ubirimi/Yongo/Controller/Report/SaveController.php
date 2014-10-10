@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
@@ -29,11 +29,11 @@ class SaveController extends UbirimiController
         $date = Util::getServerCurrentDateTime();
 
         if ($Id != -1) {
-            IssueFilter::updateById($Id, $filterName, $filterDescription, $filterData, $date);
+            Filter::updateById($Id, $filterName, $filterDescription, $filterData, $date);
             $Id = -1;
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo filter' . $filterName, $date);
         } else {
-            $Id = IssueFilter::save($loggedInUserId, $filterName, $filterDescription, $filterData, $date);
+            $Id = Filter::save($loggedInUserId, $filterName, $filterDescription, $filterData, $date);
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo filter' . $filterName, $date);
         }
 

@@ -10,7 +10,7 @@ use Ubirimi\Repository\Client;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Yongo\Repository\Project\ProjectComponent;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -195,7 +195,7 @@ function insertUbirimiIssue($bug)
         $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
 
         if (null !== $userId) {
-            IssueComment::add(
+            Comment::add(
                 $issue[0],
                 $userId,
                 $comment['thetext'],

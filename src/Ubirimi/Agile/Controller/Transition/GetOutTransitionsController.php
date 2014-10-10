@@ -5,6 +5,7 @@ namespace Ubirimi\Agile\Controller\Transition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
@@ -23,7 +24,7 @@ class GetOutTransitionsController extends UbirimiController
         $projectId = $request->request->get('project_id');
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = Issue::getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
 
         $transitions = Workflow::getOutgoingTransitionsForStep($workflowId, $stepIdFrom, 'array');
 

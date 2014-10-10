@@ -3,12 +3,12 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\GeneralTaskQueue;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\Component;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 
 /* check locking mechanism */
 if (file_exists('update_bugzilla.lock')) {
@@ -38,11 +38,11 @@ $severityConstants = array(
 );
 
 try {
-    $newIssuesUpdated = Issue::getByParameters(array(
+    $newIssuesUpdated = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array(
         'date_updated_after' => $PILOT_TEAM_START_DATE
     ));
 
-    $newIssuesCreated = Issue::getByParameters(array(
+    $newIssuesCreated = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array(
         'date_created_after' => $PILOT_TEAM_START_DATE
     ));
 
@@ -117,11 +117,11 @@ function processNewBugzillaBug($newIssue)
 {
     global $severityConstants;
 
-    $issueComponent = IssueComponent::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id']);
+    $issueComponent = Component::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id']);
     $issueVersion = IssueVersion::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $project = Project::getById($newIssue['issue_project_id']);
-    $severity = IssueCustomField::getCustomFieldsDataByFieldId($newIssue['id'], 29403);
-    $comments = IssueComment::getByIssueId($newIssue['id']);
+    $severity = CustomField::getCustomFieldsDataByFieldId($newIssue['id'], 29403);
+    $comments = Comment::getByIssueId($newIssue['id']);
 
     if (null !== $issueComponent) {
         $issueComponent = $issueComponent->fetch_array(MYSQLI_ASSOC);

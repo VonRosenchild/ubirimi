@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\Type;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
@@ -24,7 +25,7 @@ class DeleteConfirmController extends UbirimiController
             'client_id' => $session->get('client/id')
         );
 
-        $issuesResult = Issue::getByParameters($issueQueryParameters);
+        $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
         $issuesCount = null;
 
         if (null != $issuesResult) {

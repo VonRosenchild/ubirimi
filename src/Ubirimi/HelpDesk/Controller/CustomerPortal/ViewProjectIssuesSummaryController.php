@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\SystemProduct;
@@ -32,7 +33,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             'helpdesk_flag' => 1
         );
 
-        $issues = Issue::getByParameters(
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -95,7 +96,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             'helpdesk_flag' => 1
         );
 
-        $issues = Issue::getByParameters(
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -116,7 +117,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
                 'helpdesk_flag' => 1
             );
 
-            $issues = Issue::getByParameters(
+            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
                 $issueQueryParameters,
                 $session->get('user/id'),
                 null,

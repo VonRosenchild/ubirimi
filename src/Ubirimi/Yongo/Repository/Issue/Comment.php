@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueComment
+class Comment
 {
     public static function deleteById($commentId) {
         $query = 'delete from issue_comment where id = ? limit 1';

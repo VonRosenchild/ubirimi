@@ -4,7 +4,7 @@
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+    use Ubirimi\Yongo\Repository\Issue\Component;
     use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
     use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Issue\IssueVersion;
@@ -12,7 +12,7 @@
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Repository\User\User;
-    use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+    use Ubirimi\Yongo\Repository\Issue\CustomField;
 
     $issueId = $issueData['id'];
     $projectId = $issueData['issue_project_id'];
@@ -39,7 +39,7 @@
     }
 
     $projectComponents = Project::getComponents($projectId);
-    $issueComponents = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
+    $issueComponents = Component::getByIssueIdAndProjectId($issueId, $projectId);
     $arrIssueComponents = array();
 
     if ($issueComponents) {
@@ -299,7 +299,7 @@
                                     break;
 
                                 case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
-                                    $customFieldsDataUserPickerMultipleUserData = IssueCustomField::getUserPickerData($issueId, $field['field_id']);
+                                    $customFieldsDataUserPickerMultipleUserData = CustomField::getUserPickerData($issueId, $field['field_id']);
 
                                     $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
 

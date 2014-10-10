@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueFilter
+class Filter
 {
     public static function updateById($filterId, $name, $description, $definition, $date) {
         $query = "UPDATE filter set name = ?, description = ?, definition = ?, date_updated = ? where id = ? LIMIT 1";
@@ -117,11 +117,11 @@ class IssueFilter
     }
 
     public static function toggleFavourite($userId, $filterId, $date) {
-        $isFavourite = IssueFilter::checkFilterIsFavouriteForUserId($filterId, $userId);
+        $isFavourite = Filter::checkFilterIsFavouriteForUserId($filterId, $userId);
         if ($isFavourite) {
-            IssueFilter::deleteFavouriteByFilterIdAndUserId($userId, $filterId);
+            Filter::deleteFavouriteByFilterIdAndUserId($userId, $filterId);
         } else {
-            IssueFilter::addFavourite($userId, $filterId, $date);
+            Filter::addFavourite($userId, $filterId, $date);
         }
     }
 

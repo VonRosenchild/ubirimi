@@ -4,6 +4,7 @@ namespace Ubirimi\HelpDesk\Controller\Queue;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -50,7 +51,7 @@ class ViewController extends UbirimiController
             $getSearchParameters['page'] = $page;
             $getSearchParameters['issues_per_page'] = 50;
 
-            $issuesResult = Issue::getByParameters(
+            $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
                 $getSearchParameters,
                 $session->get('user/id'),
                 $whereSQL,

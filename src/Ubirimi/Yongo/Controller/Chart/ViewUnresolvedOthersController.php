@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Chart;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Repository\Client;
 use Ubirimi\Yongo\Repository\Issue\Issue;
@@ -41,7 +42,7 @@ class ViewUnresolvedOthersController extends UbirimiController
             $issueQueryParameters['not_assignee'] = $loggedInUserId;
         }
 
-        $issuesUnresolvedOthers = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issuesUnresolvedOthers = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $renderParameters = array('issues' => $issuesUnresolvedOthers, 'render_checkbox' => false, 'show_header' =>true);
         $renderColumns = array('code', 'summary', 'priority', 'assignee');

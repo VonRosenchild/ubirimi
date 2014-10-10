@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Issue\LogWork;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
@@ -35,7 +36,7 @@ class LogController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
 
             $issueQueryParameters = array('issue_id' => $issueId);
-            $issue = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
 
             IssueWorkLog::addLog($issueId, $loggedInUserId, $timeSpentPost, $dateStartedString, $comment, $currentDate);
             $remainingTime = IssueWorkLog::adjustRemainingEstimate($issue, $timeSpentPost, $remainingTime, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);

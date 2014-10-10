@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -32,7 +32,7 @@ class AddController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $event = new IssueEvent($session->get('client/id'), $name, $description);
+                $event = new Event($session->get('client/id'), $name, $description);
                 $event->save($currentDate);
 
                 Log::add(

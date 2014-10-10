@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -110,7 +111,7 @@ class AddController extends UbirimiController
                 }
 
                 // for every issue in this project add an empty line in yongo_issue_sla
-                $issuesData = Issue::getByParameters(array('project' => $projectId));
+                $issuesData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
                 if ($issuesData->num_rows) {
                     while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
                         Issue::addPlainSLADataBySLAId($issue['id'], $slaId);

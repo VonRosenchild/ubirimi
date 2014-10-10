@@ -1,10 +1,11 @@
 <?php
-    use Ubirimi\Repository\Client;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\Client;
     use Ubirimi\Repository\HelpDesk\SLA;
     use Ubirimi\Repository\User\User;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+    use Ubirimi\Yongo\Repository\Issue\Filter;
     use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
     use Ubirimi\Yongo\Repository\Permission\Permission;
@@ -38,7 +39,7 @@
         $projectsForBrowsing->data_seek(0);
         $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
-        $searchCriteria = Issue::getSearchParameters($projectsForBrowsing, $clientId);
+        $searchCriteria = UbirimiContainer::getRepository('yongo.issue.issue')->getSearchParameters($projectsForBrowsing, $clientId);
         $issuesResult = null;
 
         $SLAs = SLA::getByProjectIds($projectIds);
@@ -73,7 +74,7 @@
         if (isset($parseURLData['query']) && $projectsForBrowsing) {
             if (Util::searchQueryNotEmpty($getSearchParameters)) {
 
-                $issuesResult = Issue::getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
+                $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
 
                 $issues = $issuesResult[0];
                 $issuesCount = $issuesResult[1];
@@ -93,7 +94,7 @@
     }
 
     $hasGlobalBulkPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE);
-    $customFilters = IssueFilter::getAllByUser($loggedInUserId);
+    $customFilters = Filter::getAllByUser($loggedInUserId);
 
     if ($getFilter) {
         $menuSelectedCategory = 'filters';

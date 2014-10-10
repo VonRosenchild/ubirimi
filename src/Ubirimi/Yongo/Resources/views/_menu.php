@@ -4,7 +4,7 @@
     use Ubirimi\Repository\User\User;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+    use Ubirimi\Yongo\Repository\Issue\Filter;
     use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
@@ -21,7 +21,7 @@
         for ($i = 0; $i < count($projectsMenu); $i++)
             $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
 
-        $filters = IssueFilter::getAllByUser($loggedInUserId);
+        $filters = Filter::getAllByUser($loggedInUserId);
 
         if (null == $session->get('selected_project_id')) {
             if ($projectsMenu) {

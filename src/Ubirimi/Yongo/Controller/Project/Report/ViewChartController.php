@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Project\Report;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
@@ -43,7 +44,7 @@ class ViewChartController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2));
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $hasGlobalAdministrationPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
         $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);

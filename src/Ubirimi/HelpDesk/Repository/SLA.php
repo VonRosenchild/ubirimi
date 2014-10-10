@@ -5,7 +5,7 @@ namespace Ubirimi\Repository\HelpDesk;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
@@ -262,9 +262,9 @@ class SLA
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
-                $assigneeID = Issue::getAssigneeOnDate($issue['id'], $currentSLADate);
+                $assigneeID = UbirimiContainer::getRepository('yongo.issue.issue')->getAssigneeOnDate($issue['id'], $currentSLADate);
 
-                $comments = IssueComment::getByUserIdAfterDate($issue['id'], $assigneeID, $currentSLADate);
+                $comments = Comment::getByUserIdAfterDate($issue['id'], $assigneeID, $currentSLADate);
                 if ($comments) {
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
@@ -276,7 +276,7 @@ class SLA
                     }
                 } else {
                     $userAssigneeId = $issue['assignee'];
-                    $comments = IssueComment::getByIssueIdAndUserId($issue['id'], $userAssigneeId);
+                    $comments = Comment::getByIssueIdAndUserId($issue['id'], $userAssigneeId);
 
                     if ($comments) {
                         $firstComment = $comments->fetch_array(MYSQLI_ASSOC);

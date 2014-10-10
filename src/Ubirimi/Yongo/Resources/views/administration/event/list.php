@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+    use Ubirimi\Yongo\Repository\Issue\Event;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -49,7 +49,7 @@
                             <?php
                                 $canBeDeleted = 1;
 
-                                $notificationSchemes = IssueEvent::getNotificationSchemesByEventId($clientId, $event['id']);
+                                $notificationSchemes = Event::getNotificationSchemesByEventId($clientId, $event['id']);
                                 if ($notificationSchemes) {
                                     $canBeDeleted = 0;
                                     echo '<ul>';
@@ -62,7 +62,7 @@
                         </td>
                         <td>
                             <?php
-                                $workflows = IssueEvent::getWorkflowsByEventId($clientId, $event['id']);
+                                $workflows = Event::getWorkflowsByEventId($clientId, $event['id']);
                                 if ($workflows) {
                                     $canBeDeleted = 0;
                                     echo '<ul>';

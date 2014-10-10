@@ -11,7 +11,7 @@ use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class AddController extends UbirimiController
@@ -45,7 +45,7 @@ class AddController extends UbirimiController
                 $definitionData = 'project=' . implode('|', $projectsInBoard);
                 $date = Util::getServerCurrentDateTime();
 
-                $filterId = IssueFilter::save(
+                $filterId = Filter::save(
                     $session->get('user/id'),
                     'Filter for ' . $name,
                     'Filter created automatically for agile board ' . $name,

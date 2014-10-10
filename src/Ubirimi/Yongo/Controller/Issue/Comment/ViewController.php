@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -27,7 +27,7 @@ class ViewController extends UbirimiController
         }
 
         $projectData = Project::getByIssueId($Id);
-        $comments = IssueComment::getByIssueId($Id);
+        $comments = Comment::getByIssueId($Id);
 
         $hasAddCommentsPermission = Project::userHasPermission($projectData['id'], Permission::PERM_ADD_COMMENTS, $loggedInUserId);
         $hasDeleteAllComments = Project::userHasPermission($projectData['id'], Permission::PERM_DELETE_ALL_COMMENTS, $loggedInUserId);

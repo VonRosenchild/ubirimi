@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\Client;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 
 class ListFilterController extends UbirimiController
 {
@@ -15,12 +15,12 @@ class ListFilterController extends UbirimiController
     {
         if (Util::checkUserIsLoggedIn()) {
             $clientSettings = $session->get('client/settings');
-            $filters = IssueFilter::getAllByUser($session->get('user/id'));
+            $filters = Filter::getAllByUser($session->get('user/id'));
         } else {
             $clientId = Client::getClientIdAnonymous();
             $loggedInUserId = null;
             $clientSettings = Client::getSettings($clientId);
-            $filters = IssueFilter::getAllByClientId($clientId);
+            $filters = Filter::getAllByClientId($clientId);
         }
 
         $loggedInUserId = $session->get('user/id');

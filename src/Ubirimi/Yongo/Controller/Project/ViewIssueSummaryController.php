@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
@@ -36,7 +37,7 @@ class ViewIssueSummaryController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2));
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $count = 0;
         $statsPriority = array();
@@ -88,7 +89,7 @@ class ViewIssueSummaryController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2), 'component' => -1);
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
         $countUnresolvedWithoutComponent = 0;
         if ($issues)
             $countUnresolvedWithoutComponent = $issues->num_rows;
@@ -98,7 +99,7 @@ class ViewIssueSummaryController extends UbirimiController
         $statsComponent = array();
         while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
             $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2), 'component' => $component['id']);
-            $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
             if ($issues)
                 $statsComponent[$component['name']] = array($component['id'], $issues->num_rows);

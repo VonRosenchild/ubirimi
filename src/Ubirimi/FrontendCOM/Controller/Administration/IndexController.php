@@ -2,6 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Documentador\Entity;
@@ -23,7 +24,7 @@ class IndexController extends UbirimiController
         $clients = Client::getAll();
         $projects = Project::getAll();
         $users = User::getAll();
-        $issues = Issue::getAll();
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getAll();
         $spaces = Space::getAllForAllClients();
         $entities = Entity::getAll();
         $agileBoards = AgileBoard::getAll();
@@ -33,7 +34,7 @@ class IndexController extends UbirimiController
         $clientsToday = Client::getAll(array('today' => true));
         $projectsToday = Project::getAll(array('today' => true));
         $usersToday = User::getAll(array('today' => true));
-        $issuesToday = Issue::getAll(array('today' => true));
+        $issuesToday = UbirimiContainer::getRepository('yongo.issue.issue')->getAll(array('today' => true));
         $svnReposToday = SVNRepository::getAll(array('today' => true));
 
         $selectedOption = 'statistics';

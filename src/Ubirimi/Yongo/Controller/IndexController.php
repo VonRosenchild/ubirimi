@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
@@ -60,7 +61,7 @@ class IndexController extends UbirimiController
             $issueQueryParameters['project'] = array(-1);
         }
 
-        $issues = Issue::getByParameters(
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -83,7 +84,7 @@ class IndexController extends UbirimiController
             $issueQueryParameters['not_assignee'] = $userAssignedId;
         }
 
-        $issuesUnresolvedOthers = Issue::getByParameters(
+        $issuesUnresolvedOthers = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -110,7 +111,7 @@ class IndexController extends UbirimiController
         $issueStatuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
         $twoDimensionalData = null;
         if (count($projectIdsArray))
-            $twoDimensionalData = Issue::get2DimensionalFilter(-1, 'array');
+            $twoDimensionalData = UbirimiContainer::getRepository('yongo.issue.issue')->get2DimensionalFilter(-1, 'array');
 
         return $this->render(__DIR__ . '/../Resources/views/Index.php', get_defined_vars());
     }

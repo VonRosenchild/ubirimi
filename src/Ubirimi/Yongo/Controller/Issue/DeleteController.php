@@ -26,7 +26,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $issueId = $request->get('issue_id');
 
-        $issue = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $project = Project::getById($issue['issue_project_id']);
 
         $loggedInUser = User::getById($loggedInUserId);
@@ -36,7 +36,7 @@ class DeleteController extends UbirimiController
         Issue::deleteById($issueId);
 
         // also delete the substaks
-        $childrenIssues = Issue::getByParameters(array('parent_id' => $issueId), $loggedInUserId);
+        $childrenIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueId), $loggedInUserId);
         while ($childrenIssues && $childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)) {
             Issue::deleteById($childIssue['id']);
         }

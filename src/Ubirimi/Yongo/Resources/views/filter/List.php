@@ -1,7 +1,7 @@
 <?php
     use Ubirimi\Agile\Repository\AgileBoard;
     use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -39,8 +39,8 @@ use Ubirimi\Yongo\Repository\Issue\IssueFilter;
                         <td><?php echo $filter['description'] ?></td>
                         <td>
                             <?php
-                                $isFavourite = IssueFilter::checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
-                                $subscriptions = IssueFilter::getSubscriptions($filter['id']);
+                                $isFavourite = Filter::checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
+                                $subscriptions = Filter::getSubscriptions($filter['id']);
                                 if ($isFavourite)
                                     echo '<img id="toggle_filter_favourite_' . $filter['id'] . '" title="Remove Filter from Favourites" src="/img/favourite_full.png" />';
                                 else

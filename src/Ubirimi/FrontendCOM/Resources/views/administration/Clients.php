@@ -1,9 +1,10 @@
 <?php
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\Client;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    require_once __DIR__ . '/_header.php';
+require_once __DIR__ . '/_header.php';
 ?>
 <body>
 
@@ -54,7 +55,7 @@
                         ?></strong>U
                     <strong>
                     <?php
-                        $issues = Issue::getByParameters(array('client_id' => $client['id']));
+                        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('client_id' => $client['id']));
                         echo $issues === null ? '0' : $issues->num_rows;
                     ?></strong>I
                 </td>

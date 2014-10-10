@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -34,7 +35,7 @@ class ListIssueController extends UbirimiController
             $projectsForBrowsing->data_seek(0);
             $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
-            $searchCriteria = Issue::getSearchParameters($projectsForBrowsing, $session->get('client/id'), 1);
+            $searchCriteria = UbirimiContainer::getRepository('yongo.issue.issue')->getSearchParameters($projectsForBrowsing, $session->get('client/id'), 1);
             $issuesResult = null;
         }
 
@@ -63,7 +64,7 @@ class ListIssueController extends UbirimiController
             $projectsForBrowsing = array(229);
             if (isset($parseURLData['query']) && $projectsForBrowsing) {
                 if (Util::searchQueryNotEmpty($getSearchParameters)) {
-                    $issuesResult = Issue::getByParameters($getSearchParameters, $session->get('user/id'));
+                    $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $session->get('user/id'));
 
                     $issues = $issuesResult[0];
                     $issuesCount = $issuesResult[1];

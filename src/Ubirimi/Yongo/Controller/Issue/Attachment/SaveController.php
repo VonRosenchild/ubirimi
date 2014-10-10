@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueComment;
+    use Ubirimi\Yongo\Repository\Issue\Comment;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -16,5 +16,5 @@
 
     if (!empty($comment)) {
         $currentDate = Util::getServerCurrentDateTime();
-        IssueComment::add($issueId, $loggedInUserId, $comment, $currentDate);
+        Comment::add($issueId, $loggedInUserId, $comment, $currentDate);
     }

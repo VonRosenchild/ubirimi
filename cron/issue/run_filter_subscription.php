@@ -11,7 +11,7 @@ use Ubirimi\Util;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 
 /* check locking mechanism */
 if (file_exists(__DIR__ . '/run_filter_subscription.lock')) {
@@ -25,8 +25,8 @@ if (file_exists(__DIR__ . '/run_filter_subscription.lock')) {
 require_once __DIR__ . '/../../web/bootstrap_cli.php';
 
 $filterSubscriptionId = $argv[1];
-$filterSubscription = IssueFilter::getSubscriptionById($filterSubscriptionId);
-$filter = IssueFilter::getById($filterSubscription['filter_id']);
+$filterSubscription = Filter::getSubscriptionById($filterSubscriptionId);
+$filter = Filter::getById($filterSubscription['filter_id']);
 $definition = $filter['definition'];
 $searchParametersInFilter = explode('&', $definition);
 $searchParameters = array();
@@ -54,7 +54,7 @@ if ($filterSubscription['user_id']) {
 }
 
 foreach ($usersToNotify as $user) {
-    $issues = Issue::getByParameters($searchParameters, $filterSubscription['user_id'], null, $filterSubscription['user_id']);
+    $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($searchParameters, $filterSubscription['user_id'], null, $filterSubscription['user_id']);
 
     $columns = explode('#', $user['issues_display_columns']);
 

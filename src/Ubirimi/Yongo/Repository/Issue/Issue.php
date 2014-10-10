@@ -18,14 +18,14 @@ class Issue
     const ISSUE_AFFECTED_VERSION_FLAG = 1;
     const ISSUE_FIX_VERSION_FLAG = 2;
 
-    public static function getById($issueId, $loggedInUserId = null) {
+    public function getById($issueId, $loggedInUserId = null) {
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
 
         return $issue;
     }
 
-    public static function getByParameters($parameters, $securitySchemeUserId = null, $queryWherePart = null, $loggedInUserId = null) {
+    public function getByParameters($parameters, $securitySchemeUserId = null, $queryWherePart = null, $loggedInUserId = null) {
 
         $parameterType = '';
         $parameterArray = array();
@@ -638,7 +638,7 @@ class Issue
             $issueData['fix_version'] = array();
             $issueData['fix_version_ids'] = array();
 
-            $components = IssueComponent::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], 'array');
+            $components = Component::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], 'array');
             for ($i = 0; $i < count($components); $i++) {
                 $issueData['component'][] = $components[$i]['name'];
                 $issueData['component_ids'][] = $components[$i]['id'];
@@ -662,7 +662,7 @@ class Issue
         }
     }
 
-    public static function setUnassignedById($issueId) {
+    public function setUnassignedById($issueId) {
         $query = 'update yongo_issue SET user_assigned_id = null where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -670,7 +670,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function get2DimensionalFilter($projectId, $resultType = 'array') {
+    public function get2DimensionalFilter($projectId, $resultType = 'array') {
         $query = 'SELECT user.id, user.first_name, user.last_name, yongo_issue.status_id, COUNT(yongo_issue.status_id) AS count
                     FROM yongo_issue
                     LEFT JOIN user on user.id = yongo_issue.user_assigned_id';
@@ -705,7 +705,7 @@ class Issue
         }
     }
 
-    public static function updateField($issueId, $field_type, $newValue) {
+    public function updateField($issueId, $field_type, $newValue) {
         $query = 'update yongo_issue SET ' . $field_type . ' = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -713,7 +713,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updateResolution($projectIdArray, $oldResolutionId, $newResolutionId) {
+    public function updateResolution($projectIdArray, $oldResolutionId, $newResolutionId) {
         $projectSQL = implode(', ', $projectIdArray);
         $query_update = 'update yongo_issue SET resolution_id = ? where resolution_id = ? and project_id IN (' . $projectSQL . ')';
 
@@ -722,7 +722,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updatePriority($projectIdArray, $oldPriorityId, $newPriorityId) {
+    public function updatePriority($projectIdArray, $oldPriorityId, $newPriorityId) {
         $projectSQL = implode(', ', $projectIdArray);
         $query_update = 'update yongo_issue SET priority_id = ? where priority_id = ? and project_id IN (' . $projectSQL . ')';
 
@@ -731,7 +731,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updateType($projectIdArray, $oldTypeId, $newTypeId) {
+    public function updateType($projectIdArray, $oldTypeId, $newTypeId) {
         $projectSQL = implode(', ', $projectIdArray);
         $query_update = 'update yongo_issue SET type_id = ? where type_id = ? and project_id IN (' . $projectSQL . ')';
 
@@ -740,7 +740,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function addHistory($issueId, $userId, $field, $old_value, $new_value, $oldValueId, $newValueId, $now_date) {
+    public function addHistory($issueId, $userId, $field, $old_value, $new_value, $oldValueId, $newValueId, $now_date) {
         if (!$old_value) {
             $old_value = 'NULL';
         }
@@ -756,17 +756,17 @@ class Issue
         $stmt->execute();
     }
 
-    public static function deleteById($issueId) {
-        IssueComment::deleteByIssueId($issueId);
+    public function deleteById($issueId) {
+        Comment::deleteByIssueId($issueId);
         IssueHistory::deleteByIssueId($issueId);
-        IssueComponent::deleteByIssueId($issueId);
+        Component::deleteByIssueId($issueId);
         IssueVersion::deleteByIssueId($issueId);
 
         IssueWatcher::deleteByIssueId($issueId);
         Issue::deleteSLADataByIssueId($issueId);
         IssueWorkLog::deleteByIssueId($issueId);
-        IssueAttachment::deleteByIssueId($issueId);
-        IssueCustomField::deleteCustomFieldsData($issueId);
+        Attachment::deleteByIssueId($issueId);
+        CustomField::deleteCustomFieldsData($issueId);
 
         AgileBoard::deleteIssuesFromSprints(array($issueId));
 
@@ -777,8 +777,8 @@ class Issue
         $stmt->execute();
     }
 
-    public static function addRaw($projectId, $date, $data) {
-        $issueNumber = Issue::getAvailableIssueNumber($projectId);
+    public function addRaw($projectId, $date, $data) {
+        $issueNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($projectId);
 
         $query = "INSERT INTO yongo_issue(project_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .
             "summary, description, environment, date_created, date_due) " .
@@ -805,11 +805,11 @@ class Issue
         return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
     }
 
-    public static function addBugzilla($project, $currentDate, $delta_ts, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null, $statusId) {
+    public function addBugzilla($project, $currentDate, $delta_ts, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null, $statusId) {
         global $issueNumbers;
 
         if (!isset($issueNumbers[$project['id']])) {
-            $issueNumbers[$project['id']] = Issue::getAvailableIssueNumber($project['id']);
+            $issueNumbers[$project['id']] = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($project['id']);
         }
 
         $issueNumbers[$project['id']] += 1;
@@ -889,8 +889,8 @@ class Issue
         }
     }
 
-    public static function add($project, $currentDate, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null) {
-        $issueNumber = Issue::getAvailableIssueNumber($project['id']);
+    public function add($project, $currentDate, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null) {
+        $issueNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($project['id']);
         $workflowUsed = Project::getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
 
         $statusData = Workflow::getDataForCreation($workflowUsed['id']);
@@ -969,7 +969,7 @@ class Issue
         return array(UbirimiContainer::get()['db.connection']->insert_id, $issueNumber);
     }
 
-    public static function getByIdSimple($issueId) {
+    public function getByIdSimple($issueId) {
         $query = 'SELECT * from yongo_issue where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -986,7 +986,7 @@ class Issue
         return null;
     }
 
-    public static function getAvailableIssueNumber($projectId) {
+    public function getAvailableIssueNumber($projectId) {
         $query = 'SELECT issue_number ' .
                     'FROM project ' .
                     'WHERE id = ? ' .
@@ -1011,7 +1011,7 @@ class Issue
         return 1;
     }
 
-    public static function addComponentVersion($issueId, $values, $table, $versionFlag = null) {
+    public function addComponentVersion($issueId, $values, $table, $versionFlag = null) {
         $query = '';
         if ($table == 'issue_component')
             $query = "INSERT INTO issue_component(issue_id, project_component_id) VALUES ";
@@ -1047,7 +1047,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updateById($issueId, $data, $updateDate) {
+    public function updateById($issueId, $data, $updateDate) {
 
         $paramType = '';
         $paramValues = array();
@@ -1196,13 +1196,13 @@ class Issue
         }
 
         if (array_key_exists(Field::FIELD_COMPONENT_CODE, $data)) {
-            IssueComponent::deleteByIssueId($issueId);
+            Component::deleteByIssueId($issueId);
             if ($data[Field::FIELD_COMPONENT_CODE])
                 Issue::addComponentVersion($issueId, $data['component'], 'issue_component');
         }
     }
 
-    private static function issueFieldChanged($fieldCode, $oldIssueData, $newIssueData) {
+    private function issueFieldChanged($fieldCode, $oldIssueData, $newIssueData) {
 
         $fieldChanged = false;
 
@@ -1213,7 +1213,7 @@ class Issue
         return $fieldChanged;
     }
 
-    public static function computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData) {
+    public function computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData) {
 
         $fieldChanges = array();
         $issueId = $oldIssueData['id'];
@@ -1323,7 +1323,7 @@ class Issue
         $newIssueData['fix_version'] = array();
         $newIssueData['fix_version_ids'] = array();
 
-        $components = IssueComponent::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], 'array');
+        $components = Component::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], 'array');
         for ($i = 0; $i < count($components); $i++) {
             $newIssueData['component'][] = $components[$i]['name'];
             $newIssueData['component_ids'][] = $components[$i]['id'];
@@ -1369,7 +1369,7 @@ class Issue
         foreach ($newIssueCustomFieldsData as $key => $value) {
             $fieldData = Field::getById($key);
 
-            $oldCustomFieldValue = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            $oldCustomFieldValue = CustomField::getCustomFieldsDataByFieldId($issueId, $key);
             if ($oldCustomFieldValue) {
                 switch ($fieldData['sys_field_type_id']) {
                     case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE_ID;
@@ -1451,7 +1451,7 @@ class Issue
         return $fieldChanges;
     }
 
-    public static function updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate) {
+    public function updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate) {
 
         for ($i = 0; $i < count($fieldChanges); $i++) {
             if ($fieldChanges[$i][0] != 'comment') {
@@ -1479,7 +1479,7 @@ class Issue
         }
     }
 
-    public static function getAll($filters = array()) {
+    public function getAll($filters = array()) {
         $query = 'select * from yongo_issue ' .
                  'where 1 = 1';
 
@@ -1498,7 +1498,7 @@ class Issue
             return false;
     }
 
-    public static function updateSecurityLevel($clientId, $issueSecuritySchemeLevelId, $newIssueSecuritySchemeLevelId) {
+    public function updateSecurityLevel($clientId, $issueSecuritySchemeLevelId, $newIssueSecuritySchemeLevelId) {
         $query = 'select yongo_issue.id ' .
             'from yongo_issue ' .
             'left join project on project.id = yongo_issue.project_id ' .
@@ -1526,7 +1526,7 @@ class Issue
         }
     }
 
-    public static function setAffectedVersion($issueId, $projectVersionId) {
+    public function setAffectedVersion($issueId, $projectVersionId) {
         $query = "INSERT INTO issue_version(issue_id, project_version_id, affected_targeted_flag) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1536,8 +1536,8 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updateAssignee($clientId, $issueId, $loggedInUserId, $userAssignedId, $comment = null) {
-        $issueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+    public function updateAssignee($clientId, $issueId, $loggedInUserId, $userAssignedId, $comment = null) {
+        $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         if ($userAssignedId != -1) {
             Issue::updateField($issueId, 'user_assigned_id', $userAssignedId);
@@ -1556,13 +1556,13 @@ class Issue
         Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $oldAssignee['id'], $newAssignee['id'], $date);
 
         if (!empty($comment)) {
-            IssueComment::add($issueId, $loggedInUserId, $comment, $date);
+            Comment::add($issueId, $loggedInUserId, $comment, $date);
         }
     }
 
-    public static function move($issueId, $newProjectId, $newIssueTypeId, $newSubTaskIssueTypeIds) {
+    public function move($issueId, $newProjectId, $newIssueTypeId, $newSubTaskIssueTypeIds) {
 
-        $nextNumber = Issue::getAvailableIssueNumber($newProjectId);
+        $nextNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($newProjectId);
         $query = 'update yongo_issue SET project_id = ?, type_id = ?, nr = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1573,11 +1573,11 @@ class Issue
         // update last issue number for this project
         Project::updateLastIssueNumber($newProjectId, $nextNumber);
 
-        $subTasks = Issue::getByParameters(array('parent_id' => $issueId));
+        $subTasks = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueId));
         if ($subTasks) {
             while ($issue = $subTasks->fetch_array(MYSQLI_ASSOC)) {
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-                $nextNumber = Issue::getAvailableIssueNumber($newProjectId);
+                $nextNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($newProjectId);
 
                 $subTaskId = $issue['id'];
                 $stmt->bind_param("iisi", $newProjectId, $newIssueTypeId, $nextNumber, $subTaskId);
@@ -1588,7 +1588,7 @@ class Issue
 
                 IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
                 IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-                IssueComponent::deleteByIssueId($subTaskId);
+                Component::deleteByIssueId($subTaskId);
 
                 // also update the issue type Id if necessary
                 for ($i = 0; $i < count($newSubTaskIssueTypeIds); $i++) {
@@ -1607,7 +1607,7 @@ class Issue
         }
     }
 
-    public static function prepareDataForSearchFromURL($data, $issuesPerPage) {
+    public function prepareDataForSearchFromURL($data, $issuesPerPage) {
         $getFilter = isset($data['filter']) ? $data['filter'] : null;
         $getForQueue = isset($data['for_queue']) ? $data['for_queue'] : null;
         $getPage = isset($data['page']) ? $data['page'] : 1;
@@ -1646,7 +1646,7 @@ class Issue
         return $getSearchParameters;
     }
 
-    public static function prepareWhereClauseFromQueue($queueDefinition, $userId, $projectId, $clientId) {
+    public function prepareWhereClauseFromQueue($queueDefinition, $userId, $projectId, $clientId) {
 
         $value = mb_strtolower($queueDefinition);
         $SLAs = SLA::getByProjectId($projectId, 'array', "LENGTH('name') DESC");
@@ -1692,7 +1692,7 @@ class Issue
         return $value;
     }
 
-    public static function addSLAData($issueId, $slaId, $offset) {
+    public function addSLAData($issueId, $slaId, $offset) {
         $query = "insert into yongo_issue_sla(yongo_issue_id, help_sla_id, `value`) values (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1700,13 +1700,13 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updateSLADataForProject($clientId, $projectId, $userId, $clientSettings) {
+    public function updateSLADataForProject($clientId, $projectId, $userId, $clientSettings) {
         $SLAs = SLA::getByProjectId($projectId);
 
         if ($SLAs) {
 
             $issueQueryParameters = array('project' => $projectId);
-            $issues = Issue::getByParameters($issueQueryParameters, $userId);
+            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $userId);
 
             // check issue against the slas
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
@@ -1725,7 +1725,7 @@ class Issue
         }
     }
 
-    public static function updateSLAValue($issue, $clientId, $clientSettings) {
+    public function updateSLAValue($issue, $clientId, $clientSettings) {
         $slasPrintData = array();
         $projectId = $issue['issue_project_id'];
         $SLAs = SLA::getByProjectId($projectId);
@@ -1745,7 +1745,7 @@ class Issue
         return $slasPrintData;
     }
 
-    public static function addPlainSLAData($issueId, $projectId) {
+    public function addPlainSLAData($issueId, $projectId) {
         $SLAs = SLA::getByProjectId($projectId);
         if ($SLAs) {
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
@@ -1758,7 +1758,7 @@ class Issue
         }
     }
 
-    public static function addPlainSLADataBySLAId($issueId, $SLAId) {
+    public function addPlainSLADataBySLAId($issueId, $SLAId) {
         $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id) VALUES (?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1766,7 +1766,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function clearSLAData($slaId) {
+    public function clearSLAData($slaId) {
         $query = "update yongo_issue_sla set help_sla_goal_id = NULL, started_flag = 0, stopped_flag = 0, started_date = NULL, value = NULL where help_sla_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1774,7 +1774,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function getSearchParameters($projectsForBrowsing, $clientId, $helpDeskFlag = 0) {
+    public function getSearchParameters($projectsForBrowsing, $clientId, $helpDeskFlag = 0) {
         $projectsForBrowsing->data_seek(0);
         $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
@@ -1933,7 +1933,7 @@ class Issue
         return $criteria;
     }
     
-    public static function prepareDataForSearchFromPostGet($projectIds, $postArray, $getArray) {
+    public function prepareDataForSearchFromPostGet($projectIds, $postArray, $getArray) {
         $getFilter = isset($getArray['filter']) ? $getArray['filter'] : null;
         $searchText = $postArray['query'];
         $summaryFlag = isset($postArray['summary_flag']) ? 1 : 0;
@@ -2095,7 +2095,7 @@ class Issue
         return $searchParameters;
     }
 
-    public static function deleteSLADataByIssueIdAndSLAId($issueID, $SLAId) {
+    public function deleteSLADataByIssueIdAndSLAId($issueID, $SLAId) {
         $query = "delete from yongo_issue_sla where yongo_issue_id = ? and help_sla_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -2103,7 +2103,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function deleteSLADataByIssueId($issueID) {
+    public function deleteSLADataByIssueId($issueID) {
         $query = "delete from yongo_issue_sla where yongo_issue_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -2111,7 +2111,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updateSLAValueOnly($issueId, $SLAId, $value) {
+    public function updateSLAValueOnly($issueId, $SLAId, $value) {
         $query = "update yongo_issue_sla set `value` = ? where yongo_issue_id = ? and help_sla_id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -2119,7 +2119,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function updateAssigneeRaw($issueId, $userAssigneeId) {
+    public function updateAssigneeRaw($issueId, $userAssigneeId) {
         $query = "update yongo_issue set `user_assigned_id` = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -2127,7 +2127,7 @@ class Issue
         $stmt->execute();
     }
 
-    public static function getIssuesWithDueDateReminder() {
+    public function getIssuesWithDueDateReminder() {
         $query = "select yongo_issue.id, yongo_issue.summary, user.id as user_id, user.first_name, user.last_name, " .
                  "user.client_id " .
                  "from user " .
@@ -2146,7 +2146,7 @@ class Issue
         }
     }
 
-    public static function getAssigneeOnDate($issueId, $date) {
+    public function getAssigneeOnDate($issueId, $date) {
         $query = 'SELECT issue_history.new_value_id ' .
             'from issue_history ' .
             'WHERE issue_history.issue_id = ? ' .
@@ -2181,7 +2181,7 @@ class Issue
                 $data = $result->fetch_array(MYSQLI_ASSOC);
                 return $data['old_value_id'];
             } else {
-                $issue = Issue::getByIdSimple($issueId);
+                $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByIdSimple($issueId);
                 return $issue['user_assigned_id'];
             }
         }

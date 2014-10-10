@@ -17,7 +17,7 @@ class GetController extends UbirimiController
         UbirimiContainer::get()['api.auth']->auth($request);
 
         $id = $request->get('id');
-        $issue = Issue::getById($id);
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($id);
 
         if (null === $issue) {
             throw new NotFoundHttpException(sprintf('Issue [%d] not found', $id));

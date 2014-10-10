@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Chart;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\User\User;
@@ -34,7 +35,7 @@ class ViewTwoDimensionalFilterController extends UbirimiController
         $usersAsAssignee = User::getByClientId($clientId);
         $issueStatuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
 
-        $twoDimensionalData = Issue::get2DimensionalFilter($projectId, 'array');
+        $twoDimensionalData = UbirimiContainer::getRepository('yongo.issue.issue')->get2DimensionalFilter($projectId, 'array');
 
         return $this->render(__DIR__ . '/../../Resources/views/charts/ViewTwoDimensionalFilter.php', get_defined_vars());
     }

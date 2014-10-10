@@ -10,7 +10,7 @@
 
     $issueId = $_GET['id'];
     $issueQueryParameters = array('issue_id' => $issueId);
-    $issue = Issue::getByParameters($issueQueryParameters, $loggedInUserId);
+    $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
     $projectId = $issue['issue_project_id'];
     $issueProject = Project::getById($projectId);
 

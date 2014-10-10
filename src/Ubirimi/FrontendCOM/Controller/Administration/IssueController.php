@@ -2,6 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
@@ -13,7 +14,7 @@ class IssueController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $issuesResult = Issue::getByParameters(array(
+        $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array(
                 'sort' => 'created',
                 'sort_order' => 'desc',
                 'issues_per_page' => 500,

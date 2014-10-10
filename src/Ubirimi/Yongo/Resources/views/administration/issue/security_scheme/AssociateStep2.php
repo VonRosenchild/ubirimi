@@ -1,9 +1,10 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Project\Project;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 
@@ -57,7 +58,7 @@
                     $issuesWithSecurityLevelSet = false;
                     if ($projectLevels) {
                         while ($projectLevel = $projectLevels->fetch_array(MYSQLI_ASSOC)) {
-                            $issues = Issue::getByParameters(array('project' => $projectId, 'security_scheme_level' => $projectLevel['id']));
+                            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId, 'security_scheme_level' => $projectLevel['id']));
                             if ($issues) {
                                 $issuesWithSecurityLevelSet = true;
                                 echo $header;
@@ -111,7 +112,7 @@
                     } else {
                         echo '<tr>';
                             echo '<td>';
-                                $issues = Issue::getByParameters(array('project' => $projectId));
+                                $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
                                 $countIssues = 0;
                                 if ($issues) {
                                     $countIssues = $issues->num_rows;

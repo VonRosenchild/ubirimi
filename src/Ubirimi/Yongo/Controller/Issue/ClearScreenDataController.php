@@ -1,7 +1,7 @@
 <?php
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+    use Ubirimi\Yongo\Repository\Issue\Attachment;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -13,7 +13,7 @@
 
             $attachmentId = $attIdsSession[$i];
 
-            IssueAttachment::deleteById($attachmentId);
+            Attachment::deleteById($attachmentId);
 
             if ($issueId) {
                 Util::deleteDir(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId . '/' . $attachmentId);

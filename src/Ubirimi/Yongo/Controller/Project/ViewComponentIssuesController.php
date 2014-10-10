@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
@@ -35,7 +36,7 @@ class ViewComponentIssuesController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'component' => $componentId);
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $count = 0;
         $statsPriority = array();

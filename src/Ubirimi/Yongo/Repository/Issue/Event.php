@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueEvent
+class Event
 {
     const EVENT_ISSUE_CREATED_CODE = 1;
     const EVENT_ISSUE_UPDATED_CODE = 2;
@@ -133,7 +133,7 @@ class IssueEvent
             $definitionData = explode("=", $data['definition_data']);
             $eventId = $definitionData[1];
 
-            $event = IssueEvent::getById($eventId);
+            $event = Event::getById($eventId);
             return $event;
         } else
             return null;

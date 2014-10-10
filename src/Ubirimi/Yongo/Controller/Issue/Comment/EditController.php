@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 
 class EditController extends UbirimiController
 {
@@ -21,7 +21,7 @@ class EditController extends UbirimiController
 
         $date = Util::getServerCurrentDateTime();
 
-        IssueComment::updateById($commentId, $content, $loggedInUserId, $date);
+        Comment::updateById($commentId, $content, $loggedInUserId, $date);
 
         return new Response('');
     }

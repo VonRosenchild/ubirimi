@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class EditDataController extends UbirimiController
@@ -33,7 +33,7 @@ class EditDataController extends UbirimiController
             }
         }
 
-        $events = IssueEvent::getByClient($session->get('client/id'));
+        $events = Event::getByClient($session->get('client/id'));
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Notification Scheme';
 

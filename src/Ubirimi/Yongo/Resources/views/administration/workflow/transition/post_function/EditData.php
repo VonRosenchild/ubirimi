@@ -1,7 +1,7 @@
 <?php
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+    use Ubirimi\Yongo\Repository\Issue\Event;
     use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
@@ -59,7 +59,7 @@
                     <tr>
                         <td width="150">Event</td>
                         <td>
-                            <?php $events = IssueEvent::getByClient($clientId); ?>
+                            <?php $events = Event::getByClient($clientId); ?>
                             <select name="fire_event" class="inputTextCombo">
 
                                 <?php while ($event = $events->fetch_array(MYSQLI_ASSOC)): ?>

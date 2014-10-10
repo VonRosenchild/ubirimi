@@ -5,13 +5,13 @@ namespace Ubirimi\Yongo\Controller\Issue;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Project\Project;
-
 
 class PrintController extends UbirimiController
 {
@@ -23,7 +23,7 @@ class PrintController extends UbirimiController
         $clientId = $session->get('client/id');
 
         if (Util::checkUserIsLoggedIn()) {
-            $issue = Issue::getById($Id, $loggedInUserId);
+            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($Id, $loggedInUserId);
             $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'];
             $clientSettings = $session->get('client/settings');
         } else {
@@ -32,7 +32,7 @@ class PrintController extends UbirimiController
             $loggedInUserId = null;
             $clientSettings = Client::getSettings($clientId);
 
-            $issue = Issue::getById($Id, $loggedInUserId);
+            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($Id, $loggedInUserId);
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'];
         }
 

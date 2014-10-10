@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
@@ -71,9 +71,9 @@ class AddController extends UbirimiController
                     'update_issue_history'
                 );
 
-                $eventId = IssueEvent::getByClientIdAndCode(
+                $eventId = Event::getByClientIdAndCode(
                     $session->get('client/id'),
-                    IssueEvent::EVENT_GENERIC_CODE,
+                    Event::EVENT_GENERIC_CODE,
                     'id'
                 );
 

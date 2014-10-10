@@ -5,10 +5,11 @@ namespace Ubirimi\Agile\Controller\Sprint;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -25,7 +26,7 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
         $statusesIds = explode('_', $statuses);
 
         $parameters = array('parent_id' => $issueId);
-        $childrenIssue = Issue::getByParameters($parameters);
+        $childrenIssue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($parameters);
 
         while ($issue = $childrenIssue->fetch_array(MYSQLI_ASSOC)) {
             if (!in_array($issue['status'], $statusesIds)) {
@@ -34,7 +35,7 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
             }
         }
 
-        $issue = Issue::getByParameters(array('issue_id' => $issueId), $session->get('user/id'));
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $session->get('user/id'));
         if (in_array($issue['status'], $statusesIds)) {
             return new Response('no');
         }
@@ -52,28 +53,28 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
 
             $workflowDataId = $workflowStep['id'];
 
-            $transitionEvent = IssueEvent::getEventByWorkflowDataId($workflowDataId);
+            $transitionEvent = Event::getEventByWorkflowDataId($workflowDataId);
             $hasEventPermission = false;
 
             switch ($transitionEvent['code']) {
 
-                case IssueEvent::EVENT_ISSUE_CLOSED_CODE:
+                case Event::EVENT_ISSUE_CLOSED_CODE:
                     $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $session->get('user/id'));
                     break;
 
-                case IssueEvent::EVENT_ISSUE_REOPENED_CODE:
+                case Event::EVENT_ISSUE_REOPENED_CODE:
 
-                case IssueEvent::EVENT_ISSUE_RESOLVED_CODE:
+                case Event::EVENT_ISSUE_RESOLVED_CODE:
 
                     $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $session->get('user/id'));
                     break;
 
-                case IssueEvent::EVENT_ISSUE_WORK_STARTED_CODE:
-                case IssueEvent::EVENT_ISSUE_WORK_STOPPED_CODE:
+                case Event::EVENT_ISSUE_WORK_STARTED_CODE:
+                case Event::EVENT_ISSUE_WORK_STOPPED_CODE:
 
                     $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
                     break;
-                case IssueEvent::EVENT_GENERIC_CODE:
+                case Event::EVENT_GENERIC_CODE:
                     $hasEventPermission = true;
                     break;
             }

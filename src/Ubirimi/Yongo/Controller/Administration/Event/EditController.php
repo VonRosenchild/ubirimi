@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Repository\Log;
 
 class EditController extends UbirimiController
@@ -21,7 +21,7 @@ class EditController extends UbirimiController
         $emptyName = false;
 
         $eventId = $request->get('id');
-        $event = IssueEvent::getById($eventId);
+        $event = Event::getById($eventId);
 
         if ($event['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +37,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                IssueEvent::updateById($eventId, $name, $description, $currentDate);
+                Event::updateById($eventId, $name, $description, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

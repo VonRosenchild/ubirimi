@@ -16,7 +16,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
@@ -791,14 +791,14 @@ class Client
         $statusReopenedId = $statusReopenedIdData['id'];
         $reopenedStepId = Workflow::createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
 
-        $eventIssueWorkStoppedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
-        $eventIssueCreatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE, 'id');
-        $eventIssueWorkStartedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_WORK_STARTED_CODE, 'id');
-        $eventIssueClosedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CLOSED_CODE, 'id');
+        $eventIssueWorkStoppedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
+        $eventIssueCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
+        $eventIssueWorkStartedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_WORK_STARTED_CODE, 'id');
+        $eventIssueClosedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CLOSED_CODE, 'id');
 
-        $eventIssueResolvedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_RESOLVED_CODE, 'id');
+        $eventIssueResolvedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_RESOLVED_CODE, 'id');
 
-        $eventIssueReopenedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_REOPENED_CODE, 'id');
+        $eventIssueReopenedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_REOPENED_CODE, 'id');
 
         // create issue -----> open
         $transitionId = Workflow::addTransition($workflowId, null, $createStepId, $openStepId, 'Create Issue', '');

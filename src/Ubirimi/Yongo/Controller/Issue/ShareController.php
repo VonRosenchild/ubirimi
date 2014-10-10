@@ -12,7 +12,7 @@
     $userIds = $_POST['user_id'];
 
     $issueQueryParameters = array('issue_id' => $issueId);
-    $issue = Issue::getByParameters($issueQueryParameters);
+    $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
 
     $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_UPDATE, array('userIds' => $userIds, 'noteContent' => $noteContent));
     UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_SHARE_EMAIL, $issueEvent);

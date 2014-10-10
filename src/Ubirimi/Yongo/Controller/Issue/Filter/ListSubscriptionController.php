@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Filter;
 
 class ListSubscriptionController extends UbirimiController
 {
@@ -15,9 +15,9 @@ class ListSubscriptionController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $filterId = $request->get('id');
-        $filter = IssueFilter::getById($filterId);
+        $filter = Filter::getById($filterId);
 
-        $subscriptions = IssueFilter::getSubscriptions($filterId);
+        $subscriptions = Filter::getSubscriptions($filterId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/filter/ListSubscription.php', get_defined_vars());
     }

@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\Component;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -23,7 +24,7 @@ class DuplicateController extends UbirimiController
         $issueId = $request->get('issue_id');
 
         $summary = $request->get('summary');
-        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $project = Project::getById($oldIssueData['issue_project_id']);
 
         $currentDate = Util::getServerCurrentDateTime();
@@ -34,7 +35,7 @@ class DuplicateController extends UbirimiController
         $issueReturnValues = Issue::add($project, $currentDate, $issueSystemFields, $loggedInUserId);
         $issueId = $issueReturnValues[0];
 
-        $components = IssueComponent::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id']);
+        $components = Component::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id']);
         if ($components) {
             $components_arr = array();
             while ($component = $components->fetch_array(MYSQLI_ASSOC))

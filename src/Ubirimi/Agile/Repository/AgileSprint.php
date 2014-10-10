@@ -96,7 +96,7 @@ class AgileSprint
                 $resultArray[] = $issue['parent_id'];
             }
 
-            return Issue::getByParameters(array('issue_id' => $resultArray), $loggedInUserId);
+            return UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $resultArray), $loggedInUserId);
         } else
             return null;
     }
@@ -356,7 +356,7 @@ class AgileSprint
         $stmt->execute();
 
         // also add the children of these issues to the sprint
-        $issues = Issue::getByParameters(array('parent_id' => $issueIdArray), $loggedInUserId);
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueIdArray), $loggedInUserId);
 
         if ($issues) {
             // get the ids

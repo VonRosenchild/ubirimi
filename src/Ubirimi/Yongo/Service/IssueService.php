@@ -2,13 +2,14 @@
 
 namespace Ubirimi\Yongo\Service;
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Service\UbirimiService;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Agile\Repository\AgileSprint;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 
@@ -56,13 +57,13 @@ class IssueService extends UbirimiService
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $issueSystemFieldsData)) {
             $comment = Util::cleanRegularInputField($issueSystemFieldsData[Field::FIELD_COMMENT_CODE]);
             if (!empty($comment)) {
-                IssueComment::add($newIssueId, $loggedInUserId, $comment, $currentDate);
+                Comment::add($newIssueId, $loggedInUserId, $comment, $currentDate);
             }
         }
 
         // save custom fields
         if (count($issueCustomFieldsData)) {
-            IssueCustomField::saveCustomFieldsData(
+            CustomField::saveCustomFieldsData(
                 $newIssueId,
                 $issueCustomFieldsData,
                 $currentDate
@@ -97,7 +98,7 @@ class IssueService extends UbirimiService
 
         Util::manageModalAttachments($newIssueId, $loggedInUserId, $attachIdsToBeKept);
 
-        $issue = Issue::getById($newIssueId);
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($newIssueId);
 
         // add the current logged in user to the list of watchers
         IssueWatcher::addWatcher($newIssueId, $loggedInUserId, $currentDate);

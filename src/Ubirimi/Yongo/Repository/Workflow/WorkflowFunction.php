@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -158,7 +158,7 @@ class WorkflowFunction
                 } else if (strstr($postFunction['definition_data'], '=')) {
                     $definitionData = explode('=', $postFunction['definition_data']);
                     $eventId = $definitionData[1];
-                    $event = IssueEvent::getById($eventId);
+                    $event = Event::getById($eventId);
                     $description = 'Fire a <b>' . $event['name'] . '</b> event that can be processed by the listeners.';
                 }
 

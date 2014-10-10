@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueCustomField
+class CustomField
 {
     public static function saveCustomFieldsData($issueId, $issueCustomFieldsData, $currentDate) {
         foreach ($issueCustomFieldsData as $key => $value) {
@@ -74,7 +74,7 @@ class IssueCustomField
                         $stmt->execute();
                     }
                 } else {
-                    $valueField = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $fieldId);
+                    $valueField = CustomField::getCustomFieldsDataByFieldId($issueId, $fieldId);
 
                     if ($valueField) {
                         $query = "update issue_custom_field_data set `value` = ?, date_updated = ? where issue_id = ? and field_id = ? limit 1";

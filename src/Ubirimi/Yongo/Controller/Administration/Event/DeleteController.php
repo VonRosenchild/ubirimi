@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Event;
 
 class DeleteController extends UbirimiController
 {
@@ -19,9 +19,9 @@ class DeleteController extends UbirimiController
 
         $eventId = $request->request->get('id');
 
-        $event = IssueEvent::getById($eventId);
+        $event = Event::getById($eventId);
 
-        IssueEvent::deleteById($eventId);
+        Event::deleteById($eventId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

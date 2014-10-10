@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
@@ -39,14 +40,14 @@ class ViewComponentSummaryController extends UbirimiController
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Component: ' . $component['name'] . ' / Summary';
-        $issuesResult = Issue::getByParameters(array('project' => $projectId,
+        $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId,
             'resolution' => array(-2),
             'page' => 1,
             'component' => array($componentId),
             'issues_per_page' => 10), $loggedInUserId, null, $loggedInUserId);
         $issues = $issuesResult[0];
 
-        $issuesResultUpdatedRecently = Issue::getByParameters(array('project' => $projectId,
+        $issuesResultUpdatedRecently = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId,
             'resolution' => array(-2),
             'page' => 1,
             'issues_per_page' => 10,

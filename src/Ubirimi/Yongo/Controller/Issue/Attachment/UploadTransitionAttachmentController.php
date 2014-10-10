@@ -2,7 +2,7 @@
     use Nyholm\ZebraImage\ZebraImage;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+    use Ubirimi\Yongo\Repository\Issue\Attachment;
 
     Util::checkUserIsLoggedInAndRedirect();
     $filenameData = apache_request_headers();
@@ -20,7 +20,7 @@
         $ext = substr($filename, strrpos($filename, '.') + 1);
         $filenameWithoutExtension = substr($filename, 0, strrpos($filename, '.'));
 
-        $attachmentId = IssueAttachment::add($issueId,
+        $attachmentId = Attachment::add($issueId,
             Util::slugify($filenameWithoutExtension) . '.' . $ext,
             $loggedInUserId,
             Util::getServerCurrentDateTime());
@@ -51,7 +51,7 @@
         $temp[] = $attachmentId;
         $session->set('added_attachments_in_screen', $temp);
 
-        IssueAttachment::updateSizeById($attachmentId, $size);
+        Attachment::updateSizeById($attachmentId, $size);
 
         if (Util::isImage(Util::getExtension($filename))) {
 

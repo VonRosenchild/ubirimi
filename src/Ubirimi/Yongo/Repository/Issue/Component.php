@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueComponent
+class Component
 {
     public static function deleteByIssueId($issueId) {
         $query = 'DELETE FROM issue_component WHERE issue_id = ?';

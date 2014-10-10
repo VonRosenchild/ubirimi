@@ -6,7 +6,7 @@ use Ubirimi\Repository\Client;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\Comment;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/bootstrap_cli.php';
@@ -166,7 +166,7 @@ try {
                 $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
 
                 if (null !== $userId) {
-                    IssueComment::add(
+                    Comment::add(
                         $issue[0],
                         $userId,
                         $comment['thetext'],

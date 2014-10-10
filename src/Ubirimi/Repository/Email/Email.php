@@ -11,9 +11,9 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\Component;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
+use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -112,7 +112,7 @@ class Email {
 
     public static function triggerNewIssueNotification($clientId, $issue, $project, $loggedInUserId) {
 
-        $eventCreatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE, 'id');
+        $eventCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
         $users = Project::getUsersForNotification($project['id'], $eventCreatedId, $issue, $loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
@@ -126,7 +126,7 @@ class Email {
 
     public static function triggerAssignIssueNotification($clientId, $issue, $oldUserAssignedName, $newUserAssignedName, $project, $loggedInUserId, $comment) {
 
-        $eventAssignedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_ASSIGNED_CODE, 'id');
+        $eventAssignedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_ASSIGNED_CODE, 'id');
         $projectId = $project['id'];
         $users = Project::getUsersForNotification($projectId, $eventAssignedId, $issue, $loggedInUserId);
         $loggedInUser = User::getById($loggedInUserId);
@@ -146,11 +146,11 @@ class Email {
         $projectId = $issue['issue_project_id'];
         $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
         $versionsFixed = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-        $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
+        $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
         $clientDomain = Util::getSubdomain();
 
-        $customFieldsSingleValue = IssueCustomField::getCustomFieldsData($issueId);
-        $customFieldsUserPickerMultiple = IssueCustomField::getUserPickerData($issueId);
+        $customFieldsSingleValue = CustomField::getCustomFieldsData($issueId);
+        $customFieldsUserPickerMultiple = CustomField::getUserPickerData($issueId);
 
         $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                             "[Issue] - New issue CREATED " .
@@ -254,7 +254,7 @@ class Email {
     public static function triggerIssueUpdatedNotification($clientId, $issue, $loggedInUserId, $changedFields) {
 
         $projectId = $issue['issue_project_id'];
-        $eventUpdatedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_UPDATED_CODE, 'id');
+        $eventUpdatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_UPDATED_CODE, 'id');
         $users = Project::getUsersForNotification($projectId, $eventUpdatedId, $issue, $loggedInUserId);
         $project = Project::getById($projectId);
         $loggedInUser = User::getById($loggedInUserId);
@@ -354,7 +354,7 @@ class Email {
         $loggedInUser = $extraInformation['loggedInUser'];
         $loggedInUserId = $loggedInUser['id'];
 
-        $eventDeletedId = IssueEvent::getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_DELETED_CODE, 'id');
+        $eventDeletedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_DELETED_CODE, 'id');
         $users = Project::getUsersForNotification($projectId, $eventDeletedId, $issue, $loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {

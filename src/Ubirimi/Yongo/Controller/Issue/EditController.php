@@ -15,8 +15,8 @@ use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueComment;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+use Ubirimi\Yongo\Repository\Issue\Comment;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 
 class EditController extends UbirimiController
 {
@@ -42,7 +42,7 @@ class EditController extends UbirimiController
             $attachIdsToBeKept = array();
         }
 
-        $oldIssueData = Issue::getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         $newIssueData = array();
         $newIssueData['issue_project_id'] = $oldIssueData['issue_project_id'];
@@ -87,7 +87,7 @@ class EditController extends UbirimiController
         foreach ($newIssueCustomFieldsData as $key => $value) {
             $keyData = explode("_", $key);
 
-            $oldIssueCustomFieldsData[$keyData[0]] = IssueCustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            $oldIssueCustomFieldsData[$keyData[0]] = CustomField::getCustomFieldsDataByFieldId($issueId, $key);
             unset($newIssueCustomFieldsData[$key]);
             $newIssueCustomFieldsData[$keyData[0]] = $value;
         }
@@ -98,12 +98,12 @@ class EditController extends UbirimiController
 
         // check if on the modal there is a comment field
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $newIssueData) && !empty($newIssueData[Field::FIELD_COMMENT_CODE])) {
-            IssueComment::add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
+            Comment::add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
         }
 
         // update the custom fields value
         if ($fieldTypesCustom) {
-            IssueCustomField::updateCustomFieldsData($issueId, $newIssueCustomFieldsData, $currentDate);
+            CustomField::updateCustomFieldsData($issueId, $newIssueCustomFieldsData, $currentDate);
         }
 
         Util::manageModalAttachments($issueId, $loggedInUserId, $attachIdsToBeKept);

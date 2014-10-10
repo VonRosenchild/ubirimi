@@ -7,21 +7,21 @@
     use Ubirimi\Yongo\Event\IssueEvent;
     use Ubirimi\Yongo\Event\YongoEvents;
     use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+    use Ubirimi\Yongo\Repository\Issue\Attachment;
 
     Util::checkUserIsLoggedInAndRedirect();
 
     $menuSelectedCategory = 'issue';
     $smtpSettings = $session->get('client/settings/smtp');
 
-    $issues = Issue::getByParameters(array('issue_id' => UbirimiContainer::get()['session']->get('bulk_change_issue_ids'), $loggedInUserId));
+    $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => UbirimiContainer::get()['session']->get('bulk_change_issue_ids'), $loggedInUserId));
     if (isset($_POST['confirm'])) {
 
         if (UbirimiContainer::get()['session']->get('bulk_change_operation_type') == 'delete') {
             $issueIds = UbirimiContainer::get()['session']->get('bulk_change_issue_ids');
             for ($i = 0; $i < count($issueIds); $i++) {
                 if (UbirimiContainer::get()['session']->get('bulk_change_send_operation_email')) {
-                    $issue = Issue::getByParameters(array('issue_id' => $issueIds[$i]), $loggedInUserId);
+                    $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueIds[$i]), $loggedInUserId);
 
                     $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_DELETE);
                     $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr']);
@@ -31,13 +31,13 @@
                 }
 
                 Issue::deleteById($issueIds[$i]);
-                IssueAttachment::deleteByIssueId($issueIds[$i]);
+                Attachment::deleteByIssueId($issueIds[$i]);
 
                 // also delete the substaks
-                $childrenIssues = Issue::getByParameters(array('parent_id' => $issueIds[$i]), $loggedInUserId);
+                $childrenIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueIds[$i]), $loggedInUserId);
                 while ($childrenIssues && $childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)) {
                     Issue::deleteById($childIssue['id']);
-                    IssueAttachment::deleteByIssueId($childIssue['id']);
+                    Attachment::deleteByIssueId($childIssue['id']);
                 }
             }
         }

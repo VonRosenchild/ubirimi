@@ -9,7 +9,7 @@ use Ubirimi\Repository\ServerSettings;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+use Ubirimi\Yongo\Repository\Issue\Attachment;
 use ZipArchive;
 
 class Util {
@@ -219,12 +219,12 @@ class Util {
 
             for ($i = 0; $i < count($attIdsSession); $i++) {
                 $attachmentId = $attIdsSession[$i];
-                $attachment = IssueAttachment::getById($attachmentId);
+                $attachment = UbirimiContainer::getRepository('yongo.issue.attachment')->getById($attachmentId);
 
                 if (!in_array($attachmentId, $attachIdsToBeKept)) {
 
                     // the attachment must be deleted
-                    IssueAttachment::deleteById($attachmentId);
+                    UbirimiContainer::getRepository('yongo.issue.attachment')->deleteById($attachmentId);
 
                     if (file_exists(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name'])) {
                         unlink(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name']);
@@ -265,7 +265,7 @@ class Util {
                         rename(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . 'user_' . $loggedInUserId . '/' . $attachment['id'], Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId . '/' . $attachment['id']);
 
                         // update the attachment
-                        IssueAttachment::updateByIdAndIssueId($attachmentId, $issueId);
+                        UbirimiContainer::getRepository('yongo.issue.attachment')->updateByIdAndIssueId($attachmentId, $issueId);
                     }
                 }
             }
@@ -1121,7 +1121,7 @@ class Util {
             /** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
             $issueQueryParameters = array('date_due' => $date, 'project' => $projectId);
 
-            $issues = Issue::getByParameters($issueQueryParameters, $userId);
+            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $userId);
             if ($issues) {
                 $calendar .= '<div>Issues: <a href="/yongo/issue/search?project=' . $projectId . '&date_due_after=' . $date . '&date_due_before=' . $date . '">' . $issues->num_rows . '</a></div>';
 

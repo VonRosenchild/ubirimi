@@ -4,14 +4,15 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
-use Ubirimi\Yongo\Repository\Issue\IssueCustomField;
+use Ubirimi\Yongo\Repository\Issue\Attachment;
+use Ubirimi\Yongo\Repository\Issue\Component;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -26,7 +27,7 @@ class ViewIssueController extends UbirimiController
 
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issue = Issue::getById($issueId, $session->get('user/id'));
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
         $issueId = $issue['id'];
         $projectId = $issue['issue_project_id'];
         $clientSettings = $session->get('client/settings');
@@ -47,7 +48,7 @@ class ViewIssueController extends UbirimiController
 
         /* before going further, check to is if the issue id a valid id -- end */
 
-        $components = IssueComponent::getByIssueIdAndProjectId($issueId, $projectId);
+        $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
         $versionsAffected = IssueVersion::getByIssueIdAndProjectId(
             $issueId,
             $projectId,
@@ -81,9 +82,9 @@ class ViewIssueController extends UbirimiController
                 'array'
             );
 
-            $customFieldsData = IssueCustomField::getCustomFieldsData($issue['id']);
+            $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
 
-            $attachments = IssueAttachment::getByIssueId($issue['id'], true);
+            $attachments = Attachment::getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
 
             $atLeastOneSLA = false;
@@ -98,8 +99,8 @@ class ViewIssueController extends UbirimiController
             $watchers = IssueWatcher::getByIssueId($issueId);
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
-            $customFieldsData = IssueCustomField::getCustomFieldsData($issue['id']);
-            $customFieldsDataUserPickerMultipleUser = IssueCustomField::getUserPickerData($issue['id']);
+            $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = CustomField::getUserPickerData($issue['id']);
         }
 
         $menuSelectedCategory = 'issue';

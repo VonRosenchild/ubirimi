@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Project\Report;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
@@ -39,7 +40,7 @@ class ViewChartStatisticTypeController extends UbirimiController
         $chartType = Util::cleanRegularInputField($request->get('chart_type'));
 
         $issueQueryParameters = array('project' => array($projectId));
-        $issues = Issue::getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         if ($statisticType == 'assignee') {
             $issuesAssignee = array();
