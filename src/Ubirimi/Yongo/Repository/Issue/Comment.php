@@ -3,15 +3,13 @@
 namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\Entity;
 
-class Comment
+class Comment extends Entity
 {
-    public function deleteById($commentId) {
-        $query = 'delete from issue_comment where id = ? limit 1';
 
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->bind_param("i", $commentId);
-        $stmt->execute();
+    function __construct() {
+        $this->tableName = 'issue_comment';
     }
 
     public function deleteByIssueId($issueId) {
