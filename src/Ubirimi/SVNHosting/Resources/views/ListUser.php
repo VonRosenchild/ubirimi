@@ -8,9 +8,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('My SVN Repositories') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('My SVN Repositories') ?>
-
         <?php if (!empty($svnRepos)): ?>
             <table class="table table-hover table-condensed">
                 <thead>
