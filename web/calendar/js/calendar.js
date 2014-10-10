@@ -1,10 +1,5 @@
 $('document').ready(function () {
 
-    $(".select2Input").select2();
-    $(".select2InputSmall").select2();
-    $(".select2InputMedium").select2();
-    $(".select2InputLarge").select2();
-
     $('#cal_event_edit_date_from, #cal_event_edit_date_to').datetimepicker({
         timeFormat: "hh:mm",
         dateFormat: "yy-mm-dd",

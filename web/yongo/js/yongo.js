@@ -252,10 +252,6 @@ function doTransitionWithScreen(issueId, stepIdFrom, stepIdTo, workflowId, modal
 
 $('document').ready(function () {
 
-    $(".select2Input").select2();
-    $(".select2InputSmall").select2();
-    $(".select2InputMedium").select2();
-
     $(function () {
         $("#sortable").sortable({
 

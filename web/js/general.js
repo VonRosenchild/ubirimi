@@ -151,7 +151,11 @@ function closeOpenMenus() {
 }
 
 $('document').ready(function () {
-    $('.select2InputSmall').select2();
+    $(".select2Input").select2();
+    $(".select2InputSmall").select2();
+    $(".select2InputMedium").select2();
+    $(".select2InputLarge").select2();
+
     $('.filter-date-regular').datepicker({
         dateFormat: "yy-mm-dd",
         selectOtherMonths: true
