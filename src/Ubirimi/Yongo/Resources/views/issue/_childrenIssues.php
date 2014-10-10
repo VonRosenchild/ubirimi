@@ -17,7 +17,7 @@
             <tbody>
                 <?php while ($childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr>
-                        <td width="70%">
+                        <td width="60%">
                             <?php
                                 echo $indexChildIssue++ . '. ';
                                 if ($childIssue['resolution']) {
@@ -36,10 +36,10 @@
                                  height="16px"
                                  src="/yongo/img/issue_priority/<?php echo $childIssue['issue_priority_icon_name'] ?>" />
                         </td>
-                        <td>
+                        <td style="width: 150px;">
                             <?php echo $childIssue['status_name'] ?>
                         </td>
-                        <td style="text-align: right">
+                        <td style="text-align: right; width: 200px;">
                             <?php echo LinkHelper::getUserProfileLink($issue[Field::FIELD_ASSIGNEE_CODE], SystemProduct::SYS_PRODUCT_YONGO, $childIssue['ua_first_name'], $childIssue['ua_last_name']) ?>
                         </td>
                         <td align="right" style="text-align: right;">
