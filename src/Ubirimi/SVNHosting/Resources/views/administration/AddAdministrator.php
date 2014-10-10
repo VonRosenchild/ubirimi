@@ -3,15 +3,19 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%" class="">
+            <tr>
+                <td>
+                    <div class="headerPageText"><a class="linkNoUnderline" href="/svn-hosting/administration/administrators">SVN Administrators</a> > Add Administrator </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <div class="pageContent">
         <form name="add_svn_administrator" action="/svn-hosting/administration/add-administrator" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText"><a class="linkNoUnderline" href="/svn-hosting/administration/administrators">SVN Administrators</a> > Add Administrator </div>
-                    </td>
-                </tr>
-            </table>
+
             <table width="100%">
                 <tr>
                     <td valign="top" width="130">Available Users <span class="mandatory">*</span></td>

@@ -1,18 +1,17 @@
 <?php
-    require_once __DIR__ . '/../_header.php';
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php if ($isSVNAdministrator): ?>
+        <?php Util::renderBreadCrumb('SVN Repositories > Create SVN Repository'); ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if ($isSVNAdministrator): ?>
             <form name="add_svn_repository" action="/svn-hosting/administration/repository/add" method="post">
-                <table width="100%" class="headerPageBackground">
-                    <tr>
-                        <td>
-                            <div class="headerPageText">SVN Repositories > Create SVN Repository</div>
-                        </td>
-                    </tr>
-                </table>
+
                 <div class="infoBox">Allow 2 minutes for your repository to become active</div>
                 <table width="100%">
                     <tr>
