@@ -7,7 +7,7 @@ use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Calendar\Repository\Period;
 use Ubirimi\Calendar\Repository\CalendarReminderType;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Documentador\Space;
+
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
 use ubirimi\svn\SVNRepository;
@@ -28,14 +28,11 @@ use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Permission\Role;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Screen\Screen;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\Condition;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
 use Paymill\Models\Request\Client as PaymillClient;
 use Paymill\Request as PaymillRequest;
 

@@ -108,7 +108,7 @@ class ViewController extends UbirimiController
             $childrenIssues = null;
             $parentIssue = null;
             if ($issue['parent_id'] == null) {
-                $childrenIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
+                $childrenIssues = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
             } else {
                 $parentIssue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
             }

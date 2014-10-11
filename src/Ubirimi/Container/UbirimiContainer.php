@@ -4,8 +4,6 @@ namespace Ubirimi\Container;
 
 class UbirimiContainer
 {
-    private static $repositories = array();
-
     public static function get()
     {
         static $pimple;
@@ -15,14 +13,6 @@ class UbirimiContainer
         }
 
         return $pimple;
-    }
-
-    public static function setRepository($key, $repository) {
-        self::$repositories[$key] = $repository;
-    }
-
-    public static function getRepositories() {
-        return self::$repositories;
     }
 
     public static function register(ServiceProviderInterface $provider)
