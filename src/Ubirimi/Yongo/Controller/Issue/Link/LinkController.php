@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
@@ -35,7 +35,7 @@ class LinkController extends UbirimiController
         $comment = Util::cleanRegularInputField($_POST['comment']);
 
         $date = Util::getServerCurrentDateTime();
-        IssueLinkType::addLink($issueId, $linkTypeId, $type, $linkedIssues, $date);
+        LinkType::addLink($issueId, $linkTypeId, $type, $linkedIssues, $date);
 
         if ($comment != '') {
             UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $comment, $date);

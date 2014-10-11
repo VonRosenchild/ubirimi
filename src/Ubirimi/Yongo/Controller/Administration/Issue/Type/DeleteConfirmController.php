@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class DeleteConfirmController extends UbirimiController
@@ -18,7 +18,7 @@ class DeleteConfirmController extends UbirimiController
 
         $Id = $request->get('id');
 
-        $types = IssueType::getAll($session->get('client/id'));
+        $types = Type::getAll($session->get('client/id'));
 
         $issueQueryParameters = array(
             'type' => $Id,

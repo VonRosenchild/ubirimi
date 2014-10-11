@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 
 class AddController extends UbirimiController
 {
@@ -19,7 +19,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
         $workflowExists = false;
-        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $workflowIssueTypeSchemes = TypeScheme::getByClientId($session->get('client/id'), 'workflow');
 
         if ($request->request->has('new_workflow')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));

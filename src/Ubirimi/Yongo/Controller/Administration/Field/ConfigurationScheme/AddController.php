@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 
 class AddController extends UbirimiController
 {
@@ -28,13 +28,13 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $fieldConfigurationScheme = new FieldConfigurationScheme($session->get('client/id'), $name, $description);
+                $fieldConfigurationScheme = new ConfigurationScheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $fieldConfigurationSchemeId = $fieldConfigurationScheme->save($currentDate);
 
-                $issueTypes = IssueType::getAll($session->get('client/id'));
+                $issueTypes = Type::getAll($session->get('client/id'));
                 while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
-                    FieldConfigurationScheme::addData($fieldConfigurationSchemeId, null, $issueType['id'], $currentDate);
+                    ConfigurationScheme::addData($fieldConfigurationSchemeId, null, $issueType['id'], $currentDate);
                 }
 
                 Log::add(

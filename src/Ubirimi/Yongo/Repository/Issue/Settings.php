@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueSettings
+class Settings
 {
     public static function createIssueType($clientId, $name, $description, $subTaskFlag, $iconName, $currentDate) {
         $query = "INSERT INTO issue_type(client_id, name, description, sub_task_flag, icon_name, date_created) VALUES (?, ?, ?, ?, ?, ?)";

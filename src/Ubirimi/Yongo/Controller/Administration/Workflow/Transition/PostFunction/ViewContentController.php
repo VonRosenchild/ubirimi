@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+    use Ubirimi\Yongo\Repository\Issue\Settings;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
     Util::checkUserIsLoggedInAndRedirect();
@@ -8,7 +8,7 @@
     $functionId = $_POST['function_id'];
 
     $function = WorkflowFunction::getById($functionId);
-    $issueResolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
+    $issueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
 ?>
 <?php
     if ($functionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Repository\Client;
 
 class AssignUsersConfirmController extends UbirimiController
@@ -16,10 +16,10 @@ class AssignUsersConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionRoleId = $request->get('role_id');
-        $role = PermissionRole::getPermissionRoleById($permissionRoleId);
+        $role = Role::getPermissionRoleById($permissionRoleId);
 
         $allUsers = Client::getUsers($session->get('client/id'));
-        $roleUsers = PermissionRole::getDefaultUsers($permissionRoleId);
+        $roleUsers = Role::getDefaultUsers($permissionRoleId);
 
         $role_users_arr_ids = array();
         while ($roleUsers && $user = $roleUsers->fetch_array(MYSQLI_ASSOC))

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -27,7 +27,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $permissionScheme = new PermissionScheme($session->get('client/id'), $name, $description);
+                $permissionScheme = new Scheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $permissionSchemeId = $permissionScheme->save($currentDate);
 

@@ -9,7 +9,7 @@ use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
@@ -194,7 +194,7 @@ class Issue
                 $queryProjectPartAssignee = array();
 
                 for ($i = 0; $i <count($parameters['project']); $i++) {
-                    $permissions = PermissionScheme::getDataByProjectIdAndPermissionId($parameters['project'][$i], Permission::PERM_BROWSE_PROJECTS);
+                    $permissions = Scheme::getDataByProjectIdAndPermissionId($parameters['project'][$i], Permission::PERM_BROWSE_PROJECTS);
 
                     while ($permissions && $permission = $permissions->fetch_array(MYSQLI_ASSOC)) {
 
@@ -644,13 +644,13 @@ class Issue
                 $issueData['component_ids'][] = $components[$i]['id'];
             }
 
-            $affectsVersions = IssueVersion::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
+            $affectsVersions = Version::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
             for ($i = 0; $i < count($affectsVersions); $i++) {
                 $issueData['affects_version'][] = $affectsVersions[$i]['name'];
                 $issueData['affects_version_ids'][] = $affectsVersions[$i]['id'];
             }
 
-            $fixVersions = IssueVersion::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
+            $fixVersions = Version::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
             for ($i = 0; $i < count($fixVersions); $i++) {
                 $issueData['fix_version'][] = $fixVersions[$i]['name'];
                 $issueData['fix_version_ids'][] = $fixVersions[$i]['id'];
@@ -758,13 +758,13 @@ class Issue
 
     public function deleteById($issueId) {
         UbirimiContainer::getRepository('yongo.issue.comment')->deleteByIssueId($issueId);
-        IssueHistory::deleteByIssueId($issueId);
+        History::deleteByIssueId($issueId);
         Component::deleteByIssueId($issueId);
-        IssueVersion::deleteByIssueId($issueId);
+        Version::deleteByIssueId($issueId);
 
-        IssueWatcher::deleteByIssueId($issueId);
+        Watcher::deleteByIssueId($issueId);
         Issue::deleteSLADataByIssueId($issueId);
-        IssueWorkLog::deleteByIssueId($issueId);
+        WorkLog::deleteByIssueId($issueId);
         UbirimiContainer::getRepository('yongo.issue.attachment')->deleteByIssueId($issueId);
         CustomField::deleteCustomFieldsData($issueId);
 
@@ -1184,13 +1184,13 @@ class Issue
         $stmt->execute();
 
         if (array_key_exists(Field::FIELD_AFFECTS_VERSION_CODE, $data)) {
-            IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            Version::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
             if ($data[Field::FIELD_AFFECTS_VERSION_CODE])
                 Issue::addComponentVersion($issueId, $data['affects_version'], 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
         if (array_key_exists(Field::FIELD_FIX_VERSION_CODE, $data)) {
-            IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+            Version::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
             if ($data[Field::FIELD_FIX_VERSION_CODE])
                 Issue::addComponentVersion($issueId, $data['fix_version'], 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
         }
@@ -1250,8 +1250,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_ISSUE_TYPE_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = IssueType::getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
-            $fieldChangedNewValueRow = IssueType::getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChangedOldValueRow = Type::getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChangedNewValueRow = Type::getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
             $fieldChanges[] = array(Field::FIELD_ISSUE_TYPE_CODE,
                                     $fieldChangedOldValueRow['name'],
                                     $fieldChangedNewValueRow['name'],
@@ -1260,8 +1260,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_PRIORITY_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = IssueSettings::getById($oldIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
-            $fieldChangedNewValueRow = IssueSettings::getById($newIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
+            $fieldChangedOldValueRow = Settings::getById($oldIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
+            $fieldChangedNewValueRow = Settings::getById($newIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
 
             $fieldChanges[] = array(Field::FIELD_PRIORITY_CODE,
                                     $fieldChangedOldValueRow['name'],
@@ -1271,8 +1271,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_STATUS_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = IssueSettings::getById($oldIssueData[Field::FIELD_STATUS_CODE], 'status');
-            $fieldChangedNewValueRow = IssueSettings::getById($newIssueData[Field::FIELD_STATUS_CODE], 'status');
+            $fieldChangedOldValueRow = Settings::getById($oldIssueData[Field::FIELD_STATUS_CODE], 'status');
+            $fieldChangedNewValueRow = Settings::getById($newIssueData[Field::FIELD_STATUS_CODE], 'status');
             $fieldChanges[] = array(Field::FIELD_STATUS_CODE,
                                     $fieldChangedOldValueRow['name'],
                                     $fieldChangedNewValueRow['name'],
@@ -1281,8 +1281,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_RESOLUTION_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = IssueSettings::getById($oldIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
-            $fieldChangedNewValueRow = IssueSettings::getById($newIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
+            $fieldChangedOldValueRow = Settings::getById($oldIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
+            $fieldChangedNewValueRow = Settings::getById($newIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
 
             $fieldChanges[] = array(Field::FIELD_RESOLUTION_CODE,
                                     $fieldChangedOldValueRow['name'],
@@ -1329,13 +1329,13 @@ class Issue
             $newIssueData['component_ids'][] = $components[$i]['id'];
         }
 
-        $affectsVersions = IssueVersion::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
+        $affectsVersions = Version::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
         for ($i = 0; $i < count($affectsVersions); $i++) {
             $newIssueData['affects_version'][] = $affectsVersions[$i]['name'];
             $newIssueData['affects_version_ids'][] = $affectsVersions[$i]['id'];
         }
 
-        $fixVersions = IssueVersion::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
+        $fixVersions = Version::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
         for ($i = 0; $i < count($fixVersions); $i++) {
             $newIssueData['fix_version'][] = $fixVersions[$i]['name'];
             $newIssueData['fix_version_ids'][] = $fixVersions[$i]['id'];
@@ -1586,8 +1586,8 @@ class Issue
                 // update last issue number for this project
                 Project::updateLastIssueNumber($newProjectId, $nextNumber);
 
-                IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
-                IssueVersion::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+                Version::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
+                Version::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
                 Component::deleteByIssueId($subTaskId);
 
                 // also update the issue type Id if necessary
@@ -1668,10 +1668,10 @@ class Issue
         $value = str_ireplace('resolution', 'issue_main_table.resolution_id', $value);
         $value = str_ireplace('= unresolved', 'IS NULL', $value);
 
-        $statuses = IssueSettings::getAllIssueSettings('status', $clientId);
-        $priorities = IssueSettings::getAllIssueSettings('priority', $clientId);
-        $resolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
-        $types = IssueType::getAll($clientId);
+        $statuses = Settings::getAllIssueSettings('status', $clientId);
+        $priorities = Settings::getAllIssueSettings('priority', $clientId);
+        $resolutions = Settings::getAllIssueSettings('resolution', $clientId);
+        $types = Type::getAll($clientId);
 
         while ($statuses && $status = $statuses->fetch_array(MYSQLI_ASSOC)) {
             $value = str_ireplace(mb_strtolower($status['name']), $status['id'], $value);
@@ -1778,7 +1778,7 @@ class Issue
         $projectsForBrowsing->data_seek(0);
         $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
-        $allClientIssueTypes = IssueType::getByProjects($projectIds);
+        $allClientIssueTypes = Type::getByProjects($projectIds);
         $criteria = array();
         $issueTypeArray = array();
         while ($allClientIssueTypes && $issueType = $allClientIssueTypes->fetch_array(MYSQLI_ASSOC)) {
@@ -1795,7 +1795,7 @@ class Issue
         }
         $criteria['all_client_issue_type'] = $issueTypeArray;
 
-        $allClientIssueStatuses = IssueSettings::getAllIssueSettings('status', $clientId);
+        $allClientIssueStatuses = Settings::getAllIssueSettings('status', $clientId);
         $issueStatusArray = array();
         while ($issueStatus = $allClientIssueStatuses->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
@@ -1811,7 +1811,7 @@ class Issue
         }
         $criteria['all_client_issue_status'] = $issueStatusArray;
 
-        $allClientIssuePriorities = IssueSettings::getAllIssueSettings('priority', $clientId);
+        $allClientIssuePriorities = Settings::getAllIssueSettings('priority', $clientId);
 
         $issuePriorityArray = array();
         while ($issuePriority = $allClientIssuePriorities->fetch_array(MYSQLI_ASSOC)) {
@@ -1828,7 +1828,7 @@ class Issue
         }
         $criteria['all_client_issue_priority'] = $issuePriorityArray;
 
-        $allClientIssueResolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
+        $allClientIssueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
         $issueResolutionArray = array();
         while ($issueResolution = $allClientIssueResolutions->fetch_array(MYSQLI_ASSOC)) {
             $found = false;

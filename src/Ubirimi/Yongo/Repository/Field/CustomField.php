@@ -3,7 +3,7 @@
 namespace Ubirimi\Yongo\Repository\Field;
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class CustomField {
@@ -56,7 +56,7 @@ class CustomField {
         $query = "INSERT INTO field(client_id, sys_field_type_id, name, description, system_flag, all_issue_type_flag, all_project_flag, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $systemFlag = 0;
-        $fieldTypeResult = FieldType::getByCode($fieldType);
+        $fieldTypeResult = Type::getByCode($fieldType);
         $fieldTypeId = $fieldTypeResult['id'];
 
         $allIssueTypeFlag = (count($issueType) == 1 && $issueType[0] == -1) ? 1 : 0;
@@ -72,7 +72,7 @@ class CustomField {
         // add data if necessary
 
         if ($allIssueTypeFlag) {
-            $issueTypeResult = IssueType::getAll($clientId);
+            $issueTypeResult = Type::getAll($clientId);
             $issueType = array();
             while ($type = $issueTypeResult->fetch_array(MYSQLI_ASSOC)) {
                 $issueType[] = $type['id'];

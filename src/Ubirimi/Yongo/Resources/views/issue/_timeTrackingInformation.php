@@ -1,12 +1,12 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
+    use Ubirimi\Yongo\Repository\Issue\WorkLog;
 
     // determine the percentages
     // the biggest time is 100%
     $originalEstimate = Util::transformLogTimeToMinutes($issue['original_estimate'], $hoursPerDay, $daysPerWeek);
     $remainingEstimate = Util::transformLogTimeToMinutes($issue['remaining_estimate'], $hoursPerDay, $daysPerWeek);
-    $worklogs = IssueWorkLog::getByIssueId($issue['id']);
+    $worklogs = WorkLog::getByIssueId($issue['id']);
     $minutesLogged = 0;
     while ($worklogs && $worklog = $worklogs->fetch_array(MYSQLI_ASSOC)) {
         $minutesLogged += Util::transformLogTimeToMinutes($worklog['time_spent'], $hoursPerDay, $daysPerWeek);

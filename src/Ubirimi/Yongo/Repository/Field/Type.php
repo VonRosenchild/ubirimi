@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Field;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class FieldType
+class Type
 {
     public static function getByCode($code) {
         $query = "SELECT * from sys_field_type where code = ? limit 1";

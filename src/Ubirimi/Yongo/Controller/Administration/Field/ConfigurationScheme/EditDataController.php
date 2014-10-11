@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 
 class EditDataController extends UbirimiController
 {
@@ -19,11 +19,11 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationSchemeDataId = $request->get('id');
-        $fieldConfigurations = FieldConfiguration::getByClientId($session->get('client/id'));
-        $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataById($fieldConfigurationSchemeDataId);
+        $fieldConfigurations = Configuration::getByClientId($session->get('client/id'));
+        $fieldConfigurationSchemeData = ConfigurationScheme::getDataById($fieldConfigurationSchemeDataId);
 
         $fieldConfigurationSchemeId = $fieldConfigurationSchemeData['issue_type_field_configuration_id'];
-        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = ConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,7 +33,7 @@ class EditDataController extends UbirimiController
             $fieldConfigurationId = Util::cleanRegularInputField($request->request->get('field_configuration'));
             $issueTypeId = Util::cleanRegularInputField($request->request->get('issue_type'));
 
-            FieldConfigurationScheme::updateDataById(
+            ConfigurationScheme::updateDataById(
                 $fieldConfigurationId,
                 $fieldConfigurationSchemeId,
                 $issueTypeId

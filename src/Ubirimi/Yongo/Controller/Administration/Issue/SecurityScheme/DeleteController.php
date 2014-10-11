@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 
 class DeleteController extends UbirimiController
 {
@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $issueSecuritySchemeId = $request->request->get('id');
 
-        IssueSecurityScheme::deleteById($issueSecuritySchemeId);
+        SecurityScheme::deleteById($issueSecuritySchemeId);
 
         return new Response('');
     }

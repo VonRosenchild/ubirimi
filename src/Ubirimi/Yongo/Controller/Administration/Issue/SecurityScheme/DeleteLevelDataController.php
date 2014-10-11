@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 
 class DeleteLevelDataController extends UbirimiController
 {
@@ -18,11 +18,11 @@ class DeleteLevelDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeLevelDataId = $request->request->get('id');
-        $issueSecuritySchemeLevelData = IssueSecurityScheme::getLevelDataById($issueSecuritySchemeLevelDataId);
+        $issueSecuritySchemeLevelData = SecurityScheme::getLevelDataById($issueSecuritySchemeLevelDataId);
         $issueSecuritySchemeLevelId = $issueSecuritySchemeLevelData['issue_security_scheme_level_id'];
-        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
+        $issueSecuritySchemeLevel = SecurityScheme::getLevelById($issueSecuritySchemeLevelId);
 
-        IssueSecurityScheme::deleteLevelDataById($issueSecuritySchemeLevelDataId);
+        SecurityScheme::deleteLevelDataById($issueSecuritySchemeLevelDataId);
 
         $date = Util::getServerCurrentDateTime();
 

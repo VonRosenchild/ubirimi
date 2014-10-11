@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Log;
@@ -27,8 +27,8 @@ class DeleteController extends UbirimiController
             Issue::updateType($projects, $oldId, $newId);
         }
 
-        $issueType = IssueType::getById($oldId);
-        IssueType::deleteById($oldId);
+        $issueType = Type::getById($oldId);
+        Type::deleteById($oldId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

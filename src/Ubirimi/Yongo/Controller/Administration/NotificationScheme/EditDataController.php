@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -21,7 +21,7 @@ class EditDataController extends UbirimiController
         $backLink = $request->get('back');
         $projectId = $request->get('project_id');
 
-        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+        $notificationScheme = Scheme::getMetaDataById($notificationSchemeId);
         if ($notificationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }

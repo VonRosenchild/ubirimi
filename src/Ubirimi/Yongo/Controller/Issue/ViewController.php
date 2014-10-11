@@ -14,10 +14,10 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Attachment;
 use Ubirimi\Yongo\Repository\Issue\Component;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
-use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
-use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\Version;
+use Ubirimi\Yongo\Repository\Issue\Watcher;
+use Ubirimi\Yongo\Repository\Issue\WorkLog;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -69,8 +69,8 @@ class ViewController extends UbirimiController
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
 
             $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
-            $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-            $versionsTargeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+            $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            $versionsTargeted = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 
             $arrayListResultIds = null;
             if ($session->has('array_ids')) {
@@ -126,13 +126,13 @@ class ViewController extends UbirimiController
             }
 
             // get the worklogs
-            $workLogs = IssueWorkLog::getByIssueId($issueId);
+            $workLogs = WorkLog::getByIssueId($issueId);
 
             // get the watchers, if any
-            $watchers = IssueWatcher::getByIssueId($issueId);
+            $watchers = Watcher::getByIssueId($issueId);
 
-            $linkedIssues = IssueLinkType::getLinksByParentId($issueId);
-            $linkIssueTypes = IssueLinkType::getByClientId($session->get('client/id'));
+            $linkedIssues = LinkType::getLinksByParentId($issueId);
+            $linkIssueTypes = LinkType::getByClientId($session->get('client/id'));
             $issueLinkingFlag = $session->get('yongo/settings/issue_linking_flag');
             $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
             $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');

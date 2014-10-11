@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 class CopyController extends UbirimiController
 {
@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionSchemeId = $request->get('id');
-        $permissionScheme = PermissionScheme::getMetaDataById($permissionSchemeId);
+        $permissionScheme = Scheme::getMetaDataById($permissionSchemeId);
 
         if ($permissionScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,7 +34,7 @@ class CopyController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $duplicatePermissionScheme = PermissionScheme::getMetaDataByNameAndClientId(
+            $duplicatePermissionScheme = Scheme::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -43,11 +43,11 @@ class CopyController extends UbirimiController
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedPermissionScheme = new PermissionScheme($session->get('client/id'), $name, $description);
+                $copiedPermissionScheme = new Scheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedPermissionSchemeId = $copiedPermissionScheme->save($currentDate);
 
-                $permissionSchemeData = PermissionScheme::getDataByPermissionSchemeId($permissionSchemeId);
+                $permissionSchemeData = Scheme::getDataByPermissionSchemeId($permissionSchemeId);
 
                 while ($permissionSchemeData && $data = $permissionSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedPermissionScheme->addDataRaw(

@@ -9,7 +9,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AssignGroupsDialogController extends UbirimiController
 {
@@ -19,7 +19,7 @@ class AssignGroupsDialogController extends UbirimiController
 
         $permissionRoleId = $request->get('role_id');
         $projectId = $request->get('project_id');
-        $role = PermissionRole::getPermissionRoleById($permissionRoleId);
+        $role = Role::getPermissionRoleById($permissionRoleId);
 
         $all_groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $role_groups = Project::getGroupsInRole($projectId, $permissionRoleId);

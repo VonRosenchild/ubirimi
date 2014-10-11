@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -18,16 +18,16 @@ class AssociateStep2Controller extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $projectId = $request->get('id');
         $schemeId = $request->get('scheme_id');
-        $selectedScheme = IssueSecurityScheme::getMetaDataById($schemeId);
+        $selectedScheme = SecurityScheme::getMetaDataById($schemeId);
         $project = Project::getById($projectId);
 
         $projectIssueSecuritySchemeId = $project['issue_security_scheme_id'];
         $projectIssueSecurityScheme = null;
         if ($projectIssueSecuritySchemeId)
-            $projectIssueSecurityScheme = IssueSecurityScheme::getMetaDataById($projectIssueSecuritySchemeId);
+            $projectIssueSecurityScheme = SecurityScheme::getMetaDataById($projectIssueSecuritySchemeId);
 
         $menuSelectedCategory = 'project';
-        $selectedSchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($schemeId);
+        $selectedSchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($schemeId);
 
         if ($request->request->has('cancel')) {
             return new RedirectResponse('/yongo/administration/project/issue-security/' . $projectId);

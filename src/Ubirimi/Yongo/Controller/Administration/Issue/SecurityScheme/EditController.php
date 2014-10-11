@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 
 class EditController extends UbirimiController
 {
@@ -16,7 +16,7 @@ class EditController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $issueSecuritySchemeId = $request->get('id');
-        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeId);
+        $issueSecurityScheme = SecurityScheme::getMetaDataById($issueSecuritySchemeId);
 
         if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -31,7 +31,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                IssueSecurityScheme::updateMetaDataById($issueSecuritySchemeId, $name, $description);
+                SecurityScheme::updateMetaDataById($issueSecuritySchemeId, $name, $description);
 
                 return new RedirectResponse('/yongo/administration/issue-security-schemes');
             }

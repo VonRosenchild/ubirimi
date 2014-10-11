@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+    use Ubirimi\Yongo\Repository\Field\Configuration;
     use Ubirimi\Yongo\Repository\Screen\Screen;
 
     require_once __DIR__ . '/../../_header.php';
@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 <?php while ($field = $allFields->fetch_array(MYSQLI_ASSOC)): ?>
-                    <?php $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $field['id']) ?>
+                    <?php $data = Configuration::getDataByConfigurationAndField($fieldConfigurationId, $field['id']) ?>
                     <tr>
                         <td>
                             <?php echo $field['name'] ?>

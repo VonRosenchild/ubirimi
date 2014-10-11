@@ -4,13 +4,13 @@
     use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Issue\Attachment;
     use Ubirimi\Yongo\Repository\Issue\Component;
-    use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+    use Ubirimi\Yongo\Repository\Issue\Version;
 
     $issueId = $issue['id'];
 
     $components = Component::getByIssueIdAndProjectId($issueId, $issue['issue_project_id']);
-    $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
-    $versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
+    $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $versions_targeted = Version::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
     $attachments = Attachment::getByIssueId($issueId);
     $countAttachments = 0;
     if ($attachments) {

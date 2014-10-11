@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+    use Ubirimi\Yongo\Repository\Issue\TypeScheme;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
     require_once __DIR__ . '/../_header.php';
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <td valign="top" width="180">
-                        <?php $issueTypes = IssueTypeScheme::getDataById($workflow['issue_type_scheme_id']); ?>
+                        <?php $issueTypes = TypeScheme::getDataById($workflow['issue_type_scheme_id']); ?>
                         <div><b>These <?php echo $issueTypes->num_rows ?> issue types...</b></div>
                         <?php while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                             <div><?php echo $issueType['name'] ?></div>

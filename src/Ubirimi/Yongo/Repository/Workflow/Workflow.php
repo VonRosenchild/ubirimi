@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Workflow;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class Workflow
@@ -375,7 +375,7 @@ class Workflow
     }
 
     public static function createInitialData($clientId, $workflowId) {
-        $statusOpen = IssueSettings::getByName($clientId, 'status', 'Open');
+        $statusOpen = Settings::getByName($clientId, 'status', 'Open');
 
         $q = 'insert into workflow_step(workflow_id, linked_issue_status_id, name, initial_step_flag) ' .
              'values(?, ?, ?, ?)';

@@ -4,8 +4,8 @@
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Issue\Component;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-    use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+    use Ubirimi\Yongo\Repository\Issue\Settings;
+    use Ubirimi\Yongo\Repository\Issue\Version;
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Yongo\Repository\Project\ProjectComponent;
     use Ubirimi\Yongo\Repository\Project\ProjectVersion;
@@ -40,18 +40,18 @@
         if ($oldIssueData['component'] == null) {
             $oldIssueData['component'] = array();
         }
-        $oldIssueData['affects_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+        $oldIssueData['affects_version'] = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
         if ($oldIssueData['affects_version'] == null) {
             $oldIssueData['affects_version'] = array();
         }
-        $oldIssueData['fix_version'] = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+        $oldIssueData['fix_version'] = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
         if ($oldIssueData['fix_version'] == null) {
             $oldIssueData['fix_version'] = array();
         }
 
         Component::deleteByIssueId($issueId);
-        IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
-        IssueVersion::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        Version::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+        Version::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
         if ($session->has('move_issue/new_assignee')) {
             Issue::updateAssigneeRaw($issueId, $session->get('move_issue/new_assignee'));
@@ -94,14 +94,14 @@
     $previousData = $session->get('move_issue');
     $menuSelectedCategory = 'issue';
 
-    $newStatusName = IssueSettings::getById($session->get('move_issue/new_status'), 'status', 'name');
+    $newStatusName = Settings::getById($session->get('move_issue/new_status'), 'status', 'name');
 
     $newProject = Project::getById($session->get('move_issue/new_project'));
-    $newTypeName = IssueSettings::getById($session->get('move_issue/new_type'), 'type', 'name');
+    $newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
 
     $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
-    $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-    $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+    $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
     $newIssueComponents = null;
     $newIssueFixVersions = null;

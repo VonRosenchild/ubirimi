@@ -4,7 +4,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\GeneralTaskQueue;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -118,7 +118,7 @@ function processNewBugzillaBug($newIssue)
     global $severityConstants;
 
     $issueComponent = Component::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id']);
-    $issueVersion = IssueVersion::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $issueVersion = Version::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $project = Project::getById($newIssue['issue_project_id']);
     $severity = CustomField::getCustomFieldsDataByFieldId($newIssue['id'], 29403);
     $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($newIssue['id']);

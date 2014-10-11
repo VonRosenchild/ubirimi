@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Service\UbirimiService;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
+use Ubirimi\Yongo\Repository\Issue\Watcher;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Agile\Repository\AgileSprint;
 use Ubirimi\Yongo\Repository\Issue\Comment;
@@ -101,7 +101,7 @@ class IssueService extends UbirimiService
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($newIssueId);
 
         // add the current logged in user to the list of watchers
-        IssueWatcher::addWatcher($newIssueId, $loggedInUserId, $currentDate);
+        Watcher::addWatcher($newIssueId, $loggedInUserId, $currentDate);
 
         // add sla information for this issue
         Issue::addPlainSLAData($newIssueId, $projectId);

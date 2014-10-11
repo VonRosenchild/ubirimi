@@ -11,7 +11,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class EditProjectRoleController extends UbirimiController
@@ -25,7 +25,7 @@ class EditProjectRoleController extends UbirimiController
         $users = Client::getUsers($session->get('client/id'));
         $user = User::getById($userId);
         $projects = Project::getByClientId($session->get('client/id'));
-        $roles = PermissionRole::getByClient($session->get('client/id'));
+        $roles = Role::getByClient($session->get('client/id'));
         $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $groupIds = array();
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
@@ -34,12 +34,12 @@ class EditProjectRoleController extends UbirimiController
 
         if (isset($_POST['edit_user_project_role'])) {
             $currentDate = Util::getServerCurrentDateTime();
-            PermissionRole::deleteRolesForUser($userId);
+            Role::deleteRolesForUser($userId);
             foreach ($request->request as $key => $value) {
                 if (substr($key, 0, 5) == 'role_') {
                     $data = str_replace('role_', '', $key);
                     $params = explode('_', $data);
-                    PermissionRole::addProjectRoleForUser($userId, $params[0], $params[1], $currentDate);
+                    Role::addProjectRoleForUser($userId, $params[0], $params[1], $currentDate);
                 }
             }
 

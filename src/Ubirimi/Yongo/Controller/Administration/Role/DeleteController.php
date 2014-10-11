@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
@@ -19,8 +19,8 @@ class DeleteController extends UbirimiController
 
         $permissionRoleId = $request->request->get('perm_role_id');
 
-        $permissionRole = PermissionRole::getById($permissionRoleId);
-        PermissionRole::deleteById($permissionRoleId);
+        $permissionRole = Role::getById($permissionRoleId);
+        Role::deleteById($permissionRoleId);
 
         $date = Util::getServerCurrentDateTime();
 

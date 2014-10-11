@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Repository\Log;
 
 class CopyController extends UbirimiController
@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeId = $request->get('id');
-        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+        $notificationScheme = Scheme::getMetaDataById($notificationSchemeId);
 
         if ($notificationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateNotificationScheme = NotificationScheme::getMetaDataByNameAndClientId(
+            $duplicateNotificationScheme = Scheme::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -44,11 +44,11 @@ class CopyController extends UbirimiController
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedNotificationScheme = new NotificationScheme($session->get('client/id'), $name, $description);
+                $copiedNotificationScheme = new Scheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedNotificationSchemeId = $copiedNotificationScheme->save($currentDate);
 
-                $notificationSchemeData = NotificationScheme::getDataByNotificationSchemeId($notificationSchemeId);
+                $notificationSchemeData = Scheme::getDataByNotificationSchemeId($notificationSchemeId);
                 while ($notificationSchemeData && $data = $notificationSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedNotificationScheme->addDataRaw(
                         $copiedNotificationSchemeId,

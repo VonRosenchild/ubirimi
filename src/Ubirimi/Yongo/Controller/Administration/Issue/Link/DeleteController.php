@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 
 class DeleteController extends UbirimiController
 {
@@ -20,11 +20,11 @@ class DeleteController extends UbirimiController
         $action = $request->request->get('action');
 
         if ($action == 'swap') {
-            IssueLinkType::updateLinkTypeId($sourceLinkTypeId, $targetLinkTypeId);
-            IssueLinkType::deleteById($sourceLinkTypeId);
+            LinkType::updateLinkTypeId($sourceLinkTypeId, $targetLinkTypeId);
+            LinkType::deleteById($sourceLinkTypeId);
         } else if ($action == 'remove' || $action == null) {
-            IssueLinkType::deleteLinksByLinkTypeId($sourceLinkTypeId);
-            IssueLinkType::deleteById($sourceLinkTypeId);
+            LinkType::deleteLinksByLinkTypeId($sourceLinkTypeId);
+            LinkType::deleteById($sourceLinkTypeId);
         }
 
         return new Response('');

@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 
 class AddController extends UbirimiController
 {
@@ -20,7 +20,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
 
-        $allIssueTypes = IssueType::getAll($session->get('client/id'));
+        $allIssueTypes = Type::getAll($session->get('client/id'));
 
         if ($request->request->has('new_issue_type_screen_scheme')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -30,13 +30,13 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $issueTypeScreenScheme = new IssueTypeScreenScheme($session->get('client/id'), $name, $description);
+                $issueTypeScreenScheme = new TypeScreenScheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $issueTypeScreenSchemeId = $issueTypeScreenScheme->save($currentDate);
 
-                $issueTypes = IssueType::getAll($session->get('client/id'));
+                $issueTypes = Type::getAll($session->get('client/id'));
                 while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
-                    IssueTypeScreenScheme::addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
+                    TypeScreenScheme::addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
                 }
 
                 Log::add(

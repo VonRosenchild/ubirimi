@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
@@ -21,9 +21,9 @@ class AssignDefaultUsersController extends UbirimiController
         $userArray = $request->request->get('user_arr');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $permissionRole = PermissionRole::getById($permissionRoleId);
-        PermissionRole::deleteDefaultUsersByPermissionRoleId($permissionRoleId);
-        PermissionRole::addDefaultUsers($permissionRoleId, $userArray, $currentDate);
+        $permissionRole = Role::getById($permissionRoleId);
+        Role::deleteDefaultUsersByPermissionRoleId($permissionRoleId);
+        Role::addDefaultUsers($permissionRoleId, $userArray, $currentDate);
 
         Log::add(
             $session->get('client/id'),

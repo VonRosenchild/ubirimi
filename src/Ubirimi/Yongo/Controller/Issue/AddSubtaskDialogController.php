@@ -5,7 +5,7 @@ namespace Ubirimi\Yongo\Controller\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -22,7 +22,7 @@ class AddSubtaskDialogController extends UbirimiController
         $projectData = Project::getById($projectId);
         $projectId = $projectData['id'];
 
-        $issue_priorities = IssueSettings::getAllIssueSettings('priority', $session->get('client/id'));
+        $issue_priorities = Settings::getAllIssueSettings('priority', $session->get('client/id'));
         $issue_types = Project::getSubTasksIssueTypes($projectId);
 
         $firstIssueType = $issue_types->fetch_array(MYSQLI_ASSOC);

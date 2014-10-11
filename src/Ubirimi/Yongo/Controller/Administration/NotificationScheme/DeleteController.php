@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
 
 class DeleteController extends UbirimiController
 {
@@ -18,10 +18,10 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeId = $request->request->get('id');
-        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+        $notificationScheme = Scheme::getMetaDataById($notificationSchemeId);
 
-        NotificationScheme::deleteDataByNotificationSchemeId($notificationSchemeId);
-        NotificationScheme::deleteById($notificationSchemeId);
+        Scheme::deleteDataByNotificationSchemeId($notificationSchemeId);
+        Scheme::deleteById($notificationSchemeId);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

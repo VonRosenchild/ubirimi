@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class ViewTwoDimensionalFilterController extends UbirimiController
@@ -33,7 +33,7 @@ class ViewTwoDimensionalFilterController extends UbirimiController
         }
 
         $usersAsAssignee = User::getByClientId($clientId);
-        $issueStatuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
+        $issueStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
 
         $twoDimensionalData = UbirimiContainer::getRepository('yongo.issue.issue')->get2DimensionalFilter($projectId, 'array');
 

@@ -4,8 +4,8 @@ use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
@@ -52,8 +52,8 @@ $targetProjectComponents = Project::getComponents($targetProjectId);
 $targetVersions = Project::getVersions($targetProjectId);
 
 $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
-$issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-$issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+$issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+$issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
 $sourceAssignee = $issue['assignee'];
 $assignableUsersTargetProjectArray = Project::getUsersWithPermission($session->get('move_issue/new_project'), Permission::PERM_ASSIGNABLE_USER, 'array');
@@ -73,10 +73,10 @@ $actionTaken = false;
 if ((($issueComponents || $issueFixVersions || $issueAffectedVersions) && ($targetProjectComponents || $targetVersions)) || $assigneeChanged) {
     $actionTaken = true;
 }
-$newStatusName = IssueSettings::getById($session->get('move_issue/new_status'), 'status', 'name');
+$newStatusName = Settings::getById($session->get('move_issue/new_status'), 'status', 'name');
 
 $newProject = Project::getById($session->get('move_issue/new_project'));
 $newProjectName = $newProject['name'];
-$newTypeName = IssueSettings::getById($session->get('move_issue/new_type'), 'type', 'name');
+$newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
 
 require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep3.php';

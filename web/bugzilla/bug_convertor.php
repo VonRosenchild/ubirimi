@@ -1,6 +1,6 @@
 <?php
 
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Util;
 
 function installPriorities($connectionBugzilla, $clientId)
@@ -8,7 +8,7 @@ function installPriorities($connectionBugzilla, $clientId)
     $movidiusPriorities = getPriorities($connectionBugzilla);
 
     foreach ($movidiusPriorities as $priority) {
-        IssueSettings::create(
+        Settings::create(
             'issue_priority',
             $clientId,
             $priority['value'],

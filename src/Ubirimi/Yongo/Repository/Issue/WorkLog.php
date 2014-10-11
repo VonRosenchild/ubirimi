@@ -5,7 +5,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 
-class IssueWorkLog
+class WorkLog
 {
     public static function getByIssueId($issueId) {
         $query = 'select issue_work_log.id, issue_work_log.time_spent, issue_work_log.date_started, issue_work_log.comment, user.id as user_id, user.first_name, user.last_name, edited_flag
@@ -128,7 +128,7 @@ class IssueWorkLog
             $remainingTime = 0;
         }
 
-        IssueWorkLog::updateRemainingEstimate($issueData['id'], $remainingTime);
+        WorkLog::updateRemainingEstimate($issueData['id'], $remainingTime);
 
         return $remainingTime;
     }

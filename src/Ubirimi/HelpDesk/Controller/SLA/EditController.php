@@ -10,7 +10,7 @@ use Ubirimi\Util;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\HelpDesk\SLACalendar;
 
@@ -42,7 +42,7 @@ class EditController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        $availableStatuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
+        $availableStatuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
 
         if ($request->request->has('confirm_update_sla')) {
 

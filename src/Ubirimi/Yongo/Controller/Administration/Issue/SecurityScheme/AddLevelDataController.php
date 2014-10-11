@@ -7,12 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\Log;
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AddLevelDataController extends UbirimiController
 {
@@ -22,8 +22,8 @@ class AddLevelDataController extends UbirimiController
 
         $levelId = $request->get('id');
 
-        $level = IssueSecurityScheme::getLevelById($levelId);
-        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($level['issue_security_scheme_id']);
+        $level = SecurityScheme::getLevelById($levelId);
+        $issueSecurityScheme = SecurityScheme::getMetaDataById($level['issue_security_scheme_id']);
 
         if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -31,7 +31,7 @@ class AddLevelDataController extends UbirimiController
 
         $users = User::getByClientId($session->get('client/id'));
         $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = PermissionRole::getByClient($session->get('client/id'));
+        $roles = Role::getByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
 
@@ -46,7 +46,7 @@ class AddLevelDataController extends UbirimiController
 
                 // check for duplicate information
                 $duplication = false;
-                $dataLevel = IssueSecurityScheme::getDataByLevelId($levelId);
+                $dataLevel = SecurityScheme::getDataByLevelId($levelId);
 
                 if ($dataLevel) {
 
@@ -58,19 +58,19 @@ class AddLevelDataController extends UbirimiController
                         if ($data['permission_role_id'] && $data['permission_role_id'] && $role)
                             $duplication = true;
 
-                        if ($levelDataType == IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_LEAD)
+                        if ($levelDataType == SecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_LEAD)
                             if ($data['project_lead'])
                                 $duplication = true;
-                        if ($levelDataType == IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_CURRENT_ASSIGNEE)
+                        if ($levelDataType == SecurityScheme::SECURITY_SCHEME_DATA_TYPE_CURRENT_ASSIGNEE)
                             if ($data['current_assignee'])
                                 $duplication = true;
-                        if ($levelDataType == IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_REPORTER)
+                        if ($levelDataType == SecurityScheme::SECURITY_SCHEME_DATA_TYPE_REPORTER)
                             if ($data['reporter'])
                                 $duplication = true;
                     }
                 }
                 if (!$duplication) {
-                    IssueSecurityScheme::addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
+                    SecurityScheme::addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
 
                     Log::add(
                         $session->get('client/id'),

@@ -8,7 +8,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 
 class ViewDialogController extends UbirimiController
 {
@@ -24,7 +24,7 @@ class ViewDialogController extends UbirimiController
         $linkPossible = $request->get('link_possible');
 
         if ($linkPossible) {
-            $types = IssueLinkType::getByClientId($clientId);
+            $types = LinkType::getByClientId($clientId);
             $issueQueryParameters = array('project' => $projectId);
             $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
         }

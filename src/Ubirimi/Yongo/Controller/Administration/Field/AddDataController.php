@@ -10,8 +10,8 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\CustomField;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Field\FieldType;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Field\Type;
+use Ubirimi\Yongo\Repository\Issue\Type;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class AddDataController extends UbirimiController
@@ -20,7 +20,7 @@ class AddDataController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issueTypes = IssueType::getAll($session->get('client/id'));
+        $issueTypes = Type::getAll($session->get('client/id'));
         $projects = Project::getByClientId($session->get('client/id'));
 
         $fieldTypeCode = $request->get('type');
@@ -34,7 +34,7 @@ class AddDataController extends UbirimiController
             $issueType = $request->request->get('issue_type');
             $project = $request->request->get('project');
 
-            $fieldType = FieldType::getByCode($fieldTypeCode);
+            $fieldType = Type::getByCode($fieldTypeCode);
             $fieldTypeId = $fieldType['id'];
 
             if (empty($name)) {

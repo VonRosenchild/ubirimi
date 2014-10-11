@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 
 class DeleteController extends UbirimiController
 {
@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $Id = $request->request->get('id');
 
-        IssueLinkType::deleteLinkById($Id);
+        LinkType::deleteLinkById($Id);
 
         return new Response('');
     }

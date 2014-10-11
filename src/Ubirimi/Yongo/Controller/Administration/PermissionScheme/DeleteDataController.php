@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 class DeleteDataController extends UbirimiController
 {
@@ -18,7 +18,7 @@ class DeleteDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionSchemeDataId = $request->request->get('permission_scheme_data_id');
-        PermissionScheme::deleteDataById($permissionSchemeDataId);
+        Scheme::deleteDataById($permissionSchemeDataId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

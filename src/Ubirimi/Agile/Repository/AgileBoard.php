@@ -8,7 +8,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Filter;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
@@ -143,8 +143,8 @@ class AgileBoard
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $openStatusData = IssueSettings::getByName($clientId, 'status', 'Open');
-        $reopenedStatusData = IssueSettings::getByName($clientId, 'status', 'Reopened');
+        $openStatusData = Settings::getByName($clientId, 'status', 'Open');
+        $reopenedStatusData = Settings::getByName($clientId, 'status', 'Reopened');
         AgileBoard::addStatusToColumn($columnId, $openStatusData['id']);
         AgileBoard::addStatusToColumn($columnId, $reopenedStatusData['id']);
 
@@ -157,7 +157,7 @@ class AgileBoard
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $inProgressStatusData = IssueSettings::getByName($clientId, 'status', 'In Progress');
+        $inProgressStatusData = Settings::getByName($clientId, 'status', 'In Progress');
 
         AgileBoard::addStatusToColumn($columnId, $inProgressStatusData['id']);
 
@@ -170,8 +170,8 @@ class AgileBoard
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $resolvedStatusData = IssueSettings::getByName($clientId, 'status', 'Resolved');
-        $closedStatusData = IssueSettings::getByName($clientId, 'status', 'Closed');
+        $resolvedStatusData = Settings::getByName($clientId, 'status', 'Resolved');
+        $closedStatusData = Settings::getByName($clientId, 'status', 'Closed');
 
         AgileBoard::addStatusToColumn($columnId, $resolvedStatusData['id']);
         AgileBoard::addStatusToColumn($columnId, $closedStatusData['id']);
@@ -243,7 +243,7 @@ class AgileBoard
     }
 
     public static function getUnmappedStatuses($clientId, $boardId, $resultType = null) {
-        $clientStatuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
+        $clientStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
 
         $query = "select issue_status.id, issue_status.name " .
             "from agile_board " .

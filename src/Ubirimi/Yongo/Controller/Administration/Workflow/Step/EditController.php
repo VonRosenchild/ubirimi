@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 
 class EditController extends UbirimiController
 {
@@ -25,7 +25,7 @@ class EditController extends UbirimiController
         $workflowId = $step['workflow_id'];
 
         $workflow = Workflow::getMetaDataById($workflowId);
-        $statuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
+        $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
 
         $emptyName = false;
 

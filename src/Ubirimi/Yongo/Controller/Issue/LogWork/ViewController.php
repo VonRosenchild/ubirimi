@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
+use Ubirimi\Yongo\Repository\Issue\WorkLog;
 use Ubirimi\Repository\Client;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -26,7 +26,7 @@ class ViewController extends UbirimiController
         $issueId = $request->request->get('issue_id');
         $projectId = $request->request->get('project_id');
 
-        $workLogs = IssueWorkLog::getByIssueId($issueId);
+        $workLogs = WorkLog::getByIssueId($issueId);
 
         $hasEditOwnWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_OWN_WORKLOGS, $session->get('user/id'));
         $hasEditAllWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ALL_WORKLOGS, $session->get('user/id'));

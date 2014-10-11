@@ -9,13 +9,13 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Repository\Log;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Notification\Notification;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AddDataController extends UbirimiController
 {
@@ -28,13 +28,13 @@ class AddDataController extends UbirimiController
         $notificationSchemeId = $request->get('not_scheme_id');
         $eventId = $request->get('id');
 
-        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+        $notificationScheme = Scheme::getMetaDataById($notificationSchemeId);
 
         $events = Event::getByClient($session->get('client/id'));
 
         $users = User::getByClientId($session->get('client/id'));
         $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = PermissionRole::getByClient($session->get('client/id'));
+        $roles = Role::getByClient($session->get('client/id'));
 
         $fieldsUserPickerMultipleSelection = Field::getByClientIdAndFieldTypeId($session->get('client/id'), Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID);
 
@@ -56,7 +56,7 @@ class AddDataController extends UbirimiController
                     // check for duplicate information
                     $duplication = false;
 
-                    $dataNotification = NotificationScheme::getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventIds[$i]);
+                    $dataNotification = Scheme::getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventIds[$i]);
 
                     if ($dataNotification) {
                         while ($data = $dataNotification->fetch_array(MYSQLI_ASSOC)) {
@@ -100,7 +100,7 @@ class AddDataController extends UbirimiController
                         }
                     }
                     if (!$duplication) {
-                        NotificationScheme::addData(
+                        Scheme::addData(
                             $notificationSchemeId,
                             $eventIds[$i],
                             $notificationType,

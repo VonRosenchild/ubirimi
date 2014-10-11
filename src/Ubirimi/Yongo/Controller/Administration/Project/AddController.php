@@ -12,11 +12,11 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 use Ubirimi\Entity\Yongo\Project as ProjectEntity;
@@ -35,12 +35,12 @@ class AddController extends UbirimiController
         $emptyCode = false;
         $duplicateCode = false;
 
-        $issueTypeScheme = IssueTypeScheme::getByClientId($session->get('client/id'), 'project');
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
-        $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($session->get('client/id'));
+        $issueTypeScheme = TypeScheme::getByClientId($session->get('client/id'), 'project');
+        $issueTypeScreenScheme = TypeScreenScheme::getByClientId($session->get('client/id'));
+        $fieldConfigurationSchemes = ConfigurationScheme::getByClient($session->get('client/id'));
         $workflowScheme = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
-        $permissionScheme = PermissionScheme::getByClientId($session->get('client/id'));
-        $notificationScheme = NotificationScheme::getByClientId($session->get('client/id'));
+        $permissionScheme = Scheme::getByClientId($session->get('client/id'));
+        $notificationScheme = Scheme::getByClientId($session->get('client/id'));
         $projectCategories = ProjectCategory::getAll($session->get('client/id'));
 
         if ($request->request->has('confirm_new_project')) {

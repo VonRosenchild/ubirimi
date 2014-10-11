@@ -2,7 +2,7 @@
     use Ubirimi\Repository\Log;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+    use Ubirimi\Yongo\Repository\Permission\Scheme;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -16,20 +16,20 @@
     $somethingChanged = false;
 
     if ($userArray != -1) {
-        PermissionScheme::deleteUserDataByPermissionId($permissionSchemeId, $permissionId);
-        PermissionScheme::addUserDataToPermissionId($permissionSchemeId, $permissionId, $userArray);
+        Scheme::deleteUserDataByPermissionId($permissionSchemeId, $permissionId);
+        Scheme::addUserDataToPermissionId($permissionSchemeId, $permissionId, $userArray);
         $somethingChanged = true;
     }
 
     if ($user_group_arr != -1) {
-        PermissionScheme::deleteGroupDataByPermissionId($permissionSchemeId, $permissionId);
-        PermissionScheme::addGroupDataToPermissionId($permissionSchemeId, $permissionId, $user_group_arr);
+        Scheme::deleteGroupDataByPermissionId($permissionSchemeId, $permissionId);
+        Scheme::addGroupDataToPermissionId($permissionSchemeId, $permissionId, $user_group_arr);
         $somethingChanged = true;
     }
 
     if ($perm_roles_arr != -1) {
-        PermissionScheme::deleteRoleDataByPermissionId($permissionSchemeId, $permissionId);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, $permissionId, $perm_roles_arr, $currentDate);
+        Scheme::deleteRoleDataByPermissionId($permissionSchemeId, $permissionId);
+        Scheme::addRoleDataToPermissionId($permissionSchemeId, $permissionId, $perm_roles_arr, $currentDate);
         $somethingChanged = true;
     }
 

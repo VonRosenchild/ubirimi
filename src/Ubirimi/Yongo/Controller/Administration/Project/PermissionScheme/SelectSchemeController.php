@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 class SelectSchemeController extends UbirimiController
 {
@@ -32,7 +32,7 @@ class SelectSchemeController extends UbirimiController
             return new RedirectResponse('/yongo/administration/project/permissions/' . $projectId);
         }
 
-        $permissionSchemes = PermissionScheme::getByClientId($session->get('client/id'));
+        $permissionSchemes = Scheme::getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

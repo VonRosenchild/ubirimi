@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Repository\Log;
 
 class EditMetadataController extends UbirimiController
@@ -19,7 +19,7 @@ class EditMetadataController extends UbirimiController
 
         $fieldConfigurationSchemeId = $request->get('id');
 
-        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = ConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,7 +36,7 @@ class EditMetadataController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                FieldConfigurationScheme::updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
+                ConfigurationScheme::updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

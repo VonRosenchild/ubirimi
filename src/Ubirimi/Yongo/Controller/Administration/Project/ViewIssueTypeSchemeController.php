@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
 class ViewIssueTypeSchemeController extends UbirimiController
@@ -26,8 +26,8 @@ class ViewIssueTypeSchemeController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $issueTypeDefaultScheme = IssueTypeScheme::getMetaDataById($project['issue_type_scheme_id']);
-        $issueTypeDefaultSchemeData = IssueTypeScheme::getDataById($issueTypeDefaultScheme['id']);
+        $issueTypeDefaultScheme = TypeScheme::getMetaDataById($project['issue_type_scheme_id']);
+        $issueTypeDefaultSchemeData = TypeScheme::getDataById($issueTypeDefaultScheme['id']);
 
         $hasGlobalAdministrationPermission = User::hasGlobalPermission(
             $session->get('client/id'),

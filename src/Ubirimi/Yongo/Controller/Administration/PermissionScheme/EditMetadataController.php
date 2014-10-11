@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Repository\Log;
 
 class EditMetadataController extends UbirimiController
@@ -18,7 +18,7 @@ class EditMetadataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionSchemeId = $request->get('id');
-        $permissionScheme = PermissionScheme::getMetaDataById($permissionSchemeId);
+        $permissionScheme = Scheme::getMetaDataById($permissionSchemeId);
 
         if ($permissionScheme['client_id'] != $session->get('client/id')) {
             header('Location: /general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class EditMetadataController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                PermissionScheme::updateMetaDataById($permissionSchemeId, $name, $description, $currentDate);
+                Scheme::updateMetaDataById($permissionSchemeId, $name, $description, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

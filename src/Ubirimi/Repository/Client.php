@@ -14,21 +14,21 @@ use ubirimi\svn\SVNRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Yongo\Repository\Issue\Event;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\Type;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Role;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
@@ -262,7 +262,7 @@ class Client
     }
 
     public static function createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $currentDate) {
-        $issueTypes = IssueType::getAll($clientId);
+        $issueTypes = Type::getAll($clientId);
         $query = "INSERT INTO  issue_type_field_configuration_data(issue_type_field_configuration_id, issue_type_id, field_configuration_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
             $query .= "(" . $issueTypeFieldConfigurationId . "," . $issueType['id'] . ", " . $fieldConfigurationId . ", '" . $currentDate . "'), ";
@@ -273,7 +273,7 @@ class Client
     }
 
     public static function createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $currentDate) {
-        $issueTypes = IssueType::getAll($clientId);
+        $issueTypes = Type::getAll($clientId);
         $query = "INSERT INTO issue_type_scheme_data(issue_type_scheme_id, issue_type_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
             $query .= "(" . $issueTypeSchemeId . "," . $issueType['id'] . ", '" . $currentDate . "'), ";
@@ -415,21 +415,21 @@ class Client
         Client::deleteYongoIssuePriorities($clientId);
         Field::deleteByClientId($clientId);
 
-        FieldConfiguration::deleteByClientId($clientId);
+        Configuration::deleteByClientId($clientId);
 
-        FieldConfigurationScheme::deleteByClientId($clientId);
+        ConfigurationScheme::deleteByClientId($clientId);
 
-        PermissionScheme::deleteByClientId($clientId);
-        NotificationScheme::deleteByClientId($clientId);
+        Scheme::deleteByClientId($clientId);
+        Scheme::deleteByClientId($clientId);
 
-        IssueTypeScheme::deleteByClientId($clientId);
-        IssueTypeScreenScheme::deleteByClientId($clientId);
+        TypeScheme::deleteByClientId($clientId);
+        TypeScreenScheme::deleteByClientId($clientId);
 
         // delete issue security schemes
 
-        $issueSecuritySchemes = IssueSecurityScheme::getByClientId($clientId);
+        $issueSecuritySchemes = SecurityScheme::getByClientId($clientId);
         while ($issueSecuritySchemes && $issueSecurityScheme = $issueSecuritySchemes->fetch_array(MYSQLI_ASSOC)) {
-            IssueSecurityScheme::deleteById($issueSecurityScheme['id']);
+            SecurityScheme::deleteById($issueSecurityScheme['id']);
         }
 
         $users = Client::getUsers($clientId);
@@ -736,7 +736,7 @@ class Client
     }
 
     public static function createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $currentDate) {
-        $issueTypes = IssueType::getAll($clientId);
+        $issueTypes = Type::getAll($clientId);
         $query = "INSERT INTO issue_type_screen_scheme_data(issue_type_screen_scheme_id, issue_type_id, screen_scheme_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
             $query .= "(" . $issueTypeScreenSchemeId . "," . $issueType['id'] . ", " . $screenSchemeId . ", '" . $currentDate . "'), ";
@@ -770,24 +770,24 @@ class Client
 
         $createStepId = Workflow::createDefaultStep($workflowId, null, 'Create Issue', 1);
 
-        $statusOpenIdData = IssueSettings::getByName($clientId, 'status', 'Open');
+        $statusOpenIdData = Settings::getByName($clientId, 'status', 'Open');
         $statusOpenId = $statusOpenIdData['id'];
         $openStepId = Workflow::createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
 
-        $statusInProgressIdData = IssueSettings::getByName($clientId, 'status', 'In Progress');
+        $statusInProgressIdData = Settings::getByName($clientId, 'status', 'In Progress');
         $statusInProgressId = $statusInProgressIdData['id'];
 
         $inProgressStepId = Workflow::createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
 
-        $statusClosedIdData = IssueSettings::getByName($clientId, 'status', 'Closed');
+        $statusClosedIdData = Settings::getByName($clientId, 'status', 'Closed');
         $statusClosedId = $statusClosedIdData['id'];
         $closedStepId = Workflow::createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
 
-        $statusResolvedIdData = IssueSettings::getByName($clientId, 'status', 'Resolved');
+        $statusResolvedIdData = Settings::getByName($clientId, 'status', 'Resolved');
         $statusResolvedId = $statusResolvedIdData['id'];
         $resolvedStepId = Workflow::createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
 
-        $statusReopenedIdData = IssueSettings::getByName($clientId, 'status', 'Reopened');
+        $statusReopenedIdData = Settings::getByName($clientId, 'status', 'Reopened');
         $statusReopenedId = $statusReopenedIdData['id'];
         $reopenedStepId = Workflow::createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
 
@@ -1271,49 +1271,49 @@ class Client
 
     public static function createDefaultFieldConfigurationData($clientId, $fieldConfigurationId) {
         $field = Field::getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_COMMENT_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = Field::getByCode($clientId, Field::FIELD_COMPONENT_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = Field::getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = Field::getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = Field::getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
         $field = Field::getByCode($clientId, Field::FIELD_PRIORITY_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_REPORTER_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = Field::getByCode($clientId, Field::FIELD_SUMMARY_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
         $field = Field::getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
     }
 
     public static function addDefaultDocumentatorGlobalPermissionData($clientId) {
@@ -1506,25 +1506,25 @@ class Client
         Client::createDefaultScreenData($clientId, $clientCreatedDate);
 
         // create default permission roles
-        PermissionRole::addDefaultPermissionRoles($clientId, $clientCreatedDate);
+        Role::addDefaultPermissionRoles($clientId, $clientCreatedDate);
 
         // create default group names
         Group::addDefaultYongoGroups($clientId, $clientCreatedDate);
 
-        $roleAdministrators = PermissionRole::getByName($clientId, 'Administrators');
+        $roleAdministrators = Role::getByName($clientId, 'Administrators');
 
-        $roleDevelopers = PermissionRole::getByName($clientId, 'Developers');
-        $roleUsers = PermissionRole::getByName($clientId, 'Users');
+        $roleDevelopers = Role::getByName($clientId, 'Developers');
+        $roleUsers = Role::getByName($clientId, 'Users');
 
         $groupAdministrators = Group::getByName($clientId, 'Administrators');
 
         $groupDevelopers = Group::getByName($clientId, 'Developers');
         $groupUsers = Group::getByName($clientId, 'Users');
 
-        PermissionRole::addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
-        PermissionRole::addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
+        Role::addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
+        Role::addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
 
-        PermissionRole::addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
+        Role::addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
 
         // add in Administrators group the current user
         Group::addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
@@ -1535,11 +1535,11 @@ class Client
         // create default permission scheme
         $permissionSchemeId = Client::createDefaultPermissionScheme($clientId, $clientCreatedDate);
 
-        PermissionScheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
+        Scheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
 
         // create default notification scheme
         $notificationSchemeId = Client::createDefaultNotificationScheme($clientId, $clientCreatedDate);
-        NotificationScheme::addDefaultNotifications($clientId, $notificationSchemeId);
+        Scheme::addDefaultNotifications($clientId, $notificationSchemeId);
 
         // add global permission
         Client::addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
@@ -1562,12 +1562,12 @@ class Client
     }
 
     public static function createDefaultLinkIssueOptions($clientId, $currentDate) {
-        IssueLinkType::add($clientId, 'Relates', 'relates to', 'relates to', $currentDate);
-        IssueLinkType::add($clientId, 'Duplicate', 'duplicates', 'is duplicated by', $currentDate);
+        LinkType::add($clientId, 'Relates', 'relates to', 'relates to', $currentDate);
+        LinkType::add($clientId, 'Duplicate', 'duplicates', 'is duplicated by', $currentDate);
 
-        IssueLinkType::add($clientId, 'Blocks', 'blocks', 'is blocked by', $currentDate);
+        LinkType::add($clientId, 'Blocks', 'blocks', 'is blocked by', $currentDate);
 
-        IssueLinkType::add($clientId, 'Cloners', 'clones', 'is cloned by', $currentDate);
+        LinkType::add($clientId, 'Cloners', 'clones', 'is cloned by', $currentDate);
     }
 
     public static function updateTimeTrackingSettings($clientId, $hoursPerDay, $daysPerWeek, $defaultUnit) {

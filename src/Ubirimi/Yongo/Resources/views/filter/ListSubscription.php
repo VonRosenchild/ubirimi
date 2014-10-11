@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+    use Ubirimi\Yongo\Repository\Permission\Role;
 
     require_once __DIR__ . '/../_header.php';
 ?>

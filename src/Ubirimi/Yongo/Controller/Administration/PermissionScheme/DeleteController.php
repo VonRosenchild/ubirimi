@@ -8,7 +8,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 class DeleteController extends UbirimiController
 {
@@ -18,8 +18,8 @@ class DeleteController extends UbirimiController
 
         $permissionSchemeId = $request->request->get('id');
 
-        PermissionScheme::deleteDataByPermissionSchemeId($permissionSchemeId);
-        PermissionScheme::deleteById($permissionSchemeId);
+        Scheme::deleteDataByPermissionSchemeId($permissionSchemeId);
+        Scheme::deleteById($permissionSchemeId);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

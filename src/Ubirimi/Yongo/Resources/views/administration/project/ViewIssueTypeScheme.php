@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+    use Ubirimi\Yongo\Repository\Field\Configuration;
     use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
@@ -77,7 +77,7 @@
                         </td>
                         <td>
                             <?php
-                                $fieldConfigurations = FieldConfiguration::getByIssueType($data['issue_type_id'], $clientId);
+                                $fieldConfigurations = Configuration::getByIssueType($data['issue_type_id'], $clientId);
                                 if ($fieldConfigurations) {
                                     echo '<ul>';
                                     while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Repository\Log;
 
 class CopyController extends UbirimiController
@@ -20,7 +20,7 @@ class CopyController extends UbirimiController
         $issueTypeSchemeId = $request->get('id');
         $type = $request->get('type');
 
-        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
+        $issueTypeScheme = TypeScheme::getMetaDataById($issueTypeSchemeId);
 
         if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +37,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateIssueTypeScheme = IssueTypeScheme::getMetaDataByNameAndClientId(
+            $duplicateIssueTypeScheme = TypeScheme::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -46,12 +46,12 @@ class CopyController extends UbirimiController
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedIssueTypeScheme = new IssueTypeScheme($session->get('client/id'), $name, $description, $type);
+                $copiedIssueTypeScheme = new TypeScheme($session->get('client/id'), $name, $description, $type);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedIssueTypeSchemeId = $copiedIssueTypeScheme->save($currentDate);
 
-                $issueTypeSchemeData = IssueTypeScheme::getDataById($issueTypeSchemeId);
+                $issueTypeSchemeData = TypeScheme::getDataById($issueTypeSchemeId);
 
                 while ($issueTypeSchemeData && $data = $issueTypeSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedIssueTypeScheme->addData($copiedIssueTypeSchemeId, $data['issue_type_id'], $currentDate);

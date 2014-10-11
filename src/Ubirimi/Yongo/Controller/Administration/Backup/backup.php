@@ -1,18 +1,18 @@
 <?php
     use Ubirimi\Repository\Client;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+    use Ubirimi\Yongo\Repository\Issue\Settings;
 
     Util::checkUserIsLoggedInAndRedirect();
     // start the backup procedure
 
-    $statuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
+    $statuses = Settings::getAllIssueSettings('status', $clientId, 'array');
     $statusesData = array('issue_status' => $statuses);
 
-    $priorities = IssueSettings::getAllIssueSettings('priority', $clientId, 'array');
+    $priorities = Settings::getAllIssueSettings('priority', $clientId, 'array');
     $prioritiesData = array('issue_priority' => $priorities);
 
-    $resolutions = IssueSettings::getAllIssueSettings('resolution', $clientId, 'array');
+    $resolutions = Settings::getAllIssueSettings('resolution', $clientId, 'array');
     $resolutionsData = array('issue_resolution' => $resolutions);
 
     $users = Client::getUsers($clientId, null, 'array');

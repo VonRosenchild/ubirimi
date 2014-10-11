@@ -5,7 +5,7 @@ use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
 
 
-use Ubirimi\Yongo\Repository\Issue\IssueHistory;
+use Ubirimi\Yongo\Repository\Issue\History;
 
 //    require_once __DIR__ . '/../web/bootstrap_cli.php';
 
@@ -16,7 +16,7 @@ use Ubirimi\Yongo\Repository\Issue\IssueHistory;
     $issues = \Ubirimi\Yongo\Repository\Issue\Issue::getAll();
 
 
-    $history = IssueHistory::getAll();
+    $history = History::getAll();
 
     $clientId = 1936;
 
@@ -28,10 +28,10 @@ use Ubirimi\Yongo\Repository\Issue\IssueHistory;
             $oldResolutionId = null;
             $newResolutionId = null;
             if ($record['old_value'])
-                $oldResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'status', $record['old_value']);
+                $oldResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'status', $record['old_value']);
 
             if ($record['new_value'])
-                $newResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'status', $record['new_value']);
+                $newResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'status', $record['new_value']);
 
             if ($oldResolution) {
                 $oldResolutionId = $oldResolution['id'];
@@ -41,7 +41,7 @@ use Ubirimi\Yongo\Repository\Issue\IssueHistory;
                 $newResolutionId = $newResolution['id'];
             }
 
-            IssueHistory::updateChangedIds($record['id'], $oldResolutionId, $newResolutionId);
+            History::updateChangedIds($record['id'], $oldResolutionId, $newResolutionId);
         }
         if ($record['field'] == 'assignee') {
 
@@ -63,17 +63,17 @@ use Ubirimi\Yongo\Repository\Issue\IssueHistory;
                 $newUserId = $newUser['id'];
             }
 
-            IssueHistory::updateChangedIds($record['id'], $oldUserId, $newUserId);
+            History::updateChangedIds($record['id'], $oldUserId, $newUserId);
         } else if ($record['field'] == 'resolution') {
             $oldResolution = null;
             $newResolution = null;
             $oldResolutionId = null;
             $newResolutionId = null;
             if ($record['old_value'])
-                $oldResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'resolution', $record['old_value']);
+                $oldResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'resolution', $record['old_value']);
 
             if ($record['new_value'])
-                $newResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'resolution', $record['new_value']);
+                $newResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'resolution', $record['new_value']);
 
             if ($oldResolution) {
                 $oldResolutionId = $oldResolution['id'];
@@ -83,6 +83,6 @@ use Ubirimi\Yongo\Repository\Issue\IssueHistory;
                 $newResolutionId = $newResolution['id'];
             }
 
-            IssueHistory::updateChangedIds($record['id'], $oldResolutionId, $newResolutionId);
+            History::updateChangedIds($record['id'], $oldResolutionId, $newResolutionId);
         }
     }

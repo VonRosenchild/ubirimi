@@ -13,11 +13,11 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Attachment;
 use Ubirimi\Yongo\Repository\Issue\Component;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
-use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
+use Ubirimi\Yongo\Repository\Issue\Watcher;
 
 class ViewIssueController extends UbirimiController
 {
@@ -49,13 +49,13 @@ class ViewIssueController extends UbirimiController
         /* before going further, check to is if the issue id a valid id -- end */
 
         $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
-        $versionsAffected = IssueVersion::getByIssueIdAndProjectId(
+        $versionsAffected = Version::getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_AFFECTED_VERSION_FLAG
         );
 
-        $versionsTargeted = IssueVersion::getByIssueIdAndProjectId(
+        $versionsTargeted = Version::getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_FIX_VERSION_FLAG
@@ -96,7 +96,7 @@ class ViewIssueController extends UbirimiController
                     break;
                 }
             }
-            $watchers = IssueWatcher::getByIssueId($issueId);
+            $watchers = Watcher::getByIssueId($issueId);
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
             $customFieldsData = CustomField::getCustomFieldsData($issue['id']);

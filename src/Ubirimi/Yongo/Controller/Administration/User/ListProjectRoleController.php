@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class ListProjectRoleController extends UbirimiController
@@ -24,7 +24,7 @@ class ListProjectRoleController extends UbirimiController
         $users = Client::getUsers($session->get('client/id'));
         $user = User::getById($userId);
         $projects = Project::getByClientId($session->get('client/id'));
-        $roles = PermissionRole::getByClient($session->get('client/id'));
+        $roles = Role::getByClient($session->get('client/id'));
         $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $groupIds = array();
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {

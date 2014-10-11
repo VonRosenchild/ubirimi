@@ -9,7 +9,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
+use Ubirimi\Yongo\Repository\Issue\WorkLog;
 
 class EditController extends UbirimiController
 {
@@ -27,14 +27,14 @@ class EditController extends UbirimiController
         $dateStarted = \DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
         $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
-        $workLog = IssueWorkLog::getById($workLogId);
+        $workLog = WorkLog::getById($workLogId);
 
-        IssueWorkLog::updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
+        WorkLog::updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
 
         $issueQueryParameters = array('issue_id' => $issueId);
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
 
-        $remaining = IssueWorkLog::adjustRemainingEstimate(
+        $remaining = WorkLog::adjustRemainingEstimate(
             $issue,
             null,
             "+" . $workLog['time_spent'],
@@ -47,7 +47,7 @@ class EditController extends UbirimiController
 
         $issue['remaining_estimate'] = $remaining;
 
-        $remainingTimePost = IssueWorkLog::adjustRemainingEstimate(
+        $remainingTimePost = WorkLog::adjustRemainingEstimate(
             $issue,
             $timeSpent,
             $remainingTimePost,

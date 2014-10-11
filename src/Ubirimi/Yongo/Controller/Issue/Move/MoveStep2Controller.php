@@ -4,8 +4,8 @@ use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
@@ -33,8 +33,8 @@ if (isset($_POST['move_issue_step_2'])) {
     // check if step 3 is necessary
 
     $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
-    $issueFixVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-    $issueAffectedVersions = IssueVersion::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+    $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
     if ($issueComponents || $issueFixVersions || $issueAffectedVersions) {
         header('Location: /yongo/issue/move/fields/' . $issueId);
@@ -55,6 +55,6 @@ $menuSelectedCategory = 'issue';
 
 $newProject = Project::getById($session->get('move_issue/new_project'));
 $newProjectName = $newProject['name'];
-$newTypeName = IssueSettings::getById($session->get('move_issue/new_type'), 'type', 'name');
+$newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
 
 require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep2.php';

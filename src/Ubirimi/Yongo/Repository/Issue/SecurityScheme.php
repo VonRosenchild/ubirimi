@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueSecurityScheme
+class SecurityScheme
 {
     const SECURITY_SCHEME_DATA_TYPE_CURRENT_ASSIGNEE = 'current_assignee';
     const SECURITY_SCHEME_DATA_TYPE_REPORTER = 'reporter';
@@ -71,7 +71,7 @@ class IssueSecurityScheme
     }
 
     public static function deleteById($Id) {
-        $levels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($Id);
+        $levels = SecurityScheme::getLevelsByIssueSecuritySchemeId($Id);
         while ($levels && $level = $levels->fetch_array(MYSQLI_ASSOC)) {
             $query = "delete from issue_security_scheme_level_data where issue_security_scheme_level_id = ?";
 
@@ -154,7 +154,7 @@ class IssueSecurityScheme
     public static function addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate) {
         switch ($levelDataType) {
 
-            case IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_USER:
+            case SecurityScheme::SECURITY_SCHEME_DATA_TYPE_USER:
                 $query = "INSERT INTO issue_security_scheme_level_data(issue_security_scheme_level_id, user_id, date_created) VALUES (?, ?, ?)";
 
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -166,7 +166,7 @@ class IssueSecurityScheme
 
                 break;
 
-            case IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_GROUP:
+            case SecurityScheme::SECURITY_SCHEME_DATA_TYPE_GROUP:
                 $query = "INSERT INTO issue_security_scheme_level_data(issue_security_scheme_level_id, group_id, date_created) VALUES (?, ?, ?)";
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -177,7 +177,7 @@ class IssueSecurityScheme
 
                 break;
 
-            case IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_ROLE:
+            case SecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_ROLE:
                 $query = "INSERT INTO issue_security_scheme_level_data(issue_security_scheme_level_id, permission_role_id, date_created) VALUES (?, ?, ?)";
 
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -189,9 +189,9 @@ class IssueSecurityScheme
 
                 break;
 
-            case IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_CURRENT_ASSIGNEE:
-            case IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_REPORTER:
-            case IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_LEAD:
+            case SecurityScheme::SECURITY_SCHEME_DATA_TYPE_CURRENT_ASSIGNEE:
+            case SecurityScheme::SECURITY_SCHEME_DATA_TYPE_REPORTER:
+            case SecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_LEAD:
                 $query = "INSERT INTO issue_security_scheme_level_data(issue_security_scheme_level_id, `" . $levelDataType . "`, date_created) VALUES (?, ?, ?)";
 
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

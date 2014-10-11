@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+    use Ubirimi\Yongo\Repository\Notification\Scheme;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -50,7 +50,7 @@
                     </td>
                     <td>
                         <?php
-                        $notificationData = NotificationScheme::getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $event['id']);
+                        $notificationData = Scheme::getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $event['id']);
                         if ($notificationData) {
                             echo '<ul>';
                             while ($data = $notificationData->fetch_array(MYSQLI_ASSOC)) {

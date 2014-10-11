@@ -1,9 +1,10 @@
 <?php
 
 namespace Ubirimi\Yongo\Repository\Issue;
+
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueType
+class Type
 {
     public static function getAll($clientId) {
         $query = "SELECT issue_type.* " .

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 use Ubirimi\Yongo\Repository\Field\Field;
 
 class EditConfigController extends UbirimiController
@@ -19,13 +19,13 @@ class EditConfigController extends UbirimiController
         $fieldConfigurationId = $request->get('field_configuration_id');
         $fieldId = $request->get('id');
 
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
 
         if ($fieldConfiguration['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurationData = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
+        $fieldConfigurationData = Configuration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
         $description = $fieldConfigurationData['field_description'];
         $field = Field::getById($fieldId);
 
@@ -37,7 +37,7 @@ class EditConfigController extends UbirimiController
 
         if ($request->request->has('edit_field_configuration')) {
             $description = $request->request->get('description');
-            FieldConfiguration::updateFieldDescription($fieldConfigurationId, $fieldId, $description);
+            Configuration::updateFieldDescription($fieldConfigurationId, $fieldId, $description);
 
             return new RedirectResponse('/yongo/administration/field-configuration/edit/' . $fieldConfigurationId);
         }

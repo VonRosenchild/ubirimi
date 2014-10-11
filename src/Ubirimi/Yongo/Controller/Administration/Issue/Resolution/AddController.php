@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -28,14 +28,14 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $resolution = IssueSettings::getByName($session->get('client/id'), 'resolution', mb_strtolower($name));
+            $resolution = Settings::getByName($session->get('client/id'), 'resolution', mb_strtolower($name));
             if ($resolution)
                 $resolutionExists = true;
 
             if (!$resolutionExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                IssueSettings::create(
+                Settings::create(
                     'issue_resolution',
                     $session->get('client/id'),
                     $name,

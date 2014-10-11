@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 
@@ -21,7 +21,7 @@ class EditScreenVisibilityController extends UbirimiController
         $fieldConfigurationId = $request->get('field_configuration_id');
         $fieldId = $request->get('id');
 
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
 
         $field = Field::getById($fieldId);
         $screens = Screen::getAll($session->get('client/id'));

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -28,7 +28,7 @@ class AddController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $notificationScheme = new NotificationScheme($session->get('client/id'), $name, $description);
+                $notificationScheme = new Scheme($session->get('client/id'), $name, $description);
                 $notificationSchemeId = $notificationScheme->save($currentDate);
 
                 Log::add(

@@ -10,7 +10,7 @@ use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
@@ -108,7 +108,7 @@ class IndexController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
         $usersAsAssignee = User::getByClientId($clientId);
-        $issueStatuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
+        $issueStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
         $twoDimensionalData = null;
         if (count($projectIdsArray))
             $twoDimensionalData = $this->getRepository('yongo.issue.issue')->get2DimensionalFilter(-1, 'array');

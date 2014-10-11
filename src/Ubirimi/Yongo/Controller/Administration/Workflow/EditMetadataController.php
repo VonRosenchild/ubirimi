@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 
 class EditMetadataController extends UbirimiController
 {
@@ -20,7 +20,7 @@ class EditMetadataController extends UbirimiController
         $workflowId = $request->get('id');
 
         $workflow = Workflow::getMetaDataById($workflowId);
-        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $workflowIssueTypeSchemes = TypeScheme::getByClientId($session->get('client/id'), 'workflow');
 
         if ($workflow['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+    use Ubirimi\Yongo\Repository\Permission\Role;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -22,7 +22,7 @@
                 </tr>
             </table>
 
-            <?php $roles = PermissionRole::getByClient($session->get('client/id')); ?>
+            <?php $roles = Role::getByClient($session->get('client/id')); ?>
 
             <?php if ($roles): ?>
                 <table class="table table-hover table-condensed">

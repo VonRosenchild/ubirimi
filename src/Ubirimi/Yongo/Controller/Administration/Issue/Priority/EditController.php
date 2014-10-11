@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $issuePriority = IssueSettings::getById($Id, 'priority');
+        $issuePriority = Settings::getById($Id, 'priority');
 
         if ($issuePriority['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,7 +36,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $priority = IssueSettings::getByName(
+            $priority = Settings::getByName(
                 $session->get('client/id'),
                 'priority',
                 mb_strtolower($name),
@@ -48,7 +48,7 @@ class EditController extends UbirimiController
 
             if (!$priorityExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                IssueSettings::updateById($Id, 'priority', $name, $description, $color, $currentDate);
+                Settings::updateById($Id, 'priority', $name, $description, $color, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

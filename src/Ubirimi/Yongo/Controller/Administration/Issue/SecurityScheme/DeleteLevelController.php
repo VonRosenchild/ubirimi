@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class DeleteLevelController extends UbirimiController
@@ -25,7 +25,7 @@ class DeleteLevelController extends UbirimiController
             $newIssueSecuritySchemeLevelId
         );
 
-        IssueSecurityScheme::deleteLevelById($issueSecuritySchemeLevelId);
+        SecurityScheme::deleteLevelById($issueSecuritySchemeLevelId);
 
         return new Response('');
     }

@@ -5,7 +5,7 @@ namespace Ubirimi\Yongo\Repository\Notification;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Event;
 
-class NotificationScheme
+class Scheme
 {
     private $name;
     private $description;
@@ -318,10 +318,10 @@ class NotificationScheme
     }
 
     public static function deleteByClientId($clientId) {
-        $notificationSchemes = NotificationScheme::getByClientId($clientId);
+        $notificationSchemes = Scheme::getByClientId($clientId);
         while ($notificationSchemes && $notificationScheme = $notificationSchemes->fetch_array(MYSQLI_ASSOC)) {
-            NotificationScheme::deleteDataByNotificationSchemeId($notificationScheme['id']);
-            NotificationScheme::deleteById($notificationScheme['id']);
+            Scheme::deleteDataByNotificationSchemeId($notificationScheme['id']);
+            Scheme::deleteById($notificationScheme['id']);
         }
     }
 }

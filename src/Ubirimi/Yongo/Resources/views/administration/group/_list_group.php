@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+    use Ubirimi\Yongo\Repository\Permission\Scheme;
 ?>
 <table class="table table-hover table-condensed" width="100%">
     <thead>
@@ -31,7 +31,7 @@
                 </td>
                 <td width="20%">
                     <?php
-                        $permissionSchemes = PermissionScheme::getByClientIdAndGroupBy($clientId, $group['id']);
+                        $permissionSchemes = Scheme::getByClientIdAndGroupBy($clientId, $group['id']);
                         if ($permissionSchemes) {
                             echo '<ul>';
                             while ($permission = $permissionSchemes->fetch_array(MYSQLI_ASSOC)) {

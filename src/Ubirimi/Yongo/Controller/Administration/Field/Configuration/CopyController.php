@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 use Ubirimi\Repository\Log;
 
 class CopyController extends UbirimiController
@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationId = $request->get('id');
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
 
         if ($fieldConfiguration['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateFieldConfiguration = FieldConfiguration::getMetaDataByNameAndClientId(
+            $duplicateFieldConfiguration = Configuration::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -44,12 +44,12 @@ class CopyController extends UbirimiController
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedFieldConfiguration = new FieldConfiguration($session->get('client/id'), $name, $description);
+                $copiedFieldConfiguration = new Configuration($session->get('client/id'), $name, $description);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedFieldConfigurationId = $copiedFieldConfiguration->save($currentDate);
 
-                $fieldConfigurationData = FieldConfiguration::getDataByConfigurationId($fieldConfigurationId);
+                $fieldConfigurationData = Configuration::getDataByConfigurationId($fieldConfigurationId);
 
                 while ($fieldConfigurationData && $data = $fieldConfigurationData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedFieldConfiguration->addCompleteData(

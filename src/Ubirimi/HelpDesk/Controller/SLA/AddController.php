@@ -12,7 +12,7 @@ use Ubirimi\Util;
 use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\HelpDesk\SLACalendar;
 
 class AddController extends UbirimiController
@@ -41,7 +41,7 @@ class AddController extends UbirimiController
         }
         $slaCalendars = SLACalendar::getByProjectId($projectId);
 
-        $availableStatuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
+        $availableStatuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
 
         if ($request->request->has('confirm_new_sla')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));

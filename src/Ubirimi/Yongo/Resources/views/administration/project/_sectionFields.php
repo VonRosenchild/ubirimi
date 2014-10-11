@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+    use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 
 ?>
     <table width="100%">
@@ -15,8 +15,8 @@
                 <tr>
                     <td valign="top" width="330">
                         <?php
-                            $issueTypeFieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($project['issue_type_field_configuration_id']);
-                            $fieldConfigurations = FieldConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
+                            $issueTypeFieldConfigurationScheme = ConfigurationScheme::getMetaDataById($project['issue_type_field_configuration_id']);
+                            $fieldConfigurations = ConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
                         ?>
                         <span><a href="/yongo/administration/project/fields/<?php echo $project['id'] ?>"><?php echo $issueTypeFieldConfigurationScheme['name'] ?></a></span>
                         <?php while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)): ?>

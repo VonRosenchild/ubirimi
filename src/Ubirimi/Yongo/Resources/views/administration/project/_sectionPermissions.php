@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
-    use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+    use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+    use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 ?>
 <table width="100%">
@@ -20,7 +20,7 @@
                     <td valign="top" width="330">
                         <span>Scheme:</span>
                         <?php
-                            $permissionScheme = PermissionScheme::getMetaDataById($project['permission_scheme_id']);
+                            $permissionScheme = Scheme::getMetaDataById($project['permission_scheme_id']);
                         ?>
                         <span><a href="/yongo/administration/project/permissions/<?php echo $projectId ?>"><?php echo $permissionScheme['name'] ?></a></span>
                     </td>
@@ -31,7 +31,7 @@
                         <?php
                             $issueSecurityScheme = null;
                             if ($project['issue_security_scheme_id']) {
-                                $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($project['issue_security_scheme_id']);
+                                $issueSecurityScheme = SecurityScheme::getMetaDataById($project['issue_security_scheme_id']);
                             }
                         ?>
                         <?php if ($issueSecurityScheme): ?>

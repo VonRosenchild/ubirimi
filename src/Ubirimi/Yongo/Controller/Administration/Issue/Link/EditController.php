@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 
 class EditController extends UbirimiController
 {
@@ -24,7 +24,7 @@ class EditController extends UbirimiController
         $emptyInwardDescription = false;
         $linkTypeDuplicateName = false;
 
-        $linkType = IssueLinkType::getById($linkTypeId);
+        $linkType = LinkType::getById($linkTypeId);
 
         if ($linkType['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -49,7 +49,7 @@ class EditController extends UbirimiController
                 $emptyInwardDescription = true;
 
             // check for duplication
-            $existingLinkType = IssueLinkType::getByNameAndClientId(
+            $existingLinkType = LinkType::getByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name),
                 $linkTypeId
@@ -60,7 +60,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$emptyOutwardDescription && !$emptyInwardDescription && !$linkTypeDuplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                IssueLinkType::update($linkTypeId, $name, $outwardDescription, $inwardDescription, $currentDate);
+                LinkType::update($linkTypeId, $name, $outwardDescription, $inwardDescription, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

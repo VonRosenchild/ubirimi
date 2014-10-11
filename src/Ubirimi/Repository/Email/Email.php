@@ -15,7 +15,7 @@ use Ubirimi\Yongo\Repository\Issue\Component;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class Email {
@@ -144,8 +144,8 @@ class Email {
     private static function sendEmailNewIssue($clientId, $issue, $userToNotify) {
         $issueId = $issue['id'];
         $projectId = $issue['issue_project_id'];
-        $versionsAffected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-        $versionsFixed = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+        $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versionsFixed = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
         $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
         $clientDomain = Util::getSubdomain();
 

@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class EditScreenVisibilityController extends UbirimiController
@@ -47,9 +47,9 @@ class EditScreenVisibilityController extends UbirimiController
 
             // make field visible in all the field configurations
 
-            $fieldConfigurations = FieldConfiguration::getByClientId($session->get('client/id'));
+            $fieldConfigurations = Configuration::getByClientId($session->get('client/id'));
             while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {
-                FieldConfiguration::addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
+                Configuration::addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
             }
 
             Log::add(

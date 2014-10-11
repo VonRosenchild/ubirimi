@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Permission;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class PermissionRole
+class Role
 {
     public static function addDefaultPermissionRoles($clientId, $date) {
         $query = 'insert into permission_role(client_id, name, description, date_created) values ';

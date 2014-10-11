@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 
 class DeleteController extends UbirimiController
 {
@@ -19,8 +19,8 @@ class DeleteController extends UbirimiController
 
         $issueTypeSchemeId = $request->request->get('id');
 
-        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
-        IssueTypeScheme::deleteById($issueTypeSchemeId);
+        $issueTypeScheme = TypeScheme::getMetaDataById($issueTypeSchemeId);
+        TypeScheme::deleteById($issueTypeSchemeId);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

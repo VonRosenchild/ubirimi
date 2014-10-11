@@ -1,8 +1,10 @@
 <?php
+
 namespace Ubirimi\Yongo\Repository\Issue;
+
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueTypeScheme
+class TypeScheme
 {
     private $name;
     private $description;
@@ -132,10 +134,10 @@ class IssueTypeScheme
     }
 
     public static function deleteByClientId($clientId) {
-        $issueTypeSchemes = IssueTypeScheme::getByClientId($clientId);
+        $issueTypeSchemes = TypeScheme::getByClientId($clientId);
         while ($issueTypeSchemes && $issueTypeScheme = $issueTypeSchemes->fetch_array(MYSQLI_ASSOC)) {
-            IssueTypeScheme::deleteDataByIssueTypeSchemeId($issueTypeScheme['id']);
-            IssueTypeScheme::deleteById($issueTypeScheme['id']);
+            TypeScheme::deleteDataByIssueTypeSchemeId($issueTypeScheme['id']);
+            TypeScheme::deleteById($issueTypeScheme['id']);
         }
     }
 

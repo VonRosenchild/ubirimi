@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 
 class AddController extends UbirimiController
 {
@@ -27,7 +27,7 @@ class AddController extends UbirimiController
         $emptyIssueTypeName = false;
         $issueTypeExists = false;
 
-        $allIssueTypes = IssueType::getAll($session->get('client/id'));
+        $allIssueTypes = Type::getAll($session->get('client/id'));
 
         if ($request->request->has('new_type_scheme')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -39,14 +39,14 @@ class AddController extends UbirimiController
 
             if (!$emptyIssueTypeName) {
 
-                $issueTypeScheme = new IssueTypeScheme($session->get('client/id'), $name, $description, $type);
+                $issueTypeScheme = new TypeScheme($session->get('client/id'), $name, $description, $type);
                 $currentDate = Util::getServerCurrentDateTime();
                 $issueTypeSchemeId = $issueTypeScheme->save($currentDate);
 
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 11) == 'issue_type_') {
                         $issueTypeId = str_replace('issue_type_', '', $key);
-                        IssueTypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
+                        TypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
                     }
                 }
 

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueWorkLog;
+use Ubirimi\Yongo\Repository\Issue\WorkLog;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class DeleteController extends UbirimiController
@@ -21,10 +21,10 @@ class DeleteController extends UbirimiController
         $remainingTime = $request->request->get('remaining');
         $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
-        $workLog = IssueWorkLog::getById($workLogId);
+        $workLog = WorkLog::getById($workLogId);
         $timeSpent = $workLog['time_spent'];
 
-        IssueWorkLog::deleteById($workLogId);
+        WorkLog::deleteById($workLogId);
 
         $issueQueryParameters = array('issue_id' => $issueId);
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
@@ -33,7 +33,7 @@ class DeleteController extends UbirimiController
         if ($remainingTime == 'automatic')
             $remainingTime = '+' . $timeSpent;
 
-        $remainingTime = IssueWorkLog::adjustRemainingEstimate(
+        $remainingTime = WorkLog::adjustRemainingEstimate(
             $issue,
             $timeSpent,
             $remainingTime,

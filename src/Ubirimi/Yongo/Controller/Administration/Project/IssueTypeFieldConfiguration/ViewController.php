@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Yongo\Repository\Field\Field;
 
 class ViewController extends UbirimiController
@@ -25,7 +25,7 @@ class ViewController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurations = FieldConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
+        $fieldConfigurations = ConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
         $allFields = Field::getByClient($session->get('client/id'));
         $menuSelectedCategory = 'project';
 

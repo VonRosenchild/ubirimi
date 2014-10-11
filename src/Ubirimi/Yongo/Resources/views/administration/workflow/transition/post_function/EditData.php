@@ -2,7 +2,7 @@
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Issue\Event;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+    use Ubirimi\Yongo\Repository\Issue\Settings;
     use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
     require_once __DIR__ . '/../../../_header.php';
@@ -18,7 +18,7 @@
 
         <form name="edit_post_function_data" action="/yongo/administration/workflow/edit-post-function-data/<?php echo $workflowPostFunctionDataId; ?>" method="post">
             <?php if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>
-                <?php $resolutions = IssueSettings::getAllIssueSettings('resolution', $clientId); ?>
+                <?php $resolutions = Settings::getAllIssueSettings('resolution', $clientId); ?>
                 <div>Edit required parameters to the function <b><?php echo $workflowPostFunctionData['name'] ?></b></div>
                 <table width="100%">
                     <tr>

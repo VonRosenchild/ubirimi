@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\HelpDesk\SLA;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 
 class AutocompleteGoalController extends UbirimiController
 {
@@ -47,10 +47,10 @@ class AutocompleteGoalController extends UbirimiController
             $standardKeyWords[] = $SLA['name'];
         }
 
-        $statuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
-        $priorities = IssueSettings::getAllIssueSettings('priority', $session->get('client/id'));
-        $resolutions = IssueSettings::getAllIssueSettings('resolution', $session->get('client/id'));
-        $types = IssueType::getAll($session->get('client/id'));
+        $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
+        $priorities = Settings::getAllIssueSettings('priority', $session->get('client/id'));
+        $resolutions = Settings::getAllIssueSettings('resolution', $session->get('client/id'));
+        $types = Type::getAll($session->get('client/id'));
         $users = User::getByClientId($session->get('client/id'));
 
         while ($types && $type = $types->fetch_array(MYSQLI_ASSOC)) {

@@ -12,7 +12,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 class ViewController extends UbirimiController
 {
@@ -27,7 +27,7 @@ class ViewController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $permissionScheme = PermissionScheme::getMetaDataById($project['permission_scheme_id']);
+        $permissionScheme = Scheme::getMetaDataById($project['permission_scheme_id']);
         $permissionCategories = Permission::getCategories();
         $hasGlobalAdministrationPermission = User::hasGlobalPermission(
             $session->get('client/id'),

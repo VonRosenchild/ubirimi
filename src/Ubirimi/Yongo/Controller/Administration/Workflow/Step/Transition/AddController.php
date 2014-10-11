@@ -11,7 +11,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Repository\Log;
 use Ubirimi\Yongo\Repository\Issue\Event;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
@@ -33,7 +33,7 @@ class AddController extends UbirimiController
         }
 
         $workflowSteps = Workflow::getSteps($workflowId);
-        $statuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
+        $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
         $screens = Screen::getAll($session->get('client/id'));
 
         $emptyName = false;

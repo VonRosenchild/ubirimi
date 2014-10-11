@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+    use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 
     require_once __DIR__ . '/../../_header.php';
 ?>
@@ -45,7 +45,7 @@
                             </td>
                             <td width="500px">
                                 <?php
-                                $issueTypeScreenSchemes = IssueTypeScreenScheme::getByScreenSchemeId($scheme['id']);
+                                $issueTypeScreenSchemes = TypeScreenScheme::getByScreenSchemeId($scheme['id']);
                                 if ($issueTypeScreenSchemes) {
 
                                     echo '<ul>';

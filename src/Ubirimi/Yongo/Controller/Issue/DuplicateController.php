@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class DuplicateController extends UbirimiController
@@ -44,7 +44,7 @@ class DuplicateController extends UbirimiController
             Issue::addComponentVersion($issueId, $components_arr, 'issue_component');
         }
 
-        $versions = IssueVersion::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versions = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
         if ($versions) {
             $versions_arr = array();
             while ($version = $versions->fetch_array(MYSQLI_ASSOC))
@@ -53,7 +53,7 @@ class DuplicateController extends UbirimiController
             Issue::addComponentVersion($issueId, $versions_arr, 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
-        $targets = IssueVersion::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
+        $targets = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
         if ($targets) {
             $targets_arr = array();
             while ($target = $targets->fetch_array(MYSQLI_ASSOC))

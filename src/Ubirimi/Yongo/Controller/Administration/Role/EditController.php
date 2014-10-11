@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class EditController extends UbirimiController
 {
@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionRoleId = $request->get('id');
-        $perm_role = PermissionRole::getById($permissionRoleId);
+        $perm_role = Role::getById($permissionRoleId);
 
         if ($perm_role['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,13 +34,13 @@ class EditController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $role = PermissionRole::getByName($session->get('client/id'), $name, $permissionRoleId);
+            $role = Role::getByName($session->get('client/id'), $name, $permissionRoleId);
             if ($role)
                 $alreadyExists = true;
 
             if (!$emptyName && !$alreadyExists) {
                 $date = Util::getServerCurrentDateTime();
-                PermissionRole::updateById($permissionRoleId, $name, $description, $date);
+                Role::updateById($permissionRoleId, $name, $description, $date);
 
                 Log::add(
                     $session->get('client/id'),

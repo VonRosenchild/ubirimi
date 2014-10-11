@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 
 class DeleteController extends UbirimiController
 {
@@ -18,10 +18,10 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($Id);
+        $fieldConfiguration = Configuration::getMetaDataById($Id);
 
-        FieldConfiguration::deleteDataByFieldConfigurationId($Id);
-        FieldConfiguration::deleteById($Id);
+        Configuration::deleteDataByFieldConfigurationId($Id);
+        Configuration::deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

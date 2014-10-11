@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 require_once __DIR__ . '/../../_header.php';
@@ -53,7 +53,7 @@ require_once __DIR__ . '/../../_header.php';
                 <?php
                     $projectLevels = null;
                     if ($projectIssueSecuritySchemeId)
-                        $projectLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($projectIssueSecuritySchemeId);
+                        $projectLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($projectIssueSecuritySchemeId);
 
                     $issuesWithSecurityLevelSet = false;
                     if ($projectLevels) {

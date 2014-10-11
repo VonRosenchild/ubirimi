@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
@@ -22,11 +22,11 @@ class DeleteController extends UbirimiController
         $oldId = $request->request->get('id');
         $newId = $request->request->get('new_id');
 
-        $resolution = IssueSettings::getById($oldId, 'resolution');
+        $resolution = Settings::getById($oldId, 'resolution');
         $projects = Client::getProjects($session->get('client/id'), 'array', 'id');
         Issue::updateResolution($projects, $oldId, $newId);
 
-        IssueSettings::deleteResolutionById($oldId);
+        Settings::deleteResolutionById($oldId);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class DeleteLevelConfirmController extends UbirimiController
@@ -17,9 +17,9 @@ class DeleteLevelConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeLevelId = $request->get('id');
-        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
+        $issueSecuritySchemeLevel = SecurityScheme::getLevelById($issueSecuritySchemeLevelId);
         $issueSecuritySchemeId = $issueSecuritySchemeLevel['issue_security_scheme_id'];
-        $allLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+        $allLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
 
         $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
             array(

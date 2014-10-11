@@ -12,7 +12,7 @@ use Ubirimi\Yongo\Repository\Issue\Attachment;
 use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -35,13 +35,13 @@ class IssueDataController extends UbirimiController
         $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($issueId, 'desc');
         $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
 
-        $versionsAffected = IssueVersion::getByIssueIdAndProjectId(
+        $versionsAffected = Version::getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_AFFECTED_VERSION_FLAG
         );
 
-        $versionsTargeted = IssueVersion::getByIssueIdAndProjectId(
+        $versionsTargeted = Version::getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_FIX_VERSION_FLAG

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 
 class DeleteConfirmController extends UbirimiController
 {
@@ -16,8 +16,8 @@ class DeleteConfirmController extends UbirimiController
 
         $linkTypeId = $request->get('id');
 
-        $issues = IssueLinkType::getByLinkTypeId($linkTypeId);
-        $linkTypes = IssueLinkType::getByClientId($session->get('client/id'));
+        $issues = LinkType::getByLinkTypeId($linkTypeId);
+        $linkTypes = LinkType::getByClientId($session->get('client/id'));
 
         return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/link/DeleteConfirm.php', get_defined_vars());
     }

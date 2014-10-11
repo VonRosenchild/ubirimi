@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AddController extends UbirimiController
 {
@@ -27,13 +27,13 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $role = PermissionRole::getByName($session->get('client/id'), $name);
+            $role = Role::getByName($session->get('client/id'), $name);
             if ($role)
                 $alreadyExists = true;
 
             if (!$emptyName && !$alreadyExists) {
                 $date = Util::getServerCurrentDateTime();
-                PermissionRole::add($session->get('client/id'), $name, $description, $date);
+                Role::add($session->get('client/id'), $name, $description, $date);
 
                 Log::add(
                     $session->get('client/id'),

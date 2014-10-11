@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class IssueVersion
+class Version
 {
     public static function deleteByIssueIdAndFlag($issueId, $flag) {
         $query = 'DELETE FROM issue_version WHERE issue_id = ? and affected_targeted_flag = ?';

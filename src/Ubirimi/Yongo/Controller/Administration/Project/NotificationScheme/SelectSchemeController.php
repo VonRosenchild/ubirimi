@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Notification\Scheme;
 
 class SelectSchemeController extends UbirimiController
 {
@@ -32,7 +32,7 @@ class SelectSchemeController extends UbirimiController
             return new RedirectResponse('/yongo/administration/project/notifications/' . $projectId);
         }
 
-        $notificationSchemes = NotificationScheme::getByClientId($session->get('client/id'));
+        $notificationSchemes = Scheme::getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

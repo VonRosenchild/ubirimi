@@ -2,8 +2,8 @@
     use Ubirimi\Repository\Client;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+    use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+    use Ubirimi\Yongo\Repository\Issue\Settings;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Repository\User\User;
@@ -18,12 +18,12 @@
     $issueSecuritySchemeLevels = null;
 
     if ($issueSecuritySchemeId) {
-        $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+        $issueSecuritySchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
     }
 
     $projectVersions = Project::getVersions($projectId);
-    $issuePriorities = IssueSettings::getAllIssueSettings('priority', $clientId);
-    $issueResolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
+    $issuePriorities = Settings::getAllIssueSettings('priority', $clientId);
+    $issueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
     $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
     $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
     $allUsers = User::getByClientId($session->get('client/id'));
@@ -272,7 +272,7 @@
                  * if there is a default level set do nothing. if not add it to the warnings
                  */
 
-                $defaultLevel = IssueSecurityScheme::getDefaultLevel($projectData['issue_security_scheme_id']);
+                $defaultLevel = SecurityScheme::getDefaultLevel($projectData['issue_security_scheme_id']);
                 echo '<tr>';
                     echo '<td>';
                     if (!$defaultLevel) {

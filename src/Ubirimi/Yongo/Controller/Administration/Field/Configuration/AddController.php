@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -28,7 +28,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $fieldConfiguration = new FieldConfiguration($session->get('client/id'), $name, $description);
+                $fieldConfiguration = new Configuration($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $fieldConfiguration->save($currentDate);
 

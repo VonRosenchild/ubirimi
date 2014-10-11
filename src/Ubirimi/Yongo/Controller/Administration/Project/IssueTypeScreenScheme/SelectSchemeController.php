@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 
 class SelectSchemeController extends UbirimiController
 {
@@ -23,7 +23,7 @@ class SelectSchemeController extends UbirimiController
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $issueTypeScreenSchemes = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
+        $issueTypeScreenSchemes = TypeScreenScheme::getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

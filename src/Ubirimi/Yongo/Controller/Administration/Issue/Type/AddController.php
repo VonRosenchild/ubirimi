@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
@@ -31,7 +31,7 @@ class AddController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
                 $iconName = 'generic.png';
-                $newIssueTypeId = IssueSettings::createIssueType($session->get('client/id'), $name, $description, $subTaskFlag, $iconName, $currentDate);
+                $newIssueTypeId = Settings::createIssueType($session->get('client/id'), $name, $description, $subTaskFlag, $iconName, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

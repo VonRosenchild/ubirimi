@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Field;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class FieldConfiguration {
+class Configuration {
 
     private $name;
     private $description;
@@ -216,11 +216,11 @@ class FieldConfiguration {
     }
 
     public static function deleteByClientId($clientId) {
-        $fieldConfigurations = FieldConfiguration::getByClientId($clientId);
+        $fieldConfigurations = Configuration::getByClientId($clientId);
 
         while ($fieldConfigurations && $fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {
-            FieldConfiguration::deleteDataByFieldConfigurationId($fieldConfiguration['id']);
-            FieldConfiguration::deleteById($fieldConfiguration['id']);
+            Configuration::deleteDataByFieldConfigurationId($fieldConfiguration['id']);
+            Configuration::deleteById($fieldConfiguration['id']);
         }
     }
 

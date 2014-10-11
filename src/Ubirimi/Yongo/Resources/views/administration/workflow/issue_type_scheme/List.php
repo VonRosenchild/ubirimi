@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+    use Ubirimi\Yongo\Repository\Issue\TypeScheme;
     use Ubirimi\Yongo\Repository\Project\Project;
 
     require_once __DIR__ . '/../../_header.php';
@@ -47,7 +47,7 @@
                             </td>
                             <td><?php echo $scheme['name']; ?></td>
                             <td width="300px">
-                                <?php $schemeIssueTypes = IssueTypeScheme::getDataById($scheme['id']) ?>
+                                <?php $schemeIssueTypes = TypeScheme::getDataById($scheme['id']) ?>
                                 <ul>
                                     <?php while ($schemeIssueTypes && $issueType = $schemeIssueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                                         <li><?php echo $issueType['name'] ?></li>

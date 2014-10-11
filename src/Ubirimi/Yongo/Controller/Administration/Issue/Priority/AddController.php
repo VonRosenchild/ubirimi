@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -29,7 +29,7 @@ class AddController extends UbirimiController
                 $emptyPriorityName = true;
 
             // check for duplication
-            $priority = IssueSettings::getByName($session->get('client/id'), 'priority', mb_strtolower($name));
+            $priority = Settings::getByName($session->get('client/id'), 'priority', mb_strtolower($name));
             if ($priority)
                 $priorityExists = true;
 
@@ -37,7 +37,7 @@ class AddController extends UbirimiController
                 $iconName = 'generic.png';
                 $currentDate = Util::getServerCurrentDateTime();
 
-                IssueSettings::create(
+                Settings::create(
                     'issue_priority',
                     $session->get('client/id'),
                     $name,

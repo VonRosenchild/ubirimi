@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class AddController extends UbirimiController
@@ -26,7 +26,7 @@ class AddController extends UbirimiController
         }
 
         $workflowSteps = Workflow::getSteps($workflowId);
-        $statuses = IssueSettings::getAllIssueSettings('status', $session->get('client/id'));
+        $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
         $linkedStatuses = Workflow::getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
 
         $addStepPossible = true;

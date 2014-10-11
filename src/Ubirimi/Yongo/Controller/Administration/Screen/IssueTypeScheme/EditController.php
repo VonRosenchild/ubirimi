@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Repository\Log;
 
 class EditController extends UbirimiController
@@ -19,7 +19,7 @@ class EditController extends UbirimiController
 
         $issueTypeScreenSchemeId = $request->get('id');
         $emptyName = false;
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
+        $issueTypeScreenScheme = TypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
 
         if ($issueTypeScreenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,7 +34,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                IssueTypeScreenScheme::updateMetaDataById($issueTypeScreenSchemeId, $name, $description, $currentDate);
+                TypeScreenScheme::updateMetaDataById($issueTypeScreenSchemeId, $name, $description, $currentDate);
 
                 Log::add(
                     $session->get('client/id'),

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Repository\Log;
 
 class CopyController extends UbirimiController
@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationSchemeId = $request->get('id');
-        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = ConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateFieldConfigurationScheme = FieldConfigurationScheme::getMetaDataByNameAndClientId(
+            $duplicateFieldConfigurationScheme = ConfigurationScheme::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -46,7 +46,7 @@ class CopyController extends UbirimiController
             if (!$emptyName && !$duplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $copiedFieldConfigurationScheme = new FieldConfigurationScheme(
+                $copiedFieldConfigurationScheme = new ConfigurationScheme(
                     $session->get('client/id'),
                     $name,
                     $description
@@ -54,7 +54,7 @@ class CopyController extends UbirimiController
 
                 $copiedFieldConfigurationSchemeId = $copiedFieldConfigurationScheme->save($currentDate);
 
-                $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataByFieldConfigurationSchemeId(
+                $fieldConfigurationSchemeData = ConfigurationScheme::getDataByFieldConfigurationSchemeId(
                     $fieldConfigurationSchemeId
                 );
 

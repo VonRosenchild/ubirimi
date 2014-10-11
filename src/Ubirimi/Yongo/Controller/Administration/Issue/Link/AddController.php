@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -37,7 +37,7 @@ class AddController extends UbirimiController
                 $emptyInwardDescription = true;
 
             // check for duplication
-            $linkType = IssueLinkType::getByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            $linkType = LinkType::getByNameAndClientId($session->get('client/id'), mb_strtolower($name));
 
             if ($linkType)
                 $linkTypeDuplicateName = true;
@@ -45,7 +45,7 @@ class AddController extends UbirimiController
             if (!$emptyName && !$emptyOutwardDescription && !$emptyInwardDescription && !$linkTypeDuplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                IssueLinkType::add(
+                LinkType::add(
                     $session->get('client/id'),
                     $name,
                     $outwardDescription,

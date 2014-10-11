@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Repository\Log;
 
 class CopyController extends UbirimiController
@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypeScreenSchemeId = $request->get('id');
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
+        $issueTypeScreenScheme = TypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
 
         if ($issueTypeScreenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,17 +35,17 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateIssueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            $duplicateIssueTypeScreenScheme = TypeScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
             if ($duplicateIssueTypeScreenScheme)
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedIssueTypeScreenScheme = new IssueTypeScreenScheme($session->get('client/id'), $name, $description);
+                $copiedIssueTypeScreenScheme = new TypeScreenScheme($session->get('client/id'), $name, $description);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedIssueTypeScreenSchemeId = $copiedIssueTypeScreenScheme->save($currentDate);
 
-                $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
+                $issueTypeScreenSchemeData = TypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
 
                 while ($issueTypeScreenSchemeData && $data = $issueTypeScreenSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedIssueTypeScreenScheme->addDataComplete($copiedIssueTypeScreenSchemeId, $data['issue_type_id'], $data['screen_scheme_id'], $currentDate);

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 
 class ListController extends UbirimiController
 {
@@ -15,7 +15,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $resolutions = IssueSettings::getAllIssueSettings('resolution', $session->get('client/id'));
+        $resolutions = Settings::getAllIssueSettings('resolution', $session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

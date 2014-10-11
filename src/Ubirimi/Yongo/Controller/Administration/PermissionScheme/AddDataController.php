@@ -8,12 +8,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Repository\Log;
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AddDataController extends UbirimiController
 {
@@ -24,12 +24,12 @@ class AddDataController extends UbirimiController
         $permissionSchemeId = $request->get('perm_scheme_id');
         $permissionId = $request->get('id');
 
-        $permissionScheme = PermissionScheme::getMetaDataById($permissionSchemeId);
+        $permissionScheme = Scheme::getMetaDataById($permissionSchemeId);
         $permissions = Permission::getAll();
 
         $users = User::getByClientId($session->get('client/id'));
         $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = PermissionRole::getByClient($session->get('client/id'));
+        $roles = Role::getByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
 
@@ -46,7 +46,7 @@ class AddDataController extends UbirimiController
                 for ($i = 0; $i < count($sysPermissionIds); $i++){
                     // check for duplicate information
                     $duplication = false;
-                    $dataPermission = PermissionScheme::getDataByPermissionSchemeIdAndPermissionId(
+                    $dataPermission = Scheme::getDataByPermissionSchemeIdAndPermissionId(
                         $permissionSchemeId,
                         $sysPermissionIds[$i]
                     );
@@ -75,7 +75,7 @@ class AddDataController extends UbirimiController
                     }
 
                     if (!$duplication) {
-                        PermissionScheme::addData(
+                        Scheme::addData(
                             $permissionSchemeId,
                             $sysPermissionIds[$i],
                             $permissionType,

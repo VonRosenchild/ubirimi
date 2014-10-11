@@ -3,13 +3,13 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\Client;
-use Ubirimi\Yongo\Repository\Issue\IssueWatcher;
+use Ubirimi\Yongo\Repository\Issue\Watcher;
 
 $issueId = $_POST['id'];
 
 $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByIdSimple($issueId);
 
-$watchers = IssueWatcher::getByIssueId($issueId);
+$watchers = Watcher::getByIssueId($issueId);
 // todo: users watchers de aici trebuie sa fie useri ce au permisiune de browsing la proiectul acesta
 $users = Client::getUsers($clientId);
 $watcherArray = array();

@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\Type;
 
 class EditController extends UbirimiController
 {
@@ -22,14 +22,14 @@ class EditController extends UbirimiController
         $emptyName = false;
         $typeExists = false;
 
-        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
+        $issueTypeScheme = TypeScheme::getMetaDataById($issueTypeSchemeId);
 
         if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $allIssueTypes = IssueType::getAll($session->get('client/id'));
-        $schemeIssueTypes = IssueTypeScheme::getDataById($issueTypeSchemeId);
+        $allIssueTypes = Type::getAll($session->get('client/id'));
+        $schemeIssueTypes = TypeScheme::getDataById($issueTypeSchemeId);
 
         $type = $issueTypeScheme['type'];
         $name = $issueTypeScheme['name'];
@@ -44,12 +44,12 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                IssueTypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
-                IssueTypeScheme::deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
+                TypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
+                TypeScheme::deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 11) == 'issue_type_') {
                         $issueTypeId = str_replace('issue_type_', '', $key);
-                        IssueTypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
+                        TypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
                     }
                 }
 

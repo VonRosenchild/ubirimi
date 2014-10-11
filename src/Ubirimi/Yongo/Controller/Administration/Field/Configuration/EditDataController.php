@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\Configuration;
 use Ubirimi\Repository\Log;
 
 class EditDataController extends UbirimiController
@@ -22,12 +22,12 @@ class EditDataController extends UbirimiController
         $visibleFlag = $request->get('visible_flag');
         $requiredFlag = $request->get('required_flag');
 
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
-        $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
+        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
+        $data = Configuration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
         if (!$data)
-            FieldConfiguration::addSimpleData($fieldConfigurationId, $fieldId);
+            Configuration::addSimpleData($fieldConfigurationId, $fieldId);
 
-        FieldConfiguration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
+        Configuration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
 
         $currentDate = Util::getServerCurrentDateTime();
 

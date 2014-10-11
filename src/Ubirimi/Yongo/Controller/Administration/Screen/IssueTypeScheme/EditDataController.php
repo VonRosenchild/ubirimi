@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Repository\Log;
 use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
@@ -20,10 +20,10 @@ class EditDataController extends UbirimiController
 
         $issueTypeScreenSchemeDataId = $request->get('id');
         $screenSchemes = ScreenScheme::getMetaDataByClientId($session->get('client/id'));
-        $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataById($issueTypeScreenSchemeDataId);
+        $issueTypeScreenSchemeData = TypeScreenScheme::getDataById($issueTypeScreenSchemeDataId);
 
         $screenSchemeId = $issueTypeScreenSchemeData['issue_type_screen_scheme_id'];
-        $issueTypeScreenSchemeMetaData = IssueTypeScreenScheme::getMetaDataById($screenSchemeId);
+        $issueTypeScreenSchemeMetaData = TypeScreenScheme::getMetaDataById($screenSchemeId);
 
         if ($issueTypeScreenSchemeMetaData['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class EditDataController extends UbirimiController
             $screenSchemeId = Util::cleanRegularInputField($request->request->get('screen_scheme'));
             $issueTypeId = Util::cleanRegularInputField($request->request->get('issue_type'));
 
-            IssueTypeScreenScheme::updateDataById($screenSchemeId, $issueTypeId, $issueTypeScreenSchemeMetaData['id']);
+            TypeScreenScheme::updateDataById($screenSchemeId, $issueTypeId, $issueTypeScreenSchemeMetaData['id']);
 
             Log::add(
                 $session->get('client/id'),

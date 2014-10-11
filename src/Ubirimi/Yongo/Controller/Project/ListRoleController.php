@@ -11,7 +11,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class ListRoleController extends UbirimiController
@@ -36,7 +36,7 @@ class ListRoleController extends UbirimiController
         }
 
         $session->set('selected_project_id', $projectId);
-        $allRoles = PermissionRole::getByClient($clientId);
+        $allRoles = Role::getByClient($clientId);
 
         $menuSelectedCategory = 'project';
 

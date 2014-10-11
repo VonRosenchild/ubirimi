@@ -5,9 +5,9 @@
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Issue\Issue;
     use Ubirimi\Yongo\Repository\Issue\Component;
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-    use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+    use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+    use Ubirimi\Yongo\Repository\Issue\Settings;
+    use Ubirimi\Yongo\Repository\Issue\Version;
     use Ubirimi\Yongo\Repository\Issue\SystemOperation;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Project\Project;
@@ -21,7 +21,7 @@
     $screenData = Project::getScreenData($project, $issueTypeId, SystemOperation::OPERATION_EDIT);
 
     $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
-    $issuePriorities = IssueSettings::getAllIssueSettings('priority', $clientId);
+    $issuePriorities = Settings::getAllIssueSettings('priority', $clientId);
     $projectIssueTypes = Project::getIssueTypes($projectId, 0);
 
     $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
@@ -35,7 +35,7 @@
     $issueSecuritySchemeId = $project['issue_security_scheme_id'];
     $issueSecuritySchemeLevels = null;
     if ($issueSecuritySchemeId) {
-        $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+        $issueSecuritySchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
     }
 
     $projectComponents = Project::getComponents($projectId);
@@ -49,14 +49,14 @@
     }
 
     $projectVersions = Project::getVersions($projectId);
-    $issue_versions_affected = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $issue_versions_affected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $arr_issue_versions_affected = array();
     if ($issue_versions_affected) {
         while ($row = $issue_versions_affected->fetch_array(MYSQLI_ASSOC))
             $arr_issue_versions_affected[] = $row['project_version_id'];
     }
 
-    $issue_versions_targeted = IssueVersion::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+    $issue_versions_targeted = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
     $arr_issue_versions_targeted = array();
     if ($issue_versions_targeted) {
         while ($row = $issue_versions_targeted->fetch_array(MYSQLI_ASSOC))

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Repository\Log;
 
 class AddController extends UbirimiController
@@ -27,7 +27,7 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $status = IssueSettings::getByName($session->get('client/id'), 'status', mb_strtolower($name));
+            $status = Settings::getByName($session->get('client/id'), 'status', mb_strtolower($name));
 
             if ($status)
                 $statusExists = true;
@@ -35,7 +35,7 @@ class AddController extends UbirimiController
             if (!$emptyName && !$statusExists) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                IssueSettings::create(
+                Settings::create(
                     'issue_status',
                     $session->get('client/id'),
                     $name,

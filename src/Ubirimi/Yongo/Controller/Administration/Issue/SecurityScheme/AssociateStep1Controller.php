@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -19,7 +19,7 @@ class AssociateStep1Controller extends UbirimiController
         $projectId = $request->get('id');
         $project = Project::getById($projectId);
         $menuSelectedCategory = 'project';
-        $issueSecuritySchemes = IssueSecurityScheme::getByClientId($session->get('client/id'));
+        $issueSecuritySchemes = SecurityScheme::getByClientId($session->get('client/id'));
 
         if ($request->request->has('cancel')) {
             return new RedirectResponse('/yongo/administration/project/issue-security/' . $projectId);

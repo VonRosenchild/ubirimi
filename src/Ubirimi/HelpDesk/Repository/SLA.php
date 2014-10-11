@@ -6,9 +6,9 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Comment;
-use Ubirimi\Yongo\Repository\Issue\IssueHistory;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\History;
+use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\Type;
 
 class SLA
 {
@@ -203,10 +203,10 @@ class SLA
         $value = str_ireplace('assignee', 'user_assigned_id', $value);
         $value = str_ireplace('reporter', 'user_reported_id', $value);
 
-        $statuses = IssueSettings::getAllIssueSettings('status', $clientId);
-        $priorities = IssueSettings::getAllIssueSettings('priority', $clientId);
-        $resolutions = IssueSettings::getAllIssueSettings('resolution', $clientId);
-        $types = IssueType::getAll($clientId);
+        $statuses = Settings::getAllIssueSettings('status', $clientId);
+        $priorities = Settings::getAllIssueSettings('priority', $clientId);
+        $resolutions = Settings::getAllIssueSettings('resolution', $clientId);
+        $types = Type::getAll($clientId);
 
         while ($statuses && $status = $statuses->fetch_array(MYSQLI_ASSOC)) {
             $value = str_ireplace($status['name'], $status['id'], $value);
@@ -287,7 +287,7 @@ class SLA
                 $userAssigneeId = $issue['assignee'];
 
                 // look also in the history
-                $historyList = IssueHistory::getByAssigneeNewChangedAfterDate($issue['id'], $userAssigneeId, $currentSLADate);
+                $historyList = History::getByAssigneeNewChangedAfterDate($issue['id'], $userAssigneeId, $currentSLADate);
 
                 if ($historyList) {
                     $history = $historyList->fetch_array(MYSQLI_ASSOC);
@@ -369,7 +369,7 @@ class SLA
 
         $SLA = SLA::getById($SLA['id']);
 
-        $historyData = IssueHistory::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
+        $historyData = History::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
 
         if (!$historyData) {
             $historyData[] = array('date_created' => $issue['date_created']);
@@ -526,7 +526,7 @@ class SLA
         $condition = str_replace(array('start_', 'stop_'), '' , $condition);
         if (substr($condition, 0, 11) == 'status_set_') {
             $StatusId = str_replace('status_set_', '', $condition);
-            $statusName = IssueSettings::getById($StatusId, 'status', 'name');
+            $statusName = Settings::getById($StatusId, 'status', 'name');
             $condition = 'Status Set ' . $statusName;
         } else if (substr($condition, 0, 11) == 'comment_by_assignee') {
             $condition = 'Comment: By Assignee';

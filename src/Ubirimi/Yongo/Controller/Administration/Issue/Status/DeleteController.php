@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\Settings;
 
 class DeleteController extends UbirimiController
 {
@@ -18,8 +18,8 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $status = IssueSettings::getById($Id, 'status');
-        IssueSettings::deleteStatusById($Id);
+        $status = Settings::getById($Id, 'status');
+        Settings::deleteStatusById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

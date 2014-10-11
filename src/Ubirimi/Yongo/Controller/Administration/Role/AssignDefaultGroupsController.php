@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\PermissionRole;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\SystemProduct;
 use Ubirimi\Repository\Log;
 
@@ -21,9 +21,9 @@ class AssignDefaultGroupsController extends UbirimiController
         $groupArrayIds = $request->request->get('group_arr');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $permissionRole = PermissionRole::getById($permissionRoleId);
-        PermissionRole::deleteDefaultGroupsByPermissionRoleId($permissionRoleId);
-        PermissionRole::addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
+        $permissionRole = Role::getById($permissionRoleId);
+        Role::deleteDefaultGroupsByPermissionRoleId($permissionRoleId);
+        Role::addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
 
         Log::add(
             $session->get('client/id'),

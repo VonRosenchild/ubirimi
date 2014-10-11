@@ -13,8 +13,8 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\CustomField;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
@@ -1334,7 +1334,7 @@ class Project
 
     public static function getScreenData($project, $issueTypeId, $sysOperationId, $resultType = null) {
         $issueTypeScreenSchemeId = $project['issue_type_screen_scheme_id'];
-        $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeIdAndIssueTypeId($issueTypeScreenSchemeId, $issueTypeId);
+        $issueTypeScreenSchemeData = TypeScreenScheme::getDataByIssueTypeScreenSchemeIdAndIssueTypeId($issueTypeScreenSchemeId, $issueTypeId);
         $screenSchemeId = $issueTypeScreenSchemeData['screen_scheme_id'];
         $screenSchemeData = ScreenScheme::getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId);
         $screenId = $screenSchemeData['screen_id'];
@@ -1830,7 +1830,7 @@ class Project
         // add the default SLAs
 
         // sla 1: time to first response
-        $status = IssueSettings::getByName($clientId, 'status', 'In Progress');
+        $status = Settings::getByName($clientId, 'status', 'In Progress');
         $slaId = SLA::save($projectId, 'Time to first response', 'Time to first response', 'start_issue_created', 'stop_status_set_' . $status['id'], $currentDate);
 
         // sla 2: time to resolution

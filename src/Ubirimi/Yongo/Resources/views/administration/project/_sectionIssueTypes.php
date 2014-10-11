@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+    use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 
 ?>
 <table width="100%">
@@ -20,9 +20,9 @@
                         <div>Scheme:</div>
                         <div>
                             <?php
-                                $issueTypeScheme = IssueTypeScheme::getMetaDataById($project['issue_type_scheme_id']);
+                                $issueTypeScheme = TypeScheme::getMetaDataById($project['issue_type_scheme_id']);
                                 echo '<a href="/yongo/administration/project/issue-types/' . $project['id'] . '">' . $issueTypeScheme['name'] . '</a>';
-                                $issueTypeSchemeData = IssueTypeScheme::getDataById($project['issue_type_scheme_id']);
+                                $issueTypeSchemeData = TypeScheme::getDataById($project['issue_type_scheme_id']);
                                 while ($issueType = $issueTypeSchemeData->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<div>' . $issueType['name'] . '</div>';
                                 }
