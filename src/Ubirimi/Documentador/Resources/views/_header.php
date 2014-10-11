@@ -14,8 +14,8 @@
     <script type="text/javascript" src="/js/general_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/custom-dialog.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/js/vendor/select2.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-    <script type="text/javascript" src="/documentador/js/documentator.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-    <script type="text/javascript" src="/documentador/js/documentator_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
+    <script type="text/javascript" src="/documentador/js/documentador.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
+    <script type="text/javascript" src="/documentador/js/documentador_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/documentador/js/menu.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
 
     <link rel="stylesheet" type="text/css" href="/documentador/css/main.css?<?php echo UbirimiContainer::get()['app.version'] ?>" />
