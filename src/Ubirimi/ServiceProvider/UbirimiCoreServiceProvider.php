@@ -14,6 +14,7 @@ use Ubirimi\LoginTimeService\LoginTimeService;
 use Ubirimi\Service\BugzillaConnectorService;
 use Ubirimi\Service\ClientService;
 use Ubirimi\Service\PasswordService;
+use Ubirimi\Service\RepositoryService;
 use Ubirimi\Service\WarmUpService;
 use Ubirimi\Service\LogService;
 use Ubirimi\Service\EmailService;
@@ -34,6 +35,10 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             $databaseConnector = new BugzillaConnectorService();
 
             return $databaseConnector->getConnection();
+        });
+
+        $pimple['repository'] = $pimple->share(function() {
+            return new RepositoryService();
         });
 
         $pimple['api.auth'] = $pimple->share(function($pimple) {
