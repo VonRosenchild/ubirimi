@@ -61,7 +61,7 @@ class IndexController extends UbirimiController
             $issueQueryParameters['project'] = array(-1);
         }
 
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
+        $issues = $this->getRepository('yongo.issue.issue')->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -84,7 +84,7 @@ class IndexController extends UbirimiController
             $issueQueryParameters['not_assignee'] = $userAssignedId;
         }
 
-        $issuesUnresolvedOthers = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
+        $issuesUnresolvedOthers = $this->getRepository('yongo.issue.issue')->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -111,7 +111,7 @@ class IndexController extends UbirimiController
         $issueStatuses = IssueSettings::getAllIssueSettings('status', $clientId, 'array');
         $twoDimensionalData = null;
         if (count($projectIdsArray))
-            $twoDimensionalData = UbirimiContainer::getRepository('yongo.issue.issue')->get2DimensionalFilter(-1, 'array');
+            $twoDimensionalData = $this->getRepository('yongo.issue.issue')->get2DimensionalFilter(-1, 'array');
 
         return $this->render(__DIR__ . '/../Resources/views/Index.php', get_defined_vars());
     }

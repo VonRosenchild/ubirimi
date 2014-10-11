@@ -28,7 +28,7 @@ class ViewController extends UbirimiController
         }
 
         $projectData = Project::getByIssueId($Id);
-        $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($Id);
+        $comments = $this->getRepository('yongo.issue.comment')->getByIssueId($Id);
 
         $hasAddCommentsPermission = Project::userHasPermission($projectData['id'], Permission::PERM_ADD_COMMENTS, $loggedInUserId);
         $hasDeleteAllComments = Project::userHasPermission($projectData['id'], Permission::PERM_DELETE_ALL_COMMENTS, $loggedInUserId);

@@ -31,7 +31,7 @@ class ViewController extends UbirimiController
         $issueId = $request->get('id');
 
         if (Util::checkUserIsLoggedIn()) {
-            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
+            $issue = $this->getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
             $clientSettings = $session->get('client/settings');
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
         } else {
@@ -39,7 +39,7 @@ class ViewController extends UbirimiController
             $session->set('client/id', $clientId);
             $session->set('user/id', null);
             $clientSettings = Client::getSettings($session->get('client/id'));
-            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
+            $issue = $this->getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
             $session->set('yongo/settings', Client::getYongoSettings($session->get('client/id')));
         }
 
@@ -110,7 +110,7 @@ class ViewController extends UbirimiController
             if ($issue['parent_id'] == null) {
                 $childrenIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
             } else {
-                $parentIssue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
+                $parentIssue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
             }
 
             $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
@@ -118,7 +118,7 @@ class ViewController extends UbirimiController
 
             $subTaskIssueTypes = Project::getSubTasksIssueTypes($projectId);
 
-            $attachments = UbirimiContainer::getRepository('yongo.issue.attachment')->getByIssueId($issue['id'], true);
+            $attachments = $this->getRepository('yongo.issue.attachment')->getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
             if ($countAttachments) {
                 $hasDeleteOwnAttachmentsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));

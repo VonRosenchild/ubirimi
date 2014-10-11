@@ -20,7 +20,7 @@ class Issue
 
     public function getById($issueId, $loggedInUserId = null) {
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issue = UbirimiContainer::getRepositories()['yongo.issue.issue']->getByParameters($issueQueryParameters, $loggedInUserId);
 
         return $issue;
     }
