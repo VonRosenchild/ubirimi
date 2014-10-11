@@ -22,7 +22,7 @@ use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowStepProperty;
+use Ubirimi\Yongo\Repository\Workflow\StepProperty;
 
 class ViewController extends UbirimiController
 {
@@ -98,7 +98,7 @@ class ViewController extends UbirimiController
 
             $issueEditableProperty = true;
             for ($i = 0; $i < count($stepProperties); $i++) {
-                if ($stepProperties[$i]['name'] == WorkflowStepProperty::ISSUE_EDITABLE && $stepProperties[$i]['value'] == 'false')
+                if ($stepProperties[$i]['name'] == StepProperty::ISSUE_EDITABLE && $stepProperties[$i]['value'] == 'false')
                     $issueEditableProperty = false;
             }
 

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowPosition;
+use Ubirimi\Yongo\Repository\Workflow\Position;
 
 class GetController extends UbirimiController
 {
@@ -28,7 +28,7 @@ class GetController extends UbirimiController
 
         $positions = array();
 
-        $position_result = WorkflowPosition::getByWorkflowId($workflowId);
+        $position_result = Position::getByWorkflowId($workflowId);
         if ($position_result) {
             while ($position = $position_result->fetch_array(MYSQLI_ASSOC)) {
                 $positions[] = $position;

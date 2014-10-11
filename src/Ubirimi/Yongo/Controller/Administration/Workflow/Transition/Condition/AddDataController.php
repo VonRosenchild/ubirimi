@@ -3,7 +3,7 @@
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
+    use Ubirimi\Yongo\Repository\Workflow\Condition;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -19,24 +19,24 @@
 
     if ($conditionId) {
 
-        $conditionData = WorkflowCondition::getByTransitionId($workflowDataId);
+        $conditionData = Condition::getByTransitionId($workflowDataId);
         if (!$conditionData) {
             Workflow::addCondition($workflowDataId, '');
         }
-        if ($conditionId == WorkflowCondition::CONDITION_ONLY_ASSIGNEE) {
+        if ($conditionId == Condition::CONDITION_ONLY_ASSIGNEE) {
 
-            $definitionData = 'cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE;
-            WorkflowCondition::addConditionString($workflowDataId, $definitionData);
+            $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE;
+            Condition::addConditionString($workflowDataId, $definitionData);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
             header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
         } else
-            if ($conditionId == WorkflowCondition::CONDITION_ONLY_REPORTER) {
+            if ($conditionId == Condition::CONDITION_ONLY_REPORTER) {
 
-                $definitionData = 'cond_id=' . WorkflowCondition::CONDITION_ONLY_REPORTER;
+                $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_REPORTER;
 
-            WorkflowCondition::addConditionString($workflowDataId, $definitionData);
+            Condition::addConditionString($workflowDataId, $definitionData);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
@@ -48,13 +48,13 @@
 
     if (isset($_POST['confirm_new_condition_parameter'])) {
         $conditionId = $_GET['condition_id'];
-        if ($conditionId == WorkflowCondition::CONDITION_PERMISSION) {
+        if ($conditionId == Condition::CONDITION_PERMISSION) {
 
             $permissionId = $_POST['permission'];
 
             $conditionString = 'perm_id=' . $permissionId;
 
-            WorkflowCondition::addConditionString($workflowDataId, $conditionString);
+            Condition::addConditionString($workflowDataId, $conditionString);
 
             Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 

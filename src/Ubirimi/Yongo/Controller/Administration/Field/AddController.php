@@ -8,14 +8,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\CustomField;
+use Ubirimi\Yongo\Repository\Field\Custom;
 
 class AddController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $types = CustomField::getTypes();
+        $types = Custom::getTypes();
         $menuSelectedCategory = 'issue';
 
         $emptyType = false;

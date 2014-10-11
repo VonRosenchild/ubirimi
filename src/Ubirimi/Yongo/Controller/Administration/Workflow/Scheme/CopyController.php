@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Ubirimi\Yongo\Repository\Workflow\Scheme;
 
 class CopyController extends UbirimiController
 {
@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowSchemeId = $request->get('id');
-        $workflowScheme = WorkflowScheme::getMetaDataById($workflowSchemeId);
+        $workflowScheme = Scheme::getMetaDataById($workflowSchemeId);
 
         if ($workflowScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $workflowSchemeAlreadyExisting = WorkflowScheme::getByClientIdAndName(
+            $workflowSchemeAlreadyExisting = Scheme::getByClientIdAndName(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -45,12 +45,12 @@ class CopyController extends UbirimiController
             }
 
             if (!$emptyName && !$workflowSchemeAlreadyExisting) {
-                $copiedWorkflowScheme = new WorkflowScheme($session->get('client/id'), $name, $description);
+                $copiedWorkflowScheme = new Scheme($session->get('client/id'), $name, $description);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedWorkflowSchemeId = $copiedWorkflowScheme->save($currentDate);
 
-                $workflowSchemeData = WorkflowScheme::getDataById($workflowSchemeId);
+                $workflowSchemeData = Scheme::getDataById($workflowSchemeId);
 
                 while ($workflowSchemeData && $data = $workflowSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedWorkflowScheme->addData($copiedWorkflowSchemeId, $data['workflow_id'], $currentDate);

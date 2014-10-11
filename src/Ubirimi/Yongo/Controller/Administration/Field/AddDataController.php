@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\CustomField;
+use Ubirimi\Yongo\Repository\Field\Custom;
 use Ubirimi\Repository\Log;
 use Ubirimi\Yongo\Repository\Field\Type;
 use Ubirimi\Yongo\Repository\Issue\Type;
@@ -42,14 +42,14 @@ class AddDataController extends UbirimiController
             } else {
                 // check for duplicate name
 
-                $duplicateField = CustomField::getByNameAndType($session->get('client/id'), $name, $fieldTypeId);
+                $duplicateField = Custom::getByNameAndType($session->get('client/id'), $name, $fieldTypeId);
                 if ($duplicateField)
                     $duplicateName = true;
             }
             if (!$emptyName && !$duplicateName) {
                 $date = Util::getServerCurrentDateTime();
 
-                $fieldId = CustomField::create(
+                $fieldId = Custom::create(
                     $session->get('client/id'),
                     $fieldTypeCode,
                     $name,

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\ProjectCategory;
+use Ubirimi\Yongo\Repository\Project\Category;
 
 class ListController extends UbirimiController
 {
@@ -14,7 +14,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $projectCategories = ProjectCategory::getAll($session->get('client/id'));
+        $projectCategories = Category::getAll($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

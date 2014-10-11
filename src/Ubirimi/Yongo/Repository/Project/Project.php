@@ -10,13 +10,13 @@ use Ubirimi\Repository\HelpDesk\SLA;
 use Ubirimi\Repository\HelpDesk\SLACalendar;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\CustomField;
+use Ubirimi\Yongo\Repository\Field\Custom;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Yongo\Repository\Screen\Screen;
-use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 
 class Project
 {
@@ -611,9 +611,9 @@ class Project
         UbirimiContainer::get()['db.connection']->query($query);
 
         Project::deleteIssuesByProjectId($Id);
-        ProjectComponent::deleteByProjectId($Id);
-        ProjectVersion::deleteByProjectId($Id);
-        CustomField::deleteDataByProjectId($Id);
+        Component::deleteByProjectId($Id);
+        Version::deleteByProjectId($Id);
+        Custom::deleteDataByProjectId($Id);
         AgileBoard::deleteByProjectId($Id);
 
         $query = "DELETE IGNORE FROM project_role_data WHERE project_id = " . $Id;
@@ -1336,7 +1336,7 @@ class Project
         $issueTypeScreenSchemeId = $project['issue_type_screen_scheme_id'];
         $issueTypeScreenSchemeData = TypeScreenScheme::getDataByIssueTypeScreenSchemeIdAndIssueTypeId($issueTypeScreenSchemeId, $issueTypeId);
         $screenSchemeId = $issueTypeScreenSchemeData['screen_scheme_id'];
-        $screenSchemeData = ScreenScheme::getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId);
+        $screenSchemeData = Scheme::getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId);
         $screenId = $screenSchemeData['screen_id'];
 
         $screenData = Screen::getDataById($screenId);

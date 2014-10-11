@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Project;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class ProjectVersion
+class Version
 {
     public static function getByIds($Ids)
     {
@@ -28,7 +28,7 @@ class ProjectVersion
 
         while ($versions && $version = $versions->fetch_array(MYSQLI_ASSOC)) {
             $versionId = $version['id'];
-            ProjectVersion::deleteById($versionId);
+            Version::deleteById($versionId);
         }
     }
 

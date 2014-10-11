@@ -10,7 +10,7 @@ use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Project\ProjectComponent;
+use Ubirimi\Yongo\Repository\Project\Component;
 
 class DeleteController extends UbirimiController
 {
@@ -21,7 +21,7 @@ class DeleteController extends UbirimiController
         $componentId = $request->request->get('component_id');
         $component = Project::getComponentById($componentId);
 
-        ProjectComponent::deleteById($componentId);
+        Component::deleteById($componentId);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

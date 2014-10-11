@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Project;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class ProjectComponent
+class Component
 {
     public static function getByIds($Ids) {
         $query = 'SELECT project_component.* ' .
@@ -64,7 +64,7 @@ class ProjectComponent
 
         while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
             $componentId = $component['id'];
-            ProjectComponent::deleteById($componentId);
+            Component::deleteById($componentId);
         }
     }
 }

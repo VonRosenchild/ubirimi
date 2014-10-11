@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 
 class DeleteController extends UbirimiController
 {
@@ -18,10 +18,10 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $screen = ScreenScheme::getMetaDataById($Id);
+        $screen = Scheme::getMetaDataById($Id);
 
-        ScreenScheme::deleteDataByScreenSchemeId($Id);
-        ScreenScheme::deleteById($Id);
+        Scheme::deleteDataByScreenSchemeId($Id);
+        Scheme::deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

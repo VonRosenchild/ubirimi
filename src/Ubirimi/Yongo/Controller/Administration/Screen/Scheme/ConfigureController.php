@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 
 class ConfigureController extends UbirimiController
 {
@@ -17,13 +17,13 @@ class ConfigureController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $screenSchemeId = $request->get('id');
-        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+        $screenScheme = Scheme::getMetaDataById($screenSchemeId);
 
         if ($screenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
+        $screenSchemeData = Scheme::getDataByScreenSchemeId($screenSchemeId);
         $menuSelectedCategory = 'issue';
         $source = $request->get('source');
         $projectId = null;

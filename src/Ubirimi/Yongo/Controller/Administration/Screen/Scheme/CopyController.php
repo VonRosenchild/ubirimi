@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 use Ubirimi\Repository\Log;
 
 class CopyController extends UbirimiController
@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $screenSchemeId = $request->get('id');
-        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+        $screenScheme = Scheme::getMetaDataById($screenSchemeId);
 
         if ($screenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,16 +33,16 @@ class CopyController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $duplicateScreen = ScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            $duplicateScreen = Scheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
             if ($duplicateScreen)
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedScreenScheme = new ScreenScheme($session->get('client/id'), $name, $description);
+                $copiedScreenScheme = new Scheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedScreenSchemeId = $copiedScreenScheme->save($currentDate);
 
-                $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
+                $screenSchemeData = Scheme::getDataByScreenSchemeId($screenSchemeId);
                 while ($data = $screenSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedScreenScheme->addData($copiedScreenSchemeId, $data['sys_operation_id'], $data['screen_id'], $currentDate);
                 }

@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Yongo\Repository\Field\Configuration;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+    use Ubirimi\Yongo\Repository\Screen\Scheme;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
     require_once __DIR__ . '/../_header.php';
@@ -89,7 +89,7 @@
                         </td>
                         <td>
                             <?php
-                                $screenSchemes = ScreenScheme::getByIssueType($data['issue_type_id'], $clientId);
+                                $screenSchemes = Scheme::getByIssueType($data['issue_type_id'], $clientId);
                                 if ($screenSchemes) {
                                     echo '<ul>';
                                     while ($screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {

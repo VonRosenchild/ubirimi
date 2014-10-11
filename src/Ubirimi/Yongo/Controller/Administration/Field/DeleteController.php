@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\CustomField;
+use Ubirimi\Yongo\Repository\Field\Custom;
 
 class DeleteController extends UbirimiController
 {
@@ -18,9 +18,9 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $customField = CustomField::getById($Id);
+        $customField = Custom::getById($Id);
 
-        CustomField::deleteById($Id);
+        Custom::deleteById($Id);
 
         $date = Util::getServerCurrentDateTime();
 

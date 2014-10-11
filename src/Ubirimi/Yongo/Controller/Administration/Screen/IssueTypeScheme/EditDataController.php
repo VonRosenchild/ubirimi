@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Repository\Log;
-use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 
 class EditDataController extends UbirimiController
 {
@@ -19,7 +19,7 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypeScreenSchemeDataId = $request->get('id');
-        $screenSchemes = ScreenScheme::getMetaDataByClientId($session->get('client/id'));
+        $screenSchemes = Scheme::getMetaDataByClientId($session->get('client/id'));
         $issueTypeScreenSchemeData = TypeScreenScheme::getDataById($issueTypeScreenSchemeDataId);
 
         $screenSchemeId = $issueTypeScreenSchemeData['issue_type_screen_scheme_id'];

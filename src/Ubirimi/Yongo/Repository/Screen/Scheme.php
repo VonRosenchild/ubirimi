@@ -1,9 +1,10 @@
 <?php
 
 namespace Ubirimi\Yongo\Repository\Screen;
+
 use Ubirimi\Container\UbirimiContainer;
 
-class ScreenScheme
+class Scheme
 {
     public $name;
     public $description;
@@ -201,10 +202,10 @@ class ScreenScheme
     }
 
     public static function deleteByClientId($clientId) {
-        $screenSchemes = ScreenScheme::getMetaDataByClientId($clientId);
+        $screenSchemes = Scheme::getMetaDataByClientId($clientId);
         while ($screenSchemes && $screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {
-            ScreenScheme::deleteDataByScreenSchemeId($screenScheme['id']);
-            ScreenScheme::deleteById($screenScheme['id']);
+            Scheme::deleteDataByScreenSchemeId($screenScheme['id']);
+            Scheme::deleteById($screenScheme['id']);
         }
     }
 }

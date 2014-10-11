@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Ubirimi\Yongo\Repository\Workflow\Scheme;
 
 class DeleteController extends UbirimiController
 {
@@ -18,9 +18,9 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $workflowScheme = WorkflowScheme::getMetaDataById($Id);
-        WorkflowScheme::deleteDataByWorkflowSchemeId($Id);
-        WorkflowScheme::deleteById($Id);
+        $workflowScheme = Scheme::getMetaDataById($Id);
+        Scheme::deleteDataByWorkflowSchemeId($Id);
+        Scheme::deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

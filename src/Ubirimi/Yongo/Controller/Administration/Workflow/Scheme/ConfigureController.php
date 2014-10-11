@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Ubirimi\Yongo\Repository\Workflow\Scheme;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ConfigureController extends UbirimiController
@@ -20,7 +20,7 @@ class ConfigureController extends UbirimiController
 
         $Id = $request->get('id');
         $emptyName = false;
-        $workflowScheme = WorkflowScheme::getMetaDataById($Id);
+        $workflowScheme = Scheme::getMetaDataById($Id);
 
         if ($workflowScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -28,7 +28,7 @@ class ConfigureController extends UbirimiController
 
         $allWorkflows = Workflow::getAllByClientId($session->get('client/id'));
 
-        $schemeWorkflows = WorkflowScheme::getDataById($Id);
+        $schemeWorkflows = Scheme::getDataById($Id);
 
         $name = $workflowScheme['name'];
         $description = $workflowScheme['description'];
@@ -42,12 +42,12 @@ class ConfigureController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                WorkflowScheme::updateMetaDataById($Id, $name, $description);
-                WorkflowScheme::deleteDataByWorkflowSchemeId($Id);
+                Scheme::updateMetaDataById($Id, $name, $description);
+                Scheme::deleteDataByWorkflowSchemeId($Id);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 9) == 'workflow_') {
                         $workflowId = str_replace('workflow_', '', $key);
-                        WorkflowScheme::addData($Id, $workflowId, $currentDate);
+                        Scheme::addData($Id, $workflowId, $currentDate);
                     }
                 }
 

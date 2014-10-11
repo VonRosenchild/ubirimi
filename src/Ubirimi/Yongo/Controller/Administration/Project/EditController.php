@@ -13,8 +13,8 @@ use Ubirimi\Repository\Log;
 use Ubirimi\Repository\Client;
 use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
-use Ubirimi\Yongo\Repository\Project\ProjectCategory;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Ubirimi\Yongo\Repository\Project\Category;
+use Ubirimi\Yongo\Repository\Workflow\Scheme;
 
 class EditController extends UbirimiController
 {
@@ -37,8 +37,8 @@ class EditController extends UbirimiController
 
         $issueTypeScheme = TypeScheme::getByClientId($session->get('client/id'), 'project');
         $issueTypeScreenScheme = TypeScreenScheme::getByClientId($session->get('client/id'));
-        $workflowScheme = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
-        $projectCategories = ProjectCategory::getAll($session->get('client/id'));
+        $workflowScheme = Scheme::getMetaDataByClientId($session->get('client/id'));
+        $projectCategories = Category::getAll($session->get('client/id'));
 
         $emptyName = false;
         $duplicate_name = false;

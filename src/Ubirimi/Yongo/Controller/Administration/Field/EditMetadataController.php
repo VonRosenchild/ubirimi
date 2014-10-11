@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\CustomField;
+use Ubirimi\Yongo\Repository\Field\Custom;
 
 class EditMetadataController extends UbirimiController
 {
@@ -18,7 +18,7 @@ class EditMetadataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $customField = CustomField::getById($Id);
+        $customField = Custom::getById($Id);
 
         if ($customField['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -40,7 +40,7 @@ class EditMetadataController extends UbirimiController
             if (!$emptyName) {
                 $date = Util::getServerCurrentDateTime();
 
-                CustomField::updateMetaDataById($Id, $name, $description, $date);
+                Custom::updateMetaDataById($Id, $name, $description, $date);
 
                 Log::add(
                     $session->get('client/id'),

@@ -1,7 +1,7 @@
 <?php
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
+    use Ubirimi\Yongo\Repository\Workflow\Condition;
 
     require_once __DIR__ . '/../../../_header.php';
 ?>
@@ -14,7 +14,7 @@
             Util::renderBreadCrumb($breadCrumb);
         ?>
         <form name="add_cond_parameters" action="/yongo/administration/workflow/add-condition-data/<?php echo $workflowDataId ?>?condition_id=<?php echo $conditionId ?>" method="post">
-            <?php if ($conditionId == WorkflowCondition::CONDITION_PERMISSION): ?>
+            <?php if ($conditionId == Condition::CONDITION_PERMISSION): ?>
                 <?php $permissionCategories = Permission::getCategories() ?>
                 <div>Add required paramters to condition</div>
                 <table width="100%">

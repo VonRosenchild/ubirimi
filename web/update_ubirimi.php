@@ -11,7 +11,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Issue\Comment;
-use Ubirimi\Yongo\Repository\Project\ProjectComponent;
+use Ubirimi\Yongo\Repository\Project\Component;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/bootstrap_cli.php';
@@ -30,7 +30,7 @@ $ubirimiUsers = User::getByClientId($clientId);
 $ubirimiStatuses = getUbirimiStatuses($clientId);
 $ubirimiPriorities = getUbirimiPriorities($clientId);
 $movidiusComponents = getComponents($connectionBugzilla);
-$ubirimiComponents = ProjectComponent::getAll();
+$ubirimiComponents = Component::getAll();
 
 $issueNumbers = array();
 

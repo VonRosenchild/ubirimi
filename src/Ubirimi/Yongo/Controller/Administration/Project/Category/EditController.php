@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\ProjectCategory;
+use Ubirimi\Yongo\Repository\Project\Category;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 
@@ -19,7 +19,7 @@ class EditController extends UbirimiController
 
         $categoryId = $request->get('id');
         $projectId = $session->get('selected_project_id');
-        $category = ProjectCategory::getById($categoryId);
+        $category = Category::getById($categoryId);
 
         if ($category['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +37,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $dateUpdated = Util::getServerCurrentDateTime();
-                ProjectCategory::updateById($categoryId, $name, $description, $dateUpdated);
+                Category::updateById($categoryId, $name, $description, $dateUpdated);
 
                 Log::add(
                     $session->get('client/id'),

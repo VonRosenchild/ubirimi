@@ -1,9 +1,10 @@
 <?php
 
 namespace Ubirimi\Yongo\Repository\Workflow;
+
 use Ubirimi\Container\UbirimiContainer;
 
-class WorkflowScheme {
+class Scheme {
 
     public $name;
     public $description;
@@ -142,11 +143,11 @@ class WorkflowScheme {
     }
 
     public static function deleteByClientId($clientId) {
-        $schemes = WorkflowScheme::getMetaDataByClientId($clientId);
+        $schemes = Scheme::getMetaDataByClientId($clientId);
         if ($schemes) {
             while ($scheme = $schemes->fetch_array(MYSQLI_ASSOC)) {
-                WorkflowScheme::deleteDataByWorkflowSchemeId($scheme['id']);
-                WorkflowScheme::deleteById($scheme['id']);
+                Scheme::deleteDataByWorkflowSchemeId($scheme['id']);
+                Scheme::deleteById($scheme['id']);
             }
         }
     }

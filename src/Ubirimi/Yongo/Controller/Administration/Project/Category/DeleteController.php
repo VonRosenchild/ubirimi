@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\ProjectCategory;
+use Ubirimi\Yongo\Repository\Project\Category;
 
 class DeleteController extends UbirimiController
 {
@@ -18,8 +18,8 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectCategoryId = $request->request->get('id');
-        $projectCategory = ProjectCategory::getById($projectCategoryId);
-        ProjectCategory::deleteById($session->get('client/id'), $projectCategoryId);
+        $projectCategory = Category::getById($projectCategoryId);
+        Category::deleteById($session->get('client/id'), $projectCategoryId);
 
         $currentDate = Util::getServerCurrentDateTime();
         Log::add(

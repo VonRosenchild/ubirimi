@@ -7,8 +7,8 @@
     use Ubirimi\Yongo\Repository\Issue\Settings;
     use Ubirimi\Yongo\Repository\Issue\Version;
     use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Yongo\Repository\Project\ProjectComponent;
-    use Ubirimi\Yongo\Repository\Project\ProjectVersion;
+    use Ubirimi\Yongo\Repository\Project\Component;
+    use Ubirimi\Yongo\Repository\Project\Version;
     use Ubirimi\Repository\User\User;
     use Ubirimi\Yongo\Event\IssueEvent as Event;
     use Ubirimi\Event\LogEvent;
@@ -108,15 +108,15 @@
     $newIssueAffectsVersions = null;
 
     if (count($session->get('move_issue/new_component'))) {
-        $newIssueComponents = ProjectComponent::getByIds($session->get('move_issue/new_component'));
+        $newIssueComponents = Component::getByIds($session->get('move_issue/new_component'));
     }
 
     if (count($session->get('move_issue/new_fix_version'))) {
-        $newIssueFixVersions = ProjectVersion::getByIds($session->get('move_issue/new_fix_version'));
+        $newIssueFixVersions = Version::getByIds($session->get('move_issue/new_fix_version'));
     }
 
     if (count($session->get('move_issue/new_affects_version'))) {
-        $newIssueAffectsVersions = ProjectVersion::getByIds($session->get('move_issue/new_affects_version'));
+        $newIssueAffectsVersions = Version::getByIds($session->get('move_issue/new_affects_version'));
     }
 
     $newUserAssignee = User::getById($session->get('move_issue/new_assignee'));

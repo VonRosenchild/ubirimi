@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+    use Ubirimi\Yongo\Repository\Screen\Scheme;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -59,7 +59,7 @@
                     <?php endwhile ?>
                 </td>
                 <td valign="top">
-                    <?php $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenScheme['id']); ?>
+                    <?php $screenSchemeData = Scheme::getDataByScreenSchemeId($screenScheme['id']); ?>
                     <div><b>... use this screen scheme</b></div>
                     <table class="table table-hover table-condensed">
                         <tr>

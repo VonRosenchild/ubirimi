@@ -7,10 +7,10 @@ use Ubirimi\Repository\Email\EmailQueue;
 use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Ubirimi\Yongo\Repository\Workflow\Scheme;
 use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
-use Ubirimi\Yongo\Repository\Project\ProjectCategory;
+use Ubirimi\Yongo\Repository\Project\Category;
 use Ubirimi\Yongo\Repository\Project\Project;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\Calendar\Repository\Calendar;
@@ -315,10 +315,10 @@ function installProject($clientId, $leadId, $name, $description)
     $issueTypeScheme = TypeScheme::getByClientId($clientId, 'project');
     $issueTypeScreenScheme = TypeScreenScheme::getByClientId($clientId);
     $fieldConfigurationSchemes = ConfigurationScheme::getByClient($clientId);
-    $workflowScheme = WorkflowScheme::getMetaDataByClientId($clientId);
+    $workflowScheme = Scheme::getMetaDataByClientId($clientId);
     $permissionScheme = Scheme::getByClientId($clientId);
     $notificationScheme = Scheme::getByClientId($clientId);
-    $projectCategories = ProjectCategory::getAll($clientId);
+    $projectCategories = Category::getAll($clientId);
 
     $currentDate = Util::getServerCurrentDateTime();
 

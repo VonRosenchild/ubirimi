@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+    use Ubirimi\Yongo\Repository\Workflow\Scheme;
 
 ?>
     <table width="100%">
@@ -21,7 +21,7 @@
                         <?php
                             $workflowScheme = Project::getWorkflowScheme($projectId);
 
-                            $workflows = WorkflowScheme::getWorkflows($workflowScheme['id']);
+                            $workflows = Scheme::getWorkflows($workflowScheme['id']);
                         ?>
                         <div><a href="/yongo/administration/project/workflows/<?php echo $projectId ?>"><?php echo $workflowScheme['name'] ?></a></div>
                         <div>Workflows</div>

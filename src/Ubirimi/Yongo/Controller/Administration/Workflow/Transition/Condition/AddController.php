@@ -2,7 +2,7 @@
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
+    use Ubirimi\Yongo\Repository\Workflow\Condition;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -14,7 +14,7 @@
         header('Location: /general-settings/bad-link-access-denied');
         die();
     }
-    $conditions = WorkflowCondition::getAll();
+    $conditions = Condition::getAll();
     $menuSelectedCategory = 'issue';
     $checkedHTML = 'checked="checked"';
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Condition';

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 use Ubirimi\Repository\Log;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Screen\Screen;
@@ -34,11 +34,11 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $screenScheme = new ScreenScheme($session->get('client/id'), $name, $description);
+                $screenScheme = new Scheme($session->get('client/id'), $name, $description);
                 $screenSchemeId = $screenScheme->save($currentDate);
                 while ($operation = $allOperations->fetch_array(MYSQLI_ASSOC)) {
                     $operationId = $operation['id'];
-                    ScreenScheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
+                    Scheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
                 }
 
                 Log::add(

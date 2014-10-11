@@ -31,11 +31,11 @@ use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Screen\Screen;
-use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
+use Ubirimi\Yongo\Repository\Workflow\Condition;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Ubirimi\Yongo\Repository\Workflow\Scheme;
 use Paymill\Models\Request\Client as PaymillClient;
 use Paymill\Request as PaymillRequest;
 
@@ -401,13 +401,13 @@ class Client
         while ($workflows && $workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {
             Workflow::deleteById($workflow['id']);
         }
-        WorkflowScheme::deleteByClientId($clientId);
+        Scheme::deleteByClientId($clientId);
 
         $screens = Screen::getByClientId($clientId);
         while ($screens && $screen = $screens->fetch_array(MYSQLI_ASSOC)) {
             Screen::deleteById($screen['id']);
         }
-        ScreenScheme::deleteByClientId($clientId);
+        Scheme::deleteByClientId($clientId);
 
         Client::deleteYongoIssueTypes($clientId);
         Client::deleteYongoIssueStatuses($clientId);
@@ -815,7 +815,7 @@ class Client
 
         Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
-        $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
+        $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
         Workflow::addCondition($transitionId, $definitionData);
 
         // open ------> closed
@@ -847,7 +847,7 @@ class Client
         Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
         Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
 
-        $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
+        $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
         Workflow::addCondition($transitionId, $definitionData);
 
         // in progress ------> resolved
@@ -923,7 +923,7 @@ class Client
         Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
         Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
-        $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
+        $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
 
         Workflow::addCondition($transitionId, $definitionData);
 

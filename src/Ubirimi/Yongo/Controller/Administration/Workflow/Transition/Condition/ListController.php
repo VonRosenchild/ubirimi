@@ -3,7 +3,7 @@
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
+    use Ubirimi\Yongo\Repository\Workflow\Condition;
 
     Util::checkUserIsLoggedInAndRedirect();
 
@@ -16,7 +16,7 @@
         die();
     }
 
-    $condition = WorkflowCondition::getByTransitionId($workflowDataId);
+    $condition = Condition::getByTransitionId($workflowDataId);
     $conditionString = $condition['definition_data'];
 
     $text_open_bracket = '<a class="button">(</a> ';
@@ -35,10 +35,10 @@
 
         $text = '';
         switch ($conditionId) {
-            case WorkflowCondition::CONDITION_ONLY_ASSIGNEE:
+            case Condition::CONDITION_ONLY_ASSIGNEE:
                 $text = 'Only the assignee of the issue can execute the transition';
                 break;
-            case WorkflowCondition::CONDITION_ONLY_REPORTER:
+            case Condition::CONDITION_ONLY_REPORTER:
                 $text = 'Only the reporter of the issue can execute the transition';
                 break;
         }

@@ -1,9 +1,9 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
+    use Ubirimi\Yongo\Repository\Workflow\Condition;
 
     Util::checkUserIsLoggedInAndRedirect();
 
     $transitionId = $_POST['id'];
 
-    WorkflowCondition::deleteByTransitionId($transitionId);
+    Condition::deleteByTransitionId($transitionId);

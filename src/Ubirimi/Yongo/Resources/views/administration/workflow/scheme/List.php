@@ -1,7 +1,7 @@
 <?php
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+    use Ubirimi\Yongo\Repository\Workflow\Scheme;
 
     require_once __DIR__ . '/../../_header.php';
 ?>
@@ -50,7 +50,7 @@
 
                                 <td width="400px">
                                     <ul>
-                                        <?php $workflows = WorkflowScheme::getDataById($scheme['id']) ?>
+                                        <?php $workflows = Scheme::getDataById($scheme['id']) ?>
                                         <?php if ($workflows): ?>
                                             <?php while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)): ?>
                                                 <li>
