@@ -5,8 +5,8 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Board;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -23,19 +23,19 @@ class ReportController extends UbirimiController
         $boardId = $request->get('board_id');
         $chart = $request->get('chart');
 
-        $board = AgileBoard::getById($boardId);
+        $board = Board::getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $currentStartedSprint = AgileSprint::getStarted($boardId);
+        $currentStartedSprint = Sprint::getStarted($boardId);
 
         if ($sprintId != -1) {
-            $selectedSprint = AgileSprint::getById($sprintId);
-            $completedSprints = AgileSprint::getCompleted($boardId, $sprintId);
-            $doneIssues = AgileSprint::getCompletedUncompletedIssuesBySprintId($sprintId, 1);
-            $notDoneIssues = AgileSprint::getCompletedUncompletedIssuesBySprintId($sprintId, 0);
+            $selectedSprint = Sprint::getById($sprintId);
+            $completedSprints = Sprint::getCompleted($boardId, $sprintId);
+            $doneIssues = Sprint::getCompletedUncompletedIssuesBySprintId($sprintId, 1);
+            $notDoneIssues = Sprint::getCompletedUncompletedIssuesBySprintId($sprintId, 0);
         }
 
         $availableCharts = array('sprint_report' => 'Sprint Report', 'velocity_chart' => 'Velocity Chart');

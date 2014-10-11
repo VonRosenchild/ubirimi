@@ -5,7 +5,7 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -22,7 +22,7 @@ class EditController extends UbirimiController
         $projects = Project::getByClientId($session->get('client/id'));
 
         $boardId = $request->get('id');
-        $board = AgileBoard::getById($boardId);
+        $board = Board::getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -43,7 +43,7 @@ class EditController extends UbirimiController
 
                 $date = Util::getServerCurrentDateTime();
 
-                AgileBoard::updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
+                Board::updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
 
                 Log::add(
                     $session->get('client/id'),

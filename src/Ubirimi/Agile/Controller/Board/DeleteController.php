@@ -5,7 +5,7 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -18,9 +18,9 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $boardId = $request->request->get('id');
-        $board = AgileBoard::getById($boardId);
+        $board = Board::getById($boardId);
 
-        AgileBoard::deleteById($boardId);
+        Board::deleteById($boardId);
 
         $date = Util::getServerCurrentDateTime();
         Log::add(

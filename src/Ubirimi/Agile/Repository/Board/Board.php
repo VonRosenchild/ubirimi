@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Agile\Repository;
+namespace Ubirimi\Agile\Repository\Board;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\User\User;
@@ -12,7 +12,7 @@ use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-class AgileBoard
+class Board
 {
     public $name;
     public $description;
@@ -145,8 +145,8 @@ class AgileBoard
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
         $openStatusData = Settings::getByName($clientId, 'status', 'Open');
         $reopenedStatusData = Settings::getByName($clientId, 'status', 'Reopened');
-        AgileBoard::addStatusToColumn($columnId, $openStatusData['id']);
-        AgileBoard::addStatusToColumn($columnId, $reopenedStatusData['id']);
+        Board::addStatusToColumn($columnId, $openStatusData['id']);
+        Board::addStatusToColumn($columnId, $reopenedStatusData['id']);
 
         // add In Progress column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
@@ -159,7 +159,7 @@ class AgileBoard
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
         $inProgressStatusData = Settings::getByName($clientId, 'status', 'In Progress');
 
-        AgileBoard::addStatusToColumn($columnId, $inProgressStatusData['id']);
+        Board::addStatusToColumn($columnId, $inProgressStatusData['id']);
 
         // add Done column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
@@ -173,8 +173,8 @@ class AgileBoard
         $resolvedStatusData = Settings::getByName($clientId, 'status', 'Resolved');
         $closedStatusData = Settings::getByName($clientId, 'status', 'Closed');
 
-        AgileBoard::addStatusToColumn($columnId, $resolvedStatusData['id']);
-        AgileBoard::addStatusToColumn($columnId, $closedStatusData['id']);
+        Board::addStatusToColumn($columnId, $resolvedStatusData['id']);
+        Board::addStatusToColumn($columnId, $closedStatusData['id']);
     }
 
     public static function getColumns($boardId, $resultType = null) {
@@ -229,7 +229,7 @@ class AgileBoard
     }
 
     public static function deleteStatusFromColumn($boardId, $StatusId) {
-        $columns = AgileBoard::getColumns($boardId, 'array');
+        $columns = Board::getColumns($boardId, 'array');
         $columnsIds = array();
         for ($i = 0; $i < count($columns); $i++) {
             $columnsIds[] = $columns[$i]['id'];
@@ -467,7 +467,7 @@ class AgileBoard
     }
 
     public static function deleteById($boardId) {
-        $boardColumnsArray = AgileBoard::getColumns($boardId, 'array');
+        $boardColumnsArray = Board::getColumns($boardId, 'array');
         $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');
 
         $query = "delete from agile_board_column_status where agile_board_column_id IN (" . implode(', ', $boardColumnsIds) . ')';

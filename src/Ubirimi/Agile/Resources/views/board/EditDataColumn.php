@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
+    use Ubirimi\Agile\Repository\Board;
     use Ubirimi\LinkHelper;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
@@ -78,7 +78,7 @@
                                         </td>
                                     </tr>
 
-                                    <?php $statuses = AgileBoard::getColumnStatuses($columns[$i]['id'], 'array') ?>
+                                    <?php $statuses = Board::getColumnStatuses($columns[$i]['id'], 'array') ?>
                                     <tr>
                                         <td id="column_<?php echo $columns[$i]['id'] ?>" class="droppable" valign="top" style="height: 200px;">
                                         <?php if ($statuses): ?>

@@ -3,7 +3,7 @@
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\Util;
 
 
@@ -13,7 +13,7 @@ class AgileSprintController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $agileSprints = AgileSprint::getAllSprintsForClients();
+        $agileSprints = Sprint::getAllSprintsForClients();
         $selectedOption = 'sprints';
 
         return $this->render(__DIR__ . '/../../Resources/views/administration/AgileSprint.php', get_defined_vars());

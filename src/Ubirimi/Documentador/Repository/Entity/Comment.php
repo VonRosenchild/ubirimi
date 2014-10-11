@@ -1,13 +1,13 @@
 <?php
 
-namespace Ubirimi\Repository\Documentador;
+namespace Ubirimi\Documentador\Repository\Entity;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
 
-class EntityComment {
+class Comment {
 
     public static function getById($commentId) {
         $query = "SELECT * " .
@@ -36,10 +36,10 @@ class EntityComment {
     }
 
     public static function deleteById($commentId) {
-        $comment = EntityComment::getById($commentId);
+        $comment = Comment::getById($commentId);
         $parentId = $comment['parent_comment_id'];
 
-        EntityComment::updateCommentsParrent($commentId, $parentId);
+        Comment::updateCommentsParrent($commentId, $parentId);
 
         $query = "delete from documentator_entity_comment where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -130,7 +130,7 @@ class EntityComment {
                 $comments[$i]['printed'] = 1;
 
                 $identationIndex++;
-                EntityComment::getCommentsLayoutHTML($comments, $htmlLayout, $comments[$i]['id'], $identationIndex);
+                Comment::getCommentsLayoutHTML($comments, $htmlLayout, $comments[$i]['id'], $identationIndex);
                 $identationIndex--;
             }
         }

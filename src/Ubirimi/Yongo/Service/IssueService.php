@@ -8,7 +8,7 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\Watcher;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
@@ -47,9 +47,9 @@ class IssueService extends UbirimiService
 
         // if a parent is set check if the parent issue id is part of a sprint. if yes also add the child
         if ($issueId) {
-            $sprints = AgileSprint::getByIssueId($clientId, $issueId);
+            $sprints = Sprint::getByIssueId($clientId, $issueId);
             while ($sprints && $sprint = $sprints->fetch_array(MYSQLI_ASSOC)) {
-                AgileSprint::addIssues($sprint['id'], array($newIssueId), $loggedInUserId);
+                Sprint::addIssues($sprint['id'], array($newIssueId), $loggedInUserId);
             }
         }
 

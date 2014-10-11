@@ -5,8 +5,8 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Board;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -22,7 +22,7 @@ class WorkController extends UbirimiController
         $sprintId = $request->get('id');
         $boardId = $request->get('board_id');
         $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
-        $board = AgileBoard::getById($boardId);
+        $board = Board::getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,15 +33,15 @@ class WorkController extends UbirimiController
         if ($sprintId == -1) {
             $sprint = null;
         } else {
-            $sprint = AgileSprint::getById($sprintId);
+            $sprint = Sprint::getById($sprintId);
             $sprintBoardId = $sprint['agile_board_id'];
             if ($sprintBoardId != $boardId) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
         }
 
-        $columns = AgileBoard::getColumns($boardId, 'array');
-        $lastCompletedSprint = AgileSprint::getLastCompleted($boardId);
+        $columns = Board::getColumns($boardId, 'array');
+        $lastCompletedSprint = Sprint::getLastCompleted($boardId);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CHEETAH_NAME

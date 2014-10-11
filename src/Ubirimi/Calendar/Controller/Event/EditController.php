@@ -12,7 +12,7 @@ use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Calendar\Repository\CalendarEventRepeatCycle;
+use Ubirimi\Calendar\Repository\RepeatCycle;
 
 class EditController extends UbirimiController
 {
@@ -35,8 +35,8 @@ class EditController extends UbirimiController
         $defaultEventEndAfterOccurrences = $eventRepeatData['end_after_occurrences'];
         $defaultEventEndDate = substr($eventRepeatData['end_date'], 0, 10);
 
-        $repeatDaily = ($defaultEventRepeatCycle == CalendarEventRepeatCycle::REPEAT_DAILY);
-        $repeatWeekly = ($defaultEventRepeatCycle == CalendarEventRepeatCycle::REPEAT_WEEKLY);
+        $repeatDaily = ($defaultEventRepeatCycle == RepeatCycle::REPEAT_DAILY);
+        $repeatWeekly = ($defaultEventRepeatCycle == RepeatCycle::REPEAT_WEEKLY);
 
         $eventReminders = CalendarEvent::getReminders($eventId);
         if ($event['client_id'] != $session->get('client/id')) {
@@ -66,7 +66,7 @@ class EditController extends UbirimiController
             if ($eventRepeatType != -1) {
 
                 switch ($eventRepeatType) {
-                    case CalendarEventRepeatCycle::REPEAT_DAILY:
+                    case RepeatCycle::REPEAT_DAILY:
                         $repeatData .= '1';
                         $repeatData .= '#' . $request->request->get('add_event_repeat_every_daily');
 
@@ -80,7 +80,7 @@ class EditController extends UbirimiController
                         $repeatData .= '#' . $dateFrom;
                         break;
 
-                    case CalendarEventRepeatCycle::REPEAT_WEEKLY:
+                    case RepeatCycle::REPEAT_WEEKLY:
                         $repeatData .= '2';
                         $repeatData .= $request->request->get('add_event_repeat_every_weekly');
 

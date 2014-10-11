@@ -5,7 +5,7 @@ namespace Ubirimi\Agile\Controller\Sprint;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -19,7 +19,7 @@ class AddController extends UbirimiController
         $boardId = $request->request->get('board_id');
 
         $date = Util::getServerCurrentDateTime();
-        AgileSprint::add($boardId, $name, $date, $session->get('user/id'));
+        Sprint::add($boardId, $name, $date, $session->get('user/id'));
 
         return new Response('');
     }

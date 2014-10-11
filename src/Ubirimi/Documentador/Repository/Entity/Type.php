@@ -1,8 +1,8 @@
 <?php
 
-namespace Ubirimi\Repository\Documentador;
+namespace Ubirimi\Documentador\Repository\Entity;
 
-class EntityType {
+class Type {
 
     const ENTITY_BLANK_PAGE = 1;
     const ENTITY_FILE_LIST = 2;

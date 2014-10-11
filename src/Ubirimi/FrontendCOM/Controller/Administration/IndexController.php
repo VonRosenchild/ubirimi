@@ -6,8 +6,8 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Documentador\Entity;
-use Ubirimi\Agile\Repository\AgileBoard;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Board;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Documentador\Space;
 use Ubirimi\Repository\User\User;
@@ -27,8 +27,8 @@ class IndexController extends UbirimiController
         $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getAll();
         $spaces = Space::getAllForAllClients();
         $entities = Entity::getAll();
-        $agileBoards = AgileBoard::getAll();
-        $agileSprints = AgileSprint::getAllSprintsForClients();
+        $agileBoards = Board::getAll();
+        $agileSprints = Sprint::getAllSprintsForClients();
         $svnRepos = SVNRepository::getAll();
 
         $clientsToday = Client::getAll(array('today' => true));

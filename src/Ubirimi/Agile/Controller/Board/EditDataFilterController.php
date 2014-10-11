@@ -5,7 +5,7 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Filter;
@@ -20,13 +20,13 @@ class EditDataFilterController extends UbirimiController
         $menuSelectedCategory = 'agile';
 
         $boardId = $request->get('id');
-        $board = AgileBoard::getById($boardId);
+        $board = Board::getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $boardProjects = AgileBoard::getProjects($boardId, 'array');
+        $boardProjects = Board::getProjects($boardId, 'array');
         $filter = Filter::getById($board['filter_id']);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '

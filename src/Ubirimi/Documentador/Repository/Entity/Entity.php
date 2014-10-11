@@ -1,6 +1,7 @@
 <?php
 
-namespace Ubirimi\Repository\Documentador;
+namespace Ubirimi\Documentador\Repository\Entity;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;

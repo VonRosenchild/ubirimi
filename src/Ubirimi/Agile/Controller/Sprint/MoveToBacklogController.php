@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 
 class MoveToBacklogController extends UbirimiController
 {
@@ -17,7 +17,7 @@ class MoveToBacklogController extends UbirimiController
 
         $ids = $request->request->get('id');
 
-        AgileBoard::deleteIssuesFromSprints($ids);
+        Board::deleteIssuesFromSprints($ids);
 
         return new Response('');
     }

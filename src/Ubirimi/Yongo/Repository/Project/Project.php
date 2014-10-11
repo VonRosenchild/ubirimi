@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Yongo\Repository\Project;
 
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\Repository\HelpDesk\Queue;
@@ -614,7 +614,7 @@ class Project
         Component::deleteByProjectId($Id);
         Version::deleteByProjectId($Id);
         Custom::deleteDataByProjectId($Id);
-        AgileBoard::deleteByProjectId($Id);
+        Board::deleteByProjectId($Id);
 
         $query = "DELETE IGNORE FROM project_role_data WHERE project_id = " . $Id;
         UbirimiContainer::get()['db.connection']->query($query);

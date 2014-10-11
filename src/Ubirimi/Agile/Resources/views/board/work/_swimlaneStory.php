@@ -1,12 +1,12 @@
 <?php
 
-use Ubirimi\Agile\Repository\AgileBoard;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Board;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
 // get issues that have children. Those are shown first
-$allSprintIssuesWithChildren = AgileSprint::getIssuesBySprintIdWithChildren($sprintId, null, $loggedInUserId);
+$allSprintIssuesWithChildren = Sprint::getIssuesBySprintIdWithChildren($sprintId, null, $loggedInUserId);
 $parentChildrenIssueIds = array();
 
 while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fetch_array(MYSQLI_ASSOC)) {
@@ -30,7 +30,7 @@ while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fe
     }
 }
 
-$allSprintIssuesWithoutChildren = AgileSprint::getIssuesBySprintIdWithoutChildren($sprintId, null, $loggedInUserId, $parentChildrenIssueIds);
+$allSprintIssuesWithoutChildren = Sprint::getIssuesBySprintIdWithoutChildren($sprintId, null, $loggedInUserId, $parentChildrenIssueIds);
 
 if ($allSprintIssuesWithoutChildren) {
     if ($allSprintIssuesWithChildren) {
@@ -47,6 +47,6 @@ if ($allSprintIssuesWithoutChildren) {
     }
 
     echo '<table width="100%" cellpadding="0" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-    AgileBoard::renderIssues($allSprintIssuesWithoutChildren, $columns, $index);
+    Board::renderIssues($allSprintIssuesWithoutChildren, $columns, $index);
     echo '</table>';
 }

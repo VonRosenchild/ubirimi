@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\Util;
 
 class DeleteController extends UbirimiController
@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $sprintId = $request->request->get('id');
 
-        AgileSprint::deleteById($sprintId);
+        Sprint::deleteById($sprintId);
 
         return new Response('');
     }

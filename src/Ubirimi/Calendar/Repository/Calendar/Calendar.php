@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Calendar\Repository;
+namespace Ubirimi\Calendar\Repository\Calendar;
 
 use Ubirimi\Container\UbirimiContainer;
 

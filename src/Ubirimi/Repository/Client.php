@@ -2,9 +2,9 @@
 
 namespace Ubirimi\Repository;
 
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
+use Ubirimi\Calendar\Repository\Period;
 use Ubirimi\Calendar\Repository\CalendarReminderType;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Documentador\Space;
@@ -486,10 +486,10 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete Cheetah Product data
-        $agileBoards = AgileBoard::getByClientId($clientId, 'array');
+        $agileBoards = Board::getByClientId($clientId, 'array');
         if ($agileBoards) {
             for ($i = 0; $i < count($agileBoards); $i++) {
-                AgileBoard::deleteById($agileBoards[$i]['id']);
+                Board::deleteById($agileBoards[$i]['id']);
             }
         }
 
@@ -1808,7 +1808,7 @@ class Client
         $calendarId = Calendar::save($userData['id'], $userData['first_name'] . ' ' . $userData['last_name'], 'My default calendar', '#A1FF9E', $clientCreatedDate, 1);
 
         // add default reminders
-        Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, CalendarEventReminderPeriod::PERIOD_MINUTE, 30);
+        Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
     }
 
     public static function getCurrentMonthAndDayPayingCustomers() {

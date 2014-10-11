@@ -4,7 +4,7 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 
 class AgileBoardController extends UbirimiController
 {
@@ -12,7 +12,7 @@ class AgileBoardController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $agileBoards = AgileBoard::getAll(array('sort_by' => 'agile_board.date_created', 'sort_order' => 'desc'));
+        $agileBoards = Board::getAll(array('sort_by' => 'agile_board.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'agile';
 

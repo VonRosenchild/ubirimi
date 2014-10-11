@@ -5,7 +5,7 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Repository\Client;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
@@ -53,7 +53,7 @@ class AddController extends UbirimiController
                     $date
                 );
 
-                $board = new AgileBoard($session->get('client/id'), $filterId, $name, $description, $projectsInBoard);
+                $board = new Board($session->get('client/id'), $filterId, $name, $description, $projectsInBoard);
                 $currentDate = Util::getServerCurrentDateTime();
                 $boardId = $board->save($session->get('user/id'), $currentDate);
                 $board->addDefaultColumnData($session->get('client/id'), $boardId);

@@ -5,8 +5,8 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Board;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\Repository\Client;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -25,20 +25,20 @@ class PlanController extends UbirimiController
         $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
 
         $session->set('last_selected_board_id', $boardId);
-        $board = AgileBoard::getById($boardId);
+        $board = Board::getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $sprintsNotStarted = AgileSprint::getNotStarted($boardId);
+        $sprintsNotStarted = Sprint::getNotStarted($boardId);
 
-        $boardProjects = AgileBoard::getProjects($boardId, 'array');
-        $currentStartedSprint = AgileSprint::getStarted($boardId);
-        $lastCompletedSprint = AgileSprint::getLastCompleted($boardId);
+        $boardProjects = Board::getProjects($boardId, 'array');
+        $currentStartedSprint = Sprint::getStarted($boardId);
+        $lastCompletedSprint = Sprint::getLastCompleted($boardId);
 
-        $lastColumn = AgileBoard::getLastColumn($boardId);
-        $completeStatuses = AgileBoard::getColumnStatuses($lastColumn['id'], 'array', 'id');
+        $lastColumn = Board::getLastColumn($boardId);
+        $completeStatuses = Board::getColumnStatuses($lastColumn['id'], 'array', 'id');
 
         $columns = array('type', 'code', 'summary', 'priority');
 

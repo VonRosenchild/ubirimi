@@ -5,10 +5,10 @@ namespace Ubirimi\Agile\Controller\Sprint;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 
 class CompleteController extends UbirimiController
 {
@@ -19,13 +19,13 @@ class CompleteController extends UbirimiController
         $sprintId = $request->request->get('id');
         $boardId = $request->request->get('board_id');
 
-        $sprint = AgileSprint::getById($sprintId);
-        $lastColumn = AgileBoard::getLastColumn($boardId);
-        $completeStatuses = AgileBoard::getColumnStatuses($lastColumn['id'], 'array', 'id');
+        $sprint = Sprint::getById($sprintId);
+        $lastColumn = Board::getLastColumn($boardId);
+        $completeStatuses = Board::getColumnStatuses($lastColumn['id'], 'array', 'id');
 
-        AgileBoard::transferNotDoneIssues($boardId, $sprintId, $completeStatuses);
+        Board::transferNotDoneIssues($boardId, $sprintId, $completeStatuses);
 
-        AgileSprint::complete($sprintId);
+        Sprint::complete($sprintId);
 
         return new Response('');
     }

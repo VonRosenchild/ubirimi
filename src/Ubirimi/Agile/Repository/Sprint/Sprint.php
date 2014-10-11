@@ -1,11 +1,11 @@
 <?php
 
-namespace Ubirimi\Agile\Repository;
+namespace Ubirimi\Agile\Repository\Sprint;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
-class AgileSprint
+class Sprint
 {
     public static function add($boardId, $name, $date, $loggedInUserId) {
         $query = "INSERT INTO agile_board_sprint(agile_board_id, user_created_id, name, date_created) VALUES (?, ?, ?, ?)";

@@ -1,10 +1,10 @@
 <?php
 
-namespace Ubirimi\Calendar\Repository;
+namespace Ubirimi\Calendar\Repository\Event;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class CalendarEvent
+class Event
 {
     public static function add($calendarId, $userCreatedId, $name, $description, $location, $start, $end, $color, $currentDate, $repeatData = null, $clientSettings) {
         $calEventRepeatId = null;
@@ -428,14 +428,14 @@ class CalendarEvent
 
     public static function deleteById($eventId, $recurringType = null) {
         // delete the shares
-        CalendarEvent::deleteAllEventShares($eventId);
+        Event::deleteAllEventShares($eventId);
 
         // delete the reminders
-        CalendarEvent::deleteReminders($eventId);
+        Event::deleteReminders($eventId);
 
         switch ($recurringType) {
             case 'all_following':
-                $event = CalendarEvent::getById($eventId, 'array');
+                $event = Event::getById($eventId, 'array');
                 // todo: delete shares and reminders also
                 $query = "delete from cal_event where id >= ? and cal_event_link_id = ?";
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -445,7 +445,7 @@ class CalendarEvent
                 break;
 
             case 'all_series':
-                $event = CalendarEvent::getById($eventId, 'array');
+                $event = Event::getById($eventId, 'array');
                 // todo: delete shares and reminders also
                 $query = "delete from cal_event where id = ? or cal_event_link_id = ?";
 
@@ -576,7 +576,7 @@ class CalendarEvent
     }
 
     public static function deleteEventAndFollowingByLinkId($eventId) {
-        $event = CalendarEvent::getById($eventId, 'array');
+        $event = Event::getById($eventId, 'array');
         $linkId = $event['cal_event_link_id'];
 
         $query = "delete from " .

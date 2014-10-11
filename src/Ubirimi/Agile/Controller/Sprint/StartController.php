@@ -5,7 +5,7 @@ namespace Ubirimi\Agile\Controller\Sprint;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -20,7 +20,7 @@ class StartController extends UbirimiController
         $endDate = $request->request->get('end_date');
         $name = $request->request->get('name');
 
-        AgileSprint::start($sprintId, $startDate, $endDate, $name);
+        Sprint::start($sprintId, $startDate, $endDate, $name);
 
         return new Response('');
     }

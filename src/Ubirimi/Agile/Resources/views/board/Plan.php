@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
-    use Ubirimi\Agile\Repository\AgileSprint;
+    use Ubirimi\Agile\Repository\Board;
+    use Ubirimi\Agile\Repository\Sprint;
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
@@ -84,7 +84,7 @@
                             <div style="padding-bottom: 4px;" class="droppablePlanSprint">
                                 <span class="headerPageText"><?php echo $currentStartedSprint['name'] ?></span>
                                 <?php
-                                    $issues = AgileSprint::getIssuesBySprintId($currentStartedSprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
+                                    $issues = Sprint::getIssuesBySprintId($currentStartedSprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
                                     $renderCheckboxDisabled = true;
 
                                     $params = array('issues' => $issues, 'render_checkbox' => true, 'checkbox_disabled' => $renderCheckboxDisabled, 'show_header' => false);
@@ -100,7 +100,7 @@
                             }
                             while ($sprintsNotStarted && $sprint = $sprintsNotStarted->fetch_array(MYSQLI_ASSOC)) {
 
-                                $issues = AgileSprint::getIssuesBySprintId($sprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
+                                $issues = Sprint::getIssuesBySprintId($sprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
 
                                 $sprintHasIssues = $issues && $issues->num_rows;
 
@@ -137,7 +137,7 @@
                                 }
                             }
 
-                            $issues = AgileBoard::getBacklogIssues($clientId, $board, $onlyMyIssuesFlag, $loggedInUserId, $searchQuery, $completeStatuses);
+                            $issues = Board::getBacklogIssues($clientId, $board, $onlyMyIssuesFlag, $loggedInUserId, $searchQuery, $completeStatuses);
 
                             $params = array('issues' => $issues, 'render_checkbox' => true, 'show_header' => false, 'in_backlog' => true);
                             echo '<div class="headerPageText" style="padding-bottom: 4px; padding-top: 4px">Backlog</div>';

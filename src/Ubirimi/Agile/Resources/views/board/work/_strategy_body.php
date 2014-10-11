@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Repository\User\User;
-    use Ubirimi\Agile\Repository\AgileBoard;
+    use Ubirimi\Agile\Repository\Board;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Project\Project;
@@ -22,7 +22,7 @@
             ?>
             <td width="<?php echo (100 / count($columns)) ?>%" id="column_data_<?php echo $columns[$i]['id'] . '_' . $index ?>" valign="top" class="droppableAgileColumn_<?php echo $index ?> pageContentSmall">
                 <?php
-                    $statuses = AgileBoard::getColumnStatuses($columns[$i]['id'], 'array');
+                    $statuses = Board::getColumnStatuses($columns[$i]['id'], 'array');
                 ?>
                 <div style="display: none; position: absolute; margin: 4px;" id="statuses_for_column_<?php echo $columns[$i]['id'] . '_' . $index ?>">
                     <?php for ($j = 0; $j < count($statuses); $j++): ?>

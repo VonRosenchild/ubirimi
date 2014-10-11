@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Util;
 
 class AddController extends UbirimiController
@@ -19,7 +19,7 @@ class AddController extends UbirimiController
         $name = $request->request->get('name');
         $description = $request->request->get('description');
 
-        AgileBoard::addColumn($boardId, $name, $description);
+        Board::addColumn($boardId, $name, $description);
 
         return new Response('');
     }

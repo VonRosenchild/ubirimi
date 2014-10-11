@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
+use Ubirimi\Calendar\Repository\Period;
 use Ubirimi\Calendar\Repository\CalendarReminderType;
 use Ubirimi\Repository\Log;
 use Ubirimi\SystemProduct;
@@ -47,7 +47,7 @@ class AddController extends UbirimiController
                 Calendar::addReminder(
                     $calendarId,
                     CalendarReminderType::REMINDER_EMAIL,
-                    CalendarEventReminderPeriod::PERIOD_MINUTE,
+                    Period::PERIOD_MINUTE,
                     30
                 );
 

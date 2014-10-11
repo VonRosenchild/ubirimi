@@ -4,10 +4,10 @@ namespace Ubirimi\Agile\Controller\Sprint;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 
 class CompleteConfirmController extends UbirimiController
 {
@@ -18,12 +18,12 @@ class CompleteConfirmController extends UbirimiController
         $sprintId = $request->get('id');
         $boardId = $request->get('board_id');
 
-        $sprint = AgileSprint::getById($sprintId);
-        $lastColumn = AgileBoard::getLastColumn($boardId);
-        $completeStatuses = AgileBoard::getColumnStatuses($lastColumn['id'], 'array', 'id');
+        $sprint = Sprint::getById($sprintId);
+        $lastColumn = Board::getLastColumn($boardId);
+        $completeStatuses = Board::getColumnStatuses($lastColumn['id'], 'array', 'id');
 
-        $issuesInSprintCount = AgileSprint::getSprintIssuesCount($sprintId);
-        $completedIssuesInSprint = AgileSprint::getCompletedIssuesCountBySprintId($sprintId, $completeStatuses);
+        $issuesInSprintCount = Sprint::getSprintIssuesCount($sprintId);
+        $completedIssuesInSprint = Sprint::getCompletedIssuesCountBySprintId($sprintId, $completeStatuses);
 
         return $this->render(__DIR__ . '/../../Resources/views/sprint/CompleteConfirm.php', get_defined_vars());
     }

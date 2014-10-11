@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
+    use Ubirimi\Calendar\Repository\Period;
     use Ubirimi\Util;
     use Ubirimi\LinkHelper;
     use Ubirimi\SystemProduct;
@@ -50,12 +50,12 @@
                             <span>Email</span>
                             <input type="text" disabled="disabled" value="<?php echo $eventReminder['value'] ?>" name="value_reminder_<?php echo $eventReminder['id'] ?>" style="width: 50px;" />
 
-                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_MINUTE) echo 'minutes' ?></span>
+                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_MINUTE) echo 'minutes' ?></span>
                             <span><?php
-                                    if ($eventReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_HOUR) echo 'hours' ?></span>
+                                    if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_HOUR) echo 'hours' ?></span>
                             <span><?php
-                                    if ($eventReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_DAY) echo 'days' ?></span>
-                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == CalendarEventReminderPeriod::PERIOD_WEEK) echo 'weeks' ?></span>
+                                    if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_DAY) echo 'days' ?></span>
+                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_WEEK) echo 'weeks' ?></span>
                             <br />
                         <?php endwhile ?>
                     </div>

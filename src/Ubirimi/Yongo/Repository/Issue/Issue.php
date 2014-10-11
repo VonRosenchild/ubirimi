@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Yongo\Repository\Issue;
 
-use Ubirimi\Agile\Repository\AgileBoard;
+use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Repository\User\User;
@@ -768,7 +768,7 @@ class Issue
         UbirimiContainer::getRepository('yongo.issue.attachment')->deleteByIssueId($issueId);
         CustomField::deleteCustomFieldsData($issueId);
 
-        AgileBoard::deleteIssuesFromSprints(array($issueId));
+        Board::deleteIssuesFromSprints(array($issueId));
 
         $query = 'DELETE from yongo_issue WHERE id = ?';
 

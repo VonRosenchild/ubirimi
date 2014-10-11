@@ -1,11 +1,11 @@
 <?php
-        use Ubirimi\Agile\Repository\AgileBoard;
+        use Ubirimi\Agile\Repository\Board;
 
 ?>
 <tr>
     <?php for ($i = 0; $i < count($columns); $i++): ?>
         <?php
-            $statuses = AgileBoard::getColumnStatuses($columns[$i]['id'], 'array');
+            $statuses = Board::getColumnStatuses($columns[$i]['id'], 'array');
             $textStatuses = '';
             for ($k = 0; $k < count($statuses); $k++) {
                 $textStatuses .= $statuses[$k]['id'] . '_' . $statuses[$k]['name'] . '#';

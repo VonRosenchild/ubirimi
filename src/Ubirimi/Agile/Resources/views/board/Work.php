@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Agile\Repository\AgileBoard;
+    use Ubirimi\Agile\Repository\Board;
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
@@ -81,7 +81,7 @@
     </div>
 
     <?php
-        $lastColumnStatuses = AgileBoard::getColumnStatuses($columns[count($columns) - 1]['id'], 'array', 'id');
+        $lastColumnStatuses = Board::getColumnStatuses($columns[count($columns) - 1]['id'], 'array', 'id');
     ?>
     <div id="agileModalTransitionWithScreen"></div>
     <div id="agileModalUpdateParent"></div>

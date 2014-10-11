@@ -17,7 +17,7 @@ use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Calendar\Repository\CalendarReminderType;
 use Ubirimi\Repository\Group\Group;
-use Ubirimi\Calendar\Repository\CalendarEventReminderPeriod;
+use Ubirimi\Calendar\Repository\Period;
 use Ubirimi\Repository\User\User as UserRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\Repository\SMTPServer;
@@ -395,7 +395,7 @@ function installUser($data)
 
     if (!$data['isCustomer']) {
         // add default reminders
-        Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, CalendarEventReminderPeriod::PERIOD_MINUTE, 30);
+        Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
 
         // add the newly created user to the Ubirimi Users Global Permission Groups
         $groups = GlobalPermission::getDataByPermissionId($data['clientId'], GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);

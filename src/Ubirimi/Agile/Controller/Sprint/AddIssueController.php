@@ -5,8 +5,8 @@ namespace Ubirimi\Agile\Controller\Sprint;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileBoard;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Board;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -20,8 +20,8 @@ class AddIssueController extends UbirimiController
         $issueIdArray = $request->request->get('issue_id');
 
         if ($sprintId && $issueIdArray) {
-            AgileBoard::deleteIssuesFromSprints($issueIdArray);
-            AgileSprint::addIssues($sprintId, $issueIdArray, $session->get('user/id'));
+            Board::deleteIssuesFromSprints($issueIdArray);
+            Sprint::addIssues($sprintId, $issueIdArray, $session->get('user/id'));
         }
 
         return new Response('');

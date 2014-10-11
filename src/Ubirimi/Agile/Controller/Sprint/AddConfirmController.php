@@ -4,7 +4,7 @@ namespace Ubirimi\Agile\Controller\Sprint;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\AgileSprint;
+use Ubirimi\Agile\Repository\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -15,7 +15,7 @@ class AddConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $boardId = $request->get('board_id');
-        $lastSprint = AgileSprint::getLast($boardId);
+        $lastSprint = Sprint::getLast($boardId);
         $suggestedName = '';
 
         if ($lastSprint) {
