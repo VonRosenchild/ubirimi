@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\HelpDesk\SLACalendar;
@@ -29,7 +29,7 @@ class ListController extends UbirimiController
         $project = Project::getById($projectId);
         $calendars = SLACalendar::getByProjectId($projectId);
 
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
             $SLAs->data_seek(0);

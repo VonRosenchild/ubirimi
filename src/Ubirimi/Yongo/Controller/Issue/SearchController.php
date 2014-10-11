@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\HelpDesk\SLA;
+    use Ubirimi\Repository\HelpDesk\Sla;
     use Ubirimi\Repository\User\User;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
@@ -42,7 +42,7 @@ use Ubirimi\Repository\Client;
         $searchCriteria = UbirimiContainer::getRepository('yongo.issue.issue')->getSearchParameters($projectsForBrowsing, $clientId);
         $issuesResult = null;
 
-        $SLAs = SLA::getByProjectIds($projectIds);
+        $SLAs = Sla::getByProjectIds($projectIds);
     }
 
     if (isset($_POST['search'])) {

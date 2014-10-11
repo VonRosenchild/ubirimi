@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Repository\HelpDesk;
+namespace Ubirimi\HelpDesk\Repository\Sla;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
@@ -10,7 +10,7 @@ use Ubirimi\Yongo\Repository\Issue\History;
 use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Issue\Type;
 
-class SLA
+class Sla
 {
     const CONDITION_CREATE_ISSUE = 'issue_created';
     const CONDITION_RESOLUTION_SET = 'resolution_set';
@@ -165,9 +165,9 @@ class SLA
 
         $value = mb_strtolower($goal['definition']);
         $currentSLAId = $goal['help_sla_id'];
-        $curentSLA = SLA::getById($currentSLAId);
+        $curentSLA = Sla::getById($currentSLAId);
 
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
         while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
             if (($index = stripos(mb_strtolower($value), mb_strtolower($SLA['name']))) !== false) {
@@ -238,12 +238,12 @@ class SLA
         $conditionFulfilledDate = null;
 
         for ($i = 0; $i < count($conditions); $i++) {
-            if ($conditions[$i] == ($type . '_' . SLA::CONDITION_CREATE_ISSUE)) {
+            if ($conditions[$i] == ($type . '_' . Sla::CONDITION_CREATE_ISSUE)) {
                 if ($issue['date_created'] >= $currentSLADate) {
                     $conditionFulfilledDate = $issue['date_created'];
                     break;
                 }
-            } else if ($conditions[$i] == $type . '_' . SLA::CONDITION_RESOLUTION_SET) {
+            } else if ($conditions[$i] == $type . '_' . Sla::CONDITION_RESOLUTION_SET) {
                 if ($issue['resolution']) {
                     if ($issue['date_resolved'] >= $currentSLADate) {
                         $conditionFulfilledDate = $issue['date_resolved'];
@@ -321,7 +321,7 @@ class SLA
     }
 
     public static function getGoalForIssueId($slaId, $issueId, $projectId, $clientId) {
-        $goals = SLA::getGoals($slaId);
+        $goals = Sla::getGoals($slaId);
         $goalValue = null;
         $goalId = null;
         $goalCalendarId = null;
@@ -333,7 +333,7 @@ class SLA
                 $goalId = $goal['id'];
                 $goalCalendarId = $goal['help_sla_calendar_id'];
             } else {
-                $definitionSQL = SLA::transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
+                $definitionSQL = Sla::transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
 
                 $issueFound = false;
                 if ($stmtGoal = UbirimiContainer::get()['db.connection']->prepare($definitionSQL)) {
@@ -358,7 +358,7 @@ class SLA
 
     public static function getOffsetForIssue($SLA, $issue, $clientId, $clientSettings) {
         $issueId = $issue['id'];
-        $goalData = SLA::getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
+        $goalData = Sla::getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
         $goalId = $goalData['id'];
 
         if ($goalId == null) {
@@ -367,7 +367,7 @@ class SLA
         $goalValue = $goalData['value'];
         $slaCalendarData = SLACalendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
-        $SLA = SLA::getById($SLA['id']);
+        $SLA = Sla::getById($SLA['id']);
 
         $historyData = History::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
 
@@ -383,8 +383,8 @@ class SLA
 
         // find start and stop dates
         foreach ($historyData as $history) {
-            $startConditionSLADate = SLA::checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
-            $stopConditionSLADate = SLA::checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
+            $startConditionSLADate = Sla::checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
+            $stopConditionSLADate = Sla::checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
 
             if ($startConditionSLADate && !in_array($startConditionSLADate, $startConditionSLADates) && $startConditionSLADate > end($stopConditionSLADates)) {
                 if (count($startConditionSLADates) - count($stopConditionSLADates) == 0) {

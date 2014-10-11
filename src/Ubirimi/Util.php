@@ -4,7 +4,7 @@ namespace Ubirimi;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Repository\ServerSettings;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Yongo\Repository\Field\Field;
@@ -616,7 +616,7 @@ class Util {
                 $slaIds = explode("_", $column);
                 $slaId = $slaIds[1];
 
-                $slaColumn = SLA::getById($slaId);
+                $slaColumn = Sla::getById($slaId);
                 $columnName = $slaColumn['name'];
             } else {
                 $columnName = str_replace("_", ' ', ucfirst($column));

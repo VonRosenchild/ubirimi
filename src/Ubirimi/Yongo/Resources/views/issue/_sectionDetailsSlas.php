@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\SLA;
+    use Ubirimi\Repository\HelpDesk\Sla;
 ?>
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
@@ -17,7 +17,7 @@
                 </td>
                 <td valign="top">
                     <span class="<?php if (($slaData['goalValue'] - $slaData['intervalMinutes']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                        <?php echo SLA::formatOffset($slaData['goalValue'] - $slaData['intervalMinutes']) ?>
+                        <?php echo Sla::formatOffset($slaData['goalValue'] - $slaData['intervalMinutes']) ?>
                     </span>
                     &nbsp;
                     <?php if ($slaData['endDate']): ?>

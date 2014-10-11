@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\HelpDesk\Queue;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -30,7 +30,7 @@ class ViewController extends UbirimiController
 
         $columns = explode('#', $queueSelected['columns']);
 
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
             $SLAs->data_seek(0);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Repository\HelpDesk;
+namespace Ubirimi\HelpDesk\Repository\Queue;
 
 use Ubirimi\Container\UbirimiContainer;
 

@@ -8,7 +8,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\HelpDesk\Queue;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Yongo\Repository\Project\Project;
 
 class ViewController extends UbirimiController
@@ -22,7 +22,7 @@ class ViewController extends UbirimiController
         $slaSelectedId = $request->get('sla_id');
 
         $project = Project::getById($projectId);
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'reports';
@@ -37,7 +37,7 @@ class ViewController extends UbirimiController
             $queueSelected = $queues->fetch_array(MYSQLI_ASSOC);
         }
 
-        $slaSelected = SLA::getById($slaSelectedId);
+        $slaSelected = Sla::getById($slaSelectedId);
 
         $dateTo = date('Y-m-d');
         $dateFrom = new \DateTime($dateTo, new \DateTimeZone($clientSettings['timezone']));

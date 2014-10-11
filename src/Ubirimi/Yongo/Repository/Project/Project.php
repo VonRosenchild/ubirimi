@@ -6,7 +6,7 @@ use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\Repository\HelpDesk\Queue;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Repository\HelpDesk\SLACalendar;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
@@ -1831,16 +1831,16 @@ class Project
 
         // sla 1: time to first response
         $status = Settings::getByName($clientId, 'status', 'In Progress');
-        $slaId = SLA::save($projectId, 'Time to first response', 'Time to first response', 'start_issue_created', 'stop_status_set_' . $status['id'], $currentDate);
+        $slaId = Sla::save($projectId, 'Time to first response', 'Time to first response', 'start_issue_created', 'stop_status_set_' . $status['id'], $currentDate);
 
         // sla 2: time to resolution
-        $slaId = SLA::save($projectId, 'Time to resolution', 'Time to resolution', 'start_issue_created', 'stop_resolution_set', $currentDate);
-        SLA::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 1440);
+        $slaId = Sla::save($projectId, 'Time to resolution', 'Time to resolution', 'start_issue_created', 'stop_resolution_set', $currentDate);
+        Sla::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 1440);
 
         // sla 3: time waiting for support
-        $slaId = SLA::save($projectId, 'Time waiting for support', 'Time waiting for support', 'start_issue_created', 'stop_resolution_set', $currentDate);
-        SLA::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 24);
-        SLA::addGoal($slaId, $defaultSLACalendarId, 'priority = Critical', '', 96);
+        $slaId = Sla::save($projectId, 'Time waiting for support', 'Time waiting for support', 'start_issue_created', 'stop_resolution_set', $currentDate);
+        Sla::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 24);
+        Sla::addGoal($slaId, $defaultSLACalendarId, 'priority = Critical', '', 96);
 
         $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
         if ($issues) {
@@ -1851,9 +1851,9 @@ class Project
     }
 
     public static function removeHelpdeskData($projectId) {
-        $slas = SLA::getByProjectId($projectId);
+        $slas = Sla::getByProjectId($projectId);
         while ($slas && $sla = $slas->fetch_array(MYSQLI_ASSOC)) {
-            SLA::deleteById($sla['id']);
+            Sla::deleteById($sla['id']);
         }
 
         $calendars = SLACalendar::getByProjectId($projectId);

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 
 class DeleteController extends UbirimiController
 {
@@ -18,9 +18,9 @@ class DeleteController extends UbirimiController
         $slaId = $request->request->get('id');
         $projectId = $request->request->get('project_id');
 
-        SLA::deleteById($slaId);
+        Sla::deleteById($slaId);
 
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
         $slaToGoId = -1;
 
         if ($SLAs) {

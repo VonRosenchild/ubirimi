@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\HelpDesk\SLA;
+    use Ubirimi\Repository\HelpDesk\Sla;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Issue\Issue;
@@ -92,7 +92,7 @@
                                     <?php for ($k = 0; $k < count($slaData); $k++): ?>
                                         <?php if (isset($slaData[$k]) && $slaData[$k]['slaId'] == $slaIds[$j]): ?>
                                             <span class="<?php if (($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                                                <?php echo SLA::formatOffset($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes']) ?>
+                                                <?php echo Sla::formatOffset($slaData[$k]['goalValue'] - $slaData[$k]['intervalMinutes']) ?>
                                             </span>
                                             <?php if ($slaData[$k]['endDate']): ?>
                                                 <img src="/img/accept.png" style="position: relative; top: 3px;" />

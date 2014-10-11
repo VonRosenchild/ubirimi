@@ -1,10 +1,10 @@
 <?php
 
-namespace Ubirimi\Repository\HelpDesk;
+namespace Ubirimi\HelpDesk\Repository\Organization;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class OrganizationCustomer
+class Customer
 {
     public static function getByOrganizationId($organizationId) {
         $query = 'SELECT user.id, user.first_name, user.last_name, user.email ' .

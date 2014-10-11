@@ -9,7 +9,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Settings;
@@ -35,7 +35,7 @@ class AddController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
         }
@@ -51,7 +51,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $slaExists = SLA::getByName(mb_strtolower($name), $projectId);
+            $slaExists = Sla::getByName(mb_strtolower($name), $projectId);
             if ($slaExists) {
                 $duplicateName = true;
             }
@@ -80,7 +80,7 @@ class AddController extends UbirimiController
 
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $slaId = SLA::save(
+                $slaId = Sla::save(
                     $projectId,
                     $name,
                     $description,
@@ -99,7 +99,7 @@ class AddController extends UbirimiController
                                 $value = 'all_remaining_issues';
                             }
 
-                            SLA::addGoal(
+                            Sla::addGoal(
                                 $slaId,
                                 $request->request->get('goal_calendar_' . $index),
                                 $value,

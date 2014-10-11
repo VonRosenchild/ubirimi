@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\HelpDesk\Organization;
-use Ubirimi\Repository\HelpDesk\OrganizationCustomer;
+use Ubirimi\Repository\HelpDesk\Customer;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Container\UbirimiContainer;
 
@@ -62,7 +62,7 @@ class AddController extends UbirimiController
                 ));
 
                 if ($organizationId) {
-                    OrganizationCustomer::create($organizationId, $userId);
+                    Customer::create($organizationId, $userId);
                     return new RedirectResponse('/helpdesk/administration/customers/' . $organizationId);
                 }
 

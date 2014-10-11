@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Repository\HelpDesk\Queue;
@@ -22,7 +22,7 @@ class ViewController extends UbirimiController
         $slaSelectedId = $request->get('sla_id');
 
         $project = Project::getById($projectId);
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';
@@ -34,12 +34,12 @@ class ViewController extends UbirimiController
         if ($queues) {
             $queueSelected = $queues->fetch_array(MYSQLI_ASSOC);
         }
-        $slaSelected = SLA::getById($slaSelectedId);
+        $slaSelected = Sla::getById($slaSelectedId);
 
         $startConditions = explode("#", $slaSelected['start_condition']);
         $stopConditions = explode("#", $slaSelected['stop_condition']);
 
-        $goals = SLA::getGoals($slaSelectedId);
+        $goals = Sla::getGoals($slaSelectedId);
         $allRemainingIssuesDefinitionFound = false;
 
         return $this->render(__DIR__ . '/../../Resources/views/sla/View.php', get_defined_vars());

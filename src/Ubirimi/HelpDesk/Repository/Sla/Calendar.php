@@ -1,10 +1,10 @@
 <?php
 
-namespace Ubirimi\Repository\HelpDesk;
+namespace Ubirimi\HelpDesk\Repository\Sla;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class SLACalendar
+class Calendar
 {
     public static function getByProjectId($projectId) {
         $query = 'SELECT * from help_sla_calendar where project_id = ? order by id desc';
@@ -81,7 +81,7 @@ class SLACalendar
         $stmt->execute();
         $stmt->close();
 
-        SLACalendar::deleteDataByCalendarId($Id);
+        Calendar::deleteDataByCalendarId($Id);
     }
 
     public static function getData($slaCalendarId) {
@@ -152,7 +152,7 @@ class SLACalendar
         $calendarId = UbirimiContainer::get()['db.connection']->insert_id;
 
         // add the data
-        SLACalendar::addData($calendarId, $data);
+        Calendar::addData($calendarId, $data);
 
         return $calendarId;
     }

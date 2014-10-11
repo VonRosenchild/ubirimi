@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 
 class GetDataController extends UbirimiController
 {
@@ -21,7 +21,7 @@ class GetDataController extends UbirimiController
         $dateFrom = $request->get('date_from');
         $dateTo = $request->get('date_to');
 
-        $issues = SLA::getIssues($slaId, $dateFrom, $dateTo);
+        $issues = Sla::getIssues($slaId, $dateFrom, $dateTo);
 
         $dates = array();
         $succeeded = array();

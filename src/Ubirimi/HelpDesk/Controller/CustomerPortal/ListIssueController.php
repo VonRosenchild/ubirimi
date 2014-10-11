@@ -10,7 +10,7 @@ use Ubirimi\Repository\Client;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\SystemProduct;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -77,7 +77,7 @@ class ListIssueController extends UbirimiController
             }
         }
 
-        $SLAs = SLA::getByProjectIds(array(229));
+        $SLAs = Sla::getByProjectIds(array(229));
 
         $columns = array('code', 'summary', 'priority', 'status', 'created', 'updated', 'reporter', 'assignee', 'settings_menu');
         if (Util::checkUserIsLoggedIn()) {

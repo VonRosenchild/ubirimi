@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Settings;
@@ -23,7 +23,7 @@ class EditController extends UbirimiController
 
         $slaId = $request->get('id');
 
-        $SLA = SLA::getById($slaId);
+        $SLA = Sla::getById($slaId);
         $project = Project::getById($SLA['project_id']);
 
         $startConditions = explode("#", $SLA['start_condition']);
@@ -31,7 +31,7 @@ class EditController extends UbirimiController
 
         $slaConditions = array_merge($startConditions, $stopConditions);
         $slaCalendars = SLACalendar::getByProjectId($SLA['project_id']);
-        $goals = SLA::getGoals($slaId);
+        $goals = Sla::getGoals($slaId);
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';
 
@@ -53,7 +53,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
             }
 
-            $slaExists = SLA::getByName(mb_strtolower($name), $SLA['project_id'], $slaId);
+            $slaExists = Sla::getByName(mb_strtolower($name), $SLA['project_id'], $slaId);
             if ($slaExists) {
                 $duplicateName = true;
             }
@@ -82,15 +82,15 @@ class EditController extends UbirimiController
 
                 $currentDate = Util::getServerCurrentDateTime();
 
-                SLA::updateById($slaId, $name, $description, $startCondition, $stopCondition, $currentDate);
+                Sla::updateById($slaId, $name, $description, $startCondition, $stopCondition, $currentDate);
 
-                SLA::deleteGoalsBySLAId($slaId);
+                Sla::deleteGoalsBySLAId($slaId);
                 // add the goals of the sla
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 16) == 'goal_definition_') {
                         $index = str_replace('goal_definition_', '', $key);
                         if ($value && $request->request->get('goal_value_' . $index)) {
-                            SLA::addGoal(
+                            Sla::addGoal(
                                 $slaId,
                                 $request->request->get('goal_calendar_' . $index),
                                 $value,

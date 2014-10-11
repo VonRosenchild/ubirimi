@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Agile\Repository\AgileBoard;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\HelpDesk\SLA;
+use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Util;
@@ -1649,7 +1649,7 @@ class Issue
     public function prepareWhereClauseFromQueue($queueDefinition, $userId, $projectId, $clientId) {
 
         $value = mb_strtolower($queueDefinition);
-        $SLAs = SLA::getByProjectId($projectId, 'array', "LENGTH('name') DESC");
+        $SLAs = Sla::getByProjectId($projectId, 'array', "LENGTH('name') DESC");
 
         foreach ($SLAs as $SLA) {
             if (stripos($value, mb_strtolower($SLA['name'])) !== false) {
@@ -1701,7 +1701,7 @@ class Issue
     }
 
     public function updateSLADataForProject($clientId, $projectId, $userId, $clientSettings) {
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
 
         if ($SLAs) {
 
@@ -1712,7 +1712,7 @@ class Issue
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
                 while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                    $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
+                    $slaData = Sla::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
 
                     if ($slaData[0]) {
                         Issue::updateSLAValueOnly($issue['id'], $SLA['id'], $slaData[0]);
@@ -1728,16 +1728,16 @@ class Issue
     public function updateSLAValue($issue, $clientId, $clientSettings) {
         $slasPrintData = array();
         $projectId = $issue['issue_project_id'];
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
 
         if ($SLAs) {
             // check issue against the SLAs
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
-                $slaData = SLA::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
+                $slaData = Sla::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
                 if ($slaData) {
                     $slasPrintData[] = $slaData;
-                    SLA::updateDataForSLA($issue['id'], $slaData['slaId'], $slaData['intervalMinutes'], $slaData['goalId'], $slaData['startDate'], $slaData['endDate']);
+                    Sla::updateDataForSLA($issue['id'], $slaData['slaId'], $slaData['intervalMinutes'], $slaData['goalId'], $slaData['startDate'], $slaData['endDate']);
                 }
             }
         }
@@ -1746,7 +1746,7 @@ class Issue
     }
 
     public function addPlainSLAData($issueId, $projectId) {
-        $SLAs = SLA::getByProjectId($projectId);
+        $SLAs = Sla::getByProjectId($projectId);
         if ($SLAs) {
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
                 $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id) VALUES (?, ?)";

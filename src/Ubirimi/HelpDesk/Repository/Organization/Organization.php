@@ -1,8 +1,6 @@
 <?php
 
-namespace Ubirimi\Repository\HelpDesk;
-
-use Ubirimi\Container\UbirimiContainer;
+namespace Ubirimi\HelpDesk\Repository\Organization;
 
 class Organization
 {
