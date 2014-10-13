@@ -17,9 +17,9 @@ use Ubirimi\Repository\Client;
     } else {
         $issuesPerPage = 25;
         $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
         $loggedInUserId = null;
-        $clientSettings = Client::getSettings($clientId);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
     }
 
     $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Search';
@@ -28,7 +28,7 @@ use Ubirimi\Repository\Client;
     $selectedProductId = $session->get('selected_product_id');
     $cliMode = false;
 
-    $projectsForBrowsing = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
+    $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
 
     $searchParameters = array();
     $parseURLData = null;
@@ -63,7 +63,7 @@ use Ubirimi\Repository\Client;
         $getProjectIds = isset($_GET['project']) ? explode('|', $_GET['project']) : null;
 
         if ($getProjectIds) {
-            if (!Project::checkProjectsBelongToClient($clientId, $getProjectIds)) {
+            if (!$this->getRepository('yongo.project.project')->checkProjectsBelongToClient($clientId, $getProjectIds)) {
                 header('Location: /general-settings/bad-link-access-denied');
                 die();
             }
@@ -93,7 +93,7 @@ use Ubirimi\Repository\Client;
         $columns[] = '';
     }
 
-    $hasGlobalBulkPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE);
+    $hasGlobalBulkPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE);
     $customFilters = Filter::getAllByUser($loggedInUserId);
 
     if ($getFilter) {

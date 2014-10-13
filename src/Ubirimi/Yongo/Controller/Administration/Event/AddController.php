@@ -35,7 +35,7 @@ class AddController extends UbirimiController
                 $event = new Event($session->get('client/id'), $name, $description);
                 $event->save($currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

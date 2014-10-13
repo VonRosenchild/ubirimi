@@ -9,12 +9,12 @@
     $stepIdTo = $_GET['id_to'];
     $workflowId = $_GET['workflow_id'];
 
-    $workflowMetadata = Workflow::getMetaDataById($workflowId);
+    $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
-    $workflowData = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+    $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
     $transitionName = $workflowData['transition_name'];
     $screens = Screen::getAll($clientId);
-    $initialStep = Workflow::getInitialStep($workflowId);
+    $initialStep = $this->getRepository('yongo.workflow.workflow')->getInitialStep($workflowId);
 
 ?>
 <div>Transition name: <input class="inputText" type="text" value="<?php echo $transitionName ?>" id="transition_name_modal" /></div>

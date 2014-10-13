@@ -49,7 +49,7 @@
                                 <td><?php echo $status['name']; ?></td>
                                 <td><?php echo $status['description']; ?></td>
                                 <td>
-                                    <?php $workflows = Workflow::getByIssueStatusId($status['id']); ?>
+                                    <?php $workflows = $this->getRepository('yongo.workflow.workflow')->getByIssueStatusId($status['id']); ?>
                                     <?php if ($workflows): ?>
                                         <div>Active</div>
                                     <?php else: ?>

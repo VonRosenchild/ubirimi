@@ -1,60 +1,58 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Filter;
-    use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Filter;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Yongo\Repository\Permission\Permission;
 
-    if (!strstr($_SERVER['REQUEST_URI'], '/yongo/issue')) {
-        $session->remove('array_ids');
-        $session->remove('last_search_parameters');
-    }
+if (!strstr($_SERVER['REQUEST_URI'], '/yongo/issue')) {
+    $session->remove('array_ids');
+    $session->remove('last_search_parameters');
+}
 
-    $projectsMenu = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+$projectsMenu = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
-    if ($projectsMenu) {
-        $projectsForBrowsing = array();
-        for ($i = 0; $i < count($projectsMenu); $i++)
-            $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
+if ($projectsMenu) {
+    $projectsForBrowsing = array();
+    for ($i = 0; $i < count($projectsMenu); $i++)
+        $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
 
-        $filters = Filter::getAllByUser($loggedInUserId);
+    $filters = Filter::getAllByUser($loggedInUserId);
 
-        if (null == $session->get('selected_project_id')) {
-            if ($projectsMenu) {
-                $session->set('selected_project_id', $projectsMenu[0]['id']);
-            }
+    if (null == $session->get('selected_project_id')) {
+        if ($projectsMenu) {
+            $session->set('selected_project_id', $projectsMenu[0]['id']);
         }
-
-        $selectedProjectId = $session->get('selected_project_id');
-        $selectedProjectMenu = Project::getById($session->get('selected_project_id'));
     }
 
-    $hasAdministerProjectsPermission = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
-    $hasCreateIssuePermission = false;
-    if (isset($projectsForBrowsing) && count($projectsForBrowsing)) {
-        $hasCreateIssuePermission = Project::userHasPermission($projectsForBrowsing, Permission::PERM_CREATE_ISSUE, $loggedInUserId);
-    }
+    $selectedProjectId = $session->get('selected_project_id');
+    $selectedProjectMenu = UbirimiContainer::get()['repository']->get('yongo.project.project')->getById($session->get('selected_project_id'));
+}
 
-    $styleSelectedMenu = 'style="background-color: #EEEEEE;';
+$hasAdministerProjectsPermission = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
+$hasCreateIssuePermission = false;
+if (isset($projectsForBrowsing) && count($projectsForBrowsing)) {
+    $hasCreateIssuePermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectsForBrowsing, Permission::PERM_CREATE_ISSUE, $loggedInUserId);
+}
 
-    $projectsWithCreatePermission = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_CREATE_ISSUE);
+$styleSelectedMenu = 'style="background-color: #EEEEEE;';
 
-    if (!isset($menuSelectedCategory))
-        $menuSelectedCategory = null;
+$projectsWithCreatePermission = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_CREATE_ISSUE);
 
-    $hasAdministrationPermission = $hasAdministerProjectsPermission || User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+if (!isset($menuSelectedCategory))
+    $menuSelectedCategory = null;
 
-    Util::renderMaintenanceMessage();
+$hasAdministrationPermission = $hasAdministerProjectsPermission || UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
 
-    if ($session->has('client/products')) {
-        $clientProducts = $session->get('client/products');
-    } else {
-        $clientProducts = Client::getProducts(Client::getClientIdAnonymous(), 'array');
-    }
+Util::renderMaintenanceMessage();
+
+if ($session->has('client/products')) {
+    $clientProducts = $session->get('client/products');
+} else {
+    $clientProducts = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProducts($this->getRepository('ubirimi.general.client')->getClientIdAnonymous(), 'array');
+}
 ?>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#003466">
@@ -70,7 +68,7 @@
                     <?php if (Util::checkUserIsLoggedIn()): ?>
                         <td style="height:44px;" id="menu_top_user" width="58px" align="center" class="product-menu">
                             <span>
-                                <img src="<?php echo User::getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
+                                <img src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
                             </span>
                             <span class="arrow" style="top: 12px;"></span>
                             &nbsp;

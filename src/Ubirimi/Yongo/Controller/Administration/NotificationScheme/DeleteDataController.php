@@ -18,11 +18,11 @@ class DeleteDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeDataId = $request->request->get('notification_scheme_data_id');
-        Scheme::deleteDataById($notificationSchemeDataId);
+        $this->getRepository('yongo.notification.scheme')->gdeleteDataById($notificationSchemeDataId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

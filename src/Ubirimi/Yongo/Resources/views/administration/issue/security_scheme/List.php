@@ -47,7 +47,7 @@
                             </td>
                             <td>
                                 <?php
-                                    $projects = Project::getByIssueSecurityScheme($scheme['id']);
+                                    $projects = $this->getRepository('yongo.project.project')->getByIssueSecurityScheme($scheme['id']);
                                     if ($projects) {
                                         echo '<ul>';
                                         while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

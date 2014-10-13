@@ -38,22 +38,22 @@ class AssociateStep2Controller extends UbirimiController
                     $newSecurityLevel = $request->request->get($key);
                     $oldSecurityLevel = str_replace('new_level_', '', $key);
                     if ($oldSecurityLevel == 0) {
-                        Project::updateAllIssuesSecurityLevel($projectId, $newSecurityLevel);
+                        $this->getRepository('yongo.project.project')->updateAllIssuesSecurityLevel($projectId, $newSecurityLevel);
                     } else {
                         $oldNewLevel[] = array($oldSecurityLevel, $newSecurityLevel);
                     }
                 } else if ($key == 'no_level_set') {
                     $newSecurityLevel = $request->request->get($key);
-                    Project::updateIssueSecurityLevelForUnsercuredIssues($projectId, $newSecurityLevel);
+                    $this->getRepository('yongo.project.project')->updateIssueSecurityLevelForUnsercuredIssues($projectId, $newSecurityLevel);
                 }
             }
 
             if (count($oldNewLevel)) {
                 $date = Util::getServerCurrentDateTime();
-                Project::updateIssuesSecurityLevel($projectId, $oldNewLevel, $date);
+                $this->getRepository('yongo.project.project')->updateIssuesSecurityLevel($projectId, $oldNewLevel, $date);
             }
 
-            Project::setIssueSecuritySchemeId($projectId, $schemeId);
+            $this->getRepository('yongo.project.project')->setIssueSecuritySchemeId($projectId, $schemeId);
 
             return new RedirectResponse('/yongo/administration/project/issue-security/' . $projectId);
         }

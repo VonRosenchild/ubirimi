@@ -24,7 +24,7 @@ class DeleteController extends UbirimiController
 
         Notebook::deleteById($notebookId);
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_QUICK_NOTES,
             $session->get('user/id'),

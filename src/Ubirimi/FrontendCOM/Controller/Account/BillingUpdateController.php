@@ -19,9 +19,9 @@ class BillingUpdateController extends UbirimiController
         $clientId = $session->get('client/id');
         $content = 'account/BillingUpdate.php';
 
-        $client = Client::getById($clientId);
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
         $paymentUtil = new PaymentUtil();
-        $usersClient = Client::getUsers($clientId, null, 'array');
+        $usersClient = $this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array');
         $numberUsers = count($usersClient);
         $amount = $paymentUtil->getAmountByUsersCount($numberUsers);
         $VAT = 0;

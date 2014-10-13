@@ -29,13 +29,13 @@ class ViewController extends UbirimiController
 
         $permissionScheme = Scheme::getMetaDataById($project['permission_scheme_id']);
         $permissionCategories = Permission::getCategories();
-        $hasGlobalAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS

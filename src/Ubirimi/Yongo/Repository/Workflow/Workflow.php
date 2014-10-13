@@ -150,7 +150,7 @@ class Workflow
         $stmt->bind_param("i", $Id);
         $stmt->execute();
 
-        $steps = Workflow::getSteps($Id);
+        $steps = $this->getRepository('yongo.workflow.workflow')->getSteps($Id);
         if ($steps) {
             while ($step = $steps->fetch_array(MYSQLI_ASSOC)) {
                 $query = "delete from workflow_step_property where workflow_step_id = ?";
@@ -249,7 +249,7 @@ class Workflow
     }
 
     public function getDataForCreation($workflowId) {
-        $initialStep = Workflow::getInitialStep($workflowId);
+        $initialStep = $this->getRepository('yongo.workflow.workflow')->getInitialStep($workflowId);
 
         $query = "select workflow_data.id, workflow_step.linked_issue_status_id " .
             "from workflow_data " .
@@ -627,7 +627,7 @@ class Workflow
     }
 
     public function checkLogicalConditionsByTransitionId($workflowDataId) {
-        $conditionData = Workflow::getConditionByTransitionId($workflowDataId);
+        $conditionData = $this->getRepository('yongo.workflow.workflow')->getConditionByTransitionId($workflowDataId);
         $conditionString = $conditionData['definition_data'];
 
         $conditionString = str_replace("[[AND]]", ' && ', $conditionString);
@@ -658,7 +658,7 @@ class Workflow
     }
 
     public function checkConditionsByTransitionId($workflowDataId, $userId, $issueData) {
-        $conditionData = Workflow::getConditionByTransitionId($workflowDataId);
+        $conditionData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getConditionByTransitionId($workflowDataId);
         $conditionString = $conditionData['definition_data'];
 
         $conditionString = str_replace("[[AND]]", ' && ', $conditionString);
@@ -693,7 +693,7 @@ class Workflow
         for ($i = 0; $i < count($permissions); $i++) {
             $permissionId = (int)str_replace('perm_id=', '', $permissions[$i]);
 
-            $hasPermission = Project::userHasPermission(array($issueData['issue_project_id']), $permissionId, $userId);
+            $hasPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission(array($issueData['issue_project_id']), $permissionId, $userId);
             if ($hasPermission)
                 $text = ' 1 ';
             else
@@ -757,22 +757,22 @@ class Workflow
     }
 
     public function copy($clientId, $workflowId, $name, $description, $date) {
-        $oldWorkflow = Workflow::getMetaDataById($workflowId);
-        $newWorkflowId = Workflow::createNewMetaData($clientId, $oldWorkflow['issue_type_scheme_id'], $name, $description, $date);
+        $oldWorkflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+        $newWorkflowId = $this->getRepository('yongo.workflow.workflow')->createNewMetaData($clientId, $oldWorkflow['issue_type_scheme_id'], $name, $description, $date);
 
         // duplicate the steps
-        $oldWorkflowSteps = Workflow::getSteps($workflowId, 1);
+        $oldWorkflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId, 1);
         $stepsLinking = array();
         while ($oldStep = $oldWorkflowSteps->fetch_array(MYSQLI_ASSOC)) {
-            $newStepId = Workflow::addStep($newWorkflowId, $oldStep['step_name'], $oldStep['status_id'], $oldStep['initial_step_flag'], $date);
+            $newStepId = $this->getRepository('yongo.workflow.workflow')->addStep($newWorkflowId, $oldStep['step_name'], $oldStep['status_id'], $oldStep['initial_step_flag'], $date);
             $stepsLinking[$oldStep['id']] = $newStepId;
         }
 
         // duplicate the data
         $dataLinking = array();
-        $oldWorkflowData = Workflow::getDataByWorkflowId($workflowId);
+        $oldWorkflowData = $this->getRepository('yongo.workflow.workflow')->getDataByWorkflowId($workflowId);
         while ($oldWorkflowRow = $oldWorkflowData->fetch_array(MYSQLI_ASSOC)) {
-            $newDataId = Workflow::addTransition($newWorkflowId, $oldWorkflowRow['screen_id'], $stepsLinking[$oldWorkflowRow['ws1id']], $stepsLinking[$oldWorkflowRow['ws2id']], $oldWorkflowRow['transition_name'], $oldWorkflowRow['transition_description']);
+            $newDataId = $this->getRepository('yongo.workflow.workflow')->addTransition($newWorkflowId, $oldWorkflowRow['screen_id'], $stepsLinking[$oldWorkflowRow['ws1id']], $stepsLinking[$oldWorkflowRow['ws2id']], $oldWorkflowRow['transition_name'], $oldWorkflowRow['transition_description']);
             $dataLinking[$oldWorkflowRow['id']] = $newDataId;
         }
 
@@ -786,7 +786,7 @@ class Workflow
         foreach ($dataLinking as $oldDataId => $newDataId) {
             $oldFunctionData = WorkflowFunction::getByWorkflowDataId($oldDataId);
             while ($oldFunctionData && $oldFunctionRow = $oldFunctionData->fetch_array(MYSQLI_ASSOC)) {
-                Workflow::addPostFunctionToTransition($newDataId, $oldFunctionRow['function_id'], $oldFunctionRow['definition_data']);
+                $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($newDataId, $oldFunctionRow['function_id'], $oldFunctionRow['definition_data']);
             }
         }
 
@@ -795,7 +795,7 @@ class Workflow
 
             $oldConditionData = Condition::getByTransitionId($oldDataId);
             if ($oldConditionData) {
-                Workflow::addCondition($newDataId, $oldConditionData['definition_data']);
+                $this->getRepository('yongo.workflow.workflow')->addCondition($newDataId, $oldConditionData['definition_data']);
             }
         }
     }

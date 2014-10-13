@@ -19,13 +19,13 @@ class DeleteController extends UbirimiController
 
         $workflowId = $request->request->get('id');
 
-        $workflow = Workflow::getMetaDataById($workflowId);
+        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
-        Workflow::deleteById($workflowId);
+        $this->getRepository('yongo.workflow.workflow')->deleteById($workflowId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

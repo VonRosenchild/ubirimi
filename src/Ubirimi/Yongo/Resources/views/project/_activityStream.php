@@ -16,7 +16,7 @@
                 <?php foreach ($data as $userId => $historyData): ?>
                     <tr>
                         <td valign="top">
-                            <img width="65px" style="margin-right: 4px" src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $userData[$userId]['picture'], 'id' => $userId), 'big') ?>" />
+                            <img width="65px" style="margin-right: 4px" src="<?php echo $this->getRepository('ubirimi.user.user')->getUserAvatarPicture(array('avatar_picture' => $userData[$userId]['picture'], 'id' => $userId), 'big') ?>" />
                         </td>
                         <td>
                             <?php foreach ($historyData as $dateEvent => $eventDatas): ?>

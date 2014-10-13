@@ -30,7 +30,7 @@ class AddGuestController extends UbirimiController
         CalendarEvent::shareWithUsers($eventId, $userIds, $currentDate);
 
         $event = CalendarEvent::getById($eventId, 'array');
-        $userThatShares = User::getById($session->get('user/id'));
+        $userThatShares = $this->getRepository('ubirimi.user.user')->getById($session->get('user/id'));
 
         $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Add Guest for Event ' . $event['name']);
         $calendarEvent = new CalEvent(

@@ -12,7 +12,7 @@ class ProjectService extends UbirimiService
     {
         $currentDate = $project->getDateCreated();
 
-        $projectId = Project::add(
+        $projectId = $this->getRepository('yongo.project.project')->add(
             $project->getClientId(),
             $project->getIssueTypeSchemeId(),
             $project->getIssueTypeScreenSchemeId(),
@@ -29,12 +29,12 @@ class ProjectService extends UbirimiService
             $project->getDateCreated()
         );
 
-        Project::addDefaultUsers($project->getClientId(), $projectId, $currentDate);
-        Project::addDefaultGroups($project->getClientId(), $projectId, $currentDate);
+        $this->getRepository('yongo.project.project')->addDefaultUsers($project->getClientId(), $projectId, $currentDate);
+        $this->getRepository('yongo.project.project')->addDefaultGroups($project->getClientId(), $projectId, $currentDate);
 
         if ($project->getHelpDeskEnabledFlag()) {
 
-            Project::addDefaultInitialDataForHelpDesk($project->getClientId(), $projectId, $userId, $currentDate);
+            $this->getRepository('yongo.project.project')->addDefaultInitialDataForHelpDesk($project->getClientId(), $projectId, $userId, $currentDate);
        }
 
         return $projectId;

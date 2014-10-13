@@ -14,7 +14,7 @@ class ViewController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $clientYongoSettings = Client::getYongoSettings($session->get('client/id'));
+        $clientYongoSettings = $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id'));
         $menuSelectedCategory = 'system';
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/general_configuration/View.php', get_defined_vars());

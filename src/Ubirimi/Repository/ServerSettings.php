@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class ServerSettings
 {
-    public static function updateMaintenanceMessage($message) {
+    public function updateMaintenanceMessage($message) {
         $query = "update server_settings set maintenance_server_message = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -15,7 +15,7 @@ class ServerSettings
         $stmt->execute();
     }
 
-    public static function get() {
+    public function get() {
         $query = 'SELECT * from server_settings';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

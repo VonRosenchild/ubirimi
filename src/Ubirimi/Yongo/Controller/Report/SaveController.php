@@ -31,10 +31,10 @@ class SaveController extends UbirimiController
         if ($Id != -1) {
             Filter::updateById($Id, $filterName, $filterDescription, $filterData, $date);
             $Id = -1;
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo filter' . $filterName, $date);
+            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo filter' . $filterName, $date);
         } else {
             $Id = Filter::save($loggedInUserId, $filterName, $filterDescription, $filterData, $date);
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo filter' . $filterName, $date);
+            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo filter' . $filterName, $date);
         }
 
         return new Response($Id);

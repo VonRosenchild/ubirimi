@@ -17,7 +17,7 @@ class DeleteOutgoingController extends UbirimiController
 
         $workflowId = $request->request->get('workflow_id');
         $stepId = $request->request->get('step_id');
-        Workflow::deleteOutgoingTransitionsForStepId($workflowId, $stepId);
+        $this->getRepository('yongo.workflow.workflow')->deleteOutgoingTransitionsForStepId($workflowId, $stepId);
 
         return new Response('');
     }

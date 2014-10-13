@@ -33,7 +33,7 @@ use Ubirimi\Yongo\Repository\Issue\Filter;
             <tbody>
                 <?php while ($filter = $filters->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr id="table_row_<?php echo $filter['id'] ?>">
-                        <?php $boards = Board::getByFilterId($filter['id']) ?>
+                        <?php $boards = $this->getRepository('agile.board.board')->getByFilterId($filter['id']) ?>
                         <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $filter['id'] ?>" /></td>
                         <td><a href="/yongo/issue/search?filter=<?php echo $filter['id'] ?>&<?php echo $filter['definition'] ?>"><?php echo $filter['name'] ?></a></td>
                         <td><?php echo $filter['description'] ?></td>

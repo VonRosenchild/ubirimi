@@ -43,7 +43,7 @@
                             </td>
                             <td width="500px">
                                 <?php
-                                    $projects = Project::getByPermissionScheme($scheme['id']);
+                                    $projects = $this->getRepository('yongo.project.project')->getByPermissionScheme($scheme['id']);
                                     if ($projects) {
                                         echo '<ul>';
                                         while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

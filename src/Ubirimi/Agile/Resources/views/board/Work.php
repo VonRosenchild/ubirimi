@@ -81,7 +81,7 @@
     </div>
 
     <?php
-        $lastColumnStatuses = Board::getColumnStatuses($columns[count($columns) - 1]['id'], 'array', 'id');
+        $lastColumnStatuses = $this->getRepository('agile.board.board')->getColumnStatuses($columns[count($columns) - 1]['id'], 'array', 'id');
     ?>
     <div id="agileModalTransitionWithScreen"></div>
     <div id="agileModalUpdateParent"></div>

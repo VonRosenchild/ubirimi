@@ -15,7 +15,7 @@ class DeleteConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionRoleId = $request->get('perm_role_id');
-        $role = Role::getPermissionRoleById($permissionRoleId);
+        $role = $this->getRepository('yongo.permission.role')->ggetPermissionRoleById($permissionRoleId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/role/DeleteConfirm.php', get_defined_vars());
     }

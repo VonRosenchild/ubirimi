@@ -36,7 +36,7 @@ class UploadProfilePictureController extends UbirimiController
 
             move_uploaded_file($tmp_name, $uploadPath . "/" . $originalFileName);
 
-            User::updateAvatar($originalFileName, $userId);
+            $this->getRepository('ubirimi.user.user')->updateAvatar($originalFileName, $userId);
 
             $newFileName = $uploadPath . "/" . $originalFileName;
             $newThumbnailName = $uploadPath . "/" . $filename . '_150.' . $extension;

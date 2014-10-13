@@ -15,7 +15,7 @@ class AddGuestConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $eventId = $request->get('id');
-        $users = User::getByClientId($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
 
         return $this->render(__DIR__ . '/../../Resources/views/event/AddGuestConfirm.php', get_defined_vars());
     }

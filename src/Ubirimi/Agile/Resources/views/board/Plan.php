@@ -137,7 +137,7 @@
                                 }
                             }
 
-                            $issues = Board::getBacklogIssues($clientId, $board, $onlyMyIssuesFlag, $loggedInUserId, $searchQuery, $completeStatuses);
+                            $issues = $this->getRepository('agile.board.board')->getBacklogIssues($clientId, $board, $onlyMyIssuesFlag, $loggedInUserId, $searchQuery, $completeStatuses);
 
                             $params = array('issues' => $issues, 'render_checkbox' => true, 'show_header' => false, 'in_backlog' => true);
                             echo '<div class="headerPageText" style="padding-bottom: 4px; padding-top: 4px">Backlog</div>';

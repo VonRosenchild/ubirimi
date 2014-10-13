@@ -21,11 +21,11 @@ class AssignDefaultUsersController extends UbirimiController
         $userArray = $request->request->get('user_arr');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $permissionRole = Role::getById($permissionRoleId);
-        Role::deleteDefaultUsersByPermissionRoleId($permissionRoleId);
-        Role::addDefaultUsers($permissionRoleId, $userArray, $currentDate);
+        $permissionRole = $this->getRepository('yongo.permission.role')->ggetById($permissionRoleId);
+        $this->getRepository('yongo.permission.role')->gdeleteDefaultUsersByPermissionRoleId($permissionRoleId);
+        $this->getRepository('yongo.permission.role')->gaddDefaultUsers($permissionRoleId, $userArray, $currentDate);
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

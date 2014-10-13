@@ -15,7 +15,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $permissionSchemes = Scheme::getByClientId($session->get('client/id'));
+        $permissionSchemes = $this->getRepository('yongo.permission.scheme')->ggetByClientId($session->get('client/id'));
         $menuSelectedCategory = 'issue';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Permission Schemes';

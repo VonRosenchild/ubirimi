@@ -10,7 +10,7 @@
     $workflowId = $_GET['workflow_id'];
 
     $allPostFunctions = WorkflowFunction::getAll();
-    $workflowData = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $idFrom, $idTo);
+    $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $idFrom, $idTo);
     $workflowDataId = $workflowData['id'];
 
     $postFunctions = WorkflowFunction::getByWorkflowDataId($workflowDataId);

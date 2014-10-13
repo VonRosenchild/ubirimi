@@ -16,7 +16,7 @@ class ViewConfigurationController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'system';
-        $settings = Client::getYongoSettings($session->get('client/id'));
+        $settings = $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id'));
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Attachment Configuration';
 

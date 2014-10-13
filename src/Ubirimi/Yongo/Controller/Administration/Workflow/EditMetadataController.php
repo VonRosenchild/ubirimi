@@ -19,7 +19,7 @@ class EditMetadataController extends UbirimiController
 
         $workflowId = $request->get('id');
 
-        $workflow = Workflow::getMetaDataById($workflowId);
+        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
         $workflowIssueTypeSchemes = TypeScheme::getByClientId($session->get('client/id'), 'workflow');
 
         if ($workflow['client_id'] != $session->get('client/id')) {
@@ -39,9 +39,9 @@ class EditMetadataController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Workflow::updateMetaDataById($workflowId, $name, $description, $workflowIssueTypeSchemeId, $currentDate);
+                $this->getRepository('yongo.workflow.workflow')->updateMetaDataById($workflowId, $name, $description, $workflowIssueTypeSchemeId, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

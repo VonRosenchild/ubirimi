@@ -41,7 +41,7 @@ class EditController extends UbirimiController
             $daysPerWeek = $request->request->get('days_per_week');
             $defaultUnit = $request->request->get('default_unit');
 
-            Client::updateTimeTrackingSettings(
+            $this->getRepository('ubirimi.general.client')->updateTimeTrackingSettings(
                 $session->get('client/id'),
                 $hoursPerDay,
                 $daysPerWeek,
@@ -50,7 +50,7 @@ class EditController extends UbirimiController
 
             $currentDate = Util::getServerCurrentDateTime();
 
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

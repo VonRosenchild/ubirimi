@@ -21,7 +21,7 @@ class FilterController extends UbirimiController
             $filters['name'] = $request->request->get('name_filter');
         }
 
-        $groups = Client::getGroupsByClientIdAndProductIdAndFilters(
+        $groups = $this->getRepository('ubirimi.general.client')->getGroupsByClientIdAndProductIdAndFilters(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $filters

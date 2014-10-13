@@ -37,9 +37,9 @@
                         <td align="center">
                             <?php
 
-                                $userIsDirectMemberOfProjectRole = User::checkUserInProjectRoleId($userId, $project['id'], $role['id']);
+                                $userIsDirectMemberOfProjectRole = $this->getRepository('ubirimi.user.user')->checkUserInProjectRoleId($userId, $project['id'], $role['id']);
 
-                                $groups = User::getGroupsForUserIdAndRoleId($userId, $project['id'], $role['id'], $groupIds);
+                                $groups = $this->getRepository('ubirimi.user.user')->getGroupsForUserIdAndRoleId($userId, $project['id'], $role['id'], $groupIds);
                             ?>
                             <input name="role_<?php echo $project['id'] . '_' . $role['id'] ?>" type="checkbox" <?php if ($userIsDirectMemberOfProjectRole) echo 'checked="checked"'; ?> />
                             <?php $dataArray = array() ?>

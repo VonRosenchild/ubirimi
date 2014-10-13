@@ -25,7 +25,7 @@ class EditController extends UbirimiController
 
         $emptyName = false;
 
-        $allFields = Field::getByClient($session->get('client/id'));
+        $allFields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'issue';
 
         $source = $request->get('source');

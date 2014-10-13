@@ -43,7 +43,7 @@ class IssueService extends UbirimiService
         $newIssueNumber = $issueReturnValues[1];
 
         // update last issue number for this project
-        Project::updateLastIssueNumber($projectId, $newIssueNumber);
+        $this->getRepository('yongo.project.project')->updateLastIssueNumber($projectId, $newIssueNumber);
 
         // if a parent is set check if the parent issue id is part of a sprint. if yes also add the child
         if ($issueId) {

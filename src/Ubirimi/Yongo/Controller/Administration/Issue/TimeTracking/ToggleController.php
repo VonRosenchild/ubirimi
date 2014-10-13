@@ -17,7 +17,7 @@ class ToggleController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        Client::toggleTimeTrackingFeature($session->get('client/id'));
+        $this->getRepository('ubirimi.general.client')->toggleTimeTrackingFeature($session->get('client/id'));
 
         $session->set('yongo/settings/time_tracking_flag', 1 - $session->get('yongo/settings/time_tracking_flag'));
         $logText = 'Activate';
@@ -28,7 +28,7 @@ class ToggleController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

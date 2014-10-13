@@ -22,7 +22,7 @@
             ?>
             <td width="<?php echo (100 / count($columns)) ?>%" id="column_data_<?php echo $columns[$i]['id'] . '_' . $index ?>" valign="top" class="droppableAgileColumn_<?php echo $index ?> pageContentSmall">
                 <?php
-                    $statuses = Board::getColumnStatuses($columns[$i]['id'], 'array');
+                    $statuses = $this->getRepository('agile.board.board')->getColumnStatuses($columns[$i]['id'], 'array');
                 ?>
                 <div style="display: none; position: absolute; margin: 4px;" id="statuses_for_column_<?php echo $columns[$i]['id'] . '_' . $index ?>">
                     <?php for ($j = 0; $j < count($statuses); $j++): ?>
@@ -36,8 +36,8 @@
                             if (!in_array($issue['status'], Util::array_column($statuses, 'id'))) {
                                 continue;
                             }
-                            $workflowUsed = Project::getWorkflowUsedForType($issue['issue_project_id'], $issue['type']);
-                            $stepWorkflowFrom = Workflow::getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
+                            $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($issue['issue_project_id'], $issue['type']);
+                            $stepWorkflowFrom = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
                             $parentId = -1;
                             if ($issue['parent_id']) {
                                 $parentId = $issue['parent_id'];
@@ -72,7 +72,7 @@
                                     </td>
                                     <td align="center" width="40px">
                                         <img src="<?php
-                                        echo User::getUserAvatarPicture(array('id' => $issue['assignee'], 'avatar_picture' => $issue['assignee_avatar_picture']), 'small') ?>" title="<?php echo $issue['ua_first_name'] . ' ' . $issue['ua_last_name'] ?>" height="33px" style="vertical-align: middle;" />
+                                        echo $this->getRepository('ubirimi.user.user')->getUserAvatarPicture(array('id' => $issue['assignee'], 'avatar_picture' => $issue['assignee_avatar_picture']), 'small') ?>" title="<?php echo $issue['ua_first_name'] . ' ' . $issue['ua_last_name'] ?>" height="33px" style="vertical-align: middle;" />
                                     </td>
                                 </tr>
                             </table>

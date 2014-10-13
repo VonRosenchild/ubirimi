@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowId = $request->get('id');
-        $workflow = Workflow::getMetaDataById($workflowId);
+        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
         if ($workflow['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,16 +35,16 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $workflowAlreadyExisting = Workflow::getByClientIdAndName($session->get('client/id'), $name);
+            $workflowAlreadyExisting = $this->getRepository('yongo.workflow.workflow')->getByClientIdAndName($session->get('client/id'), $name);
             if ($workflowAlreadyExisting) {
                 $duplicateName = true;
             }
 
             if (!$emptyName && !$workflowAlreadyExisting) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Workflow::copy($session->get('client/id'), $workflowId, $name, $description, $currentDate);
+                $this->getRepository('yongo.workflow.workflow')->copy($session->get('client/id'), $workflowId, $name, $description, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

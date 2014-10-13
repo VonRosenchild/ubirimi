@@ -26,7 +26,7 @@ class ChangePasswordController extends UbirimiController
         $userId = $request->query->get('id', $request->request->get('id'));;
         $repoId = $request->query->get('repo_id', $request->request->get('repo_id'));
 
-        $user = User::getById($userId);
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
         $svnRepo = SVNRepository::getById($repoId);
 
         $errors = array('empty_password' => false, 'password_mismatch' => false);

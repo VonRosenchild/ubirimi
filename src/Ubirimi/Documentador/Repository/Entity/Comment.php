@@ -100,7 +100,7 @@ class Comment {
                 }
 
                 $htmlLayout .= '<td width="25px" style="vertical-align: top">';
-                $htmlLayout .= '<img src="' . User::getUserAvatarPicture(UbirimiContainer::get()['session']->get('user'), 'small') . '" style="vertical-align: top" />';
+                $htmlLayout .= '<img src="' . $this->getRepository('ubirimi.user.user')->getUserAvatarPicture(UbirimiContainer::get()['session']->get('user'), 'small') . '" style="vertical-align: top" />';
                 $htmlLayout .= '</td>';
                 $htmlLayout .= '<td>';
                 $htmlLayout .= LinkHelper::getUserProfileLink($comments[$i]['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $comments[$i]['first_name'], $comments[$i]['last_name']);

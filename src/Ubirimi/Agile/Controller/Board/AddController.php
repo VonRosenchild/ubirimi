@@ -21,7 +21,7 @@ class AddController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-        $projects = Client::getProjectsByPermission(
+        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS
@@ -58,7 +58,7 @@ class AddController extends UbirimiController
                 $boardId = $board->save($session->get('user/id'), $currentDate);
                 $board->addDefaultColumnData($session->get('client/id'), $boardId);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_CHEETAH,
                     $session->get('user/id'),

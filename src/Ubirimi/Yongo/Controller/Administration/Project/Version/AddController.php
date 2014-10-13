@@ -36,9 +36,9 @@ class AddController extends UbirimiController
 
             if (!$emptyName && !$alreadyExists) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Project::addVersion($projectId, $name, $description, $currentDate);
+                $this->getRepository('yongo.project.project')->addVersion($projectId, $name, $description, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

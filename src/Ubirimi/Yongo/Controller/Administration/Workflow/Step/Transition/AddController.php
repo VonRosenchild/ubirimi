@@ -23,16 +23,16 @@ class AddController extends UbirimiController
 
         $workflowStepId = $request->get('id');
 
-        $workflowStep = Workflow::getStepById($workflowStepId);
+        $workflowStep = $this->getRepository('yongo.workflow.workflow')->getStepById($workflowStepId);
         $workflowId = $workflowStep['workflow_id'];
-        $steps = Workflow::getSteps($workflowId);
+        $steps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
 
-        $workflowMetadata = Workflow::getMetaDataById($workflowId);
+        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
         if ($workflowMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $workflowSteps = Workflow::getSteps($workflowId);
+        $workflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
         $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
         $screens = Screen::getAll($session->get('client/id'));
 
@@ -50,7 +50,7 @@ class AddController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $transitionId = Workflow::addTransition(
+                $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition(
                     $workflowId,
                     $screen,
                     $workflowStepId,
@@ -59,13 +59,13 @@ class AddController extends UbirimiController
                     $description
                 );
 
-                Workflow::addPostFunctionToTransition(
+                $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition(
                     $transitionId,
                     WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP,
                     'set_issue_status'
                 );
 
-                Workflow::addPostFunctionToTransition(
+                $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition(
                     $transitionId,
                     WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY,
                     'update_issue_history'
@@ -77,13 +77,13 @@ class AddController extends UbirimiController
                     'id'
                 );
 
-                Workflow::addPostFunctionToTransition(
+                $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition(
                     $transitionId,
                     WorkflowFunction::FUNCTION_FIRE_EVENT,
                     'event=' . $eventId
                 );
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

@@ -17,7 +17,7 @@ class MoveToBacklogController extends UbirimiController
 
         $ids = $request->request->get('id');
 
-        Board::deleteIssuesFromSprints($ids);
+        $this->getRepository('agile.board.board')->deleteIssuesFromSprints($ids);
 
         return new Response('');
     }

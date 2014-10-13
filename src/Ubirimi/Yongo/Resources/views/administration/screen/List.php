@@ -67,7 +67,7 @@
                                 </td>
                                 <td width="500px">
                                     <?php
-                                        $workflows = Workflow::getByScreen($clientId, $screen['id']);
+                                        $workflows = $this->getRepository('yongo.workflow.workflow')->getByScreen($clientId, $screen['id']);
                                         if ($workflows) {
                                             echo '<ul>';
                                             while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {

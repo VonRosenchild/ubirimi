@@ -20,7 +20,7 @@ class AddIssueController extends UbirimiController
         $issueIdArray = $request->request->get('issue_id');
 
         if ($sprintId && $issueIdArray) {
-            Board::deleteIssuesFromSprints($issueIdArray);
+            $this->getRepository('agile.board.board')->deleteIssuesFromSprints($issueIdArray);
             Sprint::addIssues($sprintId, $issueIdArray, $session->get('user/id'));
         }
 

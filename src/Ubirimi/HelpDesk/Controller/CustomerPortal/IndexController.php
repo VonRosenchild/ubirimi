@@ -16,10 +16,10 @@ class IndexController extends UbirimiController
 
         $httpHOST = Util::getHttpHost();
 
-        $clientSettings = Client::getSettingsByBaseURL($httpHOST);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettingsByBaseURL($httpHOST);
         $clientId = $clientSettings['id'];
 
-        $client = Client::getById($clientId);
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
 
         $sectionPageTitle = $client['company_name'] . ' - Welcome to Customer Portal';
 

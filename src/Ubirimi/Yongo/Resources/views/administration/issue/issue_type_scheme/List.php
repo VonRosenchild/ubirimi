@@ -58,7 +58,7 @@
                                 </td>
                                 <td>
                                     <?php
-                                        $projects = Project::getByIssueTypeScheme($scheme['id']);
+                                        $projects = $this->getRepository('yongo.project.project')->getByIssueTypeScheme($scheme['id']);
                                         if ($projects) {
                                                 while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {
                                                     echo '&#8226; <a href="/yongo/administration/project/' . $project['id'] . '">' . $project['name'] . '</a>';

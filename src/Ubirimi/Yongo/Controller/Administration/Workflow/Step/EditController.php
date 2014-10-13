@@ -21,10 +21,10 @@ class EditController extends UbirimiController
         $stepId = $request->get('id');
         $source = $request->get('source', 'step');
 
-        $step = Workflow::getStepById($stepId);
+        $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
         $workflowId = $step['workflow_id'];
 
-        $workflow = Workflow::getMetaDataById($workflowId);
+        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
         $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
 
         $emptyName = false;
@@ -39,9 +39,9 @@ class EditController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Workflow::updateStepById($stepId, $name, $StatusId, $currentDate);
+                $this->getRepository('yongo.workflow.workflow')->updateStepById($stepId, $name, $StatusId, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

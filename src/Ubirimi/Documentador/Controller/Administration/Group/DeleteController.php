@@ -6,4 +6,4 @@
 
     $groupId = $_POST['id'];
 
-    Group::deleteByIdForYongo($groupId);
+    $this->getRepository('ubirimi.user.group')->deleteByIdForYongo($groupId);

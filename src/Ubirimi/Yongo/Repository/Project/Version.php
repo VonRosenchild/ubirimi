@@ -24,7 +24,7 @@ class Version
 
     public function deleteByProjectId($projectId)
     {
-        $versions = Project::getVersions($projectId);
+        $versions = $this->getRepository('yongo.project.project')->getVersions($projectId);
 
         while ($versions && $version = $versions->fetch_array(MYSQLI_ASSOC)) {
             $versionId = $version['id'];

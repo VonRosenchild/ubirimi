@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $columnId = $request->request->get('id');
 
-        Board::deleteColumn($columnId);
+        $this->getRepository('agile.board.board')->deleteColumn($columnId);
 
         return new Response('');
     }

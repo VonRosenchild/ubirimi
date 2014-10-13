@@ -19,7 +19,7 @@ class EditConfigurationController extends UbirimiController
 
         $menuSelectedCategory = 'system';
 
-        $settings = Client::getYongoSettings($session->get('client/id'));
+        $settings = $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id'));
 
         if ($request->request->has('update_configuration')) {
             $allowAttachmentsFlag = $request->request->get('allow_attachments_flag');
@@ -32,7 +32,7 @@ class EditConfigurationController extends UbirimiController
                 )
             );
 
-            Client::updateProductSettings(
+            $this->getRepository('ubirimi.general.client')->updateProductSettings(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $parameters
@@ -40,7 +40,7 @@ class EditConfigurationController extends UbirimiController
 
             $currentDate = Util::getServerCurrentDateTime();
 
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

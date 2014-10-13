@@ -48,7 +48,7 @@
                             </td>
                             <td width="500px">
                                 <?php
-                                    $projects = Project::getByIssueTypeScreenSchemeId($clientId, $scheme['id']);
+                                    $projects = $this->getRepository('yongo.project.project')->getByIssueTypeScreenSchemeId($clientId, $scheme['id']);
                                     if ($projects) {
                                         echo '<ul>';
                                         while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

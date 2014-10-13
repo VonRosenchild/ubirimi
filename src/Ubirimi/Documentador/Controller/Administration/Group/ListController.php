@@ -5,7 +5,7 @@
 
     Util::checkUserIsLoggedInAndRedirect();
 
-    $groups = Group::getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+    $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
     $menuSelectedCategory = 'doc_users';
 

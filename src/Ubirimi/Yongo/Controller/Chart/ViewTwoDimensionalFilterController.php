@@ -20,10 +20,10 @@ class ViewTwoDimensionalFilterController extends UbirimiController
             $clientId = $session->get('client/id');
             $loggedInUserId = $session->get('user/id');
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $loggedInUserId = null;
         }
-        $projects = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
         $projectId = $request->request->get('id');
 
@@ -32,7 +32,7 @@ class ViewTwoDimensionalFilterController extends UbirimiController
             $projectIdsNames[] = array($projects[$i]['id'], $projects[$i]['name']);
         }
 
-        $usersAsAssignee = User::getByClientId($clientId);
+        $usersAsAssignee = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
         $issueStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
 
         $twoDimensionalData = UbirimiContainer::getRepository('yongo.issue.issue')->get2DimensionalFilter($projectId, 'array');

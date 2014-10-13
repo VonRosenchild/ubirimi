@@ -22,9 +22,9 @@ class ViewCalendarController extends UbirimiController
             $loggedInUserId = $session->get('user/id');
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $loggedInUserId = null;
-            $clientSettings = Client::getSettings($clientId);
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         }
 
         $projectId = $request->get('id');
@@ -40,9 +40,9 @@ class ViewCalendarController extends UbirimiController
         $session->set('selected_project_id', $projectId);
         $menuSelectedCategory = 'project';
 
-        $hasGlobalAdministrationPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
-        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
-        $hasAdministerProjectsPermission = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
+        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
+        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasAdministerProjectsPermission = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
 
         $hasAdministerProject = $hasGlobalSystemAdministrationPermission || $hasGlobalAdministrationPermission || $hasAdministerProjectsPermission;
 

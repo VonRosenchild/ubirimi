@@ -23,7 +23,7 @@ class DeleteController extends UbirimiController
         $newId = $request->request->get('new_id');
 
         if ($newId) {
-            $projects = Client::getProjects($session->get('client/id'), 'array', 'id');
+            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
             Issue::updateType($projects, $oldId, $newId);
         }
 
@@ -32,7 +32,7 @@ class DeleteController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

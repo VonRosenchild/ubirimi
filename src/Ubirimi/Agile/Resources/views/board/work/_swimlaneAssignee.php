@@ -43,6 +43,6 @@ if ($allUnassignedIssues) {
         echo '</tr>';
     echo '</table>';
     echo '<table width="100%" cellpadding="0" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-        Board::renderIssues($allUnassignedIssues, $columns, $index, 'assignee');
+        $this->getRepository('agile.board.board')->renderIssues($allUnassignedIssues, $columns, $index, 'assignee');
     echo '</table>';
 }

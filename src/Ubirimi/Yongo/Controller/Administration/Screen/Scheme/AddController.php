@@ -41,7 +41,7 @@ class AddController extends UbirimiController
                     Scheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
                 }
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('client/id'),

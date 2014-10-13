@@ -21,7 +21,7 @@
                 <td width="30%"><?php echo $group['description'] ?></td>
                 <td width="10%">
                     <?php
-                        $usersInGroup = Group::getDataByGroupId($group['id']);
+                        $usersInGroup = $this->getRepository('ubirimi.user.group')->getDataByGroupId($group['id']);
                         if ($usersInGroup) {
                             echo '<a href="/yongo/administration/users/' . $group['id'] . '">' . $usersInGroup->num_rows . '</a>';
                         } else {

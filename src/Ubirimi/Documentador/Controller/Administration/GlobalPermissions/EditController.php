@@ -20,7 +20,7 @@
         $parameters = array(array('field' => 'anonymous_use_flag', 'value' => $anonymous_use_flag, 'type' => 'i'),
             array('field' => 'anonymous_view_user_profile_flag', 'value' => $anonymous_view_user_profile_flag, 'type' => 'i'));
 
-        Client::updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $parameters);
+        $this->getRepository('ubirimi.general.client')->updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $parameters);
 
         // deal with permissions added to groups
 
@@ -60,10 +60,10 @@
 
         header('Location: /documentador/administration/global-permissions');
     }
-    $documentatorSettings = Client::getDocumentatorSettings($clientId);
+    $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
     $session->set('documentator/settings', $documentatorSettings);
 
-    $users = User::getByClientId($clientId);
-    $groups = Group::getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+    $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
+    $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
     require_once __DIR__ . '/../../../Resources/views/administration/globalpermissions/Edit.php';

@@ -36,7 +36,7 @@
 
         // check if step 2 is necessary
         $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType(UbirimiContainer::get()['session']->get('move_issue/new_project'), UbirimiContainer::get()['session']->get('move_issue/new_type'));
-        $newStatuses = Workflow::getLinkedStatuses($newWorkflow['id']);
+        $newStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($newWorkflow['id']);
 
         $step2Necessary = true;
         while ($newStatuses && $status = $newStatuses->fetch_array(MYSQLI_ASSOC)) {

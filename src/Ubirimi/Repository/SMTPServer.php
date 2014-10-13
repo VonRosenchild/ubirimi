@@ -9,7 +9,7 @@ class SMTPServer
     const PROTOCOL_SMTP = 1;
     const PROTOCOL_SECURE_SMTP = 2;
 
-    public static function add($clientId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, $defaultUbirimiServer = 0, $date) {
+    public function add($clientId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, $defaultUbirimiServer = 0, $date) {
         $query = "INSERT INTO client_smtp_settings(client_id, name, description, from_address, email_prefix, smtp_protocol, hostname, port, timeout,
                     tls_flag, username, password, default_ubirimi_server_flag, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -19,7 +19,7 @@ class SMTPServer
         $stmt->execute();
     }
 
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = 'SELECT * from client_smtp_settings where client_id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -33,7 +33,7 @@ class SMTPServer
             return null;
     }
 
-    public static function updateById($smtpServerId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, $date) {
+    public function updateById($smtpServerId, $name, $description, $fromAddress, $emailPrefix, $protocol, $hostname, $port, $timeout, $tls, $username, $password, $date) {
         $query = "update client_smtp_settings set name = ?, description = ?, from_address = ?, email_prefix = ?, smtp_protocol = ?,
                     hostname = ?, port = ?, timeout = ?, tls_flag = ?, username = ?, password = ?, date_updated = ?
                     where id = ?
@@ -45,7 +45,7 @@ class SMTPServer
         $stmt->execute();
     }
 
-    public static function getById($smtpServerId) {
+    public function getById($smtpServerId) {
         $query = 'SELECT * from client_smtp_settings where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -58,7 +58,7 @@ class SMTPServer
             return null;
     }
 
-    public static function deleteById($smtpServerId) {
+    public function deleteById($smtpServerId) {
         $query = 'delete from client_smtp_settings where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

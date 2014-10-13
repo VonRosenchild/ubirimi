@@ -7,16 +7,16 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $stepId = $_GET['id'];
-    $step = Workflow::getStepById($stepId);
+    $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
     $workflowId = $step['workflow_id'];
 
-    $workflowMetadata = Workflow::getMetaDataById($workflowId);
+    $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
     if ($workflowMetadata['client_id'] != $clientId) {
         header('Location: /general-settings/bad-link-access-denied');
         die();
     }
-    $allProperties = Workflow::getSystemWorkflowProperties();
+    $allProperties = $this->getRepository('yongo.workflow.workflow')->getSystemWorkflowProperties();
     $emptyValue = false;
     $duplicateKey = false;
 
@@ -29,12 +29,12 @@
 
         if (!$emptyValue) {
 
-            $duplicateKey = Workflow::getStepKeyByStepIdAndKeyId($stepId, $keyId);
+            $duplicateKey = $this->getRepository('yongo.workflow.workflow')->getStepKeyByStepIdAndKeyId($stepId, $keyId);
             if (!$duplicateKey) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Workflow::addStepProperty($stepId, $keyId, $value, $currentDate);
+                $this->getRepository('yongo.workflow.workflow')->addStepProperty($stepId, $keyId, $value, $currentDate);
 
-                Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Step Property' , $currentDate);
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Step Property' , $currentDate);
 
                 header('Location: /yongo/administration/workflow/view-step-properties/' . $stepId);
             }

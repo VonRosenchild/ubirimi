@@ -12,7 +12,7 @@ class UsersController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $users = User::getAll(array('sort_by' => 'user.date_created', 'sort_order' => 'desc', 'limit' => 50));
+        $users = $this->getRepository('ubirimi.user.user')->getAll(array('sort_by' => 'user.date_created', 'sort_order' => 'desc', 'limit' => 50));
 
         $selectedOption = 'users';
 

@@ -27,7 +27,7 @@ class AddController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $leadUsers = Client::getUsers($session->get('client/id'));
+        $leadUsers = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
         $forHelpDesk = $request->query->has('helpdesk') ? true : false;
 
         $emptyName = false;
@@ -102,7 +102,7 @@ class AddController extends UbirimiController
 
                 $session->set('selected_project_id', $projectId);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

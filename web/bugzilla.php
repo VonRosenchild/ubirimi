@@ -29,7 +29,7 @@ try {
         'companyDomain' => 'movidius',
         'baseURL' => 'http://movidius.ubirimi_net.lan',
         'companyEmail' => 'contact@movidius.ro',
-        Client::INSTANCE_TYPE_ON_DEMAND,
+        $this->getRepository('ubirimi.general.client')->INSTANCE_TYPE_ON_DEMAND,
         Util::getServerCurrentDateTime()
     );
 
@@ -69,8 +69,8 @@ try {
     insertMovidiusDatabase();
 
     /* delete old clients -- start */
-//    foreach (Client::getAll() as $client) {
-//        Client::deleteById($client['id']);
+//    foreach ($this->getRepository('ubirimi.general.client')->getAll() as $client) {
+//        $this->getRepository('ubirimi.general.client')->deleteById($client['id']);
 //    }
     /* delete old clients -- end */
 
@@ -109,7 +109,7 @@ try {
 
     /* install users -- start */
     $movidiusUsers = getUsers($connectionBugzilla);
-    $ubirimiUsers = User::getByClientId($clientId);
+    $ubirimiUsers = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
 
 //    foreach ($movidiusUsers as &$movidiusUser) {
 //        $firstName = substr($movidiusUser['realname'], 0, strpos($movidiusUser['realname'], ' '));

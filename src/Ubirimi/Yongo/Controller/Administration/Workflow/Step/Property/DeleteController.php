@@ -1,9 +1,10 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $propertyId = $_POST['id'];
+Util::checkUserIsLoggedInAndRedirect();
 
-    Workflow::deleteStepPropertyById($propertyId);
+$propertyId = $_POST['id'];
+
+$this->getRepository('yongo.workflow.workflow')->deleteStepPropertyById($propertyId);

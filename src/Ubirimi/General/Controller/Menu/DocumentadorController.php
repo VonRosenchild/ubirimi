@@ -19,7 +19,7 @@ class DocumentadorController extends UbirimiController
             $spaces = Space::getByClientId($session->get('client/id'));
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $spaces = Space::getByClientIdAndAnonymous($clientId);
         }
 

@@ -43,7 +43,7 @@
                                 </td>
                                 <td width="500px">
                                     <?php
-                                        $projects = Project::getByNotificationScheme($scheme['id']);
+                                        $projects = $this->getRepository('yongo.project.project')->getByNotificationScheme($scheme['id']);
                                         if ($projects) {
                                             echo '<ul>';
                                             while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

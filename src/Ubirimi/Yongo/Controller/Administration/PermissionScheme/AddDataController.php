@@ -24,12 +24,12 @@ class AddDataController extends UbirimiController
         $permissionSchemeId = $request->get('perm_scheme_id');
         $permissionId = $request->get('id');
 
-        $permissionScheme = Scheme::getMetaDataById($permissionSchemeId);
+        $permissionScheme = $this->getRepository('yongo.permission.scheme')->ggetMetaDataById($permissionSchemeId);
         $permissions = Permission::getAll();
 
-        $users = User::getByClientId($session->get('client/id'));
-        $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = Role::getByClient($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
+        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
 
@@ -46,7 +46,7 @@ class AddDataController extends UbirimiController
                 for ($i = 0; $i < count($sysPermissionIds); $i++){
                     // check for duplicate information
                     $duplication = false;
-                    $dataPermission = Scheme::getDataByPermissionSchemeIdAndPermissionId(
+                    $dataPermission = $this->getRepository('yongo.permission.scheme')->ggetDataByPermissionSchemeIdAndPermissionId(
                         $permissionSchemeId,
                         $sysPermissionIds[$i]
                     );
@@ -75,7 +75,7 @@ class AddDataController extends UbirimiController
                     }
 
                     if (!$duplication) {
-                        Scheme::addData(
+                        $this->getRepository('yongo.permission.scheme')->gaddData(
                             $permissionSchemeId,
                             $sysPermissionIds[$i],
                             $permissionType,
@@ -85,7 +85,7 @@ class AddDataController extends UbirimiController
                             $currentDate
                         );
 
-                        Log::add(
+                        $this->getRepository('ubirimi.general.log')->add(
                             $session->get('client/id'),
                             SystemProduct::SYS_PRODUCT_YONGO,
                             $session->get('user/id'),

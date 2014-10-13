@@ -10,4 +10,4 @@
     $idFrom = $_POST['id_from'];
     $idTo = $_POST['id_to'];
 
-    Workflow::updateTransitionData($workflowId, $transition_name, $screenId, $idFrom, $idTo);
+    $this->getRepository('yongo.workflow.workflow')->updateTransitionData($workflowId, $transition_name, $screenId, $idFrom, $idTo);

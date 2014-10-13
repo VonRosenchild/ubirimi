@@ -17,7 +17,7 @@ class ConfirmImportUsersController extends UbirimiController
 
         $clientId = $session->get('client/id');
 
-        $users = Client::getUsers($clientId, null, 'array', 0);
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array', 0);
 
         $existingUsers = SVNRepository::getUserList($session->get('selected_svn_repo_id'), 'array');
         $importableUsers = array();

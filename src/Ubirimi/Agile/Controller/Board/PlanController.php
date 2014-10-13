@@ -19,13 +19,13 @@ class PlanController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-        $clientSettings = Client::getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
         $boardId = $request->get('id');
         $searchQuery = $request->get('q');
         $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
 
         $session->set('last_selected_board_id', $boardId);
-        $board = Board::getById($boardId);
+        $board = $this->getRepository('agile.board.board')->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,12 +33,12 @@ class PlanController extends UbirimiController
 
         $sprintsNotStarted = Sprint::getNotStarted($boardId);
 
-        $boardProjects = Board::getProjects($boardId, 'array');
+        $boardProjects = $this->getRepository('agile.board.board')->getProjects($boardId, 'array');
         $currentStartedSprint = Sprint::getStarted($boardId);
         $lastCompletedSprint = Sprint::getLastCompleted($boardId);
 
-        $lastColumn = Board::getLastColumn($boardId);
-        $completeStatuses = Board::getColumnStatuses($lastColumn['id'], 'array', 'id');
+        $lastColumn = $this->getRepository('agile.board.board')->getLastColumn($boardId);
+        $completeStatuses = $this->getRepository('agile.board.board')->getColumnStatuses($lastColumn['id'], 'array', 'id');
 
         $columns = array('type', 'code', 'summary', 'priority');
 

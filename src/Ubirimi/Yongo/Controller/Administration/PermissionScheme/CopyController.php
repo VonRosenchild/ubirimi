@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionSchemeId = $request->get('id');
-        $permissionScheme = Scheme::getMetaDataById($permissionSchemeId);
+        $permissionScheme = $this->getRepository('yongo.permission.scheme')->ggetMetaDataById($permissionSchemeId);
 
         if ($permissionScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,7 +34,7 @@ class CopyController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $duplicatePermissionScheme = Scheme::getMetaDataByNameAndClientId(
+            $duplicatePermissionScheme = $this->getRepository('yongo.permission.scheme')->ggetMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -47,7 +47,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedPermissionSchemeId = $copiedPermissionScheme->save($currentDate);
 
-                $permissionSchemeData = Scheme::getDataByPermissionSchemeId($permissionSchemeId);
+                $permissionSchemeData = $this->getRepository('yongo.permission.scheme')->ggetDataByPermissionSchemeId($permissionSchemeId);
 
                 while ($permissionSchemeData && $data = $permissionSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedPermissionScheme->addDataRaw(
@@ -63,7 +63,7 @@ class CopyController extends UbirimiController
                     );
                 }
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

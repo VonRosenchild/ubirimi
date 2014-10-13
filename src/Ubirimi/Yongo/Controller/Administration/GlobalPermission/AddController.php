@@ -18,14 +18,14 @@ class AddController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $allGroups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $allGroups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
 
         if ($request->request->has('confirm_new_permission')) {
             $permissionId = $request->request->get('permission');
             $groupId = $request->request->get('group');
             $currentDate = Util::getServerCurrentDateTime();
-            $group = Group::getMetadataById($groupId);
+            $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
             $permission = GlobalPermission::getById($permissionId);
 
             $date = Util::getServerCurrentDateTime();
@@ -40,7 +40,7 @@ class AddController extends UbirimiController
             if (!$permissionData) {
                 GlobalPermission::addDataForGroupId($session->get('client/id'), $permissionId, $groupId, $date);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

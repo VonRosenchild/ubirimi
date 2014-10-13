@@ -12,7 +12,7 @@ class ActiveClientsController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $clients = Client::getLastMonthActiveClients();
+        $clients = $this->getRepository('ubirimi.general.client')->getLastMonthActiveClients();
 
         $selectedOption = 'active_clients_last_month';
 

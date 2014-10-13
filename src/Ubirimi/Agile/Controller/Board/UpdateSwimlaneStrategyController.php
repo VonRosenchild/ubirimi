@@ -18,7 +18,7 @@ class UpdateSwimlaneStrategyController extends UbirimiController
         $boardId = $request->request->get('id');
         $strategy = $request->request->get('strategy');
 
-        Board::updateSwimlaneStrategy($boardId, $strategy);
+        $this->getRepository('agile.board.board')->updateSwimlaneStrategy($boardId, $strategy);
 
         return new Response('');
     }

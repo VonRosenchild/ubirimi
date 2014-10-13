@@ -21,7 +21,7 @@ class AddValueController extends UbirimiController
         $duplicateValue = false;
 
         $customFieldId = $request->get('id');
-        $field = Field::getById($customFieldId);
+        $field = $this->getRepository('yongo.field.field')->getById($customFieldId);
 
         if ($request->request->has('new_custom_value')) {
             $value = Util::cleanRegularInputField($request->request->get('value'));
@@ -29,7 +29,7 @@ class AddValueController extends UbirimiController
                 $emptyValue = true;
 
             if (!$emptyValue) {
-                $customValueExists = Field::getDataByFieldIdAndValue($customFieldId, $value);
+                $customValueExists = $this->getRepository('yongo.field.field')->getDataByFieldIdAndValue($customFieldId, $value);
                 if ($customValueExists)
                     $duplicateValue = true;
             }
@@ -39,7 +39,7 @@ class AddValueController extends UbirimiController
 
                 Field::addData($customFieldId, $value, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

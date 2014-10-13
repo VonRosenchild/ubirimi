@@ -16,7 +16,7 @@ class SignOutController extends UbirimiController
     {
         $date = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->has('client/id'),
             SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
             $session->get('user/id'),

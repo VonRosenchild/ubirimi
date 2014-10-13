@@ -17,7 +17,7 @@ class UpdatePositionController extends UbirimiController
 
         $newOrder = $request->request->get('order');
 
-        Board::updateColumnOrder($newOrder);
+        $this->getRepository('agile.board.board')->updateColumnOrder($newOrder);
 
         return new Response('');
     }

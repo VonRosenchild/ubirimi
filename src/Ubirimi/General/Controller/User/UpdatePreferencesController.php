@@ -26,7 +26,7 @@ class UpdatePreferencesController extends UbirimiController
             array('field' => 'country_id', 'value' => $countryId, 'type' => 'i')
         );
 
-        User::updatePreferences($userId, $parameters);
+        $this->getRepository('ubirimi.user.user')->updatePreferences($userId, $parameters);
 
         $session->set('user/issues_per_page', $issuesPerPage);
 

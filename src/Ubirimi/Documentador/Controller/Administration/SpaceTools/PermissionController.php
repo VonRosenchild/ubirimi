@@ -15,7 +15,7 @@
         die();
     }
 
-    $documentatorSettings = Client::getDocumentatorSettings($clientId);
+    $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
     $anonymousAccessSettings = Space::getAnonymousAccessSettings($spaceId);
 
     $usersWithPermissionForSpace = Space::getUsersWithPermissions($spaceId);

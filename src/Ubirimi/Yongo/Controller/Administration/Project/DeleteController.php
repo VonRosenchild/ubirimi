@@ -20,7 +20,7 @@ class DeleteController extends UbirimiController
         $projectId = $request->request->get('project_id');
         $projectDeleted = $this->getRepository('yongo.project.project')->getById($projectId);
 
-        Project::deleteById($projectId);
+        $this->getRepository('yongo.project.project')->deleteById($projectId);
 
         if ($projectId == $session->get('selected_project_id')) {
             $session->set('selected_project_id', null);
@@ -28,7 +28,7 @@ class DeleteController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

@@ -18,13 +18,13 @@ class ViewAsTextController extends UbirimiController
 
         $workflowId = $request->get('id');
 
-        $workflowMetadata = Workflow::getMetaDataById($workflowId);
+        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
         if ($workflowMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $workflowSteps = Workflow::getSteps($workflowId);
+        $workflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
         $menuSelectedCategory = 'issue';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow / Text View';

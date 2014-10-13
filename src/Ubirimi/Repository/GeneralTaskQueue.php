@@ -7,7 +7,7 @@ use Ubirimi\Util;
 
 class GeneralTaskQueue
 {
-    public static function savePendingClientData($data) {
+    public function savePendingClientData($data) {
         $currentData = Util::getServerCurrentDateTime();
         $query = "INSERT INTO general_task_queue(type, data, date_created, date_updated) VALUES " .
                     "(1, '" . $data . "', '" . $currentData . "', '" . $currentData . "');";
@@ -15,7 +15,7 @@ class GeneralTaskQueue
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getPendingClients() {
+    public function getPendingClients() {
         $query = "SELECT *
                     FROM general_task_queue
                     WHERE type = 1
@@ -31,7 +31,7 @@ class GeneralTaskQueue
         }
     }
 
-    public static function delete($id) {
+    public function delete($id) {
         $query = "DELETE FROM general_task_queue WHERE id = " . $id;
 
         UbirimiContainer::get()['db.connection']->query($query);

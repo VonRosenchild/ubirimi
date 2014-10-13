@@ -12,9 +12,9 @@
         $clientSettings = $session->get('client/settings');
     } else {
         $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-        $clientSettings = Client::getSettings($clientId);
-        $yongoSettings = Client::getYongoSettings($clientId);
+        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $yongoSettings = $this->getRepository('ubirimi.general.client')->getYongoSettings($clientId);
     }
 
     $issueId = isset($_POST['issue_id']) ? $_POST['issue_id'] : null;

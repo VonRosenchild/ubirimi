@@ -768,7 +768,7 @@ class Issue
         UbirimiContainer::getRepository('yongo.issue.attachment')->deleteByIssueId($issueId);
         CustomField::deleteCustomFieldsData($issueId);
 
-        Board::deleteIssuesFromSprints(array($issueId));
+        $this->getRepository('agile.board.board')->deleteIssuesFromSprints(array($issueId));
 
         $query = 'DELETE from yongo_issue WHERE id = ?';
 
@@ -816,7 +816,7 @@ class Issue
 
         $issueNumber = $issueNumbers[$project['id']];
 
-        $workflowUsed = Project::getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
+        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
 
         $query = "INSERT INTO yongo_issue(date_updated, project_id, resolution_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .
             "summary, description, environment, date_created, date_due, parent_id, security_scheme_level_id, original_estimate, remaining_estimate, helpdesk_flag) " .
@@ -891,9 +891,9 @@ class Issue
 
     public function add($project, $currentDate, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null) {
         $issueNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($project['id']);
-        $workflowUsed = Project::getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
+        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
 
-        $statusData = Workflow::getDataForCreation($workflowUsed['id']);
+        $statusData = $this->getRepository('yongo.workflow.workflow')->getDataForCreation($workflowUsed['id']);
         $StatusId = $statusData['linked_issue_status_id'];
 
         $query = "INSERT INTO yongo_issue(project_id, resolution_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .
@@ -1292,10 +1292,10 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_ASSIGNEE_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = User::getById($oldIssueData[Field::FIELD_ASSIGNEE_CODE]);
+            $fieldChangedOldValueRow = $this->getRepository('ubirimi.user.user')->getById($oldIssueData[Field::FIELD_ASSIGNEE_CODE]);
             $fieldChangedOldValue = $fieldChangedOldValueRow['first_name'] . ' ' . $fieldChangedOldValueRow['last_name'];
 
-            $fieldChangedNewValueRow = User::getById($newIssueData[Field::FIELD_ASSIGNEE_CODE]);
+            $fieldChangedNewValueRow = $this->getRepository('ubirimi.user.user')->getById($newIssueData[Field::FIELD_ASSIGNEE_CODE]);
             $fieldChangedNewValue = $fieldChangedNewValueRow['first_name'] . ' ' . $fieldChangedNewValueRow['last_name'];
             $fieldChanges[] = array(Field::FIELD_ASSIGNEE_CODE,
                                     $fieldChangedOldValue,
@@ -1305,9 +1305,9 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_REPORTER_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = User::getById($oldIssueData[Field::FIELD_REPORTER_CODE]);
+            $fieldChangedOldValueRow = $this->getRepository('ubirimi.user.user')->getById($oldIssueData[Field::FIELD_REPORTER_CODE]);
             $fieldChangedOldValue = $fieldChangedOldValueRow['first_name'] . ' ' . $fieldChangedOldValueRow['last_name'];
-            $fieldChangedNewValueRow = User::getById($newIssueData[Field::FIELD_REPORTER_CODE]);
+            $fieldChangedNewValueRow = $this->getRepository('ubirimi.user.user')->getById($newIssueData[Field::FIELD_REPORTER_CODE]);
             $fieldChangedNewValue = $fieldChangedNewValueRow['first_name'] . ' ' . $fieldChangedNewValueRow['last_name'];
             $fieldChanges[] = array(Field::FIELD_REPORTER_CODE,
                                     $fieldChangedOldValue,
@@ -1367,7 +1367,7 @@ class Issue
 
         // deal with custom field values also
         foreach ($newIssueCustomFieldsData as $key => $value) {
-            $fieldData = Field::getById($key);
+            $fieldData = $this->getRepository('yongo.field.field')->getById($key);
 
             $oldCustomFieldValue = CustomField::getCustomFieldsDataByFieldId($issueId, $key);
             if ($oldCustomFieldValue) {
@@ -1397,7 +1397,7 @@ class Issue
         }
 
         foreach ($newIssueCustomFieldsData as $key => $value) {
-            $fieldData = Field::getById($key);
+            $fieldData = $this->getRepository('yongo.field.field')->getById($key);
             $fieldTypeId = $fieldData['sys_field_type_id'];
             $fieldName = $fieldData['name'];
 
@@ -1422,7 +1422,7 @@ class Issue
                         if (array_diff($oldUsersDeleted, $newUsersAdded) !== array_diff($newUsersAdded, $oldUsersDeleted)) {
                             $oldUsersArray = array();
                             if (count($oldUsersDeleted)) {
-                                $oldUsersData = User::getByIds($oldUsersDeleted, 'array');
+                                $oldUsersData = $this->getRepository('ubirimi.user.user')->getByIds($oldUsersDeleted, 'array');
                                 $oldUsersArray = array();
                                 for ($i = 0; $i < count($oldUsersData); $i++) {
                                     $oldUsersArray[] = $oldUsersData[$i]['first_name'] . ' ' . $oldUsersData[$i]['last_name'];
@@ -1430,7 +1430,7 @@ class Issue
                             }
                             $newUsersArray = array();
                             if (count($newUsersAdded)) {
-                                $newUsersData = User::getByIds($newUsersAdded, 'array');
+                                $newUsersData = $this->getRepository('ubirimi.user.user')->getByIds($newUsersAdded, 'array');
                                 for ($i = 0; $i < count($newUsersData); $i++) {
                                     $newUsersArray[] = $newUsersData[$i]['first_name'] . ' ' . $newUsersData[$i]['last_name'];
                                 }
@@ -1545,8 +1545,8 @@ class Issue
             Issue::setUnassignedById($issueId);
         }
 
-        $oldAssignee = User::getById($issueData['assignee']);
-        $newAssignee = User::getById($userAssignedId);
+        $oldAssignee = $this->getRepository('ubirimi.user.user')->getById($issueData['assignee']);
+        $newAssignee = $this->getRepository('ubirimi.user.user')->getById($userAssignedId);
 
         $oldAssigneeName = $oldAssignee['first_name'] . ' ' . $oldAssignee['last_name'];
         $newAssigneeName = $newAssignee['first_name'] . ' ' . $newAssignee['last_name'];
@@ -1571,7 +1571,7 @@ class Issue
         $stmt->close();
 
         // update last issue number for this project
-        Project::updateLastIssueNumber($newProjectId, $nextNumber);
+        $this->getRepository('yongo.project.project')->updateLastIssueNumber($newProjectId, $nextNumber);
 
         $subTasks = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueId));
         if ($subTasks) {
@@ -1584,7 +1584,7 @@ class Issue
                 $stmt->execute();
 
                 // update last issue number for this project
-                Project::updateLastIssueNumber($newProjectId, $nextNumber);
+                $this->getRepository('yongo.project.project')->updateLastIssueNumber($newProjectId, $nextNumber);
 
                 Version::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
                 Version::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
@@ -1847,7 +1847,7 @@ class Issue
         $clientUsersArray = array();
 
         if ($helpDeskFlag) {
-            $allClientUsers = User::getByClientId($clientId);
+            $allClientUsers = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
             while ($allClientUsers && $clientUser = $allClientUsers->fetch_array(MYSQLI_ASSOC)) {
                 $found = false;
                 for ($i = 0; $i < count($clientUsersArray); $i++) {
@@ -1862,7 +1862,7 @@ class Issue
             }
             $criteria['all_client_user_assignee'] = $clientUsersArray;
 
-            $allClientUsers = User::getByClientId($clientId, 1);
+            $allClientUsers = $this->getRepository('ubirimi.user.user')->getByClientId($clientId, 1);
             $clientUsersArray = array();
             while ($allClientUsers && $clientUser = $allClientUsers->fetch_array(MYSQLI_ASSOC)) {
                 $found = false;
@@ -1879,7 +1879,7 @@ class Issue
             $criteria['all_client_user_reporter'] = $clientUsersArray;
 
         } else {
-            $allClientUsers = User::getByClientId($clientId);
+            $allClientUsers = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
             while ($allClientUsers && $clientUser = $allClientUsers->fetch_array(MYSQLI_ASSOC)) {
                 $found = false;
                 for ($i = 0; $i < count($clientUsersArray); $i++) {
@@ -1897,7 +1897,7 @@ class Issue
         }
 
         // get the project components
-        $allProjectsComponents = Project::getComponents($projectIds);
+        $allProjectsComponents = $this->getRepository('yongo.project.project')->getComponents($projectIds);
         $projectComponentsArray = array();
         while ($allProjectsComponents && $component = $allProjectsComponents->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
@@ -1914,7 +1914,7 @@ class Issue
         $criteria['all_client_issue_component'] = $projectComponentsArray;
 
         // get the project fix versions
-        $allProjectsVersions = Project::getVersions($projectIds);
+        $allProjectsVersions = $this->getRepository('yongo.project.project')->getVersions($projectIds);
         $projectVersionsArray = array();
         while ($allProjectsVersions && $version = $allProjectsVersions->fetch_array(MYSQLI_ASSOC)) {
             $found = false;

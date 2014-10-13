@@ -65,7 +65,7 @@
                         <td><?php echo $data['description'] ?></td>
                         <td>
                             <?php
-                                $workflows = Workflow::getByIssueType($data['issue_type_id'], $clientId);
+                                $workflows = $this->getRepository('yongo.workflow.workflow')->getByIssueType($data['issue_type_id'], $clientId);
                                 if ($workflows) {
                                     echo '<ul>';
                                     while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {

@@ -34,7 +34,7 @@ class AssignController extends UbirimiController
         // update the date_updated field
         Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
-        $userAssigned = User::getById($userAssignedId);
+        $userAssigned = $this->getRepository('ubirimi.user.user')->getById($userAssignedId);
         $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];
         $oldUserAssignedName = $issueData['ua_first_name'] . ' ' . $issueData['ua_last_name'];
 

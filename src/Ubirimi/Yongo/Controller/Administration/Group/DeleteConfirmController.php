@@ -15,7 +15,7 @@ class DeleteConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $groupId = $request->get('id');
-        $group = Group::getMetadataById($groupId);
+        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/group/DeleteConfirm.php', get_defined_vars());
     }

@@ -21,7 +21,7 @@ class AddAdministratorController extends UbirimiController
 
         $menuSelectedCategory = 'svn';
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_SVN_HOSTING);
-        $regularUsers = User::getNotSVNAdministrators($clientId);
+        $regularUsers = $this->getRepository('ubirimi.user.user')->getNotSVNAdministrators($clientId);
         $noUsersSelected = false;
 
         if (isset($_POST['confirm_new_svn_administrator'])) {

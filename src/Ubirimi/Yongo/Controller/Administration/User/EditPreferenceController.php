@@ -17,7 +17,7 @@ class EditPreferenceController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $settings = Client::getYongoSettings($session->get('client/id'));
+        $settings = $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id'));
         $menuSelectedCategory = 'user';
 
         if ($request->request->has('edit_settings')) {
@@ -29,14 +29,14 @@ class EditPreferenceController extends UbirimiController
                 array('field' => 'notify_own_changes_flag', 'value' => $notifyOwnChanges, 'type' => 'i')
             );
 
-            Client::updateProductSettings(
+            $this->getRepository('ubirimi.general.client')->updateProductSettings(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $parameters
             );
 
             $currentDate = Util::getServerCurrentDateTime();
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

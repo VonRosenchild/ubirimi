@@ -28,7 +28,7 @@ class SelectSchemeController extends UbirimiController
 
         if ($request->request->has('associate')) {
             $issueTypeFieldSchemeId = $request->request->get('issue_type_field_scheme');
-            Project::updateFieldConfigurationScheme($projectId, $issueTypeFieldSchemeId);
+            $this->getRepository('yongo.project.project')->updateFieldConfigurationScheme($projectId, $issueTypeFieldSchemeId);
 
             return new RedirectResponse('/yongo/administration/project/fields/' . $projectId);
         }

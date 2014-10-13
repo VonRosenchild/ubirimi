@@ -78,7 +78,7 @@
                                         </td>
                                     </tr>
 
-                                    <?php $statuses = Board::getColumnStatuses($columns[$i]['id'], 'array') ?>
+                                    <?php $statuses = $this->getRepository('agile.board.board')->getColumnStatuses($columns[$i]['id'], 'array') ?>
                                     <tr>
                                         <td id="column_<?php echo $columns[$i]['id'] ?>" class="droppable" valign="top" style="height: 200px;">
                                         <?php if ($statuses): ?>

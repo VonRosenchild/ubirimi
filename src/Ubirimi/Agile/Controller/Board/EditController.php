@@ -19,10 +19,10 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-        $projects = Project::getByClientId($session->get('client/id'));
+        $projects = $this->getRepository('yongo.project.project')->getByClientId($session->get('client/id'));
 
         $boardId = $request->get('id');
-        $board = Board::getById($boardId);
+        $board = $this->getRepository('agile.board.board')->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -43,9 +43,9 @@ class EditController extends UbirimiController
 
                 $date = Util::getServerCurrentDateTime();
 
-                Board::updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
+                $this->getRepository('agile.board.board')->updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_CHEETAH,
                     $session->get('user/id'),

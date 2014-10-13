@@ -9,10 +9,10 @@
     use Ubirimi\Repository\User\User;
     use Ubirimi\Yongo\Helper\IssueHelper;
 
-    $screenData = Project::getScreenData($projectData, $issueTypeId, $sysOperationId);
+    $screenData = $this->getRepository('yongo.project.project')->getScreenData($projectData, $issueTypeId, $sysOperationId);
 
     $projectId = $projectData['id'];
-    $projectComponents = Project::getComponents($projectId);
+    $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
 
     $issueSecuritySchemeId = $projectData['issue_security_scheme_id'];
     $issueSecuritySchemeLevels = null;
@@ -21,20 +21,20 @@
         $issueSecuritySchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
     }
 
-    $projectVersions = Project::getVersions($projectId);
+    $projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
     $issuePriorities = Settings::getAllIssueSettings('priority', $clientId);
     $issueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
-    $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
-    $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
-    $allUsers = User::getByClientId($session->get('client/id'));
+    $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
+    $reporterUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+    $allUsers = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
 
-    $userHasModifyReporterPermission = Project::userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
-    $userHasAssignIssuePermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
-    $userHasSetSecurityLevelPermission = Project::userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
+    $userHasModifyReporterPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
+    $userHasAssignIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
+    $userHasSetSecurityLevelPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
 
     $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
     $timeTrackingFieldId = null;
-    $fieldData = Project::getFieldInformation($projectData['issue_type_field_configuration_id'], $issueTypeId, 'array');
+    $fieldData = $this->getRepository('yongo.project.project')->getFieldInformation($projectData['issue_type_field_configuration_id'], $issueTypeId, 'array');
 
     $fieldCodeNULL = null;
     $fieldsPlacedOnScreen = array();
@@ -85,7 +85,7 @@
                                 $projectData['lead_id'],
                                 null === $userHasAssignIssuePermission,
                                 $arrayData['required_flag'],
-                                1 === Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag')
+                                1 === $this->getRepository('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag')
                             );
                             break;
 
@@ -135,7 +135,7 @@
                             if ($projectComponents) {
                                 echo '<select size="3" ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px;">';
                                 $printedComponents = array();
-                                Project::renderTreeComponentsInCombobox($projectComponents, 0, null, $printedComponents);
+                                $this->getRepository('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, null, $printedComponents);
                                 echo '</select>';
                             } else {
                                 echo '<span ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '">None</span>';
@@ -207,7 +207,7 @@
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputText mousetrap" name="' . $field['field_code'] . '" type="text" value="" />';
                                     break;
                                 case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
-                                    $possibleValues = Field::getDataByFieldId($field['field_id']);
+                                    $possibleValues = $this->getRepository('yongo.field.field')->getDataByFieldId($field['field_id']);
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                                     echo '<option value="">None</option>';
                                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {

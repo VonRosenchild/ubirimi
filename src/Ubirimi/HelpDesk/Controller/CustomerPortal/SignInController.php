@@ -18,7 +18,7 @@ class SignInController extends UbirimiController
         $signInError = null;
 
         $httpHOST = Util::getHttpHost();
-        $clientSettings = Client::getSettingsByBaseURL($httpHOST);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettingsByBaseURL($httpHOST);
 
         $clientId = $clientSettings['id'];
 
@@ -30,7 +30,7 @@ class SignInController extends UbirimiController
             $username = $request->request->get('username');
             $password = $request->request->get('password');
 
-            $userData = User::getCustomerByEmailAddressAndClientId($username, $clientId);
+            $userData = $this->getRepository('ubirimi.user.user')->getCustomerByEmailAddressAndClientId($username, $clientId);
 
             if ($userData['id']) {
                 if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {

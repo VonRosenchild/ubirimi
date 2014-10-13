@@ -26,7 +26,7 @@ class EditController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $projectId = $request->get('id');
-        $leadUsers = Client::getUsers($session->get('client/id'));
+        $leadUsers = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
 
         // todo: leadul sa fie adaugat in lista de useri pentru acest proiect
         $project = $this->getRepository('yongo.project.project')->getById($projectId);
@@ -79,9 +79,9 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$emptyCode && !$duplicate_name && !$duplicateCode) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Project::updateById($projectId, $leadId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $currentDate);
+                $this->getRepository('yongo.project.project')->updateById($projectId, $leadId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

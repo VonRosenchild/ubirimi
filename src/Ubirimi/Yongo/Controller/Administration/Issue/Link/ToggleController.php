@@ -17,7 +17,7 @@ class ToggleController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        Client::toggleIssueLinkingFeature($session->get('client/id'));
+        $this->getRepository('ubirimi.general.client')->toggleIssueLinkingFeature($session->get('client/id'));
 
         $session->set('yongo/settings/issue_linking_flag', 1 - $session->get('yongo/settings/issue_linking_flag'));
 
@@ -28,7 +28,7 @@ class ToggleController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

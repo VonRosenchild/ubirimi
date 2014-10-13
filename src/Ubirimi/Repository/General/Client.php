@@ -1,13 +1,10 @@
 <?php
 
-namespace Ubirimi\Repository;
+namespace Ubirimi\Repository\General;
 
 use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\Calendar\Repository\Period;
-use Ubirimi\Calendar\Repository\CalendarReminderType;
 use Ubirimi\Container\UbirimiContainer;
-
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
 use ubirimi\svn\SVNRepository;
@@ -27,7 +24,6 @@ use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
@@ -41,21 +37,21 @@ class Client
     const INSTANCE_TYPE_ON_DEMAND = 1;
     const INSTANCE_TYPE_DOWNLOAD = 2;
 
-    public static function getClientIdAnonymous() {
+    public function getClientIdAnonymous() {
         $httpHOST = Util::getHttpHost();
-        return Client::getByBaseURL($httpHOST, 'array', 'id');
+        return $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
     }
 
-    public static function deleteGroups($clientId) {
-        $groups = Group::getByClientId($clientId);
+    public function deleteGroups($clientId) {
+        $groups = $this->getRepository('ubirimi.user.group')->getByClientId($clientId);
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
-            Group::deleteByIdForYongo($group['id']);
+            $this->getRepository('ubirimi.user.group')->deleteByIdForYongo($group['id']);
 
-            Group::deleteByIdForDocumentator($group['id']);
+            $this->getRepository('ubirimi.user.group')->deleteByIdForDocumentator($group['id']);
         }
     }
 
-    public static function addProduct($clientId, $productId, $date) {
+    public function addProduct($clientId, $productId, $date) {
         $query = "INSERT INTO client_product(client_id, sys_product_id, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -64,7 +60,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function deleteProduct($clientId, $productId) {
+    public function deleteProduct($clientId, $productId) {
         $query = "delete from client_product where client_id = ? and sys_product_id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -73,7 +69,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function getByBaseURL($httpHOST, $resultType = null, $resultColumn = null) {
+    public function getByBaseURL($httpHOST, $resultType = null, $resultColumn = null) {
         $query = 'SELECT * ' .
             'FROM client ' .
             "WHERE client.base_url = ? " .
@@ -96,7 +92,7 @@ class Client
         }
     }
 
-    public static function getYongoSetting($clientId, $settingName) {
+    public function getYongoSetting($clientId, $settingName) {
         $query = 'SELECT ' . $settingName . ' from client_yongo_settings where client_id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -111,7 +107,7 @@ class Client
             return null;
     }
 
-    public static function getLastMonthActiveClients() {
+    public function getLastMonthActiveClients() {
         $date = date("Y-m-d", mktime(0, 0, 0, date("m") - 1, 1, date("Y")));
         $query = 'SELECT count(general_log.id) as log_entries, client.id, client.company_domain, client.company_name, client.contact_email, client.date_created ' .
                  'FROM general_log ' .
@@ -132,7 +128,7 @@ class Client
             return null;
     }
 
-    public static function getSettingsByBaseURL($url) {
+    public function getSettingsByBaseURL($url) {
         $query = 'SELECT client.id, client_settings.operating_mode ' .
             'FROM client ' .
             'LEFT JOIN client_settings on client_settings.client_id = client.id ' .
@@ -148,7 +144,7 @@ class Client
             return null;
     }
 
-    public static function createDefaultYongoSettings($clientId) {
+    public function createDefaultYongoSettings($clientId) {
         $query = "INSERT INTO client_yongo_settings(client_id, allow_unassigned_issues_flag, issues_per_page, issue_linking_flag, time_tracking_flag,
                   time_tracking_hours_per_day, time_tracking_days_per_week, time_tracking_default_unit)
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -167,7 +163,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function setInstalledFlag($clientId, $installedFlag) {
+    public function setInstalledFlag($clientId, $installedFlag) {
         $query = "update client set installed_flag = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -176,61 +172,61 @@ class Client
         $stmt->execute();
     }
 
-    public static function createDefaultScreenData($clientId, $currentDate) {
+    public function createDefaultScreenData($clientId, $currentDate) {
 
         $screen = Screen::getByName($clientId, 'Default Screen');
 
-        $summaryField = Field::getByCode($clientId, Field::FIELD_SUMMARY_CODE);
+        $summaryField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
         Screen::addData($screen['id'], $summaryField['id'], 1, $currentDate);
 
-        $issueTypeField = Field::getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
+        $issueTypeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
         Screen::addData($screen['id'], $issueTypeField['id'], 2, $currentDate);
-        $priorityField = Field::getByCode($clientId, Field::FIELD_PRIORITY_CODE);
+        $priorityField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
         Screen::addData($screen['id'], $priorityField['id'], 3, $currentDate);
-        $dueDateField = Field::getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
+        $dueDateField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
         Screen::addData($screen['id'], $dueDateField['id'], 4, $currentDate);
-        $componentsField = Field::getByCode($clientId, Field::FIELD_COMPONENT_CODE);
+        $componentsField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
         Screen::addData($screen['id'], $componentsField['id'], 5, $currentDate);
 
-        $affectsVersionField = Field::getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
+        $affectsVersionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
         Screen::addData($screen['id'], $affectsVersionField['id'], 6, $currentDate);
-        $fixVersionField = Field::getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $fixVersionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
         Screen::addData($screen['id'], $fixVersionField['id'], 7, $currentDate);
 
-        $assigneeField = Field::getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $assigneeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Screen::addData($screen['id'], $assigneeField['id'], 8, $currentDate);
 
-        $reporterField = Field::getByCode($clientId, Field::FIELD_REPORTER_CODE);
+        $reporterField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_REPORTER_CODE);
         Screen::addData($screen['id'], $reporterField['id'], 9, $currentDate);
-        $environmentField = Field::getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
+        $environmentField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
         Screen::addData($screen['id'], $environmentField['id'], 10, $currentDate);
 
-        $descriptionField = Field::getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
+        $descriptionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
         Screen::addData($screen['id'], $descriptionField['id'], 11, $currentDate);
-        $attachmentField = Field::getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
+        $attachmentField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
         Screen::addData($screen['id'], $attachmentField['id'], 12, $currentDate);
 
-        $timeTrackingField = Field::getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
+        $timeTrackingField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
         Screen::addData($screen['id'], $timeTrackingField['id'], 13, $currentDate);
 
         $screen = Screen::getByName($clientId, 'Resolve Issue Screen');
-        $assigneeField = Field::getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $assigneeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Screen::addData($screen['id'], $assigneeField['id'], 1, $currentDate);
 
-        $fixVersionField = Field::getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $fixVersionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
         Screen::addData($screen['id'], $fixVersionField['id'], 2, $currentDate);
-        $resolutionField = Field::getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
+        $resolutionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
         Screen::addData($screen['id'], $resolutionField['id'], 3, $currentDate);
 
-        $commentField = Field::getByCode($clientId, Field::FIELD_COMMENT_CODE);
+        $commentField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMMENT_CODE);
         Screen::addData($screen['id'], $commentField['id'], 4, $currentDate);
 
         $screen = Screen::getByName($clientId, 'Workflow Screen');
-        $assigneeField = Field::getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $assigneeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Screen::addData($screen['id'], $assigneeField['id'], 1, $currentDate);
     }
 
-    public static function createDefaultNotificationScheme($clientId, $currentDate) {
+    public function createDefaultNotificationScheme($clientId, $currentDate) {
         $query = "INSERT INTO notification_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -244,7 +240,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultPermissionScheme($clientId, $currentDate) {
+    public function createDefaultPermissionScheme($clientId, $currentDate) {
         $query = "INSERT INTO permission_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -258,7 +254,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $currentDate) {
+    public function createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $currentDate) {
         $issueTypes = Type::getAll($clientId);
         $query = "INSERT INTO  issue_type_field_configuration_data(issue_type_field_configuration_id, issue_type_id, field_configuration_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
@@ -269,7 +265,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $currentDate) {
+    public function createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $currentDate) {
         $issueTypes = Type::getAll($clientId);
         $query = "INSERT INTO issue_type_scheme_data(issue_type_scheme_id, issue_type_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
@@ -280,7 +276,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getAllIssueSettings($type, $clientId) {
+    public function getAllIssueSettings($type, $clientId) {
         $query = "SELECT id, name, description FROM issue_" . $type . ' WHERE client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -293,7 +289,7 @@ class Client
             return null;
     }
 
-    public static function createDefaultIssueTypes($clientId, $currentDate) {
+    public function createDefaultIssueTypes($clientId, $currentDate) {
         $query = "INSERT INTO issue_type(client_id, name, description, sub_task_flag, icon_name, date_created) VALUES " .
             "(" . $clientId . ", 'Bug', 'A problem which impairs or prevents the functions of the product.', 0, 'bug.png', '" . $currentDate . "'), (" . $clientId . ", 'New feature', 'A new feature of the product, which has yet to be developed.', 0, 'new_feature.png', '" . $currentDate . "'), " .
             "(" . $clientId . ", 'Task', 'A task that needs to be done.', 0, 'task.png', '" . $currentDate . "'), (" . $clientId . " , 'Improvement', 'An improvement or enhancement to an existing feature or task.', 0, 'improvement.png', '" . $currentDate . "'), " .
@@ -302,7 +298,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public  static function createDefaultIssueTypeScheme($clientId, $type, $currentDate) {
+    public  function createDefaultIssueTypeScheme($clientId, $type, $currentDate) {
         $query = "INSERT INTO issue_type_scheme(client_id, name, description, type, date_created) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -315,7 +311,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultIssueTypeScreenScheme($clientId, $currentDate) {
+    public function createDefaultIssueTypeScreenScheme($clientId, $currentDate) {
         $query = "INSERT INTO issue_type_screen_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -329,7 +325,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultIssuePriorities($clientId, $currentDate) {
+    public function createDefaultIssuePriorities($clientId, $currentDate) {
         $query = "INSERT INTO issue_priority(client_id, name, icon_name, color, description, date_created) VALUES " .
             "(" . $clientId . ", 'Minor', 'minor.png', '#006600', 'Minor loss of function, or other problem where easy workaround is present.', '" . $currentDate . "'), " .
             "(" . $clientId . ", 'Major', 'major.png', '#009900', 'Major loss of function.', '" . $currentDate . "'), " .
@@ -339,7 +335,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createDefaultIssueStatuses($clientId, $currentDate) {
+    public function createDefaultIssueStatuses($clientId, $currentDate) {
         $query = "INSERT INTO issue_status(client_id, name, description, date_created) VALUES " .
             "(" . $clientId . ", 'Open', 'The issue is open and ready for the assignee to start work on it.', '" . $currentDate . "'), " .
             "(" . $clientId . ", 'Resolved', 'A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed.', '" . $currentDate . "'), " .
@@ -349,7 +345,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createDefaultIssueResolutions($clientId, $currentDate) {
+    public function createDefaultIssueResolutions($clientId, $currentDate) {
         $query = "INSERT INTO issue_resolution(client_id, name, description, date_created) VALUES " .
             "(" . $clientId . ", 'Fixed', 'A fix for this issue is checked into the tree and tested.', '" . $currentDate . "'), (" . $clientId . ", 'Cannot Reproduce', 'All attempts at reproducing this issue failed, or not enough information was available to reproduce the issue. Reading the code produces no clues as to why this behavior would occur. If more information appears later, please reopen the issue.', '" . $currentDate . "'), " .
             "(" . $clientId . ", 'Won\'t Fix', 'The problem described is an issue which will never be fixed.', '" . $currentDate . "'), (" . $clientId . " , 'Duplicate', 'The problem is a duplicate of an existing issue.', '" . $currentDate . "'), " .
@@ -357,7 +353,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function create($company_name, $companyDomain, $baseURL, $companyEmail, $countryId, $vatNumber = null, $paymillId, $instanceType, $date) {
+    public function create($company_name, $companyDomain, $baseURL, $companyEmail, $countryId, $vatNumber = null, $paymillId, $instanceType, $date) {
         $query = "INSERT INTO client(company_name, company_domain, base_url, contact_email, date_created, instance_type, sys_country_id, vat_number, paymill_id) " .
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -382,21 +378,21 @@ class Client
         return $clientId;
     }
 
-    public static function deleteById($clientId) {
+    public function deleteById($clientId) {
 
-        $clientData = Client::getById($clientId);
+        $clientData = $this->getRepository('ubirimi.general.client')->getById($clientId);
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete Yongo Product data
-        $projects = Client::getProjects($clientId);
+        $projects = $this->getRepository('ubirimi.general.client')->getProjects($clientId);
         while ($projects && $project = $projects->fetch_array(MYSQLI_ASSOC)) {
-            Project::deleteById($project['id']);
+            $this->getRepository('yongo.project.project')->deleteById($project['id']);
         }
 
-        $workflows = Workflow::getByClientId($clientId);
+        $workflows = $this->getRepository('yongo.workflow.workflow')->getByClientId($clientId);
         while ($workflows && $workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {
-            Workflow::deleteById($workflow['id']);
+            $this->getRepository('yongo.workflow.workflow')->deleteById($workflow['id']);
         }
         Scheme::deleteByClientId($clientId);
 
@@ -406,10 +402,10 @@ class Client
         }
         Scheme::deleteByClientId($clientId);
 
-        Client::deleteYongoIssueTypes($clientId);
-        Client::deleteYongoIssueStatuses($clientId);
-        Client::deleteYongoIssueResolutions($clientId);
-        Client::deleteYongoIssuePriorities($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteYongoIssueTypes($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteYongoIssueStatuses($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteYongoIssueResolutions($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteYongoIssuePriorities($clientId);
         Field::deleteByClientId($clientId);
 
         Configuration::deleteByClientId($clientId);
@@ -429,7 +425,7 @@ class Client
             SecurityScheme::deleteById($issueSecurityScheme['id']);
         }
 
-        $users = Client::getUsers($clientId);
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
 
         if ($users) {
             $userIdsArray = array();
@@ -450,7 +446,7 @@ class Client
             UbirimiContainer::get()['db.connection']->query($query);
         }
 
-        Client::deleteGroups($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteGroups($clientId);
 
         $query = 'delete from permission_role where client_id = ' . $clientId;
         UbirimiContainer::get()['db.connection']->query($query);
@@ -483,21 +479,21 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete Cheetah Product data
-        $agileBoards = Board::getByClientId($clientId, 'array');
+        $agileBoards = $this->getRepository('agile.board.board')->getByClientId($clientId, 'array');
         if ($agileBoards) {
             for ($i = 0; $i < count($agileBoards); $i++) {
-                Board::deleteById($agileBoards[$i]['id']);
+                $this->getRepository('agile.board.board')->deleteById($agileBoards[$i]['id']);
             }
         }
 
         // delete Events Product data
-        Client::deleteCalendars($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteCalendars($clientId);
 
         // delete SVN Product data
-        Client::deleteSVNRepositories($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteSVNRepositories($clientId);
 
         // delete Documentador Product data
-        Client::deleteSpaces($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteSpaces($clientId);
 
         $query = 'delete from client where id = ' . $clientId . ' limit 1';
         UbirimiContainer::get()['db.connection']->query($query);
@@ -513,7 +509,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getAll($filters = array()) {
+    public function getAll($filters = array()) {
         $query = 'select client.id, company_name, company_domain, address_1, address_2, city, district, contact_email, ' .
                  'date_created, installed_flag, last_login, is_payable, paymill_id, ' .
                  'sys_country.name as country_name, sys_country_id ' .
@@ -544,7 +540,7 @@ class Client
             return false;
     }
 
-    public static function getProjects($clientId, $resultType = null, $resultColumn = null, $onlyHelpDeskFlag = false) {
+    public function getProjects($clientId, $resultType = null, $resultColumn = null, $onlyHelpDeskFlag = false) {
         $partQuery = '';
         if ($onlyHelpDeskFlag) {
             $partQuery = ' AND project.help_desk_enabled_flag = 1 ';
@@ -579,7 +575,7 @@ class Client
             return null;
     }
 
-    public static function getUsers($clientId, $filterGroupId = null, $resultType = null, $includeHelpdeskCustomerUsers = 1) {
+    public function getUsers($clientId, $filterGroupId = null, $resultType = null, $includeHelpdeskCustomerUsers = 1) {
         $query = 'SELECT user.* ' .
                  'FROM user ' .
                  'left join group_data on group_data.user_id = user.id ' .
@@ -623,7 +619,7 @@ class Client
             return null;
     }
 
-    public static function updateById($clientId, $company_name, $address_1, $address_2, $city, $district, $contact_email, $countryId) {
+    public function updateById($clientId, $company_name, $address_1, $address_2, $city, $district, $contact_email, $countryId) {
         $query = 'UPDATE client SET ' .
             'company_name = ?, address_1 = ?, address_2 = ?, city = ?, district = ?, contact_email = ?, sys_country_id = ? ' .
             'WHERE id = ? ' .
@@ -634,7 +630,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function getById($clientId) {
+    public function getById($clientId) {
         $query = 'select * from client where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -648,7 +644,7 @@ class Client
             return false;
     }
 
-    public static function createDefaultScreens($clientId, $currentDate) {
+    public function createDefaultScreens($clientId, $currentDate) {
         $query = "INSERT INTO screen(client_id, name, description, date_created) VALUES " .
             "(" . $clientId . ",'Default Screen', 'Allows to update all system fields.', '" . $currentDate . "'), " .
             "(" . $clientId . ",'Resolve Issue Screen', 'Allows to set resolution, change fix versions and assign an issue.', '" . $currentDate . "'), " .
@@ -656,7 +652,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createDefaultScreenScheme($clientId, $currentDate) {
+    public function createDefaultScreenScheme($clientId, $currentDate) {
         $query = "INSERT INTO screen_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -670,7 +666,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultWorkflowScheme($clientId, $currentDate) {
+    public function createDefaultWorkflowScheme($clientId, $currentDate) {
         $query = "INSERT INTO workflow_scheme(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -684,7 +680,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultFieldConfiguration($clientId, $currentDate) {
+    public function createDefaultFieldConfiguration($clientId, $currentDate) {
         $query = "INSERT INTO field_configuration(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -698,7 +694,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultIssueTypeFieldConfiguration($clientId, $currentDate) {
+    public function createDefaultIssueTypeFieldConfiguration($clientId, $currentDate) {
         $query = "INSERT INTO  issue_type_field_configuration(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -712,7 +708,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $currentDate) {
+    public function createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $currentDate) {
         $query = "INSERT INTO workflow_scheme_data(workflow_scheme_id, workflow_id, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -721,7 +717,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function createDefaultScreenSchemeData($clientId, $screenSchemeId, $currentDate) {
+    public function createDefaultScreenSchemeData($clientId, $screenSchemeId, $currentDate) {
         $defaultScreenData = Screen::getByName($clientId, 'Default Screen');
         $defaultScreenId = $defaultScreenData['id'];
 
@@ -732,7 +728,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $currentDate) {
+    public function createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $currentDate) {
         $issueTypes = Type::getAll($clientId);
         $query = "INSERT INTO issue_type_screen_scheme_data(issue_type_screen_scheme_id, issue_type_id, screen_scheme_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
@@ -743,7 +739,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createDefaultWorkflow($clientId, $issueTypeSchemeId, $currentDate) {
+    public function createDefaultWorkflow($clientId, $issueTypeSchemeId, $currentDate) {
         $query = "INSERT INTO workflow(client_id, issue_type_scheme_id, name, description, date_created) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -757,7 +753,7 @@ class Client
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function createDefaultWorkflowData($clientId, $workflowId, $currentDate)
+    public function createDefaultWorkflowData($clientId, $workflowId, $currentDate)
     {
         $screenResolutionData = Screen::getByName($clientId, 'Resolve Issue Screen');
         $screenResolutionId = $screenResolutionData['id'];
@@ -765,28 +761,28 @@ class Client
         $screenWorkflowData = Screen::getByName($clientId, 'Workflow Screen');
         $screenWorkflowId = $screenWorkflowData['id'];
 
-        $createStepId = Workflow::createDefaultStep($workflowId, null, 'Create Issue', 1);
+        $createStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, null, 'Create Issue', 1);
 
         $statusOpenIdData = Settings::getByName($clientId, 'status', 'Open');
         $statusOpenId = $statusOpenIdData['id'];
-        $openStepId = Workflow::createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
+        $openStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
 
         $statusInProgressIdData = Settings::getByName($clientId, 'status', 'In Progress');
         $statusInProgressId = $statusInProgressIdData['id'];
 
-        $inProgressStepId = Workflow::createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
+        $inProgressStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
 
         $statusClosedIdData = Settings::getByName($clientId, 'status', 'Closed');
         $statusClosedId = $statusClosedIdData['id'];
-        $closedStepId = Workflow::createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
+        $closedStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
 
         $statusResolvedIdData = Settings::getByName($clientId, 'status', 'Resolved');
         $statusResolvedId = $statusResolvedIdData['id'];
-        $resolvedStepId = Workflow::createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
+        $resolvedStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
 
         $statusReopenedIdData = Settings::getByName($clientId, 'status', 'Reopened');
         $statusReopenedId = $statusReopenedIdData['id'];
-        $reopenedStepId = Workflow::createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
+        $reopenedStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
 
         $eventIssueWorkStoppedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
         $eventIssueCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
@@ -798,145 +794,145 @@ class Client
         $eventIssueReopenedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_REOPENED_CODE, 'id');
 
         // create issue -----> open
-        $transitionId = Workflow::addTransition($workflowId, null, $createStepId, $openStepId, 'Create Issue', '');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $createStepId, $openStepId, 'Create Issue', '');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_CREATE_ISSUE, 'create_issue');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueCreatedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_CREATE_ISSUE, 'create_issue');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueCreatedId);
 
         // open ------> in progress
-        $transitionId = Workflow::addTransition($workflowId, null, $openStepId, $inProgressStepId, 'Start Progress', '');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $openStepId, $inProgressStepId, 'Start Progress', '');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
         $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // open ------> closed
-        $transitionId = Workflow::addTransition($workflowId, $screenResolutionId, $openStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $openStepId, $closedStepId, 'Close Issue', '');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // open ------> resolved
 
-        $transitionId = Workflow::addTransition($workflowId, $screenResolutionId, $openStepId, $resolvedStepId, 'Resolve Issue', '');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $openStepId, $resolvedStepId, 'Resolve Issue', '');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // in progress ------> open
-        $transitionId = Workflow::addTransition($workflowId, null, $inProgressStepId, $openStepId, 'Stop Progress', '');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $inProgressStepId, $openStepId, 'Stop Progress', '');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
 
         $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // in progress ------> resolved
-        $transitionId = Workflow::addTransition($workflowId, $screenResolutionId, $inProgressStepId, $resolvedStepId, 'Resolve Issue', '');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $resolvedStepId, 'Resolve Issue', '');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // in progress ------> closed
-        $transitionId = Workflow::addTransition($workflowId, $screenResolutionId, $inProgressStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $closedStepId, 'Close Issue', '');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // resolved ------> closed
-        $transitionId = Workflow::addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $closedStepId, 'Close Issue', '');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // resolved ------> reopened
-        $transitionId = Workflow::addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $reopenedStepId, 'Reopen Issue', '');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $reopenedStepId, 'Reopen Issue', '');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // reopened ------> resolved
-        $transitionId = Workflow::addTransition($workflowId, $screenResolutionId, $reopenedStepId, $resolvedStepId, 'Resolve Issue', '');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $resolvedStepId, 'Resolve Issue', '');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // reopened ------> closed
-        $transitionId = Workflow::addTransition($workflowId, $screenResolutionId, $reopenedStepId, $closedStepId, 'Close Issue', '');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $closedStepId, 'Close Issue', '');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // reopened ------> In progress
 
-        $transitionId = Workflow::addTransition($workflowId, null, $reopenedStepId, $inProgressStepId, 'Start Progress', '');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $reopenedStepId, $inProgressStepId, 'Start Progress', '');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
         $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
 
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // closed ------> reopened
-        $transitionId = Workflow::addTransition($workflowId, $screenWorkflowId, $closedStepId, $reopenedStepId, 'Reopen Issue', '');
+        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $closedStepId, $reopenedStepId, 'Reopen Issue', '');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        Workflow::addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
+        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        Workflow::addCondition($transitionId, $definitionData);
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // save the position of the elements
         // create node
@@ -970,7 +966,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function createDefaultEvents($clientId, $currentDate) {
+    public function createDefaultEvents($clientId, $currentDate) {
         $query = "INSERT INTO event(client_id, name, code, description, system_flag, date_created) VALUES " .
             "(" . $clientId . ",'Issue Created', 1, 'This is the \'issue created\' event.', 1, '" . $currentDate . "'), " .
             "(" . $clientId . ",'Issue Updated', 2, 'This is the \'issue updated\' event.', 1, '" . $currentDate . "'), " .
@@ -988,7 +984,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getYongoSettings($clientId) {
+    public function getYongoSettings($clientId) {
         $query = 'select * from client_yongo_settings where client_id = ' . $clientId;
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1002,7 +998,7 @@ class Client
             return false;
     }
 
-    public static function getSettings($clientId) {
+    public function getSettings($clientId) {
         $query = 'select * from client_settings where client_id = ' . $clientId;
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1016,7 +1012,7 @@ class Client
             return false;
     }
 
-    public static function getDocumentatorSettings($clientId) {
+    public function getDocumentatorSettings($clientId) {
         $query = 'select * from client_documentator_settings where client_id = ' . $clientId;
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1030,7 +1026,7 @@ class Client
             return false;
     }
 
-    public static function updateProductSettings($clientId, $targetProduct, $parameters) {
+    public function updateProductSettings($clientId, $targetProduct, $parameters) {
         $tableName = '';
 
         if ($targetProduct == SystemProduct::SYS_PRODUCT_YONGO)
@@ -1070,7 +1066,7 @@ class Client
         $result = $stmt->get_result();
     }
 
-    public static function getProjectsByPermission($clientId, $userId, $permissionId, $resultType = null) {
+    public function getProjectsByPermission($clientId, $userId, $permissionId, $resultType = null) {
         // 1. user in permission scheme
 
         $queryLoggedInUser = 'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, user.first_name, user.last_name, user.id as user_id, ' .
@@ -1250,7 +1246,7 @@ class Client
         }
     }
 
-    public static function hasProduct($clientId, $productId) {
+    public function hasProduct($clientId, $productId) {
         $query = 'SELECT * ' .
             'from client_product ' .
             'WHERE client_product.client_id = ? and sys_product_id = ?';
@@ -1266,56 +1262,56 @@ class Client
             return false;
     }
 
-    public static function createDefaultFieldConfigurationData($clientId, $fieldConfigurationId) {
-        $field = Field::getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
+    public function createDefaultFieldConfigurationData($clientId, $fieldConfigurationId) {
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = Field::getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = Field::getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = Field::getByCode($clientId, Field::FIELD_COMMENT_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMMENT_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = Field::getByCode($clientId, Field::FIELD_COMPONENT_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = Field::getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = Field::getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
 
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = Field::getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
-
-        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-
-        $field = Field::getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
 
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = Field::getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
-        $field = Field::getByCode($clientId, Field::FIELD_PRIORITY_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = Field::getByCode($clientId, Field::FIELD_REPORTER_CODE);
-
-        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
-
-        $field = Field::getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
-
-        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-
-        $field = Field::getByCode($clientId, Field::FIELD_SUMMARY_CODE);
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_REPORTER_CODE);
 
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
-        $field = Field::getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
+
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
+
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
+
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
     }
 
-    public static function addDefaultDocumentatorGlobalPermissionData($clientId) {
-        $groupAdministrators = Group::getByName($clientId, 'Documentador Administrators');
-        $groupUsers = Group::getByName($clientId, 'Documentador Users');
+    public function addDefaultDocumentatorGlobalPermissionData($clientId) {
+        $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
+        $groupUsers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
 
         $groupAdministratorsId = $groupAdministrators['id'];
         $groupUsersId = $groupUsers['id'];
@@ -1349,7 +1345,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers) {
+    public function addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers) {
         $query = "INSERT INTO sys_permission_global_data(client_id, sys_permission_global_id, group_id) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1377,7 +1373,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function createDefaultFields($clientId, $date) {
+    public function createDefaultFields($clientId, $date) {
         $query = "INSERT INTO field(client_id, code, name, description, system_flag, date_created) VALUES " .
             "(" . $clientId . ", 'resolution', 'Resolution', 'Resolution', 1, '" . $date . "'), " .
             "(" . $clientId . ", 'comment', 'Comment', 'Comment', 1, '" . $date . "'), " .
@@ -1398,7 +1394,7 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function checkAvailableDomain($companyDomain) {
+    public function checkAvailableDomain($companyDomain) {
         $query = 'SELECT id from client where company_domain = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1412,7 +1408,7 @@ class Client
             return true;
     }
 
-    public static function getProducts($clientId, $resultType = null, $resultColumn = null) {
+    public function getProducts($clientId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT * from client_product where client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1438,7 +1434,7 @@ class Client
             return null;
     }
 
-    public static function createDatabase($sqlDatabaseCreation) {
+    public function createDatabase($sqlDatabaseCreation) {
         UbirimiContainer::get()['db.connection']->multi_query($sqlDatabaseCreation);
         do {
 
@@ -1448,101 +1444,101 @@ class Client
         } while (UbirimiContainer::get()['db.connection']->next_result());
     }
 
-    public static function installYongoProduct($clientId, $userId, $clientCreatedDate) {
+    public function installYongoProduct($clientId, $userId, $clientCreatedDate) {
 
         // set default YONGO Product Settings
-        Client::createDefaultYongoSettings($clientId);
+        $this->getRepository('ubirimi.general.client')->createDefaultYongoSettings($clientId);
 
         // add default issue priorities, statuses, resolutions
-        Client::createDefaultIssuePriorities($clientId, $clientCreatedDate);
-        Client::createDefaultIssueStatuses($clientId, $clientCreatedDate);
-        Client::createDefaultIssueResolutions($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssuePriorities($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssueStatuses($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssueResolutions($clientId, $clientCreatedDate);
 
         // create default Screens
-        Client::createDefaultScreens($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultScreens($clientId, $clientCreatedDate);
 
-        $screenSchemeId = Client::createDefaultScreenScheme($clientId, $clientCreatedDate);
-        Client::createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
+        $screenSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultScreenScheme($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
 
         // create default issue types
-        Client::createDefaultIssueTypes($clientId, $clientCreatedDate);
-        $issueTypeSchemeId = Client::createDefaultIssueTypeScheme($clientId, 'project', $clientCreatedDate);
-        Client::createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypes($clientId, $clientCreatedDate);
+        $issueTypeSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScheme($clientId, 'project', $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
 
         // create default workflow issue type scheme
-        $workflowIssueTypeSchemeId = Client::createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
-        Client::createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+        $workflowIssueTypeSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
 
         // create default issue type screen scheme
-        $issueTypeScreenSchemeId = Client::createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
-        Client::createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
+        $issueTypeScreenSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
 
         // create default events
-        Client::createDefaultEvents($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultEvents($clientId, $clientCreatedDate);
 
         // create default workflow
-        $workflowId = Client::createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
-        Client::createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
+        $workflowId = $this->getRepository('ubirimi.general.client')->createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
 
         // create default workflow scheme
-        $workflowSchemeId = Client::createDefaultWorkflowScheme($clientId, $clientCreatedDate);
-        Client::createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
+        $workflowSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultWorkflowScheme($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
 
         // create Default Fields
-        Client::createDefaultFields($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultFields($clientId, $clientCreatedDate);
 
         // create default link issue options
-        Client::createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
 
         // create default field configurations
-        $fieldConfigurationId = Client::createDefaultFieldConfiguration($clientId, $clientCreatedDate);
-        Client::createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
-        $issueTypeFieldConfigurationId = Client::createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
-        Client::createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
+        $fieldConfigurationId = $this->getRepository('ubirimi.general.client')->createDefaultFieldConfiguration($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
+        $issueTypeFieldConfigurationId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
 
-        Client::createDefaultScreenData($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->createDefaultScreenData($clientId, $clientCreatedDate);
 
         // create default permission roles
-        Role::addDefaultPermissionRoles($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultPermissionRoles($clientId, $clientCreatedDate);
 
         // create default group names
-        Group::addDefaultYongoGroups($clientId, $clientCreatedDate);
+        $this->getRepository('ubirimi.user.group')->addDefaultYongoGroups($clientId, $clientCreatedDate);
 
-        $roleAdministrators = Role::getByName($clientId, 'Administrators');
+        $roleAdministrators = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->ggetByName($clientId, 'Administrators');
 
-        $roleDevelopers = Role::getByName($clientId, 'Developers');
-        $roleUsers = Role::getByName($clientId, 'Users');
+        $roleDevelopers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->ggetByName($clientId, 'Developers');
+        $roleUsers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->ggetByName($clientId, 'Users');
 
-        $groupAdministrators = Group::getByName($clientId, 'Administrators');
+        $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Administrators');
 
-        $groupDevelopers = Group::getByName($clientId, 'Developers');
-        $groupUsers = Group::getByName($clientId, 'Users');
+        $groupDevelopers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Developers');
+        $groupUsers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Users');
 
-        Role::addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
-        Role::addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
 
-        Role::addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
 
         // add in Administrators group the current user
-        Group::addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
+        $this->getRepository('ubirimi.user.group')->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
 
-        Group::addData($groupDevelopers['id'], array($userId), $clientCreatedDate);
-        Group::addData($groupUsers['id'], array($userId), $clientCreatedDate);
+        $this->getRepository('ubirimi.user.group')->addData($groupDevelopers['id'], array($userId), $clientCreatedDate);
+        $this->getRepository('ubirimi.user.group')->addData($groupUsers['id'], array($userId), $clientCreatedDate);
 
         // create default permission scheme
-        $permissionSchemeId = Client::createDefaultPermissionScheme($clientId, $clientCreatedDate);
+        $permissionSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultPermissionScheme($clientId, $clientCreatedDate);
 
         Scheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
 
         // create default notification scheme
-        $notificationSchemeId = Client::createDefaultNotificationScheme($clientId, $clientCreatedDate);
+        $notificationSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultNotificationScheme($clientId, $clientCreatedDate);
         Scheme::addDefaultNotifications($clientId, $notificationSchemeId);
 
         // add global permission
-        Client::addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
+        $this->getRepository('ubirimi.general.client')->addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
     }
 
-    public static function toggleIssueLinkingFeature($clientId) {
+    public function toggleIssueLinkingFeature($clientId) {
         $query = 'UPDATE client_yongo_settings SET issue_linking_flag = 1 - issue_linking_flag where client_id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1550,7 +1546,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function toggleTimeTrackingFeature($clientId) {
+    public function toggleTimeTrackingFeature($clientId) {
         $query = 'UPDATE client_yongo_settings SET time_tracking_flag = 1 - time_tracking_flag where client_id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1558,7 +1554,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function createDefaultLinkIssueOptions($clientId, $currentDate) {
+    public function createDefaultLinkIssueOptions($clientId, $currentDate) {
         LinkType::add($clientId, 'Relates', 'relates to', 'relates to', $currentDate);
         LinkType::add($clientId, 'Duplicate', 'duplicates', 'is duplicated by', $currentDate);
 
@@ -1567,7 +1563,7 @@ class Client
         LinkType::add($clientId, 'Cloners', 'clones', 'is cloned by', $currentDate);
     }
 
-    public static function updateTimeTrackingSettings($clientId, $hoursPerDay, $daysPerWeek, $defaultUnit) {
+    public function updateTimeTrackingSettings($clientId, $hoursPerDay, $daysPerWeek, $defaultUnit) {
         $query = 'UPDATE client_yongo_settings SET time_tracking_hours_per_day = ?, time_tracking_days_per_week = ?, time_tracking_default_unit = ? where client_id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1575,7 +1571,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function updateSettings($clientId, $parameters) {
+    public function updateSettings($clientId, $parameters) {
         $query = 'UPDATE client SET ';
 
         $values = array();
@@ -1595,16 +1591,18 @@ class Client
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        foreach ($values as $key => $value)
+        foreach ($values as $key => $value) {
             $values_ref[$key] = &$values[$key];
+        }
 
-        if ($valuesType != '')
+        if ($valuesType != '') {
             call_user_func_array(array($stmt, "bind_param"), array_merge(array($valuesType), $values_ref));
+        }
         $stmt->execute();
         $result = $stmt->get_result();
     }
 
-    public static function getByContactEmailAddress($emailAddress) {
+    public function getByContactEmailAddress($emailAddress) {
         $query = 'select contact_email from client where LOWER(contact_email) = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1618,23 +1616,23 @@ class Client
             return null;
     }
 
-    public static function install($clientId) {
-        $clientData = Client::getById($clientId);
-        $userData = Client::getUsers($clientId);
+    public function install($clientId) {
+        $clientData = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $userData = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
         $user = $userData->fetch_array(MYSQLI_ASSOC);
         $userId = $user['id'];
 
         $clientCreatedDate = $clientData['date_created'];
 
-        Client::installYongoProduct($clientId, $userId, $clientCreatedDate);
-        Client::installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
-        Client::installCalendarProduct($clientId, $userId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->installYongoProduct($clientId, $userId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->installCalendarProduct($clientId, $userId, $clientCreatedDate);
 
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
-        Client::addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
+        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
 
         SMTPServer::add(
             $clientId,
@@ -1653,10 +1651,10 @@ class Client
             $clientCreatedDate
         );
 
-        Client::setInstalledFlag($clientId, 1);
+        $this->getRepository('ubirimi.general.client')->setInstalledFlag($clientId, 1);
     }
 
-    public static function addDefaultDocumentatorUserGroups($clientId, $date) {
+    public function addDefaultDocumentatorUserGroups($clientId, $date) {
         $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1672,7 +1670,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function addDefaultDocumentatorSettings($clientId) {
+    public function addDefaultDocumentatorSettings($clientId) {
         $query = "INSERT INTO client_documentator_settings(client_id, anonymous_use_flag, anonymous_view_user_profile_flag) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1684,7 +1682,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function getProductById($clientId, $productId) {
+    public function getProductById($clientId, $productId) {
         $query = 'SELECT * ' .
             'FROM client_product ' .
             "WHERE client_product.client_id = ? and sys_product_id = ? " .
@@ -1700,7 +1698,7 @@ class Client
             return null;
     }
 
-    public static function getByProductIdId($clientId, $productId) {
+    public function getByProductIdId($clientId, $productId) {
         $query = 'SELECT * ' .
             'FROM client_product ' .
             "WHERE client_product.client_id = ? and sys_product_id = ? " .
@@ -1716,7 +1714,7 @@ class Client
             return null;
     }
 
-    public static function getAdministrators($clientId, $userId = null) {
+    public function getAdministrators($clientId, $userId = null) {
         $query = "SELECT user.* " .
             "FROM user " .
             "WHERE client_id = ? and client_administrator_flag = 1";
@@ -1734,27 +1732,27 @@ class Client
             return null;
     }
 
-    public static function deleteYongoIssueTypes($clientId) {
+    public function deleteYongoIssueTypes($clientId) {
         $query = 'delete from issue_type where client_id = ' . $clientId;
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteYongoIssueStatuses($clientId) {
+    public function deleteYongoIssueStatuses($clientId) {
         $query = 'delete from issue_status where client_id = ' . $clientId;
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteYongoIssueResolutions($clientId) {
+    public function deleteYongoIssueResolutions($clientId) {
         $query = 'delete from issue_resolution where client_id = ' . $clientId;
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteYongoIssuePriorities($clientId) {
+    public function deleteYongoIssuePriorities($clientId) {
         $query = 'delete from issue_priority where client_id = ' . $clientId;
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteCalendars($clientId) {
+    public function deleteCalendars($clientId) {
         $calendars = Calendar::getByClientId($clientId);
         if ($calendars) {
             while ($calendar = $calendars->fetch_array(MYSQLI_ASSOC)) {
@@ -1764,7 +1762,7 @@ class Client
         }
     }
 
-    public static function deleteSVNRepositories($clientId) {
+    public function deleteSVNRepositories($clientId) {
         $repositories = SVNRepository::getAllByClientId($clientId);
         if ($repositories) {
             while ($repository = $repositories->fetch_array(MYSQLI_ASSOC)) {
@@ -1773,7 +1771,7 @@ class Client
         }
     }
 
-    public static function deleteSpaces($clientId) {
+    public function deleteSpaces($clientId) {
         $spaces = Space::getByClientId($clientId);
         if ($spaces) {
             while ($space = $spaces->fetch_array(MYSQLI_ASSOC)) {
@@ -1782,25 +1780,25 @@ class Client
         }
     }
 
-    public static function installDocumentatorProduct($clientId, $userId, $clientCreatedDate) {
-        Client::addDefaultDocumentatorUserGroups($clientId, $clientCreatedDate);
+    public function installDocumentatorProduct($clientId, $userId, $clientCreatedDate) {
+        $this->getRepository('ubirimi.general.client')->addDefaultDocumentatorUserGroups($clientId, $clientCreatedDate);
 
-        $groupAdministrators = Group::getByName($clientId, 'Documentador Administrators');
-        $groupUsers = Group::getByName($clientId, 'Documentador Users');
+        $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
+        $groupUsers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
 
         // add in Administrators/Users groups the current user
-        Group::addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
+        $this->getRepository('ubirimi.user.group')->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
 
-        Group::addData($groupUsers['id'], array($userId), $clientCreatedDate);
+        $this->getRepository('ubirimi.user.group')->addData($groupUsers['id'], array($userId), $clientCreatedDate);
 
-        Client::addDefaultDocumentatorSettings($clientId);
-        Client::addDefaultDocumentatorGlobalPermissionData($clientId);
+        $this->getRepository('ubirimi.general.client')->addDefaultDocumentatorSettings($clientId);
+        $this->getRepository('ubirimi.general.client')->addDefaultDocumentatorGlobalPermissionData($clientId);
     }
 
-    public static function installCalendarProduct($clientId, $userId, $clientCreatedDate) {
+    public function installCalendarProduct($clientId, $userId, $clientCreatedDate) {
 
         // create default calendar for the first user
-        $userData = User::getById($userId);
+        $userData = $this->getRepository('ubirimi.user.user')->getById($userId);
 
         $calendarId = Calendar::save($userData['id'], $userData['first_name'] . ' ' . $userData['last_name'], 'My default calendar', '#A1FF9E', $clientCreatedDate, 1);
 
@@ -1808,7 +1806,7 @@ class Client
         Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
     }
 
-    public static function getCurrentMonthAndDayPayingCustomers() {
+    public function getCurrentMonthAndDayPayingCustomers() {
         $query = "SELECT client.company_domain,
                          client.contact_email,
                          client.base_url,
@@ -1831,7 +1829,7 @@ class Client
             return null;
     }
 
-    public static function getCountryById($countryId) {
+    public function getCountryById($countryId) {
         $query = 'SELECT * ' .
             'FROM sys_country ' .
             "WHERE id = ? " .
@@ -1847,7 +1845,7 @@ class Client
             return null;
     }
 
-    public static function getUsersByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
+    public function getUsersByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
         $query = 'SELECT user.* ' .
             'FROM user ' .
             'left join group_data on group_data.user_id = user.id ' .
@@ -1879,7 +1877,7 @@ class Client
             return null;
     }
 
-    public static function getGroupsByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
+    public function getGroupsByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
         $query = 'SELECT `group`.* ' .
             'FROM `group` ' .
             'left join group_data on group_data.group_id = `group`.id ' .
@@ -1902,7 +1900,7 @@ class Client
             return null;
     }
 
-    public static function updateLoginTime($clientId, $datetime)
+    public function updateLoginTime($clientId, $datetime)
     {
         $query = "UPDATE client SET last_login = ? WHERE id = ? limit 1";
 
@@ -1911,7 +1909,7 @@ class Client
         $stmt->execute();
     }
 
-    public static function updatePaymillId($clientPaymillId, $clientId) {
+    public function updatePaymillId($clientPaymillId, $clientId) {
         $query = "UPDATE client SET paymill_id = ? WHERE id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

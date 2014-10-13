@@ -14,7 +14,7 @@ class ViewPreferenceController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $settings = Client::getYongoSettings($session->get('client/id'));
+        $settings = $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id'));
 
         $menuSelectedCategory = 'user';
 

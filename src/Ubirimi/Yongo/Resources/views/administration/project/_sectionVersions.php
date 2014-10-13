@@ -18,7 +18,7 @@
                 <tr>
                     <td valign="top" width="330">
                         <?php
-                            $versions = Project::getVersions(array($projectId));
+                            $versions = $this->getRepository('yongo.project.project')->getVersions(array($projectId));
                             if ($versions) {
                                 while ($version = $versions->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<div>' . $version['name'] . '</div>';

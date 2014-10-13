@@ -367,7 +367,7 @@ function installUser($data)
 {
     $currentDate = Util::getServerCurrentDateTime();
 
-    $issuesPerPage = Client::getYongoSetting($data['clientId'], 'issues_per_page');
+    $issuesPerPage = $this->getRepository('ubirimi.general.client')->getYongoSetting($data['clientId'], 'issues_per_page');
 
     if (array_key_exists('isCustomer', $data) && $data['isCustomer']) {
         $data['customer_service_desk_flag'] = 1;
@@ -400,7 +400,7 @@ function installUser($data)
         // add the newly created user to the Ubirimi Users Global Permission Groups
         $groups = GlobalPermission::getDataByPermissionId($data['clientId'], GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
-            Group::addData($group['id'], array($userId), $currentDate);
+            $this->getRepository('ubirimi.user.group')->addData($group['id'], array($userId), $currentDate);
         }
     }
 

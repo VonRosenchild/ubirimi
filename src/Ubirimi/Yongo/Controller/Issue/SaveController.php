@@ -22,7 +22,7 @@ class SaveController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $clientSettings = Client::getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
 
         $timeTrackingDefaultUnit = $session->get('yongo/settings/time_tracking_default_unit');
 

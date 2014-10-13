@@ -7,7 +7,7 @@ use Ubirimi\SystemProduct;
 
 class Group
 {
-    public static function getByName($clientId, $name) {
+    public function getByName($clientId, $name) {
         $query = 'select * from `group` where client_id = ? and name = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -21,7 +21,7 @@ class Group
             return false;
     }
 
-    public static function addDefaultYongoGroups($clientId, $date) {
+    public function addDefaultYongoGroups($clientId, $date) {
         $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -38,7 +38,7 @@ class Group
         $stmt->execute();
     }
 
-    public static function getByNameAndProductId($clientId, $productId, $name, $groupId = null) {
+    public function getByNameAndProductId($clientId, $productId, $name, $groupId = null) {
         $query = 'select id, name from `group` where client_id = ? and sys_product_id = ? and lower(name) = ?';
         if ($groupId)
             $query .= ' and id != ' . $groupId;
@@ -54,7 +54,7 @@ class Group
             return false;
     }
 
-    public static function getByUserIdAndProductId($userId, $productId) {
+    public function getByUserIdAndProductId($userId, $productId) {
         $query = 'select group.name, group.id ' .
             'from group_data ' .
             'left join `group` on group.id = group_data.group_id ' .
@@ -72,7 +72,7 @@ class Group
             return null;
     }
 
-    public static function getByClientIdAndProductId($clientId, $productId) {
+    public function getByClientIdAndProductId($clientId, $productId) {
         $query = 'SELECT * FROM `group` where client_id = ? and sys_product_id = ? order by `group`.name';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -85,7 +85,7 @@ class Group
             return null;
     }
 
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = 'SELECT * FROM `group` where client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -98,7 +98,7 @@ class Group
             return null;
     }
 
-    public static function addData($groupId, $userArray, $currentDate) {
+    public function addData($groupId, $userArray, $currentDate) {
         $query = 'insert into group_data(group_id, user_id, date_created) values ';
 
         for ($i = 0; $i < count($userArray); $i++)
@@ -108,7 +108,7 @@ class Group
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function add($clientId, $productId, $name, $description, $currentDate) {
+    public function add($clientId, $productId, $name, $description, $currentDate) {
         $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -116,7 +116,7 @@ class Group
         $stmt->execute();
     }
 
-    public static function getMetadataById($Id) {
+    public function getMetadataById($Id) {
         $query = 'SELECT ' .
             'id, name, description, client_id ' .
             'FROM `group` ' .
@@ -132,7 +132,7 @@ class Group
             return null;
     }
 
-    public static function updateById($Id, $name, $description, $date) {
+    public function updateById($Id, $name, $description, $date) {
         $query = "update `group` set name = ?, description = ?, date_updated = ? where id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -140,7 +140,7 @@ class Group
         $stmt->execute();
     }
 
-    public static function getDataByGroupId($groupId) {
+    public function getDataByGroupId($groupId) {
         $query = 'select group_data.id, group_data.user_id, user.first_name, user.last_name, ' .
                  'user.issues_display_columns ' .
             'from group_data ' .
@@ -158,7 +158,7 @@ class Group
             return null;
     }
 
-    public static function deleteDataByGroupId($groupId) {
+    public function deleteDataByGroupId($groupId) {
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
@@ -172,7 +172,7 @@ class Group
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteByIdForDocumentator($groupId) {
+    public function deleteByIdForDocumentator($groupId) {
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
@@ -190,7 +190,7 @@ class Group
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteByIdForYongo($groupId) {
+    public function deleteByIdForYongo($groupId) {
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 

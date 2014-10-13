@@ -429,8 +429,8 @@ class Space {
 
     public function setDefaultPermissions($clientId, $spaceId) {
 
-        $groupAdministrators = Group::getByName($clientId, 'Documentador Administrators');
-        $groupUsers = Group::getByName($clientId, 'Documentador Users');
+        $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
+        $groupUsers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
 
         if ($groupAdministrators) {
             $groupAdministratorsId = $groupAdministrators['id'];

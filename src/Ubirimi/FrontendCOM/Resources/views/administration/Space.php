@@ -45,13 +45,13 @@
                 <td><?php echo $space['description']; ?></td>
                 <td>
                     <?php
-                    $client = Client::getById($space['client_id']);
+                    $client = $this->getRepository('ubirimi.general.client')->getById($space['client_id']);
                     echo $client['company_name'];
                     ?>
                 </td>
                 <td>
                     <?php
-                    $user = User::getById($space['user_created_id']);
+                    $user = $this->getRepository('ubirimi.user.user')->getById($space['user_created_id']);
                     echo $user['first_name'] . ' ' . $user['last_name'];
                     ?>
                 </td>

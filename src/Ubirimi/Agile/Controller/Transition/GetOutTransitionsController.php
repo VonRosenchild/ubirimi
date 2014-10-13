@@ -26,12 +26,12 @@ class GetOutTransitionsController extends UbirimiController
         $issueQueryParameters = array('issue_id' => $issueId);
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
 
-        $transitions = Workflow::getOutgoingTransitionsForStep($workflowId, $stepIdFrom, 'array');
+        $transitions = $this->getRepository('yongo.workflow.workflow')->getOutgoingTransitionsForStep($workflowId, $stepIdFrom, 'array');
 
         // for each transition determine if the conditions allow it to be executed
         $transitionsToBeExecuted = array();
         for ($i = 0; $i < count($transitions); $i++) {
-            $canBeExecuted = Workflow::checkConditionsByTransitionId(
+            $canBeExecuted = $this->getRepository('yongo.workflow.workflow')->checkConditionsByTransitionId(
                 $transitions[$i]['id'],
                 $session->get('user/id'),
                 $issue

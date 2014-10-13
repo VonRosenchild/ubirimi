@@ -15,7 +15,7 @@
     $resolutions = Settings::getAllIssueSettings('resolution', $clientId, 'array');
     $resolutionsData = array('issue_resolution' => $resolutions);
 
-    $users = Client::getUsers($clientId, null, 'array');
+    $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array');
     $usersData = array('user' => $users);
 
     $data = json_encode(array($statusesData, $prioritiesData, $resolutionsData, $usersData));

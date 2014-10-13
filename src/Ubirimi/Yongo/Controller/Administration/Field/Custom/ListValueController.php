@@ -18,8 +18,8 @@ class ListValueController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldId = $request->get('id');
-        $field = Field::getById($fieldId);
-        $fieldData = Field::getDataByFieldId($fieldId);
+        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
+        $fieldData = $this->getRepository('yongo.field.field')->getDataByFieldId($fieldId);
 
         if ($field['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -28,7 +28,7 @@ class ListValueController extends UbirimiController
         if ($request->request->has('edit_field_custom_screen')) {
             $currentDate = Util::getServerCurrentDateTime();
 
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

@@ -16,7 +16,7 @@ class DeleteAllController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('transition_id');
-        Workflow::deleteDataById($Id);
+        $this->getRepository('yongo.workflow.workflow')->deleteDataById($Id);
 
         return new Response('');
     }

@@ -16,7 +16,7 @@
         <?php while ($comment = $comments->fetch_array(MYSQLI_ASSOC)): ?>
             <tr>
                 <td align="left" width="33px" valign="top" <?php if ($first) echo 'style="border-top: none; padding-right: 0px;"' ?>>
-                    <img style="height: 33px;" src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $comment['avatar_picture'], 'id' => $comment['user_id']), 'small') ?>" />
+                    <img style="height: 33px;" src="<?php echo $this->getRepository('ubirimi.user.user')->getUserAvatarPicture(array('avatar_picture' => $comment['avatar_picture'], 'id' => $comment['user_id']), 'small') ?>" />
                 </td>
                 <td valign="top" <?php if ($first) echo 'style="border-top: none;"' ?>>
                     <span>

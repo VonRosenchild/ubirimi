@@ -23,7 +23,7 @@ class ReportController extends UbirimiController
         $boardId = $request->get('board_id');
         $chart = $request->get('chart');
 
-        $board = Board::getById($boardId);
+        $board = $this->getRepository('agile.board.board')->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

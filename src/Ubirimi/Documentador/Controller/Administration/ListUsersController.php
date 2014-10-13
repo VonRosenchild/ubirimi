@@ -6,7 +6,7 @@
 
     $filterGroupId = isset($_GET['group_id']) ? $_GET['group_id'] : null;
 
-    $users = Client::getUsers($clientId, $filterGroupId);
+    $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId, $filterGroupId);
 
     $menuSelectedCategory = 'doc_users';
 

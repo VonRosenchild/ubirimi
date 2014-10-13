@@ -31,7 +31,7 @@ class AddController extends UbirimiController
                 $notificationScheme = new Scheme($session->get('client/id'), $name, $description);
                 $notificationSchemeId = $notificationScheme->save($currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

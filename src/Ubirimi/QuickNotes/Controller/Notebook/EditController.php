@@ -50,7 +50,7 @@ class EditController extends UbirimiController
                 $date = Util::getServerCurrentDateTime();
                 Notebook::updateById($notebookId, $name, $description, $date);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_QUICK_NOTES,
                     $session->get('user/id'),

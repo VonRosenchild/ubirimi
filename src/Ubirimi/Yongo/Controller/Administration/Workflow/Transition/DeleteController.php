@@ -18,7 +18,7 @@ class DeleteController extends UbirimiController
         $workflowId = $request->request->get('workflow_id');
         $idFrom = $request->request->get('id_from');
         $idTo = $request->request->get('id_to');
-        Workflow::deleteRecord($workflowId, $idFrom, $idTo);
+        $this->getRepository('yongo.workflow.workflow')->deleteRecord($workflowId, $idFrom, $idTo);
 
         return new Response('');
     }

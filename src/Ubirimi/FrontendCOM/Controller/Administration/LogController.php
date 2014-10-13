@@ -12,7 +12,7 @@ class LogController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $logs = Log::getAll();
+        $logs = $this->getRepository('ubirimi.general.log')->getAll();
 
         $selectedOption = 'log';
 

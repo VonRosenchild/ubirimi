@@ -24,11 +24,11 @@ class IndexController extends UbirimiController
         $menuSelectedCategory = 'administration';
 
         if ($hasYongoGlobalAdministrationPermission && $hasYongoGlobalSystemAdministrationPermission) {
-            $projects = Client::getProjects($session->get('client/id'), 'array');
+            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array');
             $last5Projects = $this->getRepository('yongo.project.project')->getLast5ByClientId($session->get('client/id'));
             $countProjects = $this->getRepository('yongo.project.project')->getCount($session->get('client/id'));
         } else if ($hasYongoAdministerProjectsPermission) {
-            $projects = Client::getProjectsByPermission(
+            $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_ADMINISTER_PROJECTS,

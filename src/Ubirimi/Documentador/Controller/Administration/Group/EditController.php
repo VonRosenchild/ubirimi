@@ -5,7 +5,7 @@
 
     Util::checkUserIsLoggedInAndRedirect();
     $Id = $_GET['id'];
-    $group = Group::getMetadataById($Id);
+    $group = $this->getRepository('ubirimi.user.group')->getMetadataById($Id);
 
     if ($group['client_id'] != $clientId) {
         header('Location: /general-settings/bad-link-access-denied');
@@ -26,7 +26,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $groupAlreadyExists = Group::getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO, mb_strtolower($name), $Id);
+            $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO, mb_strtolower($name), $Id);
 
             if ($groupAlreadyExists)
                 $duplicateName = true;
@@ -34,7 +34,7 @@
 
         if (!$emptyName && !$duplicateName) {
             $currentDate = Util::getServerCurrentDateTime();
-            Group::updateById($Id, $name, $description, $currentDate);
+            $this->getRepository('ubirimi.user.group')->updateById($Id, $name, $description, $currentDate);
 
             header('Location: /documentador/administration/groups');
         }

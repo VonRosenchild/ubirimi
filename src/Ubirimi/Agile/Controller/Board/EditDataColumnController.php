@@ -19,16 +19,16 @@ class EditDataColumnController extends UbirimiController
         $menuSelectedCategory = 'agile';
 
         $boardId = $request->get('id');
-        $board = Board::getById($boardId);
+        $board = $this->getRepository('agile.board.board')->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $columns = Board::getColumns($boardId, 'array');
+        $columns = $this->getRepository('agile.board.board')->getColumns($boardId, 'array');
 
         $columnWidth = 100 / (count($columns) + 1);
-        $unmappedStatuses = Board::getUnmappedStatuses($session->get('client/id'), $boardId, 'array');
+        $unmappedStatuses = $this->getRepository('agile.board.board')->getUnmappedStatuses($session->get('client/id'), $boardId, 'array');
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CHEETAH_NAME

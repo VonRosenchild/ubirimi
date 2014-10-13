@@ -41,7 +41,7 @@
                 $space = new Space($clientId, $loggedInUserId, $name, $code, $description);
                 $spaceId = $space->save($currentDate);
 
-                Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador space ' . $name, $date);
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador space ' . $name, $date);
 
                 // set space permission for current user
                 Space::addUserAllPermissions($spaceId, $loggedInUserId);

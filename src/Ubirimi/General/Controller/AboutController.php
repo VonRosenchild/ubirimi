@@ -15,8 +15,8 @@ class AboutController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = Client::getClientIdAnonymous();
-            $clientSettings = Client::getSettings($clientId);
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
             $loggedInUserId = null;
         }
 

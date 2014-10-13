@@ -16,18 +16,18 @@
 
     $issueId = $issueData['id'];
     $projectId = $issueData['issue_project_id'];
-    $project = Project::getById($projectId);
+    $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
-    $screenData = Project::getScreenData($project, $issueTypeId, SystemOperation::OPERATION_EDIT);
+    $screenData = $this->getRepository('yongo.project.project')->getScreenData($project, $issueTypeId, SystemOperation::OPERATION_EDIT);
 
-    $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+    $reporterUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
     $issuePriorities = Settings::getAllIssueSettings('priority', $clientId);
-    $projectIssueTypes = Project::getIssueTypes($projectId, 0);
+    $projectIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($projectId, 0);
 
-    $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
-    $userHasModifyReporterPermission = Project::userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
-    $userHasAssignIssuePermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
-    $userHasSetSecurityLevelPermission = Project::userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
+    $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
+    $userHasModifyReporterPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
+    $userHasAssignIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
+    $userHasSetSecurityLevelPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
 
     $timeTrackingFieldId = null;
     $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
@@ -38,7 +38,7 @@
         $issueSecuritySchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
     }
 
-    $projectComponents = Project::getComponents($projectId);
+    $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
     $issueComponents = Component::getByIssueIdAndProjectId($issueId, $projectId);
     $arrIssueComponents = array();
 
@@ -48,7 +48,7 @@
         }
     }
 
-    $projectVersions = Project::getVersions($projectId);
+    $projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
     $issue_versions_affected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
     $arr_issue_versions_affected = array();
     if ($issue_versions_affected) {
@@ -62,8 +62,8 @@
         while ($row = $issue_versions_targeted->fetch_array(MYSQLI_ASSOC))
             $arr_issue_versions_targeted[] = $row['project_version_id'];
     }
-    $allUsers = User::getByClientId($clientId);
-    $fieldData = Project::getFieldInformation($project['issue_type_field_configuration_id'], $issueTypeId, 'array');
+    $allUsers = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
+    $fieldData = $this->getRepository('yongo.project.project')->getFieldInformation($project['issue_type_field_configuration_id'], $issueTypeId, 'array');
     $fieldsPlacedOnScreen = array();
 
     echo '<table border="0" cellpadding="2" cellspacing="0" id="tableFieldList" class="modal-table">';
@@ -159,7 +159,7 @@
                             break;
 
                         case Field::FIELD_ASSIGNEE_CODE:
-                            $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');
+                            $allowUnassignedIssuesFlag = $this->getRepository('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
                             $textDisabled = '';
                             if (!$userHasAssignIssuePermission)
@@ -202,7 +202,7 @@
                             if ($projectComponents) {
                                 echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 $printedComponents = array();
-                                Project::renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
+                                $this->getRepository('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
                                 echo '</select>';
                             } else {
                                 echo '<span>None</span>';
@@ -253,7 +253,7 @@
                             break;
 
                         case $fieldCodeNULL:
-                            $fieldValue = Field::getCustomFieldValueByFieldId($issueId, $field['field_id']);
+                            $fieldValue = $this->getRepository('yongo.field.field')->getCustomFieldValueByFieldId($issueId, $field['field_id']);
                             // deal with the custom fields
                             switch ($field['type_code']) {
                                 case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
@@ -284,7 +284,7 @@
 
                                 case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
 
-                                    $possibleValues = Field::getDataByFieldId($field['field_id']);
+                                    $possibleValues = $this->getRepository('yongo.field.field')->getDataByFieldId($field['field_id']);
 
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                                     echo '<option value="">None</option>';

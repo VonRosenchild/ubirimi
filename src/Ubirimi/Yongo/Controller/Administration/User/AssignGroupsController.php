@@ -18,10 +18,10 @@ class AssignGroupsController extends UbirimiController
         $userId = $request->request->get('user_id');
         $assignedGroups = $request->request->get('assigned_groups');
 
-        User::deleteGroupsByUserId($userId);
+        $this->getRepository('ubirimi.user.user')->deleteGroupsByUserId($userId);
 
         if ($assignedGroups != -1) {
-            User::addGroups($userId, $assignedGroups);
+            $this->getRepository('ubirimi.user.user')->addGroups($userId, $assignedGroups);
         }
 
         return new Response('');

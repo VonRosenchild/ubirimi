@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <?php
-                        $users = User::getByClientId($client['id']);
+                        $users = $this->getRepository('ubirimi.user.user')->getByClientId($client['id']);
                         if ($users)
                             echo $users->num_rows;
                         else echo 0;

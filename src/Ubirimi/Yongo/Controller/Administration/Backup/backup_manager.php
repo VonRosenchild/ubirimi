@@ -6,7 +6,7 @@
 
     Util::checkUserIsLoggedInAndRedirect();
 
-    $settings = Client::getYongoSettings($clientId);
+    $settings = $this->getRepository('ubirimi.general.client')->getYongoSettings($clientId);
     $menuSelectedCategory = 'system';
 
     $file = false;

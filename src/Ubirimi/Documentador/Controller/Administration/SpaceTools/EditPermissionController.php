@@ -64,8 +64,8 @@
         header('Location: /documentador/administration/space-tools/permissions/' . $spaceId);
     }
 
-    $users = User::getByClientId($clientId);
-    $groups = Group::getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+    $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
+    $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
     $anonymousAccessSettings = Space::getAnonymousAccessSettings($spaceId);
 

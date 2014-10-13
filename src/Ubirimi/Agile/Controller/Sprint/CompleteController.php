@@ -20,10 +20,10 @@ class CompleteController extends UbirimiController
         $boardId = $request->request->get('board_id');
 
         $sprint = Sprint::getById($sprintId);
-        $lastColumn = Board::getLastColumn($boardId);
-        $completeStatuses = Board::getColumnStatuses($lastColumn['id'], 'array', 'id');
+        $lastColumn = $this->getRepository('agile.board.board')->getLastColumn($boardId);
+        $completeStatuses = $this->getRepository('agile.board.board')->getColumnStatuses($lastColumn['id'], 'array', 'id');
 
-        Board::transferNotDoneIssues($boardId, $sprintId, $completeStatuses);
+        $this->getRepository('agile.board.board')->transferNotDoneIssues($boardId, $sprintId, $completeStatuses);
 
         Sprint::complete($sprintId);
 

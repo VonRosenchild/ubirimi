@@ -22,7 +22,7 @@ class EditController extends UbirimiController
         $userId = $request->get('id');
         $location = $request->get('location', 'user_list');
         if ($userId) {
-            $user = User::getById($userId);
+            $user = $this->getRepository('ubirimi.user.user')->getById($userId);
             if ($user['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
@@ -50,7 +50,7 @@ class EditController extends UbirimiController
             $lastName = Util::cleanRegularInputField($request->request->get('last_name'));
             $username = Util::cleanRegularInputField($request->request->get('username'));
 
-            $clientAdministrators = Client::getAdministrators(
+            $clientAdministrators = $this->getRepository('ubirimi.general.client')->getAdministrators(
                 $session->get('client/id'),
                 $userId
             );
@@ -101,7 +101,7 @@ class EditController extends UbirimiController
             if (!Util::validateUsername($username))
                 $errors['invalid_username'] = true;
             else {
-                $existingUser = User::getByUsernameAndClientId(
+                $existingUser = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId(
                     $username,
                     $session->get('client/id'),
                     null,
@@ -115,7 +115,7 @@ class EditController extends UbirimiController
             if (Util::hasNoErrors($errors)) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                User::updateById(
+                $this->getRepository('ubirimi.user.user')->updateById(
                     $userId,
                     $firstName,
                     $lastName,
@@ -127,9 +127,9 @@ class EditController extends UbirimiController
                     $currentDate
                 );
 
-                $userUpdated = User::getById($userId);
+                $userUpdated = $this->getRepository('ubirimi.user.user')->getById($userId);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
                     $session->get('user/id'),

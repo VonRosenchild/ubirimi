@@ -20,12 +20,12 @@ class ListController extends UbirimiController
             $loggedInUserId = $session->get('user/id');
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $loggedInUserId = null;
-            $clientSettings = Client::getSettings($clientId);
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         }
 
-        $projects = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
         $menuSelectedCategory = 'project';
 

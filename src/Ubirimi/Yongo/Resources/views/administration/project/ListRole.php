@@ -60,7 +60,7 @@
                         <td width="200"><?php echo $role['name'] ?></td>
                         <td>
                             <?php
-                                $users = Project::getUsersInRole($projectId, $role['id']);
+                                $users = $this->getRepository('yongo.project.project')->getUsersInRole($projectId, $role['id']);
                                 $usersNames = array();
                                 while ($users && $user = $users->fetch_array(MYSQLI_ASSOC))
                                     $usersNames[] = $user['first_name'] . ' ' . $user['last_name']
@@ -69,7 +69,7 @@
                         </td>
                         <td>
                             <?php
-                                $groups = Project::getGroupsInRole($projectId, $role['id']);
+                                $groups = $this->getRepository('yongo.project.project')->getGroupsInRole($projectId, $role['id']);
                                 $groupNames = array();
                                 while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
                                     $groupNames[] = $group['group_name'];

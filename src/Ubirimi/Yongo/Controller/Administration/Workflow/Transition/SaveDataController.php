@@ -9,4 +9,4 @@
     $idTo = $_POST['id_to'];
     $name = $_POST['name'];
 
-    Workflow::createNewSingleDataRecord($project_workflow_id, $idFrom, $idTo, $name);
+    $this->getRepository('yongo.workflow.workflow')->createNewSingleDataRecord($project_workflow_id, $idFrom, $idTo, $name);

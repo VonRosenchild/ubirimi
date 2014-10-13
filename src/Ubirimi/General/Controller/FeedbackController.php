@@ -12,7 +12,7 @@
     $newFeatures = $_POST['new_features'];
     $experience = $_POST['experience'];
 
-    $userData = User::getById($loggedInUserId);
+    $userData = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
 
     $event = new UbirimiEvent(
         array(

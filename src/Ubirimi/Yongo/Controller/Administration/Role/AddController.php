@@ -27,15 +27,15 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $role = Role::getByName($session->get('client/id'), $name);
+            $role = $this->getRepository('yongo.permission.role')->ggetByName($session->get('client/id'), $name);
             if ($role)
                 $alreadyExists = true;
 
             if (!$emptyName && !$alreadyExists) {
                 $date = Util::getServerCurrentDateTime();
-                Role::add($session->get('client/id'), $name, $description, $date);
+                $this->getRepository('yongo.permission.role')->gadd($session->get('client/id'), $name, $description, $date);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

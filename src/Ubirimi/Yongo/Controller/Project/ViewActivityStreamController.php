@@ -19,15 +19,15 @@ class ViewActivityStreamController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
         $clientId = $session->get('client/id');
 
-        $client = Client::getById($clientId);
-        $clientSettings = Client::getSettings($clientId);
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         if (Util::checkUserIsLoggedIn()) {
-            $hasBrowsingPermission = Project::userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $loggedInUserId);
+            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $loggedInUserId);
         } else {
             $loggedInUserId = null;
             $httpHOST = Util::getHttpHost();
-            $hasBrowsingPermission = Project::userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS);
+            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS);
         }
 
         if ($hasBrowsingPermission) {

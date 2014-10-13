@@ -25,7 +25,7 @@ class ProfileController extends UbirimiController
             'empty_city' => false,
             'empty_district' => false);
 
-        $clientData = Client::getById($session->get('client/id'));
+        $clientData = $this->getRepository('ubirimi.general.client')->getById($session->get('client/id'));
 
         $content = 'account/Profile.php';
         $page = 'account_profile';

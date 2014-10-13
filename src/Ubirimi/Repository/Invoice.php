@@ -14,7 +14,7 @@ class Invoice
      * @param $date
      * @return mixed
      */
-    public static function save($clientId, $amount, $number, $date)
+    public function save($clientId, $amount, $number, $date)
     {
         $query = "INSERT INTO general_invoice(client_id, amount, number, date_created) VALUES (?, ?, ?, ?)";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -30,7 +30,7 @@ class Invoice
      *
      * @return int
      */
-    public static function getLastInvoiceNumber()
+    public function getLastInvoiceNumber()
     {
         $query = 'SELECT number
                         FROM general_invoice
@@ -59,7 +59,7 @@ class Invoice
      * @param $clientId
      * @return array
      */
-    public static function last12($clientId)
+    public function last12($clientId)
     {
         $query = 'SELECT gi.*
                     FROM general_invoice gi

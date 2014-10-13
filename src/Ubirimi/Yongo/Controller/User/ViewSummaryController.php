@@ -23,20 +23,20 @@ class ViewSummaryController extends UbirimiController
         $projectId = $session->get('selected_project_id');
         $userId = $request->get('id');
         $loggedInUserId = $session->get('user/id');
-        $user = User::getById($userId);
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
 
         if ($user['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $clientSettings = Client::getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
 
-        $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
+        $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $stats = Statistic::getUnresolvedIssuesByProjectForUser($userId);
 
-        $hasAdministrationGlobalPermission = User::hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
-        $hasSystemAdministrationGlobalPermission = User::hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasAdministrationGlobalPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
+        $hasSystemAdministrationGlobalPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
 
-        $projectsForBrowsing = Client::getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
         $projectIds = array();
 
         if ($projectsForBrowsing) {

@@ -6,4 +6,4 @@
 
     $stepId = $_POST['id'];
 
-    Workflow::deleteStepById($stepId);
+    $this->getRepository('yongo.workflow.workflow')->deleteStepById($stepId);

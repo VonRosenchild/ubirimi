@@ -22,7 +22,7 @@ class DeleteController extends UbirimiController
         $smtpServer = SMTPServer::getById($smtpServerId);
         $date = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
             $session->get('user/id'),

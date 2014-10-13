@@ -19,7 +19,7 @@
                     <td valign="top" width="330">
                         <div>Workflow Scheme</div>
                         <?php
-                            $workflowScheme = Project::getWorkflowScheme($projectId);
+                            $workflowScheme = $this->getRepository('yongo.project.project')->getWorkflowScheme($projectId);
 
                             $workflows = Scheme::getWorkflows($workflowScheme['id']);
                         ?>

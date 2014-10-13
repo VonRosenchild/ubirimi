@@ -57,7 +57,7 @@
 
         Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
+        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
 
         header('Location: /documentador/page/view/' . $entityId);
     }

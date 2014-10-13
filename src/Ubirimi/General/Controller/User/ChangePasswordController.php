@@ -21,7 +21,7 @@ class ChangePasswordController extends UbirimiController
         $newPassword = $request->request->get('new_password');
         $confirmPassword = $request->request->get('confirm_password');
 
-        $user = User::getById($userId);
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
 
         if (!UbirimiContainer::get()['password']->check($currentPassword, $user['password'])) {
             return new Response('current_password_wrong');
@@ -32,7 +32,7 @@ class ChangePasswordController extends UbirimiController
         }
 
         $hash = UbirimiContainer::get()['password']->hash($newPassword);
-        User::updatePassword($userId, $hash);
+        $this->getRepository('ubirimi.user.user')->updatePassword($userId, $hash);
         return new Response('ok');
     }
 }

@@ -55,7 +55,7 @@
                                 </ul>
                             </td>
                             <td>
-                                <?php $projects = Project::getByWorkflowIssueTypeScheme($clientId, $scheme['id']) ?>
+                                <?php $projects = $this->getRepository('yongo.project.project')->getByWorkflowIssueTypeScheme($clientId, $scheme['id']) ?>
                                 <?php if ($projects): ?>
                                 <ul>
                                     <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

@@ -27,7 +27,7 @@ class IssueEmailService extends UbirimiService
 
     public function emailIssueNew($issue)
     {
-        $project = Project::getById($issue['issue_project_id']);
+        $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
 
         if ($this->workflowService->hasEvent($this->session->get('client/id'), $issue['issue_project_id'], $issue['type'])) {
             $smtpSettings = $this->session->get('client/settings/smtp');
@@ -68,7 +68,7 @@ class IssueEmailService extends UbirimiService
 
             // notify people
             $eventId = Event::getByClientIdAndCode($this->session->get('client/id'), Event::EVENT_ISSUE_COMMENTED_CODE, 'id');
-            $users = Project::getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
+            $users = $this->getRepository('yongo.project.project')->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
 
@@ -89,7 +89,7 @@ class IssueEmailService extends UbirimiService
 
             $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $this->session->get('user/id'));
             $eventId = Event::getByClientIdAndCode($this->session->get('client/id'), Event::EVENT_ISSUE_COMMENTED_CODE, 'id');
-            $users = Project::getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
+            $users = $this->getRepository('yongo.project.project')->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
                 if ($userToNotify['user_id'] == $this->session->get('user/id') && $userToNotify['notify_own_changes_flag']) {
@@ -109,10 +109,10 @@ class IssueEmailService extends UbirimiService
         if ($smtpSettings) {
 
             Email::$smtpSettings = $smtpSettings;
-            $userThatShares = User::getById($this->session->get('user/id'));
+            $userThatShares = $this->getRepository('ubirimi.user.user')->getById($this->session->get('user/id'));
             for ($i = 0; $i < count($userIds); $i++) {
 
-                $user = User::getById($userIds[$i]);
+                $user = $this->getRepository('ubirimi.user.user')->getById($userIds[$i]);
 
                 Email::shareIssue($this->session->get('client/id'), $issue, $userThatShares, $user['email'], $noteContent);
             }

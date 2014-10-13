@@ -30,9 +30,9 @@ class BillingUpdateDoController extends UbirimiController
         $errors['empty_card_name'] = false;
         $errors['empty_card_security'] = false;
 
-        $client = Client::getById($clientId);
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
         $paymentUtil = new PaymentUtil();
-        $usersClient = Client::getUsers($clientId, null, 'array');
+        $usersClient = $this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array');
         $numberUsers = count($usersClient);
         $amount = $paymentUtil->getAmountByUsersCount($numberUsers);
         $VAT = 0;
@@ -84,7 +84,7 @@ class BillingUpdateDoController extends UbirimiController
 
                 $subscriptionResponse = $requestPaymill->create($subscription);
 
-                Client::updatePaymillId($clientPaymillId, $clientId);
+                $this->getRepository('ubirimi.general.client')->updatePaymillId($clientPaymillId, $clientId);
                 $session->set('client/paymill_id', $clientPaymillId);
 
                 return new RedirectResponse('/account/billing');

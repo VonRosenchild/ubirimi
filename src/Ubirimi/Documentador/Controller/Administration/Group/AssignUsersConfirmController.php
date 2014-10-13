@@ -7,9 +7,9 @@
 
     $groupId = $_GET['id'];
 
-    $group = Group::getMetadataById($groupId);
-    $allUsers = Client::getUsers($clientId);
-    $groupUsers = Group::getDataByGroupId($groupId);
+    $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
+    $allUsers = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
+    $groupUsers = $this->getRepository('ubirimi.user.group')->getDataByGroupId($groupId);
 
     $groupUsersArrayIds = array();
 

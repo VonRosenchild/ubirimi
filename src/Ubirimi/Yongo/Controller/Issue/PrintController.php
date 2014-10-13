@@ -28,9 +28,9 @@ class PrintController extends UbirimiController
             $clientSettings = $session->get('client/settings');
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
-            $clientSettings = Client::getSettings($clientId);
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
             $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($Id, $loggedInUserId);
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'];

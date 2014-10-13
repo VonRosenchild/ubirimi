@@ -18,7 +18,7 @@ class ViewUnresolvedOthersController extends UbirimiController
             $clientId = $session->get('client/id');
             $loggedInUserId = $session->get('user/id');
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $loggedInUserId = null;
         }
 
@@ -26,7 +26,7 @@ class ViewUnresolvedOthersController extends UbirimiController
         $selectedProjectId = $projectId;
         if ($projectId == -1) {
             $projects = array();
-            $projectsForBrowsing = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+            $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
             for ($i = 0; $i < count($projectsForBrowsing); $i++) {
                 $projects[] = $projectsForBrowsing[$i]['id'];
@@ -47,7 +47,7 @@ class ViewUnresolvedOthersController extends UbirimiController
         $renderParameters = array('issues' => $issuesUnresolvedOthers, 'render_checkbox' => false, 'show_header' =>true);
         $renderColumns = array('code', 'summary', 'priority', 'assignee');
 
-        $projects = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
         $projectIdsNames = array();
         for ($i = 0; $i < count($projects); $i++) {

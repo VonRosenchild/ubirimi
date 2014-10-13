@@ -40,7 +40,7 @@
                 </td>
                 <td valign="top">
                     <?php
-                        $projects = Project::getByIssueTypeScheme($issueTypeScheme['id']);
+                        $projects = $this->getRepository('yongo.project.project')->getByIssueTypeScheme($issueTypeScheme['id']);
                         if ($projects) {
                             echo '<ul>';
                             while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

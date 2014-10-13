@@ -14,7 +14,7 @@ class UpdatePreferencesConfirmController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $settings = User::getYongoSettings($session->get('user/id'));
+        $settings = $this->getRepository('ubirimi.user.user')->getYongoSettings($session->get('user/id'));
         $countries = Util::getCountries();
 
         return $this->render(__DIR__ . '/../../Resources/views/user/UpdatePreferencesConfirm.php', get_defined_vars());

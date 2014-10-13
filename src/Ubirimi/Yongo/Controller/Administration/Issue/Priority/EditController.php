@@ -50,7 +50,7 @@ class EditController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 Settings::updateById($Id, 'priority', $name, $description, $color, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

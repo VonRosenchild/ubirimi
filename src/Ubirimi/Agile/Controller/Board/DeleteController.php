@@ -18,12 +18,12 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $boardId = $request->request->get('id');
-        $board = Board::getById($boardId);
+        $board = $this->getRepository('agile.board.board')->getById($boardId);
 
-        Board::deleteById($boardId);
+        $this->getRepository('agile.board.board')->deleteById($boardId);
 
         $date = Util::getServerCurrentDateTime();
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_CHEETAH,
             $session->get('user/id'),

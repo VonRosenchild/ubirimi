@@ -20,7 +20,7 @@ class AddController extends UbirimiController
 
         $projectId = $request->get('id');
         $project = $this->getRepository('yongo.project.project')->getById($projectId);
-        $users = Client::getUsers($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
 
         $emptyName = false;
         $alreadyExists = false;
@@ -42,9 +42,9 @@ class AddController extends UbirimiController
                     $leader = null;
                 }
                 $currentDate = Util::getServerCurrentDateTime();
-                Project::addComponent($projectId, $name, $description, $leader, null, $currentDate);
+                $this->getRepository('yongo.project.project')->addComponent($projectId, $name, $description, $leader, null, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

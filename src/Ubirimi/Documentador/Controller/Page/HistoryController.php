@@ -9,7 +9,7 @@ Util::checkUserIsLoggedInAndRedirect();
 $menuSelectedCategory = 'documentator';
 
 $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-$clientSettings = Client::getSettings($clientId);
+$clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
 $entityId = $_GET['id'];
 $page = Entity::getById($entityId, $loggedInUserId);

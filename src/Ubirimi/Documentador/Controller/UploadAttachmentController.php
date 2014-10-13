@@ -32,7 +32,7 @@
                 // add the file to the list of files
                 $attachmentId = EntityAttachment::add($entityId, $filename, $currentDate);
 
-                Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment ' . $filename, $currentDate);
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment ' . $filename, $currentDate);
 
                 $revisionNumber = 1;
 
@@ -55,7 +55,7 @@
             EntityAttachment::addRevision($attachmentId, $loggedInUserId, $currentDate);
 
             if ($revisionNumber > 1) {
-                Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment revision to ' . $filename, $currentDate);
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment revision to ' . $filename, $currentDate);
             }
 
             $baseFileName = pathinfo($filename, PATHINFO_FILENAME);

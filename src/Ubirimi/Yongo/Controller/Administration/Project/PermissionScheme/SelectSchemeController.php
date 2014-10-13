@@ -27,7 +27,7 @@ class SelectSchemeController extends UbirimiController
 
             $permissionSchemeId = $request->request->get('perm_scheme');
 
-            Project::updatePermissionScheme($projectId, $permissionSchemeId);
+            $this->getRepository('yongo.project.project')->updatePermissionScheme($projectId, $permissionSchemeId);
 
             return new RedirectResponse('/yongo/administration/project/permissions/' . $projectId);
         }

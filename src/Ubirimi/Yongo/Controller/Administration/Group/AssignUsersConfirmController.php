@@ -17,9 +17,9 @@ class AssignUsersConfirmController extends UbirimiController
 
         $groupId = $request->get('group_id');
 
-        $group = Group::getMetadataById($groupId);
-        $allUsers = Client::getUsers($session->get('client/id'));
-        $groupUsers = Group::getDataByGroupId($groupId);
+        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
+        $allUsers = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
+        $groupUsers = $this->getRepository('ubirimi.user.group')->getDataByGroupId($groupId);
 
         $groupUsersArrayIds = array();
 

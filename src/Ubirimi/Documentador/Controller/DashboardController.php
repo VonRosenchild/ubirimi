@@ -26,7 +26,7 @@ class DashboardController extends UbirimiController
 
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Dashboard';
         }
 

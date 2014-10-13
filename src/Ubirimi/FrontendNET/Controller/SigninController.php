@@ -24,9 +24,9 @@ class SigninController extends UbirimiController
 
         $httpHOST = Util::getHttpHost();
 
-        $clientSettings = Client::getSettingsByBaseURL($httpHOST);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettingsByBaseURL($httpHOST);
         $clientId = $clientSettings['id'];
-        $client = Client::getById($clientId);
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
         if ($client['is_payable'] && !$client['paymill_id']) {
             return new RedirectResponse($httpHOST . '/setup-payment');
             die();
@@ -42,7 +42,7 @@ class SigninController extends UbirimiController
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $userData = User::getByUsernameAndClientId($username, $clientId);
+            $userData = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId($username, $clientId);
             if ($userData['id']) {
                 if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {
                     $session->invalidate();
@@ -52,7 +52,7 @@ class SigninController extends UbirimiController
                     UbirimiContainer::get()['login.time']->userSaveLoginTime($userData['id']);
 
                     $date = Util::getServerCurrentDateTime();
-                    Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);
+                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);
 
                     if ($context) {
                         return new RedirectResponse($httpHOST . $context);

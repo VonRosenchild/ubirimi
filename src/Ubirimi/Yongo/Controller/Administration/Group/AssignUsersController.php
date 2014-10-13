@@ -20,14 +20,14 @@ class AssignUsersController extends UbirimiController
         $groupId = $request->request->get('group_id');
         $userArray = $request->request->get('user_arr');
 
-        $group = Group::getMetadataById($groupId);
-        Group::deleteDataByGroupId($groupId);
+        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
+        $this->getRepository('ubirimi.user.group')->deleteDataByGroupId($groupId);
 
         $currentDate = Util::getServerCurrentDateTime();
-        Group::addData($groupId, $userArray, $currentDate);
+        $this->getRepository('ubirimi.user.group')->addData($groupId, $userArray, $currentDate);
 
         $date = Util::getServerCurrentDateTime();
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

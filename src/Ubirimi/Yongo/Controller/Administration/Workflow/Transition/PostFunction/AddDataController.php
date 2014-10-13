@@ -10,8 +10,8 @@
     $workflowDataId = $_GET['id'];
     $postFunctionId = $_GET['function_id'];
     $postFunctionSelected = WorkflowFunction::getById($postFunctionId);
-    $workflowData = Workflow::getDataById($workflowDataId);
-    $workflow = Workflow::getMetaDataById($workflowData['workflow_id']);
+    $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
+    $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 
     $postFunctions = WorkflowFunction::getAll();
 
@@ -25,7 +25,7 @@
             WorkflowFunction::addPostFunction($workflowDataId, $postFunctionId, $value);
 
             $currentDate = Util::getServerCurrentDateTime();
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);
+            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);
         }
 
         header('Location: /yongo/administration/workflow/transition-post-functions/' . $workflowDataId);

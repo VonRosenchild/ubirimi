@@ -10,7 +10,7 @@
 
     $conditionData = Condition::getByTransitionId($transitionId);
     if (!$conditionData)
-        Workflow::addCondition($transitionId, '');
+        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, '');
 
     if ($type == 'open_bracket')
         Condition::addConditionString($transitionId, '(');

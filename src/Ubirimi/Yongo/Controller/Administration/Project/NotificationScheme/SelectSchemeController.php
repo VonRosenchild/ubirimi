@@ -27,7 +27,7 @@ class SelectSchemeController extends UbirimiController
 
             $notificationSchemeId = $request->request->get('perm_scheme');
 
-            Project::updateNotificationScheme($projectId, $notificationSchemeId);
+            $this->getRepository('yongo.project.project')->updateNotificationScheme($projectId, $notificationSchemeId);
 
             return new RedirectResponse('/yongo/administration/project/notifications/' . $projectId);
         }

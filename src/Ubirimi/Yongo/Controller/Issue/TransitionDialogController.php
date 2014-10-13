@@ -23,10 +23,10 @@ $issueId = $_GET['issue_id'];
 $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
 $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
 $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByIdSimple($issueId);
-$workflowData = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+$workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
 $screenId = $workflowData['screen_id'];
 
-$allUsers = User::getByClientId($session->get('client/id'));
+$allUsers = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
 $screenData = Screen::getDataById($screenId);
 $screenMetadata = Screen::getMetaDataById($screenId);
 $resolutions = Settings::getAllIssueSettings('resolution', $clientId);
@@ -69,7 +69,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                 break;
 
             case Field::FIELD_ASSIGNEE_CODE:
-                $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');
+                $allowUnassignedIssuesFlag = $this->getRepository('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
                 $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_assignee" name="' . $field['field_code'] . '" class="select2Input">';
                 if ($allowUnassignedIssuesFlag)
@@ -161,7 +161,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
             // deal with the custom fields
             case $fieldCodeNULL:
 
-                $fieldValue = Field::getCustomFieldValueByFieldId($issueId, $field['field_id']);
+                $fieldValue = $this->getRepository('yongo.field.field')->getCustomFieldValueByFieldId($issueId, $field['field_id']);
                 switch ($field['type_code']) {
                     case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
                         $htmlOutput .= '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
@@ -190,7 +190,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                         break;
 
                     case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
-                        $possibleValues = Field::getDataByFieldId($field['field_id']);
+                        $possibleValues = $this->getRepository('yongo.field.field')->getDataByFieldId($field['field_id']);
                         $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                         $htmlOutput .= '<option value="">None</option>';
                         while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {

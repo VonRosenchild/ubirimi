@@ -9,11 +9,11 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $menuSelectedCategory = 'doc_users';
-    $documentatorSettings = Client::getDocumentatorSettings($clientId);
+    $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
     $session->set('documentator/settings', $documentatorSettings);
 
-    $users = User::getByClientId($clientId);
-    $groups = Group::getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+    $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
+    $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
     $globalsPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
     require_once __DIR__ . '/../../../Resources/views/administration/globalpermissions/View.php';

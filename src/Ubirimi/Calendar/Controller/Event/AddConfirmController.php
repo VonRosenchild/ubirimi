@@ -14,7 +14,7 @@ class AddConfirmController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $clientId = $session->get('client/id');
-        $clientSettings = Client::getSettings($clientId);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         $calendars = Calendar::getByUserId($session->get('user/id'), 'array');
         $defaultDay = $request->get('day');

@@ -51,7 +51,7 @@ class AddController extends UbirimiController
                     30
                 );
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_CALENDAR,
                     $session->get('user/id'),

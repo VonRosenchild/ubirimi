@@ -22,7 +22,7 @@ class ProjectsDataController extends UbirimiController
         $projectIdArray = $request->request->get('project_id_arr');
 
         if (count($projectIdArray) == 1 && $projectIdArray[0] == -1) {
-            $projectsForBrowsing = Client::getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
+            $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
             $projectIdArray = Util::getAsArray($projectsForBrowsing, array('id'));
         }
 
@@ -44,7 +44,7 @@ class ProjectsDataController extends UbirimiController
                 $issueTypeArray[] = $issueType;
         }
 
-        $allIssueStatuses = Client::getAllIssueSettings('status', $clientId);
+        $allIssueStatuses = $this->getRepository('ubirimi.general.client')->getAllIssueSettings('status', $clientId);
         $issueStatusArray = array();
         while ($issueStatus = $allIssueStatuses->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
@@ -61,7 +61,7 @@ class ProjectsDataController extends UbirimiController
                 $issueStatusArray[] = $issueStatus;
         }
 
-        $allIssuePriorities = Client::getAllIssueSettings('priority', $clientId);
+        $allIssuePriorities = $this->getRepository('ubirimi.general.client')->getAllIssueSettings('priority', $clientId);
         $issuePriorityArray = array();
         while ($issuePriority = $allIssuePriorities->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
@@ -78,7 +78,7 @@ class ProjectsDataController extends UbirimiController
                 $issuePriorityArray[] = $issuePriority;
         }
 
-        $allIssueResolutions = Client::getAllIssueSettings('resolution', $clientId);
+        $allIssueResolutions = $this->getRepository('ubirimi.general.client')->getAllIssueSettings('resolution', $clientId);
         $issueResolutionArray = array();
         while ($issueResolution = $allIssueResolutions->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
@@ -97,7 +97,7 @@ class ProjectsDataController extends UbirimiController
         }
 
         $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectIdArray, Permission::PERM_ASSIGNABLE_USER);
-        $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');
+        $allowUnassignedIssuesFlag = $this->getRepository('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
         $issueUsersAssignableArray = array();
         if ($allowUnassignedIssuesFlag) {

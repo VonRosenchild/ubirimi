@@ -33,7 +33,7 @@ class AddController extends UbirimiController
                 $iconName = 'generic.png';
                 $newIssueTypeId = Settings::createIssueType($session->get('client/id'), $name, $description, $subTaskFlag, $iconName, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

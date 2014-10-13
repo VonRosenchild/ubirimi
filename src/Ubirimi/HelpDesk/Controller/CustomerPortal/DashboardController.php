@@ -18,7 +18,7 @@ class DashboardController extends UbirimiController
         $menuSelectedCategory = 'home';
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_HELP_DESK);
 
-        $projectsForBrowsing = Client::getProjects($session->get('client/id'), null, null, true);
+        $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), null, null, true);
 
         if ($projectsForBrowsing) {
             $projectIdsAndNames = Util::getAsArray($projectsForBrowsing, array('id', 'name'));

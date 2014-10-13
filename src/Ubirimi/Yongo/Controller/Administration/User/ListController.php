@@ -20,18 +20,18 @@ class ListController extends UbirimiController
         $filterGroupId = $request->get('group_id');
 
         if ($filterGroupId) {
-            $group = Group::getMetadataById($filterGroupId);
+            $group = $this->getRepository('ubirimi.user.group')->getMetadataById($filterGroupId);
             if ($group['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
         }
 
-        $users = Client::getUsers($session->get('client/id'), $filterGroupId, null, 1);
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'), $filterGroupId, null, 1);
 
         $menuSelectedCategory = 'user';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Users';
-        $allGroups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $allGroups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/user/List.php', get_defined_vars());
     }

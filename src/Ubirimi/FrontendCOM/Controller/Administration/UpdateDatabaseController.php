@@ -50,11 +50,11 @@ use Ubirimi\Yongo\Repository\Issue\History;
 
             $oldUser = null;
             if ($record['old_value'])
-                $oldUser = User::getByClientIdAndFullName($clientId, $record['old_value']);
+                $oldUser = $this->getRepository('ubirimi.user.user')->getByClientIdAndFullName($clientId, $record['old_value']);
 
             $newUser = null;
             if ($record['new_value'])
-                $newUser = User::getByClientIdAndFullName($clientId, $record['new_value']);
+                $newUser = $this->getRepository('ubirimi.user.user')->getByClientIdAndFullName($clientId, $record['new_value']);
 
             if ($oldUser) {
                 $oldUserId = $oldUser['id'];

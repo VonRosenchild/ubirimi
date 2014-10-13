@@ -36,7 +36,7 @@ class AddController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
             $notebookId = Notebook::save($session->get('user/id'), $name, $description, $currentDate);
 
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_CALENDAR,
                 $session->get('user/id'),

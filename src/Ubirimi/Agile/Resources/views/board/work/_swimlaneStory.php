@@ -47,6 +47,6 @@ if ($allSprintIssuesWithoutChildren) {
     }
 
     echo '<table width="100%" cellpadding="0" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-    Board::renderIssues($allSprintIssuesWithoutChildren, $columns, $index);
+    $this->getRepository('agile.board.board')->renderIssues($allSprintIssuesWithoutChildren, $columns, $index);
     echo '</table>';
 }

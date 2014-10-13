@@ -76,7 +76,7 @@ class PaymentUtil
     public function getAmountByClientId($clientId)
     {
         $amount = 0;
-        $users = count(Client::getUsers($clientId, null, 'array'));
+        $users = count($this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array'));
 
         switch ($users) {
             case $users <= 10:

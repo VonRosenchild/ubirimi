@@ -18,14 +18,14 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $userId = $request->request->get('user_id');
-        $user = User::getById($userId);
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
 
-        User::deleteById($userId);
+        $this->getRepository('ubirimi.user.user')->deleteById($userId);
 
         // todo: delete the avatar, if any
 
         $currentDate = Util::getServerCurrentDateTime();
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
             $session->get('user/id'),

@@ -28,7 +28,7 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $duplicateWorkflow = Workflow::getByClientIdAndName($session->get('client/id'), mb_strtolower($name));
+            $duplicateWorkflow = $this->getRepository('yongo.workflow.workflow')->getByClientIdAndName($session->get('client/id'), mb_strtolower($name));
             if ($duplicateWorkflow)
                 $workflowExists = true;
 
@@ -37,7 +37,7 @@ class AddController extends UbirimiController
 
                 $currentDate = $date = Util::getServerCurrentDateTime();
 
-                $workflowId = Workflow::createNewMetaData(
+                $workflowId = $this->getRepository('yongo.workflow.workflow')->createNewMetaData(
                     $session->get('client/id'),
                     $workflowIssueTypeSchemeId,
                     $name,
@@ -45,9 +45,9 @@ class AddController extends UbirimiController
                     $currentDate
                 );
 
-                Workflow::createInitialData($session->get('client/id'), $workflowId);
+                $this->getRepository('yongo.workflow.workflow')->createInitialData($session->get('client/id'), $workflowId);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

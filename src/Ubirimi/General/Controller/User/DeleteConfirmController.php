@@ -25,7 +25,7 @@ class DeleteConfirmController extends UbirimiController
             $issues_reported_count = 0;
             $issues_assigned_count = 0;
 
-            $user = User::getById($userId);
+            $user = $this->getRepository('ubirimi.user.user')->getById($userId);
             $issuesReported = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('reporter' => $userId));
             $issuesAssigned = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('assignee' => $userId));
 

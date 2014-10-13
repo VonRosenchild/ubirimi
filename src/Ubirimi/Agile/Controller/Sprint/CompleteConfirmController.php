@@ -19,8 +19,8 @@ class CompleteConfirmController extends UbirimiController
         $boardId = $request->get('board_id');
 
         $sprint = Sprint::getById($sprintId);
-        $lastColumn = Board::getLastColumn($boardId);
-        $completeStatuses = Board::getColumnStatuses($lastColumn['id'], 'array', 'id');
+        $lastColumn = $this->getRepository('agile.board.board')->getLastColumn($boardId);
+        $completeStatuses = $this->getRepository('agile.board.board')->getColumnStatuses($lastColumn['id'], 'array', 'id');
 
         $issuesInSprintCount = Sprint::getSprintIssuesCount($sprintId);
         $completedIssuesInSprint = Sprint::getCompletedIssuesCountBySprintId($sprintId, $completeStatuses);

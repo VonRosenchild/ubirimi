@@ -18,14 +18,14 @@ class ActivityStreamController extends UbirimiController
             $issuesPerPage = $session->get('user/issues_per_page');
             $clientSettings = $session->get('client/settings');;
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $issuesPerPage = 25;
-            $clientSettings = Client::getSettings($clientId);
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         }
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Activity Stream';
 
-        $client = Client::getById($clientId);
-        $projectsMenu = Client::getProjectsByPermission(
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,

@@ -19,15 +19,15 @@ class AddController extends UbirimiController
 
         $workflowId = $request->get('id');
 
-        $workflowMetadata = Workflow::getMetaDataById($workflowId);
+        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
         if ($workflowMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $workflowSteps = Workflow::getSteps($workflowId);
+        $workflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
         $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
-        $linkedStatuses = Workflow::getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
+        $linkedStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
 
         $addStepPossible = true;
         if (count($linkedStatuses) == $statuses->num_rows) {
@@ -44,7 +44,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateStep = Workflow::getStepByWorkflowIdAndName($workflowId, $name);
+            $duplicateStep = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndName($workflowId, $name);
             if ($duplicateStep) {
                 $duplicateName = true;
             }
@@ -53,9 +53,9 @@ class AddController extends UbirimiController
                 $currentDate = $date = Util::getServerCurrentDateTime();
                 $StatusId = $request->request->get('linked_status');
 
-                Workflow::addStep($workflowId, $name, $StatusId, 0, $currentDate);
+                $this->getRepository('yongo.workflow.workflow')->addStep($workflowId, $name, $StatusId, 0, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

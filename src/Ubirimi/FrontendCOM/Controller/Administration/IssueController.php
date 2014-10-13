@@ -21,7 +21,7 @@ class IssueController extends UbirimiController
                 'page' => 1)
         );
 
-        Project::getById("issue_project_id");
+        $this->getRepository('yongo.project.project')->getById("issue_project_id");
 
         $issues = $issuesResult[0];
         $selectedOption = 'issues';

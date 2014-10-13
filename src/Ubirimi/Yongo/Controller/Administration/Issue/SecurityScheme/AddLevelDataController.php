@@ -29,9 +29,9 @@ class AddLevelDataController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $users = User::getByClientId($session->get('client/id'));
-        $groups = Group::getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = Role::getByClient($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
+        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
 
@@ -72,7 +72,7 @@ class AddLevelDataController extends UbirimiController
                 if (!$duplication) {
                     SecurityScheme::addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
 
-                    Log::add(
+                    $this->getRepository('ubirimi.general.log')->add(
                         $session->get('client/id'),
                         SystemProduct::SYS_PRODUCT_YONGO,
                         $session->get('user/id'),

@@ -20,7 +20,7 @@ class AddController extends UbirimiController
         $menuSelectedCategory = 'issue';
         $emptyName = false;
 
-        $fields = Field::getByClient($session->get('client/id'));
+        $fields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
 
         if ($request->request->has('add_screen')) {
 
@@ -44,7 +44,7 @@ class AddController extends UbirimiController
                     }
                 }
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

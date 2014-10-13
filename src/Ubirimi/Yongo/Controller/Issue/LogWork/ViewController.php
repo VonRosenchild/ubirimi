@@ -19,7 +19,7 @@ class ViewController extends UbirimiController
 
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
         }
 
@@ -28,11 +28,11 @@ class ViewController extends UbirimiController
 
         $workLogs = WorkLog::getByIssueId($issueId);
 
-        $hasEditOwnWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_OWN_WORKLOGS, $session->get('user/id'));
-        $hasEditAllWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ALL_WORKLOGS, $session->get('user/id'));
+        $hasEditOwnWorklogsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_OWN_WORKLOGS, $session->get('user/id'));
+        $hasEditAllWorklogsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ALL_WORKLOGS, $session->get('user/id'));
 
-        $hasDeleteOwnWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_WORKLOGS, $session->get('user/id'));
-        $hasDeleteAllWorklogsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_ALL_WORKLOGS, $session->get('user/id'));
+        $hasDeleteOwnWorklogsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_OWN_WORKLOGS, $session->get('user/id'));
+        $hasDeleteAllWorklogsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_ALL_WORKLOGS, $session->get('user/id'));
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/log_work/View.php', get_defined_vars());
     }

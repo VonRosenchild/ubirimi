@@ -16,7 +16,7 @@ class ViewSummaryController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $clientSettings = Client::getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
 
         $menuSelectedCategory = 'svn';
 

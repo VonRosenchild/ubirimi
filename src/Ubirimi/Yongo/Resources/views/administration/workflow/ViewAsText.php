@@ -37,7 +37,7 @@
 
             <?php while ($step = $workflowSteps->fetch_array(MYSQLI_ASSOC)): ?>
                 <?php
-                    $incomingTransitions = Workflow::getIncomingTransitionsForStep($workflowId, $step['id']);
+                    $incomingTransitions = $this->getRepository('yongo.workflow.workflow')->getIncomingTransitionsForStep($workflowId, $step['id']);
                 ?>
                 <tr id="table_row_<?php echo $step['id'] ?>">
                     <td width="22">
@@ -48,7 +48,7 @@
                     <td><?php echo $step['status_name'] ?></td>
                     <td align="left">
                         <?php
-                            $transitions = Workflow::getTransitionsForStepId($workflowId, $step['id']); ?>
+                            $transitions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowId, $step['id']); ?>
                         <?php while ($transitions && $transition = $transitions->fetch_array(MYSQLI_ASSOC)): ?>
                             <div><a href="/yongo/administration/workflow/view-transition/<?php echo $transition['id'] ?>"><?php echo $transition['transition_name'] ?></a> >> <?php echo $transition['name'] ?></div>
                         <?php endwhile ?>

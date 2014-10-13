@@ -28,13 +28,13 @@ class ToggleHelpdeskController extends UbirimiController
 
         if ($project['help_desk_enabled_flag'] == 1) {
             // disable
-            Project::removeHelpdeskData($projectId);
+            $this->getRepository('yongo.project.project')->removeHelpdeskData($projectId);
         } else {
             // enable
-            Project::addDefaultInitialDataForHelpDesk($clientId, $projectId, $loggedInUserId, $currentDate);
+            $this->getRepository('yongo.project.project')->addDefaultInitialDataForHelpDesk($clientId, $projectId, $loggedInUserId, $currentDate);
         }
 
-        Project::toggleHelpDeskFlag($projectId);
+        $this->getRepository('yongo.project.project')->toggleHelpDeskFlag($projectId);
 
         return new RedirectResponse('/yongo/administration/project/helpdesk/' . $projectId);
     }

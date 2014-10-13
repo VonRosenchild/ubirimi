@@ -21,19 +21,19 @@ class IndexController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $clients = Client::getAll();
-        $projects = Project::getAll();
-        $users = User::getAll();
+        $clients = $this->getRepository('ubirimi.general.client')->getAll();
+        $projects = $this->getRepository('yongo.project.project')->getAll();
+        $users = $this->getRepository('ubirimi.user.user')->getAll();
         $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getAll();
         $spaces = Space::getAllForAllClients();
         $entities = Entity::getAll();
-        $agileBoards = Board::getAll();
+        $agileBoards = $this->getRepository('agile.board.board')->getAll();
         $agileSprints = Sprint::getAllSprintsForClients();
         $svnRepos = SVNRepository::getAll();
 
-        $clientsToday = Client::getAll(array('today' => true));
-        $projectsToday = Project::getAll(array('today' => true));
-        $usersToday = User::getAll(array('today' => true));
+        $clientsToday = $this->getRepository('ubirimi.general.client')->getAll(array('today' => true));
+        $projectsToday = $this->getRepository('yongo.project.project')->getAll(array('today' => true));
+        $usersToday = $this->getRepository('ubirimi.user.user')->getAll(array('today' => true));
         $issuesToday = UbirimiContainer::getRepository('yongo.issue.issue')->getAll(array('today' => true));
         $svnReposToday = SVNRepository::getAll(array('today' => true));
 

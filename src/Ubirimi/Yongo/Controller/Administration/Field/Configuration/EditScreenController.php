@@ -23,7 +23,7 @@ class EditScreenVisibilityController extends UbirimiController
 
         $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
 
-        $field = Field::getById($fieldId);
+        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
         $screens = Screen::getAll($session->get('client/id'));
 
         if ($request->request->has('edit_field_configuration_screen')) {

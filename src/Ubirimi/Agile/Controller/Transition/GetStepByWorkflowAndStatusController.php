@@ -18,7 +18,7 @@ class GetStepByWorkflowAndStatusController extends UbirimiController
         $workflowId = $request->request->get('workflow_id');
         $StatusId = $request->request->get('status_id');
 
-        $step = Workflow::getStepByWorkflowIdAndStatusId($workflowId, $StatusId);
+        $step = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowId, $StatusId);
 
         return new Response(json_encode($step));
     }

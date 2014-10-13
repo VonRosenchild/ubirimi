@@ -8,13 +8,13 @@
 
     $stepPropertyId = $_GET['id'];
 
-    $stepProperty = Workflow::getStepPropertyById($stepPropertyId);
-    $step = Workflow::getStepById($stepProperty['workflow_step_id']);
+    $stepProperty = $this->getRepository('yongo.workflow.workflow')->getStepPropertyById($stepPropertyId);
+    $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepProperty['workflow_step_id']);
     $stepId = $step['id'];
     $workflowId = $step['workflow_id'];
 
-    $workflowMetadata = Workflow::getMetaDataById($workflowId);
-    $allProperties = Workflow::getSystemWorkflowProperties();
+    $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+    $allProperties = $this->getRepository('yongo.workflow.workflow')->getSystemWorkflowProperties();
     $emptyValue = false;
     $duplicateKey = false;
 
@@ -29,14 +29,14 @@
 
         if (!$emptyValue) {
 
-            $duplicateKey = Workflow::getStepKeyByStepIdAndKeyId($stepId, $keyId, $stepProperty['id']);
+            $duplicateKey = $this->getRepository('yongo.workflow.workflow')->getStepKeyByStepIdAndKeyId($stepId, $keyId, $stepProperty['id']);
 
             if (!$duplicateKey) {
 
                 $currentDate = Util::getServerCurrentDateTime();
-                Workflow::updateStepPropertyById($stepPropertyId, $keyId, $value, $currentDate);
+                $this->getRepository('yongo.workflow.workflow')->updateStepPropertyById($stepPropertyId, $keyId, $value, $currentDate);
 
-                Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Step Property', $currentDate);
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Step Property', $currentDate);
 
                 header('Location: /yongo/administration/workflow/view-step-properties/' . $stepId);
             }

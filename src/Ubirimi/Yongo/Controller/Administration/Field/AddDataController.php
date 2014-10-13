@@ -57,7 +57,7 @@ class AddDataController extends UbirimiController
                     $date
                 );
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

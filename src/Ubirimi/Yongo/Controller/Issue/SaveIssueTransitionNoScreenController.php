@@ -14,12 +14,12 @@ $workflowStepIdTo = $_POST['step_id_to'];
 $workflowId = $_POST['workflow_id'];
 $issueId = $_POST['issue_id'];
 
-$clientSettings = Client::getSettings($clientId);
+$clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
-$workflowData = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $workflowStepIdFrom, $workflowStepIdTo);
+$workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $workflowStepIdFrom, $workflowStepIdTo);
 $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
-$canBeExecuted = Workflow::checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issue);
+$canBeExecuted = $this->getRepository('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issue);
 
 if ($canBeExecuted) {
 

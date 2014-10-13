@@ -74,7 +74,7 @@
                         </td>
                         <td>
                             <?php
-                                $projects = Project::getByWorkflowId($workflow['id']);
+                                $projects = $this->getRepository('yongo.project.project')->getByWorkflowId($workflow['id']);
                                 if ($projects) {
                                     echo 'Active';
                                 } else {

@@ -119,6 +119,6 @@
         $newIssueAffectsVersions = Version::getByIds($session->get('move_issue/new_affects_version'));
     }
 
-    $newUserAssignee = User::getById($session->get('move_issue/new_assignee'));
+    $newUserAssignee = $this->getRepository('ubirimi.user.user')->getById($session->get('move_issue/new_assignee'));
 
     require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep4.php';

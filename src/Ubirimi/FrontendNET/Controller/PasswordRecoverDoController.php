@@ -27,7 +27,7 @@ class PasswordRecoverDoController extends UbirimiController
 
             $baseURL = Util::getHttpHost();
 
-            $userData = User::getByEmailAddressAndBaseURL($address, $baseURL);
+            $userData = $this->getRepository('ubirimi.user.user')->getByEmailAddressAndBaseURL($address, $baseURL);
 
             if ($userData) {
                 $password = Util::updatePasswordForUserId($userData['id']);

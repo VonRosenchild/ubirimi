@@ -8,8 +8,8 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $workflowDataId = $_GET['id'];
-    $workflowData = Workflow::getDataById($workflowDataId);
-    $workflow = Workflow::getMetaDataById($workflowData['workflow_id']);
+    $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
+    $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 
     if ($workflow['client_id'] != $clientId) {
         header('Location: /general-settings/bad-link-access-denied');

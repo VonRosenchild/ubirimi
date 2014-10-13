@@ -20,7 +20,7 @@ class EditController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $clientId = $session->get('client/id');
-        $clientSettings = Client::getSettings($clientId);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
 
@@ -198,7 +198,7 @@ class EditController extends UbirimiController
                 }
             }
 
-            Log::add($session->get('client/id'), SystemProduct::SYS_PRODUCT_CALENDAR, $session->get('user/id'),'UPDATE EVENTS event ' . $name, $date);
+            $this->getRepository('ubirimi.general.log')->add($session->get('client/id'), SystemProduct::SYS_PRODUCT_CALENDAR, $session->get('user/id'),'UPDATE EVENTS event ' . $name, $date);
 
             return new RedirectResponse($sourcePageLink);
         }

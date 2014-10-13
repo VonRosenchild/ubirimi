@@ -29,13 +29,13 @@ class ViewIssueTypeSchemeController extends UbirimiController
         $issueTypeDefaultScheme = TypeScheme::getMetaDataById($project['issue_type_scheme_id']);
         $issueTypeDefaultSchemeData = TypeScheme::getDataById($issueTypeDefaultScheme['id']);
 
-        $hasGlobalAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS

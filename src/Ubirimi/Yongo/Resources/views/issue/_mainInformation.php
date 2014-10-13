@@ -1,10 +1,9 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
+use Ubirimi\Yongo\Repository\Field\Field;
 
-    $selectedProductId = $session->get('selected_product_id');
+$selectedProductId = $session->get('selected_product_id');
 ?>
 <table width="100%" id="contentDetails">
     <tr>
@@ -52,7 +51,7 @@
                     <td valign="middle">
                         <?php
                             if ($issue[Field::FIELD_ASSIGNEE_CODE]) {
-                                echo '<img width="33px" style="vertical-align: middle;" src="' . User::getUserAvatarPicture(array('avatar_picture' => $issue['assignee_avatar_picture'] ,'id' => $issue['assignee']), 'small') . '" />';
+                                echo '<img width="33px" style="vertical-align: middle;" src="' . UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture(array('avatar_picture' => $issue['assignee_avatar_picture'] ,'id' => $issue['assignee']), 'small') . '" />';
                                 echo ' ' . LinkHelper::getUserProfileLink($issue[Field::FIELD_ASSIGNEE_CODE], $selectedProductId, $issue['ua_first_name'], $issue['ua_last_name']);
                             } else {
                                 echo 'Unassigned';
@@ -65,7 +64,7 @@
                         <div class="textLabel">Reporter:</div>
                     </td>
                     <td valign="middle">
-                        <img width="33px" style="vertical-align: middle;" src="<?php echo User::getUserAvatarPicture(array('avatar_picture' => $issue['reporter_avatar_picture'] ,'id' => $issue['reporter']), 'small') ?>" />
+                        <img width="33px" style="vertical-align: middle;" src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture(array('avatar_picture' => $issue['reporter_avatar_picture'] ,'id' => $issue['reporter']), 'small') ?>" />
                             <?php echo LinkHelper::getUserProfileLink($issue[Field::FIELD_REPORTER_CODE], $selectedProductId, $issue['ur_first_name'], $issue['ur_last_name']) ?>
                     </td>
                 </tr>
@@ -117,7 +116,7 @@
                         <?php
                             if ($components) {
                                 while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
-                                    Project::renderTreeComponentsInViewIssue($component, '');
+                                    UbirimiContainer::get()['repository']->get('yongo.project.project')->renderTreeComponentsInViewIssue($component, '');
                                 }
                             } else {
                                 echo 'None';

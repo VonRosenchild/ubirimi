@@ -45,8 +45,8 @@ class EditController extends UbirimiController
             if (!$emptyName && !$alreadyExists) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Project::updateComponentById($componentId, $name, $description, $leader, $currentDate);
-                Log::add(
+                $this->getRepository('yongo.project.project')->updateComponentById($componentId, $name, $description, $leader, $currentDate);
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),
@@ -58,7 +58,7 @@ class EditController extends UbirimiController
             }
         }
 
-        $users = Client::getUsers($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
         $menuSelectedCategory = 'project';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Project Component';
 

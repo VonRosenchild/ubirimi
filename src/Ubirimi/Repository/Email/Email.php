@@ -20,9 +20,9 @@ use Ubirimi\Yongo\Repository\Project\Project;
 
 class Email {
 
-    public static $smtpSettings;
+    public $smtpSettings;
 
-    public static function sendNewsletter($toEmailAddress, $content, $subject) {
+    public function sendNewsletter($toEmailAddress, $content, $subject) {
         $emailContent = Email::getEmailHeader();
         $emailContent .= '<br />';
         $emailContent .= '<br />';
@@ -43,7 +43,7 @@ class Email {
         }
     }
 
-    public static function sendNewUserNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $clientDomain) {
+    public function sendNewUserNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $clientDomain) {
         $subject = Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - A new account has been created for you';
 
         EmailQueue::add($clientId,
@@ -61,7 +61,7 @@ class Email {
                         Util::getServerCurrentDateTime());
     }
 
-    public static function sendNewCustomerNotificationEmail($clientId, $firstName, $lastName, $email, $password, $clientDomain) {
+    public function sendNewCustomerNotificationEmail($clientId, $firstName, $lastName, $email, $password, $clientDomain) {
         $subject = Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - A new customer account has been created for you';
 
         EmailQueue::add($clientId,
@@ -80,7 +80,7 @@ class Email {
                         Util::getServerCurrentDateTime());
     }
 
-    public static function sendNewUserRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
+    public function sendNewUserRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
         EmailQueue::add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
@@ -95,7 +95,7 @@ class Email {
                         Util::getServerCurrentDateTime());
     }
 
-    public static function sendUserChangedPasswordForRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
+    public function sendUserChangedPasswordForRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
         EmailQueue::add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
@@ -110,10 +110,10 @@ class Email {
                         Util::getServerCurrentDateTime());
     }
 
-    public static function triggerNewIssueNotification($clientId, $issue, $project, $loggedInUserId) {
+    public function triggerNewIssueNotification($clientId, $issue, $project, $loggedInUserId) {
 
         $eventCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
-        $users = Project::getUsersForNotification($project['id'], $eventCreatedId, $issue, $loggedInUserId);
+        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($project['id'], $eventCreatedId, $issue, $loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
@@ -124,12 +124,12 @@ class Email {
         }
     }
 
-    public static function triggerAssignIssueNotification($clientId, $issue, $oldUserAssignedName, $newUserAssignedName, $project, $loggedInUserId, $comment) {
+    public function triggerAssignIssueNotification($clientId, $issue, $oldUserAssignedName, $newUserAssignedName, $project, $loggedInUserId, $comment) {
 
         $eventAssignedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_ASSIGNED_CODE, 'id');
         $projectId = $project['id'];
-        $users = Project::getUsersForNotification($projectId, $eventAssignedId, $issue, $loggedInUserId);
-        $loggedInUser = User::getById($loggedInUserId);
+        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($projectId, $eventAssignedId, $issue, $loggedInUserId);
+        $loggedInUser = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
 
@@ -141,7 +141,7 @@ class Email {
         }
     }
 
-    private static function sendEmailNewIssue($clientId, $issue, $userToNotify) {
+    private function sendEmailNewIssue($clientId, $issue, $userToNotify) {
         $issueId = $issue['id'];
         $projectId = $issue['issue_project_id'];
         $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
@@ -174,7 +174,7 @@ class Email {
                         Util::getServerCurrentDateTime());
     }
 
-    public static function getMailer($smtpSettings) {
+    public function getMailer($smtpSettings) {
         $smtpSecurity = null;
         if ($smtpSettings['smtp_protocol'] == SMTPServer::PROTOCOL_SECURE_SMTP)
             $smtpSecurity = 'ssl';
@@ -190,7 +190,7 @@ class Email {
     }
 
     /* @TODO: remove when email refactoring has been done */
-    private static function getEmailHeader($product = null) {
+    private function getEmailHeader($product = null) {
         $text = '<div style="background-color: #F6F6F6; padding: 10px; margin: 10px; width: 720px;">';
         $text .= '<div style="color: #333333;font: 17px Trebuchet MS, sans-serif;white-space: nowrap;padding-bottom: 5px;padding-top: 5px;text-align: left;padding-left: 2px;">';
 
@@ -201,11 +201,11 @@ class Email {
         return $text;
     }
 
-    private static function getEmailFooter() {
+    private function getEmailFooter() {
         return '</div>';
     }
 
-    public static function sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment, $loggedInUser) {
+    public function sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment, $loggedInUser) {
         if (Email::$smtpSettings) {
 
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
@@ -233,7 +233,7 @@ class Email {
         }
     }
 
-    public static function sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $fieldChanges, $userToNotify) {
+    public function sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $fieldChanges, $userToNotify) {
         if (Email::$smtpSettings) {
             EmailQueue::add($clientId,
                 Email::$smtpSettings['from_address'],
@@ -251,13 +251,13 @@ class Email {
         }
     }
 
-    public static function triggerIssueUpdatedNotification($clientId, $issue, $loggedInUserId, $changedFields) {
+    public function triggerIssueUpdatedNotification($clientId, $issue, $loggedInUserId, $changedFields) {
 
         $projectId = $issue['issue_project_id'];
         $eventUpdatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_UPDATED_CODE, 'id');
-        $users = Project::getUsersForNotification($projectId, $eventUpdatedId, $issue, $loggedInUserId);
-        $project = Project::getById($projectId);
-        $loggedInUser = User::getById($loggedInUserId);
+        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($projectId, $eventUpdatedId, $issue, $loggedInUserId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $loggedInUser = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
@@ -268,7 +268,7 @@ class Email {
         }
     }
 
-    public static function sendContactMessage($to_address, $name, $subject, $message, $email) {
+    public function sendContactMessage($to_address, $name, $subject, $message, $email) {
         $mailer = Util::getUbirmiMailer('contact');
 
         $message = Swift_Message::newInstance('Contact message - Ubirimi.com')
@@ -290,7 +290,7 @@ class Email {
         }
     }
 
-    public static function sendEmailNotificationNewComment($issue, $clientId, $project, $userToNotify, $content, $user) {
+    public function sendEmailNotificationNewComment($issue, $clientId, $project, $userToNotify, $content, $user) {
         if (Email::$smtpSettings) {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue COMMENT " . $issue['project_code'] . '-' . $issue['nr'];
 
@@ -312,7 +312,7 @@ class Email {
         }
     }
 
-    public static function sendEmailRetrievePassword($address, $password) {
+    public function sendEmailRetrievePassword($address, $password) {
         $tpl = UbirimiContainer::get()['savant'];
         $tpl->assign(array('password' => $password));
 
@@ -330,7 +330,7 @@ class Email {
 //        }
     }
 
-    private static function sendEmailDeleteIssue($issue, $clientId, $user, $loggedInUser, $project) {
+    private function sendEmailDeleteIssue($issue, $clientId, $user, $loggedInUser, $project) {
 
         if (Email::$smtpSettings) {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
@@ -348,14 +348,14 @@ class Email {
         }
     }
 
-    public static function triggerDeleteIssueNotification($clientId, $issue, $project, $extraInformation) {
+    public function triggerDeleteIssueNotification($clientId, $issue, $project, $extraInformation) {
         $projectId = $issue['issue_project_id'];
 
         $loggedInUser = $extraInformation['loggedInUser'];
         $loggedInUserId = $loggedInUser['id'];
 
         $eventDeletedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_DELETED_CODE, 'id');
-        $users = Project::getUsersForNotification($projectId, $eventDeletedId, $issue, $loggedInUserId);
+        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($projectId, $eventDeletedId, $issue, $loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
@@ -365,7 +365,7 @@ class Email {
         }
     }
 
-    public static function sendFeedback($userData, $like, $improve, $newFeatures, $experience) {
+    public function sendFeedback($userData, $like, $improve, $newFeatures, $experience) {
 
         $text = Email::getEmailHeader();
         $text .= '<div style="color: #333333; font: 17px Trebuchet MS, sans-serif; white-space: nowrap; padding-top: 5px;text-align: left;padding-left: 2px;">' . $userData['first_name'] . ' ' . $userData['last_name'] . ' sent the following feedback: </div>';
@@ -409,7 +409,7 @@ class Email {
         }
     }
 
-    public static function shareIssue($clientId, $issue, $userThatShares, $userToSendEmailAddress, $noteContent) {
+    public function shareIssue($clientId, $issue, $userThatShares, $userToSendEmailAddress, $noteContent) {
         if (Email::$smtpSettings) {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                 $userThatShares['first_name'] . ' ' .
@@ -433,7 +433,7 @@ class Email {
         }
     }
 
-    public static function shareCalendar($clientId, $calendar, $userThatShares, $userToSendEmailAddress, $noteContent) {
+    public function shareCalendar($clientId, $calendar, $userThatShares, $userToSendEmailAddress, $noteContent) {
         if (Email::$smtpSettings) {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                 $userThatShares['first_name'] . ' ' .
@@ -455,7 +455,7 @@ class Email {
         }
     }
 
-    public static function shareEvent($clientId, $event, $userThatShares, $userToSendEmailAddress, $noteContent) {
+    public function shareEvent($clientId, $event, $userThatShares, $userToSendEmailAddress, $noteContent) {
         if (Email::$smtpSettings) {
             $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                 $userThatShares['first_name'] . ' ' .

@@ -20,13 +20,13 @@ class EditDataFilterController extends UbirimiController
         $menuSelectedCategory = 'agile';
 
         $boardId = $request->get('id');
-        $board = Board::getById($boardId);
+        $board = $this->getRepository('agile.board.board')->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $boardProjects = Board::getProjects($boardId, 'array');
+        $boardProjects = $this->getRepository('agile.board.board')->getProjects($boardId, 'array');
         $filter = Filter::getById($board['filter_id']);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '

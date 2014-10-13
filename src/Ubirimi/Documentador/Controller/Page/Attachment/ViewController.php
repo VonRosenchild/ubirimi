@@ -19,10 +19,10 @@
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $page['name'] . ' / Attachments';
     } else {
         $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
         $loggedInUserId = null;
 
-        $settingsDocumentator = Client::getDocumentatorSettings($clientId);
+        $settingsDocumentator = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
 
         $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
 

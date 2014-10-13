@@ -16,7 +16,7 @@ class ConfirmShareController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $calendarId = $request->get('id');
-        $users = User::getByClientId($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
         $sharedWithUsers = Calendar::getSharedUsers($calendarId, 'array');
         return $this->render(__DIR__ . '/../Resources/views/ConfirmShare.php', get_defined_vars());
     }

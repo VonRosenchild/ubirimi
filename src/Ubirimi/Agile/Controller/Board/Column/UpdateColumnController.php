@@ -19,9 +19,9 @@ class UpdateColumnController extends UbirimiController
         $StatusId = $request->request->get('status_id');
         $newColumnId = $request->request->get('new_column_id');
 
-        Board::deleteStatusFromColumn($boardId, $StatusId);
+        $this->getRepository('agile.board.board')->deleteStatusFromColumn($boardId, $StatusId);
         if ($newColumnId)
-            Board::addStatusToColumn($newColumnId, $StatusId);
+            $this->getRepository('agile.board.board')->addStatusToColumn($newColumnId, $StatusId);
 
         return new Response('');
     }

@@ -89,7 +89,7 @@ class Custom {
         }
 
         if ($allProjectFlag) {
-            $projectResult = Project::getByClientId($clientId);
+            $projectResult = $this->getRepository('yongo.project.project')->getByClientId($clientId);
             $project = array();
             while ($pr = $projectResult->fetch_array(MYSQLI_ASSOC)) {
                 $project[] = $pr['id'];

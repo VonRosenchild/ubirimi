@@ -40,8 +40,8 @@
             <tbody>
             <?php while ($issue = $issues->fetch_array(MYSQLI_ASSOC)): ?>
                 <?php
-                    $project = Project::getById($issue['issue_project_id']);
-                    $client = Client::getById($project['client_id']);
+                    $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
+                    $client = $this->getRepository('ubirimi.general.client')->getById($project['client_id']);
                 ?>
                 <tr id="table_row_<?php echo $issue['id'] ?>">
                     <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $issue['id'] ?>"/></td>

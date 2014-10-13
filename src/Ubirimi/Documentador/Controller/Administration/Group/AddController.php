@@ -13,7 +13,7 @@
             $emptyName = true;
 
         if (!$emptyName) {
-            $groupAlreadyExists = Group::getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name);
+            $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name);
             if ($groupAlreadyExists)
                 $duplicateName = true;
         }
@@ -21,7 +21,7 @@
         if (!$emptyName && !$duplicateName) {
             $description = Util::cleanRegularInputField($_POST['description']);
             $currentDate = Util::getServerCurrentDateTime();
-            Group::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name, $description, $currentDate);
+            $this->getRepository('ubirimi.user.group')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name, $description, $currentDate);
 
             header('Location: /documentador/administration/groups');
         }

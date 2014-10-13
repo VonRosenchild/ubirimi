@@ -18,11 +18,11 @@ class DeleteDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionSchemeDataId = $request->request->get('permission_scheme_data_id');
-        Scheme::deleteDataById($permissionSchemeDataId);
+        $this->getRepository('yongo.permission.scheme')->gdeleteDataById($permissionSchemeDataId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

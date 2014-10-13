@@ -18,11 +18,11 @@ class FiltersController extends UbirimiController
 
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
         }
 
-        $projectsMenu = Client::getProjectsByPermission(
+        $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,

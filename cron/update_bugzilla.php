@@ -164,8 +164,8 @@ function processNewBugzillaBug($newIssue)
 
 function insertBugzillaBug($assigned_to, $bug_severity, $bug_status, $component, $creation_ts, $date_updated, $priority, $project, $reporter, $resolution, $short_desc, $version)
 {
-    $ubirimiUser = User::getById($assigned_to);
-    $ubirimiReporter = User::getById($reporter);
+    $ubirimiUser = $this->getRepository('ubirimi.user.user')->getById($assigned_to);
+    $ubirimiReporter = $this->getRepository('ubirimi.user.user')->getById($reporter);
 
     $bugzillaUser = getBugzillaUserByEmail($ubirimiUser['email']);
     $bugzillaReporter = getBugzillaUserByEmail($ubirimiReporter['email']);

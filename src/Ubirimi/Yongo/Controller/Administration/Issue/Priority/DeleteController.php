@@ -23,14 +23,14 @@ class DeleteController extends UbirimiController
         $newId = $request->request->get('new_id');
 
         $priority = Settings::getById($oldId, 'priority');
-        $projects = Client::getProjects($session->get('client/id'), 'array', 'id');
+        $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
         Issue::updatePriority($projects, $oldId, $newId);
 
         Settings::deletePriorityById($oldId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

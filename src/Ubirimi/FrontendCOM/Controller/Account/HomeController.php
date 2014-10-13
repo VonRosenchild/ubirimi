@@ -14,10 +14,10 @@ class HomeController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $clientData = Client::getById($session->get('client/id'));
+        $clientData = $this->getRepository('ubirimi.general.client')->getById($session->get('client/id'));
         $installedFlag = $clientData['installed_flag'];
 
-        $users = User::getByClientId($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
 
         $page = 'account_home';
 

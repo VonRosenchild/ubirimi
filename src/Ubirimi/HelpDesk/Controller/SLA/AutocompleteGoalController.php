@@ -51,7 +51,7 @@ class AutocompleteGoalController extends UbirimiController
         $priorities = Settings::getAllIssueSettings('priority', $session->get('client/id'));
         $resolutions = Settings::getAllIssueSettings('resolution', $session->get('client/id'));
         $types = Type::getAll($session->get('client/id'));
-        $users = User::getByClientId($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
 
         while ($types && $type = $types->fetch_array(MYSQLI_ASSOC)) {
             $standardKeyWords[] = $type['name'];

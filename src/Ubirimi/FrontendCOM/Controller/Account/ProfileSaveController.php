@@ -61,7 +61,7 @@ class ProfileSaveController extends UbirimiController
         }
 
         if (Util::hasNoErrors($errors)) {
-            Client::updateById($session->get('client/id'),
+            $this->getRepository('ubirimi.general.client')->updateById($session->get('client/id'),
                 $companyName,
                 $address1,
                 $address2,
@@ -72,7 +72,7 @@ class ProfileSaveController extends UbirimiController
             );
 
             $session->set('profile_updated', true);
-            $clientData = Client::getById($session->get('client/id'));
+            $clientData = $this->getRepository('ubirimi.general.client')->getById($session->get('client/id'));
         }
         else {
             $session->remove('profile_updated');

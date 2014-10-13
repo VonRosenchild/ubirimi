@@ -34,7 +34,7 @@ class ConfigureController extends UbirimiController
             return new RedirectResponse('/yongo/administration/screen/configure/' . $screenId);
         }
 
-        $fields = Field::getByClient($session->get('client/id'));
+        $fields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
 
         if ($request->request->has('add_screen_field')) {
             $fieldId = Util::cleanRegularInputField($request->request->get('field'));
@@ -44,7 +44,7 @@ class ConfigureController extends UbirimiController
                 $lastOrder = Screen::getLastOrderNumber($screenId);
                 Screen::addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

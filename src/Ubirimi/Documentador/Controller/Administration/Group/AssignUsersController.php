@@ -6,7 +6,7 @@
 
     $groupId = $_POST['group_id'];
     $userArray = $_POST['user_arr'];
-    Group::deleteDataByGroupId($groupId);
+    $this->getRepository('ubirimi.user.group')->deleteDataByGroupId($groupId);
 
     $currentDate = Util::getServerCurrentDateTime();
-    Group::addData($groupId, $userArray, $currentDate);
+    $this->getRepository('ubirimi.user.group')->addData($groupId, $userArray, $currentDate);

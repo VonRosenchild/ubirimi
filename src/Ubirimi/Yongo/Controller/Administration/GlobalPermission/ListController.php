@@ -16,7 +16,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $users = Client::getUsers($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
 
         $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
         $menuSelectedCategory = 'user';

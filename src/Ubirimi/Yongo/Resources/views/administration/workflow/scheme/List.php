@@ -61,7 +61,7 @@
                                     </ul>
                                 </td>
                                 <td width="300px">
-                                    <?php $projects = Project::getByWorkflowSchemeId($scheme['id']) ?>
+                                    <?php $projects = $this->getRepository('yongo.project.project')->getByWorkflowSchemeId($scheme['id']) ?>
                                     <?php if ($projects): ?>
                                         <ul>
                                             <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

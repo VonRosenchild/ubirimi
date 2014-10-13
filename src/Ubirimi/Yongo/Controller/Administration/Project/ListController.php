@@ -27,9 +27,9 @@ class ListController extends UbirimiController
         }
 
         if ($hasGlobalAdministrationPermission && $hasGlobalSystemAdministrationPermission) {
-            $projects = Client::getProjects($session->get('client/id'), 'array');
+            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array');
         } else if ($hasAdministerProjectsPermission) {
-            $projects = Client::getProjectsByPermission(
+            $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_ADMINISTER_PROJECTS,

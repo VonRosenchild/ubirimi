@@ -16,7 +16,7 @@
 
     EntityAttachment::deleteById($spaceId, $entityId, $attachmentId);
 
-    Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador entity attachment ' . $attachment['name'], $currentDate);
+    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador entity attachment ' . $attachment['name'], $currentDate);
 
     $attachments = EntityAttachment::getByEntityId($entityId);
     if (!$attachments) {

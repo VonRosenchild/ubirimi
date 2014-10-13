@@ -81,7 +81,7 @@ require_once __DIR__ . '/../../_header.php';
                         }
 
                         // deal with issues without an issue security level
-                        $issues = Project::getIssuesWithNoSecurityScheme($projectId);
+                        $issues = $this->getRepository('yongo.project.project')->getIssuesWithNoSecurityScheme($projectId);
 
                         if ($issues) {
                             echo $header;

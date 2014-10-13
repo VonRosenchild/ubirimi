@@ -32,7 +32,7 @@
         }
 
         $currentDate = Util::getServerCurrentDateTime();
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Post Function', $currentDate);
+        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Post Function', $currentDate);
 
         header('Location: /yongo/administration/workflow/transition-post-functions/' . $workflowDataId);
     }

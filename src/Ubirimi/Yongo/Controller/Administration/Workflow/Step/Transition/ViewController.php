@@ -17,8 +17,8 @@ class ViewController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowDataId = $request->get('id');
-        $workflowData = Workflow::getDataById($workflowDataId);
-        $workflow = Workflow::getMetaDataById($workflowData['workflow_id']);
+        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
+        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 
         if ($workflow['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

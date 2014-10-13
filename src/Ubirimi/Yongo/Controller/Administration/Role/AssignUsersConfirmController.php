@@ -16,10 +16,10 @@ class AssignUsersConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionRoleId = $request->get('role_id');
-        $role = Role::getPermissionRoleById($permissionRoleId);
+        $role = $this->getRepository('yongo.permission.role')->ggetPermissionRoleById($permissionRoleId);
 
-        $allUsers = Client::getUsers($session->get('client/id'));
-        $roleUsers = Role::getDefaultUsers($permissionRoleId);
+        $allUsers = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
+        $roleUsers = $this->getRepository('yongo.permission.role')->ggetDefaultUsers($permissionRoleId);
 
         $role_users_arr_ids = array();
         while ($roleUsers && $user = $roleUsers->fetch_array(MYSQLI_ASSOC))

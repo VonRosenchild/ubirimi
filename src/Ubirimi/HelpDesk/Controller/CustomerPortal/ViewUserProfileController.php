@@ -19,7 +19,7 @@ class ViewUserProfileController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_HELP_DESK);
 
         $userId = $request->get('id');
-        $user = User::getById($userId);
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
 
         return $this->render(__DIR__ . '/../../Resources/views/customer_portal/ViewUserProfile.php', get_defined_vars());
     }

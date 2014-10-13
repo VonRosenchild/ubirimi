@@ -119,7 +119,7 @@ class SignupController extends UbirimiController
                 }
                 if (!$errors['company_domain_not_valid']) {
 
-                    $domainAvailable = Client::checkAvailableDomain($companyDomain);
+                    $domainAvailable = $this->getRepository('ubirimi.general.client')->checkAvailableDomain($companyDomain);
                     if (!$domainAvailable) {
                         $errors['company_domain_not_unique'] = true;
                     }
@@ -146,7 +146,7 @@ class SignupController extends UbirimiController
                 $errors['empty_admin_username'] = true;
             }
 
-            $usernameResult = User::getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminUsername));
+            $usernameResult = $this->getRepository('ubirimi.user.user')->getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminUsername));
 
             if ($usernameResult) {
                 $errors['admin_email_already_exists'] = true;
@@ -167,7 +167,7 @@ class SignupController extends UbirimiController
             if (!$agreeTerms) {
                 $errors['not_agree_terms'] = true;
             }
-            $emailResult = User::getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminEmailAddress));
+            $emailResult = $this->getRepository('ubirimi.user.user')->getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminEmailAddress));
 
             if ($emailResult) {
                 $errors['admin_email_already_exists'] = true;

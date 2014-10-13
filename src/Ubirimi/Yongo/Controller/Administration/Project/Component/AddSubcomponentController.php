@@ -27,7 +27,7 @@ class AddSubcomponentController extends UbirimiController
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $users = Client::getUsers($session->get('client/id'));
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
 
         $emptyName = false;
         $alreadyExists = false;
@@ -50,9 +50,9 @@ class AddSubcomponentController extends UbirimiController
                     $leader = null;
                 }
                 $currentDate = Util::getServerCurrentDateTime();
-                Project::addComponent($projectId, $name, $description, $leader, $postParentComponentId, $currentDate);
+                $this->getRepository('yongo.project.project')->addComponent($projectId, $name, $description, $leader, $postParentComponentId, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

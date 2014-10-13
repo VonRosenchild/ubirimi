@@ -31,13 +31,13 @@ class ViewController extends UbirimiController
         $notificationScheme = Scheme::getMetaDataById($notificationSchemeId);
         $events = Event::getByClient($session->get('client/id'));
 
-        $hasGlobalAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS

@@ -22,7 +22,7 @@ class IssueDataController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $clientSettings = Client::getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
         $issueId = $request->request->get('id');
         $close = $request->request->get('close', 0);
         $issueParameters = array('issue_id' => $issueId);
@@ -30,7 +30,7 @@ class IssueDataController extends UbirimiController
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueParameters, $session->get('user/id'));
 
         $projectId = $issue['issue_project_id'];
-        $issueProject = Project::getById($projectId);
+        $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
         $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($issueId, 'desc');
         $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
@@ -47,31 +47,31 @@ class IssueDataController extends UbirimiController
             Issue::ISSUE_FIX_VERSION_FLAG
         );
 
-        $hasAddCommentsPermission = Project::userHasPermission(
+        $hasAddCommentsPermission = $this->getRepository('yongo.project.project')->userHasPermission(
             $projectId,
             Permission::PERM_ADD_COMMENTS,
             $session->get('user/id')
         );
 
-        $hasDeleteAllComments = Project::userHasPermission(
+        $hasDeleteAllComments = $this->getRepository('yongo.project.project')->userHasPermission(
             $projectId,
             Permission::PERM_DELETE_ALL_COMMENTS,
             $session->get('user/id')
         );
 
-        $hasDeleteOwnComments = Project::userHasPermission(
+        $hasDeleteOwnComments = $this->getRepository('yongo.project.project')->userHasPermission(
             $projectId,
             Permission::PERM_DELETE_OWN_COMMENTS,
             $session->get('user/id')
         );
 
-        $hasEditAllComments = Project::userHasPermission(
+        $hasEditAllComments = $this->getRepository('yongo.project.project')->userHasPermission(
             $projectId,
             Permission::PERM_EDIT_ALL_COMMENTS,
             $session->get('user/id')
         );
 
-        $hasEditOwnComments = Project::userHasPermission(
+        $hasEditOwnComments = $this->getRepository('yongo.project.project')->userHasPermission(
             $projectId,
             Permission::PERM_EDIT_OWN_COMMENTS,
             $session->get('user/id')
@@ -79,13 +79,13 @@ class IssueDataController extends UbirimiController
 
         $attachments = UbirimiContainer::getRepository('yongo.issue.attachment')->getByIssueId($issue['id']);
         if ($attachments && $attachments->num_rows) {
-            $hasDeleteOwnAttachmentsPermission = Project::userHasPermission(
+            $hasDeleteOwnAttachmentsPermission = $this->getRepository('yongo.project.project')->userHasPermission(
                 $projectId,
                 Permission::PERM_DELETE_OWN_ATTACHMENTS,
                 $session->get('user/id')
             );
 
-            $hasDeleteAllAttachmentsPermission = Project::userHasPermission(
+            $hasDeleteAllAttachmentsPermission = $this->getRepository('yongo.project.project')->userHasPermission(
                 $projectId,
                 Permission::PERM_DELETE_OWN_ATTACHMENTS,
                 $session->get('user/id')

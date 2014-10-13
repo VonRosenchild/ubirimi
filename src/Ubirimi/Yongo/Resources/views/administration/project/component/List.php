@@ -60,7 +60,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php Project::renderTreeComponents($components, 0) ?>
+                    <?php $this->getRepository('yongo.project.project')->renderTreeComponents($components, 0) ?>
                 </tbody>
             </table>
             <div class="ubirimiModalDialog" id="modalDeleteProjectComponent"></div>

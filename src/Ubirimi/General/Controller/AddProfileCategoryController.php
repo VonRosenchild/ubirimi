@@ -25,7 +25,7 @@
             $date = Util::getServerCurrentDateTime();
             UserProfileCategory::add($clientId, $name, $description, $date);
 
-            Log::add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD Profile Category ' . $name, $date);
+            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD Profile Category ' . $name, $date);
 
             header('Location: /general-settings/users/profile-manager');
         }

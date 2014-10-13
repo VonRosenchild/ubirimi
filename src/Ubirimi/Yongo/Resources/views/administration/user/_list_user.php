@@ -26,7 +26,7 @@
                     <td><?php echo $user['username'] ?></td>
                     <td><?php echo $user['email'] ?></td>
                     <td width="30%">
-                        <?php $groups = Group::getByUserIdAndProductId($user['id'], SystemProduct::SYS_PRODUCT_YONGO); ?>
+                        <?php $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($user['id'], SystemProduct::SYS_PRODUCT_YONGO); ?>
                         <?php if ($groups): ?>
                             <ul>
                                 <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>

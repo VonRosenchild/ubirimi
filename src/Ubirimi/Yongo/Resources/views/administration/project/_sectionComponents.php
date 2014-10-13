@@ -18,7 +18,7 @@
                 <tr>
                     <td valign="top" width="330">
                         <?php
-                            $components = Project::getComponents(array($projectId));
+                            $components = $this->getRepository('yongo.project.project')->getComponents(array($projectId));
                             if ($components) {
                                 while ($component = $components->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<div>' . $component['name'] . '</div>';

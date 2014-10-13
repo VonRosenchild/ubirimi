@@ -6,7 +6,7 @@
     if ($session->has('client/products')) {
         $productsArray = $session->get('client/products');
     } else {
-        $productsArray = Client::getProducts(Client::getClientIdAnonymous(), 'array');
+        $productsArray = $this->getRepository('ubirimi.general.client')->getProducts($this->getRepository('ubirimi.general.client')->getClientIdAnonymous(), 'array');
     }
 
 ?>

@@ -20,7 +20,7 @@ class EditScreenVisibilityController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldId = $request->get('id');
-        $field = Field::getById($fieldId);
+        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
 
         if ($field['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -52,7 +52,7 @@ class EditScreenVisibilityController extends UbirimiController
                 Configuration::addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
             }
 
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

@@ -23,7 +23,7 @@ class DeleteController extends UbirimiController
         TypeScheme::deleteById($issueTypeSchemeId);
 
         $currentDate = Util::getServerCurrentDateTime();
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

@@ -12,7 +12,7 @@ class ProjectsController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $projects = Project::getAll(array('sort_by' => 'project.date_created', 'sort_order' => 'desc'));
+        $projects = $this->getRepository('yongo.project.project')->getAll(array('sort_by' => 'project.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'projects';
 

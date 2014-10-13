@@ -342,9 +342,9 @@ class Project
 
     public function renderTreeComponentsInViewIssue($component, $htmlComponent) {
         $htmlComponent = LinkHelper::getYongoProjectComponentLink($component['project_component_id'], $component['name']) . ' / ' . $htmlComponent;
-        $parentComponent = Project::getParentComponent($component['parent_id'], 'array');
+        $parentComponent = $this->getRepository('yongo.project.project')->getParentComponent($component['parent_id'], 'array');
         if ($parentComponent) {
-            Project::renderTreeComponentsInViewIssue($parentComponent, $htmlComponent);
+            $this->getRepository('yongo.project.project')->renderTreeComponentsInViewIssue($parentComponent, $htmlComponent);
         } else {
             if (substr($htmlComponent, strlen($htmlComponent) - 3) == ' / ') {
                 $htmlComponent = substr($htmlComponent, 0, strlen($htmlComponent) - 3);
@@ -370,11 +370,11 @@ class Project
                 echo '</option>';
 
                 $printedComponents[] = $component['id'];
-                $subComponents = Project::getSubComponents($component['id']);
+                $subComponents = $this->getRepository('yongo.project.project')->getSubComponents($component['id']);
                 $identationIndex++;
 
                 if ($subComponents) {
-                    Project::renderTreeComponentsInCombobox($subComponents, $identationIndex, $arrSelectedIssueComponents, $printedComponents);
+                    $this->getRepository('yongo.project.project')->renderTreeComponentsInCombobox($subComponents, $identationIndex, $arrSelectedIssueComponents, $printedComponents);
                 }
                 $identationIndex--;
             }
@@ -401,10 +401,10 @@ class Project
                     endif ?>
             </tr>
             <?php
-                $subComponents = Project::getSubComponents($component['id']);
+                $subComponents = $this->getRepository('yongo.project.project')->getSubComponents($component['id']);
                 $identationIndex++;
                 if ($subComponents) {
-                    Project::renderTreeComponents($subComponents, $identationIndex);
+                    $this->getRepository('yongo.project.project')->renderTreeComponents($subComponents, $identationIndex);
                 }
                 $identationIndex--;
             ?>
@@ -471,7 +471,7 @@ class Project
     }
 
     public function getStatsUnresolvedByComponent($projectId) {
-        $projectComponents = Project::getComponents($projectId);
+        $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
         $stats = array();
         if ($projectComponents) {
             while ($component = $projectComponents->fetch_array(MYSQLI_ASSOC)) {
@@ -607,17 +607,17 @@ class Project
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
-        Project::deleteIssuesByProjectId($Id);
+        $this->getRepository('yongo.project.project')->deleteIssuesByProjectId($Id);
         Component::deleteByProjectId($Id);
         Version::deleteByProjectId($Id);
         Custom::deleteDataByProjectId($Id);
-        Board::deleteByProjectId($Id);
+        $this->getRepository('agile.board.board')->deleteByProjectId($Id);
 
         $query = "DELETE IGNORE FROM project_role_data WHERE project_id = " . $Id;
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete the help desk related information
-        Project::removeHelpdeskData($Id);
+        $this->getRepository('yongo.project.project')->removeHelpdeskData($Id);
 
         $query = "DELETE IGNORE FROM help_filter WHERE project_id = " . $Id;
         UbirimiContainer::get()['db.connection']->query($query);
@@ -1781,7 +1781,7 @@ class Project
 
     public function checkProjectsBelongToClient($clientId, $projectIds) {
         for ($pos = 0; $pos < count($projectIds); $pos++) {
-            $projectFilter = Project::getById($projectIds[$pos]);
+            $projectFilter = $this->getRepository('yongo.project.project')->getById($projectIds[$pos]);
 
             if ($projectFilter['client_id'] != $clientId) {
                 return false;

@@ -21,9 +21,9 @@ class ViewVersionSummaryController extends UbirimiController
             $clientId = $session->get('client/id');
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $loggedInUserId = null;
-            $clientSettings = Client::getSettings($clientId);
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         }
 
         $versionId = $request->get('id');

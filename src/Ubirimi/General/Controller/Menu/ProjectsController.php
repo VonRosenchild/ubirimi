@@ -21,14 +21,14 @@ class ProjectsController extends UbirimiController
             $selectedProjectId = $session->get('selected_project_id');
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
             $selectedProjectId = null;
         }
 
         if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_YONGO) {
             $urlPrefix = '/yongo/project/';
-            $projectsMenu = Client::getProjectsByPermission(
+            $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_BROWSE_PROJECTS,
@@ -36,7 +36,7 @@ class ProjectsController extends UbirimiController
             );
         } else {
             $urlPrefix = '/helpdesk/customer-portal/project/';
-            $projectsMenu = Client::getProjects(
+            $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjects(
                 $session->get('client/id'),
                 'array',
                 null,
@@ -46,15 +46,15 @@ class ProjectsController extends UbirimiController
 
         $selectedProjectMenu = null;
         if ($selectedProjectId) {
-            $selectedProjectMenu = Project::getById($selectedProjectId);
+            $selectedProjectMenu = $this->getRepository('yongo.project.project')->getById($selectedProjectId);
         }
-        $hasGlobalAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS

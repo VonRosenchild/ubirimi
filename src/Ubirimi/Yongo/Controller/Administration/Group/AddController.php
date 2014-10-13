@@ -27,7 +27,7 @@ class AddController extends UbirimiController
             }
 
             if (!$emptyName) {
-                $groupAlreadyExists = Group::getByNameAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $name);
+                $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $name);
                 if ($groupAlreadyExists)
                     $duplicateName = true;
             }
@@ -36,7 +36,7 @@ class AddController extends UbirimiController
                 $description = Util::cleanRegularInputField($_POST['description']);
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Group::add(
+                $this->getRepository('ubirimi.user.group')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $name,
@@ -44,7 +44,7 @@ class AddController extends UbirimiController
                     $currentDate
                 );
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

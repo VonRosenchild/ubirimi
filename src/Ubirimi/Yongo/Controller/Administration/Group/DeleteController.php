@@ -18,12 +18,12 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $groupId = $request->request->get('group_id');
-        $group = Group::getMetadataById($groupId);
-        Group::deleteByIdForYongo($groupId);
+        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
+        $this->getRepository('ubirimi.user.group')->deleteByIdForYongo($groupId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

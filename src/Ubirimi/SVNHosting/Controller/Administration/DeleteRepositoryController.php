@@ -38,7 +38,7 @@ class DeleteRepositoryController extends UbirimiController
         /* refresh apache config */
         SVNRepository::refreshApacheConfig();
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $clientId,
             SystemProduct::SYS_PRODUCT_SVN_HOSTING,
             $loggedInUserId,

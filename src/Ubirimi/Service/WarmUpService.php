@@ -29,7 +29,7 @@ class WarmUpService extends UbirimiService
         $session = $this->session;
         $this->warmUp($session, $userData);
 
-        $clientProducts = Client::getProducts($userData['client_id'], 'array');
+        $clientProducts = $this->getRepository('ubirimi.general.client')->getProducts($userData['client_id'], 'array');
 
         array_walk($clientProducts, function($value, $key) use ($session) {
             $session->set("client/products/{$key}", $value);
@@ -39,7 +39,7 @@ class WarmUpService extends UbirimiService
          * each product session information is under its namespace
          */
         if (true === $warmYongoSettings) {
-            $yongoSettings = Client::getYongoSettings($userData['client_id']);
+            $yongoSettings = $this->getRepository('ubirimi.general.client')->getYongoSettings($userData['client_id']);
 
             array_walk($yongoSettings, function($value, $key) use ($session) {
                 $session->set("yongo/settings/{$key}", $value);
@@ -47,7 +47,7 @@ class WarmUpService extends UbirimiService
         }
 
         if (true === $warmDocumentadorSettings) {
-            $documentadorSettings = Client::getDocumentatorSettings($userData['client_id']);
+            $documentadorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($userData['client_id']);
 
             array_walk($documentadorSettings, function($value, $key) use ($session) {
                 $session->set("documentador/settings/{$key}", $value);
@@ -57,7 +57,7 @@ class WarmUpService extends UbirimiService
         /**
          * determine the selected project and product id
          */
-        $projectsArray = Client::getProjectsByPermission(
+        $projectsArray = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
             $userData['client_id'],
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,
@@ -70,17 +70,17 @@ class WarmUpService extends UbirimiService
 
         $session->set('selected_product_id', $session->get('client/products/sys_product_id'));
 
-        $hasYongoGlobalAdministrationPermission = User::hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
-        $hasYongoGlobalSystemAdministrationPermission = User::hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
-        $hasYongoAdministerProjectsPermission = Client::getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_ADMINISTER_PROJECTS);
+        $hasYongoGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
+        $hasYongoGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasYongoAdministerProjectsPermission = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_ADMINISTER_PROJECTS);
 
         $session->set('user/yongo/is_global_administrator', $hasYongoGlobalAdministrationPermission);
         $session->set('user/yongo/is_global_system_administrator', $hasYongoGlobalSystemAdministrationPermission);
         $session->set('user/yongo/is_global_project_administrator', $hasYongoAdministerProjectsPermission);
 
-        $hasDocumentatorGlobalAdministrationPermission = User::hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR);
-        $hasDocumentatorGlobalSystemAdministrationPermission = User::hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
-        $hasDocumentatorGlobalCreateSpace = User::hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE);
+        $hasDocumentatorGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR);
+        $hasDocumentatorGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasDocumentatorGlobalCreateSpace = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE);
 
         $session->set('user/documentator/is_global_administrator', $hasDocumentatorGlobalAdministrationPermission);
         $session->set('user/documentator/is_global_system_administrator', $hasDocumentatorGlobalSystemAdministrationPermission);
@@ -98,7 +98,7 @@ class WarmUpService extends UbirimiService
 
         $this->session->set('client/products', array(array('sys_product_id' => SystemProduct::SYS_PRODUCT_HELP_DESK)));
 
-        $projects = Client::getProjects($userData['client_id'], 'array', null, true);
+        $projects = $this->getRepository('ubirimi.general.client')->getProjects($userData['client_id'], 'array', null, true);
         if ($projects) {
             $this->session->set('selected_project_id', $projects[0]['id']);
         } else {
@@ -113,8 +113,8 @@ class WarmUpService extends UbirimiService
      */
     private function warmUp($session, $userData)
     {
-        $clientData = Client::getById($userData['client_id']);
-        $clientSettings = Client::getSettings($userData['client_id']);
+        $clientData = $this->getRepository('ubirimi.general.client')->getById($userData['client_id']);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($userData['client_id']);
         $clientSmtpSettings = SMTPServer::getByClientId($userData['client_id']);
 
         /**

@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Newsletter
 {
-    public static function addSubscription($emailAddress, $currentDate) {
+    public function addSubscription($emailAddress, $currentDate) {
         $query = "INSERT INTO newsletter(email_address, date_created) VALUES (?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -15,7 +15,7 @@ class Newsletter
         $stmt->execute();
     }
 
-    public static function checkEmailAddressDuplication($emailAddress) {
+    public function checkEmailAddressDuplication($emailAddress) {
         $query = 'select id from newsletter where LOWER(email_address) = LOWER(?) limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

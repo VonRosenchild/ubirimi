@@ -16,7 +16,7 @@ class ListController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-        $boards = Board::getByClientId($session->get('client/id'));
+        $boards = $this->getRepository('agile.board.board')->getByClientId($session->get('client/id'));
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_CHEETAH_NAME. ' / Boards';
 

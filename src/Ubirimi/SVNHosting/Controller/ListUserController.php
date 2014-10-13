@@ -18,7 +18,7 @@ class ListUserController extends UbirimiController
 
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
-        $clientSettings = Client::getSettings($clientId);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         $isSVNAdministrator = $session->get('user/svn_administrator_flag');
         $menuSelectedCategory = 'svn';

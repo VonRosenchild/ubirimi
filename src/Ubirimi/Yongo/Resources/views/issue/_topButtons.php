@@ -1,11 +1,9 @@
 <?php
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Event;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
-
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Event;
+use Ubirimi\Yongo\Repository\Permission\Permission;
 ?>
 
 <table cellspacing="0" border="0" cellpadding="0" width="100%">
@@ -62,17 +60,17 @@
 
                                 case Event::EVENT_ISSUE_CLOSED_CODE:
 
-                                    $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
+                                    $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
                                     break;
                                 case Event::EVENT_ISSUE_REOPENED_CODE:
 
                                 case Event::EVENT_ISSUE_RESOLVED_CODE:
-                                    $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
+                                    $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
                                     break;
                                 case Event::EVENT_ISSUE_WORK_STARTED_CODE:
                                 case Event::EVENT_ISSUE_WORK_STOPPED_CODE:
 
-                                $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
+                                    $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
                                     break;
 
                                 case Event::EVENT_GENERIC_CODE:
@@ -80,7 +78,7 @@
                                     break;
                             }
 
-                            $canBeExecuted = Workflow::checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue);
+                            $canBeExecuted = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue);
                             if ($workflowStep['screen_id']) {
                                 if ($hasEventPermission && $canBeExecuted) {
                                     echo '<td><a href="#" id="issue_transition_with_screen_' . $step['id'] . '_' . $workflowStep['workflow_step_id_to'] . '" class="btn ubirimi-btn">' . $workflowStep['transition_name'] . '</a></td>';
@@ -105,7 +103,7 @@
                                 <?php $workflowMenuEnabled = 0; ?>
                                 <?php while ($workflowActions && $workflowStep = $workflowActions->fetch_array(MYSQLI_ASSOC)): ?>
 
-                                    <?php $canBeExecuted = Workflow::checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue); ?>
+                                    <?php $canBeExecuted = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue); ?>
                                     <?php if ($canBeExecuted)
                                         $workflowMenuEnabled = 1; ?>
                                     <?php
@@ -117,17 +115,17 @@
 
                                         case Event::EVENT_ISSUE_CLOSED_CODE:
 
-                                            $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
+                                            $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
                                             break;
 
                                         case Event::EVENT_ISSUE_REOPENED_CODE:
                                         case Event::EVENT_ISSUE_RESOLVED_CODE:
 
-                                        $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
+                                        $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
                                             break;
                                         case Event::EVENT_ISSUE_WORK_STARTED_CODE:
                                         case Event::EVENT_ISSUE_WORK_STOPPED_CODE:
-                                            $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
+                                            $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
                                             break;
                                         case Event::EVENT_GENERIC_CODE:
                                             $hasEventPermission = true;

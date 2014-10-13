@@ -34,20 +34,20 @@ foreach ($searchParametersInFilter as $searchParameter) {
     $data = explode('=', $searchParameter);
     $searchParameters[$data[0]] = $data[1];
 }
-$user = User::getById($filter['user_id']);
+$user = UbirimiContainer::get()['respository']->get('ubirimi.user.user')->getById($filter['user_id']);
 $smtpSettings = SMTPServer::getByClientId($user['client_id']);
-$clientSettings = Client::getSettings($user['client_id']);
+$clientSettings = UbirimiContainer::get()['respository']->get('ubirimi.general.client')->getSettings($user['client_id']);
 
-$client = Client::getById($user['client_id']);
+$client = UbirimiContainer::get()['respository']->get('ubirimi.general.client')->getById($user['client_id']);
 $subject = $smtpSettings['email_prefix'] . " Filter - " . $filter['name'];
 
 $usersToNotify = array();
 
 if ($filterSubscription['user_id']) {
-    $user = User::getById($filterSubscription['user_id']);
+    $user = UbirimiContainer::get()['respository']->get('ubirimi.user.user')->getById($filterSubscription['user_id']);
     $usersToNotify[] = $user;
 } else if ($filterSubscription['group_id']) {
-    $users = Group::getDataByGroupId($filterSubscription['group_id']);
+    $users = UbirimiContainer::get()['respository']->get('ubirimi.user.group')->getDataByGroupId($filterSubscription['group_id']);
     while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
         $usersToNotify[] = $user;
     }

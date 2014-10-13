@@ -47,7 +47,7 @@ class EditRepositoryController extends UbirimiController
                 $date = Util::getServerCurrentDateTime();
                 SVNRepository::updateRepo($description, $code, $repoId, $date);
 
-                Log::add($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $loggedInUserId, 'UPDATE SVN Repository ' . Util::slugify($code), $date);
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $loggedInUserId, 'UPDATE SVN Repository ' . Util::slugify($code), $date);
 
                 return new RedirectResponse('/svn-hosting/administration/all-repositories');
             }

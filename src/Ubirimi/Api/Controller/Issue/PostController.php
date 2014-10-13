@@ -15,12 +15,12 @@ class PostController extends UbirimiController
     {
         UbirimiContainer::get()['api.auth']->auth($request);
 
-        $timeTrackingDefaultUnit = Client::getYongoSetting(
+        $timeTrackingDefaultUnit = $this->getRepository('ubirimi.general.client')->getYongoSetting(
             $request->get('api_client_id'),
             'time_tracking_default_unit'
         );
 
-        $clientSettings = Client::getSettings($request->get('api_client_id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($request->get('api_client_id'));
 
         $issue = UbirimiContainer::get()['issue']->save(
             array('id' => $request->get('projectId')),

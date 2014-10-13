@@ -31,10 +31,10 @@ class InvoiceUtil
     {
         $customerId = $clientId;
 
-        $client = Client::getById($customerId);
-        $clientCountry = Client::getCountryById($client['sys_country_id']);
+        $client = $this->getRepository('ubirimi.general.client')->getById($customerId);
+        $clientCountry = $this->getRepository('ubirimi.general.client')->getCountryById($client['sys_country_id']);
 
-        $clientAdministrators = Client::getAdministrators($customerId);
+        $clientAdministrators = $this->getRepository('ubirimi.general.client')->getAdministrators($customerId);
         $firstClientAdministrator = $clientAdministrators->fetch_array(MYSQLI_ASSOC);
 
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

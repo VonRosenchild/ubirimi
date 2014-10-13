@@ -63,7 +63,7 @@
         } else {
             // check if step 2 is necessary
             $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($newProjectId, $newIssueTypeId);
-            $newStatuses = Workflow::getLinkedStatuses($newWorkflow['id']);
+            $newStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($newWorkflow['id']);
 
             $step2Necessary = true;
             while ($newStatuses && $status = $newStatuses->fetch_array(MYSQLI_ASSOC)) {
@@ -82,7 +82,7 @@
         die();
     }
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
-    $projectForMoving = Client::getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_CREATE_ISSUE);
+    $projectForMoving = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_CREATE_ISSUE);
     $firstProject = $projectForMoving->fetch_array(MYSQLI_ASSOC);
 
     $moveToIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($firstProject['id'], 0);

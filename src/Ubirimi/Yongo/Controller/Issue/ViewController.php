@@ -35,12 +35,12 @@ class ViewController extends UbirimiController
             $clientSettings = $session->get('client/settings');
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $session->set('client/id', $clientId);
             $session->set('user/id', null);
-            $clientSettings = Client::getSettings($session->get('client/id'));
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
             $issue = $this->getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
-            $session->set('yongo/settings', Client::getYongoSettings($session->get('client/id')));
+            $session->set('yongo/settings', $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id')));
         }
 
         $issueValid = true;
@@ -93,8 +93,8 @@ class ViewController extends UbirimiController
 
             $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
 
-            $step = Workflow::getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
-            $stepProperties = Workflow::getStepProperties($step['id'], 'array');
+            $step = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
+            $stepProperties = $this->getRepository('yongo.workflow.workflow')->getStepProperties($step['id'], 'array');
 
             $issueEditableProperty = true;
             for ($i = 0; $i < count($stepProperties); $i++) {
@@ -102,7 +102,7 @@ class ViewController extends UbirimiController
                     $issueEditableProperty = false;
             }
 
-            $workflowActions = Workflow::getTransitionsForStepId($workflowUsed['id'], $step['id']);
+            $workflowActions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowUsed['id'], $step['id']);
             $screenData = $this->getRepository('yongo.project.project')->getScreenData($issueProject, $issue[Field::FIELD_ISSUE_TYPE_CODE], SystemOperation::OPERATION_CREATE, 'array');
 
             $childrenIssues = null;

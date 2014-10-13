@@ -69,12 +69,12 @@ class ViewIssueController extends UbirimiController
 
         $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
 
-        $step = Workflow::getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
-        $stepProperties = Workflow::getStepProperties($step['id'], 'array');
+        $step = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
+        $stepProperties = $this->getRepository('yongo.workflow.workflow')->getStepProperties($step['id'], 'array');
 
         if ($issueValid) {
 
-            $workflowActions = Workflow::getTransitionsForStepId($workflowUsed['id'], $step['id']);
+            $workflowActions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowUsed['id'], $step['id']);
             $screenData = $this->getRepository('yongo.project.project')->getScreenData(
                 $issueProject,
                 $issue[Field::FIELD_ISSUE_TYPE_CODE],

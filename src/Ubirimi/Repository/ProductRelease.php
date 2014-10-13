@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class ProductRelease
 {
-    public static function addVersion($productId, $version, $date) {
+    public function addVersion($productId, $version, $date) {
         $query = "INSERT INTO sys_product_release(sys_product_id, version, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -16,7 +16,7 @@ class ProductRelease
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getLatestRelease($productId) {
+    public function getLatestRelease($productId) {
         $query = "select * from sys_product_release where sys_product_id = ? order by date_created desc";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

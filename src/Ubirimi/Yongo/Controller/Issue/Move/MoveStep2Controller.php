@@ -50,7 +50,7 @@ $currentWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUse
 
 $previousData = $session->get('move_issue');
 $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($previousData['new_project'], $previousData['new_type']);
-$newStatuses = Workflow::getLinkedStatuses($newWorkflow['id']);
+$newStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($newWorkflow['id']);
 $menuSelectedCategory = 'issue';
 
 $newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));

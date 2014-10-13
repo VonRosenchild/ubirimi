@@ -17,7 +17,7 @@ class HelpDeskController extends UbirimiController
             $selectedProjectId = $session->get('selected_project_id');
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
             $selectedProjectId = null;
         }

@@ -12,8 +12,8 @@
         $clientSettings = $session->get('client/settings');
     } else {
         $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-        $clientSettings = Client::getSettings($clientId);
+        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         $spaces = Space::getByClientIdAndAnonymous($clientId);
         $loggedInUserId = null;
         $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';

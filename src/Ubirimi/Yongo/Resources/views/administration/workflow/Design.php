@@ -28,7 +28,7 @@
                 while ($step = $steps->fetch_array(MYSQLI_ASSOC)) {
                     if ($step['step_name'] == 'Create Issue') {
                         echo '<input type="hidden" name="first_step" id="first_step" value="' . $step['id'] . '" />';
-                        $stepFromInitialStepData = Workflow::getTransitionsForStepId($workflowId, $step['id']);
+                        $stepFromInitialStepData = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowId, $step['id']);
                         $stepFromInitialStep = $stepFromInitialStepData->fetch_array(MYSQLI_ASSOC);
                         echo '<input type="hidden" id="first_transition" value="' . $step['id'] . '_' . $stepFromInitialStep['workflow_step_id_to'] . '">';
                     }

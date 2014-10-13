@@ -19,25 +19,25 @@ class DeleteController extends UbirimiController
 
         $stepId = $request->get('id');
 
-        $step = Workflow::getStepById($stepId);
+        $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
         $workflowId = $step['workflow_id'];
 
-        $workflowMetadata = Workflow::getMetaDataById($workflowId);
+        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
         if ($workflowMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $transitions = Workflow::getOutgoingTransitionsForStep($workflowId, $stepId);
+        $transitions = $this->getRepository('yongo.workflow.workflow')->getOutgoingTransitionsForStep($workflowId, $stepId);
 
         if ($request->request->has('delete_transitions')) {
             $transitionsPosted = $request->request->get('transitions');
 
-            Workflow::deleteTransitions($workflowId, $transitionsPosted);
+            $this->getRepository('yongo.workflow.workflow')->deleteTransitions($workflowId, $transitionsPosted);
 
             $currentDate = Util::getServerCurrentDateTime();
 
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

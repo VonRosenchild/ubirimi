@@ -14,7 +14,7 @@ class Payment
      * @param $successFlag
      * @return mixed
      */
-    public static function save($clientId, $amount, $successFlag)
+    public function save($clientId, $amount, $successFlag)
     {
         $query = "INSERT INTO general_payment(client_id, amount, successful_flag, date_created) VALUES (?, ?, ?, ?)";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -47,7 +47,7 @@ class Payment
      * @param $clientId
      * @return mixed
      */
-    public static function getCurrentMonthPayment($clientId)
+    public function getCurrentMonthPayment($clientId)
     {
         $currentMonth = date('n');
         $currentYear = date('Y');
@@ -85,7 +85,7 @@ class Payment
      * @param $clientId
      * @return mixed
      */
-    public static function getPreviousMonthPayment($clientId)
+    public function getPreviousMonthPayment($clientId)
     {
         $currentMonth = date('n') - 1;
         $currentYear = date('Y');

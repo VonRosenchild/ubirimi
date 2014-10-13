@@ -20,17 +20,17 @@ class MetadataController extends UbirimiController
 
         $returnData = array('projects' => array());
 
-        $projects = Client::getProjectsByPermission(
+        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
             $request->get('api_client_id'),
             $request->get('api_user_id'),
             Permission::PERM_CREATE_ISSUE
         );
 
         foreach ($projects as $project) {
-            $issueTypes = Project::getIssueTypes($project['id'], 0, 'array');
+            $issueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($project['id'], 0, 'array');
 
             foreach ($issueTypes as &$issueType) {
-                $screenData = Project::getScreenData(
+                $screenData = $this->getRepository('yongo.project.project')->getScreenData(
                     array('issue_type_screen_scheme_id' => $project['issue_type_screen_scheme_id']),
                     $issueType['id'],
                     SystemOperation::OPERATION_CREATE,

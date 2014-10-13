@@ -17,9 +17,9 @@ class SignUpController extends UbirimiController
     {
         $httpHOST = Util::getHttpHost();
 
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
-        $client = Client::getById($clientId);
-        $clientSettings = Client::getSettings($clientId);
+        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         $errors = array(
             'empty_email' => false,
@@ -45,7 +45,7 @@ class SignUpController extends UbirimiController
                 $errors['email_not_valid'] = true;
             }
 
-            $emailData = User::getUserByClientIdAndEmailAddress($clientId, mb_strtolower($email));
+            $emailData = $this->getRepository('ubirimi.user.user')->getUserByClientIdAndEmailAddress($clientId, mb_strtolower($email));
 
             if ($emailData)
                 $errors['email_already_exists'] = true;

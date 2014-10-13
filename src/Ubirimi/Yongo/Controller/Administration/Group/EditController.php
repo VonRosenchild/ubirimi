@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $group = Group::getMetadataById($Id);
+        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($Id);
 
         if ($group['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -38,7 +38,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $groupAlreadyExists = Group::getByNameAndProductId(
+                $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     mb_strtolower($name),
@@ -51,9 +51,9 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$duplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Group::updateById($Id, $name, $description, $currentDate);
+                $this->getRepository('ubirimi.user.group')->updateById($Id, $name, $description, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

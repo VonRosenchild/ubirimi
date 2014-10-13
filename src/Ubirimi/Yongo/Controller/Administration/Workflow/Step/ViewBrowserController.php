@@ -7,9 +7,9 @@
 
     $stepId = $_GET['id'];
 
-    $step = Workflow::getStepById($stepId);
+    $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
     $workflowId = $step['workflow_id'];
-    $workflow = Workflow::getMetaDataById($workflowId);
+    $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
     if ($workflow['client_id'] != $clientId) {
         header('Location: /general-settings/bad-link-access-denied');

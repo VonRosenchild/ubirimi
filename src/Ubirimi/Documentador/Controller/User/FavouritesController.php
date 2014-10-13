@@ -11,10 +11,10 @@
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
     } else {
         $httpHOST = Util::getHttpHost();
-        $clientId = Client::getByBaseURL($httpHOST, 'array', 'id');
+        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
         $loggedInUserId = null;
 
-        $settingsDocumentator = Client::getDocumentatorSettings($clientId);
+        $settingsDocumentator = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
 
         $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
         $documentatorAnonymousViewUserProfiles = $settingsDocumentator['anonymous_view_user_profile_flag'];
@@ -25,10 +25,10 @@
         }
     }
 
-    $clientSettings = Client::getById($clientId);
+    $clientSettings = $this->getRepository('ubirimi.general.client')->getById($clientId);
 
     $userId = $_GET['id'];
-    $user = User::getById($userId);
+    $user = $this->getRepository('ubirimi.user.user')->getById($userId);
 
     if ($user['client_id'] != $clientId) {
         header('Location: /general-settings/bad-link-access-denied');
@@ -36,7 +36,7 @@
     }
 
     $menuSelectedCategory = 'documentator';
-    $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+    $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
     $pages = Entity::getFavouritePagesByClientIdAndUserId($clientId, $userId);
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Favourites';

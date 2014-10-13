@@ -23,16 +23,16 @@ class IndexController extends UbirimiController
             $issuesPerPage = $session->get('user/issues_per_page');
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $issuesPerPage = 25;
-            $clientSettings = Client::getSettings($clientId);
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         }
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Dashboard';
 
         $userAssignedId = $session->get('user/id');
-        $allProjects = Client::getProjects($clientId);
+        $allProjects = $this->getRepository('ubirimi.general.client')->getProjects($clientId);
 
-        $projects = Client::getProjectsByPermission(
+        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
             $clientId,
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,
@@ -93,13 +93,13 @@ class IndexController extends UbirimiController
 
         $menuSelectedCategory = 'home';
 
-        $hasGlobalAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $clientId,
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = User::hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
             $clientId,
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS
@@ -107,7 +107,7 @@ class IndexController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        $usersAsAssignee = User::getByClientId($clientId);
+        $usersAsAssignee = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
         $issueStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
         $twoDimensionalData = null;
         if (count($projectIdsArray))

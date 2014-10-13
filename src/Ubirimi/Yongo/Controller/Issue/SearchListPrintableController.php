@@ -35,7 +35,7 @@ if ($getProjectIds) {
                 die();
             }
         } else {
-            $hasBrowsingPermission = Project::userHasPermission(array($data['id']), Permission::PERM_BROWSE_PROJECTS);
+            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($data['id']), Permission::PERM_BROWSE_PROJECTS);
             if (!$hasBrowsingPermission) {
                 header('Location: /general-settings/bad-link-access-denied');
                 die();

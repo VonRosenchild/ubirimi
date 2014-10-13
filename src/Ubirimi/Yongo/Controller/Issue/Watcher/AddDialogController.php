@@ -11,7 +11,7 @@ $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByIdSimple
 
 $watchers = Watcher::getByIssueId($issueId);
 // todo: users watchers de aici trebuie sa fie useri ce au permisiune de browsing la proiectul acesta
-$users = Client::getUsers($clientId);
+$users = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
 $watcherArray = array();
 
 if ($watchers) {
@@ -21,8 +21,8 @@ if ($watchers) {
     $watchers->data_seek(0);
 }
 
-$hasViewVotersAndWatchersPermission = Project::userHasPermission($issueData['project_id'], Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $loggedInUserId);
-$hasManageWatchersPermission = Project::userHasPermission($issueData['project_id'], Permission::PERM_MANAGE_WATCHERS, $loggedInUserId);
+$hasViewVotersAndWatchersPermission = $this->getRepository('yongo.project.project')->userHasPermission($issueData['project_id'], Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $loggedInUserId);
+$hasManageWatchersPermission = $this->getRepository('yongo.project.project')->userHasPermission($issueData['project_id'], Permission::PERM_MANAGE_WATCHERS, $loggedInUserId);
 ?>
 <?php if ($hasViewVotersAndWatchersPermission): ?>
     <?php if ($hasManageWatchersPermission): ?>

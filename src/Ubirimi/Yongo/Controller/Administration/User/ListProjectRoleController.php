@@ -21,11 +21,11 @@ class ListProjectRoleController extends UbirimiController
 
         $userId = $request->get('id');
 
-        $users = Client::getUsers($session->get('client/id'));
-        $user = User::getById($userId);
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
         $projects = $this->getRepository('yongo.project.project')->getByClientId($session->get('client/id'));
-        $roles = Role::getByClient($session->get('client/id'));
-        $groups = Group::getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
+        $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id'));
+        $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $groupIds = array();
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
             $groupIds[] = $group['id'];

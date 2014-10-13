@@ -40,7 +40,7 @@ class AddController extends UbirimiController
                 $errors['email_not_valid'] = true;
             }
 
-            $emailData = User::getUserByClientIdAndEmailAddress(
+            $emailData = $this->getRepository('ubirimi.user.user')->getUserByClientIdAndEmailAddress(
                 $session->get('client/id'),
                 mb_strtolower($email)
             );

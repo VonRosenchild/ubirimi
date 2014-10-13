@@ -6,7 +6,7 @@
 
     $issueId = $_GET['id'];
 
-    $users = User::getByClientId($clientId, 0);
+    $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId, 0);
     $subdomain = Util::getSubdomain();
 ?>
 <table>

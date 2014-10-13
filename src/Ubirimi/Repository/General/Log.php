@@ -1,12 +1,12 @@
 <?php
 
-namespace Ubirimi\Repository;
+namespace Ubirimi\Repository\General;
 
 use Ubirimi\Container\UbirimiContainer;
 
 class Log
 {
-    public static function add($clientId, $productId, $userId, $message) {
+    public function add($clientId, $productId, $userId, $message) {
         $query = "INSERT INTO general_log(client_id, sys_product_id, user_id, message, date_created) VALUES (?, ?, ?, ?, NOW())";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -17,7 +17,7 @@ class Log
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getAll() {
+    public function getAll() {
         $query = "select general_log.id, general_log.message, general_log.date_created, " .
                  "client.company_domain, user.first_name, user.last_name " .
             "from general_log " .
@@ -35,7 +35,7 @@ class Log
             return null;
     }
 
-    public static function getByClientIdAndInterval($clientId, $from, $to) {
+    public function getByClientIdAndInterval($clientId, $from, $to) {
         $query = "select general_log.id, general_log.message, general_log.date_created, general_log.sys_product_id, " .
             "client.company_domain, user.first_name, user.last_name " .
             "from general_log " .

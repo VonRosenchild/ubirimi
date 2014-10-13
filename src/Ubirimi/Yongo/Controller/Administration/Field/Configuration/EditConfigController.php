@@ -27,7 +27,7 @@ class EditConfigController extends UbirimiController
 
         $fieldConfigurationData = Configuration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
         $description = $fieldConfigurationData['field_description'];
-        $field = Field::getById($fieldId);
+        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
 
         if ($field['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

@@ -12,7 +12,7 @@ $searchQuery = $_POST['code'];
 $clientId = $session->get('client/id');
 $loggedInUserId = $session->get('user/id');
 
-$projects = Client::getProjectsByPermission($clientId, $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
+$projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
 $projects = Util::array_column($projects, 'id');
 
 // search first for a perfect match

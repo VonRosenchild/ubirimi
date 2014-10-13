@@ -55,7 +55,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
                                         $tempData = explode("=", $definitionData[$i]);
                                         if ($tempData[0] == 'project') {
                                             $projectIds = explode("|", $tempData[1]);
-                                            $projects = Project::getByClientIdAndIds($clientId, $projectIds);
+                                            $projects = $this->getRepository('yongo.project.project')->getByClientIdAndIds($clientId, $projectIds);
                                             echo '<ul>';
                                             while ($projects && $project = $projects->fetch_array(MYSQLI_ASSOC)) {
                                                 echo '<li><a href="/yongo/project/' . $project['id'] . '">' . $project['name'] . '</a></li>';

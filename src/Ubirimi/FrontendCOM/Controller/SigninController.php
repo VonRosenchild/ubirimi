@@ -20,7 +20,7 @@ class SigninController extends UbirimiController
             $username = $request->request->get('username');
             $password = $request->request->get('password');
 
-            $userData = User::getByUsernameAndAdministrator($username);
+            $userData = $this->getRepository('ubirimi.user.user')->getByUsernameAndAdministrator($username);
             if ($userData['id']) {
                 if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {
                     $httpHOST = $request->server->get('HTTP_HOST');

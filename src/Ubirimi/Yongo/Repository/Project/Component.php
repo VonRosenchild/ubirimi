@@ -60,7 +60,7 @@ class Component
 
     public function deleteByProjectId($projectId)
     {
-        $components = Project::getComponents($projectId);
+        $components = $this->getRepository('yongo.project.project')->getComponents($projectId);
 
         while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
             $componentId = $component['id'];

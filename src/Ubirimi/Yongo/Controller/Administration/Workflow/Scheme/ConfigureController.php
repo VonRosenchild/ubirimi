@@ -26,7 +26,7 @@ class ConfigureController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $allWorkflows = Workflow::getAllByClientId($session->get('client/id'));
+        $allWorkflows = $this->getRepository('yongo.workflow.workflow')->getAllByClientId($session->get('client/id'));
 
         $schemeWorkflows = Scheme::getDataById($Id);
 
@@ -51,7 +51,7 @@ class ConfigureController extends UbirimiController
                     }
                 }
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

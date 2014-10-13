@@ -21,7 +21,7 @@ class BillingController extends UbirimiController
         $clientId = $session->get('client/id');
         $content = 'account/Billing.php';
 
-        $client = Client::getById($clientId);
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
 
         $emptyCountry = false;
         if ($client['sys_country_id'] == null) {

@@ -19,7 +19,7 @@ class AddController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $clientId = $session->get('client/id');
-        $clientSettings = Client::getSettings($clientId);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         $name = Util::cleanRegularInputField($_POST['name']);
         $description = $request->request->get('description');
@@ -60,7 +60,7 @@ class AddController extends UbirimiController
                 );
             }
 
-            Log::add($session->get('client/id'), SystemProduct::SYS_PRODUCT_CALENDAR, $session->get('user/id'),'ADD EVENTS event ' . $name, $date);
+            $this->getRepository('ubirimi.general.log')->add($session->get('client/id'), SystemProduct::SYS_PRODUCT_CALENDAR, $session->get('user/id'),'ADD EVENTS event ' . $name, $date);
         }
 
         return new Response('');

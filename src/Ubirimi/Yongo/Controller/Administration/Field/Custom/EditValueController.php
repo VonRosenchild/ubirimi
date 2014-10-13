@@ -19,9 +19,9 @@ class EditValueController extends UbirimiController
 
         $valueId = $request->get('id');
 
-        $fieldValue = Field::getDataById($valueId);
+        $fieldValue = $this->getRepository('yongo.field.field')->getDataById($valueId);
         $customFieldId = $fieldValue['field_id'];
-        $field = Field::getById($customFieldId);
+        $field = $this->getRepository('yongo.field.field')->getById($customFieldId);
 
         $emptyValue = false;
         $duplicateValue = false;
@@ -34,7 +34,7 @@ class EditValueController extends UbirimiController
             }
 
             // check for duplication
-            $valueDataExists = Field::getDataByFieldIdAndValue($customFieldId, $value, $valueId);
+            $valueDataExists = $this->getRepository('yongo.field.field')->getDataByFieldIdAndValue($customFieldId, $value, $valueId);
 
             if ($valueDataExists)
                 $duplicateValue = true;
@@ -43,7 +43,7 @@ class EditValueController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 Field::updateDataById($valueId, $value, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

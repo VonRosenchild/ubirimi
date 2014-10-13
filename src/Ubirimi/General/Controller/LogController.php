@@ -10,7 +10,7 @@
     $from = $_GET['from'];
     $to = $_GET['to'];
 
-    $logs = Log::getByClientIdAndInterval($clientId, $from, $to);
+    $logs = $this->getRepository('ubirimi.general.log')->getByClientIdAndInterval($clientId, $from, $to);
 
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Logs';
 

@@ -44,16 +44,16 @@ class ManageAppListController extends UbirimiController
         }
 
         if ($visible) {
-            Client::addProduct($session->get('client/id'), $productId, $currentDate);
+            $this->getRepository('ubirimi.general.client')->addProduct($session->get('client/id'), $productId, $currentDate);
         } else {
-            Client::deleteProduct($session->get('client/id'), $productId);
+            $this->getRepository('ubirimi.general.client')->deleteProduct($session->get('client/id'), $productId);
             if ($productId == SystemProduct::SYS_PRODUCT_YONGO) {
-                Client::deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_HELP_DESK);
-                Client::deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_CHEETAH);
+                $this->getRepository('ubirimi.general.client')->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_HELP_DESK);
+                $this->getRepository('ubirimi.general.client')->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_CHEETAH);
             }
         }
 
-        $clientProducts = Client::getProducts($session->get('client/id'), 'array');
+        $clientProducts = $this->getRepository('ubirimi.general.client')->getProducts($session->get('client/id'), 'array');
 
         UbirimiContainer::get()['session']->remove("client/products");
 
@@ -62,7 +62,7 @@ class ManageAppListController extends UbirimiController
                 UbirimiContainer::get()['session']->set("client/products/{$key}", $value);
             });
         } else {
-            Client::addProduct($session->get('client/id'), $productId, $currentDate);
+            $this->getRepository('ubirimi.general.client')->addProduct($session->get('client/id'), $productId, $currentDate);
             $session->set('client/products', array(array('sys_product_id' => $productId)));
         }
 

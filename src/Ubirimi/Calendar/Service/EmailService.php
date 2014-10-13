@@ -17,7 +17,7 @@ class EmailService extends UbirimiService
             Email::$smtpSettings = $smtpSettings;
 
             for ($i = 0; $i < count($usersToShareWith); $i++) {
-                $user = User::getById($usersToShareWith[$i]);
+                $user = $this->getRepository('ubirimi.user.user')->getById($usersToShareWith[$i]);
 
                 Email::shareCalendar($this->session->get('client/id'), $calendar, $userThatShares, $user['email'], $noteContent);
             }
@@ -32,7 +32,7 @@ class EmailService extends UbirimiService
             Email::$smtpSettings = $smtpSettings;
 
             for ($i = 0; $i < count($usersToShareWith); $i++) {
-                $user = User::getById($usersToShareWith[$i]);
+                $user = $this->getRepository('ubirimi.user.user')->getById($usersToShareWith[$i]);
                 Email::shareEvent($this->session->get('client/id'), $event, $userThatShares, $user['email'], $noteContent);
             }
         }

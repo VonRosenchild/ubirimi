@@ -16,15 +16,15 @@ class GetActivityStreamChunkController extends UbirimiController
             $clientId = $session->get('client/id');
             $clientSettings = $session->get('client/settings');;
         } else {
-            $clientId = Client::getClientIdAnonymous();
-            $clientSettings = Client::getSettings($clientId);
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         }
-        $client = Client::getById($clientId);
+        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
         $date = $request->request->get('date');
         $project = $request->request->get('project');
 
         if ($project == 'all') {
-            $projectsMenu = Client::getProjectsByPermission(
+            $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_BROWSE_PROJECTS,

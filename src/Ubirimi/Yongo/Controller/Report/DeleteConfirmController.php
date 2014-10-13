@@ -22,7 +22,7 @@ class DeleteConfirmController extends UbirimiController
             return new Response('Are you sure you want to delete this report?');
         }
 
-        $boards = Board::getByFilterId($filterId);
+        $boards = $this->getRepository('agile.board.board')->getByFilterId($filterId);
 
         $message = 'This report can not be deleted due to the following reasons:';
         $message .= '<br />';

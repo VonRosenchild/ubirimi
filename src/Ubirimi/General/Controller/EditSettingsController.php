@@ -13,8 +13,8 @@
                                 'Atlantic' => 32, 'Australia' => 64, 'Europe' => 128, 'Indian' => 256, 'Pacific' => 512);
     $timeZoneCountry = $timezoneData[1];
 
-    $clientSettings = Client::getSettings($clientId);
-    $client = Client::getById($clientId);
+    $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+    $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
 
     if (isset($_POST['update_configuration'])) {
 
@@ -28,7 +28,7 @@
                             array('field' => 'language', 'value' => $language, 'type' => 's'),
                             array('field' => 'timezone', 'value' => $timezone, 'type' => 's'));
 
-        Client::updateProductSettings($clientId, 'client_settings', $parameters);
+        $this->getRepository('ubirimi.general.client')->updateProductSettings($clientId, 'client_settings', $parameters);
 
         $session->set('client/settings/language', $language);
         $session->set('client/settings/timezone', $timezone);

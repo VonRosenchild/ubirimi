@@ -6,4 +6,4 @@
 
     $clientId = $_POST['id'];
 
-    Client::deleteById($clientId);
+    $this->getRepository('ubirimi.general.client')->deleteById($clientId);

@@ -45,7 +45,7 @@
         $currentDate = Util::getServerCurrentDateTime();
         $pageId = $page->save($currentDate);
 
-        Log::add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador Entity ' . $name, $currentDate);
+        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador Entity ' . $name, $currentDate);
 
         header('Location: /documentador/page/view/' . $pageId);
     }

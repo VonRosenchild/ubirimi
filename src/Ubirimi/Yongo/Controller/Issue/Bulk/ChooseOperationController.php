@@ -37,7 +37,7 @@
     // check for delete permission in each project
     $deletePermissionInAllProjects = true;
     for ($i = 0; $i < count($projectsIds); $i++) {
-        $hasDeletePermission = Project::userHasPermission($projectsIds[$i], Permission::PERM_DELETE_ISSUE, $loggedInUserId);
+        $hasDeletePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectsIds[$i], Permission::PERM_DELETE_ISSUE, $loggedInUserId);
         if (!$hasDeletePermission) {
             $deletePermissionInAllProjects = false;
             break;

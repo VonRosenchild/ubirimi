@@ -5,5 +5,5 @@
     Util::checkUserIsLoggedInAndRedirect();
     $data = $_POST['data'];
 
-    User::updateDisplayColumns($loggedInUserId, $data);
+    $this->getRepository('ubirimi.user.user')->updateDisplayColumns($loggedInUserId, $data);
     $session->set('user/issues_display_columns', $data);

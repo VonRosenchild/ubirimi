@@ -21,11 +21,11 @@ class AssignDefaultGroupsController extends UbirimiController
         $groupArrayIds = $request->request->get('group_arr');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $permissionRole = Role::getById($permissionRoleId);
-        Role::deleteDefaultGroupsByPermissionRoleId($permissionRoleId);
-        Role::addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
+        $permissionRole = $this->getRepository('yongo.permission.role')->ggetById($permissionRoleId);
+        $this->getRepository('yongo.permission.role')->gdeleteDefaultGroupsByPermissionRoleId($permissionRoleId);
+        $this->getRepository('yongo.permission.role')->gaddDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
 
-        Log::add(
+        $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

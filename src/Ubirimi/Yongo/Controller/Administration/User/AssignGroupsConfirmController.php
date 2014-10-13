@@ -18,9 +18,9 @@ class AssignGroupsConfirmController extends UbirimiController
         $userId = $request->get('user_id');
         $productId = $request->get('product_id');
 
-        $user = User::getById($userId);
-        $allProductGroups = Group::getByClientIdAndProductId($session->get('client/id'), $productId);
-        $userGroups = Group::getByUserIdAndProductId($userId, $productId);
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
+        $allProductGroups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), $productId);
+        $userGroups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, $productId);
 
         $user_groups_ids_arr = array();
 

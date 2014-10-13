@@ -41,10 +41,10 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
         }
 
         $projectId = $issue['issue_project_id'];
-        $workflowUsed = Project::getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
+        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
 
-        $step = Workflow::getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
-        $workflowActions = Workflow::getTransitionsForStepId($workflowUsed['id'], $step['id']);
+        $step = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
+        $workflowActions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowUsed['id'], $step['id']);
 
         $data = array();
         while ($workflowActions && $workflowStep = $workflowActions->fetch_array(MYSQLI_ASSOC)) {
@@ -59,27 +59,27 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
             switch ($transitionEvent['code']) {
 
                 case Event::EVENT_ISSUE_CLOSED_CODE:
-                    $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $session->get('user/id'));
+                    $hasEventPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $session->get('user/id'));
                     break;
 
                 case Event::EVENT_ISSUE_REOPENED_CODE:
 
                 case Event::EVENT_ISSUE_RESOLVED_CODE:
 
-                    $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $session->get('user/id'));
+                    $hasEventPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $session->get('user/id'));
                     break;
 
                 case Event::EVENT_ISSUE_WORK_STARTED_CODE:
                 case Event::EVENT_ISSUE_WORK_STOPPED_CODE:
 
-                    $hasEventPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
+                    $hasEventPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
                     break;
                 case Event::EVENT_GENERIC_CODE:
                     $hasEventPermission = true;
                     break;
             }
 
-            $canBeExecuted = Workflow::checkConditionsByTransitionId($workflowStep['id'], $session->get('user/id'), $issue);
+            $canBeExecuted = $this->getRepository('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowStep['id'], $session->get('user/id'), $issue);
             $value = array();
 
             if ($hasEventPermission && $canBeExecuted) {

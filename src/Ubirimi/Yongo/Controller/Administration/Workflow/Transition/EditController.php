@@ -19,22 +19,22 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowDataId = $request->get('id');
-        $workflowData = Workflow::getDataById($workflowDataId);
+        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
         $workflowId = $workflowData['workflow_id'];
-        $workflow = Workflow::getMetaDataById($workflowId);
+        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
         $screens = Screen::getAll($session->get('client/id'));
-        $steps = Workflow::getSteps($workflowId);
+        $steps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
 
         if ($request->request->has('edit_transition')) {
             $name = Util::cleanRegularInputField($request->request->get('transition_name'));
             $description = Util::cleanRegularInputField($request->request->get('transition_description'));
             $step = $request->request->get('step');
             $screen = $request->request->get('screen');
-            Workflow::updateDataById($workflowData['id'], $name, $description, $screen, $step);
+            $this->getRepository('yongo.workflow.workflow')->updateDataById($workflowData['id'], $name, $description, $screen, $step);
 
             $currentDate = Util::getServerCurrentDateTime();
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

@@ -25,7 +25,7 @@ class BasicAuthenticationService
         list($clientDomain, $username) = explode('#', substr($decodedHeader, 0, strpos($decodedHeader, ':')));
         $password = substr($decodedHeader, strpos($decodedHeader, ':') + 1);
 
-        $user = User::getByUsernameAndClientDomain($username, $clientDomain);
+        $user = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientDomain($username, $clientDomain);
 
         if (null === $user) {
             throw new \Exception(sprintf('Api Auth Failed. User [%s] not found', $username));

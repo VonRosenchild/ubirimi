@@ -23,7 +23,7 @@ class ListController extends UbirimiController
             $organization = Organization::getById($organizationId);
             $breadCrumbTitle = 'Customers > ' . $organization['name'];
         } else {
-            $customers = User::getByClientId($session->get('client/id'), 1);
+            $customers = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'), 1);
             $breadCrumbTitle = 'Customers > All';
         }
 

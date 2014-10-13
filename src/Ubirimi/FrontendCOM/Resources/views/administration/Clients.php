@@ -47,10 +47,10 @@ require_once __DIR__ . '/_header.php';
                 <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $client['id'] ?>"/></td>
                 <td><?php echo $client['company_name'] ?></td>
                 <td>
-                    <strong><?php echo count(Client::getProjects($client['id'], 'array')) ?></strong>P
+                    <strong><?php echo count($this->getRepository('ubirimi.general.client')->getProjects($client['id'], 'array')) ?></strong>P
                     <strong>
                         <?php
-                            $users = User::getByClientId($client['id']);
+                            $users = $this->getRepository('ubirimi.user.user')->getByClientId($client['id']);
                             echo $users === null ? '0' : $users->num_rows;
                         ?></strong>U
                     <strong>

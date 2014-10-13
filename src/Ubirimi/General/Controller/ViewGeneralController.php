@@ -17,8 +17,8 @@ class ViewGeneralController extends UbirimiController
         $session->set('selected_product_id', -1);
 
         $menuSelectedCategory = 'general_overview';
-        $clientSettings = Client::getSettings($session->get('client/id'));
-        $client = Client::getById($session->get('client/id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
+        $client = $this->getRepository('ubirimi.general.client')->getById($session->get('client/id'));
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings';
 

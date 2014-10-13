@@ -22,7 +22,7 @@ class AddController extends UbirimiController
 
         $clientDomain = $session->get('client/company_domain');
 
-        $groupDevelopers = Group::getByName($session->get('client/id'), 'Developers');
+        $groupDevelopers = $this->getRepository('ubirimi.user.group')->getByName($session->get('client/id'), 'Developers');
 
         $errors = array(
             'empty_email' => false,
@@ -63,13 +63,13 @@ class AddController extends UbirimiController
             if (!Util::validateUsername($username))
                 $errors['invalid_username'] = true;
             else {
-                $existingUser = User::getByUsernameAndClientId($username, $session->get('client/id'));
+                $existingUser = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId($username, $session->get('client/id'));
 
                 if ($existingUser)
                     $errors['duplicate_username'] = true;
             }
 
-            $emailData = User::getUserByClientIdAndEmailAddress($session->get('client/id'), mb_strtolower($email));
+            $emailData = $this->getRepository('ubirimi.user.user')->getUserByClientIdAndEmailAddress($session->get('client/id'), mb_strtolower($email));
             if ($emailData)
                 $errors['email_already_exists'] = true;
 

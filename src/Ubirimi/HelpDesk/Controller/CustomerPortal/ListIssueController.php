@@ -22,8 +22,8 @@ class ListIssueController extends UbirimiController
 
         $menuSelectedCategory = 'home';
         $clientId = $session->get('client/id');
-        $projectsForBrowsing = Client::getProjects($clientId, null, null, true);
-        $clientSettings = Client::getSettings($clientId);
+        $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjects($clientId, null, null, true);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_HELP_DESK);
         $selectedProductId = $session->get('selected_product_id');

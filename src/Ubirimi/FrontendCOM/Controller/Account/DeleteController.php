@@ -16,7 +16,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $clientId = $session->get('client/id');
 
-        Client::deleteById($clientId);
+        $this->getRepository('ubirimi.general.client')->deleteById($clientId);
 
         return new RedirectResponse('/sign-out');
     }

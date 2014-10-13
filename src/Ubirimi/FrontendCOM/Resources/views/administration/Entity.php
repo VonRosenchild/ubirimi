@@ -49,7 +49,7 @@
                 </td>
                 <td>
                     <?php
-                    $user = User::getById($entity['user_created_id']);
+                    $user = $this->getRepository('ubirimi.user.user')->getById($entity['user_created_id']);
                     echo $user['first_name'] . ' ' . $user['last_name'];
                     ?>
                 </td>

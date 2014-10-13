@@ -24,9 +24,9 @@ class WorkflowFunction
         $workflowDataId = $workflowData['id'];
         $issueId = $issueData['id'];
         $projectId = $issueData['issue_project_id'];
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
         $functions = WorkflowFunction::getByWorkflowDataId($workflowDataId);
-        $loggedInUser = User::getById($loggedInUserId);
+        $loggedInUser = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
 
         while ($functions && $function = $functions->fetch_array(MYSQLI_ASSOC)) {
 
@@ -46,7 +46,7 @@ class WorkflowFunction
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP) {
 
-                $finalStatusId = Workflow::getStepById($workflowData['workflow_step_id_to'], 'linked_issue_status_id');
+                $finalStatusId = $this->getRepository('yongo.workflow.workflow')->getStepById($workflowData['workflow_step_id_to'], 'linked_issue_status_id');
 
                 $finalStatusName = Settings::getById($finalStatusId, 'status', 'name');
                 $initialStatusName = Settings::getById($issueData[Field::FIELD_STATUS_CODE], 'status', 'name');
@@ -98,7 +98,7 @@ class WorkflowFunction
                 $eventData = explode("=", $definition_data);
                 $eventId = $eventData[1];
 
-                $users = Project::getUsersForNotification($projectId, $eventId, $issueData, $loggedInUserId);
+                $users = $this->getRepository('yongo.project.project')->getUsersForNotification($projectId, $eventId, $issueData, $loggedInUserId);
 
                 if ($users && Email::$smtpSettings) {
                     while ($user = $users->fetch_array(MYSQLI_ASSOC)) {

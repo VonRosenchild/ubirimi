@@ -17,9 +17,9 @@ class ListFilterController extends UbirimiController
             $clientSettings = $session->get('client/settings');
             $filters = Filter::getAllByUser($session->get('user/id'));
         } else {
-            $clientId = Client::getClientIdAnonymous();
+            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $loggedInUserId = null;
-            $clientSettings = Client::getSettings($clientId);
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
             $filters = Filter::getAllByClientId($clientId);
         }
 

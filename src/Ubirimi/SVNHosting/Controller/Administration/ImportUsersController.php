@@ -28,7 +28,7 @@ class ImportUsersController extends UbirimiController
             SVNRepository::addUser($session->get('selected_svn_repo_id'), (int) $userToImport);
             SVNRepository::updateUserPermissions($session->get('selected_svn_repo_id'), (int) $userToImport, 1, 1);
 
-            $userRec = User::getById((int) $userToImport);
+            $userRec = $this->getRepository('ubirimi.user.user')->getById((int) $userToImport);
             $svnRepo = SVNRepository::getById($session->get('selected_svn_repo_id'));
 
             SVNRepository::updateAuthz();

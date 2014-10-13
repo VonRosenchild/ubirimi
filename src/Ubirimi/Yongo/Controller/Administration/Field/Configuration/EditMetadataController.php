@@ -37,7 +37,7 @@ class EditMetadataController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 Configuration::updateMetadataById($fieldConfigurationId, $name, $description, $currentDate);
 
-                Log::add(
+                $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

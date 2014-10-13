@@ -13,7 +13,7 @@ if ($space['client_id'] != $clientId) {
     header('Location: /general-settings/bad-link-access-denied');
     die();
 }
-$clientSettings = \Ubirimi\Repository\Client::getSettings($clientId);
+$clientSettings = \Ubirimi\Repository\$this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
 $deletedPages = Space::getDeletedPages($spaceId);
 

@@ -12,7 +12,7 @@
     $IdTo = $_POST['id_to'];
     $functionId = $field_values[0];
 
-    $data = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $IdFrom, $IdTo);
+    $data = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $IdFrom, $IdTo);
 
     $value = '';
 

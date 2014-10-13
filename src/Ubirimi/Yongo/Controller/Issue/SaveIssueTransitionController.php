@@ -26,7 +26,7 @@ $attIdsSession = $session->has('added_attachments_in_screen') ? $session->get('a
 $fieldTypesCustom = isset($_POST['field_types_custom']) ? $_POST['field_types_custom'] : null;
 $fieldValuesCustom = isset($_POST['field_values_custom']) ? $_POST['field_values_custom'] : null;
 
-$clientSettings = Client::getSettings($clientId);
+$clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 $issueCustomFieldsData = array();
 
 for ($i = 0; $i < count($fieldTypesCustom); $i++) {
@@ -48,10 +48,10 @@ for ($i = 0; $i < count($attIdsSession); $i++) {
 
 $session->remove('added_attachments_in_screen');
 $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $loggedInUserId);
-$workflowData = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+$workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
 
 // check if the transition can be executed with respect to the transition conditions
-$canBeExecuted = Workflow::checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issueData);
+$canBeExecuted = $this->getRepository('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issueData);
 
 if ($canBeExecuted) {
     $currentDate = Util::getServerCurrentDateTime();

@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'system';
-        $clientSettings = Client::getYongoSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id'));
 
         if ($request->request->has('update_configuration')) {
 
@@ -32,11 +32,11 @@ class EditController extends UbirimiController
                 )
             );
 
-            Client::updateProductSettings($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $parameters);
+            $this->getRepository('ubirimi.general.client')->updateProductSettings($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $parameters);
 
             $currentDate = Util::getServerCurrentDateTime();
 
-            Log::add(
+            $this->getRepository('ubirimi.general.log')->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

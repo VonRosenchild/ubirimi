@@ -22,7 +22,7 @@ class WorkController extends UbirimiController
         $sprintId = $request->get('id');
         $boardId = $request->get('board_id');
         $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
-        $board = Board::getById($boardId);
+        $board = $this->getRepository('agile.board.board')->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -40,7 +40,7 @@ class WorkController extends UbirimiController
             }
         }
 
-        $columns = Board::getColumns($boardId, 'array');
+        $columns = $this->getRepository('agile.board.board')->getColumns($boardId, 'array');
         $lastCompletedSprint = Sprint::getLastCompleted($boardId);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '

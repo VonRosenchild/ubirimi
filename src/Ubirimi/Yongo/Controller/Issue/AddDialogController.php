@@ -26,13 +26,13 @@ class AddDialogController extends UbirimiController
         }
 
         if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_YONGO) {
-            $projects = Client::getProjectsByPermission(
+            $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_CREATE_ISSUE
             );
         } else {
-            $projects = Client::getProjects($session->get('client/id'), null, null, true);
+            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), null, null, true);
         }
 
         $projectData = $this->getRepository('yongo.project.project')->getById($selectedProjectId);

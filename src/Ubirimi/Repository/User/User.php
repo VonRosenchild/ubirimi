@@ -7,7 +7,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class User
 {
-    public static function getPermissionRolesByUserId($userId, $resultType = null, $field = null) {
+    public function getPermissionRolesByUserId($userId, $resultType = null, $field = null) {
         $query = 'select distinct permission_role_id from permission_role_data where user_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -32,7 +32,7 @@ class User
         return $finalResult;
     }
 
-    public static function getGroupsByUserId($userId, $resultType = null, $field = null) {
+    public function getGroupsByUserId($userId, $resultType = null, $field = null) {
         $query = 'select distinct group_id from group_data where user_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -57,7 +57,7 @@ class User
         return $finalResult;
     }
 
-    public static function createAdministratorUser($admin_first_name, $admin_last_name, $admin_username, $password, $admin_email, $clientId, $issuesPerPage, $svnAdministratorFlag, $clientAdministratorFlag, $currentDate) {
+    public function createAdministratorUser($admin_first_name, $admin_last_name, $admin_username, $password, $admin_email, $clientId, $issuesPerPage, $svnAdministratorFlag, $clientAdministratorFlag, $currentDate) {
         $hash = UbirimiContainer::get()['password']->hash($password);
 
         $query = "INSERT INTO user(first_name, last_name, username, password, email, " .
@@ -69,7 +69,7 @@ class User
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function add($clientId, $firstName, $lastName, $email, $username, $password, $issuesPerPage, $customerServiceDeskFlag, $countryId, $currentDate) {
+    public function add($clientId, $firstName, $lastName, $email, $username, $password, $issuesPerPage, $customerServiceDeskFlag, $countryId, $currentDate) {
         $query = "INSERT INTO user(client_id, country_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -83,7 +83,7 @@ class User
         return array(UbirimiContainer::get()['db.connection']->insert_id, $password);
     }
 
-    public static function deleteById($userId) {
+    public function deleteById($userId) {
         // delete yongo related entities
         $query = 'delete from issue_comment where user_id = ' . $userId;
         UbirimiContainer::get()['db.connection']->query($query);
@@ -124,7 +124,7 @@ class User
         // todo: delete svn related entities
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = "SELECT user.id, user.client_id, password, first_name, last_name, email, username, user.date_created, user.avatar_picture, " .
                  "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, " .
                  "sys_country.name as country_name, issues_display_columns " .
@@ -143,7 +143,7 @@ class User
             return null;
     }
 
-    public static function getByIds($Ids, $resultType = null) {
+    public function getByIds($Ids, $resultType = null) {
         $query = "SELECT user.id, user.client_id, password, first_name, last_name, email, username, user.date_created, user.avatar_picture, " .
                  "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, sys_country.name as country_name " .
             "FROM user " .
@@ -169,7 +169,7 @@ class User
         return $finalResult;
     }
 
-    public static function updateById($userId, $firstName, $lastName, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
+    public function updateById($userId, $firstName, $lastName, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
         $query = 'UPDATE user SET ' .
                  'first_name = ?, last_name = ?, email = ?, username = ?, client_administrator_flag = ?, customer_service_desk_flag = ?, date_updated = ? ';
 
@@ -188,7 +188,7 @@ class User
         $stmt->execute();
     }
 
-    public static function checkUserInProjectRoleId($userId, $projectId, $roleId) {
+    public function checkUserInProjectRoleId($userId, $projectId, $roleId) {
         $query = "SELECT project_role_data.id, project_role_data.user_id " .
             "FROM project_role_data " .
             "WHERE permission_role_id = ? " .
@@ -205,7 +205,7 @@ class User
             return null;
     }
 
-    public static function getGroupsForUserIdAndRoleId($userId, $projectId, $roleId, $groupIds) {
+    public function getGroupsForUserIdAndRoleId($userId, $projectId, $roleId, $groupIds) {
         $queryCondition = '';
         if (!empty($groupIds)) {
             $queryCondition = " OR group_id IN (" . implode(', ', $groupIds) . ')';
@@ -229,7 +229,7 @@ class User
             return null;
     }
 
-    public static function checkProjectRole($userId, $projectId, $roleId, $groupIds) {
+    public function checkProjectRole($userId, $projectId, $roleId, $groupIds) {
         $query = "SELECT project_role_data.id, project_role_data.user_id, group.id as group_id, group.name as group_name " .
                     "FROM project_role_data " .
                     "left join `group` on `group`.id = project_role_data.group_id " .
@@ -248,7 +248,7 @@ class User
             return null;
     }
 
-    public static function getByClientId($clientId, $helpDeskFlag = 0) {
+    public function getByClientId($clientId, $helpDeskFlag = 0) {
         $query = "SELECT user.*, help_organization.name as organization_name " .
             "FROM user " .
             'left join help_organization_user on help_organization_user.user_id = user.id ' .
@@ -267,7 +267,7 @@ class User
             return null;
     }
 
-    public static function hasGlobalPermission($clientId, $userId, $globalPermissionId) {
+    public function hasGlobalPermission($clientId, $userId, $globalPermissionId) {
         $query = 'SELECT user.id as user_id, user.first_name, user.last_name ' .
             'from sys_permission_global_data ' .
             'left join `group_data` on `group_data`.group_id = sys_permission_global_data.group_id ' .
@@ -298,7 +298,7 @@ class User
             return null;
     }
 
-    public static function deleteGroupsByUserId($userId) {
+    public function deleteGroupsByUserId($userId) {
         $query = 'delete from group_data where user_id = ? ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -306,7 +306,7 @@ class User
         $stmt->execute();
     }
 
-    public static function addGroups($userId, $assigned_user_groups) {
+    public function addGroups($userId, $assigned_user_groups) {
         $query = 'insert into group_data(group_id, user_id) values ';
 
         for ($i = 0; $i < count($assigned_user_groups); $i++)
@@ -317,7 +317,7 @@ class User
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function updatePassword($userId, $hash) {
+    public function updatePassword($userId, $hash) {
         $query = 'UPDATE user SET password = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -325,7 +325,7 @@ class User
         $stmt->execute();
     }
 
-    public static function getByUsernameAndBaseURL($username, $baseURL) {
+    public function getByUsernameAndBaseURL($username, $baseURL) {
         $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, client.company_domain, svn_administrator_flag, client_administrator_flag ' .
             'FROM user ' .
@@ -345,7 +345,7 @@ class User
             return null;
     }
 
-    public static function getByUsernameAndClientDomain($username, $domain) {
+    public function getByUsernameAndClientDomain($username, $domain) {
         $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, client.company_domain, svn_administrator_flag, client_administrator_flag ' .
             'FROM user ' .
@@ -365,7 +365,7 @@ class User
             return null;
     }
 
-    public static function getByUsernameAndClientId($username, $clientId, $resultColumn = null, $userId = null) {
+    public function getByUsernameAndClientId($username, $clientId, $resultColumn = null, $userId = null) {
         $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, svn_administrator_flag, client_administrator_flag, avatar_picture, issues_display_columns ' .
                  'FROM user ' .
@@ -401,7 +401,7 @@ class User
             return null;
     }
 
-    public static function getCustomerByEmailAddressAndClientId($username, $clientId) {
+    public function getCustomerByEmailAddressAndClientId($username, $clientId) {
         $query = 'SELECT user.id, email, first_name, last_name, client_id, password, avatar_picture, issues_display_columns ' .
                  'FROM user ' .
                  "WHERE email = ? and customer_service_desk_flag = 1 and client_id = ? " .
@@ -420,7 +420,7 @@ class User
             return null;
     }
 
-    public static function getByEmailAddress($clientId, $emailAddress) {
+    public function getByEmailAddress($clientId, $emailAddress) {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password,
                     super_user_flag, svn_administrator_flag, client_administrator_flag ' .
                  'FROM user ' .
@@ -439,7 +439,7 @@ class User
             return null;
     }
 
-    public static function getByUsernameAndAdministrator($username) {
+    public function getByUsernameAndAdministrator($username) {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password, super_user_flag, svn_administrator_flag ' .
             'FROM user ' .
             "WHERE username = ? and client_administrator_flag = 1 and customer_service_desk_flag = 0 " .
@@ -456,7 +456,7 @@ class User
             return null;
     }
 
-    public static function getByUsernameAndPassword($username, $password)
+    public function getByUsernameAndPassword($username, $password)
     {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password, super_user_flag, svn_administrator_flag ' .
             'FROM user ' .
@@ -474,7 +474,7 @@ class User
             return null;
     }
 
-    public static function getAll($filters = array()) {
+    public function getAll($filters = array()) {
         $query = 'select user.id, user.first_name, user.last_name, user.username, user.date_created, user.email, client_administrator_flag, ' .
                  'client.company_name as client_company_name ' .
                  'from user ' .
@@ -506,7 +506,7 @@ class User
             return false;
     }
 
-    public static function getYongoSettings($userId) {
+    public function getYongoSettings($userId) {
         $query = 'select issues_per_page, notify_own_changes_flag, country_id ' .
             'from user ' .
             'where id = ? ' .
@@ -523,7 +523,7 @@ class User
             return false;
     }
 
-    public static function updatePreferences($userId, $parameters) {
+    public function updatePreferences($userId, $parameters) {
         $query = 'UPDATE user SET ';
 
         $values = array();
@@ -553,7 +553,7 @@ class User
         $result = $stmt->get_result();
     }
 
-    public static function getNotSVNAdministrators($clientId) {
+    public function getNotSVNAdministrators($clientId) {
         $query = 'SELECT user.* FROM user WHERE client_id = ? and svn_administrator_flag = 0 and customer_service_desk_flag = 0';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -567,7 +567,7 @@ class User
             return null;
     }
 
-    public static function getByEmailAddressAndBaseURL($address, $baseURL) {
+    public function getByEmailAddressAndBaseURL($address, $baseURL) {
         $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password, ' .
                   'super_user_flag, client.company_domain, svn_administrator_flag ' .
             'FROM user ' .
@@ -587,7 +587,7 @@ class User
             return null;
     }
 
-    public static function getCustomerByEmailAddressAndBaseURL($address, $baseURL) {
+    public function getCustomerByEmailAddressAndBaseURL($address, $baseURL) {
         $query = 'SELECT user.id, email, first_name, last_name, client_id, password, ' .
                   'client.company_domain ' .
             'FROM user ' .
@@ -608,7 +608,7 @@ class User
             return null;
     }
 
-    public static function getIssueSecurityLevelsBySecuritySchemeId($issue, $loggedInUserId) {
+    public function getIssueSecurityLevelsBySecuritySchemeId($issue, $loggedInUserId) {
         $securityLevelId = $issue['security_level'];
         $projectId = $issue['issue_project_id'];
         $issueId = $issue['id'];
@@ -689,7 +689,7 @@ class User
             return false;
     }
 
-    public static function getDocumentatorActivityStream($userId) {
+    public function getDocumentatorActivityStream($userId) {
         // created pages
         $query = 'select documentator_entity.name, documentator_entity.id, \'created\' as action, documentator_entity.date_created as date ' .
                  'from documentator_entity ' .
@@ -728,7 +728,7 @@ class User
             return null;
     }
 
-    public static function getByEmailAddressAndIsClientAdministrator($emailAddress) {
+    public function getByEmailAddressAndIsClientAdministrator($emailAddress) {
         $query = 'select email, id from user where client_administrator_flag = 1 and LOWER(email) = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -743,7 +743,7 @@ class User
         }
     }
 
-    public static function getByUsernameAndIsClientAdministrator($username) {
+    public function getByUsernameAndIsClientAdministrator($username) {
         $query = 'select username, id from user where client_administrator_flag = 1 and LOWER(username) = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -758,7 +758,7 @@ class User
         }
     }
 
-    public static function getUserByClientIdAndEmailAddress($clientId, $email) {
+    public function getUserByClientIdAndEmailAddress($clientId, $email) {
         $query = 'select email, id from user where client_id = ? and LOWER(email) = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -773,7 +773,7 @@ class User
         }
     }
 
-    public static function updateAvatar($avatar, $userId) {
+    public function updateAvatar($avatar, $userId) {
         $query = 'UPDATE user SET avatar_picture = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -781,7 +781,7 @@ class User
         $stmt->execute();
     }
 
-    public static function getUserAvatarPicture($user, $size = null) {
+    public function getUserAvatarPicture($user, $size = null) {
         if (null !==  $user['avatar_picture'] && !empty($user['avatar_picture'])) {
             $pictureData = pathinfo($user['avatar_picture']);
             $fileName = $pictureData['filename'];
@@ -797,7 +797,7 @@ class User
         return '/img/small_user.png';
     }
 
-    public static function updateDisplayColumns($userId, $data) {
+    public function updateDisplayColumns($userId, $data) {
         $query = 'UPDATE user SET issues_display_columns = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -805,7 +805,7 @@ class User
         $stmt->execute();
     }
 
-    public static function updateLoginTime($userId, $datetime)
+    public function updateLoginTime($userId, $datetime)
     {
         $query = "UPDATE user SET last_login = ? WHERE id = ? limit 1";
 
@@ -814,7 +814,7 @@ class User
         $stmt->execute();
     }
 
-    public static function getByClientIdAndFullName($clientId, $fullName) {
+    public function getByClientIdAndFullName($clientId, $fullName) {
         $query = 'select * from user where client_id = ? and CONCAT(first_name, " ", last_name) = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

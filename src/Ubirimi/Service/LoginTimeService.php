@@ -12,13 +12,13 @@ class LoginTimeService
     {
         $datetime = Util::getServerCurrentDateTime();
 
-        Client::updateLoginTime($clientId, $datetime);
+        $this->getRepository('ubirimi.general.client')->updateLoginTime($clientId, $datetime);
     }
 
     public function userSaveLoginTime($userId)
     {
         $datetime = Util::getServerCurrentDateTime();
 
-        User::updateLoginTime($userId, $datetime);
+        $this->getRepository('ubirimi.user.user')->updateLoginTime($userId, $datetime);
     }
 }

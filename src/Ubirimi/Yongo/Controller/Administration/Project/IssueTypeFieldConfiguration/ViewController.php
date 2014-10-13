@@ -26,7 +26,7 @@ class ViewController extends UbirimiController
         }
 
         $fieldConfigurations = ConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
-        $allFields = Field::getByClient($session->get('client/id'));
+        $allFields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Type Field Configuration';

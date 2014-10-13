@@ -6,13 +6,13 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $stepId = $_GET['id'];
-    $step = Workflow::getStepById($stepId);
+    $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
     $workflowId = $step['workflow_id'];
 
-    $workflow = Workflow::getMetaDataById($workflowId);
+    $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
     $menuSelectedCategory = 'issue';
-    $stepProperties = Workflow::getStepProperties($stepId);
+    $stepProperties = $this->getRepository('yongo.workflow.workflow')->getStepProperties($stepId);
 
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Step Properties';
 

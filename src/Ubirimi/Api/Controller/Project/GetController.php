@@ -18,7 +18,7 @@ class GetController extends UbirimiController
 
         $code = $request->get('code');
 
-        $project = Project::getByCode($code, null, $request->get('api_client_id'));
+        $project = $this->getRepository('yongo.project.project')->getByCode($code, null, $request->get('api_client_id'));
 
         if (false === $project) {
             throw new NotFoundHttpException(sprintf('Project [%s] not found', $code));

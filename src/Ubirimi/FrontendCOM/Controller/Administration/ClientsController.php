@@ -12,7 +12,7 @@ class ClientsController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $clients = Client::getAll(array('sort_by' => 'client.date_created', 'sort_order' => 'desc'));
+        $clients = $this->getRepository('ubirimi.general.client')->getAll(array('sort_by' => 'client.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'clients';
 
