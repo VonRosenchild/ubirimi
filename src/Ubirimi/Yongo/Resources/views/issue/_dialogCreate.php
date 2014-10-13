@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Repository\Client;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\Client;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
     use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
@@ -9,10 +10,10 @@
     use Ubirimi\Repository\User\User;
     use Ubirimi\Yongo\Helper\IssueHelper;
 
-    $screenData = $this->getRepository('yongo.project.project')->getScreenData($projectData, $issueTypeId, $sysOperationId);
+    $screenData = UbirimiContainer::get()['repository']->get('yongo.project.project')->getScreenData($projectData, $issueTypeId, $sysOperationId);
 
     $projectId = $projectData['id'];
-    $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
+    $projectComponents = UbirimiContainer::get()['repository']->get('yongo.project.project')->getComponents($projectId);
 
     $issueSecuritySchemeId = $projectData['issue_security_scheme_id'];
     $issueSecuritySchemeLevels = null;
@@ -21,20 +22,20 @@
         $issueSecuritySchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
     }
 
-    $projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
+    $projectVersions = UbirimiContainer::get()['repository']->get('yongo.project.project')->getVersions($projectId);
     $issuePriorities = Settings::getAllIssueSettings('priority', $clientId);
     $issueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
-    $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
-    $reporterUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
-    $allUsers = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
+    $assignableUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
+    $reporterUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+    $allUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($session->get('client/id'));
 
-    $userHasModifyReporterPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
-    $userHasAssignIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
-    $userHasSetSecurityLevelPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
+    $userHasModifyReporterPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
+    $userHasAssignIssuePermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
+    $userHasSetSecurityLevelPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
 
     $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
     $timeTrackingFieldId = null;
-    $fieldData = $this->getRepository('yongo.project.project')->getFieldInformation($projectData['issue_type_field_configuration_id'], $issueTypeId, 'array');
+    $fieldData = UbirimiContainer::get()['repository']->get('yongo.project.project')->getFieldInformation($projectData['issue_type_field_configuration_id'], $issueTypeId, 'array');
 
     $fieldCodeNULL = null;
     $fieldsPlacedOnScreen = array();
@@ -207,7 +208,7 @@
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputText mousetrap" name="' . $field['field_code'] . '" type="text" value="" />';
                                     break;
                                 case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
-                                    $possibleValues = $this->getRepository('yongo.field.field')->getDataByFieldId($field['field_id']);
+                                    $possibleValues = UbirimiContainer::get()['repository']->getRepository('yongo.field.field')->getDataByFieldId($field['field_id']);
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                                     echo '<option value="">None</option>';
                                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {

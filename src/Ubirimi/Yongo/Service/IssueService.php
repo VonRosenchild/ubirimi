@@ -43,7 +43,7 @@ class IssueService extends UbirimiService
         $newIssueNumber = $issueReturnValues[1];
 
         // update last issue number for this project
-        $this->getRepository('yongo.project.project')->updateLastIssueNumber($projectId, $newIssueNumber);
+        UbirimiContainer::get()['repository']->get('yongo.project.project')->updateLastIssueNumber($projectId, $newIssueNumber);
 
         // if a parent is set check if the parent issue id is part of a sprint. if yes also add the child
         if ($issueId) {
@@ -57,7 +57,7 @@ class IssueService extends UbirimiService
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $issueSystemFieldsData)) {
             $comment = Util::cleanRegularInputField($issueSystemFieldsData[Field::FIELD_COMMENT_CODE]);
             if (!empty($comment)) {
-                UbirimiContainer::getRepository('yongo.issue.comment')->add($newIssueId, $loggedInUserId, $comment, $currentDate);
+                UbirimiContainer::get()['repository']->get('yongo.issue.comment')->add($newIssueId, $loggedInUserId, $comment, $currentDate);
             }
         }
 
@@ -98,7 +98,7 @@ class IssueService extends UbirimiService
 
         Util::manageModalAttachments($newIssueId, $loggedInUserId, $attachIdsToBeKept);
 
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($newIssueId);
+        $issue = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getById($newIssueId);
 
         // add the current logged in user to the list of watchers
         Watcher::addWatcher($newIssueId, $loggedInUserId, $currentDate);

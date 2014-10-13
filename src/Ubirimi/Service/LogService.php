@@ -2,13 +2,13 @@
 
 namespace Ubirimi\Service;
 
-use Ubirimi\Repository\Log as LogRepository;
+use Ubirimi\Repository\General\Log;
 
 class LogService extends UbirimiService
 {
     public function log($productId, $message)
     {
-        LogRepository::add(
+        Log::add(
             $this->session->get('client/id'),
             $productId,
             $this->session->get('user/id'),

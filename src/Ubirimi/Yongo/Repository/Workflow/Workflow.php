@@ -249,7 +249,7 @@ class Workflow
     }
 
     public function getDataForCreation($workflowId) {
-        $initialStep = $this->getRepository('yongo.workflow.workflow')->getInitialStep($workflowId);
+        $initialStep = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getInitialStep($workflowId);
 
         $query = "select workflow_data.id, workflow_step.linked_issue_status_id " .
             "from workflow_data " .

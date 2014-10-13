@@ -16,7 +16,7 @@ class EditDialogController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueId = $request->get('id');
-        $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $session->get('user/id'), null, $session->get('user/id'));
+        $issueData = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $session->get('user/id'), null, $session->get('user/id'));
         $issueTypeId = $issueData['issue_type_id'];
 
         return $this->render(__DIR__ . '/../../Resources/views/issue/EditDialog.php', get_defined_vars());

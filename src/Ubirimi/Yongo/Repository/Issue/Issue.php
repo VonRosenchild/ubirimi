@@ -4,14 +4,12 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Agile\Repository\Board;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\HelpDesk\Sla;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Permission\Scheme;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class Issue
 {
@@ -890,10 +888,10 @@ class Issue
     }
 
     public function add($project, $currentDate, $issueSystemFields, $loggedInUserId, $parentIssueId = null, $systemTimeTrackingDefaultUnit = null) {
-        $issueNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($project['id']);
-        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
+        $issueNumber = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getAvailableIssueNumber($project['id']);
+        $workflowUsed = UbirimiContainer::get()['repository']->get('yongo.project.project')->getWorkflowUsedForType($project['id'], $issueSystemFields['type']);
 
-        $statusData = $this->getRepository('yongo.workflow.workflow')->getDataForCreation($workflowUsed['id']);
+        $statusData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getDataForCreation($workflowUsed['id']);
         $StatusId = $statusData['linked_issue_status_id'];
 
         $query = "INSERT INTO yongo_issue(project_id, resolution_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .

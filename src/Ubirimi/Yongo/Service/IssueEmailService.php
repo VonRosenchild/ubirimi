@@ -27,7 +27,7 @@ class IssueEmailService extends UbirimiService
 
     public function emailIssueNew($issue)
     {
-        $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
+        $project = UbirimiContainer::get()['repository']->get('yongo.project.project')->getById($issue['issue_project_id']);
 
         if ($this->workflowService->hasEvent($this->session->get('client/id'), $issue['issue_project_id'], $issue['type'])) {
             $smtpSettings = $this->session->get('client/settings/smtp');
