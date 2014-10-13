@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -24,11 +25,11 @@ class IndexController extends UbirimiController
         $menuSelectedCategory = 'administration';
 
         if ($hasYongoGlobalAdministrationPermission && $hasYongoGlobalSystemAdministrationPermission) {
-            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array');
-            $last5Projects = $this->getRepository('yongo.project.project')->getLast5ByClientId($session->get('client/id'));
-            $countProjects = $this->getRepository('yongo.project.project')->getCount($session->get('client/id'));
+            $projects = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjects($session->get('client/id'), 'array');
+            $last5Projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getLast5ByClientId($session->get('client/id'));
+            $countProjects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getCount($session->get('client/id'));
         } else if ($hasYongoAdministerProjectsPermission) {
-            $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+            $projects = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_ADMINISTER_PROJECTS,

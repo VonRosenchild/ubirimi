@@ -71,17 +71,17 @@ class WarmUpService extends UbirimiService
 
         $session->set('selected_product_id', $session->get('client/products/sys_product_id'));
 
-        $hasYongoGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
-        $hasYongoGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
-        $hasYongoAdministerProjectsPermission = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_ADMINISTER_PROJECTS);
+        $hasYongoGlobalAdministrationPermission = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
+        $hasYongoGlobalSystemAdministrationPermission = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasYongoAdministerProjectsPermission = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_ADMINISTER_PROJECTS);
 
         $session->set('user/yongo/is_global_administrator', $hasYongoGlobalAdministrationPermission);
         $session->set('user/yongo/is_global_system_administrator', $hasYongoGlobalSystemAdministrationPermission);
         $session->set('user/yongo/is_global_project_administrator', $hasYongoAdministerProjectsPermission);
 
-        $hasDocumentatorGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR);
-        $hasDocumentatorGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
-        $hasDocumentatorGlobalCreateSpace = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE);
+        $hasDocumentatorGlobalAdministrationPermission = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR);
+        $hasDocumentatorGlobalSystemAdministrationPermission = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasDocumentatorGlobalCreateSpace = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE);
 
         $session->set('user/documentator/is_global_administrator', $hasDocumentatorGlobalAdministrationPermission);
         $session->set('user/documentator/is_global_system_administrator', $hasDocumentatorGlobalSystemAdministrationPermission);
@@ -99,7 +99,7 @@ class WarmUpService extends UbirimiService
 
         $this->session->set('client/products', array(array('sys_product_id' => SystemProduct::SYS_PRODUCT_HELP_DESK)));
 
-        $projects = $this->getRepository('ubirimi.general.client')->getProjects($userData['client_id'], 'array', null, true);
+        $projects = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjects($userData['client_id'], 'array', null, true);
         if ($projects) {
             $this->session->set('selected_project_id', $projects[0]['id']);
         } else {
@@ -133,9 +133,11 @@ class WarmUpService extends UbirimiService
             $session->set("client/settings/{$key}", $value);
         });
 
-        array_walk($clientSmtpSettings, function($value, $key) use ($session) {
-            $session->set("client/settings/smtp/{$key}", $value);
-        });
+        if ($clientSmtpSettings) {
+            array_walk($clientSmtpSettings, function ($value, $key) use ($session) {
+                $session->set("client/settings/smtp/{$key}", $value);
+            });
+        }
 
         date_default_timezone_set($session->get('client/settings/timezone'));
     }

@@ -2,9 +2,9 @@
 
 namespace Ubirimi\LoginTimeService;
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Client;
 use Ubirimi\Util;
-use Ubirimi\Repository\User\User;
 
 class LoginTimeService
 {
@@ -12,13 +12,13 @@ class LoginTimeService
     {
         $datetime = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.client')->updateLoginTime($clientId, $datetime);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->updateLoginTime($clientId, $datetime);
     }
 
     public function userSaveLoginTime($userId)
     {
         $datetime = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.user.user')->updateLoginTime($userId, $datetime);
+        UbirimiContainer::get()['repository']->get('ubirimi.user.user')->updateLoginTime($userId, $datetime);
     }
 }
