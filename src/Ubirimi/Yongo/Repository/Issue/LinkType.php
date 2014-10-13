@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class LinkType
 {
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = 'select * from issue_link_type where client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -20,7 +20,7 @@ class LinkType
             return false;
     }
 
-    public static function getById($linkTypeId) {
+    public function getById($linkTypeId) {
         $query = 'select * from issue_link_type where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -34,7 +34,7 @@ class LinkType
             return false;
     }
 
-    public static function add($clientId, $name, $outwardDescription, $inwardDescription, $date) {
+    public function add($clientId, $name, $outwardDescription, $inwardDescription, $date) {
         $query = "INSERT INTO issue_link_type(client_id, name, outward_description, inward_description, date_created) " .
                  "VALUES (?, ?, ?, ?, ?)";
 
@@ -43,7 +43,7 @@ class LinkType
         $stmt->execute();
     }
 
-    public static function getByNameAndClientId($clientId, $name, $linkTypeId = null) {
+    public function getByNameAndClientId($clientId, $name, $linkTypeId = null) {
         $query = 'select * from issue_link_type where LOWER(name) = ? and client_id = ?';
         if ($linkTypeId)
             $query .= ' and id != ' . $linkTypeId;
@@ -59,7 +59,7 @@ class LinkType
             return false;
     }
 
-    public static function update($linkTypeId, $name, $outwardDescription, $inwardDescription, $date) {
+    public function update($linkTypeId, $name, $outwardDescription, $inwardDescription, $date) {
         $query = "update issue_link_type set name = ?, outward_description = ?, inward_description = ?, date_updated = ? " .
                  "where id = ? " .
                  "limit 1";
@@ -69,7 +69,7 @@ class LinkType
         $stmt->execute();
     }
 
-    public static function deleteById($sourceLinkTypeId) {
+    public function deleteById($sourceLinkTypeId) {
         $query = "delete from issue_link_type where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -77,7 +77,7 @@ class LinkType
         $stmt->execute();
     }
 
-    public static function addLink($issueId, $linkTypeId, $type, $linkedIssues, $date) {
+    public function addLink($issueId, $linkTypeId, $type, $linkedIssues, $date) {
         for ($i = 0; $i < count($linkedIssues); $i++) {
             $query = "INSERT INTO issue_link(parent_issue_id, issue_link_type_id, link_type, child_issue_id, date_created) " .
                 "VALUES (?, ?, ?, ?, ?)";
@@ -89,7 +89,7 @@ class LinkType
         }
     }
 
-    public static function getLinksByParentId($issueId) {
+    public function getLinksByParentId($issueId) {
         $query = 'select yongo_issue.id, yongo_issue.summary, yongo_issue.nr, issue_link_type.outward_description as outward_description, issue_link_type.inward_description as inward_description, ' .
             'issue_type.id as issue_type_id, issue_type.icon_name as issue_type_icon_name, issue_type.description as issue_type_description, issue_type.name as type, ' .
             'issue_priority.id as priority_id, issue_priority.color as priority_color, issue_priority.icon_name as issue_priority_icon_name, ' .
@@ -131,7 +131,7 @@ class LinkType
             return false;
     }
 
-    public static function getByLinkTypeId($linkTypeId) {
+    public function getByLinkTypeId($linkTypeId) {
         $query = 'select id ' .
             'from issue_link ' .
             'where issue_link_type_id = ?';
@@ -147,7 +147,7 @@ class LinkType
             return false;
     }
 
-    public static function updateLinkTypeId($sourceLinkTypeId, $targetLinkTypeId) {
+    public function updateLinkTypeId($sourceLinkTypeId, $targetLinkTypeId) {
         $query = 'update issue_link set issue_link_type_id = ? where issue_link_type_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -155,7 +155,7 @@ class LinkType
         $stmt->execute();
     }
 
-    public static function deleteLinksByLinkTypeId($sourceLinkTypeId) {
+    public function deleteLinksByLinkTypeId($sourceLinkTypeId) {
         $query = 'delete from issue_link where issue_link_type_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -163,7 +163,7 @@ class LinkType
         $stmt->execute();
     }
 
-    public static function deleteLinkById($Id) {
+    public function deleteLinkById($Id) {
         $query = 'delete from issue_link where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

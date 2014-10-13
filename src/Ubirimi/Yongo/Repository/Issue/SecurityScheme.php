@@ -36,7 +36,7 @@ class SecurityScheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = "select * from issue_security_scheme where client_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -49,7 +49,7 @@ class SecurityScheme
             return null;
     }
 
-    public static function getMetaDataById($Id) {
+    public function getMetaDataById($Id) {
         $query = "select * from issue_security_scheme where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -62,7 +62,7 @@ class SecurityScheme
             return null;
     }
 
-    public static function updateMetaDataById($Id, $name, $description) {
+    public function updateMetaDataById($Id, $name, $description) {
         $query = "update issue_security_scheme set name = ?, description = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -70,7 +70,7 @@ class SecurityScheme
         $stmt->execute();
     }
 
-    public static function deleteById($Id) {
+    public function deleteById($Id) {
         $levels = SecurityScheme::getLevelsByIssueSecuritySchemeId($Id);
         while ($levels && $level = $levels->fetch_array(MYSQLI_ASSOC)) {
             $query = "delete from issue_security_scheme_level_data where issue_security_scheme_level_id = ?";
@@ -93,7 +93,7 @@ class SecurityScheme
         $stmt->execute();
     }
 
-    public static function getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId) {
+    public function getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId) {
         $query = "select * from issue_security_scheme_level where issue_security_scheme_id = ? order by id";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -106,7 +106,7 @@ class SecurityScheme
             return null;
     }
 
-    public static function addLevel($issueSecuritySchemeId, $name, $description, $currentDate) {
+    public function addLevel($issueSecuritySchemeId, $name, $description, $currentDate) {
         $query = "INSERT INTO issue_security_scheme_level(issue_security_scheme_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -117,7 +117,7 @@ class SecurityScheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getLevelById($levelId) {
+    public function getLevelById($levelId) {
         $query = "select * from issue_security_scheme_level where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -130,7 +130,7 @@ class SecurityScheme
             return null;
     }
 
-    public static function getDataByLevelId($levelId) {
+    public function getDataByLevelId($levelId) {
         $query = "select issue_security_scheme_level_data.id, issue_security_scheme_level_data.issue_security_scheme_level_id, " .
                  "issue_security_scheme_level_data.permission_role_id, issue_security_scheme_level_data.group_id, issue_security_scheme_level_data.user_id, " .
                  "issue_security_scheme_level_data.current_assignee, issue_security_scheme_level_data.reporter, issue_security_scheme_level_data.project_lead, issue_security_scheme_level_data.date_created, " .
@@ -151,7 +151,7 @@ class SecurityScheme
             return null;
     }
 
-    public static function addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate) {
+    public function addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate) {
         switch ($levelDataType) {
 
             case SecurityScheme::SECURITY_SCHEME_DATA_TYPE_USER:
@@ -205,7 +205,7 @@ class SecurityScheme
         }
     }
 
-    public static function updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date) {
+    public function updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date) {
         $query = "update issue_security_scheme_level set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -213,7 +213,7 @@ class SecurityScheme
         $stmt->execute();
     }
 
-    public static function deleteLevelById($issueSecuritySchemeLevelId) {
+    public function deleteLevelById($issueSecuritySchemeLevelId) {
         $query = "delete from issue_security_scheme_level_data where issue_security_scheme_level_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -227,7 +227,7 @@ class SecurityScheme
         $stmt->execute();
     }
 
-    public static function deleteLevelDataById($issueSecuritySchemeLevelDataId) {
+    public function deleteLevelDataById($issueSecuritySchemeLevelDataId) {
         $query = "delete from issue_security_scheme_level_data where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -235,7 +235,7 @@ class SecurityScheme
         $stmt->execute();
     }
 
-    public static function makeAllLevelsNotDefault($securitySchemeId) {
+    public function makeAllLevelsNotDefault($securitySchemeId) {
         $query = "update issue_security_scheme_level set default_flag = 0 where issue_security_scheme_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -243,7 +243,7 @@ class SecurityScheme
         $stmt->execute();
     }
 
-    public static function setLevelDefault($securityLevelId) {
+    public function setLevelDefault($securityLevelId) {
         $query = "update issue_security_scheme_level set default_flag = 1 where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -251,7 +251,7 @@ class SecurityScheme
         $stmt->execute();
     }
 
-    public static function getDefaultLevel($securitySchemeId) {
+    public function getDefaultLevel($securitySchemeId) {
         $query = "select * from issue_security_scheme_level where issue_security_scheme_id = ? and default_flag = 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -265,7 +265,7 @@ class SecurityScheme
             return null;
     }
 
-    public static function getLevelDataById($issueSecuritySchemeLevelDataId) {
+    public function getLevelDataById($issueSecuritySchemeLevelDataId) {
         $query = "select * from issue_security_scheme_level_data where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

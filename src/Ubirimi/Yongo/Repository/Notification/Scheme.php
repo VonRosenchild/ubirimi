@@ -19,7 +19,7 @@ class Scheme
         return $this;
     }
 
-    public static function getAll() {
+    public function getAll() {
         $query = "select * " .
                  "from notification_scheme ";
 
@@ -43,7 +43,7 @@ class Scheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = "select * " .
             "from notification_scheme " .
             "where client_id = ? ";
@@ -58,7 +58,7 @@ class Scheme
             return null;
     }
 
-    public static function getMetaDataById($Id) {
+    public function getMetaDataById($Id) {
         $query = "select * " .
             "from notification_scheme " .
             "where id = ? " .
@@ -74,7 +74,7 @@ class Scheme
             return null;
     }
 
-    public static function getMetaDataByNameAndClientId($clientId, $name) {
+    public function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from notification_scheme where client_id = ? and LOWER(name) = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -87,7 +87,7 @@ class Scheme
             return null;
     }
 
-    public static function updateMetaDataById($Id, $name, $description, $date) {
+    public function updateMetaDataById($Id, $name, $description, $date) {
         $query = "update notification_scheme set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -95,7 +95,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function addDataRaw($notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $currentDate) {
+    public function addDataRaw($notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $currentDate) {
         $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, permission_role_id, group_id, user_id, current_assignee, reporter, " .
                     "`current_user`, project_lead, component_lead, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -107,7 +107,7 @@ class Scheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function addData($notificationSchemeId, $eventId, $notificationType, $user, $group, $role, $userPickerMultipleSelection, $currentDate) {
+    public function addData($notificationSchemeId, $eventId, $notificationType, $user, $group, $role, $userPickerMultipleSelection, $currentDate) {
         switch ($notificationType) {
             case Notification::NOTIFICATION_TYPE_USER:
                 $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, user_id, date_created) VALUES (?, ?, ?, ?)";
@@ -176,7 +176,7 @@ class Scheme
         }
     }
 
-    public static function getDataByNotificationSchemeId($notificationSchemeId) {
+    public function getDataByNotificationSchemeId($notificationSchemeId) {
         $query = "select notification_scheme_data.* " .
                      "from notification_scheme_data " .
                      "where notification_scheme_data.notification_scheme_id = ?";
@@ -192,7 +192,7 @@ class Scheme
             return null;
     }
 
-    public static function getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventId) {
+    public function getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventId) {
         $query = "select notification_scheme_data.id, user.first_name, user.last_name, user.id as user_id, group.id as group_id, group.name as group_name, notification_scheme_data.current_assignee, notification_scheme_data.reporter,  " .
             "notification_scheme_data.all_watchers, field.name as custom_field_name, field.id as custom_field_id, " .
             "notification_scheme_data.current_user, notification_scheme_data.permission_role_id, notification_scheme_data.project_lead, notification_scheme_data.component_lead, " .
@@ -217,7 +217,7 @@ class Scheme
             return null;
     }
 
-    public static function deleteDataById($notificationSchemeDataId) {
+    public function deleteDataById($notificationSchemeDataId) {
         $query = "delete from notification_scheme_data where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -226,7 +226,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteDataByNotificationSchemeId($notificationSchemeId) {
+    public function deleteDataByNotificationSchemeId($notificationSchemeId) {
         $query = "delete from notification_scheme_data where notification_scheme_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -235,7 +235,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function addDefaultNotifications($clientId, $notificationSchemeId) {
+    public function addDefaultNotifications($clientId, $notificationSchemeId) {
         $eventCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
 
         $eventUpdatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_UPDATED_CODE, 'id');
@@ -308,7 +308,7 @@ class Scheme
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteById($notificationSchemeId) {
+    public function deleteById($notificationSchemeId) {
         $query = "delete from notification_scheme where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -317,7 +317,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteByClientId($clientId) {
+    public function deleteByClientId($clientId) {
         $notificationSchemes = Scheme::getByClientId($clientId);
         while ($notificationSchemes && $notificationScheme = $notificationSchemes->fetch_array(MYSQLI_ASSOC)) {
             Scheme::deleteDataByNotificationSchemeId($notificationScheme['id']);

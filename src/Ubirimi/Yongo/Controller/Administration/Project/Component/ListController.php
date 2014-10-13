@@ -17,8 +17,8 @@ class ListController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $components = Project::getComponents($projectId, null, true);
-        $project = Project::getById($projectId);
+        $components = $this->getRepository('yongo.project.project')->getComponents($projectId, null, true);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

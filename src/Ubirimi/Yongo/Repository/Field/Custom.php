@@ -8,7 +8,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
 
 class Custom {
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = "SELECT * FROM field where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -22,7 +22,7 @@ class Custom {
             return null;
     }
 
-    public static function getAllByClient($clientId) {
+    public function getAllByClient($clientId) {
         $query = "SELECT field.id, field.name, field.description, sys_field_type.name as type_name, sys_field_type.description as type_description, " .
                  "field.all_issue_type_flag, field.all_project_flag " .
             "FROM field " .
@@ -39,7 +39,7 @@ class Custom {
             return null;
     }
 
-    public static function getTypes() {
+    public function getTypes() {
         $query = "SELECT * FROM sys_field_type";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -52,7 +52,7 @@ class Custom {
             return null;
     }
 
-    public static function create($clientId, $fieldType, $name, $description, $issueType, $project, $date) {
+    public function create($clientId, $fieldType, $name, $description, $issueType, $project, $date) {
         $query = "INSERT INTO field(client_id, sys_field_type_id, name, description, system_flag, all_issue_type_flag, all_project_flag, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $systemFlag = 0;
@@ -107,7 +107,7 @@ class Custom {
         return $fieldId;
     }
 
-    public static function updateMetaDataById($Id, $name, $description, $date) {
+    public function updateMetaDataById($Id, $name, $description, $date) {
         $query = "update field set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -115,14 +115,14 @@ class Custom {
         $stmt->execute();
     }
 
-    public static function deleteDataByProjectId($projectId) {
+    public function deleteDataByProjectId($projectId) {
         $query = "delete from field_project_data where project_id = ?";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $projectId);
         $stmt->execute();
     }
 
-    public static function deleteById($customFieldId) {
+    public function deleteById($customFieldId) {
         $query = "delete from field where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -155,7 +155,7 @@ class Custom {
         $stmt->execute();
     }
 
-    public static function getByNameAndType($clientId, $name, $fieldType) {
+    public function getByNameAndType($clientId, $name, $fieldType) {
         $query = "SELECT * FROM field where client_id = ? and sys_field_type_id = ? and name = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

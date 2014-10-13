@@ -38,7 +38,7 @@ class AssignController extends UbirimiController
         $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];
         $oldUserAssignedName = $issueData['ua_first_name'] . ' ' . $issueData['ua_last_name'];
 
-        $project = Project::getById($issueData['issue_project_id']);
+        $project = $this->getRepository('yongo.project.project')->getById($issueData['issue_project_id']);
 
         $smtpSettings = UbirimiContainer::get()['session']->get('client/settings/smtp');
 

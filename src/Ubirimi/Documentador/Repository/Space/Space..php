@@ -25,7 +25,7 @@ class Space {
         return $this;
     }
 
-    public static function setHomePageId($spaceId, $pageId) {
+    public function setHomePageId($spaceId, $pageId) {
         $query = "update documentator_space set home_entity_id = ? where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -34,7 +34,7 @@ class Space {
         }
     }
 
-    public static function getFirstSpace($clientId) {
+    public function getFirstSpace($clientId) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, " .
                     "documentator_space.description, documentator_space.date_created, documentator_space.user_created_id " .
                     "FROM documentator_space " .
@@ -64,7 +64,7 @@ class Space {
         }
     }
 
-    public static function getAllByClientId($clientId, $resultType = null, $resultColumn = null, $filters = null) {
+    public function getAllByClientId($clientId, $resultType = null, $resultColumn = null, $filters = null) {
         $query = "SELECT * " .
             "FROM documentator_space " .
             "where documentator_space.client_id = ?";
@@ -98,7 +98,7 @@ class Space {
         }
     }
 
-    public static function getAll($filters = null) {
+    public function getAll($filters = null) {
         $query = "SELECT * " .
             "FROM documentator_space ";
 
@@ -119,7 +119,7 @@ class Space {
         }
     }
 
-    public static function getAllForAllClients() {
+    public function getAllForAllClients() {
         $query = "SELECT * " .
             "FROM documentator_space";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -132,7 +132,7 @@ class Space {
         }
     }
 
-    public static function getByClientId($clientId, $favouriteFlag = null) {
+    public function getByClientId($clientId, $favouriteFlag = null) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                  "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, " .
                  "user.id as user_id, user.first_name, user.last_name " .
@@ -157,7 +157,7 @@ class Space {
         }
     }
 
-    public static function getByClientIdAndAnonymous($clientId) {
+    public function getByClientIdAndAnonymous($clientId) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                  "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, " .
                  "user.id as user_id, user.first_name, user.last_name " .
@@ -178,7 +178,7 @@ class Space {
         }
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                  "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, documentator_entity.name as home_page_name, " .
                  "user.id as user_id, user.first_name, user.last_name, documentator_space.client_id, " .
@@ -200,7 +200,7 @@ class Space {
         }
     }
 
-    public static function updateById($spaceId, $name, $code, $homepageId, $description, $date) {
+    public function updateById($spaceId, $name, $code, $homepageId, $description, $date) {
         $query = "update documentator_space set name = ?, code = ?, home_entity_id = ?, description = ?, date_updated = ? where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -209,7 +209,7 @@ class Space {
         }
     }
 
-    public static function deletePermissionsBySpaceId($spaceId) {
+    public function deletePermissionsBySpaceId($spaceId) {
         $query = "delete from documentator_space_permission where space_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -218,7 +218,7 @@ class Space {
         }
     }
 
-    public static function deleteById($spaceId) {
+    public function deleteById($spaceId) {
         $spaceEntities = Entity::getAllBySpaceId($spaceId);
         if ($spaceEntities) {
             while ($spaceEntity = $spaceEntities->fetch_array(MYSQLI_ASSOC)) {
@@ -249,7 +249,7 @@ class Space {
         Util::deleteDir($spaceBasePath . $spaceId);
     }
 
-    public static function getByCodeAndClientId($clientId, $code) {
+    public function getByCodeAndClientId($clientId, $code) {
         $query = "SELECT id " .
             "FROM documentator_space " .
             "where documentator_space.client_id = ? and code = ?";
@@ -265,7 +265,7 @@ class Space {
         }
     }
 
-    public static function getByNameAndClientId($clientId, $name) {
+    public function getByNameAndClientId($clientId, $name) {
         $query = "SELECT id " .
             "FROM documentator_space " .
             "where documentator_space.client_id = ? and name = ?";
@@ -281,7 +281,7 @@ class Space {
         }
     }
 
-    public static function getChildrenPagesBySpaceIdAndPageId($spaceId, $pageId) {
+    public function getChildrenPagesBySpaceIdAndPageId($spaceId, $pageId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, " .
             "documentator_entity.date_created, documentator_entity.content, page_child.id as child_id, documentator_entity.parent_entity_id, " .
             "user.id as user_id, user.first_name, user.last_name " .
@@ -305,7 +305,7 @@ class Space {
         }
     }
 
-    public static function getAllBySpaceIdNoExistingParent($spaceId) {
+    public function getAllBySpaceIdNoExistingParent($spaceId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, " .
             "documentator_entity.date_created, documentator_entity.content, documentator_entity.parent_entity_id, " .
             "user.id as user_id, user.first_name, user.last_name " .
@@ -328,7 +328,7 @@ class Space {
         }
     }
 
-    public static function getAnonymousAccessSettings($spaceId) {
+    public function getAnonymousAccessSettings($spaceId) {
         $query = "SELECT * " .
             "FROM documentator_space_permission_anonymous " .
             "where documentator_space_id = ?";
@@ -344,7 +344,7 @@ class Space {
         }
     }
 
-    public static function updatePermissions($spaceId, $groupId = null, $userId = null, $parameters) {
+    public function updatePermissions($spaceId, $groupId = null, $userId = null, $parameters) {
 
         $query = 'UPDATE documentator_space_permission SET ';
 
@@ -385,7 +385,7 @@ class Space {
             $result = $stmt->get_result();
         }
     }
-    public static function updatePermissionsAnonymous($spaceId, $parameters) {
+    public function updatePermissionsAnonymous($spaceId, $parameters) {
 
         // delete all the anonymous permissions
         $query = "delete from documentator_space_permission_anonymous where documentator_space_id = ?";
@@ -427,7 +427,7 @@ class Space {
         }
     }
 
-    public static function setDefaultPermissions($clientId, $spaceId) {
+    public function setDefaultPermissions($clientId, $spaceId) {
 
         $groupAdministrators = Group::getByName($clientId, 'Documentador Administrators');
         $groupUsers = Group::getByName($clientId, 'Documentador Users');
@@ -453,7 +453,7 @@ class Space {
         }
     }
 
-    public static function hasAnonymousAccess($spaceId) {
+    public function hasAnonymousAccess($spaceId) {
         $query = "SELECT documentator_space.id " .
             "FROM documentator_space " .
             "left join documentator_space_permission_anonymous on documentator_space_permission_anonymous.documentator_space_id = documentator_space.id " .
@@ -471,7 +471,7 @@ class Space {
         }
     }
 
-    public static function getDeletedPages($spaceId) {
+    public function getDeletedPages($spaceId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
             "user.id as user_id, user.first_name, user.last_name " .
             "FROM documentator_entity " .
@@ -490,7 +490,7 @@ class Space {
         }
     }
 
-    public static function deleteAllFromTrash($spaceId) {
+    public function deleteAllFromTrash($spaceId) {
         $entities = Space::getDeletedPages($spaceId);
 
         if ($entities) {
@@ -506,7 +506,7 @@ class Space {
         }
     }
 
-    public static function checkSpaceIsFavouriteForUserId($spaceId, $userId) {
+    public function checkSpaceIsFavouriteForUserId($spaceId, $userId) {
         $query = "SELECT documentator_user_space_favourite.id " .
             "FROM documentator_user_space_favourite " .
             "where documentator_user_space_favourite.user_id = ? and " .
@@ -524,7 +524,7 @@ class Space {
         }
     }
 
-    public static function addToFavourites($spaceId, $userId, $currentDate) {
+    public function addToFavourites($spaceId, $userId, $currentDate) {
         $query = "INSERT INTO documentator_user_space_favourite(space_id, user_id, date_created) VALUES (?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -535,7 +535,7 @@ class Space {
         }
     }
 
-    public static function removeFavourite($spaceId, $userId) {
+    public function removeFavourite($spaceId, $userId) {
         $query = "delete from documentator_user_space_favourite where space_id = ? and user_id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -544,7 +544,7 @@ class Space {
         }
     }
 
-    public static function searchForPages($clientId, $searchQuery) {
+    public function searchForPages($clientId, $searchQuery) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
             "user.id as user_id, user.first_name, user.last_name " .
             "FROM documentator_entity " .
@@ -563,7 +563,7 @@ class Space {
         }
     }
 
-    public static function getGroupPermission($spaceId, $groupId) {
+    public function getGroupPermission($spaceId, $groupId) {
         $query = "SELECT * from documentator_space_permission where group_id = ? and space_id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -577,7 +577,7 @@ class Space {
         }
     }
 
-    public static function getUserPermission($spaceId, $userId) {
+    public function getUserPermission($spaceId, $userId) {
         $query = "SELECT * from documentator_space_permission where user_id = ? and space_id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -591,7 +591,7 @@ class Space {
         }
     }
 
-    public static function getUsersWithPermissions($spaceId) {
+    public function getUsersWithPermissions($spaceId) {
         $query = "SELECT user.id as user_id, user.first_name, user.last_name, " .
                  "documentator_space_permission.id, documentator_space_permission.all_view_flag, documentator_space_permission.space_admin_flag " .
                  "from documentator_space_permission " .
@@ -610,7 +610,7 @@ class Space {
         }
     }
 
-    public static function getGroupsWithPermissions($spaceId) {
+    public function getGroupsWithPermissions($spaceId) {
         $query = "SELECT group.id as group_id, group.name, " .
                  "documentator_space_permission.id, documentator_space_permission.all_view_flag, documentator_space_permission.space_admin_flag " .
                  "from documentator_space_permission " .
@@ -629,7 +629,7 @@ class Space {
         }
     }
 
-    public static function removePermissionsForAllGroups($spaceId) {
+    public function removePermissionsForAllGroups($spaceId) {
         $query = "delete from documentator_space_permission where space_id = ? and group_id is not null";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -638,7 +638,7 @@ class Space {
         }
     }
 
-    public static function removePermissionsForAllUsers($spaceId) {
+    public function removePermissionsForAllUsers($spaceId) {
         $query = "delete from documentator_space_permission where space_id = ? and user_id is not null";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -647,7 +647,7 @@ class Space {
         }
     }
 
-    public static function updateGroupPermissions($spaceId, $groupPermissions) {
+    public function updateGroupPermissions($spaceId, $groupPermissions) {
         foreach ($groupPermissions as $groupId => $data) {
 
             $query = "INSERT INTO documentator_space_permission(space_id, group_id, " . implode(', ', array_keys($data)) . ') values (' . $spaceId . ', ' . $groupId . ', ';
@@ -663,7 +663,7 @@ class Space {
         }
     }
 
-    public static function updateUserPermissions($spaceId, $userPermissions) {
+    public function updateUserPermissions($spaceId, $userPermissions) {
         foreach ($userPermissions as $userId => $data) {
 
             $query = "INSERT INTO documentator_space_permission(space_id, user_id, " . implode(', ', array_keys($data)) . ') values (' . $spaceId . ', ' . $userId . ', ';
@@ -679,7 +679,7 @@ class Space {
         }
     }
 
-    public static function addUserAllPermissions($spaceId, $userId) {
+    public function addUserAllPermissions($spaceId, $userId) {
         $query = "INSERT INTO documentator_space_permission(space_id, user_id, all_view_flag, space_admin_flag) VALUES (?, ?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -692,7 +692,7 @@ class Space {
         }
     }
 
-    public static function userHasAdminSpacePermission($spaceId, $userId) {
+    public function userHasAdminSpacePermission($spaceId, $userId) {
         $query = "SELECT * from documentator_space_permission where user_id = ? and space_id = ? and space_admin_flag = 1 limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -707,7 +707,7 @@ class Space {
         }
     }
 
-    public static function getWithAdminPermissionByUserId($clientId, $userId) {
+    public function getWithAdminPermissionByUserId($clientId, $userId) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                         "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, " .
                         "user.id as user_id, user.first_name, user.last_name " .

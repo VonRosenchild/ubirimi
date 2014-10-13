@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Customer
 {
-    public static function getByOrganizationId($organizationId) {
+    public function getByOrganizationId($organizationId) {
         $query = 'SELECT user.id, user.first_name, user.last_name, user.email ' .
                  'from help_customer ' .
                  'left join user on user.id = help_customer.user_id ' .
@@ -23,7 +23,7 @@ class Customer
             return null;
     }
 
-    public static function getByName($clientId, $name, $organizationId = null) {
+    public function getByName($clientId, $name, $organizationId = null) {
         $query = 'select id, name, description ' .
             'from help_organization ' .
             'where client_id = ? ' .
@@ -48,7 +48,7 @@ class Customer
             return null;
     }
 
-    public static function create($organizationId, $userId) {
+    public function create($organizationId, $userId) {
         $query = "INSERT INTO help_customer(help_organization_id, user_id) VALUES (?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

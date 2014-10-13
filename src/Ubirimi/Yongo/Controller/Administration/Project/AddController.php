@@ -70,11 +70,11 @@ class AddController extends UbirimiController
             if (empty($code)) {
                 $emptyCode = true;
             } else {
-                $projectExists = Project::getByCode(mb_strtolower($code), null, $session->get('client/id'));
+                $projectExists = $this->getRepository('yongo.project.project')->getByCode(mb_strtolower($code), null, $session->get('client/id'));
                 if ($projectExists)
                     $duplicateCode = true;
             }
-            $projectExists = Project::getByName(mb_strtolower($name), null, $session->get('client/id'));
+            $projectExists = $this->getRepository('yongo.project.project')->getByName(mb_strtolower($name), null, $session->get('client/id'));
             if ($projectExists)
                 $duplicateName = true;
 

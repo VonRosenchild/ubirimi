@@ -17,7 +17,7 @@ class AssociateStep1Controller extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $projectId = $request->get('id');
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
         $menuSelectedCategory = 'project';
         $issueSecuritySchemes = SecurityScheme::getByClientId($session->get('client/id'));
 

@@ -20,8 +20,8 @@ $stepIdTo = $_GET['step_id_to'];
 
 $projectId = $_GET['project_id'];
 $issueId = $_GET['issue_id'];
-$assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
-$projectData = Project::getById($projectId);
+$assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
+$projectData = $this->getRepository('yongo.project.project')->getById($projectId);
 $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByIdSimple($issueId);
 $workflowData = Workflow::getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
 $screenId = $workflowData['screen_id'];
@@ -30,15 +30,15 @@ $allUsers = User::getByClientId($session->get('client/id'));
 $screenData = Screen::getDataById($screenId);
 $screenMetadata = Screen::getMetaDataById($screenId);
 $resolutions = Settings::getAllIssueSettings('resolution', $clientId);
-$projectComponents = Project::getComponents($projectId);
-$projectVersions = Project::getVersions($projectId);
+$projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
+$projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
 $htmlOutput = '';
 $htmlOutput .= '<table class="modal-table">';
 
-$reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+$reporterUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
 $fieldCodeNULL = null;
 
-$fieldData = Project::getFieldInformation($projectData['issue_type_field_configuration_id'], $issue['type_id'], 'array');
+$fieldData = $this->getRepository('yongo.project.project')->getFieldInformation($projectData['issue_type_field_configuration_id'], $issue['type_id'], 'array');
 
 while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
     $htmlOutput .= '<tr>';

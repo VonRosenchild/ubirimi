@@ -5,7 +5,7 @@
     Util::checkUserIsLoggedInAndRedirect();
 
     $projectId = $_POST['id'];
-    $moveToIssueTypes = Project::getIssueTypes($projectId, 0, 'array');
+    $moveToIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($projectId, 0, 'array');
 
     echo json_encode($moveToIssueTypes);
 

@@ -19,7 +19,7 @@ class WorkflowFunction
     const FUNCTION_CREATE_ISSUE = 4;
     const FUNCTION_FIRE_EVENT = 5;
 
-    public static function triggerPostFunctions($clientId, $issueData, $workflowData, $issueFieldChanges, $loggedInUserId, $currentDate) {
+    public function triggerPostFunctions($clientId, $issueData, $workflowData, $issueFieldChanges, $loggedInUserId, $currentDate) {
 
         $workflowDataId = $workflowData['id'];
         $issueId = $issueData['id'];
@@ -116,7 +116,7 @@ class WorkflowFunction
         }
     }
 
-    public static function getFunctionDescription($postFunction) {
+    public function getFunctionDescription($postFunction) {
         $description = '';
         switch ($postFunction['sys_workflow_post_function_id']) {
 
@@ -168,7 +168,7 @@ class WorkflowFunction
         return $description;
     }
 
-    public static function updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $value) {
+    public function updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $value) {
         $query = "update workflow_post_function_data set " .
                  "definition_data = ? " .
                  "where workflow_data_id = ? " .
@@ -180,7 +180,7 @@ class WorkflowFunction
         $stmt->execute();
     }
 
-    public static function getByWorkflowDataId($workflowDataId) {
+    public function getByWorkflowDataId($workflowDataId) {
         $query = "SELECT sys_workflow_post_function.name, workflow_post_function_data.definition_data, sys_workflow_post_function.id as function_id, " .
                     "workflow_post_function_data.sys_workflow_post_function_id, workflow_post_function_data.id, sys_workflow_post_function.description, " .
                     "sys_workflow_post_function.user_editable_flag, sys_workflow_post_function.user_deletable_flag " .
@@ -199,7 +199,7 @@ class WorkflowFunction
             return null;
     }
 
-    public static function getByWorkflowDataIdAndFunctionId($workflowDataId, $functionId) {
+    public function getByWorkflowDataIdAndFunctionId($workflowDataId, $functionId) {
         $query = "SELECT sys_workflow_post_function.name, workflow_post_function_data.definition_data, sys_workflow_post_function.id as function_id, " .
                     "workflow_post_function_data.sys_workflow_post_function_id, workflow_post_function_data.id, sys_workflow_post_function.description, " .
                     "sys_workflow_post_function.user_editable_flag " .
@@ -219,7 +219,7 @@ class WorkflowFunction
             return null;
     }
 
-    public static function getAll() {
+    public function getAll() {
         $query = "SELECT * from sys_workflow_post_function";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -231,7 +231,7 @@ class WorkflowFunction
             return null;
     }
 
-    public static function getById($functionId) {
+    public function getById($functionId) {
         $query = "SELECT * from sys_workflow_post_function where id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -244,7 +244,7 @@ class WorkflowFunction
             return null;
     }
 
-    public static function addPostFunction($workflowDataId, $functionId, $value) {
+    public function addPostFunction($workflowDataId, $functionId, $value) {
         $query = "INSERT INTO workflow_post_function_data(workflow_data_id, sys_workflow_post_function_id, definition_data) " .
                  "VALUES (?, ?, ?)";
 
@@ -253,7 +253,7 @@ class WorkflowFunction
         $stmt->execute();
     }
 
-    public static function getDataById($workflowPostFunctionDataId) {
+    public function getDataById($workflowPostFunctionDataId) {
         $query = "SELECT sys_workflow_post_function.id as function_id, sys_workflow_post_function.name, workflow_post_function_data.workflow_data_id, workflow_post_function_data.definition_data, " .
                     "workflow.name as workflow_name, workflow.id as workflow_id, workflow_data.transition_name " .
                  "from workflow_post_function_data " .
@@ -273,7 +273,7 @@ class WorkflowFunction
             return null;
     }
 
-    public static function hasEvent($workflowDataId, $definitionData) {
+    public function hasEvent($workflowDataId, $definitionData) {
         $query = "SELECT * from workflow_post_function_data
                     where workflow_data_id = ?
                         and sys_workflow_post_function_id = ?
@@ -291,7 +291,7 @@ class WorkflowFunction
             return false;
     }
 
-    public static function deleteByPostFunctionDataId($postFunctionDataId) {
+    public function deleteByPostFunctionDataId($postFunctionDataId) {
         $query = "delete from workflow_post_function_data " .
                  "where id = ? " .
                  "limit 1";

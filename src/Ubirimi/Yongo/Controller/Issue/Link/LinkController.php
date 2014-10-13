@@ -26,7 +26,7 @@ class LinkController extends UbirimiController
 
         $issueId = $request->request->get('id');
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $project = Project::getById($issue['issue_project_id']);
+        $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
 
         $linkTypeData = explode('_', $request->request->get('link_type'));
         $linkTypeId = $linkTypeData[0];

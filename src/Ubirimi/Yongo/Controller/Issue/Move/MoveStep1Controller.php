@@ -14,7 +14,7 @@
     $issueQueryParameters = array('issue_id' => $issueId);
     $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
     $projectId = $issue['issue_project_id'];
-    $issueProject = Project::getById($projectId);
+    $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
     // before going further, check to is if the issue project belongs to the client
     if ($clientId != $issueProject['client_id']) {
@@ -44,7 +44,7 @@
             $childrenIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issue['id']));
         }
 
-        $newProjectIssueTypes = Project::getIssueTypes($newProjectId, 0, 'array', 'id');
+        $newProjectIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($newProjectId, 0, 'array', 'id');
         $selectIssueTypeForSubstaks = false;
 
         if ($childrenIssues) {
@@ -62,7 +62,7 @@
             header('Location: /yongo/issue/move/subtask-issue-type/' . $issueId);
         } else {
             // check if step 2 is necessary
-            $newWorkflow = Project::getWorkflowUsedForType($newProjectId, $newIssueTypeId);
+            $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($newProjectId, $newIssueTypeId);
             $newStatuses = Workflow::getLinkedStatuses($newWorkflow['id']);
 
             $step2Necessary = true;
@@ -85,7 +85,7 @@
     $projectForMoving = Client::getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_CREATE_ISSUE);
     $firstProject = $projectForMoving->fetch_array(MYSQLI_ASSOC);
 
-    $moveToIssueTypes = Project::getIssueTypes($firstProject['id'], 0);
+    $moveToIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($firstProject['id'], 0);
     $projectForMoving->data_seek(0);
     $menuSelectedCategory = 'issue';
 

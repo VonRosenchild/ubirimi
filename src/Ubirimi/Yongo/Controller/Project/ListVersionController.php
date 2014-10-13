@@ -28,14 +28,14 @@ class ListVersionController extends UbirimiController
         }
 
         $projectId = $request->get('id');
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $session->set('selected_project_id', $projectId);
-        $releases = Project::getVersions($projectId);
+        $releases = $this->getRepository('yongo.project.project')->getVersions($projectId);
         $menuSelectedCategory = 'project';
 
         $hasGlobalAdministrationPermission = User::hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);

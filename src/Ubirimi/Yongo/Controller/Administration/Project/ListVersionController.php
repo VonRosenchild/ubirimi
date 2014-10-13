@@ -17,8 +17,8 @@ class ListVersionController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $releases = Project::getVersions($projectId);
-        $project = Project::getById($projectId);
+        $releases = $this->getRepository('yongo.project.project')->getVersions($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

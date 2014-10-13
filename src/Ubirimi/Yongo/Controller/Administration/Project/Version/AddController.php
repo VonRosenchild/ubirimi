@@ -18,7 +18,7 @@ class AddController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         $emptyName = false;
         $alreadyExists = false;
@@ -30,7 +30,7 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $releasesDuplicate = Project::getVersionByName($projectId, $name);
+            $releasesDuplicate = $this->getRepository('yongo.project.project')->getVersionByName($projectId, $name);
             if ($releasesDuplicate)
                 $alreadyExists = true;
 

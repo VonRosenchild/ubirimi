@@ -17,7 +17,7 @@ class ViewProjectSummaryController extends UbirimiController
 
         $projectId = $request->get('id');
 
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         $sectionPageTitle = $session->get('client/settings/title_name')
             . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME

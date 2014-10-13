@@ -9,7 +9,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
 
 class Workflow
 {
-    public static function updateMetaDataById($Id, $name, $description, $workflowIssueTypeSchemeId, $date) {
+    public function updateMetaDataById($Id, $name, $description, $workflowIssueTypeSchemeId, $date) {
         $q = 'update workflow set name = ?, description = ?, issue_type_scheme_id = ?, date_updated = ? ' .
             'where id = ? ' .
             'limit 1';
@@ -19,7 +19,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function getAllByClientId($clientId) {
+    public function getAllByClientId($clientId) {
         $query = "select workflow.id, workflow.name, workflow.description, workflow_scheme.name as scheme_name, issue_type_scheme.name as issue_type_scheme_name " .
                  "from workflow " .
                  "left join workflow_scheme_data on workflow_scheme_data.workflow_id = workflow.id " .
@@ -37,7 +37,7 @@ class Workflow
             return null;
     }
 
-    public static function updateDataById($workflowDataId, $transitionName, $transitionDescription, $screenId, $workflowStepIdTo) {
+    public function updateDataById($workflowDataId, $transitionName, $transitionDescription, $screenId, $workflowStepIdTo) {
         $q = 'update workflow_data set screen_id = ?, transition_name = ?, ' .
                 'transition_description = ?, workflow_step_id_to = ? ' .
                 'where id = ? ' .
@@ -48,7 +48,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function updateTransitionData($workflowId, $transition_name, $screenId, $idFrom, $idTo) {
+    public function updateTransitionData($workflowId, $transition_name, $screenId, $idFrom, $idTo) {
         $q = 'update workflow_data set screen_id = ?, transition_name = ? ' .
              'where workflow_id = ? and workflow_step_id_from = ? and workflow_step_id_to = ? ' .
              'limit 1';
@@ -58,7 +58,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function getStepsForStatus($workflowId, $StatusId) {
+    public function getStepsForStatus($workflowId, $StatusId) {
         $query = "select workflow_data.id, " .
             "workflow_data.transition_name, workflow_data.screen_id " .
             "from workflow " .
@@ -75,7 +75,7 @@ class Workflow
             return null;
     }
 
-    public static function getDataByStepIdFromAndStepIdTo($workflowId, $IdFrom, $IdTo) {
+    public function getDataByStepIdFromAndStepIdTo($workflowId, $IdFrom, $IdTo) {
         $query = "select workflow_data.* " .
                 "from workflow_data " .
                 "where workflow_data.workflow_id = ? and workflow_step_id_from = ? and workflow_step_id_to = ? " .
@@ -91,7 +91,7 @@ class Workflow
             return null;
     }
 
-    public static function createNewMetaData($clientId, $workflowIssueTypeSchemeId, $name, $description, $currentDate) {
+    public function createNewMetaData($clientId, $workflowIssueTypeSchemeId, $name, $description, $currentDate) {
         $q = 'insert into workflow(client_id, issue_type_scheme_id, name, description, date_created) ' .
              'values(?, ?, ?, ?, ?)';
 
@@ -103,7 +103,7 @@ class Workflow
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function deleteRecord($workflowId, $idFrom, $idTo) {
+    public function deleteRecord($workflowId, $idFrom, $idTo) {
         $q = 'delete from workflow_data where workflow_id = ? and workflow_step_id_from = ? and workflow_step_id_to = ? limit 1 ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
@@ -111,7 +111,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function createNewSingleDataRecord($projectWorkflowId, $idFrom, $idTo, $name) {
+    public function createNewSingleDataRecord($projectWorkflowId, $idFrom, $idTo, $name) {
         $q = 'insert into workflow_data (workflow_id, workflow_step_id_from, workflow_step_id_to, transition_name) values(?, ?, ?, ?)';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
@@ -119,7 +119,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function deleteById($Id) {
+    public function deleteById($Id) {
 
         $arrWorkflowDataIds = array();
         $query = "select id " .
@@ -178,7 +178,7 @@ class Workflow
         }
     }
 
-    public static function getMetaDataById($Id) {
+    public function getMetaDataById($Id) {
         $query = "select * " .
             "from workflow " .
             "where id = " . $Id;
@@ -192,7 +192,7 @@ class Workflow
             return null;
     }
 
-    public static function getDataById($Id) {
+    public function getDataById($Id) {
         $query = "select workflow_data.id, is1.name as isn1, is1.id as isi1, is2.name as isn2, is2.id as isi2, transition_name, transition_description, workflow_data.workflow_id, " .
                  "screen.name as screen_name, screen.id as screen_id, ws2.name as destination_step_name, ws2.id as destination_step_id " .
             "from workflow_data " .
@@ -213,7 +213,7 @@ class Workflow
             return null;
     }
 
-    public static function getDataByWorkflowId($workflowId) {
+    public function getDataByWorkflowId($workflowId) {
         $query = "select workflow_data.id, workflow_data.screen_id, ws1.id as ws1id, ws2.id as ws2id, is1.name as isn1, is1.id as isi1, is2.name as isn2, is2.id as isi2, transition_name, transition_description, workflow_data.workflow_id " .
             "from workflow_data " .
             "left join workflow_step ws1 on ws1.id = workflow_data.workflow_step_id_from " .
@@ -232,7 +232,7 @@ class Workflow
             return null;
     }
 
-    public static function getInitialStep($workflowId) {
+    public function getInitialStep($workflowId) {
         $query = "select workflow_step.* " .
             "from workflow_step " .
             "where workflow_step.workflow_id = " . $workflowId . ' ' .
@@ -248,7 +248,7 @@ class Workflow
             return null;
     }
 
-    public static function getDataForCreation($workflowId) {
+    public function getDataForCreation($workflowId) {
         $initialStep = Workflow::getInitialStep($workflowId);
 
         $query = "select workflow_data.id, workflow_step.linked_issue_status_id " .
@@ -267,7 +267,7 @@ class Workflow
             return null;
     }
 
-    public static function getByIssueType($issueTypeId, $clientId) {
+    public function getByIssueType($issueTypeId, $clientId) {
         $query = "select workflow.name, workflow.id " .
             "from workflow " .
             "left join issue_type_scheme_data on issue_type_scheme_data.issue_type_scheme_id = workflow.issue_type_scheme_id " .
@@ -286,7 +286,7 @@ class Workflow
             return null;
     }
 
-    public static function getTransitions($workflowId) {
+    public function getTransitions($workflowId) {
         $query = "select workflow_data.transition_name " .
             "from workflow_data " .
             "where workflow_data.workflow_id = " . $workflowId . ' ' .
@@ -302,7 +302,7 @@ class Workflow
             return null;
     }
 
-    public static function getTransitionsForStepId($workflowId, $stepId) {
+    public function getTransitionsForStepId($workflowId, $stepId) {
         $query = "select workflow_data.transition_name, workflow_data.screen_id, issue_status.id as status, issue_status.name, workflow_data.id, workflow_data.workflow_id, " .
                  "workflow_data.workflow_step_id_to " .
             "from workflow_data " .
@@ -322,7 +322,7 @@ class Workflow
             return null;
     }
 
-    public static function getOriginatingStepsForTransition($workflowId, $transitionName) {
+    public function getOriginatingStepsForTransition($workflowId, $transitionName) {
         $query = "select workflow_data.transition_name, workflow_step.id, workflow_step.name as step_name, " .
                     "workflow_data.id, workflow_data.workflow_id " .
                 "from workflow_data " .
@@ -341,7 +341,7 @@ class Workflow
             return null;
     }
 
-    public static function getDestinationStepsForTransition($workflowId, $transitionName) {
+    public function getDestinationStepsForTransition($workflowId, $transitionName) {
         $query = "select distinct workflow_data.transition_name, workflow_step.id, workflow_step.name as step_name, " .
             "workflow_data.workflow_id " .
             "from workflow_data " .
@@ -360,7 +360,7 @@ class Workflow
             return null;
     }
 
-    public static function deleteDataById($Id) {
+    public function deleteDataById($Id) {
         $q = 'delete from workflow_data where id = ? limit 1 ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
@@ -374,7 +374,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function createInitialData($clientId, $workflowId) {
+    public function createInitialData($clientId, $workflowId) {
         $statusOpen = Settings::getByName($clientId, 'status', 'Open');
 
         $q = 'insert into workflow_step(workflow_id, linked_issue_status_id, name, initial_step_flag) ' .
@@ -415,7 +415,7 @@ class Workflow
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getSteps($workflowId, $allFlag = null) {
+    public function getSteps($workflowId, $allFlag = null) {
         $query = "select workflow_step.id, workflow_step.name as step_name, workflow_step.initial_step_flag, issue_status.id as status_id, issue_status.name as status_name, " .
             "workflow_step.workflow_id " .
             "from workflow_step " .
@@ -435,7 +435,7 @@ class Workflow
         }
     }
 
-    public static function addStep($workflowId, $name, $StatusId, $initialStepFlag, $date) {
+    public function addStep($workflowId, $name, $StatusId, $initialStepFlag, $date) {
         $q = 'insert into workflow_step(workflow_id, linked_issue_status_id, name, initial_step_flag, date_created) ' .
             'values(?, ?, ?, ?, ?)';
 
@@ -446,7 +446,7 @@ class Workflow
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getStepById($workflowStepId, $fieldName = null) {
+    public function getStepById($workflowStepId, $fieldName = null) {
         $query = "select workflow_step.id, workflow_step.workflow_id, workflow_step.name, issue_status.name as status_name, workflow_step.linked_issue_status_id " .
             "from workflow_step " .
             "left join issue_status on issue_status.id = workflow_step.linked_issue_status_id " .
@@ -469,7 +469,7 @@ class Workflow
             return null;
     }
 
-    public static function addTransition($workflowId, $screenId, $stepIdFrom, $stepIdTo, $name, $description) {
+    public function addTransition($workflowId, $screenId, $stepIdFrom, $stepIdTo, $name, $description) {
         $q = 'insert into workflow_data(workflow_id, screen_id, workflow_step_id_from, workflow_step_id_to, transition_name, transition_description) ' .
              'values(?, ?, ?, ?, ?, ?)';
 
@@ -480,7 +480,7 @@ class Workflow
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getIncomingTransitionsForStep($workflowId, $stepId) {
+    public function getIncomingTransitionsForStep($workflowId, $stepId) {
         $query = "select workflow_data.transition_name, workflow_step.id, workflow_step.name as step_name, " .
             "workflow_data.id, workflow_data.workflow_id " .
             "from workflow_data " .
@@ -499,7 +499,7 @@ class Workflow
             return null;
     }
 
-    public static function  getOutgoingTransitionsForStep($workflowId, $stepId, $resultType = null) {
+    public function  getOutgoingTransitionsForStep($workflowId, $stepId, $resultType = null) {
         $query = "select workflow_data.transition_name, workflow_step.id, workflow_step.name as step_name, workflow_step.linked_issue_status_id, " .
             "workflow_data.id, workflow_data.workflow_id " .
             "from workflow_data " .
@@ -525,7 +525,7 @@ class Workflow
             return null;
     }
 
-    public static function getStepByWorkflowIdAndStatusId($workflowId, $issueStatusId) {
+    public function getStepByWorkflowIdAndStatusId($workflowId, $issueStatusId) {
         $query = "select workflow_step.* " .
             "from workflow_step " .
             "where workflow_step.linked_issue_status_id = ? " .
@@ -542,7 +542,7 @@ class Workflow
             return null;
     }
 
-    public static function createDefaultStep($workflowId, $linkedIssueStatusId, $stepName, $initialStepFlag) {
+    public function createDefaultStep($workflowId, $linkedIssueStatusId, $stepName, $initialStepFlag) {
         $query = "INSERT INTO workflow_step(workflow_id, linked_issue_status_id, name, initial_step_flag) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -552,7 +552,7 @@ class Workflow
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function updateStepById($stepId, $name, $StatusId, $date) {
+    public function updateStepById($stepId, $name, $StatusId, $date) {
         $q = 'update workflow_step set name = ?, linked_issue_status_id = ?, date_updated = ? ' .
             'where id = ? ' .
             'limit 1';
@@ -562,7 +562,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function addPostFunctionToTransition($transitionId, $functionId, $definitionData) {
+    public function addPostFunctionToTransition($transitionId, $functionId, $definitionData) {
         $query = "INSERT INTO workflow_post_function_data(workflow_data_id, sys_workflow_post_function_id, definition_data) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -572,7 +572,7 @@ class Workflow
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function deleteTransitions($workflowId, $transitionsPosted) {
+    public function deleteTransitions($workflowId, $transitionsPosted) {
         $q = 'delete from workflow_data where workflow_id = ? and id = ?';
 
         for ($i = 0; $i < count($transitionsPosted); $i++) {
@@ -582,7 +582,7 @@ class Workflow
         }
     }
 
-    public static function getByScreen($clientId, $screenId) {
+    public function getByScreen($clientId, $screenId) {
         $query = "select workflow.id, workflow.name, workflow_data.transition_name, workflow_data.id as workflow_data_id " .
             "from workflow " .
             "left join workflow_data on workflow_data.workflow_id = workflow.id " .
@@ -600,7 +600,7 @@ class Workflow
             return null;
     }
 
-    public static function addCondition($transitionId, $definitionData = null) {
+    public function addCondition($transitionId, $definitionData = null) {
         $query = "INSERT INTO workflow_condition_data(workflow_data_id, definition_data) VALUES (?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -610,7 +610,7 @@ class Workflow
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getConditionByTransitionId($workflowDataId) {
+    public function getConditionByTransitionId($workflowDataId) {
         $query = "select workflow_condition_data.* " .
             "from workflow_condition_data " .
             "where workflow_condition_data.workflow_data_id = ? " .
@@ -626,7 +626,7 @@ class Workflow
             return null;
     }
 
-    public static function checkLogicalConditionsByTransitionId($workflowDataId) {
+    public function checkLogicalConditionsByTransitionId($workflowDataId) {
         $conditionData = Workflow::getConditionByTransitionId($workflowDataId);
         $conditionString = $conditionData['definition_data'];
 
@@ -657,7 +657,7 @@ class Workflow
         return $canBeExecuted;
     }
 
-    public static function checkConditionsByTransitionId($workflowDataId, $userId, $issueData) {
+    public function checkConditionsByTransitionId($workflowDataId, $userId, $issueData) {
         $conditionData = Workflow::getConditionByTransitionId($workflowDataId);
         $conditionString = $conditionData['definition_data'];
 
@@ -715,7 +715,7 @@ class Workflow
         return $canBeExecuted;
     }
 
-    public static function getByIssueStatusId($StatusId) {
+    public function getByIssueStatusId($StatusId) {
         $query = "select workflow.id, workflow.name " .
             "from workflow_step " .
             "left join workflow on workflow.id = workflow_step.workflow_id " .
@@ -731,7 +731,7 @@ class Workflow
             return null;
     }
 
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = "select * from workflow where client_id = " . $clientId;
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -743,7 +743,7 @@ class Workflow
             return null;
     }
 
-    public static function getByClientIdAndName($clientId, $name) {
+    public function getByClientIdAndName($clientId, $name) {
         $query = "select * from workflow where client_id = ? and LOWER(name) = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -756,7 +756,7 @@ class Workflow
             return null;
     }
 
-    public static function copy($clientId, $workflowId, $name, $description, $date) {
+    public function copy($clientId, $workflowId, $name, $description, $date) {
         $oldWorkflow = Workflow::getMetaDataById($workflowId);
         $newWorkflowId = Workflow::createNewMetaData($clientId, $oldWorkflow['issue_type_scheme_id'], $name, $description, $date);
 
@@ -800,7 +800,7 @@ class Workflow
         }
     }
 
-    public static function getStepByWorkflowIdAndName($workflowId, $name) {
+    public function getStepByWorkflowIdAndName($workflowId, $name) {
         $query = "select * from workflow_step where workflow_id = ? and LOWER(name) = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -813,7 +813,7 @@ class Workflow
             return null;
     }
 
-    public static function getLinkedStatuses($workflowId, $resultType = null, $field = null) {
+    public function getLinkedStatuses($workflowId, $resultType = null, $field = null) {
         $query = "select linked_issue_status_id, issue_status.name
                     from workflow_step
                     left join issue_status on issue_status.id = workflow_step.linked_issue_status_id
@@ -839,7 +839,7 @@ class Workflow
             return null;
     }
 
-    public static function deleteStepById($stepId) {
+    public function deleteStepById($stepId) {
         $q = 'delete from workflow_data where workflow_step_id_from = ?';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
         $stmt->bind_param("i", $stepId);
@@ -851,7 +851,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function deleteOutgoingTransitionsForStepId($workflowId, $stepId) {
+    public function deleteOutgoingTransitionsForStepId($workflowId, $stepId) {
         $q = 'delete from workflow_data where workflow_step_id_from = ? and workflow_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
@@ -859,7 +859,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function getStepKeyByStepIdAndKeyId($stepId, $keyId, $stepPropertyId = null) {
+    public function getStepKeyByStepIdAndKeyId($stepId, $keyId, $stepPropertyId = null) {
         $query = "select * from workflow_step_property where workflow_step_id = ? and sys_workflow_step_property_id = ? ";
 
         if ($stepPropertyId)
@@ -875,7 +875,7 @@ class Workflow
             return null;
     }
 
-    public static function addStepProperty($stepId, $keyId, $value, $date) {
+    public function addStepProperty($stepId, $keyId, $value, $date) {
         $q = 'insert into workflow_step_property(workflow_step_id, sys_workflow_step_property_id, value, date_created) ' .
             'values(?, ?, ?, ?)';
 
@@ -887,7 +887,7 @@ class Workflow
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getStepProperties($stepId, $resultType = null, $field = null) {
+    public function getStepProperties($stepId, $resultType = null, $field = null) {
         $query = "select workflow_step_property.id, workflow_step_property.value, sys_workflow_step_property.name " .
                  "from workflow_step_property " .
                  "left join sys_workflow_step_property on sys_workflow_step_property.id = workflow_step_property.sys_workflow_step_property_id " .
@@ -913,7 +913,7 @@ class Workflow
             return null;
     }
 
-    public static function getSystemWorkflowProperties() {
+    public function getSystemWorkflowProperties() {
         $query = "select * from sys_workflow_step_property";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -925,7 +925,7 @@ class Workflow
             return null;
     }
 
-    public static function deleteStepPropertyById($propertyId) {
+    public function deleteStepPropertyById($propertyId) {
         $q = 'delete from workflow_step_property where id = ? limit 1 ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
@@ -933,7 +933,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function getStepPropertyById($stepPropertyId) {
+    public function getStepPropertyById($stepPropertyId) {
         $query = "select * from workflow_step_property where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -946,7 +946,7 @@ class Workflow
             return null;
     }
 
-    public static function updateStepPropertyById($stepPropertyId, $keyId, $value, $date) {
+    public function updateStepPropertyById($stepPropertyId, $keyId, $value, $date) {
         $q = 'update workflow_step_property set sys_workflow_step_property_id = ?, value = ?, date_updated = ? ' .
              'where id = ? ' .
              'limit 1';
@@ -956,7 +956,7 @@ class Workflow
         $stmt->execute();
     }
 
-    public static function getAllSteps() {
+    public function getAllSteps() {
         $query = "select * from workflow_step";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Reminder
 {
-    public static function getRemindersToBeFired() {
+    public function getRemindersToBeFired() {
         $query = "SELECT cal_event.date_from, cal_event.name, " .
                      "cal_event_reminder.cal_event_reminder_period_id, cal_event_reminder.value, cal_event_reminder.id,  " .
                      "user.client_id, user.email, " .
@@ -28,7 +28,7 @@ class Reminder
             return null;
     }
 
-    public static function setAsFired($reminderId) {
+    public function setAsFired($reminderId) {
         $query = "update cal_event_reminder set fired_flag = 1 where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -37,7 +37,7 @@ class Reminder
         $stmt->execute();
     }
 
-    public static function deleteById($reminderId) {
+    public function deleteById($reminderId) {
         $query = "delete from cal_event_reminder where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

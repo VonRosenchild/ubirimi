@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Notebook
 {
-    public static function getByUserId($userId, $resultType = null) {
+    public function getByUserId($userId, $resultType = null) {
         $query = "select qn_notebook.id, qn_notebook.default_flag, qn_notebook.name, qn_notebook.description, qn_notebook.date_created " .
             "from qn_notebook " .
             "left join user on user.id = qn_notebook.user_id " .
@@ -29,7 +29,7 @@ class Notebook
         }
     }
 
-    public static function getDefaultByUserId($userId) {
+    public function getDefaultByUserId($userId) {
         $query = "select qn_notebook.* " .
             "from qn_notebook " .
             "where user_id = ? and default_flag = 1 " .
@@ -45,7 +45,7 @@ class Notebook
             return null;
     }
 
-    public static function getNotesByNotebookId($notebookId, $userId = null, $tagId = null, $resultType = null) {
+    public function getNotesByNotebookId($notebookId, $userId = null, $tagId = null, $resultType = null) {
         $query = "select qn_notebook_note.* " .
             "from qn_notebook_note " .
             "left join qn_notebook_note_tag on qn_notebook_note_tag.qn_notebook_note_id = qn_notebook_note.id ";
@@ -81,7 +81,7 @@ class Notebook
             return null;
     }
 
-    public static function getNotesByTagId($userId, $tagId, $resultType = null) {
+    public function getNotesByTagId($userId, $tagId, $resultType = null) {
         $query = "select qn_notebook_note.* " .
             "from qn_notebook_note " .
             "left join qn_notebook_note_tag on qn_notebook_note_tag.qn_notebook_note_id = qn_notebook_note.id " .
@@ -113,7 +113,7 @@ class Notebook
     }
 
 
-    public static function save($userId, $name, $description, $date) {
+    public function save($userId, $name, $description, $date) {
         $query = "INSERT INTO qn_notebook(user_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -126,7 +126,7 @@ class Notebook
         return $notebookId;
     }
 
-    public static function getById($notebookId) {
+    public function getById($notebookId) {
         $query = "select qn_notebook.id, qn_notebook.user_id, qn_notebook.name, qn_notebook.description, " .
             "qn_notebook.date_created, qn_notebook.date_updated, " .
             "user.client_id " .
@@ -145,7 +145,7 @@ class Notebook
             return null;
     }
 
-    public static function getByName($userId, $name, $notebookId = null) {
+    public function getByName($userId, $name, $notebookId = null) {
         $query = 'select id, name, description ' .
             'from qn_notebook ' .
             'where user_id = ? ' .
@@ -169,7 +169,7 @@ class Notebook
             return null;
     }
 
-    public static function updateById($notebookId, $name, $description, $date) {
+    public function updateById($notebookId, $name, $description, $date) {
         $query = 'UPDATE qn_notebook SET name = ?, description = ?, date_updated = ? WHERE id = ? LIMIT 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -177,7 +177,7 @@ class Notebook
         $stmt->execute();
     }
 
-    public static function deleteById($notebookId) {
+    public function deleteById($notebookId) {
         $query = 'delete from qn_notebook_note where qn_notebook_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -191,7 +191,7 @@ class Notebook
         $stmt->execute();
     }
 
-    public static function deleteByUserId($userId) {
+    public function deleteByUserId($userId) {
         $notebooks = Notebook::getByUserId($userId);
 
         while ($notebooks && $notebook = $notebooks->fetch_array(MYSQLI_ASSOC)) {
@@ -199,7 +199,7 @@ class Notebook
         }
     }
 
-    public static function addNote($notebookId, $date) {
+    public function addNote($notebookId, $date) {
         $query = "INSERT INTO qn_notebook_note(qn_notebook_id, summary, date_created) VALUES (?, ?, ?)";
         $summary = 'Untitled';
 

@@ -19,9 +19,9 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $componentId = $request->get('id');
-        $component = Project::getComponentById($componentId);
+        $component = $this->getRepository('yongo.project.project')->getComponentById($componentId);
         $projectId = $component['project_id'];
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -38,7 +38,7 @@ class EditController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $components_duplicate = Project::getComponentByName($projectId, $name, $componentId);
+            $components_duplicate = $this->getRepository('yongo.project.project')->getComponentByName($projectId, $name, $componentId);
             if ($components_duplicate)
                 $alreadyExists = true;
 

@@ -38,7 +38,7 @@ class ViewIssueController extends UbirimiController
             . $issue['nr'] . ' ' . $issue['summary'];
 
         $session->set('selected_project_id', $projectId);
-        $issueProject = Project::getById($projectId);
+        $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
         /* before going further, check to is if the issue id a valid id -- start */
         $issueValid = true;
@@ -67,7 +67,7 @@ class ViewIssueController extends UbirimiController
             $index = array_search($issueId, $arrayListResultIds);
         }
 
-        $workflowUsed = Project::getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
+        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
 
         $step = Workflow::getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
         $stepProperties = Workflow::getStepProperties($step['id'], 'array');
@@ -75,7 +75,7 @@ class ViewIssueController extends UbirimiController
         if ($issueValid) {
 
             $workflowActions = Workflow::getTransitionsForStepId($workflowUsed['id'], $step['id']);
-            $screenData = Project::getScreenData(
+            $screenData = $this->getRepository('yongo.project.project')->getScreenData(
                 $issueProject,
                 $issue[Field::FIELD_ISSUE_TYPE_CODE],
                 SystemOperation::OPERATION_CREATE,

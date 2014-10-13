@@ -31,7 +31,7 @@ class AddController extends UbirimiController
         $date = Util::getServerCurrentDateTime();
 
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $project = Project::getById($issue['issue_project_id']);
+        $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
         UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $session->get('user/id'), $content, $date);
 
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $content);

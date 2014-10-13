@@ -35,8 +35,8 @@ class AddDialogController extends UbirimiController
             $projects = Client::getProjects($session->get('client/id'), null, null, true);
         }
 
-        $projectData = Project::getById($selectedProjectId);
-        $issueTypes = Project::getIssueTypes($selectedProjectId, 0);
+        $projectData = $this->getRepository('yongo.project.project')->getById($selectedProjectId);
+        $issueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($selectedProjectId, 0);
 
         $firstIssueType = $issueTypes->fetch_array(MYSQLI_ASSOC);
         $issueTypeId = $firstIssueType['id'];

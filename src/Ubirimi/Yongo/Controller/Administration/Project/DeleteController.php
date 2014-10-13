@@ -18,7 +18,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->request->get('project_id');
-        $projectDeleted = Project::getById($projectId);
+        $projectDeleted = $this->getRepository('yongo.project.project')->getById($projectId);
 
         Project::deleteById($projectId);
 

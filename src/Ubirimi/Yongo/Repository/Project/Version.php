@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Version
 {
-    public static function getByIds($Ids)
+    public function getByIds($Ids)
     {
         $query = 'SELECT project_version.* ' .
             'FROM project_version ' .
@@ -22,7 +22,7 @@ class Version
             return null;
     }
 
-    public static function deleteByProjectId($projectId)
+    public function deleteByProjectId($projectId)
     {
         $versions = Project::getVersions($projectId);
 
@@ -32,7 +32,7 @@ class Version
         }
     }
 
-    public static function deleteById($versionId)
+    public function deleteById($versionId)
     {
         $query = 'delete from issue_version where project_version_id = ?';
 

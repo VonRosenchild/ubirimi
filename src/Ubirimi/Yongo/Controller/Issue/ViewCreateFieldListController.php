@@ -8,9 +8,9 @@
 
     $issueTypeId = $_POST['issue_type_id'];
     $sysOperationId = $_POST['operation_id'];
-    $projectData = Project::getById($projectId);
+    $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
 
-    $workflowUsed = Project::getWorkflowUsedForType($projectId, $issueTypeId);
+    $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issueTypeId);
 
     if ($workflowUsed) {
         require_once __DIR__ . '/../../Resources/views/issue/_dialogCreate.php';

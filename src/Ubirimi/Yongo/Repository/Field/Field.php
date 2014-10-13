@@ -42,7 +42,7 @@ class Field {
     const CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID = 6;
     const CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID = 7;
 
-    public static $fieldTranslation = array(
+    public $fieldTranslation = array(
         Field::FIELD_SUMMARY_CODE => 'Summary',
         Field::FIELD_ASSIGNEE_CODE => 'Assigned to',
         Field::FIELD_DESCRIPTION_CODE => 'Description',
@@ -64,7 +64,7 @@ class Field {
         Field::FIELD_PROJECT_CODE => 'Project'
     );
 
-    public static function getByClient($clientId) {
+    public function getByClient($clientId) {
         $query = "SELECT * FROM field where client_id = ? order by name";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -77,7 +77,7 @@ class Field {
             return null;
     }
 
-    public static function getByClientIdAndFieldTypeId($clientId, $typeId) {
+    public function getByClientIdAndFieldTypeId($clientId, $typeId) {
         $query = "SELECT * FROM field
                     where client_id = ?
                       and sys_field_type_id = ?
@@ -94,7 +94,7 @@ class Field {
             return null;
     }
 
-    public static function getById($fieldId) {
+    public function getById($fieldId) {
         $query = "SELECT * FROM field where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -107,7 +107,7 @@ class Field {
             return null;
     }
 
-    public static function getByCode($clientId, $code) {
+    public function getByCode($clientId, $code) {
         $query = "SELECT * FROM field where client_id = ? and code = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -120,7 +120,7 @@ class Field {
             return null;
     }
 
-    public static function getIssueTypesFor($fieldId) {
+    public function getIssueTypesFor($fieldId) {
         $query = "SELECT issue_type.name, issue_type.id " .
             "FROM field_issue_type_data " .
             "left join issue_type on issue_type.id = field_issue_type_data.issue_type_id " .
@@ -136,7 +136,7 @@ class Field {
             return null;
     }
 
-    public static function getProjectsFor($fieldId) {
+    public function getProjectsFor($fieldId) {
         $query = "SELECT project.name, project.id " .
             "FROM field_project_data " .
             "left join project on project.id = field_project_data.project_id " .
@@ -152,7 +152,7 @@ class Field {
             return null;
     }
 
-    public static function getCustomFieldValueByFieldId($issueId, $fieldId) {
+    public function getCustomFieldValueByFieldId($issueId, $fieldId) {
         $query = "SELECT * " .
             "FROM issue_custom_field_data " .
             "where issue_id = ? and field_id = ? " .
@@ -168,7 +168,7 @@ class Field {
             return null;
     }
 
-    public static function deleteByClientId($clientId) {
+    public function deleteByClientId($clientId) {
         $fields = Field::getByClient($clientId);
         if ($fields) {
             while ($field = $fields->fetch_array(MYSQLI_ASSOC)) {
@@ -192,7 +192,7 @@ class Field {
         $stmt->execute();
     }
 
-    public static function add($clientId, $code, $name, $description, $systemFlag, $allIssueTypeFlag, $allProjectFlag) {
+    public function add($clientId, $code, $name, $description, $systemFlag, $allIssueTypeFlag, $allProjectFlag) {
         $query = "INSERT INTO field(client_id, code, name, description, system_flag, all_issue_type_flag, all_project_flag) VALUES " .
             "(?, ?, ?, ?, ?, ?, ?)";
 
@@ -203,7 +203,7 @@ class Field {
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function addData($fieldId, $value, $currentDate) {
+    public function addData($fieldId, $value, $currentDate) {
         $query = "INSERT INTO field_data(field_id, `value`, date_created) VALUES " .
                  "(?, ?, ?)";
 
@@ -214,7 +214,7 @@ class Field {
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getDataByFieldId($fieldId) {
+    public function getDataByFieldId($fieldId) {
         $query = "SELECT * " .
             "FROM field_data " .
             "where field_id = ?";
@@ -229,7 +229,7 @@ class Field {
             return null;
     }
 
-    public static function getDataByFieldIdAndValue($fieldId, $value, $dataId = null) {
+    public function getDataByFieldIdAndValue($fieldId, $value, $dataId = null) {
         $query = 'select * from `field_data` where field_id = ? and value = ?';
 
         if ($dataId) {
@@ -249,7 +249,7 @@ class Field {
             return false;
     }
 
-    public static function getDataById($id) {
+    public function getDataById($id) {
         $query = 'select * from `field_data` where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -263,7 +263,7 @@ class Field {
             return false;
     }
 
-    public static function deleteDataById($customFieldDataId) {
+    public function deleteDataById($customFieldDataId) {
         $field = Field::getDataById($customFieldDataId);
 
         $query = "delete from field_data where id = ? limit 1";
@@ -278,7 +278,7 @@ class Field {
         $stmt->execute();
     }
 
-    public static function updateDataById($id, $value, $date) {
+    public function updateDataById($id, $value, $date) {
         $query = "update field_data set `value` = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

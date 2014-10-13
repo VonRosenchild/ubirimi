@@ -24,7 +24,7 @@ class AddController extends UbirimiController
 
         $projectId = $request->get('project_id');
 
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';

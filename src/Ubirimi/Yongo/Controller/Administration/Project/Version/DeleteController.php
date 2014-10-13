@@ -19,7 +19,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $releaseId = $request->request->get('release_id');
-        $release = Project::getVersionById($releaseId);
+        $release = $this->getRepository('yongo.project.project')->getVersionById($releaseId);
 
         Version::deleteVersionById($releaseId);
 

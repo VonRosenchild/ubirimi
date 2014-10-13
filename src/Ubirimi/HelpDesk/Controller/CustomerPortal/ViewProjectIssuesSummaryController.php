@@ -21,7 +21,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
         $clientSettings = $session->get('client/settings');
 
         $projectId = $request->get('id');
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -108,7 +108,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             $countUnresolvedWithoutComponent = $issues->num_rows;
         }
 
-        $components = Project::getComponents($projectId);
+        $components = $this->getRepository('yongo.project.project')->getComponents($projectId);
         $statsComponent = array();
         while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
             $issueQueryParameters = array(

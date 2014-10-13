@@ -26,7 +26,7 @@ class ProjectsDataController extends UbirimiController
             $projectIdArray = Util::getAsArray($projectsForBrowsing, array('id'));
         }
 
-        $allIssueTypes = Project::getAllIssueTypesForProjects($projectIdArray);
+        $allIssueTypes = $this->getRepository('yongo.project.project')->getAllIssueTypesForProjects($projectIdArray);
         $issueTypeArray = array();
         while ($issueType = $allIssueTypes->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
@@ -96,7 +96,7 @@ class ProjectsDataController extends UbirimiController
             }
         }
 
-        $assignableUsers = Project::getUsersWithPermission($projectIdArray, Permission::PERM_ASSIGNABLE_USER);
+        $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectIdArray, Permission::PERM_ASSIGNABLE_USER);
         $allowUnassignedIssuesFlag = Client::getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
         $issueUsersAssignableArray = array();
@@ -121,7 +121,7 @@ class ProjectsDataController extends UbirimiController
         }
 
         // components are releases
-        $projectComponents = Project::getComponents($projectIdArray);
+        $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectIdArray);
 
         $projectComponentsArray = array();
         while ($projectComponents && $projectComponent = $projectComponents->fetch_array(MYSQLI_ASSOC)) {
@@ -140,7 +140,7 @@ class ProjectsDataController extends UbirimiController
             }
         }
 
-        $allProjectVersions = Project::getVersions($projectIdArray);
+        $allProjectVersions = $this->getRepository('yongo.project.project')->getVersions($projectIdArray);
         $projectVersionsArray = array();
         while ($allProjectVersions && $projectVersion = $allProjectVersions->fetch_array(MYSQLI_ASSOC)) {
             $found = false;

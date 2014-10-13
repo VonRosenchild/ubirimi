@@ -36,7 +36,7 @@ class PrintController extends UbirimiController
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'];
         }
 
-        $issueProject = Project::getById($issue['issue_project_id']);
+        $issueProject = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
         if ($issueProject['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }

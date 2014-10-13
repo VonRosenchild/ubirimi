@@ -24,8 +24,8 @@
     <script type="text/javascript" src="/yongo/js/yongo_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/yongo_shortcuts.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/yongo_globals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-    <script type="text/javascript" src="/yongo/js/cheetah.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
-    <script type="text/javascript" src="/yongo/js/cheetah_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
+    <script type="text/javascript" src="/yongo/js/agile.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
+    <script type="text/javascript" src="/yongo/js/agile_modals.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/menu.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/ubirimi_admin_menu.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
     <script type="text/javascript" src="/yongo/js/upload_file.js?<?php echo UbirimiContainer::get()['app.version'] ?>"></script>
@@ -52,7 +52,6 @@
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.qtip.min.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.fancybox.css?v=2.1.5" media="screen" />
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.fancybox-buttons.css?v=1.0.5" media="screen" />
-
 
     <link rel="stylesheet" type="text/css" href="/css/vendor/jquery.fileupload.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
 

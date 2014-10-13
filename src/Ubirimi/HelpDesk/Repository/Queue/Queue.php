@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Queue
 {
-    public static function deleteByProjectId($Id) {
+    public function deleteByProjectId($Id) {
         $query = "delete from help_filter where project_id = ?";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $Id);
@@ -14,7 +14,7 @@ class Queue
         $stmt->close();
     }
 
-    public static function save($createdUserId, $projectId, $filterName, $filterDescription, $filterData, $columns, $date) {
+    public function save($createdUserId, $projectId, $filterName, $filterDescription, $filterData, $columns, $date) {
         $query = "INSERT INTO help_filter(project_id, created_user_id, name, description, definition, columns, date_created) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -25,7 +25,7 @@ class Queue
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function updateById($Id, $filterName, $filterDescription, $filterData, $date) {
+    public function updateById($Id, $filterName, $filterDescription, $filterData, $date) {
         $query = "UPDATE help_filter set name = ?, description = ?, definition = ?, date_updated = ? where id = ? LIMIT 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -33,7 +33,7 @@ class Queue
         $stmt->execute();
     }
 
-    public static function getByProjectId($projectId) {
+    public function getByProjectId($projectId) {
         $query = 'SELECT * from help_filter where project_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -47,7 +47,7 @@ class Queue
             return null;
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = 'SELECT * from help_filter where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -61,7 +61,7 @@ class Queue
             return null;
     }
 
-    public static function deleteById($Id) {
+    public function deleteById($Id) {
         $query = "delete from help_filter where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -70,7 +70,7 @@ class Queue
         $stmt->close();
     }
 
-    public static function updateColumns($queueId, $columns) {
+    public function updateColumns($queueId, $columns) {
         $query = "update help_filter set columns = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -80,7 +80,7 @@ class Queue
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getByName($name, $projectId, $queueId = null) {
+    public function getByName($name, $projectId, $queueId = null) {
         $query = 'select id, name, description ' .
             'from help_filter ' .
             'where project_id = ? ' .

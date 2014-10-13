@@ -21,7 +21,7 @@ class AssignUsersDialogController extends UbirimiController
         $role = Role::getPermissionRoleById($permissionRoleId);
 
         $allUsers = Client::getUsers($session->get('client/id'));
-        $roleUsers = Project::getUsersInRole($projectId, $permissionRoleId);
+        $roleUsers = $this->getRepository('yongo.project.project')->getUsersInRole($projectId, $permissionRoleId);
 
         $role_users_arr_ids = array();
         while ($roleUsers && $user = $roleUsers->fetch_array(MYSQLI_ASSOC))

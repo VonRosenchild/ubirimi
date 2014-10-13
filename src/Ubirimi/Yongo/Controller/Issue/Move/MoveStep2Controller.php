@@ -15,7 +15,7 @@ $issueId = $_GET['id'];
 $issueQueryParameters = array('issue_id' => $issueId);
 $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
 $projectId = $issue['issue_project_id'];
-$issueProject = Project::getById($projectId);
+$issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
 // before going further, check to is if the issue project belongs to the client
 if ($clientId != $issueProject['client_id']) {
@@ -46,14 +46,14 @@ if (isset($_POST['move_issue_step_2'])) {
 }
 
 $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
-$currentWorkflow = Project::getWorkflowUsedForType($projectId, $issue['type']);
+$currentWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue['type']);
 
 $previousData = $session->get('move_issue');
-$newWorkflow = Project::getWorkflowUsedForType($previousData['new_project'], $previousData['new_type']);
+$newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($previousData['new_project'], $previousData['new_type']);
 $newStatuses = Workflow::getLinkedStatuses($newWorkflow['id']);
 $menuSelectedCategory = 'issue';
 
-$newProject = Project::getById($session->get('move_issue/new_project'));
+$newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
 $newProjectName = $newProject['name'];
 $newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
 

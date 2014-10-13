@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Component
 {
-    public static function getByIds($Ids) {
+    public function getByIds($Ids) {
         $query = 'SELECT project_component.* ' .
             'FROM project_component ' .
             'WHERE id IN (' . implode(', ', $Ids) . ') ' .
@@ -22,7 +22,7 @@ class Component
             return null;
     }
 
-    public static function getAll()
+    public function getAll()
     {
         $query = 'SELECT project_component.*, project.name as project_name
             FROM project_component
@@ -36,7 +36,7 @@ class Component
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public static function deleteById($componentId)
+    public function deleteById($componentId)
     {
         $query = 'delete from issue_component where project_component_id = ?';
 
@@ -58,7 +58,7 @@ class Component
         $stmt->execute();
     }
 
-    public static function deleteByProjectId($projectId)
+    public function deleteByProjectId($projectId)
     {
         $components = Project::getComponents($projectId);
 

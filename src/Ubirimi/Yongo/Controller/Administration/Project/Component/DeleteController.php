@@ -19,7 +19,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $componentId = $request->request->get('component_id');
-        $component = Project::getComponentById($componentId);
+        $component = $this->getRepository('yongo.project.project')->getComponentById($componentId);
 
         Component::deleteById($componentId);
 

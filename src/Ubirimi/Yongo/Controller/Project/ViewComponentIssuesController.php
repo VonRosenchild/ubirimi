@@ -27,9 +27,9 @@ class ViewComponentIssuesController extends UbirimiController
         }
 
         $componentId = $request->get('id');
-        $component = Project::getComponentById($componentId);
+        $component = $this->getRepository('yongo.project.project')->getComponentById($componentId);
         $projectId = $component['project_id'];
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

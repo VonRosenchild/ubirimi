@@ -10,7 +10,7 @@ class SystemOperation
     const OPERATION_EDIT = 2;
     const OPERATION_VIEW = 3;
 
-    public static function getAll() {
+    public function getAll() {
         $query = "SELECT * " .
             "FROM sys_operation";
 

@@ -49,8 +49,8 @@ class ViewController extends UbirimiController
             $projectId = $issue['issue_project_id'];
             $session->set('selected_project_id', $projectId);
 
-            $issueProject = Project::getById($projectId);
-            $hasBrowsingPermission = Project::userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $session->get('user/id'), $issueId);
+            $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
+            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $session->get('user/id'), $issueId);
         } else {
             $issueValid = false;
         }
@@ -77,21 +77,21 @@ class ViewController extends UbirimiController
                 $arrayListResultIds = $session->get('array_ids');
                 $index = array_search($issueId, $arrayListResultIds);
             }
-            $hasCreatePermission = Project::userHasPermission($projectId, Permission::PERM_CREATE_ISSUE, $session->get('user/id'));
-            $hasEditPermission = Project::userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
+            $hasCreatePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CREATE_ISSUE, $session->get('user/id'));
+            $hasEditPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
 
-            $hasDeletePermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_ISSUE, $session->get('user/id'));
-            $hasAssignPermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $session->get('user/id'));
-            $hasAssignablePermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGNABLE_USER, $session->get('user/id'));
+            $hasDeletePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_ISSUE, $session->get('user/id'));
+            $hasAssignPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $session->get('user/id'));
+            $hasAssignablePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGNABLE_USER, $session->get('user/id'));
 
-            $hasLinkIssuePermission = Project::userHasPermission($projectId, Permission::PERM_LINK_ISSUE, $session->get('user/id'));
-            $hasWorkOnIssuePermission = Project::userHasPermission($projectId, Permission::PERM_WORK_ON_ISSUE, $session->get('user/id'));
-            $hasMoveIssuePermission = Project::userHasPermission($projectId, Permission::PERM_MOVE_ISSUE, $session->get('user/id'));
-            $hasCreateAttachmentPermission = Project::userHasPermission($projectId, Permission::PERM_CREATE_ATTACHMENTS, $session->get('user/id'));
+            $hasLinkIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_LINK_ISSUE, $session->get('user/id'));
+            $hasWorkOnIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_WORK_ON_ISSUE, $session->get('user/id'));
+            $hasMoveIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_MOVE_ISSUE, $session->get('user/id'));
+            $hasCreateAttachmentPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CREATE_ATTACHMENTS, $session->get('user/id'));
 
-            $hasAddCommentsPermission = Project::userHasPermission($projectId, Permission::PERM_ADD_COMMENTS, $session->get('user/id'));
+            $hasAddCommentsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ADD_COMMENTS, $session->get('user/id'));
 
-            $workflowUsed = Project::getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
+            $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
 
             $step = Workflow::getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
             $stepProperties = Workflow::getStepProperties($step['id'], 'array');
@@ -103,7 +103,7 @@ class ViewController extends UbirimiController
             }
 
             $workflowActions = Workflow::getTransitionsForStepId($workflowUsed['id'], $step['id']);
-            $screenData = Project::getScreenData($issueProject, $issue[Field::FIELD_ISSUE_TYPE_CODE], SystemOperation::OPERATION_CREATE, 'array');
+            $screenData = $this->getRepository('yongo.project.project')->getScreenData($issueProject, $issue[Field::FIELD_ISSUE_TYPE_CODE], SystemOperation::OPERATION_CREATE, 'array');
 
             $childrenIssues = null;
             $parentIssue = null;
@@ -116,13 +116,13 @@ class ViewController extends UbirimiController
             $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
             $customFieldsDataUserPickerMultipleUser = CustomField::getUserPickerData($issue['id']);
 
-            $subTaskIssueTypes = Project::getSubTasksIssueTypes($projectId);
+            $subTaskIssueTypes = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes($projectId);
 
             $attachments = $this->getRepository('yongo.issue.attachment')->getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
             if ($countAttachments) {
-                $hasDeleteOwnAttachmentsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
-                $hasDeleteAllAttachmentsPermission = Project::userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
+                $hasDeleteOwnAttachmentsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
+                $hasDeleteAllAttachmentsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
             }
 
             // get the worklogs
@@ -145,7 +145,7 @@ class ViewController extends UbirimiController
             }
 
             // voters and watchers
-            $hasViewVotersAndWatchersPermission = Project::userHasPermission($projectId, Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $session->get('user/id'));
+            $hasViewVotersAndWatchersPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $session->get('user/id'));
             $recentIssues = $session->get('yongo/recent_issues');
 
             if (!isset($recentIssues)) {

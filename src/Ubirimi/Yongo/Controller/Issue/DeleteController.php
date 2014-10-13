@@ -27,7 +27,7 @@ class DeleteController extends UbirimiController
         $issueId = $request->get('issue_id');
 
         $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $project = Project::getById($issue['issue_project_id']);
+        $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
 
         $loggedInUser = User::getById($loggedInUserId);
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_DELETE, array('loggedInUser' => $loggedInUser));

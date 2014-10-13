@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Filter
 {
-    public static function updateById($filterId, $name, $description, $definition, $date) {
+    public function updateById($filterId, $name, $description, $definition, $date) {
         $query = "UPDATE filter set name = ?, description = ?, definition = ?, date_updated = ? where id = ? LIMIT 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -14,7 +14,7 @@ class Filter
         $stmt->execute();
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = 'SELECT id, user_id, description, definition, name from filter where id = ? ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -28,7 +28,7 @@ class Filter
             return null;
     }
 
-    public static function save($userId, $name, $description, $definition, $date) {
+    public function save($userId, $name, $description, $definition, $date) {
         $query = "INSERT INTO filter(user_id, name, description, definition, date_created) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -39,7 +39,7 @@ class Filter
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getAllByUser($loggedInUserId) {
+    public function getAllByUser($loggedInUserId) {
         $query = 'SELECT id, user_id, name, description, definition, date_created from filter where user_id = ? ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -53,7 +53,7 @@ class Filter
             return null;
     }
 
-    public static function getAllByClientId($clientId) {
+    public function getAllByClientId($clientId) {
         $query = 'SELECT filter.id, user_id, filter.name, description, definition, filter.date_created ' .
                  'from filter ' .
                  'left join user on user.id = filter.user_id ' .
@@ -69,7 +69,7 @@ class Filter
             return null;
     }
 
-    public static function deleteById($filterId) {
+    public function deleteById($filterId) {
         $query = 'delete from filter where id = ? limit 1 ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -78,7 +78,7 @@ class Filter
         $stmt->execute();
     }
 
-    public static function checkFilterIsFavouriteForUserId($filterId, $userId) {
+    public function checkFilterIsFavouriteForUserId($filterId, $userId) {
         $query = "SELECT filter_favourite.id " .
             "FROM filter_favourite " .
             "where filter_favourite.user_id = ? and " .
@@ -96,7 +96,7 @@ class Filter
         }
     }
 
-    public static function deleteFavouriteByFilterIdAndUserId($userId, $filterId) {
+    public function deleteFavouriteByFilterIdAndUserId($userId, $filterId) {
         $query = 'delete from filter_favourite where user_id = ? and filter_id = ? limit 1 ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -105,7 +105,7 @@ class Filter
         $stmt->execute();
     }
 
-    public static function addFavourite($userId, $filterId, $date) {
+    public function addFavourite($userId, $filterId, $date) {
         $query = "INSERT INTO filter_favourite(user_id, filter_id, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -116,7 +116,7 @@ class Filter
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function toggleFavourite($userId, $filterId, $date) {
+    public function toggleFavourite($userId, $filterId, $date) {
         $isFavourite = Filter::checkFilterIsFavouriteForUserId($filterId, $userId);
         if ($isFavourite) {
             Filter::deleteFavouriteByFilterIdAndUserId($userId, $filterId);
@@ -125,7 +125,7 @@ class Filter
         }
     }
 
-    public static function getSubscriptions($filterId) {
+    public function getSubscriptions($filterId) {
         $query = "SELECT filter_subscription.id, filter_subscription.period, " .
             "user.id as user_id, user.first_name, user.last_name, " .
             "user_created.id as user_created_id, user_created.first_name as created_first_name, user_created.last_name as created_last_name, " .
@@ -148,7 +148,7 @@ class Filter
         }
     }
 
-    public static function addSubscription($filterId, $userCreatedId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date) {
+    public function addSubscription($filterId, $userCreatedId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $date) {
         $query = "INSERT INTO filter_subscription(filter_id, user_created_id, user_id, group_id, period, email_when_empty_flag, date_created) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -159,7 +159,7 @@ class Filter
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function deleteSubscriptionById($subscriptionId) {
+    public function deleteSubscriptionById($subscriptionId) {
         $query = "delete from filter_subscription where id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -168,7 +168,7 @@ class Filter
         $stmt->execute();
     }
 
-    public static function getSubscriptionById($subscriptionId) {
+    public function getSubscriptionById($subscriptionId) {
         $query = 'SELECT * ' .
             'from filter_subscription ' .
             'where id = ? ' .
@@ -184,7 +184,7 @@ class Filter
             return null;
     }
 
-    public static function getAllSubscriptions() {
+    public function getAllSubscriptions() {
         $query = 'SELECT * ' .
             'from filter_subscription';
 

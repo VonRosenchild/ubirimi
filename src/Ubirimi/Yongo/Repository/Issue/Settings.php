@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Settings
 {
-    public static function createIssueType($clientId, $name, $description, $subTaskFlag, $iconName, $currentDate) {
+    public function createIssueType($clientId, $name, $description, $subTaskFlag, $iconName, $currentDate) {
         $query = "INSERT INTO issue_type(client_id, name, description, sub_task_flag, icon_name, date_created) VALUES (?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -16,7 +16,7 @@ class Settings
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getAllIssueSettings($type, $clientId, $resultType = null) {
+    public function getAllIssueSettings($type, $clientId, $resultType = null) {
         $query = "SELECT * FROM issue_" . $type . ' where client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -36,7 +36,7 @@ class Settings
             return null;
     }
 
-    public static function getByName($clientId, $setting_type, $name, $settingId = null) {
+    public function getByName($clientId, $setting_type, $name, $settingId = null) {
         $query = 'select id, name, description ' .
             'from issue_' . $setting_type . ' ' .
             'where client_id = ? ' .
@@ -61,7 +61,7 @@ class Settings
             return null;
     }
 
-    public static function create($type, $clientId, $name, $description, $iconName = null, $color = null, $date) {
+    public function create($type, $clientId, $name, $description, $iconName = null, $color = null, $date) {
         if ($iconName) {
             if ($color) {
                 $query = "INSERT INTO " . $type . "(client_id, name, description, icon_name, color, date_created) VALUES (?, ?, ?, ?, ?, ?)";
@@ -93,7 +93,7 @@ class Settings
         }
     }
 
-    public static function updateById($Id, $type, $name, $description, $color = null, $date) {
+    public function updateById($Id, $type, $name, $description, $color = null, $date) {
         $query = 'UPDATE issue_' . $type . ' SET ' .
                  'name = ?, description = ?, date_updated = ? ';
         if ($color)
@@ -106,7 +106,7 @@ class Settings
         $stmt->execute();
     }
 
-    public static function getById($Id, $settingType, $returnField = null) {
+    public function getById($Id, $settingType, $returnField = null) {
         $query = 'select * ' .
                  'from issue_' . $settingType . ' ' .
                  'where id = ? ' .
@@ -124,7 +124,7 @@ class Settings
             return $dataArrayResult;
     }
 
-    public static function deleteStatusById($Id) {
+    public function deleteStatusById($Id) {
         $query = 'delete from issue_status where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -132,7 +132,7 @@ class Settings
         $stmt->execute();
     }
 
-    public static function deleteResolutionById($Id) {
+    public function deleteResolutionById($Id) {
         $query = 'delete from issue_resolution where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -140,7 +140,7 @@ class Settings
         $stmt->execute();
     }
 
-    public static function deletePriorityById($Id) {
+    public function deletePriorityById($Id) {
         $query = 'delete from issue_priority where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

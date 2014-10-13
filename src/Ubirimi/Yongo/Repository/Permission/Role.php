@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Role
 {
-    public static function addDefaultPermissionRoles($clientId, $date) {
+    public function addDefaultPermissionRoles($clientId, $date) {
         $query = 'insert into permission_role(client_id, name, description, date_created) values ';
 
         $query .= "(" . $clientId . ", 'Administrators', 'The Administrator has all the privileges set', '" . $date . "')";
@@ -16,7 +16,7 @@ class Role
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function getByClient($clientId) {
+    public function getByClient($clientId) {
         $query = 'SELECT * ' .
             'FROM permission_role ' .
             'WHERE client_id = ? ';
@@ -32,7 +32,7 @@ class Role
             return null;
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = 'SELECT * ' .
             'FROM permission_role ' .
             'WHERE id = ? ';
@@ -48,7 +48,7 @@ class Role
             return null;
     }
 
-    public static function addProjectRoleForUser($userId, $projectId, $roleId, $currentDate) {
+    public function addProjectRoleForUser($userId, $projectId, $roleId, $currentDate) {
         $query = "INSERT INTO project_role_data(project_id, permission_role_id, user_id, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -57,7 +57,7 @@ class Role
         $stmt->execute();
     }
 
-    public static function deleteRolesForUser($userId) {
+    public function deleteRolesForUser($userId) {
         $query = "delete from project_role_data where user_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -66,7 +66,7 @@ class Role
         $stmt->execute();
     }
 
-    public static function getPermissionRoleById($permissionRoleId) {
+    public function getPermissionRoleById($permissionRoleId) {
         $query = 'select id, client_id, name, description ' .
                  'from permission_role ' .
                  'where id = ?';
@@ -81,7 +81,7 @@ class Role
             return null;
     }
 
-    public static function deleteDefaultUsersByPermissionRoleId($permissionRoleId) {
+    public function deleteDefaultUsersByPermissionRoleId($permissionRoleId) {
         $query = 'delete from permission_role_data where permission_role_id = ? and default_user_id is not null';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -89,7 +89,7 @@ class Role
         $stmt->execute();
     }
 
-    public static function deleteDefaultGroupsByPermissionRoleId($permissionRoleId) {
+    public function deleteDefaultGroupsByPermissionRoleId($permissionRoleId) {
         $query = 'delete from permission_role_data where permission_role_id = ? and default_group_id is not null';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -97,7 +97,7 @@ class Role
         $stmt->execute();
     }
 
-    public static function add($clientId, $name, $description, $date) {
+    public function add($clientId, $name, $description, $date) {
         $query = "INSERT INTO permission_role(client_id, name, description, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -105,7 +105,7 @@ class Role
         $stmt->execute();
     }
 
-    public static function updateById($permissionRoleId, $name, $description, $date) {
+    public function updateById($permissionRoleId, $name, $description, $date) {
         $query = 'update permission_role set name = ?, description = ?, date_updated = ? where id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -113,7 +113,7 @@ class Role
         $stmt->execute();
     }
 
-    public static function getDefaultUsers($permissionRoleId) {
+    public function getDefaultUsers($permissionRoleId) {
         $query = 'select user.id as user_id, user.first_name, user.last_name ' .
             'from permission_role_data ' .
             'left join user on user.id = permission_role_data.default_user_id ' .
@@ -131,7 +131,7 @@ class Role
             return null;
     }
 
-    public static function getDefaultGroups($permissionRoleId) {
+    public function getDefaultGroups($permissionRoleId) {
         $query = 'select group.id as group_id, group.name as group_name ' .
             'from permission_role_data ' .
             'left join `group` on group.id = permission_role_data.default_group_id ' .
@@ -148,7 +148,7 @@ class Role
             return null;
     }
 
-    public static function addDefaultUsers($permissionRoleId, $userArray, $currentDate) {
+    public function addDefaultUsers($permissionRoleId, $userArray, $currentDate) {
         $query = 'insert into permission_role_data(permission_role_id, default_user_id, date_created) values ';
 
         for ($i = 0; $i < count($userArray); $i++)
@@ -159,7 +159,7 @@ class Role
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate) {
+    public function addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate) {
         $query = 'insert into permission_role_data(permission_role_id, default_group_id, date_created) values ';
 
         for ($i = 0; $i < count($groupArrayIds); $i++)
@@ -170,7 +170,7 @@ class Role
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteById($permissionRoleId) {
+    public function deleteById($permissionRoleId) {
         $query = 'delete from permission_role_data where permission_role_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -183,7 +183,7 @@ class Role
         $stmt->execute();
     }
 
-    public static function getByName($clientId, $name, $roleId = null) {
+    public function getByName($clientId, $name, $roleId = null) {
         $query = 'select id, name from permission_role where client_id = ? and LOWER(name)= LOWER(?) ';
         if ($roleId) $query .= 'and id != ?';
 

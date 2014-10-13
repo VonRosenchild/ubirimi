@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Event
 {
-    public static function add($calendarId, $userCreatedId, $name, $description, $location, $start, $end, $color, $currentDate, $repeatData = null, $clientSettings) {
+    public function add($calendarId, $userCreatedId, $name, $description, $location, $start, $end, $color, $currentDate, $repeatData = null, $clientSettings) {
         $calEventRepeatId = null;
         $repeatDates = array();
         $repeatDay = array(0, 0, 0, 0, 0, 0, 0);
@@ -237,7 +237,7 @@ class Event
         return $eventId;
     }
 
-    public static function getByCalendarId($calendarId, $filterStartDate, $filterEndDate, $defaultCalendarSelected = null, $userId = null, $resultType = null) {
+    public function getByCalendarId($calendarId, $filterStartDate, $filterEndDate, $defaultCalendarSelected = null, $userId = null, $resultType = null) {
         $query = "SELECT cal_event.id, cal_event.user_created_id, cal_event.date_from, cal_event.date_to, cal_event.name, cal_event.description, cal_event.color, cal_event.location, " .
             "cal_calendar.name as calendar_name, TIMESTAMPDIFF(SECOND, cal_event.date_from, cal_event.date_to) as timediff, cal_calendar.color as calendar_color, " .
             "cal_event.cal_event_repeat_id, cal_event.cal_event_link_id, cal_calendar.id as calendar_id " .
@@ -291,7 +291,7 @@ class Event
         return null;
     }
 
-    public static function getByCalendarIds($calendarIds, $filterStartDate, $filterEndDate, $resultType = null) {
+    public function getByCalendarIds($calendarIds, $filterStartDate, $filterEndDate, $resultType = null) {
         $query = "SELECT cal_event.id, cal_event.user_created_id, cal_event.date_from, cal_event.date_to, cal_event.name, cal_event.description, cal_event.color " .
             "FROM cal_event " .
             "WHERE " .
@@ -321,7 +321,7 @@ class Event
         return null;
     }
 
-    public static function getById($eventId, $resultType = null) {
+    public function getById($eventId, $resultType = null) {
         $query = "SELECT cal_event.id, cal_event.user_created_id, cal_event.date_from, cal_event.date_to, cal_event.name, cal_event.description, cal_event.color, cal_event.location, " .
             "cal_event.cal_event_link_id, cal_event.cal_event_repeat_id, " .
             "cal_calendar.name as calendar_name, cal_calendar.id as calendar_id, " .
@@ -348,7 +348,7 @@ class Event
         }
     }
 
-    public static function updateById($eventId, $calendarId, $name, $description, $location, $dateFrom, $dateTo, $color, $dateUpdated) {
+    public function updateById($eventId, $calendarId, $name, $description, $location, $dateFrom, $dateTo, $color, $dateUpdated) {
         $query = "update cal_event
                     set
                         cal_calendar_id = ?,
@@ -379,7 +379,7 @@ class Event
         $stmt->execute();
     }
 
-    public static function shareWithUsers($eventId, $userIds, $date) {
+    public function shareWithUsers($eventId, $userIds, $date) {
         // first delete the users we try to add to avoid duplicated
         $query = "delete from cal_event_share where cal_event_id = ? and user_id IN (" . implode(', ', $userIds) . ');';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -395,7 +395,7 @@ class Event
         }
     }
 
-    public static function getShareByUserIdAndEventId($userId, $eventId) {
+    public function getShareByUserIdAndEventId($userId, $eventId) {
         $query = "select * " .
             "from cal_event_share " .
             "where cal_event_share.user_id = ? and cal_event_share.cal_event_id = ? ";
@@ -410,7 +410,7 @@ class Event
             return null;
     }
 
-    public static function deleteEventSharesByUserId($eventId, $userId) {
+    public function deleteEventSharesByUserId($eventId, $userId) {
         $query = "delete from cal_event_share where cal_event_id = ? and user_id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -418,7 +418,7 @@ class Event
         $stmt->execute();
     }
 
-    public static function deleteAllEventShares($eventId) {
+    public function deleteAllEventShares($eventId) {
         $query = "delete from cal_event_share where cal_event_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -426,7 +426,7 @@ class Event
         $stmt->execute();
     }
 
-    public static function deleteById($eventId, $recurringType = null) {
+    public function deleteById($eventId, $recurringType = null) {
         // delete the shares
         Event::deleteAllEventShares($eventId);
 
@@ -465,7 +465,7 @@ class Event
         }
     }
 
-    public static function getGuests($eventId) {
+    public function getGuests($eventId) {
         $query = "select user.* " .
             "from cal_event_share " .
             "left join user on user.id = cal_event_share.user_id " .
@@ -481,7 +481,7 @@ class Event
             return null;
     }
 
-    public static function getByText($userId, $query) {
+    public function getByText($userId, $query) {
         $query = "select cal_event.id, cal_event.name, cal_event.description, cal_event.date_from, cal_event.date_to, " .
                  "cal_calendar.name as calendar_name, cal_event_share.id as shared_event " .
             "from cal_calendar " .
@@ -502,7 +502,7 @@ class Event
         }
     }
 
-    public static function getAllByCalendarId($calendarId) {
+    public function getAllByCalendarId($calendarId) {
         $query = "select * " .
             "from cal_event " .
             "where cal_event.cal_calendar_id = ?";
@@ -517,7 +517,7 @@ class Event
             return null;
     }
 
-    public static function deleteReminders($eventId) {
+    public function deleteReminders($eventId) {
         $query = "delete from " .
                 "cal_event_reminder " .
                 "where cal_event_reminder.cal_event_id = ?";
@@ -527,7 +527,7 @@ class Event
         $stmt->execute();
     }
 
-    public static function addReminder($eventId, $reminderTypeId, $reminderPeriodId, $value) {
+    public function addReminder($eventId, $reminderTypeId, $reminderPeriodId, $value) {
         $query = "INSERT INTO cal_event_reminder(cal_event_id, cal_event_reminder_type_id, cal_event_reminder_period_id, value) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -536,7 +536,7 @@ class Event
         $stmt->execute();
     }
 
-    public static function getReminders($eventId) {
+    public function getReminders($eventId) {
         $query = "select * " .
             "from cal_event_reminder " .
             "where cal_event_reminder.cal_event_id = ?";
@@ -551,7 +551,7 @@ class Event
             return null;
     }
 
-    public static function getRepeatDataById($id) {
+    public function getRepeatDataById($id) {
         $query = "select * " .
             "from cal_event_repeat " .
             "where id = ? " .
@@ -567,7 +567,7 @@ class Event
             return null;
     }
 
-    public static function updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo) {
+    public function updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo) {
         $query = "update cal_event set cal_event_repeat_id = NULL, cal_event_link_id = NULL, date_from = ?, date_to = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -575,7 +575,7 @@ class Event
         $stmt->execute();
     }
 
-    public static function deleteEventAndFollowingByLinkId($eventId) {
+    public function deleteEventAndFollowingByLinkId($eventId) {
         $event = Event::getById($eventId, 'array');
         $linkId = $event['cal_event_link_id'];
 

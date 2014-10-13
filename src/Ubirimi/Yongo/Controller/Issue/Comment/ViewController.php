@@ -27,7 +27,7 @@ class ViewController extends UbirimiController
             $clientSettings = $session->get('client/settings');
         }
 
-        $projectData = Project::getByIssueId($Id);
+        $projectData = $this->getRepository('yongo.project.project')->getByIssueId($Id);
         $comments = $this->getRepository('yongo.issue.comment')->getByIssueId($Id);
 
         $hasAddCommentsPermission = Project::userHasPermission($projectData['id'], Permission::PERM_ADD_COMMENTS, $loggedInUserId);

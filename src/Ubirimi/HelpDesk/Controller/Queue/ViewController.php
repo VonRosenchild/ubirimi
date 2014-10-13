@@ -25,7 +25,7 @@ class ViewController extends UbirimiController
         $queueId = $request->get('queue_id');
         $page = $request->get('page', 1);
 
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
         $queueSelected = Queue::getById($queueId);
 
         $columns = explode('#', $queueSelected['columns']);

@@ -4,8 +4,7 @@
 
     require_once __DIR__ . '/../_header.php';
 ?>
-<body style="background-color: #EEEEEE ;">
-
+<body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
     <?php require_once __DIR__ . '/_titleSummary.php' ?>
@@ -14,8 +13,6 @@
         <?php if (!$issueValid): ?>
             <div class="infoBox">This issue does not exist or you do not have the permission to view it.</div>
         <?php else: ?>
-
-
 
             <?php require_once __DIR__ . '/_topButtons.php' ?>
 
@@ -171,7 +168,7 @@
     <div class="ubirimiModalDialog" id="modalEditIssue"></div>
     <div class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
     <div class="ubirimiModalDialog" id="modalEditIssueAttachFile"></div>
-    <div id="duplicateIssueModal" class="ubirimiModalDialog"></div>
+    <div class="ubirimiModalDialog" id="duplicateIssueModal"></div>
     <div class="ubirimiModalDialog" id="modalProjectFilters"></div>
     <div class="ubirimiModalDialog" id="modalLinkIssue"></div>
     <div class="ubirimiModalDialog" id="modalLinkIssueDelete"></div>

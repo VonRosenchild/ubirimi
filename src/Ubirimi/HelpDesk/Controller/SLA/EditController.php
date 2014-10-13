@@ -24,7 +24,7 @@ class EditController extends UbirimiController
         $slaId = $request->get('id');
 
         $SLA = Sla::getById($slaId);
-        $project = Project::getById($SLA['project_id']);
+        $project = $this->getRepository('yongo.project.project')->getById($SLA['project_id']);
 
         $startConditions = explode("#", $SLA['start_condition']);
         $stopConditions = explode("#", $SLA['stop_condition']);

@@ -43,7 +43,7 @@ class Event
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function addRaw($clientId, $name, $code, $description, $systemFlag, $dateCreated) {
+    public function addRaw($clientId, $name, $code, $description, $systemFlag, $dateCreated) {
         $query = "INSERT INTO event(client_id, name, code, description, system_flag, date_created) VALUES (?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -54,7 +54,7 @@ class Event
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getByClient($clientId) {
+    public function getByClient($clientId) {
         $query = "SELECT event.* " .
             "FROM event " .
             "WHERE event.client_id = ? " .
@@ -71,7 +71,7 @@ class Event
             return null;
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = "SELECT event.* " .
             "FROM event " .
             "WHERE event.id = ? " .
@@ -87,7 +87,7 @@ class Event
             return null;
     }
 
-    public static function getByClientIdAndCode($clientId, $code, $returnedField = null) {
+    public function getByClientIdAndCode($clientId, $code, $returnedField = null) {
         $query = "SELECT event.* " .
             "FROM event " .
             "WHERE event.client_id = ? and code = ? " .
@@ -108,7 +108,7 @@ class Event
             return null;
     }
 
-    public static function updateById($Id, $name, $description, $date) {
+    public function updateById($Id, $name, $description, $date) {
         $query = "update event set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -117,7 +117,7 @@ class Event
         $stmt->execute();
     }
 
-    public static function getEventByWorkflowDataId($workflowDataId) {
+    public function getEventByWorkflowDataId($workflowDataId) {
         $query = "SELECT definition_data " .
             "FROM workflow_post_function_data " .
             "WHERE workflow_data_id = ? " .
@@ -139,7 +139,7 @@ class Event
             return null;
     }
 
-    public static function getWorkflowsByEventId($clientId, $eventId) {
+    public function getWorkflowsByEventId($clientId, $eventId) {
         $query = "SELECT workflow.id, workflow.name " .
             "FROM workflow " .
             "left join workflow_data on workflow_data.workflow_id = workflow.id " .
@@ -160,7 +160,7 @@ class Event
             return null;
     }
 
-    public static function getNotificationSchemesByEventId($clientId, $eventId) {
+    public function getNotificationSchemesByEventId($clientId, $eventId) {
         $query = "SELECT notification_scheme.id, notification_scheme.name " .
             "FROM notification_scheme " .
             "left join notification_scheme_data on notification_scheme_data.notification_scheme_id = notification_scheme.id " .
@@ -179,7 +179,7 @@ class Event
             return null;
     }
 
-    public static function deleteById($eventId) {
+    public function deleteById($eventId) {
         $query = "delete from event where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

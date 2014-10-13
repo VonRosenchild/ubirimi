@@ -20,9 +20,9 @@ class AddSubcomponentController extends UbirimiController
 
         $projectId = $request->get('project_id');
         $parentComponentId = $request->get('id');
-        $parentComponent = Project::getComponentById($parentComponentId);
+        $parentComponent = $this->getRepository('yongo.project.project')->getComponentById($parentComponentId);
 
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -41,7 +41,7 @@ class AddSubcomponentController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $components_duplicate = Project::getComponentByName($projectId, $name);
+            $components_duplicate = $this->getRepository('yongo.project.project')->getComponentByName($projectId, $name);
             if ($components_duplicate)
                 $alreadyExists = true;
 

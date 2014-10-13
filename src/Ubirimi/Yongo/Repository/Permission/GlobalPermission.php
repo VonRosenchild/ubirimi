@@ -14,7 +14,7 @@ class GlobalPermission
     const GLOBAL_PERMISSION_DOCUMENTADOR_SYSTEM_ADMINISTRATOR = 6;
     const GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE = 7;
 
-    public static function getAllByProductId($productId) {
+    public function getAllByProductId($productId) {
         $query = "SELECT * FROM sys_permission_global where sys_product_id = ? order by name";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -27,7 +27,7 @@ class GlobalPermission
             return null;
     }
 
-    public static function getById($permissionId) {
+    public function getById($permissionId) {
         $query = "SELECT * FROM sys_permission_global where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -40,7 +40,7 @@ class GlobalPermission
             return null;
     }
 
-    public static function getDataByPermissionIdAndUserId($clientId, $globalPermissionId, $userId) {
+    public function getDataByPermissionIdAndUserId($clientId, $globalPermissionId, $userId) {
         $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
             'from sys_permission_global_data ' .
             'left join `group` on group.id = sys_permission_global_data.group_id ' .
@@ -58,7 +58,7 @@ class GlobalPermission
             return null;
     }
 
-    public static function getDataByPermissionIdAndGroupId($clientId, $globalPermissionId, $groupId) {
+    public function getDataByPermissionIdAndGroupId($clientId, $globalPermissionId, $groupId) {
         $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
             'from sys_permission_global_data ' .
             'left join `group` on group.id = sys_permission_global_data.group_id ' .
@@ -76,7 +76,7 @@ class GlobalPermission
             return null;
     }
 
-    public static function getDataByPermissionId($clientId, $globalPermissionId, $resultType = null, $resultColumn = null) {
+    public function getDataByPermissionId($clientId, $globalPermissionId, $resultType = null, $resultColumn = null) {
         $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
             'from sys_permission_global_data ' .
             'left join `group` on group.id = sys_permission_global_data.group_id ' .
@@ -106,7 +106,7 @@ class GlobalPermission
         return null;
     }
 
-    public static function addDataForGroupId($clientId, $permissionId, $groupId, $date) {
+    public function addDataForGroupId($clientId, $permissionId, $groupId, $date) {
         $query = "INSERT INTO sys_permission_global_data(client_id, sys_permission_global_id, group_id, date_created) VALUES " .
                  "(?, ?, ?, ?)";
 
@@ -117,7 +117,7 @@ class GlobalPermission
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function addDataForUserId($clientId, $permissionId, $userId) {
+    public function addDataForUserId($clientId, $permissionId, $userId) {
         $query = "INSERT INTO sys_permission_global_data(client_id, sys_permission_global_id, user_id) VALUES " .
             "(?, ?, ?)";
 
@@ -128,7 +128,7 @@ class GlobalPermission
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function deleteById($Id) {
+    public function deleteById($Id) {
         $query = "delete from sys_permission_global_data where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -136,7 +136,7 @@ class GlobalPermission
         $stmt->execute();
     }
 
-    public static function deleteByPermissionId($clientId, $globalsPermissionId, $type) {
+    public function deleteByPermissionId($clientId, $globalsPermissionId, $type) {
         $query = "delete from sys_permission_global_data where client_id = ? and sys_permission_global_id = ? ";
 
         if ($type == 'group')
@@ -149,7 +149,7 @@ class GlobalPermission
         $stmt->execute();
     }
 
-    public static function getDataById($Id) {
+    public function getDataById($Id) {
         $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id, ' .
             'sys_permission_global.name as permission_name ' .
             'from sys_permission_global_data ' .

@@ -17,7 +17,7 @@ class SettingsController extends UbirimiController
         $clientSettings = $session->get('client/settings');
 
         $projectId = $request->get('id');
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'customer_portal';

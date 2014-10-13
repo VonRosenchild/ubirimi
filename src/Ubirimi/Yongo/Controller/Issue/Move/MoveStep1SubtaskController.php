@@ -12,7 +12,7 @@
     $issueQueryParameters = array('issue_id' => $issueId);
     $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
     $projectId = $issue['issue_project_id'];
-    $issueProject = Project::getById($projectId);
+    $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
     // before going further, check to is if the issue project belongs to the client
     if ($clientId != $issueProject['client_id']) {
@@ -35,7 +35,7 @@
         }
 
         // check if step 2 is necessary
-        $newWorkflow = Project::getWorkflowUsedForType(UbirimiContainer::get()['session']->get('move_issue/new_project'), UbirimiContainer::get()['session']->get('move_issue/new_type'));
+        $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType(UbirimiContainer::get()['session']->get('move_issue/new_project'), UbirimiContainer::get()['session']->get('move_issue/new_type'));
         $newStatuses = Workflow::getLinkedStatuses($newWorkflow['id']);
 
         $step2Necessary = true;
@@ -61,6 +61,6 @@
     $menuSelectedCategory = 'issue';
 
     $oldSubtaskIssueType = UbirimiContainer::get()['session']->get('move_issue/sub_task_old_issue_type');
-    $newSubtaskIssueType = Project::getSubTasksIssueTypes(UbirimiContainer::get()['session']->get('move_issue/new_project'));
+    $newSubtaskIssueType = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes(UbirimiContainer::get()['session']->get('move_issue/new_project'));
 
     require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep1Subtask.php';

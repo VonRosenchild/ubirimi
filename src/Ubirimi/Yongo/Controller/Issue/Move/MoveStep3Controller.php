@@ -15,7 +15,7 @@ $issueId = $_GET['id'];
 $issueQueryParameters = array('issue_id' => $issueId);
 $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
 $projectId = $issue['issue_project_id'];
-$issueProject = Project::getById($projectId);
+$issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
 // before going further, check to is if the issue project belongs to the client
 if ($clientId != $issueProject['client_id']) {
@@ -48,15 +48,15 @@ $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . System
 $menuSelectedCategory = 'issue';
 
 $targetProjectId = $session->get('move_issue/new_project');
-$targetProjectComponents = Project::getComponents($targetProjectId);
-$targetVersions = Project::getVersions($targetProjectId);
+$targetProjectComponents = $this->getRepository('yongo.project.project')->getComponents($targetProjectId);
+$targetVersions = $this->getRepository('yongo.project.project')->getVersions($targetProjectId);
 
 $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
 $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
 $sourceAssignee = $issue['assignee'];
-$assignableUsersTargetProjectArray = Project::getUsersWithPermission($session->get('move_issue/new_project'), Permission::PERM_ASSIGNABLE_USER, 'array');
+$assignableUsersTargetProjectArray = $this->getRepository('yongo.project.project')->getUsersWithPermission($session->get('move_issue/new_project'), Permission::PERM_ASSIGNABLE_USER, 'array');
 
 $assigneeChanged = true;
 
@@ -75,7 +75,7 @@ if ((($issueComponents || $issueFixVersions || $issueAffectedVersions) && ($targ
 }
 $newStatusName = Settings::getById($session->get('move_issue/new_status'), 'status', 'name');
 
-$newProject = Project::getById($session->get('move_issue/new_project'));
+$newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
 $newProjectName = $newProject['name'];
 $newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
 

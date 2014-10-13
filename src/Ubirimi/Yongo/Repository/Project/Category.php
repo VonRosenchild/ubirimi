@@ -16,7 +16,7 @@ class Category
         $this->description = $description;
     }
 
-    public static function deleteById($clientId, $projectCategoryId) {
+    public function deleteById($clientId, $projectCategoryId) {
         $query = "delete from project_category where id = ? and client_id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -41,7 +41,7 @@ class Category
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getAll($clientId) {
+    public function getAll($clientId) {
         $query = "SELECT * from project_category WHERE client_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -54,7 +54,7 @@ class Category
             return null;
     }
 
-    public static function getById($categoryId) {
+    public function getById($categoryId) {
         $query = "SELECT * from project_category WHERE id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -67,7 +67,7 @@ class Category
             return null;
     }
 
-    public static function updateById($categoryId, $name, $description, $date) {
+    public function updateById($categoryId, $name, $description, $date) {
         $query = "update project_category set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -76,7 +76,7 @@ class Category
         $stmt->execute();
     }
 
-    public static function getByName($name, $projectCategoryId, $clientId) {
+    public function getByName($name, $projectCategoryId, $clientId) {
         $query = 'select id, name from project_category where client_id = ? and LOWER(name) = LOWER(?) ';
         if ($projectCategoryId)
             $query .= 'and id != ?';

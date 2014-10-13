@@ -31,7 +31,7 @@ class TypeScheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getByClientId($clientId, $type = null) {
+    public function getByClientId($clientId, $type = null) {
         $query = "select issue_type_scheme.id, issue_type_scheme.name, issue_type_scheme.description " .
                  "from issue_type_scheme " .
                  "where issue_type_scheme.client_id = ? ";
@@ -53,7 +53,7 @@ class TypeScheme
             return null;
     }
 
-    public static function getById($issueTypeSchemeId) {
+    public function getById($issueTypeSchemeId) {
         $query = "select issue_type_scheme.id, issue_type_scheme.name, issue_type_scheme.description " .
                  "from issue_type_scheme " .
                  "where issue_type_scheme.id = ? " .
@@ -69,7 +69,7 @@ class TypeScheme
             return null;
     }
 
-    public static function getMetaDataById($Id) {
+    public function getMetaDataById($Id) {
         $query = "select * " .
             "from issue_type_scheme " .
             "where issue_type_scheme.id = ? " .
@@ -85,7 +85,7 @@ class TypeScheme
             return null;
     }
 
-    public static function getDataById($Id) {
+    public function getDataById($Id) {
         $query = "select issue_type_scheme_data.id, issue_type.name, issue_type.description, issue_type_scheme_data.issue_type_id, issue_type.icon_name as issue_type_icon_name " .
             "from issue_type_scheme_data " .
             "left join issue_type on issue_type.id = issue_type_scheme_data.issue_type_id " .
@@ -101,7 +101,7 @@ class TypeScheme
             return null;
     }
 
-    public static function updateMetaDataById($Id, $name, $description) {
+    public function updateMetaDataById($Id, $name, $description) {
         $query = "update issue_type_scheme set name = ?, description = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -109,7 +109,7 @@ class TypeScheme
         $stmt->execute();
     }
 
-    public static function deleteDataByIssueTypeSchemeId($Id) {
+    public function deleteDataByIssueTypeSchemeId($Id) {
         $query = "delete from issue_type_scheme_data where issue_type_scheme_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -117,7 +117,7 @@ class TypeScheme
         $stmt->execute();
     }
 
-    public static function addData($issueTypeSchemeId, $issueTypeId, $currentDate) {
+    public function addData($issueTypeSchemeId, $issueTypeId, $currentDate) {
         $query = "INSERT INTO issue_type_scheme_data(issue_type_scheme_id, issue_type_id, date_created) VALUES (?, ?, ?)";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -125,7 +125,7 @@ class TypeScheme
         $stmt->execute();
     }
 
-    public static function deleteById($issueTypeSchemeId) {
+    public function deleteById($issueTypeSchemeId) {
         $query = "delete from issue_type_scheme where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -133,7 +133,7 @@ class TypeScheme
         $stmt->execute();
     }
 
-    public static function deleteByClientId($clientId) {
+    public function deleteByClientId($clientId) {
         $issueTypeSchemes = TypeScheme::getByClientId($clientId);
         while ($issueTypeSchemes && $issueTypeScheme = $issueTypeSchemes->fetch_array(MYSQLI_ASSOC)) {
             TypeScheme::deleteDataByIssueTypeSchemeId($issueTypeScheme['id']);
@@ -141,7 +141,7 @@ class TypeScheme
         }
     }
 
-    public static function getMetaDataByNameAndClientId($clientId, $name) {
+    public function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from issue_type_scheme where client_id = ? and LOWER(name) = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

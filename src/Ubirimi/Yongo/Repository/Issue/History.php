@@ -6,14 +6,14 @@ use Ubirimi\Container\UbirimiContainer;
 
 class History
 {
-    public static function deleteByIssueId($issueId) {
+    public function deleteByIssueId($issueId) {
         $query = 'DELETE FROM issue_history WHERE issue_id = ?';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $issueId);
         $stmt->execute();
     }
 
-    public static function getAll() {
+    public function getAll() {
         $query = 'select * from issue_history';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();
@@ -21,7 +21,7 @@ class History
         $result = $stmt->get_result();
         return $result;
     }
-    public static function getByAssigneeNewChangedAfterDate($issueId, $userAssigneeId, $date) {
+    public function getByAssigneeNewChangedAfterDate($issueId, $userAssigneeId, $date) {
         $query = "select * from issue_history where issue_id = ? and new_value_id = ? and field = 'assignee' ";
         if ($date) {
             $query .= ' and date_created >= ? ';
@@ -40,7 +40,7 @@ class History
         return $result;
     }
 
-    public static function updateChangedIds($Id, $oldValueId, $newValueId) {
+    public function updateChangedIds($Id, $oldValueId, $newValueId) {
         $queryUpdate = 'update issue_history set old_value_id = ?, new_value_id = ? where id = ? limit 1';
 
         if ($stmtUpdate = UbirimiContainer::get()['db.connection']->prepare($queryUpdate)) {
@@ -50,7 +50,7 @@ class History
         }
     }
 
-    public static function getByIssueIdAndUserId($issueId = null, $userId = null, $order = null, $resultType = null)
+    public function getByIssueIdAndUserId($issueId = null, $userId = null, $order = null, $resultType = null)
     {
 
         $query = '(select \'history_event\' as source, ' .

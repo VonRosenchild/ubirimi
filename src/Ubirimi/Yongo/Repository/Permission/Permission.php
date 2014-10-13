@@ -49,7 +49,7 @@ class Permission {
     const PERM_VIEW_VOTERS_AND_WATCHERS = 27;
     const PERM_MANAGE_WATCHERS = 28;
 
-    public static function getAll() {
+    public function getAll() {
         $query = "select sys_permission.id, sys_permission.name, sys_permission.description " .
             "from sys_permission";
 
@@ -62,7 +62,7 @@ class Permission {
             return null;
     }
 
-    public static function getByCategory($categoryId) {
+    public function getByCategory($categoryId) {
         $query = "select sys_permission.id, sys_permission.name, sys_permission.description " .
             "from sys_permission " .
             "where sys_permission_category_id = ?";
@@ -77,7 +77,7 @@ class Permission {
             return null;
     }
 
-    public static function getCategories() {
+    public function getCategories() {
         $query = "select sys_permission_category.* " .
             "from sys_permission_category";
 

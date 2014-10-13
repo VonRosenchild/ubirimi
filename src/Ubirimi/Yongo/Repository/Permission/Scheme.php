@@ -29,7 +29,7 @@ class Scheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = "select * from permission_scheme where client_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -42,7 +42,7 @@ class Scheme
             return null;
     }
 
-    public static function getMetaDataById($Id) {
+    public function getMetaDataById($Id) {
         $query = "select * " .
             "from permission_scheme " .
             "where id = ? " .
@@ -58,7 +58,7 @@ class Scheme
             return null;
     }
 
-    public static function updateMetaDataById($Id, $name, $description, $date) {
+    public function updateMetaDataById($Id, $name, $description, $date) {
         $query = "update permission_scheme set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -66,7 +66,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function getDataByPermissionId($permissionSchemeId, $permissionId) {
+    public function getDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "select permission_scheme_data.id, user.id as user_id, user.first_name, user.last_name, permission_scheme_data.reporter, " .
                     "permission_scheme_data.group_id as group_id, group.name as group_name, " .
                     "permission_role.id as permission_role_id, permission_role.name as permission_role_name, " .
@@ -89,7 +89,7 @@ class Scheme
             return null;
     }
 
-    public static function getDataByPermissionSchemeId($permissionSchemeId) {
+    public function getDataByPermissionSchemeId($permissionSchemeId) {
         $query = "select permission_scheme_data.* " .
             "from permission_scheme_data " .
             "where permission_scheme_data.permission_scheme_id = ?";
@@ -105,7 +105,7 @@ class Scheme
             return null;
     }
 
-    public static function getDataByPermissionSchemeIdAndPermissionId($permissionSchemeId, $sysPermissionId) {
+    public function getDataByPermissionSchemeIdAndPermissionId($permissionSchemeId, $sysPermissionId) {
         $query = "select permission_scheme_data.* " .
             "from permission_scheme_data " .
             "where permission_scheme_data.permission_scheme_id = ? and sys_permission_id = ?";
@@ -120,7 +120,7 @@ class Scheme
             return null;
     }
 
-    public static function getDataByProjectIdAndPermissionId($projectId, $sysPermissionId) {
+    public function getDataByProjectIdAndPermissionId($projectId, $sysPermissionId) {
         $query = "select permission_scheme_data.* " .
             "from permission_scheme_data " .
             "left join permission_scheme on permission_scheme.id = permission_scheme_data.permission_scheme_id " .
@@ -137,7 +137,7 @@ class Scheme
             return null;
     }
 
-    public static function getMetaDataByNameAndClientId($clientId, $name) {
+    public function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from permission_scheme where client_id = ? and LOWER(name) = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -150,7 +150,7 @@ class Scheme
             return null;
     }
 
-    public static function addData($permissionSchemeId, $sysPermissionId, $permissionType, $permissionRoleId, $groupId, $userId, $currentDate) {
+    public function addData($permissionSchemeId, $sysPermissionId, $permissionType, $permissionRoleId, $groupId, $userId, $currentDate) {
         switch ($permissionType) {
 
             case Permission::PERMISSION_TYPE_USER:
@@ -205,7 +205,7 @@ class Scheme
         }
     }
 
-    public static function getUsersForPermissionId($permissionSchemeId, $permissionId) {
+    public function getUsersForPermissionId($permissionSchemeId, $permissionId) {
         $query = "select user.id as user_id, user.first_name, user.last_name " .
             "from permission_scheme_data " .
             "left join user on user.id = permission_scheme_data.user_id " .
@@ -222,7 +222,7 @@ class Scheme
             return null;
     }
 
-    public static function getGroupsForPermissionId($permissionSchemeId, $permissionId) {
+    public function getGroupsForPermissionId($permissionSchemeId, $permissionId) {
         $query = "select group.id as group_id, group.name as group_name " .
             "from permission_scheme_data " .
             "left join `group` on group.id = permission_scheme_data.group_id " .
@@ -238,7 +238,7 @@ class Scheme
             return null;
     }
 
-    public static function getPermissionRolesForPermissionId($permissionSchemeId, $permissionId) {
+    public function getPermissionRolesForPermissionId($permissionSchemeId, $permissionId) {
         $query = "select permission_role.id as permission_role_id, permission_role.name as permission_role_name " .
             "from permission_scheme_data " .
             "left join permission_role on permission_role.id = permission_scheme_data.permission_role_id " .
@@ -254,7 +254,7 @@ class Scheme
             return null;
     }
 
-    public static function deleteUserDataByPermissionId($permissionSchemeId, $permissionId) {
+    public function deleteUserDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ? and sys_permission_id = ? and user_id is not null";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -263,7 +263,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteGroupDataByPermissionId($permissionSchemeId, $permissionId) {
+    public function deleteGroupDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ? and sys_permission_id = ? and group_id is not null";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -272,7 +272,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteRoleDataByPermissionId($permissionSchemeId, $permissionId) {
+    public function deleteRoleDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ? and sys_permission_id = ? and permission_role_id is not null";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -281,7 +281,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function addUserDataToPermissionId($permissionSchemeId, $permissionId, $userArray) {
+    public function addUserDataToPermissionId($permissionSchemeId, $permissionId, $userArray) {
         $query = 'insert into permission_scheme_data(permission_scheme_id, sys_permission_id, user_id) values ';
         for ($i = 0; $i < count($userArray); $i++)
             $query .= '(' . $permissionSchemeId . ', ' . $permissionId . ', ' . $userArray[$i] . '),';
@@ -291,7 +291,7 @@ class Scheme
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function addGroupDataToPermissionId($permissionSchemeId, $permissionId, $groupArr) {
+    public function addGroupDataToPermissionId($permissionSchemeId, $permissionId, $groupArr) {
         $query = 'insert into permission_scheme_data(permission_scheme_id, sys_permission_id, group_id) values ';
         for ($i = 0; $i < count($groupArr); $i++)
             $query .= '(' . $permissionSchemeId . ', ' . $permissionId . ', ' . $groupArr[$i] . '),';
@@ -300,7 +300,7 @@ class Scheme
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function addRoleDataToPermissionId($permissionSchemeId, $permissionId, $roleArr, $currentDate) {
+    public function addRoleDataToPermissionId($permissionSchemeId, $permissionId, $roleArr, $currentDate) {
         $query = 'insert into permission_scheme_data(permission_scheme_id, sys_permission_id, permission_role_id, date_created) values ';
         for ($i = 0; $i < count($roleArr); $i++)
             $query .= '(' . $permissionSchemeId . ', ' . $permissionId . ', ' . $roleArr[$i] . ", '" . $currentDate . "'),";
@@ -309,7 +309,7 @@ class Scheme
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteDataById($permissionSchemeDataId) {
+    public function deleteDataById($permissionSchemeDataId) {
         $query = "delete from permission_scheme_data where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -318,7 +318,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteDataByPermissionSchemeId($permissionSchemeId) {
+    public function deleteDataByPermissionSchemeId($permissionSchemeId) {
         $query = "delete from permission_scheme_data where permission_scheme_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -326,7 +326,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function addDefaultPermissions($permissionSchemeId, $roleAdministratorsId, $roleDevelopersId, $roleUsersId, $currentDate) {
+    public function addDefaultPermissions($permissionSchemeId, $roleAdministratorsId, $roleDevelopersId, $roleUsersId, $currentDate) {
         Scheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADMINISTER_PROJECTS, array($roleAdministratorsId), $currentDate);
         Scheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_BROWSE_PROJECTS, array($roleUsersId), $currentDate);
 
@@ -361,7 +361,7 @@ class Scheme
         Scheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_MANAGE_WATCHERS, array($roleAdministratorsId), $currentDate);
     }
 
-    public static function deleteById($permissionSchemeId) {
+    public function deleteById($permissionSchemeId) {
         $query = "delete from permission_scheme where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -370,7 +370,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteByClientId($clientId) {
+    public function deleteByClientId($clientId) {
         $permissionSchemes = Scheme::getByClientId($clientId);
         while ($permissionSchemes && $permissionScheme = $permissionSchemes->fetch_array(MYSQLI_ASSOC)) {
             Scheme::deleteDataByPermissionSchemeId($permissionScheme['id']);
@@ -378,7 +378,7 @@ class Scheme
         }
     }
 
-    public static function addDataRaw($permissionSchemeId, $permissionId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $projectLead, $currentDate) {
+    public function addDataRaw($permissionSchemeId, $permissionId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $projectLead, $currentDate) {
         $query = "INSERT INTO permission_scheme_data(permission_scheme_id, sys_permission_id, permission_role_id, group_id, user_id, current_assignee, reporter, " .
             "project_lead, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -390,7 +390,7 @@ class Scheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getByClientIdAndGroupBy($clientId, $groupId) {
+    public function getByClientIdAndGroupBy($clientId, $groupId) {
         $query = "select permission_scheme.* " .
             "from permission_scheme " .
             "left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id " .

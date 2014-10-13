@@ -21,7 +21,7 @@ class ViewController extends UbirimiController
         $projectId = $request->get('id');
         $slaSelectedId = $request->get('sla_id');
 
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
         $SLAs = Sla::getByProjectId($projectId);
 
         $menuSelectedCategory = 'help_desk';

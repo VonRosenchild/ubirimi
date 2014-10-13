@@ -22,7 +22,7 @@ class ViewSummaryController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
             $loggedInUserId = $session->get('user/id');
             $clientId = $session->get('client/id');
-            $project = Project::getById($projectId);
+            $project = $this->getRepository('yongo.project.project')->getById($projectId);
             $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $project['name'];
         } else {
             $httpHOST = Util::getHttpHost();
@@ -30,7 +30,7 @@ class ViewSummaryController extends UbirimiController
             $loggedInUserId = null;
             $clientSettings = Client::getSettings($clientId);
 
-            $project = Project::getById($projectId);
+            $project = $this->getRepository('yongo.project.project')->getById($projectId);
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $project['name'];
         }
 

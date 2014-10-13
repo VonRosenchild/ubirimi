@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Type
 {
-    public static function getAll($clientId) {
+    public function getAll($clientId) {
         $query = "SELECT issue_type.* " .
                  "FROM issue_type " .
                  "where issue_type.client_id = ?";
@@ -21,7 +21,7 @@ class Type
             return null;
     }
 
-    public static function getAllSubTasks($clientId) {
+    public function getAllSubTasks($clientId) {
         $query = "SELECT issue_type.* " .
                  "FROM issue_type " .
                  "where issue_type.client_id = ? and sub_task_flag = 1";
@@ -36,7 +36,7 @@ class Type
             return null;
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = "SELECT id, name, description, client_id FROM issue_type WHERE id = ? LIMIT 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -49,7 +49,7 @@ class Type
             return null;
     }
 
-    public static function updateById($Id, $name, $description, $date) {
+    public function updateById($Id, $name, $description, $date) {
         $query = 'UPDATE issue_type SET ' .
                  'name = ?, description = ?, date_updated = ? ' .
                  'WHERE id = ? ' .
@@ -60,7 +60,7 @@ class Type
         $stmt->execute();
     }
 
-    public static function getSchemesForIssueTypeId($typeId, $type) {
+    public function getSchemesForIssueTypeId($typeId, $type) {
         $query = "select issue_type_scheme.name, issue_type_scheme.description, issue_type_scheme.id " .
             "from issue_type " .
             "left join issue_type_scheme_data on issue_type_scheme_data.issue_type_id = issue_type.id " .
@@ -78,7 +78,7 @@ class Type
             return null;
     }
 
-    public static function getByProjects($projectIdsArray) {
+    public function getByProjects($projectIdsArray) {
         $query = "select distinct issue_type.id, issue_type.name " .
             "from project " .
             "left join issue_type_scheme_data on issue_type_scheme_data.issue_type_scheme_id = project.issue_type_scheme_id " .
@@ -94,7 +94,7 @@ class Type
             return null;
     }
 
-    public static function deleteById($Id) {
+    public function deleteById($Id) {
         $query = 'delete from issue_type where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

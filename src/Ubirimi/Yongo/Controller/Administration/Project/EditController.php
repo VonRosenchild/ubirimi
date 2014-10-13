@@ -29,7 +29,7 @@ class EditController extends UbirimiController
         $leadUsers = Client::getUsers($session->get('client/id'));
 
         // todo: leadul sa fie adaugat in lista de useri pentru acest proiect
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -63,7 +63,7 @@ class EditController extends UbirimiController
             if (empty($name)) {
                 $emptyName = true;
             } else {
-                $duplicateProjectByName = Project::getByName(mb_strtolower($name), $projectId, $session->get('client/id'));
+                $duplicateProjectByName = $this->getRepository('yongo.project.project')->getByName(mb_strtolower($name), $projectId, $session->get('client/id'));
                 if ($duplicateProjectByName) {
                     $duplicate_name = true;
                 }
@@ -72,7 +72,7 @@ class EditController extends UbirimiController
             if (empty($code)) {
                 $emptyCode = true;
             } else {
-                $project_exists = Project::getByCode(mb_strtolower($code), $projectId, $session->get('client/id'));
+                $project_exists = $this->getRepository('yongo.project.project')->getByCode(mb_strtolower($code), $projectId, $session->get('client/id'));
                 if ($project_exists)
                     $duplicateCode = true;
             }

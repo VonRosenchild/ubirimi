@@ -29,7 +29,7 @@ class Scheme
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function addData($screenSchemeId, $operationId, $screenId, $currentDate) {
+    public function addData($screenSchemeId, $operationId, $screenId, $currentDate) {
         $query = "INSERT INTO screen_scheme_data(screen_scheme_id, sys_operation_id, screen_id, date_created) VALUES (?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -38,7 +38,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteDataByScreenSchemeId($Id) {
+    public function deleteDataByScreenSchemeId($Id) {
         $query = "delete from screen_scheme_data where screen_scheme_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -46,7 +46,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function updateDataById($screenSchemeId, $operationId, $screenId) {
+    public function updateDataById($screenSchemeId, $operationId, $screenId) {
         $query = "update screen_scheme_data set screen_id = ? where screen_scheme_id = ? and sys_operation_id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -54,7 +54,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function updateMetaDataById($Id, $name, $description, $date) {
+    public function updateMetaDataById($Id, $name, $description, $date) {
         $query = "update screen_scheme set name = ?, description = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -62,7 +62,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function getDataByScreenSchemeId($screenSchemeId) {
+    public function getDataByScreenSchemeId($screenSchemeId) {
         $query = "select screen_scheme_data.id, screen_scheme_data.sys_operation_id, screen_scheme_data.screen_id, screen.name as screen_name, sys_operation.name as operation_name " .
             "from screen_scheme_data " .
             "left join screen on screen.id = screen_scheme_data.screen_id " .
@@ -79,7 +79,7 @@ class Scheme
             return null;
     }
 
-    public static function getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId) {
+    public function getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId) {
         $query = "select screen_scheme_data.id, screen_scheme_data.sys_operation_id, screen_scheme_data.screen_id, screen.name as screen_name, sys_operation.name as operation_name " .
             "from screen_scheme_data " .
             "left join screen on screen.id = screen_scheme_data.screen_id " .
@@ -98,7 +98,7 @@ class Scheme
             return null;
     }
 
-    public static function getDataByScreenDataId($Id) {
+    public function getDataByScreenDataId($Id) {
         $query = "select screen_scheme_data.id, screen_scheme_data.screen_scheme_id, screen_scheme_data.sys_operation_id, screen_scheme_data.screen_id, screen.name as screen_name, sys_operation.name as operation_name " .
             "from screen_scheme_data " .
             "left join screen on screen.id = screen_scheme_data.screen_id " .
@@ -115,7 +115,7 @@ class Scheme
             return null;
     }
 
-    public static function getMetaDataById($Id) {
+    public function getMetaDataById($Id) {
         $query = "select * " .
             "from screen_scheme " .
             "where id = ? " .
@@ -131,7 +131,7 @@ class Scheme
             return null;
     }
 
-    public static function getMetaDataByClientId($clientId) {
+    public function getMetaDataByClientId($clientId) {
         $query = "select * from screen_scheme where client_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -144,7 +144,7 @@ class Scheme
             return null;
     }
 
-    public static function getMetaDataByNameAndClientId($clientId, $name) {
+    public function getMetaDataByNameAndClientId($clientId, $name) {
         $query = "select * from screen_scheme where client_id = ? and LOWER(name) = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -157,7 +157,7 @@ class Scheme
             return null;
     }
 
-    public static function getByIssueType($issueTypeId, $clientId) {
+    public function getByIssueType($issueTypeId, $clientId) {
         $query = "select screen_scheme.id, screen_scheme.name " .
                  "from screen_scheme " .
                  "left join issue_type_screen_scheme_data on issue_type_screen_scheme_data.screen_scheme_id = screen_scheme.id " .
@@ -175,7 +175,7 @@ class Scheme
             return null;
     }
 
-    public static function getByScreenId($clientId, $screenId) {
+    public function getByScreenId($clientId, $screenId) {
         $query = "select screen_scheme.id, screen_scheme.name " .
             "from screen_scheme_data " .
             "left join screen_scheme on screen_scheme.id = screen_scheme_data.screen_scheme_id " .
@@ -193,7 +193,7 @@ class Scheme
             return null;
     }
 
-    public static function deleteById($screenSchemeId) {
+    public function deleteById($screenSchemeId) {
         $query = "delete from screen_scheme where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -201,7 +201,7 @@ class Scheme
         $stmt->execute();
     }
 
-    public static function deleteByClientId($clientId) {
+    public function deleteByClientId($clientId) {
         $screenSchemes = Scheme::getMetaDataByClientId($clientId);
         while ($screenSchemes && $screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {
             Scheme::deleteDataByScreenSchemeId($screenScheme['id']);

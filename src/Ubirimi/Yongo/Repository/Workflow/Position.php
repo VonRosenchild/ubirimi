@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Position
 {
-    public static function getByWorkflowId($Id) {
+    public function getByWorkflowId($Id) {
         $query = "select * " .
             "from workflow_position " .
             "where workflow_position.workflow_id = " . $Id;
@@ -20,7 +20,7 @@ class Position
             return null;
     }
 
-    public static function deleteByWorkflowId($workflowId) {
+    public function deleteByWorkflowId($workflowId) {
         $query = "delete from workflow_position where workflow_id = ? ";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -28,7 +28,7 @@ class Position
         $stmt->execute();
     }
 
-    public static function addSinglePositionRecord($workflowId, $stepId, $topPosition, $leftPosition) {
+    public function addSinglePositionRecord($workflowId, $stepId, $topPosition, $leftPosition) {
         $q = 'insert into workflow_position(workflow_id, workflow_step_id, top_position, left_position) values(?, ?, ?, ?)';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
@@ -37,7 +37,7 @@ class Position
         $stmt->execute();
     }
 
-    public static function addPosition($workflowId, $data) {
+    public function addPosition($workflowId, $data) {
         for ($i = 0; $i < count($data); $i++) {
             $q = 'insert into workflow_position(workflow_id, workflow_step_id, top_position, left_position) ' .
                 'values(?, ?, ?, ?)';

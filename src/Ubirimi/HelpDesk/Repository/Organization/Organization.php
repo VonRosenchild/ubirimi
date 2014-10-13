@@ -4,7 +4,7 @@ namespace Ubirimi\HelpDesk\Repository\Organization;
 
 class Organization
 {
-    public static function getByClientId($clientId) {
+    public function getByClientId($clientId) {
         $query = 'SELECT * from help_organization where client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -18,7 +18,7 @@ class Organization
             return null;
     }
 
-    public static function getByName($clientId, $name, $organizationId = null) {
+    public function getByName($clientId, $name, $organizationId = null) {
         $query = 'select id, name, description ' .
             'from help_organization ' .
             'where client_id = ? ' .
@@ -43,7 +43,7 @@ class Organization
             return null;
     }
 
-    public static function create($clientId, $name, $date) {
+    public function create($clientId, $name, $date) {
         $query = "INSERT INTO help_organization(client_id, name, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -54,7 +54,7 @@ class Organization
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getById($organizationId) {
+    public function getById($organizationId) {
         $query = 'SELECT * from help_organization where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -68,7 +68,7 @@ class Organization
             return null;
     }
 
-    public static function updateById($organizationId, $name, $description, $date) {
+    public function updateById($organizationId, $name, $description, $date) {
         $query = 'update help_organization set name = ?, description = ?, date_updated = ? where id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -76,7 +76,7 @@ class Organization
         $stmt->execute();
     }
 
-    public static function deleteById($id) {
+    public function deleteById($id) {
         $query = 'delete from help_organization WHERE id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

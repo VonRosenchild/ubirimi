@@ -26,7 +26,7 @@ class ListController extends UbirimiController
 
         $clientId = $session->get('client/id');
         $projectId = $request->get('id');
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
         $calendars = SLACalendar::getByProjectId($projectId);
 
         $SLAs = Sla::getByProjectId($projectId);

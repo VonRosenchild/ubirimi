@@ -31,9 +31,9 @@ class WorkDoneDistributionController extends UbirimiController
         $projectId = $request->get('id');
         $dateFrom = $request->get('date_from');
         $dateTo = $request->get('date_to');
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
-        $workData = Project::getWorkDoneDistributition($projectId, $dateFrom, $dateTo, 'array');
+        $workData = $this->getRepository('yongo.project.project')->getWorkDoneDistributition($projectId, $dateFrom, $dateTo, 'array');
         $workDataPrepared = array();
 
         if ($workData) {
@@ -42,7 +42,7 @@ class WorkDoneDistributionController extends UbirimiController
             }
         }
 
-        $issueTypes = Project::getIssueTypes($projectId, true, 'array');
+        $issueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($projectId, true, 'array');
         if ($project['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }

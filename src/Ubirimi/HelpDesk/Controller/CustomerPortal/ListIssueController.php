@@ -52,7 +52,7 @@ class ListIssueController extends UbirimiController
             $getProjectIds = $request->request->has('project') ? explode('|', $request->query->get('project')) : null;
             if ($getProjectIds) {
                 for ($pos = 0; $pos < count($getProjectIds); $pos++) {
-                    $projectFilter = Project::getById($getProjectIds[$pos]);
+                    $projectFilter = $this->getRepository('yongo.project.project')->getById($getProjectIds[$pos]);
 
                     if ($projectFilter['client_id'] != $session->get('client/id')) {
                         return new RedirectResponse('/general-settings/bad-link-access-denied');

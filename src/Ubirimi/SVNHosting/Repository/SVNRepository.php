@@ -10,7 +10,7 @@ use Ubirimi\Util;
 
 class SVNRepository
 {
-    public static function getByCode($code, $clientId) {
+    public function getByCode($code, $clientId) {
         return false;
 
         $query = 'select id, name, code from project where client_id = ? and LOWER(code) = LOWER(?) ';
@@ -30,7 +30,7 @@ class SVNRepository
             return false;
     }
 
-    public static function getById($repoId) {
+    public function getById($repoId) {
         $query = 'SELECT svn_repository.*,
                          user.first_name, user.last_name
                     FROM svn_repository
@@ -48,7 +48,7 @@ class SVNRepository
             return null;
     }
 
-    public static function getUserById($repoUserId) {
+    public function getUserById($repoUserId) {
         $query = 'SELECT svn_repository_user.*,
                          user.first_name, user.last_name, user.email, user.username
                     FROM svn_repository_user
@@ -66,7 +66,7 @@ class SVNRepository
             return null;
     }
 
-    public static function getUserByRepoIdAndUserId($repoId, $userId) {
+    public function getUserByRepoIdAndUserId($repoId, $userId) {
         $query = 'SELECT svn_repository_user.*,
                          user.first_name, user.last_name, user.email, user.username
                     FROM svn_repository_user
@@ -85,7 +85,7 @@ class SVNRepository
             return null;
     }
 
-    public static function addRepo($clientId, $userCreatedId, $name, $description, $code, $currentDate) {
+    public function addRepo($clientId, $userCreatedId, $name, $description, $code, $currentDate) {
         $query = "INSERT INTO svn_repository(client_id, user_created_id, name, description, code, date_created) VALUES " .
             "(?, ?, ?, ?, ?, ?)";
 
@@ -96,7 +96,7 @@ class SVNRepository
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function updateRepo($description, $code, $repoId, $date) {
+    public function updateRepo($description, $code, $repoId, $date) {
         $query = "UPDATE svn_repository SET
                     description = ?,
                     code = ?,
@@ -111,7 +111,7 @@ class SVNRepository
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getAllByClientId($clientId, $resultType = null, $resultColumn = null) {
+    public function getAllByClientId($clientId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT svn_repository.id, svn_repository.client_id, user_created_id, name, description, code,
                             svn_repository.date_created, user.first_name, user.last_name ' .
                     'FROM svn_repository ' .
@@ -141,7 +141,7 @@ class SVNRepository
             return null;
     }
 
-    public static function getAll($filters = array()) {
+    public function getAll($filters = array()) {
         $query = 'SELECT svn_repository.id, svn_repository.client_id, user_created_id, name, description, code,
                             svn_repository.date_created, user.first_name, user.last_name,
                             client.company_domain ' .
@@ -172,7 +172,7 @@ class SVNRepository
             return null;
     }
 
-    public static function getRepositoriesByUserId($clientId, $userId, $resultType = null, $resultColumn = null) {
+    public function getRepositoriesByUserId($clientId, $userId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT svn_repository.id, svn_repository.client_id, user_created_id, name, description, code,
                             svn_repository.date_created, user.first_name, user.last_name ' .
                     'FROM svn_repository ' .
@@ -204,7 +204,7 @@ class SVNRepository
             return null;
     }
 
-    public static function getUserList($repoId, $resultType = null, $resultColumn = null) {
+    public function getUserList($repoId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT svn_repository_user.*,
                          user.first_name, user.last_name, user.email, user.username
                     FROM svn_repository_user
@@ -233,7 +233,7 @@ class SVNRepository
             return null;
     }
 
-    public static function addUser($repoId, $userId) {
+    public function addUser($repoId, $userId) {
         $query = "INSERT INTO svn_repository_user(svn_repository_id, user_id, date_created) " .
                         "VALUES (?, ?, ?)";
 
@@ -243,7 +243,7 @@ class SVNRepository
         $stmt->execute();
     }
 
-    public static function updateUserPermissions($repoId, $userId, $hasRead, $hasWrite) {
+    public function updateUserPermissions($repoId, $userId, $hasRead, $hasWrite) {
         $query = "UPDATE svn_repository_user
                     SET has_read = ?,
                         has_write = ?
@@ -255,7 +255,7 @@ class SVNRepository
         $stmt->execute();
     }
 
-    public static function updateUserPassword($repoId, $userId, $password) {
+    public function updateUserPassword($repoId, $userId, $password) {
         $query = "UPDATE svn_repository_user
                     SET password = ?
                     WHERE svn_repository_id = ?
@@ -267,7 +267,7 @@ class SVNRepository
         $stmt->execute();
     }
 
-    public static function deleteById($Id) {
+    public function deleteById($Id) {
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
@@ -281,7 +281,7 @@ class SVNRepository
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public static function deleteAllById($Id) {
+    public function deleteAllById($Id) {
         $repo = SVNRepository::getById($Id);
         $client = Client::getById($repo['svn_repository.client_id']);
 
@@ -299,7 +299,7 @@ class SVNRepository
         SVNRepository::refreshApacheConfig();
     }
 
-    public static function deleteUserById($Id) {
+    public function deleteUserById($Id) {
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
@@ -318,7 +318,7 @@ class SVNRepository
      *
      * @param string Path to create subversion
      */
-    public static function createSvn($path) {
+    public function createSvn($path) {
         $escape_path = escapeshellarg($path);
         $message = ConsoleUtils::runCmdCaptureMessage(SVNUtils::svnadminCommand("create $escape_path"), $return);
         if ($return) {
@@ -326,7 +326,7 @@ class SVNRepository
         }
     }
 
-    public static function updateHtpasswd($repoId, $companyDomain) {
+    public function updateHtpasswd($repoId, $companyDomain) {
         $text = "";
 
         $repository = SVNRepository::getById($repoId);
@@ -353,7 +353,7 @@ class SVNRepository
         @file_put_contents($path, $text);
     }
 
-    public static function updateAuthz() {
+    public function updateAuthz() {
         $text = "# This is an auto generated file! Edit at your own risk!\n";
         $text .= "# You can edit this \"/\" section. Settings will be kept\n";
         $text .= "#\n";
@@ -425,12 +425,12 @@ class SVNRepository
         }
     }
 
-    public static function apacheConfig($clientDomain, $repositoryName) {
+    public function apacheConfig($clientDomain, $repositoryName) {
         file_put_contents(UbirimiContainer::get()['subversion.apache_config'], "Use SubversionRepo $clientDomain $repositoryName\n", FILE_APPEND | LOCK_EX);
         system("/etc/init.d/apache2 reload");
     }
 
-    public static function refreshApacheConfig() {
+    public function refreshApacheConfig() {
         $text = "";
 
         $query = "SELECT *
@@ -450,7 +450,7 @@ class SVNRepository
         system("/etc/init.d/apache2 reload");
     }
 
-    public static function getAdministratorsByClientId($clientId) {
+    public function getAdministratorsByClientId($clientId) {
         $query = 'SELECT user.* FROM user WHERE client_id = ? and svn_administrator_flag = 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -464,14 +464,14 @@ class SVNRepository
             return null;
     }
 
-    public static function addAdministrator($users) {
+    public function addAdministrator($users) {
         $query = "UPDATE user SET svn_administrator_flag = 1 where id IN (" . implode(', ', $users) . ")";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();
     }
 
-    public static function deleteAdministratorById($clientId, $Id) {
+    public function deleteAdministratorById($clientId, $Id) {
         $query = "UPDATE user SET svn_administrator_flag = 0 where client_id = ? and id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

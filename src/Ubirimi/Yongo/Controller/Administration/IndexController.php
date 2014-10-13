@@ -25,8 +25,8 @@ class IndexController extends UbirimiController
 
         if ($hasYongoGlobalAdministrationPermission && $hasYongoGlobalSystemAdministrationPermission) {
             $projects = Client::getProjects($session->get('client/id'), 'array');
-            $last5Projects = Project::getLast5ByClientId($session->get('client/id'));
-            $countProjects = Project::getCount($session->get('client/id'));
+            $last5Projects = $this->getRepository('yongo.project.project')->getLast5ByClientId($session->get('client/id'));
+            $countProjects = $this->getRepository('yongo.project.project')->getCount($session->get('client/id'));
         } else if ($hasYongoAdministerProjectsPermission) {
             $projects = Client::getProjectsByPermission(
                 $session->get('client/id'),

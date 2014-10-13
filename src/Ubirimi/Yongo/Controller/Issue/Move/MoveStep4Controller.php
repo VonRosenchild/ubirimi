@@ -22,7 +22,7 @@
     $issueQueryParameters = array('issue_id' => $issueId);
     $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
     $projectId = $issue['issue_project_id'];
-    $issueProject = Project::getById($projectId);
+    $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
     // before going further, check to is if the issue project belongs to the client
     if ($clientId != $issueProject['client_id']) {
@@ -96,7 +96,7 @@
 
     $newStatusName = Settings::getById($session->get('move_issue/new_status'), 'status', 'name');
 
-    $newProject = Project::getById($session->get('move_issue/new_project'));
+    $newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
     $newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
 
     $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);

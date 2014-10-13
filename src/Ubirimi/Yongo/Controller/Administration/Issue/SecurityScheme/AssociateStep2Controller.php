@@ -19,7 +19,7 @@ class AssociateStep2Controller extends UbirimiController
         $projectId = $request->get('id');
         $schemeId = $request->get('scheme_id');
         $selectedScheme = SecurityScheme::getMetaDataById($schemeId);
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         $projectIssueSecuritySchemeId = $project['issue_security_scheme_id'];
         $projectIssueSecurityScheme = null;

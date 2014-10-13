@@ -15,7 +15,7 @@ class Sla
     const CONDITION_CREATE_ISSUE = 'issue_created';
     const CONDITION_RESOLUTION_SET = 'resolution_set';
 
-    public static function getByProjectId($projectId, $resultType = null, $order = null) {
+    public function getByProjectId($projectId, $resultType = null, $order = null) {
         $query = 'SELECT * from help_sla where project_id = ?';
 
         if ($order) {
@@ -43,7 +43,7 @@ class Sla
             return null;
     }
 
-    public static function getByProjectIds($projectIds) {
+    public function getByProjectIds($projectIds) {
         $query = 'SELECT * from help_sla where project_id IN (' . implode(', ', $projectIds) . ') order by id desc';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -56,7 +56,7 @@ class Sla
             return null;
     }
 
-    public static function getById($Id) {
+    public function getById($Id) {
         $query = 'SELECT * from help_sla where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -70,7 +70,7 @@ class Sla
             return null;
     }
 
-    public static function getByName($name, $projectId, $slaId = null) {
+    public function getByName($name, $projectId, $slaId = null) {
         $query = 'select id, name from help_sla where project_id = ? and LOWER(name) = LOWER(?) ';
         if ($slaId) {
             $query .= 'and id != ?';
@@ -91,7 +91,7 @@ class Sla
             return false;
     }
 
-    public static function save($projectId, $name, $description, $startCondition, $stopCondition, $date) {
+    public function save($projectId, $name, $description, $startCondition, $stopCondition, $date) {
         $query = "INSERT INTO help_sla(project_id, name, description, start_condition, stop_condition, date_created) VALUES " .
             "(?, ?, ?, ?, ?, ?)";
 
@@ -102,7 +102,7 @@ class Sla
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function addGoal($slaId, $SLACalendarId, $definition, $definitionSQL, $value) {
+    public function addGoal($slaId, $SLACalendarId, $definition, $definitionSQL, $value) {
         $query = "INSERT INTO help_sla_goal(help_sla_id, help_sla_calendar_id, definition, definition_sql, value) VALUES " .
                  "(?, ?, ?, ?, ?)";
 
@@ -113,7 +113,7 @@ class Sla
         return UbirimiContainer::get()['db.connection']->insert_id;
     }
 
-    public static function getGoals($slaId) {
+    public function getGoals($slaId) {
         $query = 'select help_sla_goal.id, help_sla_goal.help_sla_id, help_sla_goal.help_sla_calendar_id, ' .
                  'help_sla_goal.definition, help_sla_goal.definition_sql, help_sla_goal.value, ' .
                  'help_sla_calendar.name as calendar_name ' .
@@ -133,7 +133,7 @@ class Sla
             return false;
     }
 
-    public static function deleteById($Id) {
+    public function deleteById($Id) {
         $query = "delete from help_sla_goal where help_sla_id = ?";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $Id);
@@ -161,7 +161,7 @@ class Sla
         $stmt->close();
     }
 
-    public static function transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId) {
+    public function transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId) {
 
         $value = mb_strtolower($goal['definition']);
         $currentSLAId = $goal['help_sla_id'];
@@ -232,7 +232,7 @@ class Sla
         return $query;
     }
 
-    public static function checkConditionOnIssue($slaCondition, $issue, $historyData, $type, $currentSLADate) {
+    public function checkConditionOnIssue($slaCondition, $issue, $historyData, $type, $currentSLADate) {
 
         $conditions = explode("#", $slaCondition);
         $conditionFulfilledDate = null;
@@ -305,7 +305,7 @@ class Sla
         return $conditionFulfilledDate;
     }
 
-    public static function getSLAData($issueId, $SLAId) {
+    public function getSLAData($issueId, $SLAId) {
         $query = 'select * from yongo_issue_sla where yongo_issue_id = ? and help_sla_id = ? limit 1 ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -320,7 +320,7 @@ class Sla
             return false;
     }
 
-    public static function getGoalForIssueId($slaId, $issueId, $projectId, $clientId) {
+    public function getGoalForIssueId($slaId, $issueId, $projectId, $clientId) {
         $goals = Sla::getGoals($slaId);
         $goalValue = null;
         $goalId = null;
@@ -356,7 +356,7 @@ class Sla
         return array('value' => $goalValue, 'id' => $goalId, 'goalCalendarId' => $goalCalendarId);
     }
 
-    public static function getOffsetForIssue($SLA, $issue, $clientId, $clientSettings) {
+    public function getOffsetForIssue($SLA, $issue, $clientId, $clientSettings) {
         $issueId = $issue['id'];
         $goalData = Sla::getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
         $goalId = $goalData['id'];
@@ -485,7 +485,7 @@ class Sla
                      'endDate' => end($stopConditionSLADates));
     }
 
-    public static function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId, $startedDate, $stoppedDate) {
+    public function updateDataForSLA($issueId, $SLAId, $intervalMinutes, $goalId, $startedDate, $stoppedDate) {
         $query = "update yongo_issue_sla set `value` = ?, help_sla_goal_id = ? ";
 
         if ($startedDate) {
@@ -507,7 +507,7 @@ class Sla
         $stmt->execute();
     }
 
-    public static function checkSLABelongsToProject($slaId, $projectId) {
+    public function checkSLABelongsToProject($slaId, $projectId) {
         $query = 'select id from help_sla where id = ? and project_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -522,7 +522,7 @@ class Sla
             return false;
     }
 
-    public static function transformConditionForView($condition) {
+    public function transformConditionForView($condition) {
         $condition = str_replace(array('start_', 'stop_'), '' , $condition);
         if (substr($condition, 0, 11) == 'status_set_') {
             $StatusId = str_replace('status_set_', '', $condition);
@@ -537,7 +537,7 @@ class Sla
         return ucwords($condition);
     }
 
-    public static function deleteGoalsBySLAId($slaId) {
+    public function deleteGoalsBySLAId($slaId) {
         $query = "delete from help_sla_goal where help_sla_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -545,7 +545,7 @@ class Sla
         $stmt->execute();
     }
 
-    public static function updateById($slaId, $name, $description, $startCondition, $stopCondition, $date) {
+    public function updateById($slaId, $name, $description, $startCondition, $stopCondition, $date) {
         $query = "update help_sla set name = ?, description = ?, start_condition = ?, stop_condition = ?, date_updated = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -553,7 +553,7 @@ class Sla
         $stmt->execute();
     }
 
-    public static function formatOffset($value) {
+    public function formatOffset($value) {
         $hours = floor(abs($value) / 60);
         $minutes = (abs($value) % 60);
         $sign = '';
@@ -564,7 +564,7 @@ class Sla
         return sprintf('%s%s:%s', $sign, $hours, $minutes);
     }
 
-    public static function getGoalById($goalId) {
+    public function getGoalById($goalId) {
         $query = 'select * from help_sla_goal where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -579,7 +579,7 @@ class Sla
             return false;
     }
 
-    public static function getByCalendarId($clientId, $calendarId) {
+    public function getByCalendarId($clientId, $calendarId) {
         $query = 'select help_sla.* ' .
             'from help_sla ' .
             'left join project on project.id = help_sla.project_id ' .
@@ -598,7 +598,7 @@ class Sla
             return false;
     }
 
-    public static function getIssues($slaId, $dateFrom, $dateTo) {
+    public function getIssues($slaId, $dateFrom, $dateTo) {
         $query = 'select yongo_issue.id, yongo_issue.date_created, (help_sla_goal.value - yongo_issue_sla.value) as sla_value, yongo_issue_sla.stopped_date ' .
                  'from yongo_issue_sla ' .
                  'left join help_sla_goal on help_sla_goal.help_sla_id = yongo_issue_sla.help_sla_id ' .

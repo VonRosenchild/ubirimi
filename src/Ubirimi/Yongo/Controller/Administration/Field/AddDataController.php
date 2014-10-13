@@ -11,8 +11,6 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Custom;
 use Ubirimi\Repository\Log;
 use Ubirimi\Yongo\Repository\Field\Type;
-use Ubirimi\Yongo\Repository\Issue\Type;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class AddDataController extends UbirimiController
 {
@@ -21,7 +19,7 @@ class AddDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypes = Type::getAll($session->get('client/id'));
-        $projects = Project::getByClientId($session->get('client/id'));
+        $projects = $this->getRepository('yongo.project.project')->getByClientId($session->get('client/id'));
 
         $fieldTypeCode = $request->get('type');
 

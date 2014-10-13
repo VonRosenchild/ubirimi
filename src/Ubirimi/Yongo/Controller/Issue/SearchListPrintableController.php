@@ -22,7 +22,7 @@ $getCommentsFlag = isset($_GET['comments_flag']) ? $_GET['comments_flag'] : null
 $getProjectIds = isset($_GET['project']) ? explode('|', $_GET['project']) : null;
 
 if ($getProjectIds) {
-    $projectsData = Project::getByIds($getProjectIds);
+    $projectsData = $this->getRepository('yongo.project.project')->getByIds($getProjectIds);
     if (!$projectsData) {
         header('Location: /general-settings/bad-link-access-denied');
         die();

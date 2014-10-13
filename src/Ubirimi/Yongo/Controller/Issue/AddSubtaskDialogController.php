@@ -19,22 +19,22 @@ class AddSubtaskDialogController extends UbirimiController
         $issueId = $request->get('issue_id');
         $projectId = $request->get('project_id');
 
-        $projectData = Project::getById($projectId);
+        $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
         $projectId = $projectData['id'];
 
         $issue_priorities = Settings::getAllIssueSettings('priority', $session->get('client/id'));
-        $issue_types = Project::getSubTasksIssueTypes($projectId);
+        $issue_types = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes($projectId);
 
         $firstIssueType = $issue_types->fetch_array(MYSQLI_ASSOC);
         $issueTypeId = $firstIssueType['id'];
         $issue_types->data_seek(0);
 
-        $screenData = Project::getScreenData($projectData, $issueTypeId, SystemOperation::OPERATION_CREATE);
-        $projectComponents = Project::getComponents($projectId);
-        $projectVersions = Project::getVersions($projectId);
+        $screenData = $this->getRepository('yongo.project.project')->getScreenData($projectData, $issueTypeId, SystemOperation::OPERATION_CREATE);
+        $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
+        $projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
 
-        $assignableUsers = Project::getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
-        $reporterUsers = Project::getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+        $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
+        $reporterUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
 
         $userHasModifyReporterPermission = Project::userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $session->get('user/id'));
         $userHasAssignIssuePermission = Project::userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $session->get('user/id'));

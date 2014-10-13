@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Statistic
 {
-    public static function getUnresolvedIssuesByProjectForUser($userId) {
+    public function getUnresolvedIssuesByProjectForUser($userId) {
         $q = 'select count(yongo_issue.id) as total, project.name, project.id as project_id ' .
             'from yongo_issue ' .
             'left join project on yongo_issue.project_id = project.id ' .
@@ -26,7 +26,7 @@ class Statistic
             return null;
     }
 
-    public static function getComponentOrVersionStatsUnresolvedBySetting($projectId, $setting, $comp_version_id, $type) {
+    public function getComponentOrVersionStatsUnresolvedBySetting($projectId, $setting, $comp_version_id, $type) {
         $query = 'select count(yongo_issue.id) as count, ';
         if ($setting != 'assignee') {
             $query .= 'issue_' . $setting . '.name, yongo_issue.' . $setting . '_id as setting_id ';
@@ -75,7 +75,7 @@ class Statistic
             return null;
     }
 
-    public static function getComponentORVersionCountUnresolved($comp_version_id, $type) {
+    public function getComponentORVersionCountUnresolved($comp_version_id, $type) {
         $query = 'select count(yongo_issue.id) as count ' .
             'from yongo_issue ' .
             'left join issue_' . $type . ' on yongo_issue.id = issue_' . $type . '.issue_id ' .

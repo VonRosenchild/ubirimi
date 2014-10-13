@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Type
 {
-    public static function getByCode($code) {
+    public function getByCode($code) {
         $query = "SELECT * from sys_field_type where code = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

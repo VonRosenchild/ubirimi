@@ -53,7 +53,7 @@ class Board
         return $boardId;
     }
 
-    public static function getByClientId($clientId, $resultType = null) {
+    public function getByClientId($clientId, $resultType = null) {
         $query = "select agile_board.client_id, agile_board.id, agile_board.filter_id, agile_board.name, agile_board.description, agile_board.swimlane_strategy, " .
                  "agile_board.user_created_id, agile_board.date_created, user.first_name, user.last_name, " .
                  "filter.name as filter_name, filter.id as filter_id, filter.definition as filter_definition " .
@@ -80,7 +80,7 @@ class Board
             return null;
     }
 
-    public static function getById($boardId) {
+    public function getById($boardId) {
         $query = "select agile_board.id, agile_board.client_id, agile_board.name, agile_board.description, agile_board.user_created_id, agile_board.swimlane_strategy, " .
                  "filter.id as filter_id, filter.name as filter_name, filter.description as filter_description, " .
                  "user.first_name, user.last_name " .
@@ -100,7 +100,7 @@ class Board
             return null;
     }
 
-    public static function getProjects($boardId, $resultType = null) {
+    public function getProjects($boardId, $resultType = null) {
         $query = "select project.id, project.name " .
             "from agile_board_project " .
             "left join project on project.id = agile_board_project.project_id " .
@@ -124,7 +124,7 @@ class Board
             return null;
     }
 
-    public static function addStatusToColumn($columnId, $StatusId) {
+    public function addStatusToColumn($columnId, $StatusId) {
         $query = "INSERT INTO agile_board_column_status(agile_board_column_id, issue_status_id) VALUES (?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -133,7 +133,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function addDefaultColumnData($clientId, $boardId) {
+    public function addDefaultColumnData($clientId, $boardId) {
         // add To Do column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
 
@@ -177,7 +177,7 @@ class Board
         Board::addStatusToColumn($columnId, $closedStatusData['id']);
     }
 
-    public static function getColumns($boardId, $resultType = null) {
+    public function getColumns($boardId, $resultType = null) {
         $query = "select agile_board_column.* " .
             "from agile_board_column " .
             "where agile_board_column.agile_board_id = ? " .
@@ -201,7 +201,7 @@ class Board
             return null;
     }
 
-    public static function getColumnStatuses($columnId, $resultType = null, $column = null) {
+    public function getColumnStatuses($columnId, $resultType = null, $column = null) {
         $query = "select issue_status.id, issue_status.name " .
             "from agile_board_column_status " .
             "left join issue_status on issue_status.id = agile_board_column_status.issue_status_id " .
@@ -228,7 +228,7 @@ class Board
             return null;
     }
 
-    public static function deleteStatusFromColumn($boardId, $StatusId) {
+    public function deleteStatusFromColumn($boardId, $StatusId) {
         $columns = Board::getColumns($boardId, 'array');
         $columnsIds = array();
         for ($i = 0; $i < count($columns); $i++) {
@@ -242,7 +242,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function getUnmappedStatuses($clientId, $boardId, $resultType = null) {
+    public function getUnmappedStatuses($clientId, $boardId, $resultType = null) {
         $clientStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
 
         $query = "select issue_status.id, issue_status.name " .
@@ -277,7 +277,7 @@ class Board
         return $resultArray;
     }
 
-    public static function addColumn($boardId, $name, $description) {
+    public function addColumn($boardId, $name, $description) {
         $query = "INSERT INTO agile_board_column(agile_board_id, name) VALUES (?, ?)";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -285,7 +285,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function deleteColumn($columnId) {
+    public function deleteColumn($columnId) {
         $query = "delete from agile_board_column_status where agile_board_column_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -298,7 +298,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function getLast5BoardsByClientId($clientId) {
+    public function getLast5BoardsByClientId($clientId) {
         $query = "select * " .
             "from agile_board " .
             "where client_id = ? " .
@@ -314,7 +314,7 @@ class Board
             return null;
     }
 
-    public static function getBacklogIssues($clientId, $boardData, $onlyMyIssuesFlag, $loggedInUserId, $searchText, $completeStatuses) {
+    public function getBacklogIssues($clientId, $boardData, $onlyMyIssuesFlag, $loggedInUserId, $searchText, $completeStatuses) {
         $filterId = $boardData['filter_id'];
 
         $filterData = Filter::getById($filterId);
@@ -345,14 +345,14 @@ class Board
         return UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($searchParameters, $loggedInUserId);
     }
 
-    public static function deleteIssuesFromSprints($issueIdArray) {
+    public function deleteIssuesFromSprints($issueIdArray) {
         $query = "delete from agile_board_sprint_issue where issue_id IN (" . implode(", ", $issueIdArray) . ')';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();
     }
 
-    public static function getIssuesBySprintAndStatusIdAndParentId($sprintId, $parentId = null, $statuses, $onlyMyIssuesFlag, $loggedInUserId) {
+    public function getIssuesBySprintAndStatusIdAndParentId($sprintId, $parentId = null, $statuses, $onlyMyIssuesFlag, $loggedInUserId) {
         $query = 'select yongo_issue.id, nr, yongo_issue.parent_id, issue_priority.name as priority_name, issue_status.name as status_name, issue_status.id as status, summary, yongo_issue.description, environment, ' .
             'issue_type.name as type, ' .
             'project.code as project_code, project.name as project_name, yongo_issue.project_id as issue_project_id, ' .
@@ -384,7 +384,7 @@ class Board
             return null;
     }
 
-    public static function getLastColumn($boardId) {
+    public function getLastColumn($boardId) {
         $query = "select * " .
             "from agile_board_column " .
             "where agile_board_id = ? " .
@@ -401,7 +401,7 @@ class Board
             return null;
     }
 
-    public static function transferNotDoneIssues($boardId, $sprintId, $completeStatuses) {
+    public function transferNotDoneIssues($boardId, $sprintId, $completeStatuses) {
         $nextSprint = AgileSprint::getNextNotStartedByBoardId($boardId, $sprintId);
 
         // set as done the completed issues
@@ -458,7 +458,7 @@ class Board
         }
     }
 
-    public static function deleteByProjectId($projectId) {
+    public function deleteByProjectId($projectId) {
         $query = "delete from agile_board_project where project_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -466,7 +466,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function deleteById($boardId) {
+    public function deleteById($boardId) {
         $boardColumnsArray = Board::getColumns($boardId, 'array');
         $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');
 
@@ -503,7 +503,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function updateColumnOrder($newOrder) {
+    public function updateColumnOrder($newOrder) {
         for ($i = 0; $i < count($newOrder); $i++) {
             $query = "update agile_board_column set position = ? where id = ? limit 1";
 
@@ -514,11 +514,11 @@ class Board
         }
     }
 
-    public static function renderIssues($issues, $columns, $indexSection, $swimlaneStrategy = null) { ?>
+    public function renderIssues($issues, $columns, $indexSection, $swimlaneStrategy = null) { ?>
 
     <?php }
 
-    public static function updateSwimlaneStrategy($boardId, $strategy) {
+    public function updateSwimlaneStrategy($boardId, $strategy) {
         $query = "update agile_board set swimlane_strategy = ? where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -526,7 +526,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function updateMetadata($clientId, $boardId, $name, $description, $date) {
+    public function updateMetadata($clientId, $boardId, $name, $description, $date) {
         $query = "update agile_board set name = ?, description = ?, date_updated = ? where client_id = ? and id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -534,7 +534,7 @@ class Board
         $stmt->execute();
     }
 
-    public static function getByFilterId($filterId) {
+    public function getByFilterId($filterId) {
         $query = "select * " .
             "from agile_board " .
             "where filter_id = ? " .
@@ -552,7 +552,7 @@ class Board
         }
     }
 
-    public static function getAll($filters = null) {
+    public function getAll($filters = null) {
         $query = "select * " .
             "from agile_board ";
 

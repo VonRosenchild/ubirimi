@@ -10,7 +10,7 @@ class Condition
     const CONDITION_ONLY_REPORTER = 2;
     const CONDITION_PERMISSION = 3;
 
-    public static function getByTransitionId($workflowDataId) {
+    public function getByTransitionId($workflowDataId) {
         $query = "select workflow_condition_data.* " .
             "from workflow_condition_data " .
             "where workflow_condition_data.workflow_data_id = ? " .
@@ -26,7 +26,7 @@ class Condition
             return null;
     }
 
-    public static function deleteByTransitionId($transitionId) {
+    public function deleteByTransitionId($transitionId) {
         $q = 'delete from workflow_condition_data where workflow_data_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);
@@ -34,7 +34,7 @@ class Condition
         $stmt->execute();
     }
 
-    public static function getAll() {
+    public function getAll() {
         $query = "SELECT * from sys_condition";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -46,7 +46,7 @@ class Condition
             return null;
     }
 
-    public static function addConditionString($transitionId, $stringText) {
+    public function addConditionString($transitionId, $stringText) {
         $q = 'update workflow_condition_data set definition_data = CONCAT(definition_data, ?) where workflow_data_id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($q);

@@ -38,7 +38,7 @@ class Entity {
         }
     }
 
-    public static function getAllBySpaceId($spaceId, $inTrashFlag = null) {
+    public function getAllBySpaceId($spaceId, $inTrashFlag = null) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
                  "user.id as user_id, user.first_name, user.last_name " .
             "FROM documentator_entity " .
@@ -59,7 +59,7 @@ class Entity {
         }
     }
 
-    public static function getById($pageId, $userId = null, $inTrashFlag = null) {
+    public function getById($pageId, $userId = null, $inTrashFlag = null) {
         $query = "SELECT documentator_entity.name, documentator_entity.documentator_entity_type_id, documentator_entity.id, " .
                  "documentator_entity.date_created, documentator_entity.content, in_trash_flag, documentator_entity.parent_entity_id, " .
                  "documentator_entity.documentator_space_id as space_id, " .
@@ -97,7 +97,7 @@ class Entity {
         }
     }
 
-    public static function updateById($pageId, $name, $content, $date) {
+    public function updateById($pageId, $name, $content, $date) {
         $query = "update documentator_entity set name = ?, content = ?, date_updated = ? where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -106,7 +106,7 @@ class Entity {
         }
     }
 
-    public static function getFavouritePagesByClientIdAndUserId($clientId, $userId) {
+    public function getFavouritePagesByClientIdAndUserId($clientId, $userId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
             "user.id as user_id, user.first_name, user.last_name " .
             "FROM documentator_entity " .
@@ -128,7 +128,7 @@ class Entity {
         }
     }
 
-    public static function addFavourite($pageId, $userId, $date) {
+    public function addFavourite($pageId, $userId, $date) {
         $query = "INSERT INTO documentator_user_entity_favourite(entity_id, user_id, date_created) VALUES (?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -139,7 +139,7 @@ class Entity {
         }
     }
 
-    public static function removeAsFavouriteForUsers($pageId) {
+    public function removeAsFavouriteForUsers($pageId) {
         $query = "delete from documentator_user_entity_favourite where entity_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -148,7 +148,7 @@ class Entity {
         }
     }
 
-    public static function removeAsFavouriteForUserId($pageId, $userId) {
+    public function removeAsFavouriteForUserId($pageId, $userId) {
         $query = "delete from documentator_user_entity_favourite where entity_id = ? and user_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -157,7 +157,7 @@ class Entity {
         }
     }
 
-    public static function deleteById($pageId) {
+    public function deleteById($pageId) {
         $query = "delete from documentator_entity where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -166,7 +166,7 @@ class Entity {
         }
     }
 
-    public static function updateChildrenAsTopLevelPages($pageId) {
+    public function updateChildrenAsTopLevelPages($pageId) {
         $query = "update documentator_entity set parent_entity_id = NULL where parent_entity_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -175,7 +175,7 @@ class Entity {
         }
     }
 
-    public static function removeAsHomePage($spaceId, $pageId) {
+    public function removeAsHomePage($spaceId, $pageId) {
         $query = "update documentator_space set home_entity_id = NULL where home_entity_id = ? and id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -184,7 +184,7 @@ class Entity {
         }
     }
 
-    public static function addRevision($pageId, $userId, $content, $date) {
+    public function addRevision($pageId, $userId, $content, $date) {
         $query = "INSERT INTO documentator_entity_revision(entity_id, user_id, content, date_created) VALUES (?, ?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -195,7 +195,7 @@ class Entity {
         }
     }
 
-    public static function getRevisionsByPageId($pageId) {
+    public function getRevisionsByPageId($pageId) {
         $query = "SELECT documentator_entity_revision.id, documentator_entity_revision.content, documentator_entity_revision.user_id, documentator_entity_revision.date_created, " .
             "user.first_name, user.last_name, user.id as user_id " .
             "FROM documentator_entity_revision " .
@@ -214,7 +214,7 @@ class Entity {
         }
     }
 
-    public static function getRevisionsByAttachmentId($attachmentId) {
+    public function getRevisionsByAttachmentId($attachmentId) {
         $query = "SELECT documentator_entity_attachment_revision.id, documentator_entity_attachment_revision.date_created, " .
             'user.id as user_id, user.first_name, user.last_name ' .
             'from documentator_entity_attachment_revision ' .
@@ -233,7 +233,7 @@ class Entity {
         }
     }
 
-    public static function getLastRevisionByPageId($pageId) {
+    public function getLastRevisionByPageId($pageId) {
         $query = "SELECT documentator_entity_revision.id, documentator_entity_revision.content, documentator_entity_revision.user_id, documentator_entity_revision.date_created, " .
             "user.first_name, user.last_name, user.id as user_id " .
             "FROM documentator_entity_revision " .
@@ -253,7 +253,7 @@ class Entity {
         }
     }
 
-    public static function getRevisionsByPageIdAndRevisionId($pageId, $revisionId) {
+    public function getRevisionsByPageIdAndRevisionId($pageId, $revisionId) {
         $query = "SELECT documentator_entity_revision.id, documentator_entity_revision.content, documentator_entity_revision.user_id, documentator_entity_revision.date_created, " .
             "user.first_name, user.last_name, user.id as user_id " .
             "FROM documentator_entity_revision " .
@@ -273,7 +273,7 @@ class Entity {
         }
     }
 
-    public static function getChildren($pageId) {
+    public function getChildren($pageId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
             "user.id as user_id, user.first_name, user.last_name " .
             "FROM documentator_entity " .
@@ -291,7 +291,7 @@ class Entity {
         }
     }
 
-    public static function deleteRevisionById($revisionId) {
+    public function deleteRevisionById($revisionId) {
         $query = "delete from documentator_entity_revision where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -300,7 +300,7 @@ class Entity {
         }
     }
 
-    public static function updateContent($pageId, $content) {
+    public function updateContent($pageId, $content) {
         $query = "update documentator_entity set content = ? where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -309,7 +309,7 @@ class Entity {
         }
     }
 
-    public static function findBySpaceIdAndKeyword($clientId, $spaceId, $pageNameKeyword) {
+    public function findBySpaceIdAndKeyword($clientId, $spaceId, $pageNameKeyword) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
             "user.id as user_id, user.first_name, user.last_name, " .
             "documentator_space.name as space_name " .
@@ -336,7 +336,7 @@ class Entity {
         }
     }
 
-    public static function deleteRevisionsByEntityId($pageId) {
+    public function deleteRevisionsByEntityId($pageId) {
         $query = "delete from documentator_entity_revision where entity_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -345,7 +345,7 @@ class Entity {
         }
     }
 
-    public static function moveToTrash($pageId) {
+    public function moveToTrash($pageId) {
         $query = "update documentator_entity set in_trash_flag = 1 where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -354,7 +354,7 @@ class Entity {
         }
     }
 
-    public static function restoreById($pageId) {
+    public function restoreById($pageId) {
         $query = "update documentator_entity set in_trash_flag = 0 where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -363,7 +363,7 @@ class Entity {
         }
     }
 
-    public static function getTypes() {
+    public function getTypes() {
         $query = "SELECT * from documentator_entity_type";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -376,7 +376,7 @@ class Entity {
         }
     }
 
-    public static function getFilesByEntityId($entityId) {
+    public function getFilesByEntityId($entityId) {
         $query = "SELECT * from documentator_entity_file where documentator_entity_id = ?";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -390,7 +390,7 @@ class Entity {
         }
     }
 
-    public static function getFileByName($entityId, $filename) {
+    public function getFileByName($entityId, $filename) {
         $query = "SELECT * from documentator_entity_file where documentator_entity_id = ? and name = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -404,7 +404,7 @@ class Entity {
         }
     }
 
-    public static function addFile($entityId, $filename, $currentDate) {
+    public function addFile($entityId, $filename, $currentDate) {
         $query = "INSERT INTO documentator_entity_file(documentator_entity_id, name, date_created) VALUES (?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -415,7 +415,7 @@ class Entity {
         }
     }
 
-    public static function getRevisionsByFileId($fileId) {
+    public function getRevisionsByFileId($fileId) {
         $query = "SELECT documentator_entity_file_revision.id, documentator_entity_file_revision.date_created, " .
                     'user.id as user_id, user.first_name, user.last_name ' .
                     'from documentator_entity_file_revision ' .
@@ -434,7 +434,7 @@ class Entity {
         }
     }
 
-    public static function addFileRevision($fileId, $userId, $currentDate) {
+    public function addFileRevision($fileId, $userId, $currentDate) {
         $query = "INSERT INTO documentator_entity_file_revision(documentator_entity_file_id, user_created_id, date_created) VALUES (?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -445,7 +445,7 @@ class Entity {
         }
     }
 
-    public static function getFileById($fileId) {
+    public function getFileById($fileId) {
         $query = "SELECT * from documentator_entity_file where id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -459,7 +459,7 @@ class Entity {
         }
     }
 
-    public static function deleteFileRevisions($fileId) {
+    public function deleteFileRevisions($fileId) {
         $query = "delete from documentator_entity_file_revision where documentator_entity_file_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -468,7 +468,7 @@ class Entity {
         }
     }
 
-    public static function deleteFileById($entityId, $fileId) {
+    public function deleteFileById($entityId, $fileId) {
         Entity::deleteFileRevisions($fileId);
 
         // remove file from database
@@ -484,7 +484,7 @@ class Entity {
         Util::deleteDir($filelistsPathBase . $entityId . '/' . $fileId);
     }
 
-    public static function deleteFilesByEntityId($entityId) {
+    public function deleteFilesByEntityId($entityId) {
         $files = Entity::getFilesByEntityId($entityId);
         if ($files) {
             while ($file = $files->fetch_array(MYSQLI_ASSOC)) {
@@ -506,7 +506,7 @@ class Entity {
         }
     }
 
-    public static function addSnapshot($entityId, $entityContent, $userId, $date) {
+    public function addSnapshot($entityId, $entityContent, $userId, $date) {
         $query = "INSERT INTO documentator_entity_snapshot(documentator_entity_id, user_id, content, date_created) VALUES (?, ?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -517,7 +517,7 @@ class Entity {
         }
     }
 
-    public static function deleteAllSnapshotsByEntityIdAndUserId($entityId, $userId, $entityLastSnapshotId = null) {
+    public function deleteAllSnapshotsByEntityIdAndUserId($entityId, $userId, $entityLastSnapshotId = null) {
         $query = "DELETE FROM documentator_entity_snapshot where documentator_entity_id = ? and user_id = ?";
         if (isset($entityLastSnapshotId) && $entityLastSnapshotId != -1)
             $query .= ' and id != ' . $entityLastSnapshotId;
@@ -529,7 +529,7 @@ class Entity {
         }
     }
 
-    public static function getOtherActiveSnapshots($entityId, $userId, $currentTime, $resultType = null) {
+    public function getOtherActiveSnapshots($entityId, $userId, $currentTime, $resultType = null) {
         $query = "select user_id, TIMESTAMPDIFF(MINUTE, documentator_entity_snapshot.date_created, '" . $currentTime . "') as last_edit_offset, " .
                  "user.first_name, user.last_name " .
                  "FROM documentator_entity_snapshot " .
@@ -560,7 +560,7 @@ class Entity {
         }
     }
 
-    public static function getLastSnapshot($entityId, $userId) {
+    public function getLastSnapshot($entityId, $userId) {
         $query = "SELECT * from documentator_entity_snapshot where documentator_entity_id = ? and user_id = ? order by id desc limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -574,7 +574,7 @@ class Entity {
         }
     }
 
-    public static function getSnapshotById($snapshotId) {
+    public function getSnapshotById($snapshotId) {
         $query = "SELECT * from documentator_entity_snapshot where id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -588,7 +588,7 @@ class Entity {
         }
     }
 
-    public static function deleteSnapshotById($snapShotId) {
+    public function deleteSnapshotById($snapShotId) {
         $query = "DELETE FROM documentator_entity_snapshot where id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -598,7 +598,7 @@ class Entity {
         }
     }
 
-    public static function updateParent($entityId, $parentId) {
+    public function updateParent($entityId, $parentId) {
         $query = "update documentator_entity set parent_entity_id = ? where id = ? limit 1";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -608,7 +608,7 @@ class Entity {
         }
     }
 
-    public static function getAll($filters = null) {
+    public function getAll($filters = null) {
         $query = "SELECT * from documentator_entity";
 
         if (empty($filters['sort_by'])) {

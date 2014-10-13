@@ -64,7 +64,7 @@ class SaveController extends UbirimiController
             $projectId = $issueSystemFieldsData['project'];
         }
 
-        $project = Project::getById($projectId);
+        $project = $this->getRepository('yongo.project.project')->getById($projectId);
 
         if (array_key_exists(Field::FIELD_ASSIGNEE_CODE, $issueSystemFieldsData)) {
             // assignee field is placed on screen

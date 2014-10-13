@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Tag
 {
-    public static function getAll($userId)
+    public function getAll($userId)
     {
         $query = "select qn_tag.id, qn_tag.name, count(qn_notebook_note_tag.qn_notebook_note_id) as nr " .
             "from qn_tag " .
@@ -27,7 +27,7 @@ class Tag
             return null;
     }
 
-    public static function getByNameAndUserId($userId, $name, $tagId = null) {
+    public function getByNameAndUserId($userId, $name, $tagId = null) {
         $query = 'select * ' .
             'from qn_tag ' .
             'where user_id = ? ' .
@@ -51,7 +51,7 @@ class Tag
             return null;
     }
 
-    public static function getByUserId($userId) {
+    public function getByUserId($userId) {
         $query = "select qn_tag.* " .
             "from qn_tag " .
             "where qn_tag.user_id = ?";
@@ -68,7 +68,7 @@ class Tag
             return null;
     }
 
-    public static function add($userId, $value, $date) {
+    public function add($userId, $value, $date) {
         $query = "INSERT INTO qn_tag(user_id, name, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -81,7 +81,7 @@ class Tag
         return $tagId;
     }
 
-    public static function getById($tagId) {
+    public function getById($tagId) {
         $query = "select * " .
             "from qn_tag " .
             "where id = ? " .
@@ -97,7 +97,7 @@ class Tag
             return null;
     }
 
-    public static function updateById($tagId, $name, $description, $date) {
+    public function updateById($tagId, $name, $description, $date) {
         $query = 'UPDATE qn_tag SET name = ?, description = ?, date_updated = ? WHERE id = ? LIMIT 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -105,7 +105,7 @@ class Tag
         $stmt->execute();
     }
 
-    public static function deleteById($tagId) {
+    public function deleteById($tagId) {
         $query = 'delete from qn_tag where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

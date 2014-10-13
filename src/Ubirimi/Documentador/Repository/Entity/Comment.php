@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 
 class Comment {
 
-    public static function getById($commentId) {
+    public function getById($commentId) {
         $query = "SELECT * " .
             "FROM documentator_entity_comment " .
             "where documentator_entity_comment.id = ? " .
@@ -26,7 +26,7 @@ class Comment {
         }
     }
 
-    public static function updateCommentsParrent($oldParentId, $newParentId) {
+    public function updateCommentsParrent($oldParentId, $newParentId) {
         $query = "update documentator_entity_comment set parent_comment_id = ? where parent_comment_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -35,7 +35,7 @@ class Comment {
         }
     }
 
-    public static function deleteById($commentId) {
+    public function deleteById($commentId) {
         $comment = Comment::getById($commentId);
         $parentId = $comment['parent_comment_id'];
 
@@ -49,7 +49,7 @@ class Comment {
         }
     }
 
-    public static function addComment($pageId, $userId, $content, $date, $parentCommentId = null) {
+    public function addComment($pageId, $userId, $content, $date, $parentCommentId = null) {
         $query = "INSERT INTO documentator_entity_comment(documentator_entity_id, user_id, parent_comment_id, content, date_created) VALUES (?, ?, ?, ?, ?)";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 
@@ -60,7 +60,7 @@ class Comment {
         }
     }
 
-    public static function getComments($pageId, $resultType = null) {
+    public function getComments($pageId, $resultType = null) {
         $query = "SELECT documentator_entity_comment.id, documentator_entity_comment.user_id, documentator_entity_comment.content, documentator_entity_comment.documentator_entity_id, " .
             "documentator_entity_comment.date_created, user.first_name, user.last_name, " .
             "documentator_entity_comment.parent_comment_id, 0 as printed " .
@@ -85,7 +85,7 @@ class Comment {
         }
     }
 
-    public static function getCommentsLayoutHTML($comments, &$htmlLayout, $commentParentId, $identationIndex) {
+    public function getCommentsLayoutHTML($comments, &$htmlLayout, $commentParentId, $identationIndex) {
 
         for ($i = 0; $i < count($comments); $i++) {
 
@@ -138,7 +138,7 @@ class Comment {
         return $htmlLayout;
     }
 
-    public static function deleteCommentsByEntityId($pageId) {
+    public function deleteCommentsByEntityId($pageId) {
         $query = "delete from documentator_entity_comment where documentator_entity_id = ?";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
 

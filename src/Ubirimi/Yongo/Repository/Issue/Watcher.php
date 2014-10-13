@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Watcher
 {
-    public static function addWatcher($issueId, $userId, $currentDate) {
+    public function addWatcher($issueId, $userId, $currentDate) {
         $query = "INSERT INTO yongo_issue_watch(yongo_issue_id, user_id, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -14,7 +14,7 @@ class Watcher
         $stmt->execute();
     }
 
-    public static function getByIssueId($issueId) {
+    public function getByIssueId($issueId) {
         $query = "SELECT user.id, user.first_name, user.last_name, user.email " .
             "FROM yongo_issue_watch " .
             "left join user on user.id = yongo_issue_watch.user_id " .
@@ -30,7 +30,7 @@ class Watcher
             return null;
     }
 
-    public static function deleteByUserIdAndIssueId($issueId, $userId) {
+    public function deleteByUserIdAndIssueId($issueId, $userId) {
         $query = "delete from yongo_issue_watch where yongo_issue_id = ? and user_id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -38,7 +38,7 @@ class Watcher
         $stmt->execute();
     }
 
-    public static function deleteByIssueId($issueId) {
+    public function deleteByIssueId($issueId) {
         $query = "delete from yongo_issue_watch where yongo_issue_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

@@ -7,7 +7,7 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class Sprint
 {
-    public static function add($boardId, $name, $date, $loggedInUserId) {
+    public function add($boardId, $name, $date, $loggedInUserId) {
         $query = "INSERT INTO agile_board_sprint(agile_board_id, user_created_id, name, date_created) VALUES (?, ?, ?, ?)";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -15,7 +15,7 @@ class Sprint
         $stmt->execute();
     }
 
-    public static function getNotStarted($boardId) {
+    public function getNotStarted($boardId) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where agile_board_id = ? and started_flag = 0 " .
@@ -31,7 +31,7 @@ class Sprint
             return null;
     }
 
-    public static function getIssuesBySprintId($sprintId, $onlyMyIssuesFlag, $loggedInUserId, $searchText = null) {
+    public function getIssuesBySprintId($sprintId, $onlyMyIssuesFlag, $loggedInUserId, $searchText = null) {
         $query = 'select yongo_issue.id, parent_id, nr, issue_priority.name as priority, issue_status.name as status, summary, yongo_issue.description, environment, ' .
             'issue_type.name as type, ' .
             'issue_status.id as status, ' .
@@ -66,7 +66,7 @@ class Sprint
             return null;
     }
 
-    public static function getIssuesBySprintIdWithChildren($sprintId, $onlyMyIssuesFlag, $loggedInUserId) {
+    public function getIssuesBySprintIdWithChildren($sprintId, $onlyMyIssuesFlag, $loggedInUserId) {
         $query = 'select yongo_issue.id, parent_id, nr, issue_priority.name as priority, issue_status.name as status, summary, yongo_issue.description, environment, ' .
             'issue_type.name as type, ' .
             'project.code as project_code, project.name as project_name, yongo_issue.project_id as issue_project_id, issue_type.id as issue_type_id, ' .
@@ -101,7 +101,7 @@ class Sprint
             return null;
     }
 
-    public static function getIssuesBySprintIdWithoutChildren($sprintId, $onlyMyIssuesFlag, $loggedInUserId, $parentChildrenIssueIds) {
+    public function getIssuesBySprintIdWithoutChildren($sprintId, $onlyMyIssuesFlag, $loggedInUserId, $parentChildrenIssueIds) {
         $query = 'select yongo_issue.id, parent_id, nr, issue_priority.name as priority, issue_status.name as status, summary, yongo_issue.description, environment, ' .
             'issue_type.name as type_name, issue_type.id as type, ' .
             'issue_status.id as status, ' .
@@ -135,7 +135,7 @@ class Sprint
             return null;
     }
 
-    public static function getById($sprintId) {
+    public function getById($sprintId) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where id = ? " .
@@ -151,7 +151,7 @@ class Sprint
             return null;
     }
 
-    public static function start($sprintId, $startDate, $endDate, $name) {
+    public function start($sprintId, $startDate, $endDate, $name) {
         $query = "update agile_board_sprint set name = ?, date_start = ?, date_end = ?, started_flag = 1 where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -159,7 +159,7 @@ class Sprint
         $stmt->execute();
     }
 
-    public static function getStarted($boardId) {
+    public function getStarted($boardId) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where agile_board_id = ? and started_flag = 1 and finished_flag = 0 " .
@@ -175,7 +175,7 @@ class Sprint
             return null;
     }
 
-    public static function getCompletedIssuesCountBySprintId($sprintId, $completeStatuses) {
+    public function getCompletedIssuesCountBySprintId($sprintId, $completeStatuses) {
         $query = "select * " .
             "from agile_board_sprint_issue " .
             "left join yongo_issue on yongo_issue.id = agile_board_sprint_issue.issue_id " .
@@ -192,7 +192,7 @@ class Sprint
             return 0;
     }
 
-    public static function getSprintIssuesCount($sprintId) {
+    public function getSprintIssuesCount($sprintId) {
         $query = "select * " .
             "from agile_board_sprint_issue " .
             "where agile_board_sprint_id = ?";
@@ -207,7 +207,7 @@ class Sprint
             return null;
     }
 
-    public static function complete($sprintId) {
+    public function complete($sprintId) {
         $query = "update agile_board_sprint set finished_flag = 1 where id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -215,7 +215,7 @@ class Sprint
         $stmt->execute();
     }
 
-    public static function getNextNotStartedByBoardId($boardId, $sprintId) {
+    public function getNextNotStartedByBoardId($boardId, $sprintId) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where agile_board_id = ? and id != ? " .
@@ -233,7 +233,7 @@ class Sprint
             return null;
     }
 
-    public static function getCompleted($boardId, $sprintId = null) {
+    public function getCompleted($boardId, $sprintId = null) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where agile_board_id = ? and finished_flag = 1 ";
@@ -252,7 +252,7 @@ class Sprint
             return null;
     }
 
-    public static function getByBoardId($boardId, $resultType = null, $column = null) {
+    public function getByBoardId($boardId, $resultType = null, $column = null) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where agile_board_id = ?";
@@ -279,7 +279,7 @@ class Sprint
         }
     }
 
-    public static function getAllSprintsForClients() {
+    public function getAllSprintsForClients() {
         $query = "select agile_board_sprint.*, client.company_name, client.company_domain " .
             "from agile_board_sprint " .
             "left join agile_board on agile_board.id = agile_board_sprint.agile_board_id " .
@@ -296,7 +296,7 @@ class Sprint
         }
     }
 
-    public static function getLast($boardId) {
+    public function getLast($boardId) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where agile_board_id = ? " .
@@ -314,7 +314,7 @@ class Sprint
         }
     }
 
-    public static function deleteById($sprintId) {
+    public function deleteById($sprintId) {
         $query = "delete from agile_board_sprint_issue where agile_board_sprint_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -327,7 +327,7 @@ class Sprint
         $stmt->execute();
     }
 
-    public static function getByIssueId($clientId, $issueId) {
+    public function getByIssueId($clientId, $issueId) {
         $query = "select agile_board_sprint.id, agile_board_sprint.name " .
             "from agile_board_sprint_issue " .
             "left join agile_board_sprint on agile_board_sprint.id = agile_board_sprint_issue.agile_board_sprint_id " .
@@ -344,7 +344,7 @@ class Sprint
             return null;
     }
 
-    public static function addIssues($sprintId, $issueIdArray, $loggedInUserId) {
+    public function addIssues($sprintId, $issueIdArray, $loggedInUserId) {
         $query = "INSERT INTO agile_board_sprint_issue(agile_board_sprint_id, issue_id) VALUES ";
         for ($i = 0; $i < count($issueIdArray) - 1; $i++) {
             $query .= '(' . $sprintId . ', ' . $issueIdArray[$i] . '), ';
@@ -376,7 +376,7 @@ class Sprint
         }
     }
 
-    public static function getLastCompleted($boardId) {
+    public function getLastCompleted($boardId) {
         $query = "select * " .
             "from agile_board_sprint " .
             "where agile_board_id = ? and finished_flag = 1 " .
@@ -393,7 +393,7 @@ class Sprint
             return null;
     }
 
-    public static function getCompletedUncompletedIssuesBySprintId($sprintId, $doneFlag) {
+    public function getCompletedUncompletedIssuesBySprintId($sprintId, $doneFlag) {
         $query = 'select yongo_issue.id, nr, summary, yongo_issue.description, environment, ' .
             'issue_priority.name as priority_name, ' .
             'issue_type.name as type_name, issue_type.id as type, ' .
@@ -417,7 +417,7 @@ class Sprint
             return null;
     }
 
-    public static function getAssigneesBySprintId($sprintId) {
+    public function getAssigneesBySprintId($sprintId) {
         $query = "select user.id, user.first_name, user.last_name " .
             "from agile_board_sprint_issue " .
             "left join yongo_issue on yongo_issue.id = agile_board_sprint_issue.issue_id " .
