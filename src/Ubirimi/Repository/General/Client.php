@@ -39,15 +39,15 @@ class Client
 
     public function getClientIdAnonymous() {
         $httpHOST = Util::getHttpHost();
-        return $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+        return UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
     }
 
     public function deleteGroups($clientId) {
         $groups = $this->getRepository('ubirimi.user.group')->getByClientId($clientId);
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
-            $this->getRepository('ubirimi.user.group')->deleteByIdForYongo($group['id']);
+            UbirimiContainer::get()['repository']->get('ubirimi.user.group')->deleteByIdForYongo($group['id']);
 
-            $this->getRepository('ubirimi.user.group')->deleteByIdForDocumentator($group['id']);
+            UbirimiContainer::get()['repository']->get('ubirimi.user.group')->deleteByIdForDocumentator($group['id']);
         }
     }
 

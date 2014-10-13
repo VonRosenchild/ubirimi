@@ -51,7 +51,7 @@ Util::renderMaintenanceMessage();
 if ($session->has('client/products')) {
     $clientProducts = $session->get('client/products');
 } else {
-    $clientProducts = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProducts($this->getRepository('ubirimi.general.client')->getClientIdAnonymous(), 'array');
+    $clientProducts = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProducts(UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getClientIdAnonymous(), 'array');
 }
 ?>
 

@@ -1,10 +1,10 @@
 <?php
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-    require_once __DIR__ . '/_header.php';
-    $section = 'dashboard';
+require_once __DIR__ . '/_header.php';
+$section = 'dashboard';
 ?>
 
 <body>
@@ -99,7 +99,7 @@
                     </div>
 
                     <br />
-                    <?php if ($this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS)): ?>
+                    <?php if (UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS)): ?>
                         <ul class="nav nav-tabs" style="padding: 0px;">
                             <li class="active"><a href="#" title="Administration">Administration</a></li>
                         </ul>
