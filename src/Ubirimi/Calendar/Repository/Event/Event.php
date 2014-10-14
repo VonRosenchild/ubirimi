@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Calendar\Repository\Event;
 
+use Ubirimi\Calendar\Repository\Reminder\RepeatCycle;
 use Ubirimi\Container\UbirimiContainer;
 
 class Event
@@ -18,7 +19,7 @@ class Event
 
             $daysBetween = (strtotime($end) - strtotime($start)) / 86400;
 
-            if (CalendarEventRepeatCycle::REPEAT_DAILY == $repeatType) {
+            if (RepeatCycle::REPEAT_DAILY == $repeatType) {
 
                 // $repeatData format
                 // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date
@@ -64,7 +65,7 @@ class Event
                     }
                 }
 
-            } else if (CalendarEventRepeatCycle::REPEAT_WEEKLY == $repeatType) {
+            } else if (RepeatCycle::REPEAT_WEEKLY == $repeatType) {
                 // $repeatData format
                 // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date#0#1#1#1#1#1#0
 
@@ -230,9 +231,11 @@ class Event
                     }
                 }
             }
+
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+            $stmt->execute();
         }
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->execute();
 
         return $eventId;
     }

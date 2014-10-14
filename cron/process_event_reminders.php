@@ -1,7 +1,10 @@
 <?php
-use Ubirimi\Calendar\Repository\Period;
-use Ubirimi\Calendar\Repository\Reminder;
+
+
+use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Calendar\Repository\Reminder\Reminder;
 use Ubirimi\Repository\Email\Email;
+
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Util;
 

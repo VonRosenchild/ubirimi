@@ -5,13 +5,11 @@ namespace Ubirimi\Calendar\Controller\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\Calendar\Repository\CalendarEvent;
-use Ubirimi\Repository\Log;
+use Ubirimi\Calendar\Repository\Calendar\Calendar;
+use Ubirimi\Calendar\Repository\Event\Event;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Client;
 
 class AddController extends UbirimiController
 {
@@ -35,7 +33,7 @@ class AddController extends UbirimiController
 
             ini_set('memory_limit', '1024M');
 
-            $eventId = CalendarEvent::add(
+            $eventId = Event::add(
                 $calendarId,
                 $session->get('user/id'),
                 $name,
@@ -52,7 +50,7 @@ class AddController extends UbirimiController
             // add the default reminders
             $reminders = Calendar::getReminders($calendarId);
             while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
-                CalendarEvent::addReminder(
+                Event::addReminder(
                     $eventId,
                     $reminder['cal_event_reminder_type_id'],
                     $reminder['cal_event_reminder_period_id'],

@@ -2,11 +2,13 @@
 
 namespace Ubirimi\Calendar\Controller\Event;
 
-use Ubirimi\Repository\Client;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
+
+use Ubirimi\Calendar\Repository\Calendar\Calendar;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class AddConfirmController extends UbirimiController
 {
@@ -32,6 +34,7 @@ class AddConfirmController extends UbirimiController
 
         $startDate = new \DateTime($defaultYear . '-' . $defaultMonth . '-' . $defaultDay, new \DateTimeZone($clientSettings['timezone']));
         $dayInWeek = date_format($startDate, 'w');
+
         return $this->render(__DIR__ . '/../../Resources/views/event/AddConfirm.php', get_defined_vars());
     }
 }
