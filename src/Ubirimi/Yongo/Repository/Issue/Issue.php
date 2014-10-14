@@ -1365,7 +1365,7 @@ class Issue
 
         // deal with custom field values also
         foreach ($newIssueCustomFieldsData as $key => $value) {
-            $fieldData = $this->getRepository('yongo.field.field')->getById($key);
+            $fieldData = UbirimiContainer::get()['repository']->get('yongo.field.field')->getById($key);
 
             $oldCustomFieldValue = CustomField::getCustomFieldsDataByFieldId($issueId, $key);
             if ($oldCustomFieldValue) {
@@ -1395,7 +1395,7 @@ class Issue
         }
 
         foreach ($newIssueCustomFieldsData as $key => $value) {
-            $fieldData = $this->getRepository('yongo.field.field')->getById($key);
+            $fieldData = UbirimiContainer::get()['repository']->get('yongo.field.field')->getById($key);
             $fieldTypeId = $fieldData['sys_field_type_id'];
             $fieldName = $fieldData['name'];
 
@@ -1420,7 +1420,7 @@ class Issue
                         if (array_diff($oldUsersDeleted, $newUsersAdded) !== array_diff($newUsersAdded, $oldUsersDeleted)) {
                             $oldUsersArray = array();
                             if (count($oldUsersDeleted)) {
-                                $oldUsersData = $this->getRepository('ubirimi.user.user')->getByIds($oldUsersDeleted, 'array');
+                                $oldUsersData = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByIds($oldUsersDeleted, 'array');
                                 $oldUsersArray = array();
                                 for ($i = 0; $i < count($oldUsersData); $i++) {
                                     $oldUsersArray[] = $oldUsersData[$i]['first_name'] . ' ' . $oldUsersData[$i]['last_name'];
@@ -1428,7 +1428,7 @@ class Issue
                             }
                             $newUsersArray = array();
                             if (count($newUsersAdded)) {
-                                $newUsersData = $this->getRepository('ubirimi.user.user')->getByIds($newUsersAdded, 'array');
+                                $newUsersData = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByIds($newUsersAdded, 'array');
                                 for ($i = 0; $i < count($newUsersData); $i++) {
                                     $newUsersArray[] = $newUsersData[$i]['first_name'] . ' ' . $newUsersData[$i]['last_name'];
                                 }

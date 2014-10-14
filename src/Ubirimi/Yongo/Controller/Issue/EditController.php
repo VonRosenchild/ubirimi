@@ -42,7 +42,7 @@ class EditController extends UbirimiController
             $attachIdsToBeKept = array();
         }
 
-        $oldIssueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData = $this::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         $newIssueData = array();
         $newIssueData['issue_project_id'] = $oldIssueData['issue_project_id'];
@@ -81,7 +81,7 @@ class EditController extends UbirimiController
         }
 
         $currentDate = Util::getServerCurrentDateTime();
-        Issue::updateById($issueId, $newIssueData, $currentDate);
+        $this::getRepository('yongo.issue.issue')->updateById($issueId, $newIssueData, $currentDate);
 
         $oldIssueCustomFieldsData = array();
         foreach ($newIssueCustomFieldsData as $key => $value) {
@@ -92,13 +92,13 @@ class EditController extends UbirimiController
             $newIssueCustomFieldsData[$keyData[0]] = $value;
         }
 
-        $fieldChanges = Issue::computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
+        $fieldChanges = $this::getRepository('yongo.issue.issue')->computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
 
-        Issue::updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
+        $this::getRepository('yongo.issue.issue')->updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         // check if on the modal there is a comment field
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $newIssueData) && !empty($newIssueData[Field::FIELD_COMMENT_CODE])) {
-            UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
+            $this->getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
         }
 
         // update the custom fields value

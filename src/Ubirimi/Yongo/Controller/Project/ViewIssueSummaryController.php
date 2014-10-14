@@ -37,7 +37,7 @@ class ViewIssueSummaryController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2));
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $count = 0;
         $statsPriority = array();
@@ -89,7 +89,7 @@ class ViewIssueSummaryController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2), 'component' => -1);
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
         $countUnresolvedWithoutComponent = 0;
         if ($issues)
             $countUnresolvedWithoutComponent = $issues->num_rows;
@@ -99,7 +99,7 @@ class ViewIssueSummaryController extends UbirimiController
         $statsComponent = array();
         while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
             $issueQueryParameters = array('project' => array($projectId), 'resolution' => array(-2), 'component' => $component['id']);
-            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+            $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
             if ($issues)
                 $statsComponent[$component['name']] = array($component['id'], $issues->num_rows);

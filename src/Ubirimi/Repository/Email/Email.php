@@ -20,7 +20,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
 
 class Email {
 
-    public $smtpSettings;
+    public static $smtpSettings;
 
     public function sendNewsletter($toEmailAddress, $content, $subject) {
         $emailContent = Email::getEmailHeader();
@@ -113,7 +113,7 @@ class Email {
     public function triggerNewIssueNotification($clientId, $issue, $project, $loggedInUserId) {
 
         $eventCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
-        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($project['id'], $eventCreatedId, $issue, $loggedInUserId);
+        $users = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersForNotification($project['id'], $eventCreatedId, $issue, $loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
@@ -128,8 +128,8 @@ class Email {
 
         $eventAssignedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_ASSIGNED_CODE, 'id');
         $projectId = $project['id'];
-        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($projectId, $eventAssignedId, $issue, $loggedInUserId);
-        $loggedInUser = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
+        $users = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersForNotification($projectId, $eventAssignedId, $issue, $loggedInUserId);
+        $loggedInUser = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
 
@@ -255,9 +255,9 @@ class Email {
 
         $projectId = $issue['issue_project_id'];
         $eventUpdatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_UPDATED_CODE, 'id');
-        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($projectId, $eventUpdatedId, $issue, $loggedInUserId);
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
-        $loggedInUser = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
+        $users = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersForNotification($projectId, $eventUpdatedId, $issue, $loggedInUserId);
+        $project = UbirimiContainer::get()['repository']->get('yongo.project.project')->getById($projectId);
+        $loggedInUser = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
@@ -355,7 +355,7 @@ class Email {
         $loggedInUserId = $loggedInUser['id'];
 
         $eventDeletedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_DELETED_CODE, 'id');
-        $users = $this->getRepository('yongo.project.project')->getUsersForNotification($projectId, $eventDeletedId, $issue, $loggedInUserId);
+        $users = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersForNotification($projectId, $eventDeletedId, $issue, $loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {

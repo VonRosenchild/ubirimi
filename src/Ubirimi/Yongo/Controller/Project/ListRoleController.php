@@ -36,7 +36,7 @@ class ListRoleController extends UbirimiController
         }
 
         $session->set('selected_project_id', $projectId);
-        $allRoles = $this->getRepository('yongo.permission.role')->ggetByClient($clientId);
+        $allRoles = $this->getRepository('yongo.permission.role')->getByClient($clientId);
 
         $menuSelectedCategory = 'project';
 

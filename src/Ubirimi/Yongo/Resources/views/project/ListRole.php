@@ -1,9 +1,9 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 
@@ -40,7 +40,7 @@
                         <tr>
                             <td><?php echo $role['name']; ?></td>
                             <td>
-                                <?php $usersInRole = $this->getRepository('yongo.project.project')->getAllUsersInRole($projectId, $role['id']); ?>
+                                <?php $usersInRole = UbirimiContainer::get()['repository']->get('yongo.project.project')->getAllUsersInRole($projectId, $role['id']); ?>
                                 <?php if ($usersInRole): ?>
                                     <?php while ($user = $usersInRole->fetch_array(MYSQLI_ASSOC)): ?>
                                         <?php echo LinkHelper::getUserProfileLink($user['user_id'], SystemProduct::SYS_PRODUCT_YONGO, $user['first_name'], $user['last_name']) ?>

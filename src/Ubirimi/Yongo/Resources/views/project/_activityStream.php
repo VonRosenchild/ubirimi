@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
     use Ubirimi\Repository\User\User;
     use Ubirimi\LinkHelper;
     use Ubirimi\Yongo\Repository\Field\Field;
@@ -16,7 +17,7 @@
                 <?php foreach ($data as $userId => $historyData): ?>
                     <tr>
                         <td valign="top">
-                            <img width="65px" style="margin-right: 4px" src="<?php echo $this->getRepository('ubirimi.user.user')->getUserAvatarPicture(array('avatar_picture' => $userData[$userId]['picture'], 'id' => $userId), 'big') ?>" />
+                            <img width="65px" style="margin-right: 4px" src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture(array('avatar_picture' => $userData[$userId]['picture'], 'id' => $userId), 'big') ?>" />
                         </td>
                         <td>
                             <?php foreach ($historyData as $dateEvent => $eventDatas): ?>

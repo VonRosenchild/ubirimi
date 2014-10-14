@@ -1121,7 +1121,7 @@ class Util {
             /** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
             $issueQueryParameters = array('date_due' => $date, 'project' => $projectId);
 
-            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $userId);
+            $issues = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($issueQueryParameters, $userId);
             if ($issues) {
                 $calendar .= '<div>Issues: <a href="/yongo/issue/search?project=' . $projectId . '&date_due_after=' . $date . '&date_due_before=' . $date . '">' . $issues->num_rows . '</a></div>';
 
