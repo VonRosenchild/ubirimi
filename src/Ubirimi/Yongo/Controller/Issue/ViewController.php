@@ -69,8 +69,8 @@ class ViewController extends UbirimiController
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
 
             $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
-            $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
-            $versionsTargeted = Version::getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
+            $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            $versionsTargeted = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 
             $arrayListResultIds = null;
             if ($session->has('array_ids')) {
