@@ -3,18 +3,14 @@
 
     require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
 ?>
-<style type="text/css">
-    html, body {
-        height: 100%;
-    }
-</style>
 
 <body>
     <?php require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_menu.php'; ?>
+    <?php
+        Util::renderBreadCrumb('Quick Notes > All Notes');
+    ?>
+
     <div class="pageContent">
-        <?php
-            Util::renderBreadCrumb('Quick Notes > All Notes');
-        ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

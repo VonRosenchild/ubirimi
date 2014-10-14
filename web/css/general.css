@@ -445,7 +445,10 @@
     background-color: #ffffff;
     border-top: #CCCCCC 1px solid;
     border-bottom: #CCCCCC 1px solid;
-    padding: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .pageContentSmall {

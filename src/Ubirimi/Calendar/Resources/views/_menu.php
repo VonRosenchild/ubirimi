@@ -1,10 +1,11 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
+use Ubirimi\Repository\User\User;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    Util::renderMaintenanceMessage();
+Util::renderMaintenanceMessage();
 ?>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#003466">
@@ -19,7 +20,7 @@
                 <tr>
                     <td style="height:44px;" id="menu_top_user" width="58px" align="center" class="product-menu">
                         <span>
-                            <img src="<?php echo $this->getRepository('ubirimi.user.user')->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
+                            <img src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
                         </span>
                         <span class="arrow" style="top: 12px;"></span>
                         &nbsp;

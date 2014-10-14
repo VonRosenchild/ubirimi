@@ -1,23 +1,23 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\Documentador\Space;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    $styleSelectedMenu = 'style="background-color: #EEEEEE;';
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-    if (Util::checkUserIsLoggedIn()) {
+$styleSelectedMenu = 'style="background-color: #EEEEEE;';
+$session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+if (Util::checkUserIsLoggedIn()) {
 
-        $hasAdministrationPermission = Util::userHasDocumentatorAdministrativePermission();
-        $spaces = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
-    }
+    $hasAdministrationPermission = Util::userHasDocumentatorAdministrativePermission();
+    $spaces = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+}
 
-    if (!isset($menuSelectedCategory)) {
-        $menuSelectedCategory = null;
-    }
+if (!isset($menuSelectedCategory)) {
+    $menuSelectedCategory = null;
+}
 
-    Util::renderMaintenanceMessage();
+Util::renderMaintenanceMessage();
 ?>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#003466">
@@ -33,7 +33,7 @@
                     <?php if (Util::checkUserIsLoggedIn()): ?>
                         <td style="height:44px;" id="menu_top_user" width="58px" align="center" class="product-menu">
                             <span>
-                                <img src="<?php echo $this->getRepository('ubirimi.user.user')->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
+                                <img src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
                             </span>
                             <span class="arrow" style="top: 12px;"></span>
                             &nbsp;

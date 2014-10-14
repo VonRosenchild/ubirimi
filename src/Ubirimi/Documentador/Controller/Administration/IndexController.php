@@ -1,14 +1,15 @@
 <?php
-    use Ubirimi\Repository\Documentador\Space;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Util;
 
-    $menuSelectedCategory = 'doc_administration';
+Util::checkUserIsLoggedInAndRedirect();
 
-    $spacesWithAdminPermission = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+$menuSelectedCategory = 'doc_administration';
 
-    $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
-    $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
+$spacesWithAdminPermission = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
 
-    require_once __DIR__ . '/../../Resources/views/administration/Index.php';
+$hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
+$hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
+
+require_once __DIR__ . '/../../Resources/views/administration/Index.php';
