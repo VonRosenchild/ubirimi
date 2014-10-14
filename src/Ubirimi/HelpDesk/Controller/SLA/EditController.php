@@ -5,14 +5,13 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Sla\Calendar;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Repository\HelpDesk\SLACalendar;
 
 class EditController extends UbirimiController
 {
@@ -30,7 +29,7 @@ class EditController extends UbirimiController
         $stopConditions = explode("#", $SLA['stop_condition']);
 
         $slaConditions = array_merge($startConditions, $stopConditions);
-        $slaCalendars = SLACalendar::getByProjectId($SLA['project_id']);
+        $slaCalendars = Calendar::getByProjectId($SLA['project_id']);
         $goals = Sla::getGoals($slaId);
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';

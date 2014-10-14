@@ -160,7 +160,7 @@ use Ubirimi\Repository\Client;
                             break;
 
                         case Field::FIELD_ASSIGNEE_CODE:
-                            $allowUnassignedIssuesFlag = $this->getRepository('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
+                            $allowUnassignedIssuesFlag = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
                             $textDisabled = '';
                             if (!$userHasAssignIssuePermission)

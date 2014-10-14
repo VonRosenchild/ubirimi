@@ -1,75 +1,90 @@
 <?php
-    use Nyholm\ZebraImage\ZebraImage;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Attachment;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $filenameData = apache_request_headers();
-    $filename = rawurldecode($filenameData['X_FILENAME']);
+namespace Ubirimi\Yongo\Controller\Issue\Attachment;
 
-    $issueId = isset($_GET['issue_id']) ? $_GET['issue_id'] : null;
+use Nyholm\ZebraImage\ZebraImage;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Attachment;
 
-    if (!$session->has('added_attachments_in_screen')) {
-        $session->set('added_attachments_in_screen', array());
-    }
+class UploadTransitionAttachmentController extends UbirimiController
+{
 
-    /* every attachment has its own dedicated sub-folder, so no editing on the upload filename will be done */
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $loggedInUserId = $session->get('user/id');
 
-    if ($filename) {
-        $ext = substr($filename, strrpos($filename, '.') + 1);
-        $filenameWithoutExtension = substr($filename, 0, strrpos($filename, '.'));
+        $filenameData = apache_request_headers();
+        $filename = rawurldecode($filenameData['X_FILENAME']);
 
-        $attachmentId = Attachment::add($issueId,
-            Util::slugify($filenameWithoutExtension) . '.' . $ext,
-            $loggedInUserId,
-            Util::getServerCurrentDateTime());
+        $issueId = $request->request->get('issue_id');
 
-        if ($issueId == null) {
-            $issueId = 'user_' . $loggedInUserId;
+        if (!$session->has('added_attachments_in_screen')) {
+            $session->set('added_attachments_in_screen', array());
         }
 
-        $uploadDirectory = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId;
-        /* subfolders */
-        $uploadDirSubfolder = $uploadDirectory . '/' . $attachmentId;
+        /* every attachment has its own dedicated sub-folder, so no editing on the upload filename will be done */
 
-        if (!file_exists($uploadDirectory)) {
-            mkdir($uploadDirectory);
-        }
+        if ($filename) {
+            $ext = substr($filename, strrpos($filename, '.') + 1);
+            $filenameWithoutExtension = substr($filename, 0, strrpos($filename, '.'));
 
-        if (!file_exists($uploadDirSubfolder)) {
-            mkdir($uploadDirSubfolder);
-        }
+            $attachmentId = Attachment::add($issueId,
+                Util::slugify($filenameWithoutExtension) . '.' . $ext,
+                $loggedInUserId,
+                Util::getServerCurrentDateTime());
 
-        $newFileName = $uploadDirSubfolder . '/' . Util::slugify($filenameWithoutExtension) . '.' . $ext;
-
-        file_put_contents($newFileName, file_get_contents('php://input'));
-
-        $size = filesize($newFileName);
-
-        $temp = $session->get('added_attachments_in_screen');
-        $temp[] = $attachmentId;
-        $session->set('added_attachments_in_screen', $temp);
-
-        Attachment::updateSizeById($attachmentId, $size);
-
-        if (Util::isImage(Util::getExtension($filename))) {
-
-            $thumbUploaddirSubfolder = $uploadDirSubfolder . '/thumbs';
-            if (!file_exists($thumbUploaddirSubfolder)) {
-                mkdir($thumbUploaddirSubfolder);
+            if ($issueId == null) {
+                $issueId = 'user_' . $loggedInUserId;
             }
-            $newThumbnailName = $thumbUploaddirSubfolder . '/' . Util::slugify($filenameWithoutExtension) . '.' . $ext;
 
-            $image = new ZebraImage();
-            $image->jpeg_quality = 100;
-            $image->chmod_value = 0755;
-            $image->source_path = $newFileName;
-            $image->target_path = $newThumbnailName;
+            $uploadDirectory = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId;
+            /* subfolders */
+            $uploadDirSubfolder = $uploadDirectory . '/' . $attachmentId;
 
-            $image->resize(150, 150, ZEBRA_IMAGE_CROP_CENTER);
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory);
+            }
+
+            if (!file_exists($uploadDirSubfolder)) {
+                mkdir($uploadDirSubfolder);
+            }
+
+            $newFileName = $uploadDirSubfolder . '/' . Util::slugify($filenameWithoutExtension) . '.' . $ext;
+
+            file_put_contents($newFileName, file_get_contents('php://input'));
+
+            $size = filesize($newFileName);
+
+            $temp = $session->get('added_attachments_in_screen');
+            $temp[] = $attachmentId;
+            $session->set('added_attachments_in_screen', $temp);
+
+            Attachment::updateSizeById($attachmentId, $size);
+
+            if (Util::isImage(Util::getExtension($filename))) {
+
+                $thumbUploaddirSubfolder = $uploadDirSubfolder . '/thumbs';
+                if (!file_exists($thumbUploaddirSubfolder)) {
+                    mkdir($thumbUploaddirSubfolder);
+                }
+                $newThumbnailName = $thumbUploaddirSubfolder . '/' . Util::slugify($filenameWithoutExtension) . '.' . $ext;
+
+                $image = new ZebraImage();
+                $image->jpeg_quality = 100;
+                $image->chmod_value = 0755;
+                $image->source_path = $newFileName;
+                $image->target_path = $newThumbnailName;
+
+                $image->resize(150, 150, ZEBRA_IMAGE_CROP_CENTER);
+            }
+
+            echo $attachmentId;
+            exit();
         }
-
-        echo $attachmentId;
-        exit();
     }
+}

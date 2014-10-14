@@ -1504,10 +1504,10 @@ class Client
         // create default group names
         $this->getRepository('ubirimi.user.group')->addDefaultYongoGroups($clientId, $clientCreatedDate);
 
-        $roleAdministrators = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->ggetByName($clientId, 'Administrators');
+        $roleAdministrators = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Administrators');
 
-        $roleDevelopers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->ggetByName($clientId, 'Developers');
-        $roleUsers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->ggetByName($clientId, 'Users');
+        $roleDevelopers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Developers');
+        $roleUsers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Users');
 
         $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Administrators');
 

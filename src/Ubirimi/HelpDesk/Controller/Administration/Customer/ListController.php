@@ -4,11 +4,10 @@ namespace Ubirimi\HelpDesk\Controller\Administration\Customer;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Organization\Customer;
+use Ubirimi\HelpDesk\Repository\Organization\Organization;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\Organization;
-use Ubirimi\Repository\HelpDesk\Customer;
-use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
 
 class ListController extends UbirimiController

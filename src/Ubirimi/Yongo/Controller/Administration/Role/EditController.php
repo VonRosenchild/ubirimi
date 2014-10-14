@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionRoleId = $request->get('id');
-        $perm_role = $this->getRepository('yongo.permission.role')->ggetById($permissionRoleId);
+        $perm_role = $this->getRepository('yongo.permission.role')->getById($permissionRoleId);
 
         if ($perm_role['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,7 +34,7 @@ class EditController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $role = $this->getRepository('yongo.permission.role')->ggetByName($session->get('client/id'), $name, $permissionRoleId);
+            $role = $this->getRepository('yongo.permission.role')->getByName($session->get('client/id'), $name, $permissionRoleId);
             if ($role)
                 $alreadyExists = true;
 

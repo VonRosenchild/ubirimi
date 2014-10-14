@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\Sla;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 ?>
 <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
@@ -7,8 +7,7 @@
     </tr>
 </table>
 <table width="100%" id="contentDates">
-    <?php
-        foreach ($slasPrintData as $slaId => $slaData): ?>
+    <?php foreach ($slasPrintData as $slaId => $slaData): ?>
         <?php if ($slaData['goalValue']): ?>
             <tr>
                 <td width="200" valign="top">

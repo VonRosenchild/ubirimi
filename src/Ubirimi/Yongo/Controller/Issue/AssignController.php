@@ -28,11 +28,11 @@ class AssignController extends UbirimiController
         $userAssignedId = $_POST['user_assigned_id'];
         $comment = Util::cleanRegularInputField($_POST['comment']);
 
-        $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        Issue::updateAssignee($session->get('client/id'), $issueId, $session->get('user/id'), $userAssignedId, $comment);
+        $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $this->getRepository('yongo.issue.issue')->updateAssignee($session->get('client/id'), $issueId, $session->get('user/id'), $userAssignedId, $comment);
 
         // update the date_updated field
-        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         $userAssigned = $this->getRepository('ubirimi.user.user')->getById($userAssignedId);
         $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];

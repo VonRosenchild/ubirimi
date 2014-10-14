@@ -1093,7 +1093,7 @@ $('document').ready(function () {
 
     $(document).on('click', "[id^='issue_submenu_duplicate_']", function (event) {
         event.preventDefault();
-
+        $('#contentMenuIssueSearchOptions').hide();
         var issueId = $(this).attr("id").replace('issue_submenu_duplicate_', '');
 
         duplicateIssue(issueId);
@@ -1101,7 +1101,7 @@ $('document').ready(function () {
 
     $(document).on('click', "[id^='issue_submenu_edit_']", function (event) {
         event.preventDefault();
-
+        $('#contentMenuIssueSearchOptions').hide();
         var issueId = $(this).attr("id").replace('issue_submenu_edit_', '');
 
         editIssue(issueId);

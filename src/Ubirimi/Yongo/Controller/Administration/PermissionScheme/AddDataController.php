@@ -24,12 +24,12 @@ class AddDataController extends UbirimiController
         $permissionSchemeId = $request->get('perm_scheme_id');
         $permissionId = $request->get('id');
 
-        $permissionScheme = $this->getRepository('yongo.permission.scheme')->ggetMetaDataById($permissionSchemeId);
+        $permissionScheme = $this->getRepository('yongo.permission.scheme')->getMetaDataById($permissionSchemeId);
         $permissions = Permission::getAll();
 
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
         $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id'));
+        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
 
@@ -46,7 +46,7 @@ class AddDataController extends UbirimiController
                 for ($i = 0; $i < count($sysPermissionIds); $i++){
                     // check for duplicate information
                     $duplication = false;
-                    $dataPermission = $this->getRepository('yongo.permission.scheme')->ggetDataByPermissionSchemeIdAndPermissionId(
+                    $dataPermission = $this->getRepository('yongo.permission.scheme')->getDataByPermissionSchemeIdAndPermissionId(
                         $permissionSchemeId,
                         $sysPermissionIds[$i]
                     );

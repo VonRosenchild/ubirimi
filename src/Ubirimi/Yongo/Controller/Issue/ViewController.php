@@ -141,7 +141,7 @@ class ViewController extends UbirimiController
 
             $slasPrintData = null;
             if ($issueProject['help_desk_enabled_flag']) {
-                $slasPrintData = UbirimiContainer::getRepository('yongo.issue.issue')->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+                $slasPrintData = $this->getRepository('yongo.issue.issue')->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
             }
 
             // voters and watchers

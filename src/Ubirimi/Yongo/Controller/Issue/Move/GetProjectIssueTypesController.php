@@ -1,11 +1,23 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Issue\Move;
 
-    $projectId = $_POST['id'];
-    $moveToIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($projectId, 0, 'array');
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    echo json_encode($moveToIssueTypes);
+class GetProjectIssueTypesController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
+        $projectId = $request->request->get('id');
+        $moveToIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($projectId, 0, 'array');
+
+        return new JsonResponse(json_encode($moveToIssueTypes));
+
+    }
+}

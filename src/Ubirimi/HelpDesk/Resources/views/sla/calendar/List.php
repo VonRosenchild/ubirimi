@@ -1,9 +1,10 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\SLACalendar;
-    use Ubirimi\Util;
-    use Ubirimi\Repository\HelpDesk\Sla;
 
-    require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
+use Ubirimi\HelpDesk\Repository\Sla\Calendar;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
 
@@ -49,7 +50,7 @@
                         <td><?php echo $calendar['description']; ?></td>
                         <td>
                             <?php
-                                $data = SLACalendar::getCalendarDataByCalendarId($calendar['id']);
+                                $data = Calendar::getCalendarDataByCalendarId($calendar['id']);
                                 $dowMap = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
                             ?>
                             <table style="width: 350px">

@@ -23,7 +23,7 @@ class PrintController extends UbirimiController
         $clientId = $session->get('client/id');
 
         if (Util::checkUserIsLoggedIn()) {
-            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($Id, $loggedInUserId);
+            $issue = $this->getRepository('yongo.issue.issue')->getById($Id, $loggedInUserId);
             $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'];
             $clientSettings = $session->get('client/settings');
         } else {
@@ -32,7 +32,7 @@ class PrintController extends UbirimiController
             $loggedInUserId = null;
             $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
-            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($Id, $loggedInUserId);
+            $issue = $this->getRepository('yongo.issue.issue')->getById($Id, $loggedInUserId);
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'];
         }
 

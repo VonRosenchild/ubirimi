@@ -28,13 +28,13 @@ class AddDataController extends UbirimiController
         $notificationSchemeId = $request->get('not_scheme_id');
         $eventId = $request->get('id');
 
-        $notificationScheme = $this->getRepository('yongo.notification.scheme')->ggetMetaDataById($notificationSchemeId);
+        $notificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataById($notificationSchemeId);
 
         $events = Event::getByClient($session->get('client/id'));
 
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
         $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id'));
+        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
 
         $fieldsUserPickerMultipleSelection = $this->getRepository('yongo.field.field')->getByClientIdAndFieldTypeId($session->get('client/id'), Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID);
 
@@ -56,7 +56,7 @@ class AddDataController extends UbirimiController
                     // check for duplicate information
                     $duplication = false;
 
-                    $dataNotification = $this->getRepository('yongo.notification.scheme')->ggetDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventIds[$i]);
+                    $dataNotification = $this->getRepository('yongo.notification.scheme')->getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventIds[$i]);
 
                     if ($dataNotification) {
                         while ($data = $dataNotification->fetch_array(MYSQLI_ASSOC)) {

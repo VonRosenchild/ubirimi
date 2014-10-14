@@ -19,7 +19,7 @@ class DeleteController extends UbirimiController
 
         $permissionRoleId = $request->request->get('perm_role_id');
 
-        $permissionRole = $this->getRepository('yongo.permission.role')->ggetById($permissionRoleId);
+        $permissionRole = $this->getRepository('yongo.permission.role')->getById($permissionRoleId);
         $this->getRepository('yongo.permission.role')->gdeleteById($permissionRoleId);
 
         $date = Util::getServerCurrentDateTime();

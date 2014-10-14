@@ -1,26 +1,37 @@
 <?php
-use Ubirimi\Container\UbirimiContainer;
+
+namespace Ubirimi\Yongo\Controller\Issue;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Repository\Client;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
-Util::checkUserIsLoggedInAndRedirect();
 
-$searchQuery = $_POST['code'];
+class QuickSearchController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-$clientId = $session->get('client/id');
-$loggedInUserId = $session->get('user/id');
+        $searchQuery = $request->request->get('code');
 
-$projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
-$projects = Util::array_column($projects, 'id');
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
 
-// search first for a perfect match
-$issueResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projects, 'code_nr' => $searchQuery), $loggedInUserId, null, $loggedInUserId);
+        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projects = Util::array_column($projects, 'id');
 
-if ($issueResult) {
-    $issue = $issueResult->fetch_array(MYSQLI_ASSOC);
-    echo $issue['id'];
-} else {
-    echo '-1';
+        // search first for a perfect match
+        $issueResult = $this->getRepository('yongo.issue.issue')->getByParameters(array('project' => $projects, 'code_nr' => $searchQuery), $loggedInUserId, null, $loggedInUserId);
+
+        if ($issueResult) {
+            $issue = $issueResult->fetch_array(MYSQLI_ASSOC);
+            return new Response($issue['id']);
+        } else {
+            return new Response('-1');
+        }
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Documentador\Space;
+
     use Ubirimi\Repository\Log;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;

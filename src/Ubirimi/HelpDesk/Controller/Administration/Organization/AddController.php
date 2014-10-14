@@ -5,11 +5,11 @@ namespace Ubirimi\HelpDesk\Controller\Administration\Organization;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Organization\Organization;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\Organization;
 use Ubirimi\SystemProduct;
-use Ubirimi\Repository\Log;
+
 
 class AddController extends UbirimiController
 {

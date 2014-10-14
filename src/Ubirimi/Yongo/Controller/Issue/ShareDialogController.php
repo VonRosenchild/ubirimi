@@ -1,37 +1,27 @@
 <?php
 
+namespace Ubirimi\Yongo\Controller\Issue;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-Util::checkUserIsLoggedInAndRedirect();
+class ShareDialogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-$issueId = $_GET['id'];
+        $clientId = UbirimiContainer::get()['session']->get('client/id');
 
-$users = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($clientId, 0);
-$subdomain = Util::getSubdomain();
-?>
-<table>
-    <tr>
-        <td>
-            <div>Link to Issue</div>
-            <input type="text" class="inputTextLarge" value="https://<?php echo $subdomain ?>.ubirimi.net/yongo/issue/<?php echo $issueId ?>" disabled="disabled" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div>User</div>
-            <select style="width: 100%;" name="user_to_share[]" id="user_to_share" class="select2Input" multiple="multiple">
-                <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
-                    <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
-                <?php endwhile ?>
-            </select>
-            <div class="error" id="share_no_user_selected"></div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div>Note</div>
-            <textarea id="share_issue_note" rows="10" class="inputTextAreaLarge"></textarea>
-        </td>
-    </tr>
-</table>
+        $issueId = $_GET['id'];
+
+        $users = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($clientId, 0);
+        $subdomain = Util::getSubdomain();
+
+        return $this->render(__DIR__ . '/../../Resources/views/issue/ShareDialog.php', get_defined_vars());
+    }
+}

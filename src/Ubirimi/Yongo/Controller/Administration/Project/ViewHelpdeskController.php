@@ -5,12 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Repository\HelpDesk\Queue;
-use Ubirimi\Repository\HelpDesk\Sla;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
+
 
 class ViewHelpdeskController extends UbirimiController
 {

@@ -1,11 +1,11 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\HelpDesk\Sla;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\LinkHelper;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    $arrayIds = array();
+$arrayIds = array();
 ?>
     <div class="pageContent" style="border-bottom: 0; margin: 0; border-radius: 0;">
     <?php if (isset($issuesCount) && $issuesCount > 0): ?>

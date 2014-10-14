@@ -5,10 +5,10 @@ namespace Ubirimi\HelpDesk\Controller\SLA\Calendar;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Sla\Calendar;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\SystemProduct;
-use Ubirimi\Repository\HelpDesk\SLACalendar;
 
 class EditController extends UbirimiController
 {
@@ -27,9 +27,9 @@ class EditController extends UbirimiController
         $duplicateName = false;
 
         $calendarId = $request->get('id');
-        $calendar = SLACalendar::getById($calendarId);
+        $calendar = Calendar::getById($calendarId);
         $projectId = $calendar['project_id'];
-        $data = SLACalendar::getData($calendarId);
+        $data = Calendar::getData($calendarId);
 
         if ($request->request->has('confirm_edit_calendar')) {
 
@@ -40,7 +40,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
             }
 
-            $existingCalendar = SLACalendar::getByName($name, $projectId, $calendarId);
+            $existingCalendar = Calendar::getByName($name, $projectId, $calendarId);
             if ($existingCalendar) {
                 $duplicateName = true;
             }
@@ -58,9 +58,9 @@ class EditController extends UbirimiController
 
                     $currentDate = Util::getServerCurrentDateTime();
 
-                    SLACalendar::deleteDataByCalendarId($calendarId);
-                    SLACalendar::updateById($calendarId, null, $name, $description, $currentDate);
-                    SLACalendar::addData($calendarId, $dataCalendar);
+                    Calendar::deleteDataByCalendarId($calendarId);
+                    Calendar::updateById($calendarId, null, $name, $description, $currentDate);
+                    Calendar::addData($calendarId, $dataCalendar);
 
                     return new RedirectResponse('/helpdesk/sla/calendar/' . $projectId);
                 }

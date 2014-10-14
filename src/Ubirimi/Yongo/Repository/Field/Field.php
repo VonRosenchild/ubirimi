@@ -42,7 +42,7 @@ class Field {
     const CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID = 6;
     const CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID = 7;
 
-    public $fieldTranslation = array(
+    public static $fieldTranslation = array(
         Field::FIELD_SUMMARY_CODE => 'Summary',
         Field::FIELD_ASSIGNEE_CODE => 'Assigned to',
         Field::FIELD_DESCRIPTION_CODE => 'Description',

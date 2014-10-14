@@ -31,7 +31,7 @@ class AddLevelDataController extends UbirimiController
 
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
         $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id'));
+        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
 

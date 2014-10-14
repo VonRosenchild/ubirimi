@@ -1,8 +1,9 @@
 <?php
-    use Ubirimi\Repository\HelpDesk\Sla;
-    use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
 

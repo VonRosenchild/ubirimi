@@ -1,13 +1,20 @@
 <?php
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Issue;
 
-    $issueId = $_GET['id'];
-?>
-Please enter the summary for the duplicated issue.
-<br/>
-(comments and attachments linked will not be duplicated)
-<br/>
-<input type="text" value="" id="summary" class="inputTextLarge"/>
-<input id="issue_id" value="<?php echo $issueId ?>" type="hidden"/>
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+
+class DuplicateDialogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $issueId = $request->get('id');
+
+        return $this->render(__DIR__ . '/../../Resources/views/issue/DuplicateDialog.php', get_defined_vars());
+    }
+}
+

@@ -4,8 +4,6 @@ namespace Ubirimi\HelpDesk\Repository\Sla;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Yongo\Repository\Issue\History;
 use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Issue\Type;
@@ -262,9 +260,9 @@ class Sla
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
-                $assigneeID = UbirimiContainer::getRepository('yongo.issue.issue')->getAssigneeOnDate($issue['id'], $currentSLADate);
+                $assigneeID = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getAssigneeOnDate($issue['id'], $currentSLADate);
 
-                $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByUserIdAfterDate($issue['id'], $assigneeID, $currentSLADate);
+                $comments = UbirimiContainer::get()['repository']->get('yongo.issue.comment')->getByUserIdAfterDate($issue['id'], $assigneeID, $currentSLADate);
                 if ($comments) {
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
@@ -276,7 +274,7 @@ class Sla
                     }
                 } else {
                     $userAssigneeId = $issue['assignee'];
-                    $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueIdAndUserId($issue['id'], $userAssigneeId);
+                    $comments = UbirimiContainer::get()['repository']->get('yongo.issue.comment')->getByIssueIdAndUserId($issue['id'], $userAssigneeId);
 
                     if ($comments) {
                         $firstComment = $comments->fetch_array(MYSQLI_ASSOC);
@@ -365,7 +363,7 @@ class Sla
             return null;
         }
         $goalValue = $goalData['value'];
-        $slaCalendarData = SLACalendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
+        $slaCalendarData = Calendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
         $SLA = Sla::getById($SLA['id']);
 

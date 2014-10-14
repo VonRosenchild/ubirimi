@@ -21,7 +21,7 @@ class EditDataController extends UbirimiController
         $backLink = $request->get('back');
         $projectId = $request->get('project_id');
 
-        $notificationScheme = $this->getRepository('yongo.notification.scheme')->ggetMetaDataById($notificationSchemeId);
+        $notificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataById($notificationSchemeId);
         if ($notificationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }

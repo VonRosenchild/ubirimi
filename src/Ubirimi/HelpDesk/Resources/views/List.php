@@ -1,10 +1,11 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\HelpDesk\Queue;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
+use Ubirimi\LinkHelper;
 
-    require_once __DIR__ . '/../../../Yongo/Resources/views/_header.php';
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+
+require_once __DIR__ . '/../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../Yongo/Resources/views/_menu.php'; ?>

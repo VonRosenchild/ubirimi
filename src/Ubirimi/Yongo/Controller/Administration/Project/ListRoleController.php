@@ -23,7 +23,7 @@ class ListRoleController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id'));
+        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Project Roles';

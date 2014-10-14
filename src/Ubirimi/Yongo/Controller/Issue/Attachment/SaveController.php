@@ -1,21 +1,32 @@
 <?php
-use Ubirimi\Container\UbirimiContainer;
+
+namespace Ubirimi\Yongo\Controller\Issue\Attachment;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Comment;
 
-Util::checkUserIsLoggedInAndRedirect();
+class SaveController extends UbirimiController
+{
 
-$issueId = isset($_POST['issue_id']) ? $_POST['issue_id'] : null;
-$attachIdsToBeKept = $_POST['attach_ids'];
-$comment = Util::cleanRegularInputField($_POST['comment']);
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-if (!is_array($attachIdsToBeKept)) {
-    $attachIdsToBeKept = array();
-}
+        $issueId = $request->request->get('issue_id');
+        $attachIdsToBeKept = $_POST['attach_ids'];
+        $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
-Util::manageModalAttachments($issueId, $loggedInUserId, $attachIdsToBeKept);
+        if (!is_array($attachIdsToBeKept)) {
+            $attachIdsToBeKept = array();
+        }
 
-if (!empty($comment)) {
-    $currentDate = Util::getServerCurrentDateTime();
-    UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $comment, $currentDate);
+        Util::manageModalAttachments($issueId, $session->get('user/id'), $attachIdsToBeKept);
+
+        if (!empty($comment)) {
+            $currentDate = Util::getServerCurrentDateTime();
+            $this->getRepository('yongo.issue.comment')->add($issueId, $session->get('user/id'), $comment, $currentDate);
+        }
+    }
 }

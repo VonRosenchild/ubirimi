@@ -1,24 +1,26 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Issue;
 
-    $projectId = $_POST['project_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $issueTypeId = $_POST['issue_type_id'];
-    $sysOperationId = $_POST['operation_id'];
-    $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
+class ViewCreateFieldListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issueTypeId);
+        $projectId = $request->request->get('project_id');
 
-    if ($workflowUsed) {
-        require_once __DIR__ . '/../../Resources/views/issue/_dialogCreate.php';
+        $issueTypeId = $request->request->get('issue_type_id');
+        $sysOperationId = $request->request->get('operation_id');
+        $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
 
-    } else {
-        echo '<tr>';
-            echo '<td colspan="2">';
-                echo '<div class="infoBox">There is no workflow set for this issue type.</div>';
-            echo '</td>';
-        echo '</tr>';
+        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issueTypeId);
+
+        return $this->render(__DIR__ . '/../../Resources/views/issue/ViewCreateFieldList.php', get_defined_vars());
     }
+}

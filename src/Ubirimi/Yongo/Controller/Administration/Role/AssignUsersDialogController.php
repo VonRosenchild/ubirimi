@@ -18,7 +18,7 @@ class AssignUsersDialogController extends UbirimiController
 
         $permissionRoleId = $request->get('role_id');
         $projectId = $request->get('project_id');
-        $role = $this->getRepository('yongo.permission.role')->ggetPermissionRoleById($permissionRoleId);
+        $role = $this->getRepository('yongo.permission.role')->getPermissionRoleById($permissionRoleId);
 
         $allUsers = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
         $roleUsers = $this->getRepository('yongo.project.project')->getUsersInRole($projectId, $permissionRoleId);

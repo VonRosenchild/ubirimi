@@ -21,7 +21,7 @@ class AssignDefaultUsersController extends UbirimiController
         $userArray = $request->request->get('user_arr');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $permissionRole = $this->getRepository('yongo.permission.role')->ggetById($permissionRoleId);
+        $permissionRole = $this->getRepository('yongo.permission.role')->getById($permissionRoleId);
         $this->getRepository('yongo.permission.role')->gdeleteDefaultUsersByPermissionRoleId($permissionRoleId);
         $this->getRepository('yongo.permission.role')->gaddDefaultUsers($permissionRoleId, $userArray, $currentDate);
 

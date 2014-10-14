@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeId = $request->get('id');
-        $notificationScheme = $this->getRepository('yongo.notification.scheme')->ggetMetaDataById($notificationSchemeId);
+        $notificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataById($notificationSchemeId);
 
         if ($notificationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateNotificationScheme = $this->getRepository('yongo.notification.scheme')->ggetMetaDataByNameAndClientId(
+            $duplicateNotificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -48,7 +48,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedNotificationSchemeId = $copiedNotificationScheme->save($currentDate);
 
-                $notificationSchemeData = $this->getRepository('yongo.notification.scheme')->ggetDataByNotificationSchemeId($notificationSchemeId);
+                $notificationSchemeData = $this->getRepository('yongo.notification.scheme')->getDataByNotificationSchemeId($notificationSchemeId);
                 while ($notificationSchemeData && $data = $notificationSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedNotificationScheme->addDataRaw(
                         $copiedNotificationSchemeId,

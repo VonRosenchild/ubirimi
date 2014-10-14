@@ -1,18 +1,28 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Event\IssueEvent;
-    use Ubirimi\Yongo\Event\YongoEvents;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Issue;
 
-    $issueId = $_POST['id'];
-    $noteContent = $_POST['note'];
-    $userIds = $_POST['user_id'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $issueQueryParameters = array('issue_id' => $issueId);
-    $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
+class ShareController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_UPDATE, array('userIds' => $userIds, 'noteContent' => $noteContent));
-    UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_SHARE_EMAIL, $issueEvent);
+        $issueId = $_POST['id'];
+        $noteContent = $_POST['note'];
+        $userIds = $_POST['user_id'];
+
+        $issueQueryParameters = array('issue_id' => $issueId);
+        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
+
+        $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_UPDATE, array('userIds' => $userIds, 'noteContent' => $noteContent));
+        UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_SHARE_EMAIL, $issueEvent);
+    }
+}

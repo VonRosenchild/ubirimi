@@ -6,13 +6,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\SystemProduct;
-use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class ListIssueController extends UbirimiController
 {
@@ -35,7 +33,7 @@ class ListIssueController extends UbirimiController
             $projectsForBrowsing->data_seek(0);
             $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
-            $searchCriteria = UbirimiContainer::getRepository('yongo.issue.issue')->getSearchParameters($projectsForBrowsing, $session->get('client/id'), 1);
+            $searchCriteria = $this->getRepository('yongo.issue.issue')->getSearchParameters($projectsForBrowsing, $session->get('client/id'), 1);
             $issuesResult = null;
         }
 
@@ -64,7 +62,7 @@ class ListIssueController extends UbirimiController
             $projectsForBrowsing = array(229);
             if (isset($parseURLData['query']) && $projectsForBrowsing) {
                 if (Util::searchQueryNotEmpty($getSearchParameters)) {
-                    $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $session->get('user/id'));
+                    $issuesResult = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $session->get('user/id'));
 
                     $issues = $issuesResult[0];
                     $issuesCount = $issuesResult[1];

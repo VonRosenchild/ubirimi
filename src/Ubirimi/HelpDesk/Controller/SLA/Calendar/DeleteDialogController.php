@@ -4,7 +4,7 @@ namespace Ubirimi\HelpDesk\Controller\SLA\Calendar;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Repository\HelpDesk\Sla;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 

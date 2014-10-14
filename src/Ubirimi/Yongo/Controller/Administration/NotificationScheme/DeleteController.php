@@ -18,7 +18,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeId = $request->request->get('id');
-        $notificationScheme = $this->getRepository('yongo.notification.scheme')->ggetMetaDataById($notificationSchemeId);
+        $notificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataById($notificationSchemeId);
 
         $this->getRepository('yongo.notification.scheme')->gdeleteDataByNotificationSchemeId($notificationSchemeId);
         $this->getRepository('yongo.notification.scheme')->gdeleteById($notificationSchemeId);

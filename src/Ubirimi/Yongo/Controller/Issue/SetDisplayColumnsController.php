@@ -1,9 +1,22 @@
 <?php
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $data = $_POST['data'];
+namespace Ubirimi\Yongo\Controller\Issue;
 
-    $this->getRepository('ubirimi.user.user')->updateDisplayColumns($loggedInUserId, $data);
-    $session->set('user/issues_display_columns', $data);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+
+class SetDisplayColumnsController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $data = $_POST['data'];
+
+        $this->getRepository('ubirimi.user.user')->updateDisplayColumns($loggedInUserId, $data);
+        $session->set('user/issues_display_columns', $data);
+    }
+}

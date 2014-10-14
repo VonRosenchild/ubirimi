@@ -16,7 +16,7 @@ class EditDialogController extends UbirimiController
 
         $commentId = $request->get('id');
 
-        $comment = UbirimiContainer::getRepository('yongo.issue.comment')->getById($commentId);
+        $comment = $this->getRepository('yongo.issue.comment')->getById($commentId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/comment/editDialog.php', get_defined_vars());
     }

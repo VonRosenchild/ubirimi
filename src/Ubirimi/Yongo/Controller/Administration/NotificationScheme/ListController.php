@@ -15,7 +15,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $notificationSchemes = $this->getRepository('yongo.notification.scheme')->ggetByClientId($session->get('client/id'));
+        $notificationSchemes = $this->getRepository('yongo.notification.scheme')->getByClientId($session->get('client/id'));
         $menuSelectedCategory = 'issue';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Notification Schemes';

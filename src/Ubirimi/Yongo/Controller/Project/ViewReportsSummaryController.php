@@ -55,6 +55,8 @@ class ViewReportsSummaryController extends UbirimiController
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $project['name'] . ' / Reports';
 
+        $menuSelectedCategory = 'project';
+
         return $this->render(__DIR__ . '/../../Resources/views/project/ViewReportsSummary.php', get_defined_vars());
     }
 }

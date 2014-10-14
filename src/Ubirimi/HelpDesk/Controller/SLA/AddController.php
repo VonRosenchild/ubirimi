@@ -6,14 +6,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\HelpDesk\Repository\Sla\Calendar;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\Sla;
-use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Repository\HelpDesk\SLACalendar;
 
 class AddController extends UbirimiController
 {
@@ -39,7 +38,7 @@ class AddController extends UbirimiController
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
         }
-        $slaCalendars = SLACalendar::getByProjectId($projectId);
+        $slaCalendars = Calendar::getByProjectId($projectId);
 
         $availableStatuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
 
@@ -111,7 +110,7 @@ class AddController extends UbirimiController
                 }
 
                 // for every issue in this project add an empty line in yongo_issue_sla
-                $issuesData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
+                $issuesData = $this->getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
                 if ($issuesData->num_rows) {
                     while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
                         Issue::addPlainSLADataBySLAId($issue['id'], $slaId);

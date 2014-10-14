@@ -27,7 +27,7 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $role = $this->getRepository('yongo.permission.role')->ggetByName($session->get('client/id'), $name);
+            $role = $this->getRepository('yongo.permission.role')->getByName($session->get('client/id'), $name);
             if ($role)
                 $alreadyExists = true;
 

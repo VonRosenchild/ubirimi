@@ -18,7 +18,7 @@ class EditMetadataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionSchemeId = $request->get('id');
-        $permissionScheme = $this->getRepository('yongo.permission.scheme')->ggetMetaDataById($permissionSchemeId);
+        $permissionScheme = $this->getRepository('yongo.permission.scheme')->getMetaDataById($permissionSchemeId);
 
         if ($permissionScheme['client_id'] != $session->get('client/id')) {
             header('Location: /general-settings/bad-link-access-denied');

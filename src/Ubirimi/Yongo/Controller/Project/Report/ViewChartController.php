@@ -54,6 +54,8 @@ class ViewChartController extends UbirimiController
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $project['name'] . ' / Reports / Chart';
 
+        $menuSelectedCategory = 'project';
+
         return $this->render(__DIR__ . '/../../../Resources/views/project/report/ViewChart.php', get_defined_vars());
     }
 }

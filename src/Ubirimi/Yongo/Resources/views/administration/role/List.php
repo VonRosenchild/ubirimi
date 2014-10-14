@@ -22,7 +22,7 @@
                 </tr>
             </table>
 
-            <?php $roles = $this->getRepository('yongo.permission.role')->ggetByClient($session->get('client/id')); ?>
+            <?php $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id')); ?>
 
             <?php if ($roles): ?>
                 <table class="table table-hover table-condensed">

@@ -1,95 +1,107 @@
 <?php
+
+namespace Ubirimi\Yongo\Controller\Issue;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Project;
 
-$issuesPerPage = $session->get('user/issues_per_page');
+class SearchListPrintableController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
+        $issuesPerPage = $session->get('user/issues_per_page');
 
-$searchParameters = array();
-$parseURLData = null;
+        $searchParameters = array();
+        $parseURLData = null;
 
-$getFilter = isset($_GET['filter']) ? $_GET['filter'] : null;
-$getPage = isset($_GET['page']) ? $_GET['page'] : 1;
-$getSortColumn = isset($_GET['sort']) ? $_GET['sort'] : 'created';
-$getSortOrder = isset($_GET['order']) ? $_GET['order'] : 'desc';
-$getSearchQuery = isset($_GET['search_query']) ? $_GET['search_query'] : null;
-$getSummaryFlag = isset($_GET['summary_flag']) ? $_GET['summary_flag'] : null;
-$getDescriptionFlag = isset($_GET['description_flag']) ? $_GET['description_flag'] : null;
-$getCommentsFlag = isset($_GET['comments_flag']) ? $_GET['comments_flag'] : null;
-$getProjectIds = isset($_GET['project']) ? explode('|', $_GET['project']) : null;
+        $getFilter = $request->get('filter');
+        $getPage = $request->get('page');
+        $getSortColumn = $request->get('sort') ? $request->get('sort') : 'created';
+        $getSortOrder = $request->get('order') ? $request->get('order') : 'desc';
+        $getSearchQuery = $request->get('search_query');;
+        $getSummaryFlag = $request->get('summary_flag');
+        $getDescriptionFlag = $request->get('description_flag');
+        $getCommentsFlag = $request->get('comments_flag');
+        $getProjectIds = $request->get('project') ? explode('|', $request->get('project')) : null;
 
-if ($getProjectIds) {
-    $projectsData = $this->getRepository('yongo.project.project')->getByIds($getProjectIds);
-    if (!$projectsData) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
-    while ($projectsData && $data = $projectsData->fetch_array(MYSQLI_ASSOC)) {
-
-        if (Util::checkUserIsLoggedIn()) {
-            if ($data['client_id'] != $clientId) {
+        if ($getProjectIds) {
+            $projectsData = $this->getRepository('yongo.project.project')->getByIds($getProjectIds);
+            if (!$projectsData) {
                 header('Location: /general-settings/bad-link-access-denied');
                 die();
             }
-        } else {
-            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($data['id']), Permission::PERM_BROWSE_PROJECTS);
-            if (!$hasBrowsingPermission) {
-                header('Location: /general-settings/bad-link-access-denied');
-                die();
+            while ($projectsData && $data = $projectsData->fetch_array(MYSQLI_ASSOC)) {
+
+                if (Util::checkUserIsLoggedIn()) {
+                    if ($data['client_id'] != $clientId) {
+                        header('Location: /general-settings/bad-link-access-denied');
+                        die();
+                    }
+                } else {
+                    $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($data['id']), Permission::PERM_BROWSE_PROJECTS);
+                    if (!$hasBrowsingPermission) {
+                        header('Location: /general-settings/bad-link-access-denied');
+                        die();
+                    }
+                }
             }
         }
+
+        $getAssigneeIds = $request->get('assignee') ? explode('|', $request->get('assignee')) : null;
+        $getReportedIds = $request->get('reporter') ? explode('|', $request->get('reporter')) : null;
+        $getIssueTypeIds = $request->get('type') ? explode('|', $request->get('type')) : null;
+        $getIssueStatusIds = $request->get('status') ? explode('|', $request->get('status')) : null;
+        $getIssuePriorityIds = $request->get('priority') ? explode('|', $request->get('priority')) : null;
+        $getProjectComponentIds = $request->get('component') ? explode('|', $request->get('component')) : null;
+        $getProjectVersionIds = $request->get('version') ? explode('|', $request->get('version')) : null;
+        $getIssueResolutionIds = $request->get('resolution') ? explode('|', $request->get('resolution')) : null;
+
+        $getSearchParameters = array('search_query' => $getSearchQuery,
+            'summary_flag' => $getSummaryFlag,
+            'description_flag' => $getDescriptionFlag,
+            'comments_flag' => $getCommentsFlag,
+            'project' => $getProjectIds,
+            'assignee' => $getAssigneeIds,
+            'reporter' => $getReportedIds,
+            'filter' => $getFilter,
+            'type' => $getIssueTypeIds,
+            'status' => $getIssueStatusIds,
+            'priority' => $getIssuePriorityIds,
+            'component' => $getProjectComponentIds,
+            'version' => $getProjectVersionIds,
+            'resolution' => $getIssueResolutionIds,
+            'sort' => $getSortColumn,
+            'sort_order' => $getSortOrder);
+
+        $parseURLData = parse_url($_SERVER['REQUEST_URI']);
+
+        if (isset($parseURLData['query'])) {
+            if (Util::searchQueryNotEmpty($getSearchParameters)) {
+
+                $issues = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
+                $issuesCount = $issues->num_rows;
+                $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';
+            }
+        }
+
+        $columns = array('code',
+            'summary',
+            'priority',
+            'status',
+            'created',
+            'updated',
+            'reporter',
+            'assignee');
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Print List';
+        $menuSelectedCategory = null;
+        require_once __DIR__ . '/../../Resources/views/issue/search/SearchListPrintable.php';
     }
 }
-
-$getAssigneeIds = isset($_GET['assignee']) ? explode('|', $_GET['assignee']) : null;
-$getReportedIds = isset($_GET['reporter']) ? explode('|', $_GET['reporter']) : null;
-$getIssueTypeIds = isset($_GET['type']) ? explode('|', $_GET['type']) : null;
-$getIssueStatusIds = isset($_GET['status']) ? explode('|', $_GET['status']) : null;
-$getIssuePriorityIds = isset($_GET['priority']) ? explode('|', $_GET['priority']) : null;
-$getProjectComponentIds = isset($_GET['component']) ? explode('|', $_GET['component']) : null;
-$getProjectVersionIds = isset($_GET['version']) ? explode('|', $_GET['version']) : null;
-$getIssueResolutionIds = isset($_GET['resolution']) ? explode('|', $_GET['resolution']) : null;
-
-$getSearchParameters = array('search_query' => $getSearchQuery,
-                             'summary_flag' => $getSummaryFlag,
-                             'description_flag' => $getDescriptionFlag,
-                             'comments_flag' => $getCommentsFlag,
-                             'project' => $getProjectIds,
-                             'assignee' => $getAssigneeIds,
-                             'reporter' => $getReportedIds,
-                             'filter' => $getFilter,
-                             'type' => $getIssueTypeIds,
-                             'status' => $getIssueStatusIds,
-                             'priority' => $getIssuePriorityIds,
-                             'component' => $getProjectComponentIds,
-                             'version' => $getProjectVersionIds,
-                             'resolution' => $getIssueResolutionIds,
-                             'sort' => $getSortColumn,
-                             'sort_order' => $getSortOrder);
-
-$parseURLData = parse_url($_SERVER['REQUEST_URI']);
-
-if (isset($parseURLData['query'])) {
-    if (Util::searchQueryNotEmpty($getSearchParameters)) {
-
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
-        $issuesCount = $issues->num_rows;
-        $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';
-    }
-}
-
-$columns = array('code',
-                 'summary',
-                 'priority',
-                 'status',
-                 'created',
-                 'updated',
-                 'reporter',
-                 'assignee');
-
-$sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Print List';
-$menuSelectedCategory = null;
-require_once __DIR__ . '/../../Resources/views/issue/search/SearchListPrintable.php';

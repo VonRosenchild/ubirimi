@@ -61,7 +61,9 @@ class WorkDoneDistributionController extends UbirimiController
         $hasAdministerProject = $hasGlobalSystemAdministrationPermission || $hasGlobalAdministrationPermission || $hasAdministerProjectsPermission;
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $project['name'] . ' / Reports / Work Done Distribution';
-
+        $menuSelectedCategory = 'project';
+        $menuProjectCategory = 'reports';
+        
         return $this->render(__DIR__ . '/../../../Resources/views/project/report/ViewWorkDoneDistribution.php', get_defined_vars());
     }
 }

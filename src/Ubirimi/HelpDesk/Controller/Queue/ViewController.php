@@ -5,11 +5,11 @@ namespace Ubirimi\HelpDesk\Controller\Queue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\Queue;
-use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Project\Project;
 
@@ -51,7 +51,7 @@ class ViewController extends UbirimiController
             $getSearchParameters['page'] = $page;
             $getSearchParameters['issues_per_page'] = 50;
 
-            $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
+            $issuesResult = $this->getRepository('yongo.issue.issue')->getByParameters(
                 $getSearchParameters,
                 $session->get('user/id'),
                 $whereSQL,
@@ -75,6 +75,7 @@ class ViewController extends UbirimiController
 
         $selectedProductId = $session->get('selected_product_id');
         $cliMode = false;
+
         return $this->render(__DIR__ . '/../../Resources/views/queue/View.php', get_defined_vars());
     }
 }

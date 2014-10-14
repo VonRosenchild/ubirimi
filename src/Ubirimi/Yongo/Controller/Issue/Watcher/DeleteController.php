@@ -1,16 +1,26 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Watcher;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Issue\Watcher;
 
-    $currentDate = Util::getServerCurrentDateTime();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $userId = $_POST['id'];
-    $issueId = $_POST['issue_id'];
+class DeleteController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    Watcher::deleteByUserIdAndIssueId($issueId, $userId);
+        $currentDate = Util::getServerCurrentDateTime();
 
-    // update the date_updated field
-    Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $userId = $_POST['id'];
+        $issueId = $_POST['issue_id'];
+
+        Watcher::deleteByUserIdAndIssueId($issueId, $userId);
+
+        // update the date_updated field
+        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+    }
+}

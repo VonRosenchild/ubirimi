@@ -5,9 +5,9 @@ namespace Ubirimi\HelpDesk\Controller\Report;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\Sla;
 
 class GetDataController extends UbirimiController
 {
@@ -26,7 +26,6 @@ class GetDataController extends UbirimiController
         $dates = array();
         $succeeded = array();
         $breached = array();
-
 
         $dateTemporary = new \DateTime($dateFrom, new \DateTimeZone($clientSettings['timezone']));
         while (date_format($dateTemporary, 'Y-m-d') <= $dateTo) {

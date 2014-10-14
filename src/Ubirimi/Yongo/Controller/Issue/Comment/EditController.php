@@ -22,7 +22,7 @@ class EditController extends UbirimiController
 
         $date = Util::getServerCurrentDateTime();
 
-        UbirimiContainer::getRepository('yongo.issue.comment')->updateById($commentId, $content, $loggedInUserId, $date);
+        $this->getRepository('yongo.issue.comment')->updateById($commentId, $content, $loggedInUserId, $date);
 
         return new Response('');
     }

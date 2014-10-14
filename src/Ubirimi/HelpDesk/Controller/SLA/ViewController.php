@@ -4,12 +4,11 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\HelpDesk\Sla;
 use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Repository\HelpDesk\Queue;
 
 class ViewController extends UbirimiController
 {

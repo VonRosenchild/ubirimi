@@ -21,7 +21,7 @@ class EditController extends UbirimiController
         $backLink = $request->get('back');
         $projectId = $request->get('project_id');
 
-        $permissionScheme = $this->getRepository('yongo.permission.scheme')->ggetMetaDataById($Id);
+        $permissionScheme = $this->getRepository('yongo.permission.scheme')->getMetaDataById($Id);
 
         if ($permissionScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

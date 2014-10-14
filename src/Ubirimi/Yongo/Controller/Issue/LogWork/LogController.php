@@ -15,9 +15,9 @@ class LogController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $loggedInUserId = $session->get('user/id');
-
         Util::checkUserIsLoggedInAndRedirect();
+
+        $loggedInUserId = $session->get('user/id');
 
         $issueId = $request->request->get('id');
         $timeSpentPost = trim(str_replace(" ", '', $request->request->get('time_spent')));
@@ -36,7 +36,7 @@ class LogController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
 
             $issueQueryParameters = array('issue_id' => $issueId);
-            $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+            $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
 
             WorkLog::addLog($issueId, $loggedInUserId, $timeSpentPost, $dateStartedString, $comment, $currentDate);
             $remainingTime = WorkLog::adjustRemainingEstimate($issue, $timeSpentPost, $remainingTime, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);

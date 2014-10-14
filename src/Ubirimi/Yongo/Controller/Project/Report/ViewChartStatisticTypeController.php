@@ -40,7 +40,7 @@ class ViewChartStatisticTypeController extends UbirimiController
         $chartType = Util::cleanRegularInputField($request->get('chart_type'));
 
         $issueQueryParameters = array('project' => array($projectId));
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         if ($statisticType == 'assignee') {
             $issuesAssignee = array();
@@ -63,6 +63,9 @@ class ViewChartStatisticTypeController extends UbirimiController
         $hasAdministerProject = $hasGlobalSystemAdministrationPermission || $hasGlobalAdministrationPermission || $hasAdministerProjectsPermission;
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $project['name'] . ' / Reports / Chart';
+
+        $menuProjectCategory = 'reports';
+        $menuSelectedCategory = 'project';
 
         return $this->render(__DIR__ . '/../../../Resources/views/project/report/ViewChartStatisticType.php', get_defined_vars());
     }

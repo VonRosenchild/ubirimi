@@ -24,7 +24,7 @@ class DuplicateController extends UbirimiController
         $issueId = $request->get('issue_id');
 
         $summary = $request->get('summary');
-        $oldIssueData = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $project = $this->getRepository('yongo.project.project')->getById($oldIssueData['issue_project_id']);
 
         $currentDate = Util::getServerCurrentDateTime();

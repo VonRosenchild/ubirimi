@@ -19,7 +19,7 @@ class AssignGroupsDialogController extends UbirimiController
 
         $permissionRoleId = $request->get('role_id');
         $projectId = $request->get('project_id');
-        $role = $this->getRepository('yongo.permission.role')->ggetPermissionRoleById($permissionRoleId);
+        $role = $this->getRepository('yongo.permission.role')->getPermissionRoleById($permissionRoleId);
 
         $all_groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $role_groups = $this->getRepository('yongo.project.project')->getGroupsInRole($projectId, $permissionRoleId);
