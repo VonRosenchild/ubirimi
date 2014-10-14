@@ -33,12 +33,12 @@ class DeleteController extends UbirimiController
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_DELETE, array('loggedInUser' => $loggedInUser));
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
 
-        Issue::deleteById($issueId);
+        $this->getRepository('yongo.issue.issue')->deleteById($issueId);
 
         // also delete the substaks
         $childrenIssues = $this->getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueId), $loggedInUserId);
         while ($childrenIssues && $childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)) {
-            Issue::deleteById($childIssue['id']);
+            $this->getRepository('yongo.issue.issue')->deleteById($childIssue['id']);
         }
 
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr']);

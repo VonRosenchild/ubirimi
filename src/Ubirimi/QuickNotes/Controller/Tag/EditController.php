@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\QuickNotes\Repository\Tag;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 

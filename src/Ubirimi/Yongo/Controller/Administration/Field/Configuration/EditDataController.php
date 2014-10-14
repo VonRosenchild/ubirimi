@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Configuration;
-use Ubirimi\Repository\Log;
+
 
 class EditDataController extends UbirimiController
 {

@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Documentador\Space;
+
     use Ubirimi\Repository\User\User;
 
     require_once __DIR__ . '/_header.php';

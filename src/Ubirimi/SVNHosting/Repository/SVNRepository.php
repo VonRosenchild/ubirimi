@@ -5,7 +5,7 @@ namespace ubirimi\svn;
 use Exception;
 use Ubirimi\ConsoleUtils;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Util;
 
 class SVNRepository

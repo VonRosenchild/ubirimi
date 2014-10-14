@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
-use Ubirimi\Repository\Log;
+
 
 class DeleteController extends UbirimiController
 {

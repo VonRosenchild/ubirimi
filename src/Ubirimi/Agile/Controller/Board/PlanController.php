@@ -5,9 +5,8 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\Board;
-use Ubirimi\Agile\Repository\Sprint;
-use Ubirimi\Repository\Client;
+
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;

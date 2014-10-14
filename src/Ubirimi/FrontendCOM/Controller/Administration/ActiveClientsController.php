@@ -2,7 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
-use Ubirimi\Repository\Client;
+
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 

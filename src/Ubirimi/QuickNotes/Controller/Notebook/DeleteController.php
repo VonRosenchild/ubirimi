@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\QuickNotes\Repository\Notebook;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\SystemProduct;
 
 class DeleteController extends UbirimiController

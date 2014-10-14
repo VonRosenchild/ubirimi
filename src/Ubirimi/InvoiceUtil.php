@@ -3,7 +3,7 @@
 namespace Ubirimi;
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Repository\Invoice;
 
 class InvoiceUtil

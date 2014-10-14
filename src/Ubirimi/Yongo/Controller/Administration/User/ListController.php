@@ -5,7 +5,7 @@ namespace Ubirimi\Yongo\Controller\Administration\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;

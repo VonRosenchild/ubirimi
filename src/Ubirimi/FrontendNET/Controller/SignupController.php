@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Repository\User\User;
 
 class SignupController extends UbirimiController

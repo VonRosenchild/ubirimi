@@ -1,6 +1,6 @@
 <div id="reminder_content_<?php
-    use Ubirimi\Calendar\Repository\Period;
-    use Ubirimi\Calendar\Repository\CalendarReminderType;
+
+
 
     echo $uniqueId ?>">
     <select name="reminder_type_<?php echo $uniqueId; ?>" class="select2InputSmall">

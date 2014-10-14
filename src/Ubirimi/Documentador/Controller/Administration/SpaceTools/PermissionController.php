@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Repository\Client;
-    use Ubirimi\Repository\Documentador\Space;
+
+
     use Ubirimi\Util;
 
     Util::checkUserIsLoggedInAndRedirect();

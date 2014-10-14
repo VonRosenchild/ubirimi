@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Log;
+
+
 use Ubirimi\SystemProduct;
 
 class EditController extends UbirimiController

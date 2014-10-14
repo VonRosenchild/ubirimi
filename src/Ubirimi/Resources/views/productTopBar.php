@@ -2,7 +2,7 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Repository\Client;
+
 
 if ($session->has('client/products')) {
     $productsArray = $session->get('client/products');

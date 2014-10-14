@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Repository\Documentador\Entity;
-    use Ubirimi\Repository\Documentador\EntityComment;
+
+
     use Ubirimi\Util;
 
     Util::checkUserIsLoggedInAndRedirect();

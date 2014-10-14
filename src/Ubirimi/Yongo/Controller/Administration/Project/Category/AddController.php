@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\Yongo\Repository\Project\Category;
 
 class AddController extends UbirimiController

@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Repository\General;
 
-use Ubirimi\Agile\Repository\Board;
+
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Group\Group;

@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Client;
+
     use Ubirimi\Util;
 
     Util::checkSuperUserIsLoggedIn();

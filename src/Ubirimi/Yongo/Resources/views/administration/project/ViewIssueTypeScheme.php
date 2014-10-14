@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Field\Configuration;
     use Ubirimi\Yongo\Repository\Screen\Scheme;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
@@ -65,7 +66,7 @@
                         <td><?php echo $data['description'] ?></td>
                         <td>
                             <?php
-                                $workflows = $this->getRepository('yongo.workflow.workflow')->getByIssueType($data['issue_type_id'], $clientId);
+                                $workflows = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getByIssueType($data['issue_type_id'], $clientId);
                                 if ($workflows) {
                                     echo '<ul>';
                                     while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {

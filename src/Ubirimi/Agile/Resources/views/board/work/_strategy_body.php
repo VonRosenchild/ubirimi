@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Repository\User\User;
-    use Ubirimi\Agile\Repository\Board;
+
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Project\Project;

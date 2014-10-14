@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Agile\Repository\Board;
+
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';

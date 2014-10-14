@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Role;
-use Ubirimi\Repository\Client;
+
 
 class AssignUsersConfirmController extends UbirimiController
 {

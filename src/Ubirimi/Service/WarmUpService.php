@@ -4,7 +4,7 @@ namespace Ubirimi\Service;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;

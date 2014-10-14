@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\Documentador\Space;
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 

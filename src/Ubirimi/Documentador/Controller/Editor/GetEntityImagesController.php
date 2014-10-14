@@ -1,7 +1,7 @@
 <?php
     use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Repository\Documentador\Entity;
-    use Ubirimi\Repository\Documentador\EntityAttachment;
+
+
     use Ubirimi\Util;
 
     Util::checkUserIsLoggedInAndRedirect();

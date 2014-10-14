@@ -1,7 +1,7 @@
 <?php
     require_once __DIR__ . '/_header.php';
 
-    use Ubirimi\Repository\Client;
+
     use Ubirimi\Yongo\Repository\Project\Project;
 ?>
 <body>

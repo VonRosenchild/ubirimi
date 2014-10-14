@@ -4,10 +4,10 @@ namespace Ubirimi\Agile\Controller\Sprint;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\Sprint;
+
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Agile\Repository\Board;
+
 
 class CompleteConfirmController extends UbirimiController
 {

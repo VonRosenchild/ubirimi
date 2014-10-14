@@ -1,7 +1,8 @@
 <?php
-    use Ubirimi\Calendar\Repository\Period;
-    use Ubirimi\Calendar\Repository\CalendarReminderType;
-    use Ubirimi\Util;
+
+
+use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Util;
     use Ubirimi\Calendar\Repository\RepeatCycle;
 
     require_once __DIR__ . '/../_header.php';

@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\Yongo\Repository\Issue\Type;
 
 class AddController extends UbirimiController

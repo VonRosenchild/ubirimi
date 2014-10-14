@@ -1,7 +1,7 @@
 <?php
 
 use Ubirimi\PaymentUtil;
-use Ubirimi\Repository\Client;
+
 
 /* check locking mechanism */
 if (file_exists(__DIR__ .'/generate_invoice.lock')) {

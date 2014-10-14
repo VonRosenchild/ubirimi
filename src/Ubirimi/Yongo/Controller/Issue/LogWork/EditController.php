@@ -63,10 +63,10 @@ class EditController extends UbirimiController
             array('remaining_estimate', $previousIssueRemainingEstimate, $remainingTimePost)
         );
 
-        Issue::updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
 
         // update the date_updated field
-        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         return new Response($remainingTimePost);
     }

@@ -7,7 +7,6 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Filter;
 use Ubirimi\Yongo\Repository\Issue\Settings;
 
-
 class Board
 {
     public $name;
@@ -16,7 +15,7 @@ class Board
     public $filterId;
     public $projects;
 
-    function __construct($clientId, $filterId, $name, $description, $projects ) {
+    function __construct($clientId = null, $filterId = null, $name = null, $description = null, $projects = null) {
         $this->clientId = $clientId;
         $this->filterId = $filterId;
         $this->name = $name;
@@ -141,8 +140,8 @@ class Board
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
         $openStatusData = Settings::getByName($clientId, 'status', 'Open');
         $reopenedStatusData = Settings::getByName($clientId, 'status', 'Reopened');
-        $this->getRepository('agile.board.board')->addStatusToColumn($columnId, $openStatusData['id']);
-        $this->getRepository('agile.board.board')->addStatusToColumn($columnId, $reopenedStatusData['id']);
+        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $openStatusData['id']);
+        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $reopenedStatusData['id']);
 
         // add In Progress column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
@@ -155,7 +154,7 @@ class Board
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
         $inProgressStatusData = Settings::getByName($clientId, 'status', 'In Progress');
 
-        $this->getRepository('agile.board.board')->addStatusToColumn($columnId, $inProgressStatusData['id']);
+        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $inProgressStatusData['id']);
 
         // add Done column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
@@ -169,8 +168,8 @@ class Board
         $resolvedStatusData = Settings::getByName($clientId, 'status', 'Resolved');
         $closedStatusData = Settings::getByName($clientId, 'status', 'Closed');
 
-        $this->getRepository('agile.board.board')->addStatusToColumn($columnId, $resolvedStatusData['id']);
-        $this->getRepository('agile.board.board')->addStatusToColumn($columnId, $closedStatusData['id']);
+        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $resolvedStatusData['id']);
+        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $closedStatusData['id']);
     }
 
     public function getColumns($boardId, $resultType = null) {
@@ -225,7 +224,7 @@ class Board
     }
 
     public function deleteStatusFromColumn($boardId, $StatusId) {
-        $columns = $this->getRepository('agile.board.board')->getColumns($boardId, 'array');
+        $columns = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumns($boardId, 'array');
         $columnsIds = array();
         for ($i = 0; $i < count($columns); $i++) {
             $columnsIds[] = $columns[$i]['id'];
@@ -338,7 +337,7 @@ class Board
 
         $searchParameters['not_status'] = $completeStatuses;
 
-        return UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($searchParameters, $loggedInUserId);
+        return UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($searchParameters, $loggedInUserId);
     }
 
     public function deleteIssuesFromSprints($issueIdArray) {
@@ -463,7 +462,7 @@ class Board
     }
 
     public function deleteById($boardId) {
-        $boardColumnsArray = $this->getRepository('agile.board.board')->getColumns($boardId, 'array');
+        $boardColumnsArray = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumns($boardId, 'array');
         $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');
 
         $query = "delete from agile_board_column_status where agile_board_column_id IN (" . implode(', ', $boardColumnsIds) . ')';

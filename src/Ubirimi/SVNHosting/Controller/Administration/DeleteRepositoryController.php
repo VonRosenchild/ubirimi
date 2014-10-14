@@ -9,7 +9,7 @@ use ubirimi\svn\SVNRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\SystemProduct;
 
 class DeleteRepositoryController extends UbirimiController

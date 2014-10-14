@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Agile\Repository\Board;
+
     use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Filter;
 

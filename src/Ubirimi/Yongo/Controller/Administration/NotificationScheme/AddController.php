@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
-use Ubirimi\Repository\Log;
+
 
 class AddController extends UbirimiController
 {

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Event;
 

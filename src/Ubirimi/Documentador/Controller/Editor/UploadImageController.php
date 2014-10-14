@@ -2,8 +2,8 @@
     // upload image
 
     use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Repository\Documentador\Entity;
-    use Ubirimi\Repository\Documentador\EntityAttachment;
+
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 

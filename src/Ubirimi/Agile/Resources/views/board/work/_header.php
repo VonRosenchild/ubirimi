@@ -1,5 +1,5 @@
 <?php
-        use Ubirimi\Agile\Repository\Board;
+
 
 ?>
 <tr>

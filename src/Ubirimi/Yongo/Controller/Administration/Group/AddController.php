@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\Group\Group;
-use Ubirimi\Repository\Log;
+
 
 class AddController extends UbirimiController
 {

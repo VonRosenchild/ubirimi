@@ -5,7 +5,7 @@ namespace Ubirimi\Agile\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Attachment;
@@ -27,12 +27,12 @@ class IssueDataController extends UbirimiController
         $close = $request->request->get('close', 0);
         $issueParameters = array('issue_id' => $issueId);
 
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueParameters, $session->get('user/id'));
+        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueParameters, $session->get('user/id'));
 
         $projectId = $issue['issue_project_id'];
         $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
-        $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($issueId, 'desc');
+        $comments = $this->getRepository('yongo.issue.comment')->getByIssueId($issueId, 'desc');
         $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
 
         $versionsAffected = Version::getByIssueIdAndProjectId(
@@ -77,7 +77,7 @@ class IssueDataController extends UbirimiController
             $session->get('user/id')
         );
 
-        $attachments = UbirimiContainer::getRepository('yongo.issue.attachment')->getByIssueId($issue['id']);
+        $attachments = $this->getRepository('yongo.issue.attachment')->getByIssueId($issue['id']);
         if ($attachments && $attachments->num_rows) {
             $hasDeleteOwnAttachmentsPermission = $this->getRepository('yongo.project.project')->userHasPermission(
                 $projectId,
@@ -91,7 +91,7 @@ class IssueDataController extends UbirimiController
                 $session->get('user/id')
             );
         }
-        $childrenIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueId), $session->get('user/id'));
+        $childrenIssues = $this->getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueId), $session->get('user/id'));
 
         return $this->render(__DIR__ . '/../Resources/views/IssueData.php', get_defined_vars());
     }

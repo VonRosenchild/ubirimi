@@ -4,7 +4,7 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Documentador\Space;
+
 
 class SpaceController extends UbirimiController
 {

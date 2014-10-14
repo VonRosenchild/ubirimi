@@ -32,7 +32,7 @@ class DuplicateController extends UbirimiController
             'assignee' => $oldIssueData['assignee'], 'description' => $oldIssueData['description'], Field::FIELD_DUE_DATE_CODE => $oldIssueData['due_date'],
             'environment' => $oldIssueData['environment'], 'type' => $oldIssueData['type']);
 
-        $issueReturnValues = Issue::add($project, $currentDate, $issueSystemFields, $loggedInUserId);
+        $issueReturnValues = $this->getRepository('yongo.issue.issue')->add($project, $currentDate, $issueSystemFields, $loggedInUserId);
         $issueId = $issueReturnValues[0];
 
         $components = Component::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id']);
@@ -41,25 +41,25 @@ class DuplicateController extends UbirimiController
             while ($component = $components->fetch_array(MYSQLI_ASSOC))
                 $components_arr[] = $component['project_component_id'];
 
-            Issue::addComponentVersion($issueId, $components_arr, 'issue_component');
+            $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $components_arr, 'issue_component');
         }
 
-        $versions = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versions = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
         if ($versions) {
             $versions_arr = array();
             while ($version = $versions->fetch_array(MYSQLI_ASSOC))
                 $versions_arr[] = $version['project_version_id'];
 
-            Issue::addComponentVersion($issueId, $versions_arr, 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $versions_arr, 'issue_version', $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
         }
 
-        $targets = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
+        $targets = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
         if ($targets) {
             $targets_arr = array();
             while ($target = $targets->fetch_array(MYSQLI_ASSOC))
                 $targets_arr[] = $target['project_version_id'];
 
-            Issue::addComponentVersion($issueId, $targets_arr, 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
+            $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $targets_arr, 'issue_version', $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
         }
 
         return new Response($issueId);

@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Repository\Documentador\Entity;
-    use Ubirimi\Repository\Documentador\Space;
+
+
 
     $spaceId = $_POST['id'];
 

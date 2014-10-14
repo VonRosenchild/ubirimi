@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class IndexController extends UbirimiController

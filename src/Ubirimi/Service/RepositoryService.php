@@ -12,9 +12,6 @@ class RepositoryService
             return $this->repositoryList[$name];
         }
 
-//        ubirimi.general.client'
-
-
         $classNameComponents = explode(".", $name);
         if ($classNameComponents[0] == 'ubirimi') {
             $className = 'Ubirimi\\Repository\\' .

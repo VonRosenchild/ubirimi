@@ -3,7 +3,7 @@
 namespace Ubirimi\Service;
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Util;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Repository\Email\EmailQueue;

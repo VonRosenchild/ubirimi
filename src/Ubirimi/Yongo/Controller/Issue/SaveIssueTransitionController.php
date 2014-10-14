@@ -76,7 +76,7 @@ class SaveIssueTransitionController extends UbirimiController
                 $issueCustomFieldsData[$keyData[0]] = $value;
             }
 
-            $fieldChanges = Issue::computeDifference($issueData, $newIssueSystemFieldsData, $oldIssueCustomFieldsData, $issueCustomFieldsData);
+            $fieldChanges = $this->getRepository('yongo.issue.issue')->computeDifference($issueData, $newIssueSystemFieldsData, $oldIssueCustomFieldsData, $issueCustomFieldsData);
 
             if (in_array(Field::FIELD_COMMENT_CODE, $fieldTypes)) {
                 if ($fieldValues[array_search('comment', $fieldTypes)]) {
@@ -88,7 +88,7 @@ class SaveIssueTransitionController extends UbirimiController
             }
 
             try {
-                Issue::updateById($issueId, $newIssueSystemFieldsData, $currentDate);
+                $this->getRepository('yongo.issue.issue')->updateById($issueId, $newIssueSystemFieldsData, $currentDate);
 
                 // save custom fields
                 if (count($issueCustomFieldsData)) {
@@ -106,7 +106,7 @@ class SaveIssueTransitionController extends UbirimiController
             WorkflowFunction::triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
 
             // update the date_updated field
-            Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+            $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
             return new Response('success');
         } else {

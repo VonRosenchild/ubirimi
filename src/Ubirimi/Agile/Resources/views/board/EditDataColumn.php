@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Agile\Repository\Board;
+
     use Ubirimi\LinkHelper;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;

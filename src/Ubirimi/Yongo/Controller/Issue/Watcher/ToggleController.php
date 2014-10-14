@@ -28,6 +28,6 @@ class ToggleController extends UbirimiController
         }
 
         // update the date_updated field
-        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
     }
 }

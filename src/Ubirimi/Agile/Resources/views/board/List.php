@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\LinkHelper;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
     use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
@@ -55,7 +56,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
                                         $tempData = explode("=", $definitionData[$i]);
                                         if ($tempData[0] == 'project') {
                                             $projectIds = explode("|", $tempData[1]);
-                                            $projects = $this->getRepository('yongo.project.project')->getByClientIdAndIds($clientId, $projectIds);
+                                            $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByClientIdAndIds($clientId, $projectIds);
                                             echo '<ul>';
                                             while ($projects && $project = $projects->fetch_array(MYSQLI_ASSOC)) {
                                                 echo '<li><a href="/yongo/project/' . $project['id'] . '">' . $project['name'] . '</a></li>';

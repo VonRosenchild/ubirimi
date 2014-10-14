@@ -65,8 +65,8 @@ class MoveStep3Controller extends UbirimiController
         $targetVersions = $this->getRepository('yongo.project.project')->getVersions($targetProjectId);
 
         $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
-        $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-        $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
+        $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
 
         $sourceAssignee = $issue['assignee'];
         $assignableUsersTargetProjectArray = $this->getRepository('yongo.project.project')->getUsersWithPermission($session->get('move_issue/new_project'), Permission::PERM_ASSIGNABLE_USER, 'array');

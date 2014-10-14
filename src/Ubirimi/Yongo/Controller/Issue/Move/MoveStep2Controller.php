@@ -44,8 +44,8 @@ class MoveStep2Controller extends UbirimiController
             // check if step 3 is necessary
 
             $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
-            $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-            $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
+            $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
 
             if ($issueComponents || $issueFixVersions || $issueAffectedVersions) {
                 header('Location: /yongo/issue/move/fields/' . $issueId);

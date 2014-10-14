@@ -5,7 +5,7 @@ namespace Ubirimi\FrontendCOM\Controller\Account;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Util;
 
 class SettingsController extends UbirimiController

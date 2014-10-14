@@ -9,8 +9,8 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Type;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Log;
+
+
 use Ubirimi\SystemProduct;
 
 class DeleteController extends UbirimiController
@@ -24,7 +24,7 @@ class DeleteController extends UbirimiController
 
         if ($newId) {
             $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
-            Issue::updateType($projects, $oldId, $newId);
+            $this->getRepository('yongo.issue.issue')->updateType($projects, $oldId, $newId);
         }
 
         $issueType = Type::getById($oldId);

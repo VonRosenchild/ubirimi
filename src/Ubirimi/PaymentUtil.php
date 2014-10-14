@@ -2,7 +2,7 @@
 
 namespace Ubirimi;
 
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Container\UbirimiContainer;
 
 class PaymentUtil

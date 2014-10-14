@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Log;
+
+
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
@@ -24,7 +24,7 @@ class DeleteController extends UbirimiController
 
         $priority = Settings::getById($oldId, 'priority');
         $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
-        Issue::updatePriority($projects, $oldId, $newId);
+        $this->getRepository('yongo.issue.issue')->updatePriority($projects, $oldId, $newId);
 
         Settings::deletePriorityById($oldId);
 

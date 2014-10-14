@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
 class ListController extends UbirimiController

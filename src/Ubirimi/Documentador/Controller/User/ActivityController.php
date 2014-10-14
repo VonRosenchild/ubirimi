@@ -1,5 +1,5 @@
 <?php
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;

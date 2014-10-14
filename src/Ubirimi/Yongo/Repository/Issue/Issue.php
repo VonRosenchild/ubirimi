@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Yongo\Repository\Issue;
 
-use Ubirimi\Agile\Repository\Board;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\Repository\User\User;
@@ -755,7 +755,7 @@ class Issue
     }
 
     public function deleteById($issueId) {
-        UbirimiContainer::getRepository('yongo.issue.comment')->deleteByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get('yongo.issue.comment')->deleteByIssueId($issueId);
         History::deleteByIssueId($issueId);
         Component::deleteByIssueId($issueId);
         Version::deleteByIssueId($issueId);
@@ -763,7 +763,7 @@ class Issue
         Watcher::deleteByIssueId($issueId);
         Issue::deleteSLADataByIssueId($issueId);
         WorkLog::deleteByIssueId($issueId);
-        UbirimiContainer::getRepository('yongo.issue.attachment')->deleteByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get('yongo.issue.attachment')->deleteByIssueId($issueId);
         CustomField::deleteCustomFieldsData($issueId);
 
         UbirimiContainer::get()['repository']->get('agile.board.board')->deleteIssuesFromSprints(array($issueId));
@@ -776,7 +776,7 @@ class Issue
     }
 
     public function addRaw($projectId, $date, $data) {
-        $issueNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($projectId);
+        $issueNumber = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getAvailableIssueNumber($projectId);
 
         $query = "INSERT INTO yongo_issue(project_id, priority_id, status_id, type_id, user_assigned_id, user_reported_id, nr, " .
             "summary, description, environment, date_created, date_due) " .
@@ -807,7 +807,7 @@ class Issue
         global $issueNumbers;
 
         if (!isset($issueNumbers[$project['id']])) {
-            $issueNumbers[$project['id']] = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($project['id']);
+            $issueNumbers[$project['id']] = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getAvailableIssueNumber($project['id']);
         }
 
         $issueNumbers[$project['id']] += 1;
@@ -1535,7 +1535,7 @@ class Issue
     }
 
     public function updateAssignee($clientId, $issueId, $loggedInUserId, $userAssignedId, $comment = null) {
-        $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $issueData = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         if ($userAssignedId != -1) {
             Issue::updateField($issueId, 'user_assigned_id', $userAssignedId);
@@ -1554,7 +1554,7 @@ class Issue
         Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $oldAssignee['id'], $newAssignee['id'], $date);
 
         if (!empty($comment)) {
-            UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $comment, $date);
+            UbirimiContainer::get()['repository']->get('yongo.issue.comment')->add($issueId, $loggedInUserId, $comment, $date);
         }
     }
 
@@ -1575,7 +1575,7 @@ class Issue
         if ($subTasks) {
             while ($issue = $subTasks->fetch_array(MYSQLI_ASSOC)) {
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-                $nextNumber = UbirimiContainer::getRepository('yongo.issue.issue')->getAvailableIssueNumber($newProjectId);
+                $nextNumber = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getAvailableIssueNumber($newProjectId);
 
                 $subTaskId = $issue['id'];
                 $stmt->bind_param("iisi", $newProjectId, $newIssueTypeId, $nextNumber, $subTaskId);
@@ -1704,7 +1704,7 @@ class Issue
         if ($SLAs) {
 
             $issueQueryParameters = array('project' => $projectId);
-            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $userId);
+            $issues = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($issueQueryParameters, $userId);
 
             // check issue against the slas
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {

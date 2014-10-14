@@ -10,8 +10,8 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Log;
+
+
 use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;

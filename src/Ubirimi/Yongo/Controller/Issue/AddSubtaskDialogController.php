@@ -8,7 +8,7 @@ use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Project;
+
 
 class AddSubtaskDialogController extends UbirimiController
 {
@@ -19,6 +19,7 @@ class AddSubtaskDialogController extends UbirimiController
         $issueId = $request->get('issue_id');
         $projectId = $request->get('project_id');
 
+        var_dump($projectId);
         $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
         $projectId = $projectData['id'];
 
@@ -29,9 +30,9 @@ class AddSubtaskDialogController extends UbirimiController
         $issueTypeId = $firstIssueType['id'];
         $issue_types->data_seek(0);
 
-        $screenData = $this->getRepository('yongo.project.project')->getScreenData($projectData, $issueTypeId, SystemOperation::OPERATION_CREATE);
-        $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
-        $projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
+        $screenData = $this->getRepository('yongo.screen.screen')->getScreenData($projectData, $issueTypeId, SystemOperation::OPERATION_CREATE);
+        $projectComponents = $this->getRepository('yongo.project.component')->getComponents($projectId);
+        $projectVersions = $this->getRepository('yongo.project.version')->getVersions($projectId);
 
         $assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
         $reporterUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);

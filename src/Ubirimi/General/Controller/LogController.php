@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Log;
+
     use Ubirimi\Util;
 
     Util::checkUserIsLoggedInAndRedirect();

@@ -8,8 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Log;
+
+
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
@@ -24,7 +24,7 @@ class DeleteController extends UbirimiController
 
         $resolution = Settings::getById($oldId, 'resolution');
         $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
-        Issue::updateResolution($projects, $oldId, $newId);
+        $this->getRepository('yongo.issue.issue')->updateResolution($projects, $oldId, $newId);
 
         Settings::deleteResolutionById($oldId);
 

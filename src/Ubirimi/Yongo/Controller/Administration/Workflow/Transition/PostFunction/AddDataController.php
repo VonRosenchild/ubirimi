@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Log;
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;

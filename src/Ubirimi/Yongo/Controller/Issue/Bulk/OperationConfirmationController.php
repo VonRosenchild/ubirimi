@@ -41,13 +41,13 @@ class OperationConfirmationController extends UbirimiController
                         UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
                     }
 
-                    Issue::deleteById($issueIds[$i]);
+                    $this->getRepository('yongo.issue.issue')->deleteById($issueIds[$i]);
                     Attachment::deleteByIssueId($issueIds[$i]);
 
                     // also delete the substaks
                     $childrenIssues = $this->getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueIds[$i]), $loggedInUserId);
                     while ($childrenIssues && $childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)) {
-                        Issue::deleteById($childIssue['id']);
+                        $this->getRepository('yongo.issue.issue')->deleteById($childIssue['id']);
                         Attachment::deleteByIssueId($childIssue['id']);
                     }
                 }

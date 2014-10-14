@@ -4,7 +4,7 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Agile\Repository\Board;
+
 
 class AgileBoardController extends UbirimiController
 {

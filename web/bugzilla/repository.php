@@ -1,6 +1,6 @@
 <?php
 
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Util;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Repository\Email\EmailQueue;
@@ -15,9 +15,9 @@ use Ubirimi\Yongo\Repository\Project\Project;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
-use Ubirimi\Calendar\Repository\CalendarReminderType;
+
 use Ubirimi\Repository\Group\Group;
-use Ubirimi\Calendar\Repository\Period;
+
 use Ubirimi\Repository\User\User as UserRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\Repository\SMTPServer;

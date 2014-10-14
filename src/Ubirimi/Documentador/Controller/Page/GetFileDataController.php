@@ -2,7 +2,7 @@
 
     use Ubirimi\Container\UbirimiContainer;
     use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\Documentador\Entity;
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 

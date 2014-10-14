@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 
 class PostController extends UbirimiController
 {

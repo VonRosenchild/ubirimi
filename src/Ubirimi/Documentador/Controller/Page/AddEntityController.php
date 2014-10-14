@@ -1,7 +1,7 @@
 <?php
-    use Ubirimi\Repository\Documentador\Entity;
-    use Ubirimi\Repository\Documentador\EntityType;
-    use Ubirimi\Repository\Documentador\Space;
+
+
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 

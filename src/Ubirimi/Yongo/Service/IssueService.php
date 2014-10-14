@@ -8,7 +8,7 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\Watcher;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Agile\Repository\Sprint;
+
 use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;

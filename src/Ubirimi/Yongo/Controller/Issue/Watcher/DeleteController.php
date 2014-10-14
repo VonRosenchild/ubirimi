@@ -21,6 +21,6 @@ class DeleteController extends UbirimiController
         Watcher::deleteByUserIdAndIssueId($issueId, $userId);
 
         // update the date_updated field
-        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
     }
 }

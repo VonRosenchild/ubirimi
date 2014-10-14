@@ -6,7 +6,7 @@
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Repository\User\User;

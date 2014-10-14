@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Calendar\Repository\Period;
-    use Ubirimi\Calendar\Repository\CalendarReminderType;
+
+
     use Ubirimi\Util;
 
     require_once __DIR__ . '/_header.php';

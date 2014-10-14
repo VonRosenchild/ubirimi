@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Event\CalendarEvent as CalEvent;
 use Ubirimi\Calendar\Event\CalendarEvents;
-use Ubirimi\Calendar\Repository\CalendarEvent;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;

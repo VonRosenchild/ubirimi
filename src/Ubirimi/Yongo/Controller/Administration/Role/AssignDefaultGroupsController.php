@@ -9,7 +9,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\SystemProduct;
-use Ubirimi\Repository\Log;
+
 
 class AssignDefaultGroupsController extends UbirimiController
 {

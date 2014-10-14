@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Role;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\SystemProduct;
 
 class AssignDefaultUsersController extends UbirimiController

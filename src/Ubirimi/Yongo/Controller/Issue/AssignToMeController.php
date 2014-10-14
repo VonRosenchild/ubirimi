@@ -29,10 +29,10 @@ class AssignToMeController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        Issue::updateAssignee($clientId, $issueId, $loggedInUserId, $loggedInUserId);
+        $this->getRepository('yongo.issue.issue')->updateAssignee($clientId, $issueId, $loggedInUserId, $loggedInUserId);
 
         // update the date_updated field
-        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         $userAssigned = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
         $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];

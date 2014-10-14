@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
-use Ubirimi\Repository\Log;
+
 
 class CopyController extends UbirimiController
 {

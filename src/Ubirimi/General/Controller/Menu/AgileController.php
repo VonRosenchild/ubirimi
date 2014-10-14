@@ -5,7 +5,6 @@ namespace Ubirimi\General\Controller\Menu;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
-use Ubirimi\Agile\Repository\Board;
 
 class AgileController extends UbirimiController
 {

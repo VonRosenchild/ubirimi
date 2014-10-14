@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Client;
+
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../include/header.php';

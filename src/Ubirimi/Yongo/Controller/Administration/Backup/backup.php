@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Client;
+
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Issue\Settings;
 

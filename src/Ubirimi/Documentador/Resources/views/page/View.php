@@ -1,8 +1,8 @@
 <?php
     use Ubirimi\LinkHelper;
 
-use Ubirimi\Repository\Documentador\EntityComment;
-    use Ubirimi\Repository\Documentador\EntityType;
+
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 

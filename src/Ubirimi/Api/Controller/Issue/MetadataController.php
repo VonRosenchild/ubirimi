@@ -5,7 +5,7 @@ namespace Ubirimi\Api\Controller\Issue;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\UbirimiController;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;

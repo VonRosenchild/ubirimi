@@ -5,11 +5,11 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Documentador\Entity;
-use Ubirimi\Agile\Repository\Board;
-use Ubirimi\Agile\Repository\Sprint;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Documentador\Space;
+
+
+
+
+
 use Ubirimi\Repository\User\User;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\Yongo\Repository\Issue\Issue;

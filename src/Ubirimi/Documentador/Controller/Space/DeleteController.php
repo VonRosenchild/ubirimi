@@ -1,6 +1,6 @@
 <?php
 
-    use Ubirimi\Repository\Log;
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 

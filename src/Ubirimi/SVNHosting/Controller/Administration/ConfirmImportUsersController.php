@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Client;
+
 
 class ConfirmImportUsersController extends UbirimiController
 {

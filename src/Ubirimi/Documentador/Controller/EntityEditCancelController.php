@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Documentador\Entity;
+
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
 

@@ -49,10 +49,10 @@ class DeleteController extends UbirimiController
             array('remaining_estimate', $previousEstimate, $remainingTime),
             array('worklog_time_spent', $workLog['time_spent'], null));
 
-        Issue::updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
 
         // update the date_updated field
-        Issue::updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         return new Response($remainingTime);
     }

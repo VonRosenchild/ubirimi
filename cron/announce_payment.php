@@ -1,9 +1,9 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Util;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\SystemProduct;
 
 /* check locking mechanism */

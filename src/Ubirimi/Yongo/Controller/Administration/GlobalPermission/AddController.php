@@ -10,7 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Repository\Group\Group;
-use Ubirimi\Repository\Log;
+
 
 class AddController extends UbirimiController
 {

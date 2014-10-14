@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\SystemProduct;
 
 class EditRepositoryController extends UbirimiController

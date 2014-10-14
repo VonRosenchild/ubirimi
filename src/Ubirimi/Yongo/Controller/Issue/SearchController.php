@@ -58,7 +58,7 @@ class SearchController extends UbirimiController
 
         if (isset($_POST['search'])) {
 
-            $searchParameters = Issue::prepareDataForSearchFromPostGet($projectIds, $_POST, $_GET);
+            $searchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromPostGet($projectIds, $_POST, $_GET);
 
             $redirectLink = str_replace("%7C", "|", http_build_query($searchParameters));
             header('Location: /yongo/issue/search?' . $redirectLink);
@@ -68,7 +68,7 @@ class SearchController extends UbirimiController
             $getFilter = $request->get('filter');
             $currentSearchPage = $request->get('page');
 
-            $getSearchParameters = Issue::prepareDataForSearchFromURL($_GET, $issuesPerPage);
+            $getSearchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromURL($_GET, $issuesPerPage);
 
             // check to see if the project Ids are all belonging to the client
             $getProjectIds = isset($_GET['project']) ? explode('|', $_GET['project']) : null;

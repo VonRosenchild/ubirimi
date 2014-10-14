@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Yongo\Repository\Project;
 
-use Ubirimi\Agile\Repository\Board;
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\SystemProduct;

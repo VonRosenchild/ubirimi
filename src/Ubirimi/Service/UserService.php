@@ -3,12 +3,12 @@
 namespace Ubirimi\Service;
 
 use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\Calendar\Repository\Period;
-use Ubirimi\Calendar\Repository\CalendarReminderType;
+
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\Event\UserEvent;
-use Ubirimi\Repository\Client;
+
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User as UserRepository;
 use ubirimi\svn\SVNRepository;

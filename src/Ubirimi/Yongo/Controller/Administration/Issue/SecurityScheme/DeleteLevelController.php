@@ -19,7 +19,7 @@ class DeleteLevelController extends UbirimiController
         $issueSecuritySchemeLevelId = $request->request->get('id');
         $newIssueSecuritySchemeLevelId = $request->request->get('new_level_id');
 
-        Issue::updateSecurityLevel(
+        $this->getRepository('yongo.issue.issue')->updateSecurityLevel(
             $session->get('client/id'),
             $issueSecuritySchemeLevelId,
             $newIssueSecuritySchemeLevelId

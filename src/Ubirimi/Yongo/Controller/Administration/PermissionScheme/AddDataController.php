@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Scheme;
-use Ubirimi\Repository\Log;
+
 use Ubirimi\Repository\Group\Group;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Permission\Permission;
