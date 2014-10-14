@@ -5,10 +5,12 @@ var PRODUCT_QUICK_NOTES = 7;
 function setInputFieldFocused(id) {
 
     var SearchInput = $('#' + id);
-    SearchInput.val(SearchInput.val());
-    var strLength = SearchInput.val().length;
-    SearchInput.focus();
-    SearchInput[0].setSelectionRange(strLength, strLength);
+    if (SearchInput.length) {
+        SearchInput.val(SearchInput.val());
+        var strLength = SearchInput.val().length;
+        SearchInput.focus();
+        SearchInput[0].setSelectionRange(strLength, strLength);
+    }
 }
 
 function addParameterToURL(url, parameter) {
@@ -151,15 +153,26 @@ function closeOpenMenus() {
 }
 
 $('document').ready(function () {
-    $(".select2Input").select2();
-    $(".select2InputSmall").select2();
-    $(".select2InputMedium").select2();
-    $(".select2InputLarge").select2();
 
-    $('.filter-date-regular').datepicker({
-        dateFormat: "yy-mm-dd",
-        selectOtherMonths: true
-    });
+    if ($(".select2Input").length) {
+        $(".select2Input").select2();
+    }
+    if ($(".select2InputSmall").length) {
+        $(".select2InputSmall").select2();
+    }
+    if ($(".select2InputMedium").length) {
+        $(".select2InputMedium").select2();
+    }
+    if ($(".select2InputLarge").length) {
+        $(".select2InputLarge").select2();
+    }
+
+    if ($('.filter-date-regular').length) {
+        $('.filter-date-regular').datepicker({
+            dateFormat: "yy-mm-dd",
+            selectOtherMonths: true
+        });
+    }
 
     $('#ubirimi_quick_search, #calendar_quick_search').on('click', function (event) {
         $(this).val('');
