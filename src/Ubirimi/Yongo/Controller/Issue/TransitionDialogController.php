@@ -20,25 +20,25 @@ $stepIdTo = $_GET['step_id_to'];
 
 $projectId = $_GET['project_id'];
 $issueId = $_GET['issue_id'];
-$assignableUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
-$projectData = $this->getRepository('yongo.project.project')->getById($projectId);
-$issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByIdSimple($issueId);
-$workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+$assignableUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
+$projectData = UbirimiContainer::get()['repository']->get('yongo.project.project')->getById($projectId);
+$issue = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByIdSimple($issueId);
+$workflowData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
 $screenId = $workflowData['screen_id'];
 
-$allUsers = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
+$allUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($session->get('client/id'));
 $screenData = Screen::getDataById($screenId);
 $screenMetadata = Screen::getMetaDataById($screenId);
 $resolutions = Settings::getAllIssueSettings('resolution', $clientId);
-$projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
-$projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
+$projectComponents = UbirimiContainer::get()['repository']->get('yongo.project.project')->getComponents($projectId);
+$projectVersions = UbirimiContainer::get()['repository']->get('yongo.project.project')->getVersions($projectId);
 $htmlOutput = '';
 $htmlOutput .= '<table class="modal-table">';
 
-$reporterUsers = $this->getRepository('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+$reporterUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
 $fieldCodeNULL = null;
 
-$fieldData = $this->getRepository('yongo.project.project')->getFieldInformation($projectData['issue_type_field_configuration_id'], $issue['type_id'], 'array');
+$fieldData = UbirimiContainer::get()['repository']->get('yongo.project.project')->getFieldInformation($projectData['issue_type_field_configuration_id'], $issue['type_id'], 'array');
 
 while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
     $htmlOutput .= '<tr>';
@@ -46,9 +46,9 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
         $arrayData = Util::checkKeyAndValueInArray('field_id', $field['field_id'], $fieldData);
         $requiredHTML = $arrayData['required_flag'] ? 'required="1"' : 'required="0"';
         $mandatoryStarHTML = '';
-        if ($arrayData['required_flag'])
+        if ($arrayData['required_flag']) {
             $mandatoryStarHTML = '<span class="mandatory">*</span>';
-
+        }
         $htmlOutput .= '<td valign="top">' . $field['field_name'] . ' ' . $mandatoryStarHTML . '</td>';
         $htmlOutput .= '<td>';
 
@@ -69,7 +69,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                 break;
 
             case Field::FIELD_ASSIGNEE_CODE:
-                $allowUnassignedIssuesFlag = $this->getRepository('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
+                $allowUnassignedIssuesFlag = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
                 $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_assignee" name="' . $field['field_code'] . '" class="select2Input">';
                 if ($allowUnassignedIssuesFlag)
@@ -161,7 +161,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
             // deal with the custom fields
             case $fieldCodeNULL:
 
-                $fieldValue = $this->getRepository('yongo.field.field')->getCustomFieldValueByFieldId($issueId, $field['field_id']);
+                $fieldValue = UbirimiContainer::get()['repository']->get('yongo.field.field')->getCustomFieldValueByFieldId($issueId, $field['field_id']);
                 switch ($field['type_code']) {
                     case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
                         $htmlOutput .= '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
@@ -190,7 +190,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                         break;
 
                     case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
-                        $possibleValues = $this->getRepository('yongo.field.field')->getDataByFieldId($field['field_id']);
+                        $possibleValues = UbirimiContainer::get()['repository']->get('yongo.field.field')->getDataByFieldId($field['field_id']);
                         $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                         $htmlOutput .= '<option value="">None</option>';
                         while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {

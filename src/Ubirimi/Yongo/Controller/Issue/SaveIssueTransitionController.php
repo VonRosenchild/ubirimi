@@ -26,7 +26,7 @@ $attIdsSession = $session->has('added_attachments_in_screen') ? $session->get('a
 $fieldTypesCustom = isset($_POST['field_types_custom']) ? $_POST['field_types_custom'] : null;
 $fieldValuesCustom = isset($_POST['field_values_custom']) ? $_POST['field_values_custom'] : null;
 
-$clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+$clientSettings = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getSettings($clientId);
 $issueCustomFieldsData = array();
 
 for ($i = 0; $i < count($fieldTypesCustom); $i++) {
@@ -47,11 +47,11 @@ for ($i = 0; $i < count($attIdsSession); $i++) {
 }
 
 $session->remove('added_attachments_in_screen');
-$issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $loggedInUserId);
-$workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+$issueData = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getById($issueId, $loggedInUserId);
+$workflowData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
 
 // check if the transition can be executed with respect to the transition conditions
-$canBeExecuted = $this->getRepository('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issueData);
+$canBeExecuted = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issueData);
 
 if ($canBeExecuted) {
     $currentDate = Util::getServerCurrentDateTime();
@@ -77,7 +77,7 @@ if ($canBeExecuted) {
         if ($fieldValues[array_search('comment', $fieldTypes)]) {
             $commentText = $fieldValues[array_search('comment', $fieldTypes)];
 
-            UbirimiContainer::getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $commentText, $currentDate);
+            UbirimiContainer::get()['repository']->get('yongo.issue.comment')->add($issueId, $loggedInUserId, $commentText, $currentDate);
             $fieldChanges[] = array('comment', $commentText);
         }
     }
