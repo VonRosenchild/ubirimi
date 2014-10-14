@@ -5,14 +5,12 @@ namespace Ubirimi\Calendar\Controller\Event;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\Calendar\Repository\CalendarEvent;
-use Ubirimi\Repository\Client;
-use Ubirimi\Repository\Log;
+use Ubirimi\Calendar\Repository\Calendar\Calendar;
+use Ubirimi\Calendar\Repository\Event\Event;
+use Ubirimi\Calendar\Repository\Reminder\RepeatCycle;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Calendar\Repository\RepeatCycle;
 
 class EditController extends UbirimiController
 {
@@ -26,8 +24,8 @@ class EditController extends UbirimiController
 
         $eventId = $request->get('id');
         $sourcePageLink = $request->get('source');
-        $event = CalendarEvent::getById($eventId, 'array');
-        $eventRepeatData = CalendarEvent::getRepeatDataById($event['cal_event_repeat_id']);
+        $event = Event::getById($eventId, 'array');
+        $eventRepeatData = Event::getRepeatDataById($event['cal_event_repeat_id']);
 
         $defaultEventStartDate = $eventRepeatData['start_date'];
         $defaultEventRepeatCycle = $eventRepeatData['cal_event_repeat_cycle_id'];
@@ -38,7 +36,7 @@ class EditController extends UbirimiController
         $repeatDaily = ($defaultEventRepeatCycle == RepeatCycle::REPEAT_DAILY);
         $repeatWeekly = ($defaultEventRepeatCycle == RepeatCycle::REPEAT_WEEKLY);
 
-        $eventReminders = CalendarEvent::getReminders($eventId);
+        $eventReminders = Event::getReminders($eventId);
         if ($event['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -118,7 +116,7 @@ class EditController extends UbirimiController
                         $nextEvent = $eventsLinked->fetch_array(MYSQLI_ASSOC);
                         Calendar::updateEventsLinkByLinkId($event['cal_event_link_id'], $nextEvent['cal_event_link_id']);
                     }
-                    CalendarEvent::updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo);
+                    Event::updateRemoveLinkAndRepeat($eventId, $dateFrom, $dateTo);
                 } else if ("following_events" == $changeType) {
 
                     if ($repeatData) {
@@ -127,9 +125,9 @@ class EditController extends UbirimiController
                          * add this new event as a stand alone event
                          */
 
-                        CalendarEvent::deleteEventAndFollowingByLinkId($eventId);
+                        Event::deleteEventAndFollowingByLinkId($eventId);
 
-                        CalendarEvent::add(
+                        Event::add(
                             $calendarId,
                             $session->get('user/id'),
                             $name,
@@ -144,7 +142,7 @@ class EditController extends UbirimiController
                         );
                     }
                 } else if ("all_events" == $changeType) {
-                    $eventLink = CalendarEvent::getById($event['cal_event_link_id'], 'array');
+                    $eventLink = Event::getById($event['cal_event_link_id'], 'array');
 
                     $repeatDataPieces = explode('#', $repeatData);
                     array_pop($repeatDataPieces);
@@ -152,9 +150,9 @@ class EditController extends UbirimiController
                     $repeatData = implode("#", $repeatDataPieces);
 
                     // delete current event and create new one
-                    CalendarEvent::deleteById($eventId, 'all_series');
+                    Event::deleteById($eventId, 'all_series');
 
-                    CalendarEvent::add(
+                    Event::add(
                         $calendarId,
                         $session->get('user/id'),
                         $name,
@@ -169,7 +167,7 @@ class EditController extends UbirimiController
                     );
                 }
             } else {
-                CalendarEvent::updateById(
+                Event::updateById(
                     $eventId,
                     $calendarId,
                     $name,
@@ -180,7 +178,7 @@ class EditController extends UbirimiController
                     $color,
                     $date
                 );
-                CalendarEvent::deleteReminders($eventId);
+                Event::deleteReminders($eventId);
 
                 // reminder information
                 foreach ($request->request as $key => $value) {
@@ -192,7 +190,7 @@ class EditController extends UbirimiController
 
                         // add the reminder
                         if (is_numeric($reminderValue)) {
-                            CalendarEvent::addReminder($eventId, $reminderType, $reminderPeriod, $reminderValue);
+                            Event::addReminder($eventId, $reminderType, $reminderPeriod, $reminderValue);
                         }
                     }
                 }

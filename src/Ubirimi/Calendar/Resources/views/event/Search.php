@@ -1,16 +1,16 @@
 <?php
+use Ubirimi\Util;
 
-    use Ubirimi\Util;
-
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/calendar/calendars">My Calendars</a> > Search > ' . $query;
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
+
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a href="/calendar/calendars">My Calendars</a> > Search > ' . $query;
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
         <?php if ($events): ?>
             <table class="table table-hover table-condensed">
                 <thead>

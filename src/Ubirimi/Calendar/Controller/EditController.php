@@ -5,8 +5,8 @@ namespace Ubirimi\Calendar\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Calendar\Repository\Calendar;
-use Ubirimi\Repository\Log;
+
+use Ubirimi\Calendar\Repository\Calendar\Calendar;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
