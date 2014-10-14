@@ -1,13 +1,14 @@
 <?php
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
 
-    $issueId = $_GET['id'];
+Util::checkUserIsLoggedInAndRedirect();
 
-    $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId, 0);
-    $subdomain = Util::getSubdomain();
+$issueId = $_GET['id'];
+
+$users = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($clientId, 0);
+$subdomain = Util::getSubdomain();
 ?>
 <table>
     <tr>
