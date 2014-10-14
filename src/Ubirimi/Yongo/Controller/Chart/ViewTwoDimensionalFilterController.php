@@ -35,7 +35,7 @@ class ViewTwoDimensionalFilterController extends UbirimiController
         $usersAsAssignee = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
         $issueStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
 
-        $twoDimensionalData = UbirimiContainer::getRepository('yongo.issue.issue')->get2DimensionalFilter($projectId, 'array');
+        $twoDimensionalData = $this->getRepository('yongo.issue.issue')->get2DimensionalFilter($projectId, 'array');
 
         return $this->render(__DIR__ . '/../../Resources/views/charts/ViewTwoDimensionalFilter.php', get_defined_vars());
     }

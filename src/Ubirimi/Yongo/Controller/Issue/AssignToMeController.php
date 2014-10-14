@@ -28,7 +28,7 @@ class AssignToMeController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $issueData = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         Issue::updateAssignee($clientId, $issueId, $loggedInUserId, $loggedInUserId);
 
         // update the date_updated field

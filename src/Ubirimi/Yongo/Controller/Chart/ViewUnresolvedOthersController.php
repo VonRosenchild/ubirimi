@@ -42,7 +42,7 @@ class ViewUnresolvedOthersController extends UbirimiController
             $issueQueryParameters['not_assignee'] = $loggedInUserId;
         }
 
-        $issuesUnresolvedOthers = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issuesUnresolvedOthers = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $renderParameters = array('issues' => $issuesUnresolvedOthers, 'render_checkbox' => false, 'show_header' =>true);
         $renderColumns = array('code', 'summary', 'priority', 'assignee');

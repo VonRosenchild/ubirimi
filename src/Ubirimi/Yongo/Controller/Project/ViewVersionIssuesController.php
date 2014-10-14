@@ -36,7 +36,7 @@ class ViewVersionIssuesController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'version' => $versionId);
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
 
         $count = 0;
 

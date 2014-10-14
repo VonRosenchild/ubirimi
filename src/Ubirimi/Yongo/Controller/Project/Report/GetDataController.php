@@ -19,7 +19,7 @@ class GetDataController extends UbirimiController
 
         if ($statisticType == 'assignee') {
             $issueQueryParameters = array('project' => array($projectId));
-            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+            $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
             $issuesAssignee = array();
             while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {

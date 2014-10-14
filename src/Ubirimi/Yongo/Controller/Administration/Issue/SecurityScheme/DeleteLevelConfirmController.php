@@ -21,7 +21,7 @@ class DeleteLevelConfirmController extends UbirimiController
         $issueSecuritySchemeId = $issueSecuritySchemeLevel['issue_security_scheme_id'];
         $allLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
 
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
+        $issues = $this->getRepository('yongo.issue.issue')->getByParameters(
             array(
                 'client_id' => $session->get('client/id'),
                 'security_scheme_level' => $issueSecuritySchemeLevelId

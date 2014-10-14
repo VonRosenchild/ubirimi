@@ -27,7 +27,7 @@ class DeleteController extends UbirimiController
         WorkLog::deleteById($workLogId);
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
         $previousEstimate = $issue['remaining_estimate'];
 
         if ($remainingTime == 'automatic')

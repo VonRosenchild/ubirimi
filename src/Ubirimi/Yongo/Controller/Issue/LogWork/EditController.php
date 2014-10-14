@@ -32,7 +32,7 @@ class EditController extends UbirimiController
         WorkLog::updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
 
         $remaining = WorkLog::adjustRemainingEstimate(
             $issue,

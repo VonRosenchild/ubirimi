@@ -38,14 +38,14 @@ class ViewVersionSummaryController extends UbirimiController
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Version: ' . $version['name'] . ' / Summary';
-        $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId,
+        $issuesResult = $this->getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId,
             'resolution' => array(-2),
             'page' => 1,
             'version' => array($versionId),
             'issues_per_page' => 10), $loggedInUserId);
         $issues = $issuesResult[0];
 
-        $issuesResultUpdatedRecently = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId,
+        $issuesResultUpdatedRecently = $this->getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId,
             'resolution' => array(-2),
             'page' => 1,
             'issues_per_page' => 10,

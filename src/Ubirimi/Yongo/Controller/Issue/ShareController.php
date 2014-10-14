@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Event\IssueEvent;
+use Ubirimi\Yongo\Event\YongoEvents;
 
 class ShareController extends UbirimiController
 {
@@ -20,7 +22,7 @@ class ShareController extends UbirimiController
         $userIds = $_POST['user_id'];
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
+        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
 
         $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_UPDATE, array('userIds' => $userIds, 'noteContent' => $noteContent));
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_SHARE_EMAIL, $issueEvent);

@@ -25,7 +25,7 @@ class DeleteConfirmController extends UbirimiController
             'client_id' => $session->get('client/id')
         );
 
-        $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
+        $issuesResult = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);
         $issuesCount = null;
 
         if (null != $issuesResult) {

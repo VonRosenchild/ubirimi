@@ -4,10 +4,8 @@ namespace Ubirimi\Yongo\Controller\Issue\Link;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\LinkType;
 
 class ViewDialogController extends UbirimiController
@@ -26,7 +24,7 @@ class ViewDialogController extends UbirimiController
         if ($linkPossible) {
             $types = LinkType::getByClientId($clientId);
             $issueQueryParameters = array('project' => $projectId);
-            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+            $issues = $this::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
         }
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/link/ViewDialog.php', get_defined_vars());

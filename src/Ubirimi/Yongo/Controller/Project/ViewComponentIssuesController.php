@@ -36,7 +36,7 @@ class ViewComponentIssuesController extends UbirimiController
         }
 
         $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'component' => $componentId);
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $count = 0;
         $statsPriority = array();
@@ -93,6 +93,3 @@ class ViewComponentIssuesController extends UbirimiController
         return $this->render(__DIR__ . '/../../Resources/views/project/ViewComponentIssues.php', get_defined_vars());
     }
 }
-
-
-
