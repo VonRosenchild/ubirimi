@@ -9,16 +9,11 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
-
-
 use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Project\Category;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
 use Ubirimi\Entity\Yongo\Project as ProjectEntity;
 
 class AddController extends UbirimiController
@@ -38,8 +33,8 @@ class AddController extends UbirimiController
         $issueTypeScheme = TypeScheme::getByClientId($session->get('client/id'), 'project');
         $issueTypeScreenScheme = TypeScreenScheme::getByClientId($session->get('client/id'));
         $fieldConfigurationSchemes = ConfigurationScheme::getByClient($session->get('client/id'));
-        $workflowScheme = Scheme::getMetaDataByClientId($session->get('client/id'));
-        $permissionScheme = Scheme::getByClientId($session->get('client/id'));
+        $workflowScheme = \Ubirimi\Yongo\Repository\Workflow\Scheme::getMetaDataByClientId($session->get('client/id'));
+        $permissionScheme = \Ubirimi\Yongo\Repository\Permission\Scheme::getByClientId($session->get('client/id'));
         $notificationScheme = Scheme::getByClientId($session->get('client/id'));
         $projectCategories = Category::getAll($session->get('client/id'));
 
