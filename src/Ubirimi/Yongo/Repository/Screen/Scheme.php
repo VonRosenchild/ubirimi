@@ -10,7 +10,7 @@ class Scheme
     public $description;
     public $clientId;
 
-    function __construct($clientId, $name, $description) {
+    function __construct($clientId = null, $name = null, $description = null) {
         $this->clientId = $clientId;
         $this->name = $name;
         $this->description = $description;

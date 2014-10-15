@@ -68,9 +68,9 @@ class ViewController extends UbirimiController
 
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
 
-            $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
-            $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-            $versionsTargeted = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+            $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
+            $versionsAffected = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            $versionsTargeted = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 
             $arrayListResultIds = null;
             if ($session->has('array_ids')) {
@@ -113,8 +113,8 @@ class ViewController extends UbirimiController
                 $parentIssue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
             }
 
-            $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
-            $customFieldsDataUserPickerMultipleUser = CustomField::getUserPickerData($issue['id']);
+            $customFieldsData = $this->getRepository('yongo.issue.customField')->getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = $this->getRepository('yongo.issue.customField')->getUserPickerData($issue['id']);
 
             $subTaskIssueTypes = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes($projectId);
 
@@ -126,13 +126,13 @@ class ViewController extends UbirimiController
             }
 
             // get the worklogs
-            $workLogs = WorkLog::getByIssueId($issueId);
+            $workLogs = $this->getRepository('yongo.issue.workLog')->getByIssueId($issueId);
 
             // get the watchers, if any
-            $watchers = Watcher::getByIssueId($issueId);
+            $watchers = $this->getRepository('yongo.issue.watcher')->getByIssueId($issueId);
 
-            $linkedIssues = LinkType::getLinksByParentId($issueId);
-            $linkIssueTypes = LinkType::getByClientId($session->get('client/id'));
+            $linkedIssues = $this->getRepository('yongo.issue.linkType')->getLinksByParentId($issueId);
+            $linkIssueTypes = $this->getRepository('yongo.issue.linkType')->getByClientId($session->get('client/id'));
             $issueLinkingFlag = $session->get('yongo/settings/issue_linking_flag');
             $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
             $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');

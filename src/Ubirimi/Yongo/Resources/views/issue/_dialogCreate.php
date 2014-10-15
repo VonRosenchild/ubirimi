@@ -23,8 +23,8 @@ use Ubirimi\Container\UbirimiContainer;
     }
 
     $projectVersions = UbirimiContainer::get()['repository']->get('yongo.project.project')->getVersions($projectId);
-    $issuePriorities = Settings::getAllIssueSettings('priority', $clientId);
-    $issueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
+    $issuePriorities = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('priority', $clientId);
+    $issueResolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
     $assignableUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
     $reporterUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
     $allUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($session->get('client/id'));
@@ -86,7 +86,7 @@ use Ubirimi\Container\UbirimiContainer;
                                 $projectData['lead_id'],
                                 null === $userHasAssignIssuePermission,
                                 $arrayData['required_flag'],
-                                1 === $this->getRepository('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag')
+                                1 === UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag')
                             );
                             break;
 
@@ -136,7 +136,7 @@ use Ubirimi\Container\UbirimiContainer;
                             if ($projectComponents) {
                                 echo '<select size="3" ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px;">';
                                 $printedComponents = array();
-                                $this->getRepository('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, null, $printedComponents);
+                                UbirimiContainer::get()['repository']->get('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, null, $printedComponents);
                                 echo '</select>';
                             } else {
                                 echo '<span ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '">None</span>';

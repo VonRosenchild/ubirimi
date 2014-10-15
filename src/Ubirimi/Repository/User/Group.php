@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Repository\Group;
+namespace Ubirimi\Repository\User;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;

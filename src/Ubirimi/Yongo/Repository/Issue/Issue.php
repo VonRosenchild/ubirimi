@@ -636,19 +636,19 @@ class Issue
             $issueData['fix_version'] = array();
             $issueData['fix_version_ids'] = array();
 
-            $components = Component::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], 'array');
+            $components = UbirimiContainer::get()['repository']->get('yongo.issue.component')->getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], 'array');
             for ($i = 0; $i < count($components); $i++) {
                 $issueData['component'][] = $components[$i]['name'];
                 $issueData['component_ids'][] = $components[$i]['id'];
             }
 
-            $affectsVersions = Version::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
+            $affectsVersions = UbirimiContainer::get()['repository']->get('yongo.issue.version')->getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
             for ($i = 0; $i < count($affectsVersions); $i++) {
                 $issueData['affects_version'][] = $affectsVersions[$i]['name'];
                 $issueData['affects_version_ids'][] = $affectsVersions[$i]['id'];
             }
 
-            $fixVersions = Version::getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
+            $fixVersions = UbirimiContainer::get()['repository']->get('yongo.issue.version')->getByIssueIdAndProjectId($issueData['id'], $issueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
             for ($i = 0; $i < count($fixVersions); $i++) {
                 $issueData['fix_version'][] = $fixVersions[$i]['name'];
                 $issueData['fix_version_ids'][] = $fixVersions[$i]['id'];

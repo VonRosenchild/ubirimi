@@ -53,7 +53,7 @@ use Ubirimi\Yongo\Repository\Permission\Permission;
                         $buttonsCount = 0;
                         while ($workflowActions && $workflowStep = $workflowActions->fetch_array(MYSQLI_ASSOC)) {
                             $workflowDataId = $workflowStep['id'];
-                            $transitionEvent = Event::getEventByWorkflowDataId($workflowDataId);
+                            $transitionEvent = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getEventByWorkflowDataId($workflowDataId);
                             $hasEventPermission = false;
 
                             switch ($transitionEvent['code']) {

@@ -12,7 +12,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-class RemoveFavouritesController extends UbirimiController
+class UserSpacesController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {

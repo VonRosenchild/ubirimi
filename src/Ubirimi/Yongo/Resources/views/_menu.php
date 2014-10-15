@@ -19,7 +19,7 @@ if ($projectsMenu) {
     for ($i = 0; $i < count($projectsMenu); $i++)
         $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
 
-    $filters = Filter::getAllByUser($loggedInUserId);
+    $filters = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->getAllByUser($loggedInUserId);
 
     if (null == $session->get('selected_project_id')) {
         if ($projectsMenu) {

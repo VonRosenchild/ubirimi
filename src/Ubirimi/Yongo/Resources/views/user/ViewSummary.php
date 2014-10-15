@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\LinkHelper;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
     use Ubirimi\Repository\User\User;
     use Ubirimi\Util;
 
@@ -69,7 +70,7 @@
                                         <img id="profile-picture"
                                              style="width: 150px; height: 150px; vertical-align: top"
                                              title="<?php echo $user['first_name'] . ' ' . $user['last_name'] ?>"
-                                             src="<?php echo $this->getRepository('ubirimi.user.user')->getUserAvatarPicture($user, 'big') ?>" />
+                                             src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture($user, 'big') ?>" />
                                         <img id="loading" style="display: none" src="/img/loader.gif" />
                                     </span>
                                     <?php if ($loggedInUserId == $userId): ?>

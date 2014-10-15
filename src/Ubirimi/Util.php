@@ -1009,7 +1009,7 @@ class Util {
 
     public static function renderMaintenanceMessage() {
         // get the server settings
-        $serverSettings = ServerSettings::get();
+        $serverSettings = UbirimiContainer::get()['repository']->get('ubirimi.general.serverSettings')->get();
 
         if ($serverSettings) {
             echo '<div class="warningMessage">' . $serverSettings['maintenance_server_message'] . '</div>';

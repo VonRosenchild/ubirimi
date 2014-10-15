@@ -1331,12 +1331,12 @@ class Project
 
     public function getScreenData($project, $issueTypeId, $sysOperationId, $resultType = null) {
         $issueTypeScreenSchemeId = $project['issue_type_screen_scheme_id'];
-        $issueTypeScreenSchemeData = TypeScreenScheme::getDataByIssueTypeScreenSchemeIdAndIssueTypeId($issueTypeScreenSchemeId, $issueTypeId);
+        $issueTypeScreenSchemeData = UbirimiContainer::get()['repository']->get('yongo.issue.typeScreenScheme')->getDataByIssueTypeScreenSchemeIdAndIssueTypeId($issueTypeScreenSchemeId, $issueTypeId);
         $screenSchemeId = $issueTypeScreenSchemeData['screen_scheme_id'];
-        $screenSchemeData = Scheme::getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId);
+        $screenSchemeData = UbirimiContainer::get()['repository']->get('yongo.screen.scheme')->getDataByScreenSchemeIdAndSysOperationId($screenSchemeId, $sysOperationId);
         $screenId = $screenSchemeData['screen_id'];
 
-        $screenData = Screen::getDataById($screenId);
+        $screenData = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getDataById($screenId);
         if ($resultType == 'array') {
             $resultArray = array();
             while ($data = $screenData->fetch_array(MYSQLI_ASSOC)) {
