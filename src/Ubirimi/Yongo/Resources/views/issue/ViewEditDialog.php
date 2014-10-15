@@ -304,7 +304,7 @@ use Ubirimi\Container\UbirimiContainer;
 
                                     $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
 
-                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';
+                                    echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2InputLarge mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';
                                     while ($allUsers && $systemUser = $allUsers->fetch_array(MYSQLI_ASSOC)) {
                                         $userFound = false;
                                         if ($customFieldsDataUserPickerMultipleUser) {

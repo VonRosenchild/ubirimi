@@ -325,6 +325,7 @@ function editIssue(issueId) {
 
         $(".ui-dialog-content .select2Input").select2();
         $(".ui-dialog-content .select2InputMedium").select2();
+        $(".ui-dialog-content .select2InputLarge").select2();
 
         $("[id^='s2id_field_type_component'] > ul > li > div").each(function (i, selected) {
             $(this).text($(this).text().replace(/^\s+/,""));
