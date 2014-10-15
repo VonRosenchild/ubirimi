@@ -10,6 +10,10 @@ class AddDialogController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
+
+
+        $addedBy = $session->get('user')['first_name'] . ' ' . $session->get('user')['last_name'];
+
         return $this->render(__DIR__ . '/../../../Resources/views/issue/comment/AddDialog.php', get_defined_vars());
     }
 }

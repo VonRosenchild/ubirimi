@@ -9,6 +9,6 @@
     <tr>
         <td align="right">Added by</td>
         <td></td>
-        <td><?php echo $session->get('user')['first_name'] . ' ' . $session->get('user')['last_name'] ?></td>
+        <td><?php echo $addedBy; ?></td>
     </tr>
 </table>
