@@ -216,7 +216,7 @@ docPageHistory:
 
 docSpaceDoFavourite:
   path: /documentador/space/add-favourites
-  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\DoFavouriteControler' }
+  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\DoFavouriteController' }
 
 docSpaceFindPage:
   path: /documentador/page/find
@@ -225,10 +225,6 @@ docSpaceFindPage:
 docSpaceGetAll:
   path: /documentador/space/get-all
   defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\GetAllController' }
-
-docSpaceGetTopPages:
-  path: /documentador/space/get-top-pages
-  defaults: { _controller: '\Ubirimi\Documentador\Controller\Space\GetTopPagesController' }
 
 docSpaceRemoveFavourites:
   path: /documentador/space/remove-favourites
