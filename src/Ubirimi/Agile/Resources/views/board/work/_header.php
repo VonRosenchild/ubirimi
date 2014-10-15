@@ -1,11 +1,8 @@
-<?php
-
-
-?>
+<?php use Ubirimi\Container\UbirimiContainer; ?>
 <tr>
     <?php for ($i = 0; $i < count($columns); $i++): ?>
         <?php
-            $statuses = $this->getRepository('agile.board.board')->getColumnStatuses($columns[$i]['id'], 'array');
+            $statuses = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumnStatuses($columns[$i]['id'], 'array');
             $textStatuses = '';
             for ($k = 0; $k < count($statuses); $k++) {
                 $textStatuses .= $statuses[$k]['id'] . '_' . $statuses[$k]['name'] . '#';

@@ -24,7 +24,7 @@ class GetOutTransitionsController extends UbirimiController
         $projectId = $request->request->get('project_id');
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
 
         $transitions = $this->getRepository('yongo.workflow.workflow')->getOutgoingTransitionsForStep($workflowId, $stepIdFrom, 'array');
 

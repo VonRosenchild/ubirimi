@@ -1,8 +1,7 @@
 <?php
 
-
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 
 // get all the assignees of the issues in this sprint
 $allAssignees = Sprint::getAssigneesBySprintId($sprintId);
@@ -16,7 +15,7 @@ while ($allAssignees && $user = $allAssignees->fetch_array(MYSQLI_ASSOC)) {
         $queryParameters = array('assignee' => $assignee,
                                  'sprint' => $sprintId,
                                  'sort' => 'sprint');
-        $strategyIssue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($queryParameters, $loggedInUserId);
+        $strategyIssue = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($queryParameters, $loggedInUserId);
     }
     if ($strategyIssue) {
 
@@ -27,7 +26,7 @@ while ($allAssignees && $user = $allAssignees->fetch_array(MYSQLI_ASSOC)) {
 
 $allUnassignedIssues = null;
 if (!$onlyMyIssuesFlag) {
-    $allUnassignedIssues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('assignee' => 0, 'sprint' => $sprintId, 'sort' => 'sprint'), $loggedInUserId);
+    $allUnassignedIssues = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('assignee' => 0, 'sprint' => $sprintId, 'sort' => 'sprint'), $loggedInUserId);
 }
 
 if ($allUnassignedIssues) {
