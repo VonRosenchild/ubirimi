@@ -203,7 +203,7 @@ use Ubirimi\Container\UbirimiContainer;
                             if ($projectComponents) {
                                 echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                                 $printedComponents = array();
-                                $this->getRepository('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
+                                UbirimiContainer::get()['repository']->get('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
                                 echo '</select>';
                             } else {
                                 echo '<span>None</span>';
