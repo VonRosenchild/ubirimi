@@ -1,25 +1,41 @@
 <?php
 
+namespace Ubirimi\Documentador\Controller;
 
-
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-Util::checkUserIsLoggedInAndRedirect();
-$menuSelectedCategory = 'documentator';
+class HistoryController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-$session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-$clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
 
-$entityId = $_GET['id'];
-$page = Entity::getById($entityId, $loggedInUserId);
+        $menuSelectedCategory = 'documentator';
 
-$spaceId = $page['space_id'];
-$space = Space::getById($spaceId);
-$revisions = Entity::getRevisionsByPageId($entityId);
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
-$revisionCount = ($revisions) ? $revisions->num_rows + 1 : 1;
+        $entityId = $_GET['id'];
+        $page = Entity::getById($entityId, $loggedInUserId);
 
-$sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $page['name'] . ' / History';
+        $spaceId = $page['space_id'];
+        $space = Space::getById($spaceId);
+        $revisions = Entity::getRevisionsByPageId($entityId);
 
-require_once __DIR__ . '/../../Resources/views/page/History.php';
+        $revisionCount = ($revisions) ? $revisions->num_rows + 1 : 1;
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $page['name'] . ' / History';
+
+        require_once __DIR__ . '/../../Resources/views/page/History.php';
+    }
+}

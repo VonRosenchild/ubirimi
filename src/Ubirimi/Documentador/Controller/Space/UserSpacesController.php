@@ -1,24 +1,40 @@
 <?php
 
+namespace Ubirimi\Documentador\Controller;
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    if (Util::checkUserIsLoggedIn()) {
+class RemoveFavouritesController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        if (Util::checkUserIsLoggedIn()) {
 
-        $spaces = Space::getByClientId($clientId);
-        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';
-        $clientSettings = $session->get('client/settings');
-    } else {
-        $httpHOST = Util::getHttpHost();
-        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
-        $spaces = Space::getByClientIdAndAnonymous($clientId);
-        $loggedInUserId = null;
-        $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';
+            $clientId = $session->get('client/id');
+
+            $spaces = Space::getByClientId($clientId);
+            $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+            $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';
+            $clientSettings = $session->get('client/settings');
+        } else {
+            $httpHOST = Util::getHttpHost();
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $spaces = Space::getByClientIdAndAnonymous($clientId);
+            $loggedInUserId = null;
+            $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';
+        }
+
+        $menuSelectedCategory = 'documentator';
+
+        require_once __DIR__ . '/../../Resources/views/UserSpaces.php';
     }
-
-    $menuSelectedCategory = 'documentator';
-
-    require_once __DIR__ . '/../../Resources/views/UserSpaces.php';
+}

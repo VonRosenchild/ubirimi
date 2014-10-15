@@ -1,41 +1,26 @@
 <?php
 
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\LinkHelper;
+namespace Ubirimi\Documentador\Controller;
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $fileId = $_POST['id'];
-    $file = Entity::getFileById($fileId);
+class GetFileDataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
 
-    $revisions = Entity::getRevisionsByFileId($fileId);
+        $fileId = $_POST['id'];
+        $file = Entity::getFileById($fileId);
 
-    $index = 0;
-    echo '<td></td>';
-    echo '<td colspan="3">';
+        $revisions = Entity::getRevisionsByFileId($fileId);
 
-        echo '<table width="100%">';
-            echo '<tr>';
-                echo '<td style="border: none">Version History</td>';
-                echo '<td style="border: none">User</td>';
-                echo '<td style="border: none">Date</td>';
-            echo '</tr>';
-            while ($revisions && $revision = $revisions->fetch_array(MYSQLI_ASSOC)) {
-                $revisionNumber = $revisions->num_rows - $index;
-
-                echo '<tr>';
-                    echo '<td style="border: none"><a href="/assets' . UbirimiContainer::get()['asset.documentador_filelists_attachments'] . $file['documentator_entity_id'] . '/' . $fileId . '/' . $revisionNumber . '/' . $file['name'] .  '">Version ' . ($revisions->num_rows - $index) . '</a></td>';
-                    echo '<td style="border: none">';
-                        if ($revisions->num_rows - $index == 1)
-                            echo 'Created by ';
-                        else
-                            echo 'Modified by ';
-                        echo LinkHelper::getUserProfileLink($revision['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $revision['first_name'], $revision['last_name']);
-                    echo '</td>';
-                    echo '<td style="border: none">' . Util::getFormattedDate($revision['date_created']) . '</td>';
-                echo '</tr>';
-                $index++;
-            }
-        echo '</table>';
-    echo '</td>';
+        return $this->render(__DIR__ . '/../../../Resources/views/page//GetFileData.php', get_defined_vars());
+    }
+}

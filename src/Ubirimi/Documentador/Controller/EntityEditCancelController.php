@@ -1,15 +1,30 @@
 <?php
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+class EntityEditCancelController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $spaceId = $_GET['space_id'];
-    $entityId = $_GET['entity_id'];
+        $loggedInUserId = $session->get('user/id');
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-    Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
+        $spaceId = $_GET['space_id'];
+        $entityId = $_GET['entity_id'];
 
-    header('Location: /documentador/pages/' . $spaceId);
+        Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
+
+        header('Location: /documentador/pages/' . $spaceId);
+    }
+}
+

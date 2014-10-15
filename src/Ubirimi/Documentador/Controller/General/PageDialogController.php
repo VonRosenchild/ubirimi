@@ -1,24 +1,25 @@
 <?php
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Documentador\Controller;
 
-    $type = $_GET['type'];
-?>
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-<?php if ($type == 'file_list'): ?>
-    <table>
-        <tr>
-            <td>Name <span class="mandatory">*</span></td>
-            <td valign="top">
-                <input type="text" class="inputText" value="" id="entity_name" />
-            </td>
-        </tr>
-        <tr>
-            <td valign="top">Description</td>
-            <td>
-                <textarea class="inputTextAreaLarge" id="entity_description" />
-            </td>
-        </tr>
-    </table>
-<?php endif ?>
+class PageDialogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $type = $request->get('type');
+
+        return $this->render(__DIR__ . '/../../../Resources/views/page/Dialog.php', get_defined_vars());
+
+    }
+}

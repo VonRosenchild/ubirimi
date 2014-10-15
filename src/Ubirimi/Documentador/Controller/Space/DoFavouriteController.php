@@ -11,20 +11,17 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-class AddConfirmController extends UbirimiController
+class DoFavouriteController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $clientId = $session->get('client/id');
-        $spaceId = $_GET['space_id'];
+        $loggedInUserId = $session->get('user/id');
 
-        $spaces = Space::getByClientId($clientId);
+        $spaceId = $_POST['id'];
 
-        $entityTypes = Entity::getTypes();
-        $position = 1;
-
-        return $this->render(__DIR__ . '/../../Resources/views/page/AddConfirm.php', get_defined_vars());
+        $currentDate = Util::getServerCurrentDateTime();
+        Space::addToFavourites($spaceId, $loggedInUserId, $currentDate);
     }
 }

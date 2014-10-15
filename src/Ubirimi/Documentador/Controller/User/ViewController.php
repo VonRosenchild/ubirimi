@@ -1,39 +1,52 @@
 <?php
 
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller;
 
-    if (Util::checkUserIsLoggedIn()) {
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-    } else {
-        $httpHOST = Util::getHttpHost();
-        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
-        $loggedInUserId = null;
+class ViewController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        if (Util::checkUserIsLoggedIn()) {
 
-        $settingsDocumentator = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
+            $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        } else {
+            $httpHOST = Util::getHttpHost();
+            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $loggedInUserId = null;
 
-        $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
-        $documentatorAnonymousViewUserProfiles = $settingsDocumentator['anonymous_view_user_profile_flag'];
+            $settingsDocumentator = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
 
-        if (!($documentatorUseAnonymous && $documentatorAnonymousViewUserProfiles)) {
-            Util::signOutAndRedirect();
+            $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
+            $documentatorAnonymousViewUserProfiles = $settingsDocumentator['anonymous_view_user_profile_flag'];
+
+            if (!($documentatorUseAnonymous && $documentatorAnonymousViewUserProfiles)) {
+                Util::signOutAndRedirect();
+                die();
+            }
+        }
+
+        $userId = $_GET['id'];
+        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
+        if ($user['client_id'] != $clientId) {
+            header('Location: /general-settings/bad-link-access-denied');
             die();
         }
+
+        $menuSelectedCategory = 'documentator';
+        $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Summary';
+
+        require_once __DIR__ . '/../../Resources/views/user/View.php';
     }
-
-    $userId = $_GET['id'];
-    $user = $this->getRepository('ubirimi.user.user')->getById($userId);
-    if ($user['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
-
-    $menuSelectedCategory = 'documentator';
-    $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Summary';
-
-    require_once __DIR__ . '/../../Resources/views/user/View.php';
+}

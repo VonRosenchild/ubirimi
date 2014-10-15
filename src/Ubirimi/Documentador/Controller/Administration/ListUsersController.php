@@ -1,13 +1,29 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $filterGroupId = isset($_GET['group_id']) ? $_GET['group_id'] : null;
+class ListUsersController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientId = $session->get('client/id');
 
-    $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId, $filterGroupId);
+        $filterGroupId = isset($_GET['group_id']) ? $_GET['group_id'] : null;
 
-    $menuSelectedCategory = 'doc_users';
+        $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId, $filterGroupId);
 
-    require_once __DIR__ . '/../../Resources/views/administration/ListUsers.php';
+        $menuSelectedCategory = 'doc_users';
+
+        require_once __DIR__ . '/../../Resources/views/administration/ListUsers.php';
+    }
+}

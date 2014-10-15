@@ -1,11 +1,26 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $pageId = $_GET['entity_id'];
-    $revisionNR = $_GET['rev_nr'];
-    $page = Entity::getById($pageId);
+class DeleteRevisionDialogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    echo 'Are you sure you want to remove revision ' . $revisionNR . ' for ' . $page['name'];
+        $pageId = $_GET['entity_id'];
+        $revisionNR = $_GET['rev_nr'];
+        $page = Entity::getById($pageId);
+
+        return new Response('Are you sure you want to remove revision ' . $revisionNR . ' for ' . $page['name']);
+    }
+}

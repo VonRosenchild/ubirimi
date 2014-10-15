@@ -1,25 +1,42 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $entityId = $_POST['id'];
-    $entityLastSnapshotId = $_POST['entity_last_snapshot_id'];
-    $newEntityContent = $_POST['content'];
-    $date = Util::getServerCurrentDateTime();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $entity = Entity::getById($entityId);
-    $oldEntityContent = $entity['content'];
+class AddSnapshotController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $loggedInUserId = $session->get('user/id');
 
-    $newEntityContent =  preg_replace("/[[:cntrl:]]/", "", $newEntityContent); ;
-    $oldEntityContent =  preg_replace("/[[:cntrl:]]/", "", $oldEntityContent); ;
+        $entityId = $_POST['id'];
+        $entityLastSnapshotId = $_POST['entity_last_snapshot_id'];
+        $newEntityContent = $_POST['content'];
+        $date = Util::getServerCurrentDateTime();
 
-    if (md5($oldEntityContent) != md5($newEntityContent)) {
-        Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId, $entityLastSnapshotId);
-        Entity::addSnapshot($entityId, $newEntityContent, $loggedInUserId, $date);
+        $entity = Entity::getById($entityId);
+        $oldEntityContent = $entity['content'];
 
-        $now = date('Y-m-d H:i:s');
-        $activeSnapshots = Entity::getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
+        $newEntityContent =  preg_replace("/[[:cntrl:]]/", "", $newEntityContent); ;
+        $oldEntityContent =  preg_replace("/[[:cntrl:]]/", "", $oldEntityContent); ;
 
-        echo json_encode($activeSnapshots);
+        if (md5($oldEntityContent) != md5($newEntityContent)) {
+            Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId, $entityLastSnapshotId);
+            Entity::addSnapshot($entityId, $newEntityContent, $loggedInUserId, $date);
+
+            $now = date('Y-m-d H:i:s');
+            $activeSnapshots = Entity::getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
+
+            echo json_encode($activeSnapshots);
+        }
     }
+}

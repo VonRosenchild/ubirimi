@@ -1,40 +1,56 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $pageId = $_GET['id'];
+class EntityExportPdfController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $page = Entity::getById($pageId, $loggedInUserId);
+        $loggedInUserId = $session->get('user/id');
+        $pageId = $_GET['id'];
 
-    // create new PDF document
-    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $page = Entity::getById($pageId, $loggedInUserId);
 
-    // set default monospaced font
-    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-    $pdf->setPrintHeader(false);
-    //set margins
-    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        // create new PDF document
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-    //set auto page breaks
-    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+        // set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf->setPrintHeader(false);
+        //set margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
-    //set image scale factor
-    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+        //set auto page breaks
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-    // ---------------------------------------------------------
+        //set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-    // set font
-    $pdf->SetFont('dejavusans', '', 10);
+        // ---------------------------------------------------------
 
-    // add a page
-    $pdf->AddPage();
+        // set font
+        $pdf->SetFont('dejavusans', '', 10);
 
-    $html = $page['content'];
-    $pdf->writeHTML($html, true, false, true, false, '');
+        // add a page
+        $pdf->AddPage();
 
-    // Close and output PDF document
-    $pdf->Output('./../../' . $page['name'] . '.pdf', 'D');
+        $html = $page['content'];
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Close and output PDF document
+        $pdf->Output('./../../' . $page['name'] . '.pdf', 'D');
+
+    }
+}

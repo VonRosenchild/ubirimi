@@ -1,17 +1,33 @@
 <?php
 
+namespace Ubirimi\Documentador\Controller;
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+class DeleteFileController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $fileId = $_POST['id'];
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
 
-    $file = Entity::getFileById($fileId);
-    $entityId = $file['documentator_entity_id'];
+        $fileId = $_POST['id'];
 
-    Entity::deleteFileById($entityId, $fileId);
+        $file = Entity::getFileById($fileId);
+        $entityId = $file['documentator_entity_id'];
 
-    $currentDate = Util::getServerCurrentDateTime();
-    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador file ' . $file['name'], $currentDate);
+        Entity::deleteFileById($entityId, $fileId);
+
+        $currentDate = Util::getServerCurrentDateTime();
+        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador file ' . $file['name'], $currentDate);
+    }
+}
