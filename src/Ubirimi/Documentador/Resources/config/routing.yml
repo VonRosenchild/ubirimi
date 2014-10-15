@@ -343,10 +343,6 @@ docEditorUploadImage:
   path: /documentador/editor/upload-image
   defaults: { _controller: '\Ubirimi\Documentador\Controller\Editor\UploadImageController' }
 
-docGetChildPages:
-  path: /documentador/get-child-pages
-  defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\GetChildPagesController' }
-
 docDeleteFileDialog:
   path: /documentador/dialog/delete-file/{id}
   defaults: { _controller: '\Ubirimi\Documentador\Controller\Page\DeleteFileDialogController' }
