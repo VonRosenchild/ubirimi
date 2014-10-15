@@ -1,7 +1,7 @@
 <table>
     <tr>
         <td align="right" style="height: 50px;">
-            <img src="./../web/img/logo_text_big.png">
+            <img src="https://ubirimi.com/img/logo_text_big.png">
         </td>
     </tr>
 </table>
