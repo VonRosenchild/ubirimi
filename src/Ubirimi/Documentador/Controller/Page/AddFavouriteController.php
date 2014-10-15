@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Documentador\Controller;
+namespace Ubirimi\Documentador\Controller\Page;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,5 +23,7 @@ class AddFavouriteController extends UbirimiController
         $date = Util::getServerCurrentDateTime();
 
         Entity::addFavourite($pageId, $loggedInUserId, $date);
+
+        return new Response('');
     }
 }

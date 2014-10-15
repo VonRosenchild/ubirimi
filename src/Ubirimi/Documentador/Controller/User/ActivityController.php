@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Documentador\Controller;
+namespace Ubirimi\Documentador\Controller\User;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,11 +1,26 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Documentador\Controller;
 
-    $groupId = $_GET['id'];
-    $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
-?>
-<div>Are you sure you want to delete <b><?php echo $group['name'] ?></b> group?</div>
-<input type="hidden" value="<?php echo $group['id'] ?>" id="group_id" />
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+
+class DeleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $groupId = $_GET['id'];
+        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
+
+        return $this->render(__DIR__ . '/../../Resources/views/administration/group/DeleteConfirm.php', get_defined_vars());
+
+    }
+}

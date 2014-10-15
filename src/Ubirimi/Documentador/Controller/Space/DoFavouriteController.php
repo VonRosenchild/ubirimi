@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Documentador\Controller;
+namespace Ubirimi\Documentador\Controller\Space;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,5 +23,7 @@ class DoFavouriteController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
         Space::addToFavourites($spaceId, $loggedInUserId, $currentDate);
+
+        return new Response('');
     }
 }

@@ -16,6 +16,9 @@ class UploadController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
+
         $entityId = $_GET['id'];
         $currentDate = Util::getServerCurrentDateTime();
         $pathBaseAttachments = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_DOCUMENTADOR, 'filelists');
