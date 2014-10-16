@@ -5,9 +5,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<div class="headerPageText">Attachments > Update Settings</div>') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('<div class="headerPageText">Attachments > Update Settings</div>') ?>
-        <br />
+
         <form name="edit_attachments" method="post" action="/yongo/administration/edit-attachment-configuration">
             <table width="100%" style="border-spacing: 0">
                 <tr>

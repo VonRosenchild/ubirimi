@@ -7,14 +7,15 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-    <div class="pageContent">
-
-        <?php if (Util::userHasYongoAdministrativePermission()): ?>
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
         <?php
             $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/issue-security-schemes">Issue Security Schemes</a> > ' . $issueSecurityScheme['name'] . ' > Levels';
             Util::renderBreadCrumb($breadCrumb)
         ?>
+    <?php endif ?>
+    <div class="pageContent">
 
+        <?php if (Util::userHasYongoAdministrativePermission()): ?>
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <td><a href="/yongo/administration/issue-security-scheme/level/add/<?php echo $issueSecuritySchemeId ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Level</a></td>

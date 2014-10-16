@@ -6,14 +6,14 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/issue-security-schemes">Issue Security Schemes</a> > ' . $issueSecurityScheme['name'] .' > Edit';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
+
     <div class="pageContent">
 
         <form name="edit_issue_security_scheme_metadata" action="/yongo/administration/issue-security-scheme/edit/<?php echo $issueSecuritySchemeId ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/issue-security-schemes">Issue Security Schemes</a> > ' . $issueSecurityScheme['name'] .' > Edit';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
-
             <table width="100%">
                 <tr>
                     <td width="100" valign="top">Name <span class="error">*</span></td>

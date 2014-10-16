@@ -6,11 +6,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/issue-security-schemes">Issue Security Schemes</a> > <a class="linkNoUnderline" href="/yongo/administration/issue-security-scheme-levels/' . $issueSecurityScheme['id'] . '">' . $issueSecurityScheme['name'] . '</a> > Level: ' . $level['name'] . ' > Add Data';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/issue-security-schemes">Issue Security Schemes</a> > <a class="linkNoUnderline" href="/yongo/administration/issue-security-scheme-levels/' . $issueSecurityScheme['id'] . '">' . $issueSecurityScheme['name'] . '</a> > Level: ' . $level['name'] . ' > Add Data';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <form name="add_level_data" action="/yongo/administration/issue-security-scheme/level-data/add/<?php echo $levelId ?>" method="post">
             <table width="100%">
@@ -42,7 +42,7 @@
                         <label for="label_user">Single User</label>
                     </td>
                     <td>
-                        <select name="user" class="inputTextCombo">
+                        <select name="user" class="select2Input">
                             <option value>Choose a user</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
@@ -57,7 +57,7 @@
                         <label for="label_group">Group</label>
                     </td>
                     <td>
-                        <select name="group" class="inputTextCombo">
+                        <select name="group" class="select2Input">
                             <option value>Choose a group</option>
                             <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
@@ -72,7 +72,7 @@
                         <label for="label_project_role">Project Role</label>
                     </td>
                     <td>
-                        <select name="role" class="inputTextCombo">
+                        <select name="role" class="select2Input">
                             <option value>Choose a project role</option>
                             <?php while ($role = $roles->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>

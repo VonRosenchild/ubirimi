@@ -6,12 +6,13 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breachCrumb = '<a class="linkNoUnderline" href="/yongo/administration/issue-security-schemes">Issue Security Schemes</a> > ' . $issueSecurityScheme['name'] . ' > Create Level';
+        Util::renderBreadCrumb($breachCrumb);
+    ?>
     <div class="pageContent">
         <form name="add_issue_security_scheme_level" action="/yongo/administration/issue-security-scheme/level/add/<?php echo $issueSecuritySchemeId ?>" method="post">
-            <?php
-                $breachCrumb = '<a class="linkNoUnderline" href="/yongo/administration/issue-security-schemes">Issue Security Schemes</a> > ' . $issueSecurityScheme['name'] . ' > Create Level';
-                Util::renderBreadCrumb($breachCrumb);
-            ?>
+
 
             <table width="100%">
                 <tr>
