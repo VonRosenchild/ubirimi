@@ -169,7 +169,6 @@ class Event
                  "date_to, color, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        $color = '#' . $color;
         $stmt->bind_param("iiisssssss",
             $calendarId,
             $userCreatedId,

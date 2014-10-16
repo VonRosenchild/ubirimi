@@ -51,10 +51,11 @@ class EditController extends UbirimiController
             $calendarId = Util::cleanRegularInputField($request->request->get('calendar'));
             $dateFrom = Util::cleanRegularInputField($request->request->get('date_from'));
             $dateTo = Util::cleanRegularInputField($request->request->get('date_to'));
-            $color = str_replace("#", '' , Util::cleanRegularInputField($request->request->get('color')));
+            $color = Util::cleanRegularInputField($request->request->get('color'));
             $eventRepeatType = Util::cleanRegularInputField($request->request->get('add_event_repeat_type'));
 
             $changeType = Util::cleanRegularInputField($request->request->get('change_event'));
+
             $dateFrom .= ':00';
             $dateTo .= ':00';
             $date = Util::getServerCurrentDateTime();
@@ -178,6 +179,7 @@ class EditController extends UbirimiController
                     $color,
                     $date
                 );
+
                 $this->getRepository('calendar.event.event')->deleteReminders($eventId);
 
                 // reminder information

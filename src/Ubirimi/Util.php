@@ -176,7 +176,11 @@ class Util {
     }
 
     public static function cleanRegularInputField($value) {
-        return strip_tags(trim($value));
+        if (isset($value)) {
+            return strip_tags(trim($value));
+        } else {
+            return null;
+        }
     }
 
     public static function deepInArray($value, $array) {

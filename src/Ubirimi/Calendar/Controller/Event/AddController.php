@@ -25,7 +25,7 @@ class AddController extends UbirimiController
         $calendarId = $request->request->get('calendar');
         $start = $request->request->get('start');
         $end = $request->request->get('end');
-        $color = $request->request->get('color');
+        $color = '#' . $request->request->get('color');
         $repeatData = $request->request->get('repeat_data');
 
         if (!empty($name)) {
