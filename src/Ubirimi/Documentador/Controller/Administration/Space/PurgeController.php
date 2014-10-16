@@ -20,7 +20,7 @@ class PurgeController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $entityId = $_POST['id'];
+        $entityId = $request->request->get('id');
 
         $entity = $this->getRepository('documentador.entity.entity')->getById($entityId);
 

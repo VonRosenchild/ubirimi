@@ -3,14 +3,12 @@
 namespace Ubirimi\Documentador\Controller\Comment;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Documentador\Repository\Space\Space;
-use Ubirimi\Documentador\Repository\Entity\Entity;
-use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-class UploadAttachmentController extends UbirimiController
+class AddController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
@@ -19,11 +17,14 @@ class UploadAttachmentController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
 
-        $content = Util::cleanRegularInputField($_POST['content']);
-        $pageId = $_POST['entity_id'];
-        $parentId = $_POST['parent_comment_id'];
+        $content = Util::cleanRegularInputField($request->request->get('content'));
+        $pageId = $request->request->get('entity_id');
+        $parentId = $request->request->get('parent_comment_id');
+        var_dump($pageId);
         $date = Util::getServerCurrentDateTime();
 
         $this->getRepository('documentador.entity.comment')->addComment($pageId, $loggedInUserId, $content, $date, $parentId);
+
+        return new Response('');
     }
 }

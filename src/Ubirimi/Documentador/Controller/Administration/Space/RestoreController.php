@@ -20,7 +20,7 @@ class RestoreController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $pageId = $_POST['id'];
+        $pageId = $request->request->get('id');
         $entity = $this->getRepository('documentador.entity.entity')->getById($pageId);
 
         $this->getRepository('documentador.entity.entity')->restoreById($pageId);

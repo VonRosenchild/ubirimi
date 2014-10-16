@@ -20,8 +20,8 @@ class DeleteController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $pageId = $_POST['id'];
-        $spaceId = $_POST['space_id'];
+        $pageId = $request->request->get('id');
+        $spaceId = $request->request->get('space_id');
 
         $entity = $this->getRepository('documentador.entity.entity')->getById($pageId);
 

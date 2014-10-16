@@ -19,8 +19,8 @@ class RestoreRevisionController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
 
-        $revisionId = $_POST['id'];
-        $pageId = $_POST['entity_id'];
+        $revisionId = $request->request->get('id');
+        $pageId = $request->request->get('entity_id');
         $page = $this->getRepository('documentador.entity.entity')->getById($pageId);
         $revision = $this->getRepository('documentador.entity.entity')->getRevisionsByPageIdAndRevisionId($pageId, $revisionId);
 

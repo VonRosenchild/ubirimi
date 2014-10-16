@@ -19,7 +19,7 @@ class DoFavouriteController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
 
-        $spaceId = $_POST['id'];
+        $spaceId = $request->request->get('id');
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository('documentador.space.space')->addToFavourites($spaceId, $loggedInUserId, $currentDate);

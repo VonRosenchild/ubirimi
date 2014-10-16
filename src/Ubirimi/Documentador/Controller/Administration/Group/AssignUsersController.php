@@ -17,8 +17,8 @@ class AssignUsersController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $groupId = $_POST['group_id'];
-        $userArray = $_POST['user_arr'];
+        $groupId = $request->request->get('group_id');
+        $userArray = $request->request->get('user_arr');
         $this->getRepository('ubirimi.user.group')->deleteDataByGroupId($groupId);
 
         $currentDate = Util::getServerCurrentDateTime();

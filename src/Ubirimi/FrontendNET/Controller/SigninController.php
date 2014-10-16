@@ -29,7 +29,6 @@ class SigninController extends UbirimiController
         $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
         if ($client['is_payable'] && !$client['paymill_id']) {
             return new RedirectResponse($httpHOST . '/setup-payment');
-            die();
         }
         if ($session->has('user') && Util::getSubdomain() == $session->get('client/company_domain')) {
             return new RedirectResponse($httpHOST . '/yongo/my-dashboard');
@@ -37,10 +36,10 @@ class SigninController extends UbirimiController
 
         $context = isset($_GET['context']) ? $_GET['context'] : null;
 
-        if (isset($_POST['sign_in'])) {
+        if ($request->request->get('sign_in')) {
 
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = $request->request->get('username');
+            $password = $request->request->get('password');
 
             $userData = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId($username, $clientId);
             if ($userData['id']) {
@@ -62,7 +61,7 @@ class SigninController extends UbirimiController
 
                 } else $signInError = true;
             } else $signInError = true;
-        } else if (isset($_POST['create_account'])) {
+        } else if ($request->request->get('create_account')) {
             return new RedirectResponse('/sign-up');
         }
 

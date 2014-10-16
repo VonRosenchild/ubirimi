@@ -20,7 +20,7 @@ class DeleteController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $attachmentId = $_POST['id'];
+        $attachmentId = $request->request->get('id');
         $attachment = $this->getRepository('documentador.entity.attachment')->getById($attachmentId);
         $entityId = $attachment['documentator_entity_id'];
         $space = $this->getRepository('documentador.entity.entity')->getById($entityId);

@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $groupId = $_POST['id'];
+        $groupId = $request->request->get('id');
 
         $this->getRepository('ubirimi.user.group')->deleteByIdForYongo($groupId);
 

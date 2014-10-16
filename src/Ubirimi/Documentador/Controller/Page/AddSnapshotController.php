@@ -20,9 +20,9 @@ class AddSnapshotController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
 
-        $entityId = $_POST['id'];
-        $entityLastSnapshotId = $_POST['entity_last_snapshot_id'];
-        $newEntityContent = $_POST['content'];
+        $entityId = $request->request->get('id');
+        $entityLastSnapshotId = $request->request->get('entity_last_snapshot_id');
+        $newEntityContent = $request->request->get('content');
         $date = Util::getServerCurrentDateTime();
 
         $entity = $this->getRepository('documentador.entity.entity')->getById($entityId);

@@ -53,6 +53,6 @@ class ViewController extends UbirimiController
             $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
         }
 
-        return $this->render(__DIR__ . '/../../Resources/views/page/attachment/View.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../../Resources/views/page/attachment/View.php', get_defined_vars());
     }
 }

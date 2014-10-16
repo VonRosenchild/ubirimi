@@ -25,7 +25,7 @@ class EntityEditCancelController extends UbirimiController
 
         $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
-        return new RedirectResponse('Location: /documentador/pages/' . $spaceId);
+        return new RedirectResponse('/documentador/pages/' . $spaceId);
     }
 }
 

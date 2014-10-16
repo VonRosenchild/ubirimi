@@ -17,7 +17,7 @@ class RemoveRevisionController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $revisionId = $_POST['id'];
+        $revisionId = $request->request->get('id');
 
         $this->getRepository('documentador.entity.entity')->deleteRevisionById($revisionId);
 

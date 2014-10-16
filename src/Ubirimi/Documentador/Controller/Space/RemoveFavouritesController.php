@@ -18,7 +18,7 @@ class RemoveFavouritesController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $loggedInUserId = $session->get('user/id');
-        $spaceId = $_POST['id'];
+        $spaceId = $request->request->get('id');
 
         $this->getRepository('documentador.space.space')->removeFavourite($spaceId, $loggedInUserId);
 

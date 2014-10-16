@@ -15,6 +15,6 @@ class DeleteConfirmController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        return $this->render(__DIR__ . '/../../../Resources/views/page/DeleteConfirm.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../Resources/views/page/DeleteConfirm.php', get_defined_vars());
     }
 }

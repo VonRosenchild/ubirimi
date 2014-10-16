@@ -16,7 +16,7 @@ class GetFileDataController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
 
-        $fileId = $_POST['id'];
+        $fileId = $request->request->get('id');
         $file = $this->getRepository('documentador.entity.entity')->getFileById($fileId);
 
         $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByFileId($fileId);

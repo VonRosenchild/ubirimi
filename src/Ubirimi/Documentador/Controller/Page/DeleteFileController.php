@@ -20,7 +20,7 @@ class DeleteFileController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $fileId = $_POST['id'];
+        $fileId = $request->request->get('id');
 
         $file = $this->getRepository('documentador.entity.entity')->getFileById($fileId);
         $entityId = $file['documentator_entity_id'];

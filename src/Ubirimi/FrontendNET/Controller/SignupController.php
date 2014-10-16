@@ -36,17 +36,17 @@ class SignupController extends UbirimiController
             'duplicate_username' => false,
             'invalid_username' => false);
 
-        if (isset($_POST['cancel'])) {
+        if ($request->request->get('cancel')) {
             return new RedirectResponse('/');
         } else if (isset($_POST['create-user-account'])) {
 
-            $email = Util::cleanRegularInputField($_POST['email']);
-            $firstName = Util::cleanRegularInputField($_POST['first_name']);
-            $lastName = Util::cleanRegularInputField($_POST['last_name']);
-            $username = Util::cleanRegularInputField($_POST['username']);
-            $password = Util::cleanRegularInputField($_POST['password']);
-            $passwordAgain = Util::cleanRegularInputField($_POST['password_again']);
-            $countryId = $_POST['country'];
+            $email = Util::cleanRegularInputField($request->request->get('email'));
+            $firstName = Util::cleanRegularInputField($request->request->get('first_name'));
+            $lastName = Util::cleanRegularInputField($request->request->get('last_name'));
+            $username = Util::cleanRegularInputField($request->request->get('username'));
+            $password = Util::cleanRegularInputField($request->request->get('password'));
+            $passwordAgain = Util::cleanRegularInputField($request->request->get('password_again'));
+            $countryId = $request->request->get('country');
 
             if (empty($email)) {
                 $errors['empty_email'] = true;

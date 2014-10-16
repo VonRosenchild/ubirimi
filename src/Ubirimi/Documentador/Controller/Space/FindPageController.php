@@ -19,8 +19,8 @@ class FindPageController extends UbirimiController
 
         $clientId = $session->get('client/id');
 
-        $spaceId = $_POST['space_id'];
-        $pageNameKeyword = $_POST['page'];
+        $spaceId = $request->request->get('space_id');
+        $pageNameKeyword = $request->request->get('page');
 
         $pages = $this->getRepository('documentador.entity.entity')->findBySpaceIdAndKeyword($clientId, $spaceId, $pageNameKeyword);
 

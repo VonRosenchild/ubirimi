@@ -79,6 +79,6 @@ class UploadController extends UbirimiController
             }
         }
 
-        return new RedirectResponse('Location: /documentador/page/view/' . $entityId);
+        return new RedirectResponse('/documentador/page/view/' . $entityId);
     }
 }

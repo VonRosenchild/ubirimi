@@ -19,11 +19,11 @@ class AddEntityController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
 
-        $name = $_POST['name'];
-        $description = $_POST['description'];
-        $type = $_POST['type'];
-        $parentId = $_POST['parent_id'];
-        $spaceId = $_POST['space_id'];
+        $name = $request->request->get('name');
+        $description = $request->request->get('description');
+        $type = $request->request->get('type');
+        $parentId = $request->request->get('parent_id');
+        $spaceId = $request->request->get('space_id');
         if ($type == 'file_list')
             $pageType = EntityType::ENTITY_FILE_LIST;
         else

@@ -29,7 +29,7 @@ class EntityResumeEditController extends UbirimiController
         $this->getRepository('documentador.entity.entity')->updateContent($entityId, $snapshot['content']);
         $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
-        return new RedirectResponse('Location: /documentador/page/edit/' . $entityId);
+        return new RedirectResponse('/documentador/page/edit/' . $entityId);
     }
 }
 

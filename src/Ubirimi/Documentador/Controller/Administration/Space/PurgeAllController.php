@@ -17,7 +17,7 @@ class PurgeAllController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $spaceId = $_POST['id'];
+        $spaceId = $request->request->get('id');
 
         $this->getRepository('documentador.space.space')->deleteAllFromTrash($spaceId);
 

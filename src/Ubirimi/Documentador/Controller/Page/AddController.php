@@ -30,7 +30,7 @@ class AddController extends UbirimiController
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
-            return new RedirectResponse('Location: /general-settings/bad-link-access-denied');
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $parentEntityId = isset($_GET['entity_id']) ? $_GET['entity_id'] : null;
@@ -52,7 +52,7 @@ class AddController extends UbirimiController
 
         if (isset($_POST['add_page'])) {
             $name = Util::cleanRegularInputField($_POST['name']);
-            $content = $_POST['content'];
+            $content = $request->request->get('content');
 
             $page = new Entity(Type::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, $parentEntityId, $name, $content);
             $currentDate = Util::getServerCurrentDateTime();
@@ -60,7 +60,7 @@ class AddController extends UbirimiController
 
             $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador Entity ' . $name, $currentDate);
 
-            return new RedirectResponse('Location: /documentador/page/view/' . $pageId);
+            return new RedirectResponse('/documentador/page/view/' . $pageId);
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Create Page';

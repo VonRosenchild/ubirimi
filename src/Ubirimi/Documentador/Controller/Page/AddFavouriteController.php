@@ -19,7 +19,7 @@ class AddFavouriteController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
         
-        $pageId = $_POST['id'];
+        $pageId = $request->request->get('id');
         $date = Util::getServerCurrentDateTime();
 
         $this->getRepository('documentador.entity.entity')->addFavourite($pageId, $loggedInUserId, $date);

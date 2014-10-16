@@ -6,12 +6,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-    <div class="pageContent" style="overflow: hidden;">
-
-        <?php
-            $breadCrumb = '<a href="/documentador/spaces" class="linkNoUnderline">Spaces</a> > ' . $page['space_name'] . ' > ' . '<a class="linkNoUnderline" href="/documentador/pages/' . $spaceId . '">Pages</a> > <a class="linkNoUnderline" href="/documentador/page/view/' . $page['id'] . '">' . $page['name'] . '</a> > Attachments';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
+    <?php
+        $breadCrumb = '<a href="/documentador/spaces" class="linkNoUnderline">Spaces</a> > ' . $page['space_name'] . ' > ' . '<a class="linkNoUnderline" href="/documentador/pages/' . $spaceId . '">Pages</a> > <a class="linkNoUnderline" href="/documentador/page/view/' . $page['id'] . '">' . $page['name'] . '</a> > Attachments';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
+    <div class="pageContent">
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

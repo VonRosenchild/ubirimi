@@ -16,7 +16,7 @@ class DeleteSnapshotController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $snapShotId = $_POST['id'];
+        $snapShotId = $request->request->get('id');
 
         $this->getRepository('documentador.entity.entity')->deleteSnapshotById($snapShotId);
 

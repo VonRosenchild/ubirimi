@@ -17,8 +17,8 @@ class UpdateParentController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $entityId = $_POST['entity_id'];
-        $parentId = $_POST['parent_id'];
+        $entityId = $request->request->get('entity_id');
+        $parentId = $request->request->get('parent_id');
 
         $this->getRepository('documentador.entity.entity')->updateParent($entityId, $parentId);
 

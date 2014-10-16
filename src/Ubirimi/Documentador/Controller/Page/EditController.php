@@ -32,7 +32,7 @@ class EditController extends UbirimiController
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
-            return new RedirectResponse('Location: /general-settings/bad-link-access-denied');
+            return new RedirectResponse('general-settings/bad-link-access-denied');
         }
 
         $menuSelectedCategory = 'documentator';
@@ -40,6 +40,8 @@ class EditController extends UbirimiController
         $session->set('current_edit_entity_id', $entityId);
 
         $name = $page['name'];
+
+
 
         $now = date('Y-m-d H:i:s');
         $activeSnapshots = $this->getRepository('documentador.entity.entity')->getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
@@ -59,9 +61,11 @@ class EditController extends UbirimiController
         // see if the user editing the page has a draft saved
         $lastUserSnapshot = $this->getRepository('documentador.entity.entity')->getLastSnapshot($entityId, $loggedInUserId);
 
-        if (isset($_POST['edit_page'])) {
-            $name = $_POST['name'];
-            $content = $_POST['content'];
+        var_dump($request->request->get('edit_page'));
+//        die('sssssssssss');
+        if ($request->get('edit_page')) {
+            $name = $request->request->get('name');
+            $content = $request->request->get('content');
 
             $date = Util::getServerCurrentDateTime();
 
@@ -72,11 +76,11 @@ class EditController extends UbirimiController
 
             $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
 
-            return new RedirectResponse('Location: /documentador/page/view/' . $entityId);
+            return new RedirectResponse('/documentador/page/view/' . $entityId);
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Update ' . $page['name'];
 
-        return $this->render(__DIR__ . '/../Resources/views/page/Edit.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../Resources/views/page/Edit.php', get_defined_vars());
     }
 }

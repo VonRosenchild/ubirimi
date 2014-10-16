@@ -20,7 +20,7 @@ class PasswordRecoverDoController extends UbirimiController
 
         $httpHOST = Util::getHttpHost();
 
-        $address = Util::cleanRegularInputField($_POST['address']);
+        $address = Util::cleanRegularInputField($request->request->get('address'));
         $exists = Util::checkEmailAddressExistence($address);
 
         if ($exists) {

@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $commentId = $_POST['id'];
+        $commentId = $request->request->get('id');
 
         $this->getRepository('documentador.entity.comment')->deleteById($commentId);
 

@@ -20,7 +20,7 @@ class DeleteController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $spaceId = $_POST['id'];
+        $spaceId = $request->request->get('id');
 
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
         $this->getRepository('documentador.space.space')->deleteById($spaceId);
