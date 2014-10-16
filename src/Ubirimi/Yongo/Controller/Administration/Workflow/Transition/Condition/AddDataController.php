@@ -1,67 +1,80 @@
 <?php
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
-    use Ubirimi\Yongo\Repository\Workflow\Condition;
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
+class AddDataController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $workflowDataId = $_GET['id'];
-    $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
-    $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
 
-    $conditionId = isset($_POST['condition']) ? $_POST['condition'] : null;
+        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-    $currentDate = Util::getServerCurrentDateTime();
+        $workflowDataId = $_GET['id'];
+        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
+        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 
-    if ($conditionId) {
+        $conditionId = isset($_POST['condition']) ? $_POST['condition'] : null;
 
-        $conditionData = Condition::getByTransitionId($workflowDataId);
-        if (!$conditionData) {
-            $this->getRepository('yongo.workflow.workflow')->addCondition($workflowDataId, '');
+        $currentDate = Util::getServerCurrentDateTime();
+
+        if ($conditionId) {
+
+            $conditionData = Condition::getByTransitionId($workflowDataId);
+            if (!$conditionData) {
+                $this->getRepository('yongo.workflow.workflow')->addCondition($workflowDataId, '');
+            }
+            if ($conditionId == Condition::CONDITION_ONLY_ASSIGNEE) {
+
+                $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE;
+                Condition::addConditionString($workflowDataId, $definitionData);
+
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
+
+                header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
+            } else
+                if ($conditionId == Condition::CONDITION_ONLY_REPORTER) {
+
+                    $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_REPORTER;
+
+                    Condition::addConditionString($workflowDataId, $definitionData);
+
+                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
+
+                    header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
+                }
+        } else {
+
         }
-        if ($conditionId == Condition::CONDITION_ONLY_ASSIGNEE) {
 
-            $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE;
-            Condition::addConditionString($workflowDataId, $definitionData);
+        if (isset($_POST['confirm_new_condition_parameter'])) {
+            $conditionId = $_GET['condition_id'];
+            if ($conditionId == Condition::CONDITION_PERMISSION) {
 
-            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
+                $permissionId = $_POST['permission'];
 
-            header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
-        } else
-            if ($conditionId == Condition::CONDITION_ONLY_REPORTER) {
+                $conditionString = 'perm_id=' . $permissionId;
 
-                $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_REPORTER;
+                Condition::addConditionString($workflowDataId, $conditionString);
 
-            Condition::addConditionString($workflowDataId, $definitionData);
+                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
-            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
-
-            header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
+                header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
+            }
         }
-    } else {
 
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow / Add Condition Data';
+
+        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/condition/AddData.php';
     }
-
-    if (isset($_POST['confirm_new_condition_parameter'])) {
-        $conditionId = $_GET['condition_id'];
-        if ($conditionId == Condition::CONDITION_PERMISSION) {
-
-            $permissionId = $_POST['permission'];
-
-            $conditionString = 'perm_id=' . $permissionId;
-
-            Condition::addConditionString($workflowDataId, $conditionString);
-
-            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
-
-            header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
-        }
-    }
-
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow / Add Condition Data';
-
-    require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/condition/AddData.php';
+}

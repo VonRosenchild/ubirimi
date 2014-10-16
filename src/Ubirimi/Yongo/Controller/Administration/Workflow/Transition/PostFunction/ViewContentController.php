@@ -1,31 +1,29 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\Settings;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction;
 
-    $functionId = $_POST['function_id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $function = WorkflowFunction::getById($functionId);
-    $issueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
-?>
-<?php
-    if ($functionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>
-    <div>Description: <?php echo $function['description'] ?></div>
-    <div>
-        <span>Issue field</span>
-        <select name="issue_field" id="post_function_issue_field" class="inputTextCombo">
-            <option value="resolution">Resolution</option>
-        </select>
-    </div>
-    <div>
-        <span>Field value</span>
-        <select name="field_value" id="post_function_field_value" class="inputTextCombo">
-            <option value="-1">Clear value</option>
-            <?php while ($resolution = $issueResolutions->fetch_array(MYSQLI_ASSOC)): ?>
-                <option value="<?php echo $resolution['id'] ?>"><?php echo $resolution['name'] ?></option>
-            <?php endwhile ?>
-        </select>
-    </div>
-<?php endif ?>
+class ViewContentController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+
+        $clientId = $session->get('client/id');
+        $functionId = $request->request->get('function_id');
+
+        $function = WorkflowFunction::getById($functionId);
+        $issueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
+
+        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/ViewContent.php';
+
+    }
+}
+

@@ -1,23 +1,35 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
-    use Ubirimi\Yongo\Repository\Workflow\Condition;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition;
 
-    $transitionId = $_POST['transition_id'];
-    $type = $_POST['type'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $conditionData = Condition::getByTransitionId($transitionId);
-    if (!$conditionData)
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, '');
+class AddStringController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($type == 'open_bracket')
-        Condition::addConditionString($transitionId, '(');
-    else if ($type == 'closed_bracket')
-        Condition::addConditionString($transitionId, ')');
-    else if ($type == 'operator_and')
+        $transitionId = $_POST['transition_id'];
+        $type = $_POST['type'];
 
-        Condition::addConditionString($transitionId, '[[AND]]');
-    else if ($type == 'operator_or')
-        Condition::addConditionString($transitionId, '[[OR]]');
+        $conditionData = Condition::getByTransitionId($transitionId);
+        if (!$conditionData)
+            $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, '');
+
+        if ($type == 'open_bracket')
+            Condition::addConditionString($transitionId, '(');
+        else if ($type == 'closed_bracket')
+            Condition::addConditionString($transitionId, ')');
+        else if ($type == 'operator_and')
+
+            Condition::addConditionString($transitionId, '[[AND]]');
+        else if ($type == 'operator_or')
+            Condition::addConditionString($transitionId, '[[OR]]');
+    }
+}

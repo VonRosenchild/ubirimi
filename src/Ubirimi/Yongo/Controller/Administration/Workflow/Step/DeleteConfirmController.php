@@ -1,7 +1,27 @@
 <?php
-    $deletePossible = $_GET['delete_possible'];
-    if ($deletePossible)
-        echo 'Are you sure you want to delete this workflow step?';
-    else {
-        echo 'This step has incoming transitions. It can not be deleted';
+
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step;
+
+use Guzzle\Http\Message\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+
+class DeleteConfirmController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        $deletePossible = $request->get('delete_possible');
+        if ($deletePossible)
+            return new Response('Are you sure you want to delete this workflow step?');
+        else {
+            return new Response('This step has incoming transitions. It can not be deleted');
+        }
+
     }
+}

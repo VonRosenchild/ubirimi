@@ -17,7 +17,7 @@ class ShareDialogController extends UbirimiController
 
         $clientId = UbirimiContainer::get()['session']->get('client/id');
 
-        $issueId = $_GET['id'];
+        $issueId = $request->get('id');
 
         $users = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($clientId, 0);
         $subdomain = Util::getSubdomain();
