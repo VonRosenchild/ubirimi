@@ -5,7 +5,6 @@ namespace Ubirimi;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\Repository\Email\Email;
-use Ubirimi\Repository\ServerSettings;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Yongo\Repository\Field\Field;
 use ZipArchive;

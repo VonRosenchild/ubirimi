@@ -51,7 +51,7 @@
                 <tr>
                     <td valign="top">Protocol <span class="error">*</span></td>
                     <td>
-                        <select name="protocol" class="inputTextCombo">
+                        <select name="protocol" class="select2InputSmall">
                             <option value="1">SMTP</option>
                             <option value="2">SECURE_SMTP</option>
                         </select>
