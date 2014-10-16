@@ -6,19 +6,21 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/field-configurations">Field Configurations</a> >
+                        <a class="linkNoUnderline" href="/yongo/administration/field-configuration/edit/<?php echo $fieldConfiguration['id'] ?>"><?php echo $fieldConfiguration['name'] ?></a> >
+                        Associate <?php echo $field['name'] ?> to screens
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="form_edit_field_configuration_screen" action="/yongo/administration/field-configuration/edit-screen/<?php echo $fieldConfigurationId ?>/<?php echo $fieldId ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/field-configurations">Field Configurations</a> >
-                            <a class="linkNoUnderline" href="/yongo/administration/field-configuration/edit/<?php echo $fieldConfiguration['id'] ?>"><?php echo $fieldConfiguration['name'] ?></a> >
-                            Associate <?php echo $field['name'] ?> to screens
-                        </div>
-                    </td>
-                </tr>
-            </table>
 
             <table class="table table-hover table-condensed">
                 <tr>

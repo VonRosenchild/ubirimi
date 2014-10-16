@@ -6,9 +6,10 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue/resolutions">Issue Resolutions</a> > Create Resolution') ?>
     <div class="pageContent">
         <form name="add_priority" action="/yongo/administration/issue/resolution/add" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue/resolutions">Issue Resolutions</a> > Create Resolution') ?>
+            
             <table width="100%">
                 <tr>
                     <td valign="top">Name <span class="error">*</span></td>

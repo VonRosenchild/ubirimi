@@ -5,13 +5,16 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php
+            $breadCrumb = '<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > ' . $field['name'] . ' > Update Custom Value';
+            Util::renderBreadCrumb($breadCrumb);
+        ?>
+    <?php endif ?>
+
     <div class="pageContent">
         <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
             <form name="form_update_custom_field_value" action="/yongo/administration/custom-field/value/edit/<?php echo $valueId ?>" method="post">
-                <?php
-                    $breadCrumb = '<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > ' . $field['name'] . ' > Update Custom Value';
-                    Util::renderBreadCrumb($breadCrumb);
-                ?>
 
                 <table width="100%">
                     <tr>

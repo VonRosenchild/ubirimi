@@ -11,7 +11,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
 
-use Ubirimi\Repository\Group\Group;
+
 use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Notification\Notification;

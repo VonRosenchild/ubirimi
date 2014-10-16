@@ -6,9 +6,12 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Issue Resolutions') ?>
+    <?php endif ?>
+
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-        <?php Util::renderBreadCrumb('Issue Resolutions') ?>
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li><a href="/yongo/administration/issue/statuses">Statuses</a></li>

@@ -16,7 +16,7 @@ use ubirimi\svn\SVNRepository;
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-use Ubirimi\Repository\Group\Group;
+
 
 use Ubirimi\Repository\User\User as UserRepository;
 use Ubirimi\SystemProduct;

@@ -34,7 +34,7 @@
             <tr>
                 <td>
                     <?php
-                        $transitions = $this->getRepository('yongo.workflow.workflow')->getIncomingTransitionsForStep($workflow['id'], $stepId); ?>
+                        $transitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getIncomingTransitionsForStep($workflow['id'], $stepId); ?>
                     <?php if ($transitions): ?>
                         <table>
                             <?php while ($transition = $transitions->fetch_array(MYSQLI_ASSOC)): ?>
@@ -48,7 +48,7 @@
                 <td valign="top" align="center"><?php echo $step['name'] ?></td>
                 <td valign="top">
                     <?php
-                        $transitions = $this->getRepository('yongo.workflow.workflow')->getOutgoingTransitionsForStep($workflow['id'], $stepId); ?>
+                        $transitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getOutgoingTransitionsForStep($workflow['id'], $stepId); ?>
                     <?php if ($transitions): ?>
                         <table>
                             <?php while ($transition = $transitions->fetch_array(MYSQLI_ASSOC)): ?>

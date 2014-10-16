@@ -4,8 +4,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td>
                     <div class="headerPageText">
@@ -14,6 +14,8 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="pageContent">
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

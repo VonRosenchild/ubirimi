@@ -8,11 +8,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/yongo/administration/issue-type-schemes" class="linkNoUnderline">Issue Type Schemes</a> > ' . $issueTypeScheme['name'];
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a href="/yongo/administration/issue-type-schemes" class="linkNoUnderline">Issue Type Schemes</a> > ' . $issueTypeScheme['name'];
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <table class="table table-hover table-condensed">
             <thead>
@@ -40,7 +40,7 @@
                 </td>
                 <td valign="top">
                     <?php
-                        $projects = $this->getRepository('yongo.project.project')->getByIssueTypeScheme($issueTypeScheme['id']);
+                        $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByIssueTypeScheme($issueTypeScheme['id']);
                         if ($projects) {
                             echo '<ul>';
                             while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

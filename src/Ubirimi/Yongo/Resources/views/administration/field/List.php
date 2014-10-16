@@ -56,7 +56,7 @@
                             <?php if ($field['all_issue_type_flag']): ?>
                                 <div>All Issue Types</div>
                             <?php else: ?>
-                                <?php $issueTypes = $this->getRepository('yongo.field.field')->getIssueTypesFor($field['id']) ?>
+                                <?php $issueTypes = UbirimiContainer::get()['repository']->get('yongo.field.field')->getIssueTypesFor($field['id']) ?>
                                 <div>Used for the following issue types:</div>
                                 <ul>
                                 <?php while ($type = $issueTypes->fetch_array(MYSQLI_ASSOC)): ?>
@@ -67,7 +67,7 @@
                             <?php if ($field['all_project_flag']): ?>
                                 <div>All Projects</div>
                             <?php else: ?>
-                                <?php $projects = $this->getRepository('yongo.field.field')->getProjectsFor($field['id']) ?>
+                                <?php $projects = UbirimiContainer::get()['repository']->get('yongo.field.field')->getProjectsFor($field['id']) ?>
                                 <div>Used for the following projects:</div>
                                 <ul>
                                 <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

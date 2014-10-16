@@ -7,10 +7,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Issue Statuses') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Issue Statuses') ?>
 
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li class="active"><a href="/yongo/administration/issue/statuses">Statuses</a></li>
@@ -49,7 +50,7 @@
                                 <td><?php echo $status['name']; ?></td>
                                 <td><?php echo $status['description']; ?></td>
                                 <td>
-                                    <?php $workflows = $this->getRepository('yongo.workflow.workflow')->getByIssueStatusId($status['id']); ?>
+                                    <?php $workflows = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getByIssueStatusId($status['id']); ?>
                                     <?php if ($workflows): ?>
                                         <div>Active</div>
                                     <?php else: ?>

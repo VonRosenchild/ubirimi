@@ -6,13 +6,13 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/yongo/administration/workflows/schemes" class="linkNoUnderline">Workflow Schemes</a> > Create Workflow Scheme';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
+
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/workflows/add-scheme" method="post">
-            <?php
-                $breadCrumb = '<a href="/yongo/administration/workflows/schemes" class="linkNoUnderline">Workflow Schemes</a> > Create Workflow Scheme';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
-
             <table width="100%">
                 <tr>
                     <td valign="top">Name <span class="error">*</span></td>

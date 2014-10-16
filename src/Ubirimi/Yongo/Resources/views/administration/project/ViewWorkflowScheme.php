@@ -68,13 +68,13 @@
                                 <td width="400">Step Name</td>
                                 <td align="left">Transition</td>
                             </tr>
-                            <?php $steps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflow['id']) ?>
+                            <?php $steps = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getSteps($workflow['id']) ?>
                             <?php while ($step = $steps->fetch_array(MYSQLI_ASSOC)): ?>
                                 <tr>
                                     <td><?php echo $step['step_name'] ?></td>
                                     <td align="left">
                                         <?php
-                                            $transitions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflow['id'], $step['id']); ?>
+                                            $transitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getTransitionsForStepId($workflow['id'], $step['id']); ?>
                                         <?php if ($transitions): ?>
                                             <?php for ($i = 0; $i < $transitions->num_rows; $i++): ?>
                                                 <?php $transition = $transitions->fetch_array(MYSQLI_ASSOC) ?>

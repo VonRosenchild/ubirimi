@@ -6,12 +6,13 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflow['name'] . ' > Copy';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <form name="copy_workflow" action="/yongo/administration/workflow/copy/<?php echo $workflowId ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflow['name'] . ' > Copy';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
+
             <table width="100%">
                 <tr>
                     <td width="200" valign="top">Name <span class="mandatory">*</span></td>

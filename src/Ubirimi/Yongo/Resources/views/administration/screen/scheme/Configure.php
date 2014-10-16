@@ -6,12 +6,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/screens/schemes">Screen Schemes</a> > ' . $screenScheme['name'] . ' > Configure';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/screens/schemes">Screen Schemes</a> > ' . $screenScheme['name'] . ' > Configure';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

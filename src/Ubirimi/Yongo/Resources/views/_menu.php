@@ -44,7 +44,7 @@ $projectsWithCreatePermission = UbirimiContainer::get()['repository']->get('ubir
 if (!isset($menuSelectedCategory))
     $menuSelectedCategory = null;
 
-$hasAdministrationPermission = $hasAdministerProjectsPermission || UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+$hasAdministrationPermission = $hasAdministerProjectsPermission || UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
 
 Util::renderMaintenanceMessage();
 

@@ -1,7 +1,8 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Repository\Group\Group;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
+
 ?>
 <table class="table table-hover table-condensed" width="100%">
     <thead>
@@ -26,7 +27,7 @@
                     <td><?php echo $user['username'] ?></td>
                     <td><?php echo $user['email'] ?></td>
                     <td width="30%">
-                        <?php $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($user['id'], SystemProduct::SYS_PRODUCT_YONGO); ?>
+                        <?php $groups = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByUserIdAndProductId($user['id'], SystemProduct::SYS_PRODUCT_YONGO); ?>
                         <?php if ($groups): ?>
                             <ul>
                                 <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>

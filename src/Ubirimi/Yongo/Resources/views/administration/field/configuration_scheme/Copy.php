@@ -5,9 +5,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/field-configurations/schemes">Field Configuration Schemes</a> > Copy Field Configuration Scheme') ?>
     <div class="pageContent">
         <form name="form_copy_field_configuration_scheme" action="/yongo/administration/field-configuration/scheme/copy/<?php echo $fieldConfigurationSchemeId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/field-configurations/schemes">Field Configuration Schemes</a> > Copy Field Configuration Scheme') ?>
 
             <table width="100%">
                 <tr>

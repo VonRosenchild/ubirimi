@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
-use Ubirimi\Repository\Group\Group;
+
 
 use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;

@@ -5,9 +5,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/notification-schemes">Notification Schemes</a> > Create Notification Scheme'); ?>
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/notification-scheme/add" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/notification-schemes">Notification Schemes</a> > Create Notification Scheme'); ?>
 
             <table width="100%">
                 <tr>

@@ -9,7 +9,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\Event\UserEvent;
 
-use Ubirimi\Repository\Group\Group;
+
 use Ubirimi\Repository\User\User as UserRepository;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\Util;

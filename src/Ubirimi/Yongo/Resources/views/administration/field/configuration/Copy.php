@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/field-configurations">Field Configurations</a> > Copy Field Configuration') ?>
     <div class="pageContent">
         <form name="form_copy_notification_scheme" action="/yongo/administration/field-configuration/copy/<?php echo $fieldConfigurationId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/field-configurations">Field Configurations</a> > Copy Field Configuration') ?>
 
             <table width="100%">
                 <tr>

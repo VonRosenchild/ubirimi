@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Project\Project;
     use Ubirimi\Yongo\Repository\Workflow\Scheme;
 
@@ -8,9 +9,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Workflows', 'help', 'https://support.ubirimi.net/documentador/page/view/43') ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Workflows', 'help', 'https://support.ubirimi.net/documentador/page/view/43') ?>
 
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li class="active"><a href="/yongo/administration/workflows">Workflows</a></li>
@@ -74,7 +75,7 @@
                         </td>
                         <td>
                             <?php
-                                $projects = $this->getRepository('yongo.project.project')->getByWorkflowId($workflow['id']);
+                                $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByWorkflowId($workflow['id']);
                                 if ($projects) {
                                     echo 'Active';
                                 } else {

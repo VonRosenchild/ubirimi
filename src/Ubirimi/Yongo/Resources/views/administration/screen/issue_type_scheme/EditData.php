@@ -4,19 +4,20 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/screens/issue-types">Issue Type Screen Schemes</a> > <?php echo $issueTypeScreenSchemeMetaData['name'] ?> > Configure
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <div class="pageContent">
         <form name="edit_screen_metadata" action="/yongo/administration/screen/edit-scheme-issue-type-data/<?php echo $issueTypeScreenSchemeDataId ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/screens/issue-types">Issue Type Screen Schemes</a> > <?php echo $issueTypeScreenSchemeMetaData['name'] ?> > Configure
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
             <table width="100%">
                 <tr>
                     <td width="150" valign="top">Issue Type</td>

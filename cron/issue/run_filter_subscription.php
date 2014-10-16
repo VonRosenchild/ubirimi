@@ -4,7 +4,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\Email\EmailQueue;
-use Ubirimi\Repository\Group\Group;
+
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Repository\User\User;
 use Ubirimi\Util;

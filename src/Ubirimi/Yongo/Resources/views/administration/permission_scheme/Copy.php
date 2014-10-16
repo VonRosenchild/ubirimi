@@ -6,10 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/permission-schemes">Permission Schemes</a> > Copy Permission Scheme') ?>
     <div class="pageContent">
         <form name="form_copy_permission_scheme" action="/yongo/administration/permission-scheme/copy/<?php echo $permissionSchemeId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/permission-schemes">Permission Schemes</a> > Copy Permission Scheme') ?>
-
             <table width="100%">
                 <tr>
                     <td width="100" valign="top">Name <span class="mandatory">*</span></td>

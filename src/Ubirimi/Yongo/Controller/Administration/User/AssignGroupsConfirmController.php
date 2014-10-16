@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\User\User;
-use Ubirimi\Repository\Group\Group;
+
 
 class AssignGroupsConfirmController extends UbirimiController
 {

@@ -1,18 +1,17 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Configuration;
-    use Ubirimi\Yongo\Repository\Screen\Screen;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 <?php require_once __DIR__ . '/../../_menu.php'; ?>
-
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/field-configurations">Field Configurations</a> > ' . $fieldConfiguration['name'] . ' > Configure';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/field-configurations">Field Configurations</a> > ' . $fieldConfiguration['name'] . ' > Configure';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

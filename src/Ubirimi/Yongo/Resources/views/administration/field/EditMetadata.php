@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > Edit Custom Field') ?>
     <div class="pageContent">
         <form name="edit_custom_field" action="/yongo/administration/custom-field/edit/<?php echo $Id ?>" method="post">
-            <?php Util::renderBreadCrumb('<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > Edit Custom Field') ?>
 
             <table width="100%">
                 <tr>

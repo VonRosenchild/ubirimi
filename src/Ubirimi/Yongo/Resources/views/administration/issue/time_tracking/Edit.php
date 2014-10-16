@@ -5,10 +5,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Issue Features > Time Tracking > Update') ?>
     <div class="pageContent">
-        <?php
-            Util::renderBreadCrumb('Issue Features > Time Tracking > Update')
-        ?>
 
         <form method="post" name="edit_time_tracking" action="/yongo/administration/time-tracking/edit">
             <table width="100%">

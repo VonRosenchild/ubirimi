@@ -7,11 +7,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > As Text';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > As Text';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
@@ -37,7 +37,7 @@
 
             <?php while ($step = $workflowSteps->fetch_array(MYSQLI_ASSOC)): ?>
                 <?php
-                    $incomingTransitions = $this->getRepository('yongo.workflow.workflow')->getIncomingTransitionsForStep($workflowId, $step['id']);
+                    $incomingTransitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getIncomingTransitionsForStep($workflowId, $step['id']);
                 ?>
                 <tr id="table_row_<?php echo $step['id'] ?>">
                     <td width="22">
@@ -48,7 +48,7 @@
                     <td><?php echo $step['status_name'] ?></td>
                     <td align="left">
                         <?php
-                            $transitions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowId, $step['id']); ?>
+                            $transitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getTransitionsForStepId($workflowId, $step['id']); ?>
                         <?php while ($transitions && $transition = $transitions->fetch_array(MYSQLI_ASSOC)): ?>
                             <div><a href="/yongo/administration/workflow/view-transition/<?php echo $transition['id'] ?>"><?php echo $transition['transition_name'] ?></a> >> <?php echo $transition['name'] ?></div>
                         <?php endwhile ?>

@@ -5,8 +5,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Issue Features > Time Tracking') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Issue Features > Time Tracking') ?>
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li class="active"><a href="/yongo/administration/issue-features/time-tracking">Time Tracking</a></li>

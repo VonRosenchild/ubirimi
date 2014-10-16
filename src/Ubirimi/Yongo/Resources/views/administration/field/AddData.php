@@ -6,9 +6,10 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/custom-fields">Custom Fields</a> > Create Custom Field - Details (Step 2 of 2)') ?>
     <div class="pageContent">
         <form name="add_custom_field" action="/yongo/administration/custom-field/add-data/<?php echo $fieldTypeCode ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/custom-fields">Custom Fields</a> > Create Custom Field - Details (Step 2 of 2)') ?>
+
             <table width="100%">
                 <tr>
                     <td width="150" valign="top">Name <span class="mandatory">*</span></td>

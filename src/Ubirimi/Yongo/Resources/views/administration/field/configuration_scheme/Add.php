@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a href="/yongo/administration/field-configurations/schemes" class="linkNoUnderline">Field Configuration Schemes</a> > Create Field Configuration Scheme') ?>
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/field-configuration/add-scheme" method="post">
-            <?php Util::renderBreadCrumb('<a href="/yongo/administration/field-configurations/schemes" class="linkNoUnderline">Field Configuration Schemes</a> > Create Field Configuration Scheme') ?>
 
             <table width="100%">
                 <tr>

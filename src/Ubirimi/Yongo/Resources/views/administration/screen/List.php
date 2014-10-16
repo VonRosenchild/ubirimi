@@ -1,17 +1,19 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Screen\Scheme;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Screens') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Screens') ?>
+
 
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li class="active"><a href="/yongo/administration/screens">Screens</a></li>
@@ -67,7 +69,7 @@
                                 </td>
                                 <td width="500px">
                                     <?php
-                                        $workflows = $this->getRepository('yongo.workflow.workflow')->getByScreen($clientId, $screen['id']);
+                                        $workflows = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getByScreen($clientId, $screen['id']);
                                         if ($workflows) {
                                             echo '<ul>';
                                             while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {

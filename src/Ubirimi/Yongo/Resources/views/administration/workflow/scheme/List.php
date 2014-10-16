@@ -1,13 +1,17 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Workflow\Scheme;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Workflow Schemes') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
             <?php Util::renderBreadCrumb('Workflow Schemes') ?>
@@ -61,7 +65,7 @@
                                     </ul>
                                 </td>
                                 <td width="300px">
-                                    <?php $projects = $this->getRepository('yongo.project.project')->getByWorkflowSchemeId($scheme['id']) ?>
+                                    <?php $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByWorkflowSchemeId($scheme['id']) ?>
                                     <?php if ($projects): ?>
                                         <ul>
                                             <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

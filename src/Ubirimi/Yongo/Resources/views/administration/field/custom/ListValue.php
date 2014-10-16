@@ -6,8 +6,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a href="/yongo/administration/custom-fields">Custom Fields</a> > ' . $field['name'] . ' > Define Custom Values') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('<a href="/yongo/administration/custom-fields">Custom Fields</a> > ' . $field['name'] . ' > Define Custom Values') ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

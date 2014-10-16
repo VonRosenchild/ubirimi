@@ -4,17 +4,19 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/issue-features/linking">Issue Linking</a> > <?php echo $linkType['name'] ?> > Update Link Type
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="edit_link_type" action="/yongo/administration/link-type/edit/<?php echo $linkTypeId ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/issue-features/linking">Issue Linking</a> > <?php echo $linkType['name'] ?> > Update Link Type
-                        </div>
-                    </td>
-                </tr>
-            </table>
             <table width="100%">
                 <tr>
                     <td width="200px" valign="top">Name <span class="error">*</span></td>

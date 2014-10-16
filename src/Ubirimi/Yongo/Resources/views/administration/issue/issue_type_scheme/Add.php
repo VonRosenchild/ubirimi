@@ -6,16 +6,16 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        if ('workflow' == $type) {
+            Util::renderBreadCrumb('<a href="/yongo/administration/workflows/issue-type-schemes" class="linkNoUnderline">Workflow Issue Type Schemes</a> > Create Workflow Issue Type Scheme');
+        } else {
+            Util::renderBreadCrumb('<a href="/yongo/administration/issue-type-schemes" class="linkNoUnderline">Issue Type Schemes</a> > Create Issue Type Scheme');
+        }
+    ?>
+
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/issue/add-type-scheme/<?php echo $type ?>" method="post">
-
-            <?php
-                if ('workflow' == $type) {
-                    Util::renderBreadCrumb('<a href="/yongo/administration/workflows/issue-type-schemes" class="linkNoUnderline">Workflow Issue Type Schemes</a> > Create Workflow Issue Type Scheme');
-                } else {
-                    Util::renderBreadCrumb('<a href="/yongo/administration/issue-type-schemes" class="linkNoUnderline">Issue Type Schemes</a> > Create Issue Type Scheme');
-                }
-            ?>
 
             <table width="100%">
                 <tr>

@@ -6,9 +6,10 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/notification-schemes">Notification Schemes</a> > Copy Notification Scheme') ?>
     <div class="pageContent">
         <form name="form_copy_notification_scheme" action="/yongo/administration/notification-scheme/copy/<?php echo $notificationSchemeId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/notification-schemes">Notification Schemes</a> > Copy Notification Scheme') ?>
+
 
             <table width="100%">
                 <tr>

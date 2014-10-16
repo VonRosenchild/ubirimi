@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/permission-schemes">Permission Schemes</a> > Create Permission Scheme') ?>
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/permission-scheme/add" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/permission-schemes">Permission Schemes</a> > Create Permission Scheme') ?>
 
             <table width="100%">
                 <tr>

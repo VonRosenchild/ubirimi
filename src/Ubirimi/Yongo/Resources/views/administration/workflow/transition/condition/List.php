@@ -37,7 +37,7 @@
             <div>
                 <span>Condition passes logical examination: </span>
                 <?php
-                    if ($this->getRepository('yongo.workflow.workflow')->checkLogicalConditionsByTransitionId($workflowDataId)): ?>
+                    if (UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkLogicalConditionsByTransitionId($workflowDataId)): ?>
                     <span style="background-color: greenyellow; padding: 4px">YES</span>
                 <?php else: ?>
                     <span style="background-color: red; padding: 4px">NO</span>

@@ -57,7 +57,7 @@
                             <div class="smallDescription"><?php echo $fieldConfigurationScheme['description'] ?></div>
                         </td>
                         <td width="500px">
-                            <?php $projects = $this->getRepository('yongo.project.project')->getByIssueTypeFieldConfigurationScheme($clientId, $fieldConfigurationScheme['id']) ?>
+                            <?php $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByIssueTypeFieldConfigurationScheme($clientId, $fieldConfigurationScheme['id']) ?>
                             <?php if ($projects): ?>
                                 <ul>
                                 <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

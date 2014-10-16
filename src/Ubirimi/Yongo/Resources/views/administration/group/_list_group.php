@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\Group\Group;
+
     use Ubirimi\Yongo\Repository\Permission\Scheme;
 ?>
 <table class="table table-hover table-condensed" width="100%">
@@ -21,7 +21,7 @@
                 <td width="30%"><?php echo $group['description'] ?></td>
                 <td width="10%">
                     <?php
-                        $usersInGroup = $this->getRepository('ubirimi.user.group')->getDataByGroupId($group['id']);
+                        $usersInGroup = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getDataByGroupId($group['id']);
                         if ($usersInGroup) {
                             echo '<a href="/yongo/administration/users/' . $group['id'] . '">' . $usersInGroup->num_rows . '</a>';
                         } else {

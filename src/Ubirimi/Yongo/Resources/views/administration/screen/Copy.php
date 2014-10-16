@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/screens">Screens</a> > Copy Screen') ?>
     <div class="pageContent">
         <form name="form_copy_screen" action="/yongo/administration/screen/copy/<?php echo $screenId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/screens">Screens</a> > Copy Screen') ?>
 
             <table width="100%">
                 <tr>

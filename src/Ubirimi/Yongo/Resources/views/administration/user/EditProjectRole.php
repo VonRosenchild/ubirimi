@@ -1,22 +1,24 @@
 <?php
 
-    use Ubirimi\Repository\User\User;
+use Ubirimi\Container\UbirimiContainer;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/users">Users</a> > <?php echo $user['first_name'] . ' ' . $user['last_name'] ?> > <a class="linkNoUnderline" href="/yongo/administration/roles">Project Roles</a> > Edit
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="edit_user_project_role" method="post" action="/yongo/administration/user/project-roles/edit/<?php echo $userId ?>">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/users">Users</a> > <?php echo $user['first_name'] . ' ' . $user['last_name'] ?> > <a class="linkNoUnderline" href="/yongo/administration/roles">Project Roles</a> > Edit
-                        </div>
-                    </td>
-                </tr>
-            </table>
 
             <table class="table table-hover table-condensed">
                 <thead>
@@ -37,9 +39,9 @@
                         <td align="center">
                             <?php
 
-                                $userIsDirectMemberOfProjectRole = $this->getRepository('ubirimi.user.user')->checkUserInProjectRoleId($userId, $project['id'], $role['id']);
+                                $userIsDirectMemberOfProjectRole = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->checkUserInProjectRoleId($userId, $project['id'], $role['id']);
 
-                                $groups = $this->getRepository('ubirimi.user.user')->getGroupsForUserIdAndRoleId($userId, $project['id'], $role['id'], $groupIds);
+                                $groups = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getGroupsForUserIdAndRoleId($userId, $project['id'], $role['id'], $groupIds);
                             ?>
                             <input name="role_<?php echo $project['id'] . '_' . $role['id'] ?>" type="checkbox" <?php if ($userIsDirectMemberOfProjectRole) echo 'checked="checked"'; ?> />
                             <?php $dataArray = array() ?>

@@ -1,16 +1,18 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\TypeScheme;
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 
-    require_once __DIR__ . '/../../_header.php';
+
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Workflow Issue Type Schemes') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Workflow Issue Type Schemes') ?>
 
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li><a href="/yongo/administration/workflows">Workflows</a></li>
@@ -55,7 +57,7 @@
                                 </ul>
                             </td>
                             <td>
-                                <?php $projects = $this->getRepository('yongo.project.project')->getByWorkflowIssueTypeScheme($clientId, $scheme['id']) ?>
+                                <?php $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByWorkflowIssueTypeScheme($clientId, $scheme['id']) ?>
                                 <?php if ($projects): ?>
                                 <ul>
                                     <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

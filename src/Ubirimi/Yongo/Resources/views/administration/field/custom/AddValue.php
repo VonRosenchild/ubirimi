@@ -5,13 +5,15 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php
+            $breadCrumb = '<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > ' . $field['name'] . ' > Create Custom Value';
+            Util::renderBreadCrumb($breadCrumb);
+        ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
             <form name="add_user_group" action="/yongo/administration/custom-field/value/add/<?php echo $customFieldId ?>" method="post">
-                <?php
-                    $breadCrumb = '<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > ' . $field['name'] . ' > Create Custom Value';
-                    Util::renderBreadCrumb($breadCrumb);
-                ?>
 
                 <table width="100%">
                     <tr>

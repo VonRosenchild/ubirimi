@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Group\Group;
+
 use Ubirimi\Repository\User\User;
 use ubirimi\svn\SVNRepository;
 

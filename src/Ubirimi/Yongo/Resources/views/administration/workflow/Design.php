@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
     require_once __DIR__ . '/../_header.php';
@@ -7,13 +8,14 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <div id="buttons_workflow">
+        <?php
+            $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'];
+            Util::renderBreadCrumb($breadcrumb);
+        ?>
+    </div>
     <div class="pageContent" style="height: 900px;">
-        <div id="buttons_workflow">
-            <?php
-                $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'];
-                Util::renderBreadCrumb($breadcrumb);
-            ?>
-        </div>
+
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
@@ -28,7 +30,7 @@
                 while ($step = $steps->fetch_array(MYSQLI_ASSOC)) {
                     if ($step['step_name'] == 'Create Issue') {
                         echo '<input type="hidden" name="first_step" id="first_step" value="' . $step['id'] . '" />';
-                        $stepFromInitialStepData = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowId, $step['id']);
+                        $stepFromInitialStepData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getTransitionsForStepId($workflowId, $step['id']);
                         $stepFromInitialStep = $stepFromInitialStepData->fetch_array(MYSQLI_ASSOC);
                         echo '<input type="hidden" id="first_transition" value="' . $step['id'] . '_' . $stepFromInitialStep['workflow_step_id_to'] . '">';
                     }

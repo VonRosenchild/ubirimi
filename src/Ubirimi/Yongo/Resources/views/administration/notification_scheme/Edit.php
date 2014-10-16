@@ -6,8 +6,8 @@
 <?php require_once __DIR__ . '/../_menu.php'; ?>
 
 <div class="pageContent">
-    <form name="edit_notification_scheme_metadata" action="/yongo/administration/notification-scheme/edit-metadata/<?php echo $notificationSchemeId ?>" method="post">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%" class="">
             <tr>
                 <td>
                     <div class="headerPageText">
@@ -16,6 +16,8 @@
                 </td>
             </tr>
         </table>
+    </div>
+    <form name="edit_notification_scheme_metadata" action="/yongo/administration/notification-scheme/edit-metadata/<?php echo $notificationSchemeId ?>" method="post">
 
         <table width="100%">
             <tr>

@@ -4,17 +4,19 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/screens/schemes">Screen Schemes</a> > <?php echo $screenScheme['name'] ?> > Update
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="edit_screen_scheme_metadata" action="/yongo/administration/screen/edit-scheme/<?php echo $screenSchemeId ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/screens/schemes">Screen Schemes</a> > <?php echo $screenScheme['name'] ?> > Update
-                        </div>
-                    </td>
-                </tr>
-            </table>
 
             <table width="100%">
                 <tr>

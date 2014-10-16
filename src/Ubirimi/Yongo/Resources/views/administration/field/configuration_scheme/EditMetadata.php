@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/field-configurations/schemes">Field Configuration Schemes</a> > Edit Field Configuration Scheme') ?>
     <div class="pageContent">
         <form name="edit_field_configuration_scheme_metadata" action="/yongo/administration/field-configuration/scheme-metadata/edit/<?php echo $fieldConfigurationSchemeId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/field-configurations/schemes">Field Configuration Schemes</a> > Edit Field Configuration Scheme') ?>
 
             <table width="100%">
                 <tr>

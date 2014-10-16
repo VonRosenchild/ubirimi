@@ -5,7 +5,7 @@ namespace Ubirimi\Repository\General;
 
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\Group\Group;
+
 use Ubirimi\Repository\User\User;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\SystemProduct;

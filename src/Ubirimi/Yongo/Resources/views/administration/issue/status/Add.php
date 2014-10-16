@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue/statuses">Issue Statuses</a> > Create Status') ?>
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/issue/status/add" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue/statuses">Issue Statuses</a> > Create Status') ?>
 
             <table width="100%">
                 <tr>

@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue-type-schemes">Issue Type Schemes</a> > ' . $issueTypeScreenScheme['name'] . ' > Copy') ?>
     <div class="pageContent">
         <form name="form_copy_issue_type_screen_scheme" action="/yongo/administration/screen/scheme-issue-type/copy/<?php echo $issueTypeScreenSchemeId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue-type-schemes">Issue Type Schemes</a> > ' . $issueTypeScreenScheme['name'] . ' > Copy') ?>
 
             <table width="100%">
                 <tr>

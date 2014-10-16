@@ -1,12 +1,15 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Screen Schemes') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
         <?php Util::renderBreadCrumb('Screen Schemes') ?>

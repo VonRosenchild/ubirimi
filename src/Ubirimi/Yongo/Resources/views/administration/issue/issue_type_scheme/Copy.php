@@ -6,15 +6,16 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        if ('workflow' == $type) {
+            Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/workflows/issue-type-schemes">Workflow Issue Type Schemes</a> > ' . $issueTypeScheme['name'] . ' > Copy');
+        } else {
+            Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue-type-schemes">Issue Type Schemes</a> > ' . $issueTypeScheme['name'] . ' > Copy');
+        }
+    ?>
     <div class="pageContent">
         <form name="form_copy_issue_type_scheme" action="/yongo/administration/issue-type-scheme/copy/<?php echo $issueTypeSchemeId ?>?type=<?php echo $type ?>" method="post">
-            <?php
-                if ('workflow' == $type) {
-                    Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/workflows/issue-type-schemes">Workflow Issue Type Schemes</a> > ' . $issueTypeScheme['name'] . ' > Copy');
-                } else {
-                    Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue-type-schemes">Issue Type Schemes</a> > ' . $issueTypeScheme['name'] . ' > Copy');
-                }
-            ?>
+
             <table width="100%">
                 <tr>
                     <td width="100" valign="top">Name <span class="mandatory">*</span></td>

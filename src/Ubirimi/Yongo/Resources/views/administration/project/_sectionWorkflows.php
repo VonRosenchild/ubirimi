@@ -19,7 +19,7 @@
                     <td valign="top" width="330">
                         <div>Workflow Scheme</div>
                         <?php
-                            $workflowScheme = $this->getRepository('yongo.project.project')->getWorkflowScheme($projectId);
+                            $workflowScheme = UbirimiContainer::get()['repository']->get('yongo.project.project')->getWorkflowScheme($projectId);
 
                             $workflows = Scheme::getWorkflows($workflowScheme['id']);
                         ?>

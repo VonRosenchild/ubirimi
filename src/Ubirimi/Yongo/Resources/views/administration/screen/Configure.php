@@ -6,12 +6,12 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/screens">Screens</a> > ' . $screenMetadata['name'] . ' > Edit Screen Fields';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <form name="add_priority" action="/yongo/administration/screen/configure/<?php echo $screenId ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/screens">Screens</a> > ' . $screenMetadata['name'] . ' > Edit Screen Fields';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
 
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>

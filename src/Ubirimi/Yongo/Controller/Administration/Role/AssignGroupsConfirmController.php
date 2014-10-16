@@ -8,7 +8,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\SystemProduct;
-use Ubirimi\Repository\Group\Group;
+
 
 class AssignGroupsConfirmController extends UbirimiController
 {

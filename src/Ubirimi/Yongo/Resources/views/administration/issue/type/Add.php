@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue-types">Issue Types</a> > Create Type'); ?>
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/issue/add-type<?php if ($subTaskFlag) echo '?type=sub_task'; ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/issue-types">Issue Types</a> > Create Type'); ?>
 
             <table width="100%">
                 <tr>

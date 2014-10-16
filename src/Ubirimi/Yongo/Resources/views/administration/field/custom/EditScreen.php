@@ -7,19 +7,20 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > Place Field on Screens > <?php echo $field['name'] ?>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <div class="pageContent">
         <form name="form_edit_field_configuration_screen" action="/yongo/administration/custom-field/edit-field-screen/<?php echo $fieldId ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > Place Field on Screens > <?php echo $field['name'] ?>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>

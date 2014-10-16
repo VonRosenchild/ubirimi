@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a href="/yongo/administration/screens" class="linkNoUnderline">Screens</a> > Create Screen') ?>
     <div class="pageContent">
         <form name="add_screen" action="/yongo/administration/screen/add" method="post">
-            <?php Util::renderBreadCrumb('<a href="/yongo/administration/screens" class="linkNoUnderline">Screens</a> > Create Screen') ?>
 
             <table width="100%">
                 <tr>

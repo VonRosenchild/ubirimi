@@ -81,7 +81,7 @@ require_once __DIR__ . '/../../_header.php';
                         }
 
                         // deal with issues without an issue security level
-                        $issues = $this->getRepository('yongo.project.project')->getIssuesWithNoSecurityScheme($projectId);
+                        $issues = UbirimiContainer::get()['repository']->get('yongo.project.project')->getIssuesWithNoSecurityScheme($projectId);
 
                         if ($issues) {
                             echo $header;

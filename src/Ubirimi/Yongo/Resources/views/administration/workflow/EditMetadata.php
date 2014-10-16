@@ -4,17 +4,20 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <?php echo $workflow['name'] ?> > Edit
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="edit_workflow" action="/yongo/administration/workflow/edit/<?php echo $workflowId ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <?php echo $workflow['name'] ?> > Edit
-                        </div>
-                    </td>
-                </tr>
-            </table>
+
             <table width="100%">
                 <tr>
                     <td width="200" valign="top">Name <span class="error">*</span></td>

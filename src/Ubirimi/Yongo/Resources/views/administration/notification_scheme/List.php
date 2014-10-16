@@ -7,9 +7,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Notification Schemes') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Notification Schemes') ?>
 
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
@@ -43,7 +45,7 @@
                                 </td>
                                 <td width="500px">
                                     <?php
-                                        $projects = $this->getRepository('yongo.project.project')->getByNotificationScheme($scheme['id']);
+                                        $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByNotificationScheme($scheme['id']);
                                         if ($projects) {
                                             echo '<ul>';
                                             while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

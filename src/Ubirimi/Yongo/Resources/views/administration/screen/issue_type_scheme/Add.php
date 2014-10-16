@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/screens/issue-types">Issue Type Screen Schemes</a> > Create Issue Type Screen Scheme') ?>
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/screen/add-scheme-issue-type" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/screens/issue-types">Issue Type Screen Schemes</a> > Create Issue Type Screen Scheme') ?>
 
             <table>
                 <tr>

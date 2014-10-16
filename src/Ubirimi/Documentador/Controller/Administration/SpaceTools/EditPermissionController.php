@@ -1,6 +1,6 @@
 <?php
 
-    use Ubirimi\Repository\Group\Group;
+
     use Ubirimi\Repository\User\User;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;

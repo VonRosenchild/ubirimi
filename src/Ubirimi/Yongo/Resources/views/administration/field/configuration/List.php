@@ -1,19 +1,21 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td>
                     <div class="headerPageText">Field Configurations</div>
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="pageContent">
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li><a href="/yongo/administration/custom-fields">Custom Fields</a></li>

@@ -5,10 +5,10 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a href="/yongo/administration/workflows" class="linkNoUnderline">Workflows</a> > Create Workflow') ?>
 
     <div class="pageContent">
         <form name="add_status" action="/yongo/administration/workflow/add" method="post">
-            <?php Util::renderBreadCrumb('<a href="/yongo/administration/workflows" class="linkNoUnderline">Workflows</a> > Create Workflow') ?>
 
             <table width="100%">
                 <tr>
