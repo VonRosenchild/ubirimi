@@ -19,6 +19,7 @@ class UserSpacesController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
 
             $clientId = $session->get('client/id');
+            $loggedInUserId = $session->get('user/id');
 
             $spaces = $this->getRepository('documentador.space.space')->getByClientId($clientId);
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
@@ -35,6 +36,6 @@ class UserSpacesController extends UbirimiController
 
         $menuSelectedCategory = 'documentator';
 
-        require_once __DIR__ . '/../../Resources/views/UserSpaces.php';
+        return $this->render(__DIR__ . '/../../Resources/views/UserSpaces.php', get_defined_vars());
     }
 }

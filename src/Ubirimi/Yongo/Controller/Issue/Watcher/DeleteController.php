@@ -15,8 +15,8 @@ class DeleteController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $userId = $_POST['id'];
-        $issueId = $_POST['issue_id'];
+        $userId = $request->request->get('id');
+        $issueId = $request->request->get('issue_id');
 
         Watcher::deleteByUserIdAndIssueId($issueId, $userId);
 

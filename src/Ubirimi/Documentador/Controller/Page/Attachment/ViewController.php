@@ -15,7 +15,7 @@ class ViewController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $entityId = $_GET['id'];
+        $entityId = $request->get('id');
 
         if (Util::checkUserIsLoggedIn()) {
 
@@ -50,9 +50,9 @@ class ViewController extends UbirimiController
         $menuSelectedCategory = 'documentator';
 
         if ($page) {
-            $attachments = EntityAttachment::getByEntityId($entityId);
+            $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
         }
 
-        require_once __DIR__ . '/../../../Resources/views/page/attachment/View.php';
+        return $this->render(__DIR__ . '/../../Resources/views/page/attachment/View.php', get_defined_vars());
     }
 }

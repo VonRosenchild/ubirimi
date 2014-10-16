@@ -21,21 +21,23 @@ class DeleteController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $attachmentId = $_POST['id'];
-        $attachment = EntityAttachment::getById($attachmentId);
+        $attachment = $this->getRepository('documentador.entity.attachment')->getById($attachmentId);
         $entityId = $attachment['documentator_entity_id'];
         $space = $this->getRepository('documentador.entity.entity')->getById($entityId);
         $spaceId = $space['space_id'];
         $currentDate = Util::getServerCurrentDateTime();
 
-        EntityAttachment::deleteById($spaceId, $entityId, $attachmentId);
+        $this->getRepository('documentador.entity.attachment')->deleteById($spaceId, $entityId, $attachmentId);
 
         $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador entity attachment ' . $attachment['name'], $currentDate);
 
-        $attachments = EntityAttachment::getByEntityId($entityId);
+        $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
         if (!$attachments) {
             // delete the attachment folder
             $attachmentsFilePath = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_DOCUMENTADOR, 'attachments');
             Util::deleteDir($attachmentsFilePath . $spaceId . '/' . $entityId);
         }
+
+        return new Response('');
     }
 }

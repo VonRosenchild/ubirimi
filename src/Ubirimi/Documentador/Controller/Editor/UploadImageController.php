@@ -45,7 +45,7 @@ class UploadImageController extends UbirimiController
                 $fileName = $_FILES["upload"]["name"];
 
                 // check if the attachment already exists
-                $attachment = EntityAttachment::getByEntityIdAndName($entityId, $fileName);
+                $attachment = $this->getRepository('documentador.entity.attachment')->getByEntityIdAndName($entityId, $fileName);
                 if ($attachment) {
                     // get the last revision and increment it by one
                     $attachmentId = $attachment['id'];
@@ -58,7 +58,7 @@ class UploadImageController extends UbirimiController
                 } else {
                     // add the attachment in the database
                     $currentDate = Util::getServerCurrentDateTime();
-                    $attachmentId = EntityAttachment::add($entityId, $fileName, $currentDate);
+                    $attachmentId = $this->getRepository('documentador.entity.attachment')->add($entityId, $fileName, $currentDate);
 
                     $revisionNumber = 1;
 
@@ -80,7 +80,7 @@ class UploadImageController extends UbirimiController
                 $directoryName = $attachmentsBaseFilePath . $spaceId . '/' . $entityId. '/' . $attachmentId . '/' . $revisionNumber;
                 move_uploaded_file($_FILES["upload"]["tmp_name"], $directoryName . '/' . $fileName);
 
-                EntityAttachment::addRevision($attachmentId, $loggedInUserId, $currentDate);
+                $this->getRepository('documentador.entity.attachment')->addRevision($attachmentId, $loggedInUserId, $currentDate);
 
                 $attachmentsPath = UbirimiContainer::get()['asset.documentador_entity_attachments'];
                 $html = '<html><body><script type="text/javascript">window.parent.CKEDITOR.tools.callFunction("' . $CKEditorFuncNum . '", "/assets/' . $attachmentsPath . $spaceId . '/' . $entityId. '/' . $attachmentId . '/' . $revisionNumber . '/' . $fileName . '");</script></body></html>';

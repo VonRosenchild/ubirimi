@@ -35,7 +35,7 @@ class ViewController extends UbirimiController
             }
         }
 
-        $userId = $_GET['id'];
+        $userId = $request->get('id');
         $user = $this->getRepository('ubirimi.user.user')->getById($userId);
         if ($user['client_id'] != $clientId) {
             header('Location: /general-settings/bad-link-access-denied');

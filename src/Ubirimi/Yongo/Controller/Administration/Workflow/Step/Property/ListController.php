@@ -18,7 +18,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $stepId = $_GET['id'];
+        $stepId = $request->get('id');
         $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
         $workflowId = $step['workflow_id'];
 

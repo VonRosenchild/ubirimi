@@ -20,9 +20,9 @@ class TransitionScreenController extends UbirimiController
 
         $clientId = $session->get('client/id');
 
-        $stepIdFrom = $_GET['id_from'];
-        $stepIdTo = $_GET['id_to'];
-        $workflowId = $_GET['workflow_id'];
+        $stepIdFrom = $request->get('id_from');
+        $stepIdTo = $request->get('id_to');
+        $workflowId = $request->get('workflow_id');
 
         $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 

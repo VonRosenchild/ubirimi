@@ -17,9 +17,9 @@ class ShareController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issueId = $_POST['id'];
-        $noteContent = $_POST['note'];
-        $userIds = $_POST['user_id'];
+        $issueId = $request->request->get('id');
+        $noteContent = $request->request->get('note');
+        $userIds = $request->request->get('user_id');
 
         $issueQueryParameters = array('issue_id' => $issueId);
         $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters);

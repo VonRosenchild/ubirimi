@@ -17,7 +17,7 @@ class GetDataController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         $attachmentId = $_POST['id'];
-        $attachment = EntityAttachment::getById($attachmentId);
+        $attachment = $this->getRepository('documentador.entity.attachment')->getById($attachmentId);
         $entity = $this->getRepository('documentador.entity.entity')->getById($attachment['documentator_entity_id']);
         $spaceId = $entity['space_id'];
         $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByAttachmentId($attachmentId);

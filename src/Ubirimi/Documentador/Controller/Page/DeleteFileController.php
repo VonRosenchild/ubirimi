@@ -29,5 +29,7 @@ class DeleteFileController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador file ' . $file['name'], $currentDate);
+
+        return new Response('');
     }
 }

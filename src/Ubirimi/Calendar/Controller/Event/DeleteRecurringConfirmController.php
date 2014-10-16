@@ -13,7 +13,7 @@ class DeleteRecurringConfirmController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $eventId = $_GET['id'];
+        $eventId = $request->get('id');
 
         return $this->render(__DIR__ . '/../../Resources/views/event/DeleteRecurringConfirm.php', get_defined_vars());
     }

@@ -37,7 +37,7 @@ class FavouritesController extends UbirimiController
 
         $clientSettings = $this->getRepository('ubirimi.general.client')->getById($clientId);
 
-        $userId = $_GET['id'];
+        $userId = $request->get('id');
         $user = $this->getRepository('ubirimi.user.user')->getById($userId);
 
         if ($user['client_id'] != $clientId) {

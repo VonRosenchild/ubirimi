@@ -16,7 +16,7 @@ class AddController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $workflowDataId = $_GET['id'];
+        $workflowDataId = $request->get('id');
         $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 

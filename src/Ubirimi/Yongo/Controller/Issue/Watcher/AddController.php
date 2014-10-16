@@ -13,8 +13,8 @@ class AddController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $userIds = $_POST['id'];
-        $issueId = $_POST['issue_id'];
+        $userIds = $request->request->get('id');
+        $issueId = $request->request->get('issue_id');
 
         $currentDate = Util::getServerCurrentDateTime();
         if ($userIds) {

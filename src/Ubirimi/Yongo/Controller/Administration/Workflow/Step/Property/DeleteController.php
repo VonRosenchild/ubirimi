@@ -18,7 +18,7 @@ class DeleteController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $propertyId = $_POST['id'];
+        $propertyId = $request->request->get('id');
 
         $this->getRepository('yongo.workflow.workflow')->deleteStepPropertyById($propertyId);
 

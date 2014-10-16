@@ -18,7 +18,7 @@ class ViewBrowserController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $clientId = $session->get('client/id');
-        $stepId = $_GET['id'];
+        $stepId = $request->get('id');
 
         $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
         $workflowId = $step['workflow_id'];

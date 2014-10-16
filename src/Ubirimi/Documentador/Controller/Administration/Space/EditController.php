@@ -20,7 +20,7 @@ class EditController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $spaceId = $_GET['id'];
+        $spaceId = $request->get('id');
         $backLink = isset($_GET['back']) ? $_GET['back'] : null;
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
         $pages = $this->getRepository('documentador.entity.entity')->getAllBySpaceId($spaceId);

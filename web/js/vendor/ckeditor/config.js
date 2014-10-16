@@ -30,14 +30,6 @@ CKEDITOR.editorConfig = function (config) {
     }
 };
 
-
-CKEDITOR.on('instanceReady', function (ev) {
-
-    $('#doc_page_new_page, #doc_page_edit_page').css('width', $('#cke_entity_content').width() - 10);
-});
-
-
-
 CKEDITOR.on('dialogDefinition', function (ev) {
     // Take the dialog name and its definition from the event
     // data.

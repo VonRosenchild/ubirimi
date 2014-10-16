@@ -18,10 +18,10 @@ class SaveDataController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $project_workflow_id = $_POST['project_workflow_id'];
-        $idFrom = $_POST['id_from'];
-        $idTo = $_POST['id_to'];
-        $name = $_POST['name'];
+        $project_workflow_id = $request->request->get('project_workflow_id');
+        $idFrom = $request->request->get('id_from');
+        $idTo = $request->request->get('id_to');
+        $name = $request->request->get('name');
 
         $this->getRepository('yongo.workflow.workflow')->createNewSingleDataRecord($project_workflow_id, $idFrom, $idTo, $name);
 

@@ -7,8 +7,8 @@
     $session->set('selected_product_id', -1);
     $menuSelectedCategory = 'general_overview';
 
-    $from = $_GET['from'];
-    $to = $_GET['to'];
+    $from = $request->get('from');
+    $to = $request->get('to');
 
     $logs = $this->getRepository('ubirimi.general.log')->getByClientIdAndInterval($clientId, $from, $to);
 

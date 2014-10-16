@@ -17,7 +17,7 @@ class RestoreRevisionDialogController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $revisionNR = $_GET['rev_nr'];
+        $revisionNR = $request->get('rev_nr');
 
         return new Response('Are you sure you want to revert the page content back to this previous version (v. ' . $revisionNR . ')?');
     }

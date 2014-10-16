@@ -16,9 +16,9 @@ class ViewContentByParamsController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $idFrom = $_GET['id_from'];
-        $idTo = $_GET['id_to'];
-        $workflowId = $_GET['workflow_id'];
+        $idFrom = $request->get('id_from');
+        $idTo = $request->get('id_to');
+        $workflowId = $request->get('workflow_id');
 
         $allPostFunctions = WorkflowFunction::getAll();
         $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $idFrom, $idTo);

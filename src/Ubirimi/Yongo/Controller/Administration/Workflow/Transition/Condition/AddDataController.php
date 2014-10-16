@@ -20,7 +20,7 @@ class AddDataController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        $workflowDataId = $_GET['id'];
+        $workflowDataId = $request->get('id');
         $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 
@@ -58,10 +58,10 @@ class AddDataController extends UbirimiController
         }
 
         if (isset($_POST['confirm_new_condition_parameter'])) {
-            $conditionId = $_GET['condition_id'];
+            $conditionId = $request->get('condition_id');
             if ($conditionId == Condition::CONDITION_PERMISSION) {
 
-                $permissionId = $_POST['permission'];
+                $permissionId = $request->request->get('permission');
 
                 $conditionString = 'perm_id=' . $permissionId;
 

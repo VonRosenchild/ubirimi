@@ -18,13 +18,13 @@ class SaveIssueTransitionController extends UbirimiController
         $clientId = UbirimiContainer::get()['session']->get('client/id');
         $loggedInUserId = UbirimiContainer::get()['session']->get('user/id');
 
-        $issueId = $_POST['issue_id'];
+        $issueId = $request->request->get('issue_id');
         $fieldTypes = isset($_POST['field_types']) ? $_POST['field_types'] : array();
         $fieldValues = isset($_POST['field_values']) ? $_POST['field_values'] : array();
 
-        $stepIdFrom = $_POST['step_id_from'];
-        $stepIdTo = $_POST['step_id_to'];
-        $workflowId = $_POST['workflow_id'];
+        $stepIdFrom = $request->request->get('step_id_from');
+        $stepIdTo = $request->request->get('step_id_to');
+        $workflowId = $request->request->get('workflow_id');
         $attachIdsToBeKept = isset($_POST['attach_ids']) ? $_POST['attach_ids'] : array();
         $attIdsSession = $session->has('added_attachments_in_screen') ? $session->get('added_attachments_in_screen') : array();
 

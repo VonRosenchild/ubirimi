@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $clientId = $session->get('client/id');
-        $Id = $_GET['id'];
+        $Id = $request->get('id');
         $group = $this->getRepository('ubirimi.user.group')->getMetadataById($Id);
 
         if ($group['client_id'] != $clientId) {

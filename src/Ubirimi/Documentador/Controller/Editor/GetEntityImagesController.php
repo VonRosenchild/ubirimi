@@ -19,7 +19,7 @@ class GetEntityImagesController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $entityId = $session->get('current_edit_entity_id');
-        $attachments = EntityAttachment::getByEntityId($entityId);
+        $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
 
         $index = 0;
         if ($attachments) {

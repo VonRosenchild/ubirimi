@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Space\Space;
@@ -19,7 +20,7 @@ class UploadController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $entityId = $_GET['id'];
+        $entityId = $request->get('id');
         $currentDate = Util::getServerCurrentDateTime();
         $pathBaseAttachments = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_DOCUMENTADOR, 'filelists');
         $index = 0;
@@ -78,6 +79,6 @@ class UploadController extends UbirimiController
             }
         }
 
-        header('Location: /documentador/page/view/' . $entityId);
+        return new RedirectResponse('Location: /documentador/page/view/' . $entityId);
     }
 }

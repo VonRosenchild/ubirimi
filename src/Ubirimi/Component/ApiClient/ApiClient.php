@@ -49,7 +49,7 @@ class ApiClient
 
     public function get($uri, $params = array())
     {
-        $response  = $this->adapter->get($uri, $params);
+        $response = $this->adapter->get($uri, $params);
 
         return $this->handleResponse($response);
     }
@@ -70,7 +70,7 @@ class ApiClient
     {
         $uri = $uri . '?' . $this->prepareUriParams($uriParams);
 
-        $response  = $this->adapter->get($uri, $params);
+        $response = $this->adapter->get($uri, $params);
 
         return $this->handleResponse($response);
     }

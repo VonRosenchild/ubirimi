@@ -29,7 +29,7 @@ class PurgeController extends UbirimiController
         $this->getRepository('documentador.entity.entity')->deleteRevisionsByEntityId($entityId);
         $this->getRepository('documentador.entity.entity')->deleteFilesByEntityId($entityId);
 
-        EntityAttachment::deleteByEntityId($entityId, $entity['space_id']);
+        $this->getRepository('documentador.entity.attachment')->deleteByEntityId($entityId, $entity['space_id']);
         $this->getRepository('documentador.entity.entity')->deleteById($entityId);
 
         $date = Util::getServerCurrentDateTime();

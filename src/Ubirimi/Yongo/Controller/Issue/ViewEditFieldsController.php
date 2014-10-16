@@ -13,8 +13,8 @@ class ViewEditFieldsController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issueId = $_POST['issue_id'];
-        $issueTypeId = $_POST['issue_type_id'];
+        $issueId = $request->request->get('issue_id');
+        $issueTypeId = $request->request->get('issue_type_id');
         $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         require_once __DIR__ . '/../../Resources/views/issue/ViewEditDialog.php';

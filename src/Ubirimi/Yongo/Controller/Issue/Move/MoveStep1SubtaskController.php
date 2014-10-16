@@ -18,7 +18,7 @@ class MoveStep1SubtaskController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $issueId = $_GET['id'];
+        $issueId = $request->get('id');
         $issueQueryParameters = array('issue_id' => $issueId);
         $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
         $projectId = $issue['issue_project_id'];

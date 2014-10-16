@@ -16,11 +16,11 @@ class SaveController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $field_ids = $_POST['field_ids'];
-        $field_values = $_POST['field_values'];
-        $workflowId = $_POST['workflow_id'];
-        $IdFrom = $_POST['id_from'];
-        $IdTo = $_POST['id_to'];
+        $field_ids = $request->request->get('field_ids');
+        $field_values = $request->request->get('field_values');
+        $workflowId = $request->request->get('workflow_id');
+        $IdFrom = $request->request->get('id_from');
+        $IdTo = $request->request->get('id_to');
         $functionId = $field_values[0];
 
         $data = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $IdFrom, $IdTo);

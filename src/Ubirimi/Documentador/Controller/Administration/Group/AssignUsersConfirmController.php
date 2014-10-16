@@ -18,7 +18,7 @@ class AssignUsersConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $clientId = $session->get('client/id');
-        $groupId = $_GET['id'];
+        $groupId = $request->get('id');
 
         $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
         $allUsers = $this->getRepository('ubirimi.general.client')->getUsers($clientId);

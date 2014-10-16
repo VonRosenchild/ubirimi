@@ -14,7 +14,7 @@ class SetDisplayColumnsController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $data = $_POST['data'];
+        $data = $request->request->get('data');
 
         $this->getRepository('ubirimi.user.user')->updateDisplayColumns($loggedInUserId, $data);
         $session->set('user/issues_display_columns', $data);

@@ -18,8 +18,8 @@ class AddDataController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $workflowDataId = $_GET['id'];
-        $postFunctionId = $_GET['function_id'];
+        $workflowDataId = $request->get('id');
+        $postFunctionId = $request->get('function_id');
         $postFunctionSelected = WorkflowFunction::getById($postFunctionId);
         $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
@@ -29,8 +29,8 @@ class AddDataController extends UbirimiController
         if (isset($_POST['add_parameters'])) {
 
             if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE) {
-                $field_name = $_POST['issue_field'];
-                $field_value = $_POST['field_value'];
+                $field_name = $request->request->get('issue_field');
+                $field_value = $request->request->get('field_value');
                 $value = 'field_name=' . $field_name . '###field_value=' . $field_value;
 
                 WorkflowFunction::addPostFunction($workflowDataId, $postFunctionId, $value);

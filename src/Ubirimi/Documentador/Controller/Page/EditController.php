@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Page;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -24,15 +25,14 @@ class EditController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-        $entityId = $_GET['id'];
+        $entityId = $request->get('id');
 
         $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
         $spaceId = $page['space_id'];
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('Location: /general-settings/bad-link-access-denied');
         }
 
         $menuSelectedCategory = 'documentator';
@@ -72,11 +72,11 @@ class EditController extends UbirimiController
 
             $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
 
-            header('Location: /documentador/page/view/' . $entityId);
+            return new RedirectResponse('Location: /documentador/page/view/' . $entityId);
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Update ' . $page['name'];
 
-        require_once __DIR__ . '/../../Resources/views/page/Edit.php';
+        return $this->render(__DIR__ . '/../Resources/views/page/Edit.php', get_defined_vars());
     }
 }

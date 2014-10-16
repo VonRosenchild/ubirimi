@@ -15,8 +15,8 @@ class AddStringController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $transitionId = $_POST['transition_id'];
-        $type = $_POST['type'];
+        $transitionId = $request->request->get('transition_id');
+        $type = $request->request->get('type');
 
         $conditionData = Condition::getByTransitionId($transitionId);
         if (!$conditionData)

@@ -30,7 +30,7 @@ class EditController extends UbirimiController
         if ($request->request->has('edit_smtp')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $description = Util::cleanRegularInputField($request->request->get('description'));
-            $fromAddress  = Util::cleanRegularInputField($request->request->get('from_address'));
+            $fromAddress = Util::cleanRegularInputField($request->request->get('from_address'));
             $emailPrefix = Util::cleanRegularInputField($request->request->get('email_prefix'));
             $protocol = Util::cleanRegularInputField($request->request->get('protocol'));
             $hostname = Util::cleanRegularInputField($request->request->get('hostname'));

@@ -24,8 +24,8 @@ class AssignController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $issueId = $_POST['issue_id'];
-        $userAssignedId = $_POST['user_assigned_id'];
+        $issueId = $request->request->get('issue_id');
+        $userAssignedId = $request->request->get('user_assigned_id');
         $comment = Util::cleanRegularInputField($_POST['comment']);
 
         $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);

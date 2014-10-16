@@ -40,9 +40,9 @@ class MoveStep3Controller extends UbirimiController
 
         if (isset($_POST['move_issue_step_3'])) {
 
-            $newIssueComponents = $_POST['new_component'];
-            $newIssueFixVersions = $_POST['new_fix_version'];
-            $newIssueAffectsVersions = $_POST['new_affects_version'];
+            $newIssueComponents = $request->request->get('new_component');
+            $newIssueFixVersions = $request->request->get('new_fix_version');
+            $newIssueAffectsVersions = $request->request->get('new_affects_version');
 
             if (array_key_exists('new_assignee', $_POST)) {
                 $session->set('move_issue/new_assignee', $_POST['new_assignee']);

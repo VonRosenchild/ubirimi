@@ -17,7 +17,7 @@ class PurgeAllDialogController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $spaceId = $_GET['id'];
+        $spaceId = $request->get('id');
 
         $pages = $this->getRepository('documentador.space.space')->getDeletedPages($spaceId);
 

@@ -17,7 +17,7 @@ class EntityExportPdfController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $loggedInUserId = $session->get('user/id');
-        $pageId = $_GET['id'];
+        $pageId = $request->get('id');
 
         $page = $this->getRepository('documentador.entity.entity')->getById($pageId, $loggedInUserId);
 

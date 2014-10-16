@@ -22,10 +22,10 @@ class SaveIssueTransitionNoScreenController extends UbirimiController
         $clientId = UbirimiContainer::get()['session']->get('client/id');
         $loggedInUserId = UbirimiContainer::get()['session']->get('user/id');
 
-        $workflowStepIdFrom = $_POST['step_id_from'];
-        $workflowStepIdTo = $_POST['step_id_to'];
-        $workflowId = $_POST['workflow_id'];
-        $issueId = $_POST['issue_id'];
+        $workflowStepIdFrom = $request->request->get('step_id_from');
+        $workflowStepIdTo = $request->request->get('step_id_to');
+        $workflowId = $request->request->get('workflow_id');
+        $issueId = $request->request->get('issue_id');
 
         $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 

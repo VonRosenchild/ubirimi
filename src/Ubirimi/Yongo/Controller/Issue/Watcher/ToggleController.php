@@ -16,8 +16,8 @@ class ToggleController extends UbirimiController
 
         $loggedInUserId = UbirimiContainer::get()['session']->get('user/id');
 
-        $action = $_POST['action'];
-        $issueId = $_POST['id'];
+        $action = $request->request->get('action');
+        $issueId = $request->request->get('id');
 
         $currentDate = Util::getServerCurrentDateTime();
 

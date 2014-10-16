@@ -15,7 +15,7 @@ class SaveController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueId = $request->request->get('issue_id');
-        $attachIdsToBeKept = $_POST['attach_ids'];
+        $attachIdsToBeKept = $request->request->get('attach_ids');
         $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
         if (!is_array($attachIdsToBeKept)) {

@@ -19,10 +19,10 @@ class UpdateController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $transition_name = $request->request->get('transition_name');
-        $workflowId = $_POST['workflow_id'];
+        $workflowId = $request->request->get('workflow_id');
         $screenId = isset($_POST['screen_id']) ? $_POST['screen_id'] : null;
-        $idFrom = $_POST['id_from'];
-        $idTo = $_POST['id_to'];
+        $idFrom = $request->request->get('id_from');
+        $idTo = $request->request->get('id_to');
 
         $this->getRepository('yongo.workflow.workflow')->updateTransitionData($workflowId, $transition_name, $screenId, $idFrom, $idTo);
 

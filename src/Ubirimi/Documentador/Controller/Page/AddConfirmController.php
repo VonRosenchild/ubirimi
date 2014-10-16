@@ -18,7 +18,7 @@ class AddConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $clientId = $session->get('client/id');
-        $spaceId = $_GET['space_id'];
+        $spaceId = $request->get('space_id');
 
         $spaces = $this->getRepository('documentador.space.space')->getByClientId($clientId);
 

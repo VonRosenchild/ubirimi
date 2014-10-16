@@ -4,7 +4,7 @@
 
     Util::checkUserIsLoggedInAndRedirect();
 
-    $projectId = $_GET['id'];
+    $projectId = $request->get('id');
 
 ?>
 <table cellpadding="8px">

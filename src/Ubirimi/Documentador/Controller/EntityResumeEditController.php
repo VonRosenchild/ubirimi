@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Space\Space;
@@ -20,7 +21,7 @@ class EntityResumeEditController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
 
-        $snapshotId = $_GET['id'];
+        $snapshotId = $request->get('id');
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
         $snapshot = $this->getRepository('documentador.entity.entity')->getSnapshotById($snapshotId);
@@ -28,7 +29,7 @@ class EntityResumeEditController extends UbirimiController
         $this->getRepository('documentador.entity.entity')->updateContent($entityId, $snapshot['content']);
         $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
-        header('Location: /documentador/page/edit/' . $entityId);
+        return new RedirectResponse('Location: /documentador/page/edit/' . $entityId);
     }
 }
 

@@ -20,7 +20,7 @@ class ContentTrashController extends UbirimiController
         $clientId = $session->get('client/id');
         $menuSelectedCategory = 'doc_spaces';
 
-        $spaceId = $_GET['id'];
+        $spaceId = $request->get('id');
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {

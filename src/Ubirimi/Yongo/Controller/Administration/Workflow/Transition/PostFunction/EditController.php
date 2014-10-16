@@ -20,14 +20,14 @@ class EditController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         if (isset($_POST['edit_parameters'])) {
-            $functionId = $_POST['function_id'];
-            $workflowDataId = $_POST['workflow_data_id'];
+            $functionId = $request->request->get('function_id');
+            $workflowDataId = $request->request->get('workflow_data_id');
 
             switch ($functionId) {
 
                 case WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE:
-                    $fieldCode = $_POST['issue_field'];
-                    $fieldValue = $_POST['field_value'];
+                    $fieldCode = $request->request->get('issue_field');
+                    $fieldValue = $request->request->get('field_value');
                     $definitionData = 'field_name=' . $fieldCode . '###field_value=' . $fieldValue;
 
                     WorkflowFunction::updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
@@ -36,7 +36,7 @@ class EditController extends UbirimiController
 
                 case WorkflowFunction::FUNCTION_FIRE_EVENT:
 
-                    $event = $_POST['fire_event'];
+                    $event = $request->request->get('fire_event');
                     $definitionData = 'event=' . $event;
 
                     WorkflowFunction::updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
@@ -50,7 +50,7 @@ class EditController extends UbirimiController
             header('Location: /yongo/administration/workflow/transition-post-functions/' . $workflowDataId);
         }
 
-        $workflowPostFunctionDataId = $_GET['id'];
+        $workflowPostFunctionDataId = $request->get('id');
 
         $workflowPostFunctionData = WorkflowFunction::getDataById($workflowPostFunctionDataId);
 

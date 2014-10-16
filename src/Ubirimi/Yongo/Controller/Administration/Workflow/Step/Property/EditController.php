@@ -21,7 +21,7 @@ class EditController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $stepPropertyId = $_GET['id'];
+        $stepPropertyId = $request->get('id');
 
         $stepProperty = $this->getRepository('yongo.workflow.workflow')->getStepPropertyById($stepPropertyId);
         $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepProperty['workflow_step_id']);

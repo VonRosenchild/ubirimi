@@ -16,11 +16,11 @@ class DocumentadorController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
             Util::checkUserIsLoggedInAndRedirect();
 
-            $spaces = Space::getByClientId($session->get('client/id'));
+            $spaces = $this->getRepository('documentador.space.space')->getByClientId($session->get('client/id'));
         } else {
             $httpHOST = Util::getHttpHost();
             $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
-            $spaces = Space::getByClientIdAndAnonymous($clientId);
+            $spaces = $this->getRepository('documentador.space.space')->getByClientIdAndAnonymous($clientId);
         }
 
         return $this->render(__DIR__ . '/../../Resources/views/menu/Documentador.php', get_defined_vars());

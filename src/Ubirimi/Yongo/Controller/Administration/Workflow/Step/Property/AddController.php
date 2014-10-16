@@ -20,7 +20,7 @@ class AddController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $stepId = $_GET['id'];
+        $stepId = $request->get('id');
         $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
         $workflowId = $step['workflow_id'];
 

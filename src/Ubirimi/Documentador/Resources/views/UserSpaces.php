@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\LinkHelper;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
 
     use Ubirimi\Repository\User\User;
     use Ubirimi\SystemProduct;
@@ -16,7 +17,7 @@
         <?php if (Util::checkUserIsLoggedIn()): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
-                    <?php if ($this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE)): ?>
+                    <?php if (UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE)): ?>
                         <td><a id="btnNew" href="/documentador/administration/spaces/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create New Space</a></td>
                     <?php endif ?>
                 </tr>

@@ -17,7 +17,7 @@ class RestoreDialogController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $pageId = $_GET['id'];
+        $pageId = $request->get('id');
 
         $page = $this->getRepository('documentador.entity.entity')->getById($pageId);
 
