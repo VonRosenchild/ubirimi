@@ -1,9 +1,27 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller\Administration\Space;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $spaceId = $_POST['id'];
+class PurgeAllController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    Space::deleteAllFromTrash($spaceId);
+        $spaceId = $_POST['id'];
+
+        Space::deleteAllFromTrash($spaceId);
+
+        return new Response('');
+    }
+}
+

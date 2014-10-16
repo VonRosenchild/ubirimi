@@ -1,11 +1,27 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller\Administration\Space;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $spaceId = $_GET['id'];
+class PurgeAllDialogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $pages = Space::getDeletedPages($spaceId);
+        $spaceId = $_GET['id'];
 
-    echo 'This will remove all ' . $pages->num_rows . ' items permanently. Do you wish to continue?';
+        $pages = Space::getDeletedPages($spaceId);
+
+        return new Response('This will remove all ' . $pages->num_rows . ' items permanently. Do you wish to continue?');
+    }
+}
+

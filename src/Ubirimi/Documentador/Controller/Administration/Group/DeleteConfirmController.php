@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Documentador\Controller;
+namespace Ubirimi\Documentador\Controller\Administration\Group;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

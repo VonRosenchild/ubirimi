@@ -1,24 +1,39 @@
 <?php
 
+namespace Ubirimi\Documentador\Controller\Administration\SpaceTools;
 
-    use Ubirimi\Util;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+class PermissionController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientId = $session->get('client/id');
 
-    $menuSelectedCategory = 'doc_spaces';
+        $menuSelectedCategory = 'doc_spaces';
 
-    $spaceId = $_GET['id'];
-    $space = Space::getById($spaceId);
+        $spaceId = $_GET['id'];
+        $space = Space::getById($spaceId);
 
-    if ($space['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+        if ($space['client_id'] != $clientId) {
+            header('Location: /general-settings/bad-link-access-denied');
+            die();
+        }
+
+        $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
+        $anonymousAccessSettings = Space::getAnonymousAccessSettings($spaceId);
+
+        $usersWithPermissionForSpace = Space::getUsersWithPermissions($spaceId);
+        $groupsWithPermissionForSpace = Space::getGroupsWithPermissions($spaceId);
+
+        require_once __DIR__ . '/../../../Resources/views/administration/spacetools/Permission.php';
     }
-
-    $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
-    $anonymousAccessSettings = Space::getAnonymousAccessSettings($spaceId);
-
-    $usersWithPermissionForSpace = Space::getUsersWithPermissions($spaceId);
-    $groupsWithPermissionForSpace = Space::getGroupsWithPermissions($spaceId);
-
-    require_once __DIR__ . '/../../../Resources/views/administration/spacetools/Permission.php';
+}

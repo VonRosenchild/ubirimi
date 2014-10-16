@@ -1,19 +1,35 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller\Administration\Space;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
-    $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
+class ListController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission) {
-        $spaces = Space::getByClientId($clientId);
-    } else {
-        $spaces = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+        $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
+        $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
+
+        if ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission) {
+            $spaces = Space::getByClientId($clientId);
+        } else {
+            $spaces = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+        }
+        $clientSettings = $session->get('client/settings');
+
+        $menuSelectedCategory = 'doc_spaces';
+
+        require_once __DIR__ . '/../../../Resources/views/administration/space/List.php';
     }
-    $clientSettings = $session->get('client/settings');
+}
 
-    $menuSelectedCategory = 'doc_spaces';
-
-    require_once __DIR__ . '/../../../Resources/views/administration/space/List.php';

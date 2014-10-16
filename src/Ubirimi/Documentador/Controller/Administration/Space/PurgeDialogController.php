@@ -1,11 +1,27 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller\Administration\Space;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $pageId = $_GET['id'];
+class PurgeDialogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $page = Entity::getById($pageId);
+        $pageId = $_GET['id'];
 
-    echo 'This will permanently remove the Page ' . $page['name'] . ' from Documentador. Do you wish to continue?';
+        $page = Entity::getById($pageId);
+
+        return new Response('This will permanently remove the Page ' . $page['name'] . ' from Documentador. Do you wish to continue?');
+    }
+}
+

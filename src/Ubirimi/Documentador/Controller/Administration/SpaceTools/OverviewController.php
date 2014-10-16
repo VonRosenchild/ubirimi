@@ -1,16 +1,35 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\Documentador\Controller\Administration\SpaceTools;
 
-    Util::checkUserIsLoggedInAndRedirect();
-    $menuSelectedCategory = 'doc_spaces';
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $spaceId = $_GET['id'];
-    $space = Space::getById($spaceId);
+class OverviewController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($space['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
+        $clientId = $session->get('client/id');
+
+        $menuSelectedCategory = 'doc_spaces';
+
+        $spaceId = $_GET['id'];
+        $space = Space::getById($spaceId);
+
+        if ($space['client_id'] != $clientId) {
+            header('Location: /general-settings/bad-link-access-denied');
+            die();
+        }
+
+        require_once __DIR__ . '/../../../Resources/views/administration/spacetools/Overview.php';
     }
+}
 
-    require_once __DIR__ . '/../../../Resources/views/administration/spacetools/Overview.php';
