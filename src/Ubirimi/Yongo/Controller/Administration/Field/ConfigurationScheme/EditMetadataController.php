@@ -10,7 +10,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
 
-
 class EditMetadataController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

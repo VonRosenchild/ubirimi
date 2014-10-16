@@ -10,7 +10,6 @@ use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Configuration;
 
-
 class EditDataController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

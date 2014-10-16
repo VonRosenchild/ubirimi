@@ -15,7 +15,7 @@ class StartConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $sprintId = $request->get('id');
-        $sprint = Sprint::getById($sprintId);
+        $sprint = $this->getRepository('agile.sprint.sprint')->getById($sprintId);
         $today = date("Y-m-d");
         $todayPlus2Weeks = date('Y-m-d', strtotime('+2 week', strtotime($today)));
 

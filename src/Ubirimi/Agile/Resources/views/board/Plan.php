@@ -84,7 +84,7 @@ require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
                             <div style="padding-bottom: 4px;" class="droppablePlanSprint">
                                 <span class="headerPageText"><?php echo $currentStartedSprint['name'] ?></span>
                                 <?php
-                                    $issues = Sprint::getIssuesBySprintId($currentStartedSprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
+                                    $issues = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getIssuesBySprintId($currentStartedSprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
                                     $renderCheckboxDisabled = true;
 
                                     $params = array('issues' => $issues, 'render_checkbox' => true, 'checkbox_disabled' => $renderCheckboxDisabled, 'show_header' => false);
@@ -100,7 +100,7 @@ require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
                             }
                             while ($sprintsNotStarted && $sprint = $sprintsNotStarted->fetch_array(MYSQLI_ASSOC)) {
 
-                                $issues = Sprint::getIssuesBySprintId($sprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
+                                $issues = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getIssuesBySprintId($sprint['id'], $onlyMyIssuesFlag, $loggedInUserId, $searchQuery);
 
                                 $sprintHasIssues = $issues && $issues->num_rows;
 

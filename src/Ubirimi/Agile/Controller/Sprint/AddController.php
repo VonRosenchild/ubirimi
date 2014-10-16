@@ -19,7 +19,7 @@ class AddController extends UbirimiController
         $boardId = $request->request->get('board_id');
 
         $date = Util::getServerCurrentDateTime();
-        Sprint::add($boardId, $name, $date, $session->get('user/id'));
+        $this->getRepository('agile.sprint.sprint')->add($boardId, $name, $date, $session->get('user/id'));
 
         return new Response('');
     }

@@ -397,7 +397,7 @@ class Board
     }
 
     public function transferNotDoneIssues($boardId, $sprintId, $completeStatuses) {
-        $nextSprint = AgileSprint::getNextNotStartedByBoardId($boardId, $sprintId);
+        $nextSprint = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getNextNotStartedByBoardId($boardId, $sprintId);
 
         // set as done the completed issues
         $query = "select * " .
@@ -463,11 +463,12 @@ class Board
 
     public function deleteById($boardId) {
         $boardColumnsArray = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumns($boardId, 'array');
-        $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');
-
-        $query = "delete from agile_board_column_status where agile_board_column_id IN (" . implode(', ', $boardColumnsIds) . ')';
-        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        $stmt->execute();
+        if ($boardColumnsArray) {
+            $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');
+            $query = "delete from agile_board_column_status where agile_board_column_id IN (" . implode(', ', $boardColumnsIds) . ')';
+            $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+            $stmt->execute();
+        }
 
         $query = "delete from agile_board_column where agile_board_id = ?";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -479,7 +480,7 @@ class Board
         $stmt->bind_param("i", $boardId);
         $stmt->execute();
 
-        $sprintIdsArray = AgileSprint::getByBoardId($boardId, 'array', 'id');
+        $sprintIdsArray = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getByBoardId($boardId, 'array', 'id');
         for ($i = 0; $i < count($sprintIdsArray); $i++) {
             $query = "delete from agile_board_sprint_issue where agile_board_sprint_id = ?";
             $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

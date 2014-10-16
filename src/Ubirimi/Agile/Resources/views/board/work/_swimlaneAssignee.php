@@ -4,7 +4,7 @@ use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
 
 // get all the assignees of the issues in this sprint
-$allAssignees = Sprint::getAssigneesBySprintId($sprintId);
+$allAssignees = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getAssigneesBySprintId($sprintId);
 
 while ($allAssignees && $user = $allAssignees->fetch_array(MYSQLI_ASSOC)) {
 
@@ -42,6 +42,6 @@ if ($allUnassignedIssues) {
         echo '</tr>';
     echo '</table>';
     echo '<table width="100%" cellpadding="0" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-        $this->getRepository('agile.board.board')->renderIssues($allUnassignedIssues, $columns, $index, 'assignee');
+        UbirimiContainer::get()['repository']->get('agile.board.board')->renderIssues($allUnassignedIssues, $columns, $index, 'assignee');
     echo '</table>';
 }

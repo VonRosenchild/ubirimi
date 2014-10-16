@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $sprintId = $request->request->get('id');
 
-        Sprint::deleteById($sprintId);
+        $this->getRepository('agile.sprint.sprint')->deleteById($sprintId);
 
         return new Response('');
     }

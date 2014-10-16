@@ -30,11 +30,11 @@ class PlanController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $sprintsNotStarted = Sprint::getNotStarted($boardId);
+        $sprintsNotStarted = $this->getRepository('agile.sprint.sprint')->getNotStarted($boardId);
 
         $boardProjects = $this->getRepository('agile.board.board')->getProjects($boardId, 'array');
-        $currentStartedSprint = Sprint::getStarted($boardId);
-        $lastCompletedSprint = Sprint::getLastCompleted($boardId);
+        $currentStartedSprint = $this->getRepository('agile.sprint.sprint')->getStarted($boardId);
+        $lastCompletedSprint = $this->getRepository('agile.sprint.sprint')->getLastCompleted($boardId);
 
         $lastColumn = $this->getRepository('agile.board.board')->getLastColumn($boardId);
         $completeStatuses = $this->getRepository('agile.board.board')->getColumnStatuses($lastColumn['id'], 'array', 'id');

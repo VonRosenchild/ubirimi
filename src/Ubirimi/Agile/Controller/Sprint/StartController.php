@@ -20,7 +20,7 @@ class StartController extends UbirimiController
         $endDate = $request->request->get('end_date');
         $name = $request->request->get('name');
 
-        Sprint::start($sprintId, $startDate, $endDate, $name);
+        $this->getRepository('agile.sprint.sprint')->start($sprintId, $startDate, $endDate, $name);
 
         return new Response('');
     }

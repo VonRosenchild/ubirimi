@@ -16,7 +16,7 @@ class AddConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $boardId = $request->get('board_id');
-        $lastSprint = Sprint::getLast($boardId);
+        $lastSprint = $this->getRepository('agile.sprint.sprint')->getLast($boardId);
         $suggestedName = '';
 
         if ($lastSprint) {

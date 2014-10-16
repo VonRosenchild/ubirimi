@@ -29,13 +29,13 @@ class ReportController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $currentStartedSprint = Sprint::getStarted($boardId);
+        $currentStartedSprint = $this->getRepository('agile.sprint.sprint')->getStarted($boardId);
 
         if ($sprintId != -1) {
-            $selectedSprint = Sprint::getById($sprintId);
-            $completedSprints = Sprint::getCompleted($boardId, $sprintId);
-            $doneIssues = Sprint::getCompletedUncompletedIssuesBySprintId($sprintId, 1);
-            $notDoneIssues = Sprint::getCompletedUncompletedIssuesBySprintId($sprintId, 0);
+            $selectedSprint = $this->getRepository('agile.sprint.sprint')->getById($sprintId);
+            $completedSprints = $this->getRepository('agile.sprint.sprint')->getCompleted($boardId, $sprintId);
+            $doneIssues = $this->getRepository('agile.sprint.sprint')->getCompletedUncompletedIssuesBySprintId($sprintId, 1);
+            $notDoneIssues = $this->getRepository('agile.sprint.sprint')->getCompletedUncompletedIssuesBySprintId($sprintId, 0);
         }
 
         $availableCharts = array('sprint_report' => 'Sprint Report', 'velocity_chart' => 'Velocity Chart');
