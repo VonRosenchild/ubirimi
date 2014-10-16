@@ -1,35 +1,36 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Screen\Screen;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition;
 
-    $stepIdFrom = $_GET['id_from'];
-    $stepIdTo = $_GET['id_to'];
-    $workflowId = $_GET['workflow_id'];
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
-    $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+class TransitionScreenController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
-    $transitionName = $workflowData['transition_name'];
-    $screens = Screen::getAll($clientId);
-    $initialStep = $this->getRepository('yongo.workflow.workflow')->getInitialStep($workflowId);
+        $clientId = $session->get('client/id');
 
-?>
-<div>Transition name: <input class="inputText" type="text" value="<?php echo $transitionName ?>" id="transition_name_modal" /></div>
-<div style="height: 4px"></div>
-<?php if ($initialStep['id'] != $stepIdFrom): ?>
-    <div>
-        <span>Set screen for transition:</span>
-        <select name="screen_modal" id="screens_modal" class="inputTextCombo">
-            <option <?php if (!$workflowData['screen_id']) echo 'selected="selected"' ?> value="-1">No screen</option>
-            <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>
-                <option <?php if ($screen['id'] == $workflowData['screen_id']) echo 'selected="selected"' ?> value="<?php echo $screen['id'] ?>"><?php echo $screen['name'] ?></option>
-            <?php endwhile ?>
-        </select>
-    <div>
-<?php endif ?>
-<input type="hidden" value="<?php echo $stepIdFrom ?>" id="id_from_modal" />
-<input type="hidden" value="<?php echo $stepIdTo ?>" id="id_to_modal" />
-<input type="hidden" value="<?php echo $workflowId ?>" id="project_workflow_id_modal" />
+        $stepIdFrom = $_GET['id_from'];
+        $stepIdTo = $_GET['id_to'];
+        $workflowId = $_GET['workflow_id'];
+
+        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+
+        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+        $transitionName = $workflowData['transition_name'];
+        $screens = Screen::getAll($clientId);
+        $initialStep = $this->getRepository('yongo.workflow.workflow')->getInitialStep($workflowId);
+
+        return $this->render(__DIR__ . '/../../../../Resources/views/administration/workflow/transition/TransitionScreen.php', get_defined_vars());
+    }
+}

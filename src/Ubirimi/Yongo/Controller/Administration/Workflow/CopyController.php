@@ -10,7 +10,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-
 class CopyController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

@@ -1,47 +1,63 @@
 <?php
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
+namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-    $stepId = $_GET['id'];
-    $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
-    $workflowId = $step['workflow_id'];
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+class AddController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    if ($workflowMetadata['client_id'] != $clientId) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
-    $allProperties = $this->getRepository('yongo.workflow.workflow')->getSystemWorkflowProperties();
-    $emptyValue = false;
-    $duplicateKey = false;
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
 
-    if (isset($_POST['add_property'])) {
-        $keyId = Util::cleanRegularInputField($_POST['key']);
-        $value = Util::cleanRegularInputField($_POST['value']);
+        $stepId = $_GET['id'];
+        $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
+        $workflowId = $step['workflow_id'];
 
-        if (empty($value))
-            $emptyValue = true;
+        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
-        if (!$emptyValue) {
+        if ($workflowMetadata['client_id'] != $clientId) {
+            header('Location: /general-settings/bad-link-access-denied');
+            die();
+        }
+        $allProperties = $this->getRepository('yongo.workflow.workflow')->getSystemWorkflowProperties();
+        $emptyValue = false;
+        $duplicateKey = false;
 
-            $duplicateKey = $this->getRepository('yongo.workflow.workflow')->getStepKeyByStepIdAndKeyId($stepId, $keyId);
-            if (!$duplicateKey) {
-                $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.workflow.workflow')->addStepProperty($stepId, $keyId, $value, $currentDate);
+        if (isset($_POST['add_property'])) {
+            $keyId = Util::cleanRegularInputField($_POST['key']);
+            $value = Util::cleanRegularInputField($_POST['value']);
 
-                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Step Property' , $currentDate);
+            if (empty($value))
+                $emptyValue = true;
 
-                header('Location: /yongo/administration/workflow/view-step-properties/' . $stepId);
+            if (!$emptyValue) {
+
+                $duplicateKey = $this->getRepository('yongo.workflow.workflow')->getStepKeyByStepIdAndKeyId($stepId, $keyId);
+                if (!$duplicateKey) {
+                    $currentDate = Util::getServerCurrentDateTime();
+                    $this->getRepository('yongo.workflow.workflow')->addStepProperty($stepId, $keyId, $value, $currentDate);
+
+                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Step Property' , $currentDate);
+
+                    header('Location: /yongo/administration/workflow/view-step-properties/' . $stepId);
+                }
             }
         }
+
+        $menuSelectedCategory = 'issue';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Step Property';
+
+        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/Add.php';
     }
-
-    $menuSelectedCategory = 'issue';
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Step Property';
-
-    require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/Add.php';
+}
