@@ -22,8 +22,8 @@ class DeleteController extends UbirimiController
 
         $spaceId = $_POST['id'];
 
-        $space = Space::getById($spaceId);
-        Space::deleteById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+        $this->getRepository('documentador.space.space')->deleteById($spaceId);
 
         $date = Util::getServerCurrentDateTime();
 

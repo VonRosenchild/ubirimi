@@ -24,7 +24,7 @@ class AddController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
         $spaceId = $_GET['space_id'];
-        $space = Space::getById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             header('Location: /general-settings/bad-link-access-denied');
@@ -37,7 +37,7 @@ class AddController extends UbirimiController
 
         if (empty($parentEntityId)) {
             // set the parent to the home page of the space if it exists
-            $space = Space::getById($spaceId);
+            $space = $this->getRepository('documentador.space.space')->getById($spaceId);
             $homeEntityId = $space['home_entity_id'];
             if ($homeEntityId) {
                 $parentEntityId = $homeEntityId;

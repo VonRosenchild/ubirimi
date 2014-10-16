@@ -22,7 +22,7 @@ class EditPermissionController extends UbirimiController
         $menuSelectedCategory = 'doc_spaces';
 
         $spaceId = $_GET['id'];
-        $space = Space::getById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             header('Location: /general-settings/bad-link-access-denied');
@@ -33,7 +33,7 @@ class EditPermissionController extends UbirimiController
 
             // deal with the groups
             // delete all the permissions for all groups
-            Space::removePermissionsForAllGroups($spaceId);
+            $this->getRepository('documentador.space.space')->removePermissionsForAllGroups($spaceId);
             $groupPermissions = array();
             foreach ($_POST as $key => $value) {
 
@@ -47,11 +47,11 @@ class EditPermissionController extends UbirimiController
                 }
             }
 
-            Space::updateGroupPermissions($spaceId, $groupPermissions);
+            $this->getRepository('documentador.space.space')->updateGroupPermissions($spaceId, $groupPermissions);
 
             // deal with the users
             // delete all the permissions for all users
-            Space::removePermissionsForAllUsers($spaceId);
+            $this->getRepository('documentador.space.space')->removePermissionsForAllUsers($spaceId);
             $usersPermissions = array();
             foreach ($_POST as $key => $value) {
 
@@ -65,14 +65,14 @@ class EditPermissionController extends UbirimiController
                 }
             }
 
-            Space::updateUserPermissions($spaceId, $usersPermissions);
+            $this->getRepository('documentador.space.space')->updateUserPermissions($spaceId, $usersPermissions);
 
             // deal with anonymous access
             $anonymous_all_view_flag = isset($_POST['anonymous_all_view_flag']) ? $_POST['anonymous_all_view_flag'] : 0;
 
             $parameters = array(array('field' => 'all_view_flag', 'value' => $anonymous_all_view_flag, 'type' => 'i'));
 
-            Space::updatePermissionsAnonymous($spaceId, $parameters);
+            $this->getRepository('documentador.space.space')->updatePermissionsAnonymous($spaceId, $parameters);
 
             header('Location: /documentador/administration/space-tools/permissions/' . $spaceId);
         }
@@ -80,7 +80,7 @@ class EditPermissionController extends UbirimiController
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
         $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-        $anonymousAccessSettings = Space::getAnonymousAccessSettings($spaceId);
+        $anonymousAccessSettings = $this->getRepository('documentador.space.space')->getAnonymousAccessSettings($spaceId);
 
         require_once __DIR__ . '/../../../Resources/views/administration/spacetools/EditPermission.php';
     }

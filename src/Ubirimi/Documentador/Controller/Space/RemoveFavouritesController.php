@@ -20,7 +20,7 @@ class RemoveFavouritesController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
         $spaceId = $_POST['id'];
 
-        Space::removeFavourite($spaceId, $loggedInUserId);
+        $this->getRepository('documentador.space.space')->removeFavourite($spaceId, $loggedInUserId);
 
         return new Response('');
     }

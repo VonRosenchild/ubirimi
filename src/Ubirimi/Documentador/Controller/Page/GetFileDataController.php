@@ -17,9 +17,9 @@ class GetFileDataController extends UbirimiController
     {
 
         $fileId = $_POST['id'];
-        $file = Entity::getFileById($fileId);
+        $file = $this->getRepository('documentador.entity.entity')->getFileById($fileId);
 
-        $revisions = Entity::getRevisionsByFileId($fileId);
+        $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByFileId($fileId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/page//GetFileData.php', get_defined_vars());
     }

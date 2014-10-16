@@ -20,7 +20,7 @@ class RemoveFavouriteController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $pageId = $_POST['id'];
-        Entity::removeAsFavouriteForUserId($pageId, $loggedInUserId);
+        $this->getRepository('documentador.entity.entity')->removeAsFavouriteForUserId($pageId, $loggedInUserId);
 
         return new Response('');
     }

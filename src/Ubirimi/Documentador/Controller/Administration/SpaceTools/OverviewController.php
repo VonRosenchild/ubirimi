@@ -22,7 +22,7 @@ class OverviewController extends UbirimiController
         $menuSelectedCategory = 'doc_spaces';
 
         $spaceId = $_GET['id'];
-        $space = Space::getById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             header('Location: /general-settings/bad-link-access-denied');

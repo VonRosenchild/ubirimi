@@ -18,9 +18,9 @@ class GetDataController extends UbirimiController
     {
         $attachmentId = $_POST['id'];
         $attachment = EntityAttachment::getById($attachmentId);
-        $entity = Entity::getById($attachment['documentator_entity_id']);
+        $entity = $this->getRepository('documentador.entity.entity')->getById($attachment['documentator_entity_id']);
         $spaceId = $entity['space_id'];
-        $revisions = Entity::getRevisionsByAttachmentId($attachmentId);
+        $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByAttachmentId($attachmentId);
         $clientSettings = $session->get('client/settings');
 
         $index = 0;

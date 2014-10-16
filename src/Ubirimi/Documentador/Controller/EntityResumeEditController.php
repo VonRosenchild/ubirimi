@@ -23,10 +23,10 @@ class EntityResumeEditController extends UbirimiController
         $snapshotId = $_GET['id'];
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-        $snapshot = Entity::getSnapshotById($snapshotId);
+        $snapshot = $this->getRepository('documentador.entity.entity')->getSnapshotById($snapshotId);
         $entityId = $snapshot['documentator_entity_id'];
-        Entity::updateContent($entityId, $snapshot['content']);
-        Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
+        $this->getRepository('documentador.entity.entity')->updateContent($entityId, $snapshot['content']);
+        $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
         header('Location: /documentador/page/edit/' . $entityId);
     }

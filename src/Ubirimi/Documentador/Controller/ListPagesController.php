@@ -27,18 +27,18 @@ class ListPagesController extends UbirimiController
         }
 
         $spaceId = $request->get('space_id');
-        $space = Space::getById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         $menuSelectedCategory = 'documentator';
-        $space = Space::getById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $spaceHasAnonymousAccess = Space::hasAnonymousAccess($spaceId);
-        $pages = Entity::getAllBySpaceId($spaceId, 0);
-        $homePage = Entity::getById($space['home_entity_id']);
+        $spaceHasAnonymousAccess = $this->getRepository('documentador.space.space')->hasAnonymousAccess($spaceId);
+        $pages = $this->getRepository('documentador.entity.entity')->getAllBySpaceId($spaceId, 0);
+        $homePage = $this->getRepository('documentador.entity.entity')->getById($space['home_entity_id']);
 
         if ($homePage['in_trash_flag']) {
             $homePage = null;

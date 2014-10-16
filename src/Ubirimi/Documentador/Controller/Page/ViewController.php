@@ -20,7 +20,7 @@ class ViewController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-            $page = Entity::getById($entityId, $session->get('user/id'));
+            $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $session->get('user/id'));
             if ($page)
                 $spaceId = $page['space_id'];
 
@@ -36,10 +36,10 @@ class ViewController extends UbirimiController
 
             $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
 
-            $page = Entity::getById($entityId, $loggedInUserId);
+            $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
             if ($page) {
                 $spaceId = $page['space_id'];
-                $spaceHasAnonymousAccess = Space::hasAnonymousAccess($spaceId);
+                $spaceHasAnonymousAccess = $this->getRepository('documentador.space.space')->hasAnonymousAccess($spaceId);
 
                 if (!($documentatorUseAnonymous && $spaceHasAnonymousAccess)) {
                     Util::signOutAndRedirect();
@@ -55,24 +55,24 @@ class ViewController extends UbirimiController
             $parentEntityId = $page['parent_entity_id'];
             $parentPage = null;
             if ($parentEntityId)
-                $parentPage = Entity::getById($parentEntityId);
+                $parentPage = $this->getRepository('documentador.entity.entity')->getById($parentEntityId);
 
             $revisionId = $request->attributes->has('rev_id') ? str_replace('/', '', $request->get('rev_id')) : null;
 
             if ($revisionId)
-                $revision = Entity::getRevisionsByPageIdAndRevisionId($entityId, $revisionId);
+                $revision = $this->getRepository('documentador.entity.entity')->getRevisionsByPageIdAndRevisionId($entityId, $revisionId);
 
-            $space = Space::getById($spaceId);
+            $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
             if ($space['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
 
-            $comments = EntityComment::getComments($entityId, 'array');
-            $lastRevision = Entity::getLastRevisionByPageId($entityId);
-            $childPages = Entity::getChildren($entityId);
-            $pageFiles = Entity::getFilesByEntityId($entityId);
-            $attachments = EntityAttachment::getByEntityId($entityId);
+            $comments = $this->getRepository('documentador.entity.comment')->getComments($entityId, 'array');
+            $lastRevision = $this->getRepository('documentador.entity.entity')->getLastRevisionByPageId($entityId);
+            $childPages = $this->getRepository('documentador.entity.entity')->getChildren($entityId);
+            $pageFiles = $this->getRepository('documentador.entity.entity')->getFilesByEntityId($entityId);
+            $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
         }
 
         return $this->render(__DIR__ . '/../../Resources/views/page/View.php', get_defined_vars());

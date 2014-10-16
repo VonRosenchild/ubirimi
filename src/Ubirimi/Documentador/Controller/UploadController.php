@@ -28,12 +28,12 @@ class UploadController extends UbirimiController
             foreach ($_FILES['entity_upload_file']['name'] as $filename) {
                 if (!empty($filename)) {
                     // check if this file already exists
-                    $fileExists = Entity::getFileByName($entityId, $filename);
+                    $fileExists = $this->getRepository('documentador.entity.entity')->getFileByName($entityId, $filename);
 
                     if ($fileExists) {
                         // get the last revision and increment it by one
                         $fileId = $fileExists['id'];
-                        $revisions = Entity::getRevisionsByFileId($fileId);
+                        $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByFileId($fileId);
                         $revisionNumber = $revisions->num_rows + 1;
 
                         // create the revision folder
@@ -49,7 +49,7 @@ class UploadController extends UbirimiController
 
                     } else {
                         // add the file to the list of files
-                        $fileId = Entity::addFile($entityId, $filename, $currentDate);
+                        $fileId = $this->getRepository('documentador.entity.entity')->addFile($entityId, $filename, $currentDate);
 
                         $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity file ' . $filename, $currentDate);
 
@@ -64,7 +64,7 @@ class UploadController extends UbirimiController
 
                     // add revision to the file
 
-                    Entity::addFileRevision($fileId, $loggedInUserId, $currentDate);
+                    $this->getRepository('documentador.entity.entity')->addFileRevision($fileId, $loggedInUserId, $currentDate);
 
                     if ($revisionNumber > 1) {
                         $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity file revision to ' . $filename, $currentDate);

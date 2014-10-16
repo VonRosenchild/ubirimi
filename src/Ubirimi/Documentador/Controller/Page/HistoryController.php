@@ -26,11 +26,11 @@ class HistoryController extends UbirimiController
         $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
         $entityId = $_GET['id'];
-        $page = Entity::getById($entityId, $loggedInUserId);
+        $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
 
         $spaceId = $page['space_id'];
-        $space = Space::getById($spaceId);
-        $revisions = Entity::getRevisionsByPageId($entityId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+        $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByPageId($entityId);
 
         $revisionCount = ($revisions) ? $revisions->num_rows + 1 : 1;
 

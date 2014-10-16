@@ -20,7 +20,7 @@ class UserSpacesController extends UbirimiController
 
             $clientId = $session->get('client/id');
 
-            $spaces = Space::getByClientId($clientId);
+            $spaces = $this->getRepository('documentador.space.space')->getByClientId($clientId);
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
             $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';
             $clientSettings = $session->get('client/settings');
@@ -28,7 +28,7 @@ class UserSpacesController extends UbirimiController
             $httpHOST = Util::getHttpHost();
             $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
             $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
-            $spaces = Space::getByClientIdAndAnonymous($clientId);
+            $spaces = $this->getRepository('documentador.space.space')->getByClientIdAndAnonymous($clientId);
             $loggedInUserId = null;
             $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Spaces';
         }

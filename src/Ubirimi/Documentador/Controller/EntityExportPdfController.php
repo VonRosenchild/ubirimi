@@ -19,7 +19,7 @@ class EntityExportPdfController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
         $pageId = $_GET['id'];
 
-        $page = Entity::getById($pageId, $loggedInUserId);
+        $page = $this->getRepository('documentador.entity.entity')->getById($pageId, $loggedInUserId);
 
         // create new PDF document
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\LinkHelper;
+use Ubirimi\Documentador\Repository\Entity\Type;
+use Ubirimi\LinkHelper;
 
 
 
@@ -64,7 +65,7 @@
                 ?>
             </div>
 
-            <?php if ($page['documentator_entity_type_id'] == EntityType::ENTITY_FILE_LIST): ?>
+            <?php if ($page['documentator_entity_type_id'] == Type::ENTITY_FILE_LIST): ?>
                 <?php if ($pageFiles): ?>
                     <br />
                     <?php require_once __DIR__ . '/_listFiles.php' ?>

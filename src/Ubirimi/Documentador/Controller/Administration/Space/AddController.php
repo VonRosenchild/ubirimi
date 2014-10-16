@@ -38,11 +38,11 @@ class AddController extends UbirimiController
                 $emptySpaceCode = true;
 
             if (!$emptySpaceName && !$emptySpaceCode) {
-                $doubleSpace = Space::getByCodeAndClientId($clientId, $code);
+                $doubleSpace = $this->getRepository('documentador.space.space')->getByCodeAndClientId($clientId, $code);
                 if ($doubleSpace)
                     $doubleCode = true;
 
-                $doubleSpace = Space::getByNameAndClientId($clientId, $name);
+                $doubleSpace = $this->getRepository('documentador.space.space')->getByNameAndClientId($clientId, $name);
                 if ($doubleSpace)
                     $doubleName = true;
 
@@ -56,16 +56,16 @@ class AddController extends UbirimiController
                     $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador space ' . $name, $date);
 
                     // set space permission for current user
-                    Space::addUserAllPermissions($spaceId, $loggedInUserId);
+                    $this->getRepository('documentador.space.space')->addUserAllPermissions($spaceId, $loggedInUserId);
 
                     // set default home page
                     $content = '<p><span style="font-size:24px"><strong>Welcome to your new space!</strong></span></p><div class="message-content" style="font-family: Arial, sans-serif; font-size: 14px;"><p>Documentador spaces are great for sharing content and news with your team. This is your home page. You can customize this page in anyway you like.</p></div>';
                     $page = new Entity(EntityType::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, null, $name . ' Home', $content);
                     $pageId = $page->save($currentDate);
-                    Space::setHomePageId($spaceId, $pageId);
+                    $this->getRepository('documentador.space.space')->setHomePageId($spaceId, $pageId);
 
                     // add space permissions for groups
-                    Space::setDefaultPermissions($clientId, $spaceId);
+                    $this->getRepository('documentador.space.space')->setDefaultPermissions($clientId, $spaceId);
 
                     header('Location: /documentador/administration/spaces');
                 }

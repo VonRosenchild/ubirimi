@@ -19,7 +19,7 @@ class PurgeAllController extends UbirimiController
 
         $spaceId = $_POST['id'];
 
-        Space::deleteAllFromTrash($spaceId);
+        $this->getRepository('documentador.space.space')->deleteAllFromTrash($spaceId);
 
         return new Response('');
     }

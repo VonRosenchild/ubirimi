@@ -19,7 +19,7 @@ class RestoreDialogController extends UbirimiController
 
         $pageId = $_GET['id'];
 
-        $page = Entity::getById($pageId);
+        $page = $this->getRepository('documentador.entity.entity')->getById($pageId);
 
         return new Response('This will restore the Page <b>' . $page['name'] . '</b> back into Documentador. Do you wish to continue?');
     }

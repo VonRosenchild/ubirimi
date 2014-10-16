@@ -21,9 +21,9 @@ class ListController extends UbirimiController
         $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
 
         if ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission) {
-            $spaces = Space::getByClientId($clientId);
+            $spaces = $this->getRepository('documentador.space.space')->getByClientId($clientId);
         } else {
-            $spaces = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+            $spaces = $this->getRepository('documentador.space.space')->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
         }
         $clientSettings = $session->get('client/settings');
 

@@ -21,13 +21,13 @@ class RestoreRevisionController extends UbirimiController
 
         $revisionId = $_POST['id'];
         $pageId = $_POST['entity_id'];
-        $page = Entity::getById($pageId);
-        $revision = Entity::getRevisionsByPageIdAndRevisionId($pageId, $revisionId);
+        $page = $this->getRepository('documentador.entity.entity')->getById($pageId);
+        $revision = $this->getRepository('documentador.entity.entity')->getRevisionsByPageIdAndRevisionId($pageId, $revisionId);
 
         $date = Util::getServerCurrentDateTime();
-        Entity::addRevision($pageId, $loggedInUserId, $page['content'], $date);
+        $this->getRepository('documentador.entity.entity')->addRevision($pageId, $loggedInUserId, $page['content'], $date);
 
-        Entity::updateContent($pageId, $revision['content']);
+        $this->getRepository('documentador.entity.entity')->updateContent($pageId, $revision['content']);
 
         return new Response('');
     }

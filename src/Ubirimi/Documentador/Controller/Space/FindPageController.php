@@ -22,7 +22,7 @@ class FindPageController extends UbirimiController
         $spaceId = $_POST['space_id'];
         $pageNameKeyword = $_POST['page'];
 
-        $pages = Entity::findBySpaceIdAndKeyword($clientId, $spaceId, $pageNameKeyword);
+        $pages = $this->getRepository('documentador.entity.entity')->findBySpaceIdAndKeyword($clientId, $spaceId, $pageNameKeyword);
 
         return $this->render(__DIR__ . '/../../../Resources/views/page/Find.php', get_defined_vars());
     }

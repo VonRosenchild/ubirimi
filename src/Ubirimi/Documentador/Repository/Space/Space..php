@@ -15,7 +15,7 @@ class Space {
     public $clientId;
     public $userCreatedId;
 
-    function __construct($clientId, $userCreatedId, $name, $code, $description) {
+    function __construct($clientId = null, $userCreatedId = null, $name = null, $code = null, $description = null) {
         $this->clientId = $clientId;
         $this->name = $name;
         $this->code = $code;

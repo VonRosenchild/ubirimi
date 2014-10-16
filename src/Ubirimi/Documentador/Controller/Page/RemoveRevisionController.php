@@ -19,7 +19,7 @@ class RemoveRevisionController extends UbirimiController
 
         $revisionId = $_POST['id'];
 
-        Entity::deleteRevisionById($revisionId);
+        $this->getRepository('documentador.entity.entity')->deleteRevisionById($revisionId);
 
         return new Response('');
     }

@@ -18,7 +18,7 @@ class UploadAttachmentController extends UbirimiController
 
         $loggedInUserId = $session->get('user/id');
         $entityId = $_GET['id'];
-        $entity = Entity::getById($entityId);
+        $entity = $this->getRepository('documentador.entity.entity')->getById($entityId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
@@ -33,7 +33,7 @@ class UploadAttachmentController extends UbirimiController
                 if ($attachmentExists) {
                     // get the last revision and increment it by one
                     $attachmentId = $attachmentExists['id'];
-                    $revisions = Entity::getRevisionsByAttachmentId($attachmentId);
+                    $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByAttachmentId($attachmentId);
                     $revisionNumber = $revisions->num_rows + 1;
 
                     // create the revision folder
@@ -80,7 +80,7 @@ class UploadAttachmentController extends UbirimiController
 
                     $content = $entity['content'];
                     $content = str_replace($oldLink, $newLink, $content);
-                    Entity::updateContent($entityId, $content);
+                    $this->getRepository('documentador.entity.entity')->updateContent($entityId, $content);
                 }
 
                 $index++;

@@ -22,8 +22,8 @@ class EditController extends UbirimiController
 
         $spaceId = $_GET['id'];
         $backLink = isset($_GET['back']) ? $_GET['back'] : null;
-        $space = Space::getById($spaceId);
-        $pages = Entity::getAllBySpaceId($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+        $pages = $this->getRepository('documentador.entity.entity')->getAllBySpaceId($spaceId);
 
         if ($space['client_id'] != $clientId) {
             header('Location: /general-settings/bad-link-access-denied');
@@ -47,7 +47,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$emptyCode) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Space::updateById($spaceId, $name, $code, $homepageId, $description, $currentDate);
+                $this->getRepository('documentador.space.space')->updateById($spaceId, $name, $code, $homepageId, $description, $currentDate);
 
                 $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador space ' . $name, $currentDate);
 

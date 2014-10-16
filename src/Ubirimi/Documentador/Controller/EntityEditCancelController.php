@@ -22,7 +22,7 @@ class EntityEditCancelController extends UbirimiController
         $spaceId = $_GET['space_id'];
         $entityId = $_GET['entity_id'];
 
-        Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
+        $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
         header('Location: /documentador/pages/' . $spaceId);
     }

@@ -22,7 +22,7 @@ class AddFavouriteController extends UbirimiController
         $pageId = $_POST['id'];
         $date = Util::getServerCurrentDateTime();
 
-        Entity::addFavourite($pageId, $loggedInUserId, $date);
+        $this->getRepository('documentador.entity.entity')->addFavourite($pageId, $loggedInUserId, $date);
 
         return new Response('');
     }

@@ -22,7 +22,7 @@ class DoFavouriteController extends UbirimiController
         $spaceId = $_POST['id'];
 
         $currentDate = Util::getServerCurrentDateTime();
-        Space::addToFavourites($spaceId, $loggedInUserId, $currentDate);
+        $this->getRepository('documentador.space.space')->addToFavourites($spaceId, $loggedInUserId, $currentDate);
 
         return new Response('');
     }

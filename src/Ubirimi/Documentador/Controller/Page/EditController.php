@@ -26,9 +26,9 @@ class EditController extends UbirimiController
 
         $entityId = $_GET['id'];
 
-        $page = Entity::getById($entityId, $loggedInUserId);
+        $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
         $spaceId = $page['space_id'];
-        $space = Space::getById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             header('Location: /general-settings/bad-link-access-denied');
@@ -42,7 +42,7 @@ class EditController extends UbirimiController
         $name = $page['name'];
 
         $now = date('Y-m-d H:i:s');
-        $activeSnapshots = Entity::getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
+        $activeSnapshots = $this->getRepository('documentador.entity.entity')->getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
         $textWarningMultipleEdits = null;
         if ($activeSnapshots) {
             $textWarningMultipleEdits = 'This page is being edited by ';
@@ -57,7 +57,7 @@ class EditController extends UbirimiController
         }
 
         // see if the user editing the page has a draft saved
-        $lastUserSnapshot = Entity::getLastSnapshot($entityId, $loggedInUserId);
+        $lastUserSnapshot = $this->getRepository('documentador.entity.entity')->getLastSnapshot($entityId, $loggedInUserId);
 
         if (isset($_POST['edit_page'])) {
             $name = $_POST['name'];
@@ -65,10 +65,10 @@ class EditController extends UbirimiController
 
             $date = Util::getServerCurrentDateTime();
 
-            Entity::addRevision($entityId, $loggedInUserId, $page['content'], $date);
-            Entity::updateById($entityId, $name, $content, $date);
+            $this->getRepository('documentador.entity.entity')->addRevision($entityId, $loggedInUserId, $page['content'], $date);
+            $this->getRepository('documentador.entity.entity')->updateById($entityId, $name, $content, $date);
 
-            Entity::deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
+            $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
             $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
 

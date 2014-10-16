@@ -21,9 +21,9 @@ class RestoreController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $pageId = $_POST['id'];
-        $entity = Entity::getById($pageId);
+        $entity = $this->getRepository('documentador.entity.entity')->getById($pageId);
 
-        Entity::restoreById($pageId);
+        $this->getRepository('documentador.entity.entity')->restoreById($pageId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

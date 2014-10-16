@@ -23,7 +23,7 @@ class DeleteController extends UbirimiController
         $attachmentId = $_POST['id'];
         $attachment = EntityAttachment::getById($attachmentId);
         $entityId = $attachment['documentator_entity_id'];
-        $space = Entity::getById($entityId);
+        $space = $this->getRepository('documentador.entity.entity')->getById($entityId);
         $spaceId = $space['space_id'];
         $currentDate = Util::getServerCurrentDateTime();
 

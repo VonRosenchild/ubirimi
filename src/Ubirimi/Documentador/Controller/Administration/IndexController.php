@@ -22,7 +22,7 @@ class IndexController extends UbirimiController
 
         $menuSelectedCategory = 'doc_administration';
 
-        $spacesWithAdminPermission = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+        $spacesWithAdminPermission = $this->getRepository('documentador.space.space')->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
 
         $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
         $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');

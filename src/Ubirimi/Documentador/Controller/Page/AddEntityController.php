@@ -31,7 +31,7 @@ class AddEntityController extends UbirimiController
 
         if ($parentId == -1) {
             // set the parent to the home page of the space if it exists
-            $space = Space::getById($spaceId);
+            $space = $this->getRepository('documentador.space.space')->getById($spaceId);
             $homeEntityId = $space['home_entity_id'];
             if ($homeEntityId) {
                 $parentId = $homeEntityId;

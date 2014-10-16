@@ -58,7 +58,7 @@
                             <?php if (Util::checkUserIsLoggedIn()): ?>
                                 <td width="150px" align="center">
                                     <?php
-                                        $isFavourite = Space::checkSpaceIsFavouriteForUserId($space['space_id'], $loggedInUserId);
+                                        $isFavourite = UbirimiContainer::get()['repository']->get('documentador.space.space')->checkSpaceIsFavouriteForUserId($space['space_id'], $loggedInUserId);
                                         if ($isFavourite)
                                             echo '<img id="remove_space_from_favourites_' . $space['space_id'] . '" title="Remove Space from Favourites" src="/img/favourite_full.png" />';
                                         else

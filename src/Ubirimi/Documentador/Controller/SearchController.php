@@ -36,7 +36,7 @@ class SearchController extends UbirimiController
         $searchQuery = $request->get('search_query');
         $menuSelectedCategory = 'documentator';
 
-        $pages = Space::searchForPages($session->get('client/id'), $searchQuery);
+        $pages = $this->getRepository('documentador.space.space')->searchForPages($session->get('client/id'), $searchQuery);
 
         return $this->render(__DIR__ . '/../Resources/views/Search.php', get_defined_vars());
     }

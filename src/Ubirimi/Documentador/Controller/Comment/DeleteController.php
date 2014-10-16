@@ -19,7 +19,7 @@ class DeleteController extends UbirimiController
 
         $commentId = $_POST['id'];
 
-        EntityComment::deleteById($commentId);
+        $this->getRepository('documentador.entity.comment')->deleteById($commentId);
 
         return new Response('');
     }

@@ -25,7 +25,7 @@ class UploadImageController extends UbirimiController
         $extension = strtolower(pathinfo($_FILES['upload']['name'], PATHINFO_EXTENSION));
 
         $entityId = $session->get('current_edit_entity_id');
-        $entity = Entity::getById($entityId);
+        $entity = $this->getRepository('documentador.entity.entity')->getById($entityId);
         $spaceId = $entity['space_id'];
 
         $currentDate = Util::getServerCurrentDateTime();
@@ -49,7 +49,7 @@ class UploadImageController extends UbirimiController
                 if ($attachment) {
                     // get the last revision and increment it by one
                     $attachmentId = $attachment['id'];
-                    $revisions = Entity::getRevisionsByAttachmentId($attachmentId);
+                    $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByAttachmentId($attachmentId);
                     $revisionNumber = $revisions->num_rows + 1;
 
                     // create the revision folder

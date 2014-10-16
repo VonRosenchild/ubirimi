@@ -16,7 +16,7 @@ class Entity {
     public $name;
     public $content;
 
-    function __construct($entityTypeId, $spaceId, $userCreatedId, $parentPageId, $name, $content) {
+    function __construct($entityTypeId = null, $spaceId = null, $userCreatedId = null, $parentPageId = null, $name = null, $content = null) {
         $this->entityTypeId = $entityTypeId;
         $this->spaceId = $spaceId;
         $this->name = $name;

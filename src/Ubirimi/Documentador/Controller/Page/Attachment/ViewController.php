@@ -21,7 +21,7 @@ class ViewController extends UbirimiController
 
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
             $loggedInUserId = $session->get('user/id');
-            $page = Entity::getById($entityId, $loggedInUserId);
+            $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
             if ($page)
                 $spaceId = $page['space_id'];
 
@@ -35,10 +35,10 @@ class ViewController extends UbirimiController
 
             $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
 
-            $page = Entity::getById($entityId, $loggedInUserId);
+            $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
             if ($page) {
                 $spaceId = $page['space_id'];
-                $spaceHasAnonymousAccess = Space::hasAnonymousAccess($spaceId);
+                $spaceHasAnonymousAccess = $this->getRepository('documentador.space.space')->hasAnonymousAccess($spaceId);
 
                 if (!($documentatorUseAnonymous && $spaceHasAnonymousAccess)) {
                     Util::signOutAndRedirect();

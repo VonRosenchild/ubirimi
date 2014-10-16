@@ -19,7 +19,7 @@ class DeleteRevisionDialogController extends UbirimiController
 
         $pageId = $_GET['entity_id'];
         $revisionNR = $_GET['rev_nr'];
-        $page = Entity::getById($pageId);
+        $page = $this->getRepository('documentador.entity.entity')->getById($pageId);
 
         return new Response('Are you sure you want to remove revision ' . $revisionNR . ' for ' . $page['name']);
     }

@@ -21,7 +21,7 @@ class PermissionController extends UbirimiController
         $menuSelectedCategory = 'doc_spaces';
 
         $spaceId = $_GET['id'];
-        $space = Space::getById($spaceId);
+        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             header('Location: /general-settings/bad-link-access-denied');
@@ -29,10 +29,10 @@ class PermissionController extends UbirimiController
         }
 
         $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
-        $anonymousAccessSettings = Space::getAnonymousAccessSettings($spaceId);
+        $anonymousAccessSettings = $this->getRepository('documentador.space.space')->getAnonymousAccessSettings($spaceId);
 
-        $usersWithPermissionForSpace = Space::getUsersWithPermissions($spaceId);
-        $groupsWithPermissionForSpace = Space::getGroupsWithPermissions($spaceId);
+        $usersWithPermissionForSpace = $this->getRepository('documentador.space.space')->getUsersWithPermissions($spaceId);
+        $groupsWithPermissionForSpace = $this->getRepository('documentador.space.space')->getGroupsWithPermissions($spaceId);
 
         require_once __DIR__ . '/../../../Resources/views/administration/spacetools/Permission.php';
     }

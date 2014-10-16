@@ -18,7 +18,7 @@ class DeleteSnapshotController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $snapShotId = $_POST['id'];
 
-        Entity::deleteSnapshotById($snapShotId);
+        $this->getRepository('documentador.entity.entity')->deleteSnapshotById($snapShotId);
 
         return new Response('');
     }

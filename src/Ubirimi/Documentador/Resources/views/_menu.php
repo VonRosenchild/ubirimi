@@ -10,7 +10,7 @@ $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 if (Util::checkUserIsLoggedIn()) {
 
     $hasAdministrationPermission = Util::userHasDocumentatorAdministrativePermission();
-    $spaces = Space::getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+    $spaces = UbirimiContainer::get()['repository']->get('documentador.space.space')->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
 }
 
 if (!isset($menuSelectedCategory)) {
@@ -74,7 +74,7 @@ Util::renderMaintenanceMessage();
                         <?php if (Util::checkUserIsLoggedIn()): ?>
                             <?php
 
-                                $spaces = Space::getByClientId($clientId);
+                                $spaces = UbirimiContainer::get()['repository']->get('documentador.space.space')->getByClientId($clientId);
                             ?>
                             <?php if ($spaces): ?>
                                 <input type="button" id="btnDocumentatorCreate" value="Create" />

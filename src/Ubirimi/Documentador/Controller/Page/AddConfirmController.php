@@ -20,9 +20,9 @@ class AddConfirmController extends UbirimiController
         $clientId = $session->get('client/id');
         $spaceId = $_GET['space_id'];
 
-        $spaces = Space::getByClientId($clientId);
+        $spaces = $this->getRepository('documentador.space.space')->getByClientId($clientId);
 
-        $entityTypes = Entity::getTypes();
+        $entityTypes = $this->getRepository('documentador.entity.entity')->getTypes();
         $position = 1;
 
         return $this->render(__DIR__ . '/../../Resources/views/page/AddConfirm.php', get_defined_vars());

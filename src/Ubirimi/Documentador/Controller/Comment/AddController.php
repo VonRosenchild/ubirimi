@@ -24,6 +24,6 @@ class UploadAttachmentController extends UbirimiController
         $parentId = $_POST['parent_comment_id'];
         $date = Util::getServerCurrentDateTime();
 
-        EntityComment::addComment($pageId, $loggedInUserId, $content, $date, $parentId);
+        $this->getRepository('documentador.entity.comment')->addComment($pageId, $loggedInUserId, $content, $date, $parentId);
     }
 }

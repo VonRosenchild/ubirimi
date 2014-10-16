@@ -19,8 +19,8 @@ class ShowController extends UbirimiController
 
         $pageId = $_POST['id'];
 
-        $childPages = Entity::getChildren($pageId);
-        $comments = EntityComment::getComments($pageId, 'array');
+        $childPages = $this->getRepository('documentador.entity.entity')->getChildren($pageId);
+        $comments = $this->getRepository('documentador.entity.comment')->getComments($pageId, 'array');
 
         if ($comments) {
 
@@ -34,7 +34,7 @@ class ShowController extends UbirimiController
 
             $htmlLayout .= '<div class="headerPageText" style="border-bottom: 1px solid #DDDDDD;">' . count($comments) . ' Comment' . $pluralCommentsHTML . '</div>';
             $htmlLayout .= '<div style="float: left; display: block; width: 100%">';
-            $htmlLayout = EntityComment::getCommentsLayoutHTML($comments, $htmlLayout, null, 0);
+            $htmlLayout = $this->getRepository('documentador.entity.comment')->getCommentsLayoutHTML($comments, $htmlLayout, null, 0);
             echo $htmlLayout;
             $htmlLayout .= '</div>';
         }

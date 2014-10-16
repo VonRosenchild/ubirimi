@@ -20,7 +20,7 @@ class UpdateParentController extends UbirimiController
         $entityId = $_POST['entity_id'];
         $parentId = $_POST['parent_id'];
 
-        Entity::updateParent($entityId, $parentId);
+        $this->getRepository('documentador.entity.entity')->updateParent($entityId, $parentId);
 
         return new Response('');
     }
