@@ -3,15 +3,16 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <div class="pageContent">
-
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td>
                     <div class="headerPageText">User Preferences > Edit</div>
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="pageContent">
 
         <form name="update_settings" method="post" action="/yongo/administration/user-preference/edit">
             <table width="100%">

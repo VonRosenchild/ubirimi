@@ -6,10 +6,10 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/project/categories">Project Categories</a> > Create Category') ?>
     <div class="pageContent">
         <form name="add_project_category" action="/yongo/administration/project/category/add" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/project/categories">Project Categories</a> > Create Category') ?>
+
             <table width="100%">
                 <tr>
                     <td width="110" valign="top">Name <span class="mandatory">*</span></td>

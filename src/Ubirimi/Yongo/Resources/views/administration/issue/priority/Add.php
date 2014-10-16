@@ -6,8 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a href="/yongo/administration/issue/priorities" class="linkNoUnderline">Issue Priorities</a> > Create Priority') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('<a href="/yongo/administration/issue/priorities" class="linkNoUnderline">Issue Priorities</a> > Create Priority') ?>
+
         <form name="add_priority" action="/yongo/administration/issue/priority/add" method="post">
             
             <table width="100%">

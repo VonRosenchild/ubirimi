@@ -8,8 +8,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Custom Fields') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Custom Fields') ?>
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li class="active"><a href="/yongo/administration/screens">Custom Fields</a></li>

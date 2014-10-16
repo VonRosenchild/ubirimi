@@ -5,13 +5,13 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/events">Events</a> > ' . $event['name'] . ' > Update';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
+
     <div class="pageContent">
         <form name="add_event" action="/yongo/administration/edit-event/<?php echo $eventId ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/events">Events</a> > ' . $event['name'] . ' > Update';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
-
             <table width="100%">
                 <tr>
                     <td width="150" valign="top">Name <span class="mandatory">*</span></td>

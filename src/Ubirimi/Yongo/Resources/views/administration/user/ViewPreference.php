@@ -5,9 +5,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('User Preferences') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('User Preferences') ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
                     <td><a href="/yongo/administration/user-preference/edit" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit Default Values</a></td>

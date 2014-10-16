@@ -1,6 +1,7 @@
 <?php
 
-    use Ubirimi\Yongo\Repository\Permission\Scheme;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Permission\Scheme;
 ?>
 <table class="table table-hover table-condensed" width="100%">
     <thead>

@@ -6,8 +6,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Events') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Events') ?>
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li><a href="/yongo/administration/attachment-configuration">Attachments</a></li>

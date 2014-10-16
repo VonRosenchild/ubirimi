@@ -4,17 +4,19 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/project/categories">Project Categories</a> > <?php echo $category['name'] ?> > Edit
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="edit_project_category" action="/yongo/administration/project/category/edit/<?php echo $categoryId; ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/project/categories">Project Categories</a> > <?php echo $category['name'] ?> > Edit
-                        </div>
-                    </td>
-                </tr>
-            </table>
             <table width="100%">
                 <tr>
                     <td valign="top" width="130">Name <span class="error">*</span></td>

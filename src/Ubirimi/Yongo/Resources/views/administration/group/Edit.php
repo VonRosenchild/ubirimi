@@ -6,12 +6,12 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/yongo/administration/groups" class="linkNoUnderline">Groups</a> > ' . $group['name'] . ' > Edit';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <form name="edit_user_group" action="/yongo/administration/group/edit/<?php echo $Id ?>" method="post">
-            <?php
-                $breadCrumb = '<a href="/yongo/administration/groups" class="linkNoUnderline">Groups</a> > ' . $group['name'] . ' > Edit';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
 
             <table width="100%">
                 <tr>

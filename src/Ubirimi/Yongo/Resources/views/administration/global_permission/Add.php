@@ -6,9 +6,10 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/global-permissions">Globals Permissions</a> > Create Permission') ?>
     <div class="pageContent">
+
         <form id="form_add_global_permission" name="add_global_permission" action="/yongo/administration/global-permission/add" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/yongo/administration/global-permissions">Globals Permissions</a> > Create Permission') ?>
             <table width="100%">
                 <tr>
                     <td width="100">Permission</td>

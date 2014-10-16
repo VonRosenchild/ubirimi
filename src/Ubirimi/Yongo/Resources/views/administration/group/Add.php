@@ -6,12 +6,13 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/yongo/administration/groups" class="linkNoUnderline">Groups</a> > Create Group';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
+
     <div class="pageContent">
         <form name="add_user_group" action="/yongo/administration/group/add" method="post">
-            <?php
-                $breadCrumb = '<a href="/yongo/administration/groups" class="linkNoUnderline">Groups</a> > Create Group';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
             <table width="100%">
                 <tr>
                     <td width="150" valign="top">Name <span class="error">*</span></td>

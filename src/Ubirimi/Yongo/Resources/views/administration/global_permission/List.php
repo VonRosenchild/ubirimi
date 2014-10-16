@@ -6,9 +6,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php if (Util::userHasYongoAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Global Permissions') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Global Permissions') ?>
 
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>

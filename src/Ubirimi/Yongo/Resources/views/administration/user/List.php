@@ -6,9 +6,9 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Users') ?>
     <div class="pageContent">
         <?php if (Util::userHasYongoAdministrativePermission()): ?>
-        <?php Util::renderBreadCrumb('Users') ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
