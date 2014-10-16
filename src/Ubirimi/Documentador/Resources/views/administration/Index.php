@@ -6,10 +6,11 @@
 <body>
 
     <?php require_once __DIR__ . '/_menu.php'; ?>
-
+    <?php if (Util::userHasDocumentatorAdministrativePermission() || $spacesWithAdminPermission): ?>
+        <?php Util::renderBreadCrumb('Administration') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasDocumentatorAdministrativePermission() || $spacesWithAdminPermission): ?>
-            <?php Util::renderBreadCrumb('Administration') ?>
             <?php if ($spacesWithAdminPermission || $hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission): ?>
                 <table width="100%">
                     <tr>

@@ -6,12 +6,12 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/documentador/spaces">Spaces</a> > ' . $space['name'] . ' > Update';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <form name="edit_workflow" action="/documentador/administration/space/edit/<?php echo $spaceId ?><?php if (isset($backLink)) echo '?back=' . $backLink ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="/documentador/spaces">Spaces</a> > ' . $space['name'] . ' > Update';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
             <table width="100%">
                 <tr>
                     <td width="200" valign="top">Name <span class="mandatory">*</span></td>

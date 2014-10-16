@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\Documentador\Controller;
+namespace Ubirimi\Documentador\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +27,6 @@ class IndexController extends UbirimiController
         $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
         $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
 
-        require_once __DIR__ . '/../../Resources/views/administration/Index.php';
+        return $this->render(__DIR__ . '/../../Resources/views/administration/Index.php', get_defined_vars());
     }
 }

@@ -6,15 +6,16 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td>
                     <div class="headerPageText"><a href="/documentador/administration/spaces" class="linkNoUnderline">Spaces</a> > <a class="linkNoUnderline" href="/documentador/pages/<?php echo $spaceId ?>"><?php echo $space['name'] ?></a> > Space Tools > Overview</div>
                 </td>
             </tr>
         </table>
-
+    </div>
+    <div class="pageContent">
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li class="active"><a href="/documentador/administration/space-tools/overview/<?php echo $spaceId ?>">Overview</a></li>
             <li><a href="/documentador/administration/space-tools/permissions/<?php echo $spaceId ?>">Permissions</a></li>

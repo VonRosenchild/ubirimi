@@ -3,18 +3,19 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a href="/documentador/spaces" class="linkNoUnderline">Spaces</a> > Create Space
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="add_screen" action="/documentador/administration/spaces/add" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a href="/documentador/spaces" class="linkNoUnderline">Spaces</a> > Create Space
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
             <table width="100%">
                 <tr>
                     <td valign="top" width="150">Name <span class="error">*</span></td>

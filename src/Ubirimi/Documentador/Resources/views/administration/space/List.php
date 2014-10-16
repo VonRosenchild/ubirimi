@@ -7,9 +7,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php if (Util::userHasDocumentatorAdministrativePermission() || $spaces): ?>
+        <?php Util::renderBreadCrumb('Spaces') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasDocumentatorAdministrativePermission() || $spaces): ?>
-            <?php Util::renderBreadCrumb('Spaces') ?>
 
             <?php if (Util::checkUserIsLoggedIn()): ?>
                 <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">

@@ -5,15 +5,16 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td>
                     <div class="headerPageText"><a href="/documentador/administration/spaces" class="linkNoUnderline">Spaces</a> > <a class="linkNoUnderline" href="/documentador/page/view/<?php echo $space['home_entity_id'] ?>"><?php echo $space['name'] ?></a> > Permissions > Update</div>
                 </td>
             </tr>
         </table>
-
+    </div>
+    <div class="pageContent">
         <form name="edit_space_permissions" action="/documentador/administration/space-tools/edit-permissions/<?php echo $spaceId ?>" method="post">
 
             <div class="headerPageText">Groups</div>
