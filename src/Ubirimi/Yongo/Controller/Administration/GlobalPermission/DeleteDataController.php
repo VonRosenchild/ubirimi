@@ -10,7 +10,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-
 class DeleteDataController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

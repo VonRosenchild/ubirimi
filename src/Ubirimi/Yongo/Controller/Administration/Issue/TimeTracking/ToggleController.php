@@ -9,8 +9,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\SystemProduct;
 
-
-
 class ToggleController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

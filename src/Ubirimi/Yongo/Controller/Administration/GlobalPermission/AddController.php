@@ -10,8 +10,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
-
-
 class AddController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
