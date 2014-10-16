@@ -17,7 +17,7 @@ class DeleteReminder extends UbirimiController
 
         $reminderId = $request->request->get('id');
 
-        Calendar::deleteReminderById($reminderId);
+        $this->getRepository('calendar.calendar.calendar')->deleteReminderById($reminderId);
 
         return new Response('');
     }

@@ -19,8 +19,8 @@ class ViewController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
 
-        $myCalendarIds = Calendar::getByUserId($session->get('user/id'), 'array', 'id');
-        $sharedCalendarsIds = Calendar::getSharedWithUserId($session->get('user/id'), 'array', 'id');
+        $myCalendarIds = $this->getRepository('calendar.calendar.calendar')->getByUserId($session->get('user/id'), 'array', 'id');
+        $sharedCalendarsIds = $this->getRepository('calendar.calendar.calendar')->getSharedWithUserId($session->get('user/id'), 'array', 'id');
         if (!$sharedCalendarsIds) {
             $sharedCalendarsIds = array();
         }
@@ -39,7 +39,7 @@ class ViewController extends UbirimiController
 
         $menuSelectedCategory = 'calendars';
         $defaultCalendarSelected = false;
-        $calendarDefault = Calendar::getDefaultCalendar($session->get('user/id'));
+        $calendarDefault = $this->getRepository('calendar.calendar.calendar')->getDefaultCalendar($session->get('user/id'));
 
         $calendarDefaultId = $calendarDefault['id'];
         if (in_array($calendarDefaultId, $calendarIds)) {
@@ -48,13 +48,13 @@ class ViewController extends UbirimiController
 
         // check to see if each calendar belongs to the client
         for ($i = 0; $i < count($calendarIds); $i++) {
-            $calendarFilter = Calendar::getById($calendarIds[$i]);
+            $calendarFilter = $this->getRepository('calendar.calendar.calendar')->getById($calendarIds[$i]);
 
             if ($calendarFilter['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
         }
-        $calendar = Calendar::getByIds(implode(', ', $calendarIds));
+        $calendar = $this->getRepository('calendar.calendar.calendar')->getByIds(implode(', ', $calendarIds));
 
         $clientSettings = $session->get('client/settings');
         $filterStartDate = new \DateTime("first day of last month", new \DateTimeZone($clientSettings['timezone']));
@@ -63,7 +63,7 @@ class ViewController extends UbirimiController
         $filterStartDate = $filterStartDate->format('Y-m-d');
         $filterEndDate = $filterEndDate->format('Y-m-d');
 
-        $calendarEvents = Event::getByCalendarId(
+        $calendarEvents = $this->getRepository('calendar.event.event')->getByCalendarId(
             implode(', ', $calendarIds),
             $filterStartDate,
             $filterEndDate,
@@ -72,10 +72,10 @@ class ViewController extends UbirimiController
             'array'
         );
 
-        $calendars = Calendar::getByUserId($session->get('user/id'), 'array');
+        $calendars = $this->getRepository('calendar.calendar.calendar')->getByUserId($session->get('user/id'), 'array');
 
 
-        $calendarsSharedWithMe = Calendar::getSharedWithUserId($session->get('user/id'), 'array');
+        $calendarsSharedWithMe = $this->getRepository('calendar.calendar.calendar')->getSharedWithUserId($session->get('user/id'), 'array');
 
         $currentMonthName = date("F", mktime(0, 0, 0, $month, 1, $year));
 

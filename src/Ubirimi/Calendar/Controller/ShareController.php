@@ -27,12 +27,12 @@ class ShareController extends UbirimiController
         $userIds = $request->request->get('user_id');
 
         $currentDate = Util::getServerCurrentDateTime();
-        Calendar::deleteSharesByCalendarId($calendarId);
-        $calendar = Calendar::getById($calendarId);
+        $this->getRepository('calendar.calendar.calendar')->deleteSharesByCalendarId($calendarId);
+        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
         $userThatShares = $this->getRepository('ubirimi.user.user')->getById($session->get('user/id'));
 
         if ($userIds) {
-            Calendar::shareWithUsers($calendarId, $userIds, $currentDate);
+            $this->getRepository('calendar.calendar.calendar')->shareWithUsers($calendarId, $userIds, $currentDate);
             $calendarEvent = new CalendarEvent(
                 $calendar,
                 array(

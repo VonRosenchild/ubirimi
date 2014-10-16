@@ -18,11 +18,11 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $calendarId = $request->request->get('id');
-        $calendar = Calendar::getById($calendarId);
+        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
 
         $date = Util::getServerCurrentDateTime();
 
-        Calendar::deleteById($calendarId);
+        $this->getRepository('calendar.calendar.calendar')->deleteById($calendarId);
 
         $this->getRepository('ubirimi.general.log')->add(
             $session->get('client/id'),
@@ -34,7 +34,7 @@ class DeleteController extends UbirimiController
 
         if ($calendar['default_flag']) {
             // create the default calendar again
-            Calendar::save(
+            $this->getRepository('calendar.calendar.calendar')->save(
                 $session->get('user/id'),
                 $session->get('user/first_name') . ' ' . $session->get('user/last_name'),
                 'The primary calendar',

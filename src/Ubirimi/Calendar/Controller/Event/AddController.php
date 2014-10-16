@@ -33,7 +33,7 @@ class AddController extends UbirimiController
 
             ini_set('memory_limit', '1024M');
 
-            $eventId = Event::add(
+            $eventId = $this->getRepository('calendar.event.event')->add(
                 $calendarId,
                 $session->get('user/id'),
                 $name,
@@ -48,9 +48,9 @@ class AddController extends UbirimiController
             );
 
             // add the default reminders
-            $reminders = Calendar::getReminders($calendarId);
+            $reminders = $this->getRepository('calendar.calendar.calendar')->getReminders($calendarId);
             while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
-                Event::addReminder(
+                $this->getRepository('calendar.event.event')->addReminder(
                     $eventId,
                     $reminder['cal_event_reminder_type_id'],
                     $reminder['cal_event_reminder_period_id'],

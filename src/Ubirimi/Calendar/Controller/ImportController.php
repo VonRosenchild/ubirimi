@@ -44,14 +44,14 @@ class ImportController extends UbirimiController
                     break;
                 }
             }
-            $calendarExists = Calendar::getByName($session->get('user/id'), $calendarName);
+            $calendarExists = $this->getRepository('calendar.calendar.calendar')->getByName($session->get('user/id'), $calendarName);
             if ($calendarExists) {
                 $calendarName .= '_' . time();
             }
 
             // deal with the events
             $date = Util::getServerCurrentDateTime();
-            $calendarId = Calendar::save($session->get('user/id'), $calendarName, null, '#A1FF9E', $date);
+            $calendarId = $this->getRepository('calendar.calendar.calendar')->save($session->get('user/id'), $calendarName, null, '#A1FF9E', $date);
 
             $defaultColor = 'A1FF9E';
             $events = $calendar->VEvent;
@@ -69,7 +69,7 @@ class ImportController extends UbirimiController
 
                 $endTime = $endTime->format('Y-m-d H:i:s');
 
-                CalendarEvent::add(
+                $this->getRepository('calendar.event.event')->add(
                     $calendarId,
                     $session->get('user/id'),
                     $summary,

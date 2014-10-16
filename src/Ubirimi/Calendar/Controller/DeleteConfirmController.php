@@ -12,7 +12,7 @@ class DeleteConfirmController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         $calendarId = $request->get('id');
-        $calendar = Calendar::getById($calendarId);
+        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
         $defaultCalendar = false;
         if (1 == $calendar['default_flag']) {
             $defaultCalendar = true;

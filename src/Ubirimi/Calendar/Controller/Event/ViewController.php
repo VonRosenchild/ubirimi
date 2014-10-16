@@ -21,21 +21,21 @@ class ViewController extends UbirimiController
 
         $eventId = $request->get('id');
 
-        $event = CalendarEvent::getById($eventId, 'array');
-        $myCalendarIds = Calendar::getByUserId($session->get('user/id'), 'array', 'id');
+        $event = $this->getRepository('calendar.event.event')->getById($eventId, 'array');
+        $myCalendarIds = $this->getRepository('calendar.calendar.calendar')->getByUserId($session->get('user/id'), 'array', 'id');
         $myEvent = in_array($event['calendar_id'], $myCalendarIds) ? true : false;
         if ($event['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $guests = CalendarEvent::getGuests($eventId);
+        $guests = $this->getRepository('calendar.event.event')->getGuests($eventId);
 
         $menuSelectedCategory = 'calendars';
 
         $month = date('n');
         $year = date('Y');
 
-        $eventReminders = CalendarEvent::getReminders($eventId);
+        $eventReminders = $this->getRepository('calendar.event.event')->getReminders($eventId);
         $sourcePageLink = $request->get('source');
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '

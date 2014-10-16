@@ -17,7 +17,7 @@ class AddConfirmController extends UbirimiController
         $clientId = $session->get('client/id');
         $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
-        $calendars = Calendar::getByUserId($session->get('user/id'), 'array');
+        $calendars = $this->getRepository('calendar.calendar.calendar')->getByUserId($session->get('user/id'), 'array');
         $defaultDay = $request->get('day');
         $defaultMonth = $request->get('month');
         $defaultYear = $request->get('year');

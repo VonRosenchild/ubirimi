@@ -1,19 +1,21 @@
 <?php
 
-
 use Ubirimi\Calendar\Repository\Reminder\Period;
-use Ubirimi\Util;
-    use Ubirimi\Calendar\Repository\RepeatCycle;
 
-    require_once __DIR__ . '/../_header.php';
+use Ubirimi\Calendar\Repository\Reminder\RepeatCycle;
+use Ubirimi\Calendar\Repository\Reminder\Type;
+use Ubirimi\Util;
+
+
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = 'Calendars > <a href="' . $sourcePageLink . '">' . $event['calendar_name'] . '</a> > Events > ' . $event['name'] . ' > Edit';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = 'Calendars > <a href="' . $sourcePageLink . '">' . $event['calendar_name'] . '</a> > Events > ' . $event['name'] . ' > Edit';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <form name="edit_event" action="/calendar/edit/event/<?php echo $eventId ?>?source=<?php echo $sourcePageLink ?>" method="post">
             <table width="100%">
@@ -47,13 +49,22 @@ use Ubirimi\Util;
                 <tr>
                     <td valign="top" width="150px">Start time:</td>
                     <td>
-                        <input class="inputText" style="width: 110px;" type="text" id="cal_event_edit_date_from" name="date_from" value="<?php echo date('Y-m-d H:i', strtotime($event['date_from'])); ?>"/>
+                        <input class="inputText"
+                               style="width: 120px;"
+                               type="text"
+                               id="cal_event_edit_date_from"
+                               name="date_from"
+                               value="<?php echo date('Y-m-d H:i', strtotime($event['date_from'])); ?>"/>
                     </td>
                 </tr>
                 <tr>
                     <td valign="top">End time:</td>
                     <td>
-                        <input class="inputText" style="width: 110px;" name="date_to" id="cal_event_edit_date_to" type="text" value="<?php echo date('Y-m-d H:i', strtotime($event['date_to'])) ?>"/>
+                        <input class="inputText"
+                               style="width: 120px;"
+                               name="date_to" id="cal_event_edit_date_to"
+                               type="text"
+                               value="<?php echo date('Y-m-d H:i', strtotime($event['date_to'])) ?>"/>
                     </td>
                 </tr>
                 <tr>
@@ -92,10 +103,14 @@ use Ubirimi\Util;
                                 <div id="reminder_content_<?php echo $eventReminder['id'] ?>">
                                     <select name="reminder_type_<?php echo $eventReminder['id'] ?>" class="select2InputSmall">
                                         <option value="<?php
-                                            echo CalendarReminderType::REMINDER_EMAIL ?>">Email</option>
+                                            echo Type::REMINDER_EMAIL ?>">Email</option>
                                     </select>
                                     &nbsp;
-                                    <input type="text" value="<?php echo $eventReminder['value'] ?>" name="value_reminder_<?php echo $eventReminder['id'] ?>" style="width: 50px;" />
+                                    <input type="text"
+                                           value="<?php echo $eventReminder['value'] ?>"
+                                           class="inputText"
+                                           name="value_reminder_<?php echo $eventReminder['id'] ?>"
+                                           style="width: 50px;" />
                                     &nbsp;
                                     <select name="reminder_period_<?php echo $eventReminder['id'] ?>" class="select2InputSmall">
                                         <option <?php

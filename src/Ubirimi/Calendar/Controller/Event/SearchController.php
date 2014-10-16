@@ -21,7 +21,7 @@ class SearchController extends UbirimiController
         $menuSelectedCategory = 'calendars';
         $query = $request->get('search_query');
         // todo: search only my events or shared with me
-        $events = Event::getByText($session->get('user/id'), $query);
+        $events = $this->getRepository('calendar.event.event')->getByText($session->get('user/id'), $query);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CALENDAR_NAME

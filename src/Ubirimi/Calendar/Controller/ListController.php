@@ -17,7 +17,7 @@ class ListController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
         $menuSelectedCategory = 'calendars';
-        $calendars = Calendar::getByUserId($session->get('user/id'));
+        $calendars = $this->getRepository('calendar.calendar.calendar')->getByUserId($session->get('user/id'));
 
         $month = date('n');
         $year = date('Y');

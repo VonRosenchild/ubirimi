@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $calendarId = $request->get('id');
-        $calendar = Calendar::getById($calendarId);
+        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
 
         if ($calendar['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,13 +37,13 @@ class EditController extends UbirimiController
             }
 
             // check for duplication
-            $calendarDuplicate = Calendar::getByName($session->get('user/id'), mb_strtolower($name), $calendarId);
+            $calendarDuplicate = $this->getRepository('calendar.calendar.calendar')->getByName($session->get('user/id'), mb_strtolower($name), $calendarId);
             if ($calendarDuplicate) {
                 $calendarExists = true;
             }
             if (!$calendarExists && !$emptyName) {
                 $date = Util::getServerCurrentDateTime();
-                Calendar::updateById($calendarId, $name, $description, $color, $date);
+                $this->getRepository('calendar.calendar.calendar')->updateById($calendarId, $name, $description, $color, $date);
 
                 $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),

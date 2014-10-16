@@ -19,17 +19,17 @@ class SettingsController extends UbirimiController
 
         $calendarId = $request->get('id');
 
-        $calendar = Calendar::getById($calendarId);
+        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
 
-        $defaultReminders = Calendar::getReminders($calendarId);
+        $defaultReminders = $this->getRepository('calendar.calendar.calendar')->getReminders($calendarId);
         if ($calendar['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         if ($request->request->has('edit_calendar_settings')) {
             $date = Util::getServerCurrentDateTime();
-            Calendar::deleteReminders($calendarId);
-            Calendar::deleteSharesByCalendarId($calendarId);
+            $this->getRepository('calendar.calendar.calendar')->deleteReminders($calendarId);
+            $this->getRepository('calendar.calendar.calendar')->deleteSharesByCalendarId($calendarId);
 
             // reminder information
             foreach ($request->request as $key => $value) {
@@ -41,7 +41,7 @@ class SettingsController extends UbirimiController
 
                     // add the reminder
                     if (is_numeric($reminderValue)) {
-                        Calendar::addReminder($calendarId, $reminderType, $reminderPeriod, $reminderValue);
+                        $this->getRepository('calendar.calendar.calendar')->addReminder($calendarId, $reminderType, $reminderPeriod, $reminderValue);
                     }
                 }
             }

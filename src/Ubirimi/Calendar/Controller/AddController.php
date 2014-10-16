@@ -32,18 +32,18 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $calendarSameName = Calendar::getByName($session->get('user/id'), $name);
+            $calendarSameName = $this->getRepository('calendar.calendar.calendar')->getByName($session->get('user/id'), $name);
             if ($calendarSameName) {
                 $duplicateName = true;
             }
 
             if (!$emptyName && !$duplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $calendarId = Calendar::save($session->get('user/id'), $name, $description, $color, $currentDate);
+                $calendarId = $this->getRepository('calendar.calendar.calendar')->save($session->get('user/id'), $name, $description, $color, $currentDate);
 
                 // add default reminders
 
-                Calendar::addReminder(
+                $this->getRepository('calendar.calendar.calendar')->addReminder(
                     $calendarId,
                     Type::REMINDER_EMAIL,
                     Period::PERIOD_MINUTE,
