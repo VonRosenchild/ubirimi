@@ -1,14 +1,14 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
+require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../../Resources/views/administration/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Administration') ?>
 
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Administration') ?>
 
         <table width="100%">
             <tr>

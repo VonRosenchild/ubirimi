@@ -5,8 +5,8 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../../Resources/views/administration/_menu.php'; ?>
+    <?php Util::renderBreadCrumb($breadCrumbTitle) ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb($breadCrumbTitle) ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

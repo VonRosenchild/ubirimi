@@ -6,9 +6,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../../../views/administration/_menu.php'; ?>
-
+    <?php Util::renderBreadCrumb('Administration > Organizations') ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Administration > Organizations') ?>
 
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

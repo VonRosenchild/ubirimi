@@ -1,18 +1,18 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
+require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../../Resources/views/administration/_menu.php'; ?>
 
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/helpdesk/administration/customers?id=' . $organizationId . '">Customers</a> > Create Customer';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <?php if (Util::userHasClientAdministrationPermission()): ?>
             <form id="form_add_customer" name="add_customer" action="/helpdesk/administration/customers/add<?php if ($organizationId) echo '?id=' . $organizationId ?>" method="post">
-                <?php
-                    $breadCrumb = '<a class="linkNoUnderline" href="/helpdesk/administration/customers?id=' . $organizationId . '">Customers</a> > Create Customer';
-                    Util::renderBreadCrumb($breadCrumb);
-                ?>
                 <table width="100%">
                     <tr>
                         <td valign="top" width="150">Email address <span class="mandatory">*</span></td>

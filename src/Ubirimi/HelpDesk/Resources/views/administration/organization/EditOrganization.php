@@ -6,9 +6,9 @@
 <body>
 
     <?php require_once __DIR__ . '/../../../views/administration/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/helpdesk/administration/organizations">Organizations</a> > Update Organization') ?>
     <div class="pageContent">
         <form name="add_status" action="/helpdesk/administration/organizations/edit/<?php echo $organizationId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/helpdesk/administration/organizations">Organizations</a> > Update Organization') ?>
 
             <table width="100%">
                 <tr>
