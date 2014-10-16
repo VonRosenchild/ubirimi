@@ -36,7 +36,7 @@ class SigninController extends UbirimiController
 
         $context = isset($_GET['context']) ? $_GET['context'] : null;
 
-        if ($request->request->get('sign_in')) {
+        if ($request->request->has('sign_in')) {
 
             $username = $request->request->get('username');
             $password = $request->request->get('password');
