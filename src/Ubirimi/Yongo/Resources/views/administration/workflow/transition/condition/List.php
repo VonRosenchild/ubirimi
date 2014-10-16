@@ -1,8 +1,9 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    require_once __DIR__ . '/../../../_header.php';
+require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
 
@@ -36,8 +37,7 @@
             <br />
             <div>
                 <span>Condition passes logical examination: </span>
-                <?php
-                    if (UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkLogicalConditionsByTransitionId($workflowDataId)): ?>
+                <?php if (UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkLogicalConditionsByTransitionId($workflowDataId)): ?>
                     <span style="background-color: greenyellow; padding: 4px">YES</span>
                 <?php else: ?>
                     <span style="background-color: red; padding: 4px">NO</span>

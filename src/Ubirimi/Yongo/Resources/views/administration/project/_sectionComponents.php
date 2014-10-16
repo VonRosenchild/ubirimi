@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Project\Project;
 
 ?>
 

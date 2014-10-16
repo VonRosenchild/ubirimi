@@ -2,6 +2,8 @@
 
 namespace Ubirimi\HelpDesk\Repository\Organization;
 
+use Ubirimi\Container\UbirimiContainer;
+
 class Organization
 {
     public function getByClientId($clientId) {
