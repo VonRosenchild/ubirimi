@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Workflow\Condition;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ListController extends UbirimiController
@@ -26,7 +28,7 @@ class ListController extends UbirimiController
             die();
         }
 
-        $condition = Condition::getByTransitionId($workflowDataId);
+        $condition = $this->getRepository('yongo.workflow.condition')->getByTransitionId($workflowDataId);
         $conditionString = $condition['definition_data'];
 
         $text_open_bracket = '<a class="button">(</a> ';

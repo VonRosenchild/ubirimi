@@ -17,6 +17,6 @@ class WorkflowService extends UbirimiService
         $creationData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getDataForCreation($workflowUsed['id']);
         $eventData = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE);
 
-        return WorkflowFunction::hasEvent($creationData['id'], 'event=' . $eventData['id']);
+        return $this->getRepository('yongo.workflow.workflowFunction')->hasEvent($creationData['id'], 'event=' . $eventData['id']);
     }
 }

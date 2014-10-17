@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class SaveController extends UbirimiController
 {
@@ -32,6 +33,6 @@ class SaveController extends UbirimiController
             $field_value = $field_values[2];
             $value = 'field_name=' . $field_name . '###field_value=' . $field_value;
         }
-        WorkflowFunction::addPostFunction($data['id'], $functionId, $value);
+        $this->getRepository('yongo.workflow.workflowFunction')->addPostFunction($data['id'], $functionId, $value);
     }
 }

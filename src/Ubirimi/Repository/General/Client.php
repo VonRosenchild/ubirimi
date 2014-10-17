@@ -43,7 +43,7 @@ class Client
     }
 
     public function deleteGroups($clientId) {
-        $groups = $this->getRepository('ubirimi.user.group')->getByClientId($clientId);
+        $groups = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByClientId($clientId);
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
             UbirimiContainer::get()['repository']->get('ubirimi.user.group')->deleteByIdForYongo($group['id']);
 
@@ -176,53 +176,53 @@ class Client
 
         $screen = Screen::getByName($clientId, 'Default Screen');
 
-        $summaryField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
+        $summaryField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
         Screen::addData($screen['id'], $summaryField['id'], 1, $currentDate);
 
-        $issueTypeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
+        $issueTypeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
         Screen::addData($screen['id'], $issueTypeField['id'], 2, $currentDate);
-        $priorityField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
+        $priorityField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
         Screen::addData($screen['id'], $priorityField['id'], 3, $currentDate);
-        $dueDateField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
+        $dueDateField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
         Screen::addData($screen['id'], $dueDateField['id'], 4, $currentDate);
-        $componentsField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
+        $componentsField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
         Screen::addData($screen['id'], $componentsField['id'], 5, $currentDate);
 
-        $affectsVersionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
+        $affectsVersionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
         Screen::addData($screen['id'], $affectsVersionField['id'], 6, $currentDate);
-        $fixVersionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $fixVersionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
         Screen::addData($screen['id'], $fixVersionField['id'], 7, $currentDate);
 
-        $assigneeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $assigneeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Screen::addData($screen['id'], $assigneeField['id'], 8, $currentDate);
 
-        $reporterField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_REPORTER_CODE);
+        $reporterField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_REPORTER_CODE);
         Screen::addData($screen['id'], $reporterField['id'], 9, $currentDate);
-        $environmentField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
+        $environmentField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
         Screen::addData($screen['id'], $environmentField['id'], 10, $currentDate);
 
-        $descriptionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
+        $descriptionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
         Screen::addData($screen['id'], $descriptionField['id'], 11, $currentDate);
-        $attachmentField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
+        $attachmentField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
         Screen::addData($screen['id'], $attachmentField['id'], 12, $currentDate);
 
-        $timeTrackingField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
+        $timeTrackingField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
         Screen::addData($screen['id'], $timeTrackingField['id'], 13, $currentDate);
 
         $screen = Screen::getByName($clientId, 'Resolve Issue Screen');
-        $assigneeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $assigneeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Screen::addData($screen['id'], $assigneeField['id'], 1, $currentDate);
 
-        $fixVersionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $fixVersionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
         Screen::addData($screen['id'], $fixVersionField['id'], 2, $currentDate);
-        $resolutionField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
+        $resolutionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
         Screen::addData($screen['id'], $resolutionField['id'], 3, $currentDate);
 
-        $commentField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMMENT_CODE);
+        $commentField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_COMMENT_CODE);
         Screen::addData($screen['id'], $commentField['id'], 4, $currentDate);
 
         $screen = Screen::getByName($clientId, 'Workflow Screen');
-        $assigneeField = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $assigneeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Screen::addData($screen['id'], $assigneeField['id'], 1, $currentDate);
     }
 
@@ -380,19 +380,19 @@ class Client
 
     public function deleteById($clientId) {
 
-        $clientData = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $clientData = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getById($clientId);
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete Yongo Product data
-        $projects = $this->getRepository('ubirimi.general.client')->getProjects($clientId);
+        $projects = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjects($clientId);
         while ($projects && $project = $projects->fetch_array(MYSQLI_ASSOC)) {
-            $this->getRepository('yongo.project.project')->deleteById($project['id']);
+            UbirimiContainer::get()['repository']->get('yongo.project.project')->deleteById($project['id']);
         }
 
-        $workflows = $this->getRepository('yongo.workflow.workflow')->getByClientId($clientId);
+        $workflows = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getByClientId($clientId);
         while ($workflows && $workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {
-            $this->getRepository('yongo.workflow.workflow')->deleteById($workflow['id']);
+            UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->deleteById($workflow['id']);
         }
         Scheme::deleteByClientId($clientId);
 
@@ -402,10 +402,10 @@ class Client
         }
         Scheme::deleteByClientId($clientId);
 
-        $this->getRepository('ubirimi.general.client')->deleteYongoIssueTypes($clientId);
-        $this->getRepository('ubirimi.general.client')->deleteYongoIssueStatuses($clientId);
-        $this->getRepository('ubirimi.general.client')->deleteYongoIssueResolutions($clientId);
-        $this->getRepository('ubirimi.general.client')->deleteYongoIssuePriorities($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteYongoIssueTypes($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteYongoIssueStatuses($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteYongoIssueResolutions($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteYongoIssuePriorities($clientId);
         Field::deleteByClientId($clientId);
 
         Configuration::deleteByClientId($clientId);
@@ -425,7 +425,7 @@ class Client
             SecurityScheme::deleteById($issueSecurityScheme['id']);
         }
 
-        $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
+        $users = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getUsers($clientId);
 
         if ($users) {
             $userIdsArray = array();
@@ -446,7 +446,7 @@ class Client
             UbirimiContainer::get()['db.connection']->query($query);
         }
 
-        $this->getRepository('ubirimi.general.client')->deleteGroups($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteGroups($clientId);
 
         $query = 'delete from permission_role where client_id = ' . $clientId;
         UbirimiContainer::get()['db.connection']->query($query);
@@ -479,21 +479,21 @@ class Client
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete Cheetah Product data
-        $agileBoards = $this->getRepository('agile.board.board')->getByClientId($clientId, 'array');
+        $agileBoards = UbirimiContainer::get()['repository']->get('agile.board.board')->getByClientId($clientId, 'array');
         if ($agileBoards) {
             for ($i = 0; $i < count($agileBoards); $i++) {
-                $this->getRepository('agile.board.board')->deleteById($agileBoards[$i]['id']);
+                UbirimiContainer::get()['repository']->get('agile.board.board')->deleteById($agileBoards[$i]['id']);
             }
         }
 
         // delete Events Product data
-        $this->getRepository('ubirimi.general.client')->deleteCalendars($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteCalendars($clientId);
 
         // delete SVN Product data
-        $this->getRepository('ubirimi.general.client')->deleteSVNRepositories($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteSVNRepositories($clientId);
 
         // delete Documentador Product data
-        $this->getRepository('ubirimi.general.client')->deleteSpaces($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->deleteSpaces($clientId);
 
         $query = 'delete from client where id = ' . $clientId . ' limit 1';
         UbirimiContainer::get()['db.connection']->query($query);
@@ -761,28 +761,28 @@ class Client
         $screenWorkflowData = Screen::getByName($clientId, 'Workflow Screen');
         $screenWorkflowId = $screenWorkflowData['id'];
 
-        $createStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, null, 'Create Issue', 1);
+        $createStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, null, 'Create Issue', 1);
 
         $statusOpenIdData = Settings::getByName($clientId, 'status', 'Open');
         $statusOpenId = $statusOpenIdData['id'];
-        $openStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
+        $openStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
 
         $statusInProgressIdData = Settings::getByName($clientId, 'status', 'In Progress');
         $statusInProgressId = $statusInProgressIdData['id'];
 
-        $inProgressStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
+        $inProgressStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
 
         $statusClosedIdData = Settings::getByName($clientId, 'status', 'Closed');
         $statusClosedId = $statusClosedIdData['id'];
-        $closedStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
+        $closedStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
 
         $statusResolvedIdData = Settings::getByName($clientId, 'status', 'Resolved');
         $statusResolvedId = $statusResolvedIdData['id'];
-        $resolvedStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
+        $resolvedStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
 
         $statusReopenedIdData = Settings::getByName($clientId, 'status', 'Reopened');
         $statusReopenedId = $statusReopenedIdData['id'];
-        $reopenedStepId = $this->getRepository('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
+        $reopenedStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
 
         $eventIssueWorkStoppedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
         $eventIssueCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
@@ -794,145 +794,145 @@ class Client
         $eventIssueReopenedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_REOPENED_CODE, 'id');
 
         // create issue -----> open
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $createStepId, $openStepId, 'Create Issue', '');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, null, $createStepId, $openStepId, 'Create Issue', '');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_CREATE_ISSUE, 'create_issue');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueCreatedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_CREATE_ISSUE, 'create_issue');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueCreatedId);
 
         // open ------> in progress
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $openStepId, $inProgressStepId, 'Start Progress', '');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, null, $openStepId, $inProgressStepId, 'Start Progress', '');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
         $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // open ------> closed
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $openStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $openStepId, $closedStepId, 'Close Issue', '');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // open ------> resolved
 
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $openStepId, $resolvedStepId, 'Resolve Issue', '');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $openStepId, $resolvedStepId, 'Resolve Issue', '');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // in progress ------> open
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $inProgressStepId, $openStepId, 'Stop Progress', '');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, null, $inProgressStepId, $openStepId, 'Stop Progress', '');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
 
         $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // in progress ------> resolved
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $resolvedStepId, 'Resolve Issue', '');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $resolvedStepId, 'Resolve Issue', '');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // in progress ------> closed
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $closedStepId, 'Close Issue', '');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // resolved ------> closed
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $closedStepId, 'Close Issue', '');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // resolved ------> reopened
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $reopenedStepId, 'Reopen Issue', '');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $reopenedStepId, 'Reopen Issue', '');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // reopened ------> resolved
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $resolvedStepId, 'Resolve Issue', '');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $resolvedStepId, 'Resolve Issue', '');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // reopened ------> closed
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $closedStepId, 'Close Issue', '');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $closedStepId, 'Close Issue', '');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // reopened ------> In progress
 
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, null, $reopenedStepId, $inProgressStepId, 'Start Progress', '');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, null, $reopenedStepId, $inProgressStepId, 'Start Progress', '');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
         $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
 
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // closed ------> reopened
-        $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $closedStepId, $reopenedStepId, 'Reopen Issue', '');
+        $transitionId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($workflowId, $screenWorkflowId, $closedStepId, $reopenedStepId, 'Reopen Issue', '');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
+        UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($transitionId, $definitionData);
 
         // save the position of the elements
         // create node
@@ -1263,55 +1263,55 @@ class Client
     }
 
     public function createDefaultFieldConfigurationData($clientId, $fieldConfigurationId) {
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMMENT_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_COMMENT_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
 
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
-
-        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
 
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_REPORTER_CODE);
-
-        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
-
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
-
-        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
-
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_REPORTER_CODE);
 
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
-        $field = $this->getRepository('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
+
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
+
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
+
+        Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
         Configuration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
     }
 
     public function addDefaultDocumentatorGlobalPermissionData($clientId) {
-        $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
-        $groupUsers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
+        $groupAdministrators = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
+        $groupUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
 
         $groupAdministratorsId = $groupAdministrators['id'];
         $groupUsersId = $groupUsers['id'];
@@ -1447,72 +1447,72 @@ class Client
     public function installYongoProduct($clientId, $userId, $clientCreatedDate) {
 
         // set default YONGO Product Settings
-        $this->getRepository('ubirimi.general.client')->createDefaultYongoSettings($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultYongoSettings($clientId);
 
         // add default issue priorities, statuses, resolutions
-        $this->getRepository('ubirimi.general.client')->createDefaultIssuePriorities($clientId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultIssueStatuses($clientId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultIssueResolutions($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssuePriorities($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueStatuses($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueResolutions($clientId, $clientCreatedDate);
 
         // create default Screens
-        $this->getRepository('ubirimi.general.client')->createDefaultScreens($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultScreens($clientId, $clientCreatedDate);
 
-        $screenSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultScreenScheme($clientId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
+        $screenSchemeId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultScreenScheme($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
 
         // create default issue types
-        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypes($clientId, $clientCreatedDate);
-        $issueTypeSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScheme($clientId, 'project', $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypes($clientId, $clientCreatedDate);
+        $issueTypeSchemeId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeScheme($clientId, 'project', $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
 
         // create default workflow issue type scheme
-        $workflowIssueTypeSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+        $workflowIssueTypeSchemeId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
 
         // create default issue type screen scheme
-        $issueTypeScreenSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
+        $issueTypeScreenSchemeId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
 
         // create default events
-        $this->getRepository('ubirimi.general.client')->createDefaultEvents($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultEvents($clientId, $clientCreatedDate);
 
         // create default workflow
-        $workflowId = $this->getRepository('ubirimi.general.client')->createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
+        $workflowId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
 
         // create default workflow scheme
-        $workflowSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultWorkflowScheme($clientId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
+        $workflowSchemeId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultWorkflowScheme($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
 
         // create Default Fields
-        $this->getRepository('ubirimi.general.client')->createDefaultFields($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultFields($clientId, $clientCreatedDate);
 
         // create default link issue options
-        $this->getRepository('ubirimi.general.client')->createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
 
         // create default field configurations
-        $fieldConfigurationId = $this->getRepository('ubirimi.general.client')->createDefaultFieldConfiguration($clientId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
-        $issueTypeFieldConfigurationId = $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
+        $fieldConfigurationId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultFieldConfiguration($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
+        $issueTypeFieldConfigurationId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
 
-        $this->getRepository('ubirimi.general.client')->createDefaultScreenData($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultScreenData($clientId, $clientCreatedDate);
 
         // create default permission roles
         UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultPermissionRoles($clientId, $clientCreatedDate);
 
         // create default group names
-        $this->getRepository('ubirimi.user.group')->addDefaultYongoGroups($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.user.group')->addDefaultYongoGroups($clientId, $clientCreatedDate);
 
         $roleAdministrators = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Administrators');
 
         $roleDevelopers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Developers');
         $roleUsers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Users');
 
-        $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Administrators');
+        $groupAdministrators = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Administrators');
 
-        $groupDevelopers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Developers');
-        $groupUsers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Users');
+        $groupDevelopers = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Developers');
+        $groupUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Users');
 
         UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
         UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
@@ -1520,22 +1520,22 @@ class Client
         UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
 
         // add in Administrators group the current user
-        $this->getRepository('ubirimi.user.group')->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.user.group')->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
 
-        $this->getRepository('ubirimi.user.group')->addData($groupDevelopers['id'], array($userId), $clientCreatedDate);
-        $this->getRepository('ubirimi.user.group')->addData($groupUsers['id'], array($userId), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.user.group')->addData($groupDevelopers['id'], array($userId), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.user.group')->addData($groupUsers['id'], array($userId), $clientCreatedDate);
 
         // create default permission scheme
-        $permissionSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultPermissionScheme($clientId, $clientCreatedDate);
+        $permissionSchemeId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultPermissionScheme($clientId, $clientCreatedDate);
 
         Scheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
 
         // create default notification scheme
-        $notificationSchemeId = $this->getRepository('ubirimi.general.client')->createDefaultNotificationScheme($clientId, $clientCreatedDate);
+        $notificationSchemeId = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->createDefaultNotificationScheme($clientId, $clientCreatedDate);
         Scheme::addDefaultNotifications($clientId, $notificationSchemeId);
 
         // add global permission
-        $this->getRepository('ubirimi.general.client')->addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
     }
 
     public function toggleIssueLinkingFeature($clientId) {
@@ -1617,22 +1617,22 @@ class Client
     }
 
     public function install($clientId) {
-        $clientData = $this->getRepository('ubirimi.general.client')->getById($clientId);
-        $userData = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
+        $clientData = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getById($clientId);
+        $userData = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getUsers($clientId);
         $user = $userData->fetch_array(MYSQLI_ASSOC);
         $userId = $user['id'];
 
         $clientCreatedDate = $clientData['date_created'];
 
-        $this->getRepository('ubirimi.general.client')->installYongoProduct($clientId, $userId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->installCalendarProduct($clientId, $userId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->installYongoProduct($clientId, $userId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->installCalendarProduct($clientId, $userId, $clientCreatedDate);
 
-        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
-        $this->getRepository('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
 
         SMTPServer::add(
             $clientId,
@@ -1651,7 +1651,7 @@ class Client
             $clientCreatedDate
         );
 
-        $this->getRepository('ubirimi.general.client')->setInstalledFlag($clientId, 1);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->setInstalledFlag($clientId, 1);
     }
 
     public function addDefaultDocumentatorUserGroups($clientId, $date) {
@@ -1781,24 +1781,24 @@ class Client
     }
 
     public function installDocumentatorProduct($clientId, $userId, $clientCreatedDate) {
-        $this->getRepository('ubirimi.general.client')->addDefaultDocumentatorUserGroups($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addDefaultDocumentatorUserGroups($clientId, $clientCreatedDate);
 
-        $groupAdministrators = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
-        $groupUsers = $this->getRepository('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
+        $groupAdministrators = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
+        $groupUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
 
         // add in Administrators/Users groups the current user
-        $this->getRepository('ubirimi.user.group')->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.user.group')->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
 
-        $this->getRepository('ubirimi.user.group')->addData($groupUsers['id'], array($userId), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get('ubirimi.user.group')->addData($groupUsers['id'], array($userId), $clientCreatedDate);
 
-        $this->getRepository('ubirimi.general.client')->addDefaultDocumentatorSettings($clientId);
-        $this->getRepository('ubirimi.general.client')->addDefaultDocumentatorGlobalPermissionData($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addDefaultDocumentatorSettings($clientId);
+        UbirimiContainer::get()['repository']->get('ubirimi.general.client')->addDefaultDocumentatorGlobalPermissionData($clientId);
     }
 
     public function installCalendarProduct($clientId, $userId, $clientCreatedDate) {
 
         // create default calendar for the first user
-        $userData = $this->getRepository('ubirimi.user.user')->getById($userId);
+        $userData = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($userId);
 
         $calendarId = Calendar::save($userData['id'], $userData['first_name'] . ' ' . $userData['last_name'], 'My default calendar', '#A1FF9E', $clientCreatedDate, 1);
 

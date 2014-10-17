@@ -1,11 +1,12 @@
-<div id="reminder_content_<?php
+<?php
 
-
-
-    echo $uniqueId ?>">
+use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Calendar\Repository\Reminder\Type;
+?>
+<div id="reminder_content_<?php echo $uniqueId ?>">
     <select name="reminder_type_<?php echo $uniqueId; ?>" class="select2InputSmall">
         <option value="<?php
-            echo CalendarReminderType::REMINDER_EMAIL ?>">Email</option>
+            echo Type::REMINDER_EMAIL ?>">Email</option>
     </select>
     &nbsp;
     <input

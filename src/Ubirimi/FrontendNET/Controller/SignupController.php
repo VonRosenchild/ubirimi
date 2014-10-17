@@ -36,9 +36,9 @@ class SignupController extends UbirimiController
             'duplicate_username' => false,
             'invalid_username' => false);
 
-        if ($request->request->get('cancel')) {
+        if ($request->request->has('cancel')) {
             return new RedirectResponse('/');
-        } else if (isset($_POST['create-user-account'])) {
+        } else if ($request->request->has('create-user-account')) {
 
             $email = Util::cleanRegularInputField($request->request->get('email'));
             $firstName = Util::cleanRegularInputField($request->request->get('first_name'));

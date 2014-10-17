@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class AddDataController extends UbirimiController
 {
@@ -20,11 +21,11 @@ class AddDataController extends UbirimiController
 
         $workflowDataId = $request->get('id');
         $postFunctionId = $request->get('function_id');
-        $postFunctionSelected = WorkflowFunction::getById($postFunctionId);
+        $postFunctionSelected = $this->getRepository('yongo.workflow.workflowFunction')->getById($postFunctionId);
         $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 
-        $postFunctions = WorkflowFunction::getAll();
+        $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
 
         if (isset($_POST['add_parameters'])) {
 
@@ -33,7 +34,7 @@ class AddDataController extends UbirimiController
                 $field_value = $request->request->get('field_value');
                 $value = 'field_name=' . $field_name . '###field_value=' . $field_value;
 
-                WorkflowFunction::addPostFunction($workflowDataId, $postFunctionId, $value);
+                $this->getRepository('yongo.workflow.workflowFunction')->addPostFunction($workflowDataId, $postFunctionId, $value);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);

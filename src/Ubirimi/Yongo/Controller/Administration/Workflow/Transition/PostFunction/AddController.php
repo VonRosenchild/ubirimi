@@ -20,7 +20,7 @@ class AddController extends UbirimiController
         $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
 
-        $postFunctions = WorkflowFunction::getAll();
+        $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
 
         $errors = array('no_function_selected' => false);
 

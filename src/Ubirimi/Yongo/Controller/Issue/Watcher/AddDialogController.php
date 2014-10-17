@@ -22,7 +22,7 @@ class AddDialogController extends UbirimiController
 
         $issueData = $this->getRepository('yongo.issue.issue')->getByIdSimple($issueId);
 
-        $watchers = Watcher::getByIssueId($issueId);
+        $watchers = $this->getRepository('yongo.issue.watcher')->getByIssueId($issueId);
         // todo: users watchers de aici trebuie sa fie useri ce au permisiune de browsing la proiectul acesta
         $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
         $watcherArray = array();

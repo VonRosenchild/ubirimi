@@ -25,7 +25,7 @@ class AddController extends UbirimiController
             header('Location: /general-settings/bad-link-access-denied');
             die();
         }
-        $conditions = Condition::getAll();
+        $conditions = $this->getRepository('yongo.workflow.condition')->getAll();
         $menuSelectedCategory = 'issue';
         $checkedHTML = 'checked="checked"';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Condition';

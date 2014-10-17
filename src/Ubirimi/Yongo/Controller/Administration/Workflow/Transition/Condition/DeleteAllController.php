@@ -18,7 +18,7 @@ class DeleteAllController extends UbirimiController
 
         $transitionId = $request->request->get('id');
 
-        Condition::deleteByTransitionId($transitionId);
+        $this->getRepository('yongo.workflow.condition')->deleteByTransitionId($transitionId);
 
         return new Response('');
     }

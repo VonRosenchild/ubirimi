@@ -1,3 +1,5 @@
+<?php use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction; ?>
+
 <?php if ($functionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>
     <div>Description: <?php echo $function['description'] ?></div>
     <div>

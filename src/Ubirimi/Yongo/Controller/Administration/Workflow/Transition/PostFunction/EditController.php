@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class EditController extends UbirimiController
 {
@@ -30,7 +31,7 @@ class EditController extends UbirimiController
                     $fieldValue = $request->request->get('field_value');
                     $definitionData = 'field_name=' . $fieldCode . '###field_value=' . $fieldValue;
 
-                    WorkflowFunction::updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
+                    $this->getRepository('yongo.workflow.workflowFunction')->updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
 
                     break;
 
@@ -39,7 +40,7 @@ class EditController extends UbirimiController
                     $event = $request->request->get('fire_event');
                     $definitionData = 'event=' . $event;
 
-                    WorkflowFunction::updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
+                    $this->getRepository('yongo.workflow.workflowFunction')->updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
 
                     break;
             }
@@ -52,7 +53,7 @@ class EditController extends UbirimiController
 
         $workflowPostFunctionDataId = $request->get('id');
 
-        $workflowPostFunctionData = WorkflowFunction::getDataById($workflowPostFunctionDataId);
+        $workflowPostFunctionData = $this->getRepository('yongo.workflow.workflowFunction')->getDataById($workflowPostFunctionDataId);
 
         $postFunctionId = $workflowPostFunctionData['function_id'];
         $definitionData = $workflowPostFunctionData['definition_data'];

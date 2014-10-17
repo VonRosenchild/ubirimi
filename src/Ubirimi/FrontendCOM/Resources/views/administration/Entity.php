@@ -1,8 +1,8 @@
 <?php
 
-    use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\User;
 
-    require_once __DIR__ . '/_header.php';
+require_once __DIR__ . '/_header.php';
 ?>
 <body>
 

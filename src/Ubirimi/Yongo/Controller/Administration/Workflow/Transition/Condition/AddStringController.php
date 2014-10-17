@@ -18,18 +18,18 @@ class AddStringController extends UbirimiController
         $transitionId = $request->request->get('transition_id');
         $type = $request->request->get('type');
 
-        $conditionData = Condition::getByTransitionId($transitionId);
+        $conditionData = $this->getRepository('yongo.workflow.condition')->getByTransitionId($transitionId);
         if (!$conditionData)
             $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, '');
 
         if ($type == 'open_bracket')
-            Condition::addConditionString($transitionId, '(');
+            $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, '(');
         else if ($type == 'closed_bracket')
-            Condition::addConditionString($transitionId, ')');
+            $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, ')');
         else if ($type == 'operator_and')
 
-            Condition::addConditionString($transitionId, '[[AND]]');
+            $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, '[[AND]]');
         else if ($type == 'operator_or')
-            Condition::addConditionString($transitionId, '[[OR]]');
+        $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, '[[OR]]');
     }
 }

@@ -17,7 +17,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $postFunctionDataId = $request->request->get('id');
-        WorkflowFunction::deleteByPostFunctionDataId($postFunctionDataId);
+        $this->getRepository('yongo.workflow.workflowFunction')->deleteByPostFunctionDataId($postFunctionDataId);
 
         return new Response('');
     }

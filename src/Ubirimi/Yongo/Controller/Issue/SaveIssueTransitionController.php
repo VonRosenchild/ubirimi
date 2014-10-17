@@ -94,7 +94,7 @@ class SaveIssueTransitionController extends UbirimiController
                 if (count($issueCustomFieldsData)) {
                     CustomField::updateCustomFieldsData($issueId, $issueCustomFieldsData, $currentDate);
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
 
             }
 
@@ -103,7 +103,7 @@ class SaveIssueTransitionController extends UbirimiController
                 Email::$smtpSettings = $smtpSettings;
             }
 
-            WorkflowFunction::triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
+            $this->getRepository('yongo.workflow.workflowFunction')->triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
 
             // update the date_updated field
             $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);

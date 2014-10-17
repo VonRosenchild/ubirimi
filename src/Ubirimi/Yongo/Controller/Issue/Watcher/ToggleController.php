@@ -22,9 +22,9 @@ class ToggleController extends UbirimiController
         $currentDate = Util::getServerCurrentDateTime();
 
         if ($action == 'add') {
-            Watcher::addWatcher($issueId, $loggedInUserId, $currentDate);
+            $this->getRepository('yongo.issue.watcher')->addWatcher($issueId, $loggedInUserId, $currentDate);
         } else if ($action == 'remove') {
-            Watcher::deleteByUserIdAndIssueId($issueId, $loggedInUserId);
+            $this->getRepository('yongo.issue.watcher')->deleteByUserIdAndIssueId($issueId, $loggedInUserId);
         }
 
         // update the date_updated field

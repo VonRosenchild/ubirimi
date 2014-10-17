@@ -27,7 +27,7 @@ class ListController extends UbirimiController
             die();
         }
 
-        $postFunctions = WorkflowFunction::getByWorkflowDataId($workflowDataId);
+        $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getByWorkflowDataId($workflowDataId);
 
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Transition Post Function';

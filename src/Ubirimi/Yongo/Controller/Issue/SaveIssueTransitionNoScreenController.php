@@ -42,7 +42,7 @@ class SaveIssueTransitionNoScreenController extends UbirimiController
             }
 
             $date = Util::getServerCurrentDateTime();
-            WorkflowFunction::triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
+            $this->getRepository('yongo.workflow.workflowFunction')->triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
 
             // update the date_updated field
             $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $date), $date);
