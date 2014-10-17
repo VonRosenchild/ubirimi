@@ -758,7 +758,7 @@ class Issue
         UbirimiContainer::get()['repository']->get('yongo.issue.comment')->deleteByIssueId($issueId);
         History::deleteByIssueId($issueId);
         Component::deleteByIssueId($issueId);
-        Version::deleteByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueId($issueId);
 
         Watcher::deleteByIssueId($issueId);
         Issue::deleteSLADataByIssueId($issueId);
@@ -1182,19 +1182,19 @@ class Issue
         $stmt->execute();
 
         if (array_key_exists(Field::FIELD_AFFECTS_VERSION_CODE, $data)) {
-            Version::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
             if ($data[Field::FIELD_AFFECTS_VERSION_CODE])
                 Issue::addComponentVersion($issueId, $data['affects_version'], 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
         if (array_key_exists(Field::FIELD_FIX_VERSION_CODE, $data)) {
-            Version::deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+            UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
             if ($data[Field::FIELD_FIX_VERSION_CODE])
                 Issue::addComponentVersion($issueId, $data['fix_version'], 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
         }
 
         if (array_key_exists(Field::FIELD_COMPONENT_CODE, $data)) {
-            Component::deleteByIssueId($issueId);
+            UbirimiContainer::get()['repository']->get('yongo.issue.component')->deleteByIssueId($issueId);
             if ($data[Field::FIELD_COMPONENT_CODE])
                 Issue::addComponentVersion($issueId, $data['component'], 'issue_component');
         }
@@ -1248,8 +1248,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_ISSUE_TYPE_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = Type::getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
-            $fieldChangedNewValueRow = Type::getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
             $fieldChanges[] = array(Field::FIELD_ISSUE_TYPE_CODE,
                                     $fieldChangedOldValueRow['name'],
                                     $fieldChangedNewValueRow['name'],
@@ -1258,8 +1258,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_PRIORITY_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = Settings::getById($oldIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
-            $fieldChangedNewValueRow = Settings::getById($newIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
+            $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($oldIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
+            $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($newIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
 
             $fieldChanges[] = array(Field::FIELD_PRIORITY_CODE,
                                     $fieldChangedOldValueRow['name'],
@@ -1269,8 +1269,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_STATUS_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = Settings::getById($oldIssueData[Field::FIELD_STATUS_CODE], 'status');
-            $fieldChangedNewValueRow = Settings::getById($newIssueData[Field::FIELD_STATUS_CODE], 'status');
+            $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($oldIssueData[Field::FIELD_STATUS_CODE], 'status');
+            $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($newIssueData[Field::FIELD_STATUS_CODE], 'status');
             $fieldChanges[] = array(Field::FIELD_STATUS_CODE,
                                     $fieldChangedOldValueRow['name'],
                                     $fieldChangedNewValueRow['name'],
@@ -1279,8 +1279,8 @@ class Issue
         }
 
         if (Issue::issueFieldChanged(Field::FIELD_RESOLUTION_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = Settings::getById($oldIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
-            $fieldChangedNewValueRow = Settings::getById($newIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
+            $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($oldIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
+            $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($newIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
 
             $fieldChanges[] = array(Field::FIELD_RESOLUTION_CODE,
                                     $fieldChangedOldValueRow['name'],
@@ -1321,19 +1321,19 @@ class Issue
         $newIssueData['fix_version'] = array();
         $newIssueData['fix_version_ids'] = array();
 
-        $components = Component::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], 'array');
+        $components = UbirimiContainer::get()['repository']->get('yongo.issue.component')-getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], 'array');
         for ($i = 0; $i < count($components); $i++) {
             $newIssueData['component'][] = $components[$i]['name'];
             $newIssueData['component_ids'][] = $components[$i]['id'];
         }
 
-        $affectsVersions = Version::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
+        $affectsVersions = UbirimiContainer::get()['repository']->get('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array');
         for ($i = 0; $i < count($affectsVersions); $i++) {
             $newIssueData['affects_version'][] = $affectsVersions[$i]['name'];
             $newIssueData['affects_version_ids'][] = $affectsVersions[$i]['id'];
         }
 
-        $fixVersions = Version::getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
+        $fixVersions = UbirimiContainer::get()['repository']->get('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG, 'array');
         for ($i = 0; $i < count($fixVersions); $i++) {
             $newIssueData['fix_version'][] = $fixVersions[$i]['name'];
             $newIssueData['fix_version_ids'][] = $fixVersions[$i]['id'];
@@ -1367,7 +1367,7 @@ class Issue
         foreach ($newIssueCustomFieldsData as $key => $value) {
             $fieldData = UbirimiContainer::get()['repository']->get('yongo.field.field')->getById($key);
 
-            $oldCustomFieldValue = CustomField::getCustomFieldsDataByFieldId($issueId, $key);
+            $oldCustomFieldValue = UbirimiContainer::get()['repository']->get('yongo.issue.customField')->getCustomFieldsDataByFieldId($issueId, $key);
             if ($oldCustomFieldValue) {
                 switch ($fieldData['sys_field_type_id']) {
                     case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE_ID;
@@ -1584,9 +1584,9 @@ class Issue
                 // update last issue number for this project
                 UbirimiContainer::get()['repository']->get('yongo.project.project')->updateLastIssueNumber($newProjectId, $nextNumber);
 
-                Version::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
-                Version::deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-                Component::deleteByIssueId($subTaskId);
+                UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_FIX_VERSION_FLAG);
+                UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueIdAndFlag($subTaskId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+                UbirimiContainer::get()['repository']->get('yongo.issue.component')->deleteByIssueId($subTaskId);
 
                 // also update the issue type Id if necessary
                 for ($i = 0; $i < count($newSubTaskIssueTypeIds); $i++) {
@@ -1647,7 +1647,7 @@ class Issue
     public function prepareWhereClauseFromQueue($queueDefinition, $userId, $projectId, $clientId) {
 
         $value = mb_strtolower($queueDefinition);
-        $SLAs = Sla::getByProjectId($projectId, 'array', "LENGTH('name') DESC");
+        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId, 'array', "LENGTH('name') DESC");
 
         foreach ($SLAs as $SLA) {
             if (stripos($value, mb_strtolower($SLA['name'])) !== false) {
@@ -1666,10 +1666,10 @@ class Issue
         $value = str_ireplace('resolution', 'issue_main_table.resolution_id', $value);
         $value = str_ireplace('= unresolved', 'IS NULL', $value);
 
-        $statuses = Settings::getAllIssueSettings('status', $clientId);
-        $priorities = Settings::getAllIssueSettings('priority', $clientId);
-        $resolutions = Settings::getAllIssueSettings('resolution', $clientId);
-        $types = Type::getAll($clientId);
+        $statuses = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('status', $clientId);
+        $priorities = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('priority', $clientId);
+        $resolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
+        $types = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getAll($clientId);
 
         while ($statuses && $status = $statuses->fetch_array(MYSQLI_ASSOC)) {
             $value = str_ireplace(mb_strtolower($status['name']), $status['id'], $value);
@@ -1699,7 +1699,7 @@ class Issue
     }
 
     public function updateSLADataForProject($clientId, $projectId, $userId, $clientSettings) {
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId);
 
         if ($SLAs) {
 
@@ -1710,7 +1710,7 @@ class Issue
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
                 while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                    $slaData = Sla::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
+                    $slaData = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
 
                     if ($slaData[0]) {
                         Issue::updateSLAValueOnly($issue['id'], $SLA['id'], $slaData[0]);
@@ -1726,16 +1726,16 @@ class Issue
     public function updateSLAValue($issue, $clientId, $clientSettings) {
         $slasPrintData = array();
         $projectId = $issue['issue_project_id'];
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId);
 
         if ($SLAs) {
             // check issue against the SLAs
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
-                $slaData = Sla::getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
+                $slaData = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
                 if ($slaData) {
                     $slasPrintData[] = $slaData;
-                    Sla::updateDataForSLA($issue['id'], $slaData['slaId'], $slaData['intervalMinutes'], $slaData['goalId'], $slaData['startDate'], $slaData['endDate']);
+                    UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->updateDataForSLA($issue['id'], $slaData['slaId'], $slaData['intervalMinutes'], $slaData['goalId'], $slaData['startDate'], $slaData['endDate']);
                 }
             }
         }
@@ -1744,7 +1744,7 @@ class Issue
     }
 
     public function addPlainSLAData($issueId, $projectId) {
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId);
         if ($SLAs) {
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
                 $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id) VALUES (?, ?)";
@@ -1776,7 +1776,7 @@ class Issue
         $projectsForBrowsing->data_seek(0);
         $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
-        $allClientIssueTypes = Type::getByProjects($projectIds);
+        $allClientIssueTypes = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getByProjects($projectIds);
         $criteria = array();
         $issueTypeArray = array();
         while ($allClientIssueTypes && $issueType = $allClientIssueTypes->fetch_array(MYSQLI_ASSOC)) {
@@ -1793,7 +1793,7 @@ class Issue
         }
         $criteria['all_client_issue_type'] = $issueTypeArray;
 
-        $allClientIssueStatuses = Settings::getAllIssueSettings('status', $clientId);
+        $allClientIssueStatuses = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('status', $clientId);
         $issueStatusArray = array();
         while ($issueStatus = $allClientIssueStatuses->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
@@ -1809,7 +1809,7 @@ class Issue
         }
         $criteria['all_client_issue_status'] = $issueStatusArray;
 
-        $allClientIssuePriorities = Settings::getAllIssueSettings('priority', $clientId);
+        $allClientIssuePriorities = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('priority', $clientId);
 
         $issuePriorityArray = array();
         while ($issuePriority = $allClientIssuePriorities->fetch_array(MYSQLI_ASSOC)) {
@@ -1826,7 +1826,7 @@ class Issue
         }
         $criteria['all_client_issue_priority'] = $issuePriorityArray;
 
-        $allClientIssueResolutions = Settings::getAllIssueSettings('resolution', $clientId);
+        $allClientIssueResolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
         $issueResolutionArray = array();
         while ($issueResolution = $allClientIssueResolutions->fetch_array(MYSQLI_ASSOC)) {
             $found = false;
