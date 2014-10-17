@@ -65,7 +65,7 @@
         </header>
 
         <?php if ($page == 'index'): ?>
-            <div style="width: 100%; margin-top: 4px; height: 500px; background-color: rgba(44, 185, 232, 0.46); vertical-align: middle" align="center">
+            <div style="width: 100%; margin-top: 2px; height: 500px; background-color: rgba(44, 185, 232, 0.46); vertical-align: middle" align="center">
                 <div class="splash">Fast, most affordable productivity tools</div>
                 <div class="splash_small">Plan, work together, organize, stay in touch</div>
             </div>
