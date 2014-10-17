@@ -1,5 +1,5 @@
 .doc-left-side {
-    position: absolute;
+    position: fixed;
     width: 264px;
     visibility: visible;
     top: 124px;

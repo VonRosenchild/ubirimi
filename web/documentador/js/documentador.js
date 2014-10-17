@@ -1,5 +1,19 @@
 $('document').ready(function () {
-    $('.doc-left-side').css('height', ($(document).height() - 123 - 137) + 'px');
+
+    $(window).scroll(function(){
+        console.log($(this).scrollTop());
+        if ($(this).scrollTop() == 0) {
+            $('.doc-left-side').css('top', '124px');
+        } else if ($(this).scrollTop() < 108) {
+            $('.doc-left-side').css('top', 124 - ($(this).scrollTop()) + 'px');
+            $('.doc-left-side').css('height', ($(window).height() - 123 + $(this).scrollTop()) + 10 + 'px');
+        } else {
+            $('.doc-left-side').css('top', '-1px');
+        }
+
+    });
+
+    $('.doc-left-side').css('height', ($(window).height() - 123) + 'px');
 
     $('#doc_view_page_add_comment_content').click(function (event) {
         event.preventDefault();

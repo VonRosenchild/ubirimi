@@ -38,10 +38,7 @@ class EditController extends UbirimiController
         $menuSelectedCategory = 'documentator';
 
         $session->set('current_edit_entity_id', $entityId);
-
         $name = $page['name'];
-
-
 
         $now = date('Y-m-d H:i:s');
         $activeSnapshots = $this->getRepository('documentador.entity.entity')->getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
@@ -61,8 +58,6 @@ class EditController extends UbirimiController
         // see if the user editing the page has a draft saved
         $lastUserSnapshot = $this->getRepository('documentador.entity.entity')->getLastSnapshot($entityId, $loggedInUserId);
 
-        var_dump($request->request->get('edit_page'));
-//        die('sssssssssss');
         if ($request->get('edit_page')) {
             $name = $request->request->get('name');
             $content = $request->request->get('content');

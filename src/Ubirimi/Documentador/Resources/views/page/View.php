@@ -24,7 +24,7 @@ use Ubirimi\LinkHelper;
             Util::renderBreadCrumb($breadCrumb);
         }
     ?>
-    <div id="sticky-anchor"></div>
+
     <div class="doc-left-side">
         dasdasdas
     </div>
