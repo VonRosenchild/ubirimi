@@ -165,7 +165,7 @@ class Util {
         return preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $email);
     }
 
-    public static function getFormattedDate($date, $timezone) {
+    public static function getFormattedDate($date, $timezone = null) {
         $dateObject = new \DateTime($date, new \DateTimeZone(date_default_timezone_get()));
 
         if ($timezone) {

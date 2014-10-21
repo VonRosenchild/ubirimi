@@ -1,6 +1,7 @@
 <?php
 
 use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Calendar\Repository\Reminder\Type;
 use Ubirimi\Util;
 
 require_once __DIR__ . '/_header.php';
@@ -22,7 +23,7 @@ require_once __DIR__ . '/_header.php';
                             <span>By default, remind me via</span>
                             <br />
                             <select name="reminder_type_<?php echo $defaultReminder['id'] ?>" class="select2InputSmall">
-                                <option value="<?php echo CalendarReminderType::REMINDER_EMAIL ?>">Email</option>
+                                <option value="<?php echo Type::REMINDER_EMAIL ?>">Email</option>
                             </select>
                             &nbsp;
                             <input type="text"

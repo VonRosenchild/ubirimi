@@ -45,7 +45,7 @@ class SaveIssueTransitionController extends UbirimiController
         for ($i = 0; $i < count($attIdsSession); $i++) {
             $attachmentId = $attIdsSession[$i];
             if (!in_array($attachmentId, $attachIdsToBeKept)) {
-                $attachment = Attachment::getById($attachmentId);
+                $attachment = $this->getRepository('yongo.issue.attachment')->getById($attachmentId);
                 Attachment::deleteById($attachmentId);
                 unlink('./../../..' . $attachment['path'] . '/' . $attachment['name']);
             }

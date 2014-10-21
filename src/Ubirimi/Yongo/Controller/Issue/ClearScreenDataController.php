@@ -26,7 +26,7 @@ class ClearScreenDataController extends UbirimiController
 
                 $attachmentId = $attIdsSession[$i];
 
-                Attachment::deleteById($attachmentId);
+                $this->getRepository('yongo.issue.attachment')->deleteById($attachmentId);
 
                 if ($issueId) {
                     Util::deleteDir(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId . '/' . $attachmentId);
