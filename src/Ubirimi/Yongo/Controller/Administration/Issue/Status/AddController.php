@@ -26,7 +26,7 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $status = Settings::getByName($session->get('client/id'), 'status', mb_strtolower($name));
+            $status = $this->getRepository('yongo.issue.settings')->getByName($session->get('client/id'), 'status', mb_strtolower($name));
 
             if ($status)
                 $statusExists = true;
@@ -34,7 +34,7 @@ class AddController extends UbirimiController
             if (!$emptyName && !$statusExists) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Settings::create(
+                $this->getRepository('yongo.issue.settings')->create(
                     'issue_status',
                     $session->get('client/id'),
                     $name,

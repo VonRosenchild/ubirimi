@@ -18,8 +18,8 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $status = Settings::getById($Id, 'status');
-        Settings::deleteStatusById($Id);
+        $status = $this->getRepository('yongo.issue.settings')->getById($Id, 'status');
+        $this->getRepository('yongo.issue.settings')->deleteStatusById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

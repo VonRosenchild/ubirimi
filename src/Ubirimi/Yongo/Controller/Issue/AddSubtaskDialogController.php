@@ -23,7 +23,7 @@ class AddSubtaskDialogController extends UbirimiController
         $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
         $projectId = $projectData['id'];
 
-        $issue_priorities = Settings::getAllIssueSettings('priority', $session->get('client/id'));
+        $issue_priorities = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('priority', $session->get('client/id'));
         $issue_types = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes($projectId);
 
         $firstIssueType = $issue_types->fetch_array(MYSQLI_ASSOC);

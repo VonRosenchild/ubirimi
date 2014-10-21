@@ -22,11 +22,11 @@ class DeleteController extends UbirimiController
         $oldId = $request->request->get('id');
         $newId = $request->request->get('new_id');
 
-        $resolution = Settings::getById($oldId, 'resolution');
+        $resolution = $this->getRepository('yongo.issue.settings')->getById($oldId, 'resolution');
         $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
         $this->getRepository('yongo.issue.issue')->updateResolution($projects, $oldId, $newId);
 
-        Settings::deleteResolutionById($oldId);
+        $this->getRepository('yongo.issue.settings')->deleteResolutionById($oldId);
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository('ubirimi.general.log')->add(

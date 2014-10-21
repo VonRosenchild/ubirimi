@@ -108,7 +108,7 @@ class IndexController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
         $usersAsAssignee = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
-        $issueStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
+        $issueStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $clientId, 'array');
         $twoDimensionalData = null;
         if (count($projectIdsArray))
             $twoDimensionalData = $this->getRepository('yongo.issue.issue')->get2DimensionalFilter(-1, 'array');

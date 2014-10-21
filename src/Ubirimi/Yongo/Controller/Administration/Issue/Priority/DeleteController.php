@@ -22,11 +22,11 @@ class DeleteController extends UbirimiController
         $oldId = $request->request->get('id');
         $newId = $request->request->get('new_id');
 
-        $priority = Settings::getById($oldId, 'priority');
+        $priority = $this->getRepository('yongo.issue.settings')->getById($oldId, 'priority');
         $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
         $this->getRepository('yongo.issue.issue')->updatePriority($projects, $oldId, $newId);
 
-        Settings::deletePriorityById($oldId);
+        $this->getRepository('yongo.issue.settings')->deletePriorityById($oldId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

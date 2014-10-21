@@ -15,7 +15,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $resolutions = Settings::getAllIssueSettings('resolution', $session->get('client/id'));
+        $resolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

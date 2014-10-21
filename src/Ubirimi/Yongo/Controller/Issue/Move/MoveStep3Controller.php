@@ -86,11 +86,11 @@ class MoveStep3Controller extends UbirimiController
         if ((($issueComponents || $issueFixVersions || $issueAffectedVersions) && ($targetProjectComponents || $targetVersions)) || $assigneeChanged) {
             $actionTaken = true;
         }
-        $newStatusName = Settings::getById($session->get('move_issue/new_status'), 'status', 'name');
+        $newStatusName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_status'), 'status', 'name');
 
         $newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
         $newProjectName = $newProject['name'];
-        $newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
+        $newTypeName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_type'), 'type', 'name');
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/move/MoveStep3.php', get_defined_vars());
     }

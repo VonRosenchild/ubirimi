@@ -66,7 +66,7 @@ class MoveStep2Controller extends UbirimiController
 
         $newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
         $newProjectName = $newProject['name'];
-        $newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
+        $newTypeName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_type'), 'type', 'name');
 
         require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep2.php';
     }

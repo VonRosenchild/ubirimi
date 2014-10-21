@@ -16,7 +16,7 @@ class DeleteConfirmController extends UbirimiController
 
         $Id = $request->get('id');
 
-        $resolutions = Settings::getAllIssueSettings('resolution', $session->get('client/id'));
+        $resolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $session->get('client/id'));
 
         return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/resolution/DeleteConfirm.php', get_defined_vars());
     }

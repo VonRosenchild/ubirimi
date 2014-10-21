@@ -15,7 +15,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $priorities = Settings::getAllIssueSettings('priority', $session->get('client/id'));
+        $priorities = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('priority', $session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

@@ -3,7 +3,7 @@
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
-use Ubirimi\Calendar\Repository\Calendar;
+
 use Ubirimi\Util;
 
 class CalendarController extends UbirimiController
@@ -12,7 +12,7 @@ class CalendarController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $calendars = Calendar::getAll();
+        $calendars = $this->getRepository('calendar.calendar.calendar')->getAll();
 
         $selectedOption = 'calendar';
 

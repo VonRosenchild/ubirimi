@@ -29,7 +29,7 @@ class AddController extends UbirimiController
                 $emptyPriorityName = true;
 
             // check for duplication
-            $priority = Settings::getByName($session->get('client/id'), 'priority', mb_strtolower($name));
+            $priority = $this->getRepository('yongo.issue.settings')->getByName($session->get('client/id'), 'priority', mb_strtolower($name));
             if ($priority)
                 $priorityExists = true;
 
@@ -37,7 +37,7 @@ class AddController extends UbirimiController
                 $iconName = 'generic.png';
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Settings::create(
+                $this->getRepository('yongo.issue.settings')->create(
                     'issue_priority',
                     $session->get('client/id'),
                     $name,

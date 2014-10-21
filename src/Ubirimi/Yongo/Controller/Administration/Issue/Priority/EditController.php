@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $issuePriority = Settings::getById($Id, 'priority');
+        $issuePriority = $this->getRepository('yongo.issue.settings')->getById($Id, 'priority');
 
         if ($issuePriority['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,7 +36,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $priority = Settings::getByName(
+            $priority = $this->getRepository('yongo.issue.settings')->getByName(
                 $session->get('client/id'),
                 'priority',
                 mb_strtolower($name),
@@ -48,7 +48,7 @@ class EditController extends UbirimiController
 
             if (!$priorityExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Settings::updateById($Id, 'priority', $name, $description, $color, $currentDate);
+                $this->getRepository('yongo.issue.settings')->updateById($Id, 'priority', $name, $description, $color, $currentDate);
 
                 $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),

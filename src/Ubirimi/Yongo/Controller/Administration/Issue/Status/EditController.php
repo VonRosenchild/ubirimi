@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $issueStatus = Settings::getById($Id, 'status');
+        $issueStatus = $this->getRepository('yongo.issue.settings')->getById($Id, 'status');
 
         if ($issueStatus['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $status = Settings::getByName(
+            $status = $this->getRepository('yongo.issue.settings')->getByName(
                 $session->get('client/id'),
                 'status',
                 mb_strtolower($name),
@@ -47,7 +47,7 @@ class EditController extends UbirimiController
 
             if (!$statusExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Settings::updateById($Id, 'status', $name, $description, null, $currentDate);
+                $this->getRepository('yongo.issue.settings')->updateById($Id, 'status', $name, $description, null, $currentDate);
 
                 $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),

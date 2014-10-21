@@ -28,14 +28,14 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $resolution = Settings::getByName($session->get('client/id'), 'resolution', mb_strtolower($name));
+            $resolution = $this->getRepository('yongo.issue.settings')->getByName($session->get('client/id'), 'resolution', mb_strtolower($name));
             if ($resolution)
                 $resolutionExists = true;
 
             if (!$resolutionExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Settings::create(
+                $this->getRepository('yongo.issue.settings')->create(
                     'issue_resolution',
                     $session->get('client/id'),
                     $name,

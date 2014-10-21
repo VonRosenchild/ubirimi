@@ -36,7 +36,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $type = Settings::getByName($session->get('client/id'), 'type', mb_strtolower($name), $Id);
+            $type = $this->getRepository('yongo.issue.settings')->getByName($session->get('client/id'), 'type', mb_strtolower($name), $Id);
             if ($type)
                 $typeExists = true;
 

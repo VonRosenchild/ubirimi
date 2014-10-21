@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\GlobalPermissions;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -17,14 +18,16 @@ class EditController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $menuSelectedCategory = 'doc_administration';
+        $clientId = $session->get('client/id');
 
-        $globalsPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $menuSelectedCategory = 'doc_users';
 
-        if (isset($_POST['update_configuration'])) {
+        $globalsPermissions = $this->getRepository('yongo.permission.globalPermission')->getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-            $anonymous_use_flag = isset($_POST['anonymous_use_flag']) ? $_POST['anonymous_use_flag'] : 0;
-            $anonymous_view_user_profile_flag = isset($_POST['anonymous_view_user_profile_flag']) ? $_POST['anonymous_view_user_profile_flag'] : 0;
+        if ($request->request->has('update_configuration')) {
+
+            $anonymous_use_flag = $request->request->get('anonymous_use_flag');
+            $anonymous_view_user_profile_flag = $request->request->get('anonymous_view_user_profile_flag');
 
             $parameters = array(array('field' => 'anonymous_use_flag', 'value' => $anonymous_use_flag, 'type' => 'i'),
                 array('field' => 'anonymous_view_user_profile_flag', 'value' => $anonymous_view_user_profile_flag, 'type' => 'i'));
@@ -35,7 +38,7 @@ class EditController extends UbirimiController
 
             // delete first all the permissions related to groups
             while ($globalsPermission = $globalsPermissions->fetch_array(MYSQLI_ASSOC)) {
-                GlobalPermission::deleteByPermissionId($clientId, $globalsPermission['id'], 'group');
+                $this->getRepository('yongo.permission.globalPermission')->deleteByPermissionId($clientId, $globalsPermission['id'], 'group');
             }
 
             $date = Util::getServerCurrentDateTime();
@@ -46,7 +49,7 @@ class EditController extends UbirimiController
                     $globalsPermissionId = $data[1];
                     $groupId = $data[2];
 
-                    GlobalPermission::addDataForGroupId($clientId, $globalsPermissionId, $groupId, $date);
+                    $this->getRepository('yongo.permission.globalPermission')->addDataForGroupId($clientId, $globalsPermissionId, $groupId, $date);
                 }
             }
 
@@ -54,7 +57,7 @@ class EditController extends UbirimiController
 
             // delete first all the permissions related to individual users
             while ($globalsPermission = $globalsPermissions->fetch_array(MYSQLI_ASSOC)) {
-                GlobalPermission::deleteByPermissionId($clientId, $globalsPermission['id'], 'user');
+                $this->getRepository('yongo.permission.globalPermission')->deleteByPermissionId($clientId, $globalsPermission['id'], 'user');
             }
 
             foreach ($_POST as $key => $value) {
@@ -63,11 +66,11 @@ class EditController extends UbirimiController
                     $globalsPermissionId = $data[1];
                     $userId = $data[2];
 
-                    GlobalPermission::addDataForUserId($clientId, $globalsPermissionId, $userId);
+                    $this->getRepository('yongo.permission.globalPermission')->addDataForUserId($clientId, $globalsPermissionId, $userId);
                 }
             }
 
-            header('Location: /documentador/administration/global-permissions');
+            return new RedirectResponse('/documentador/administration/global-permissions');
         }
         $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
         $session->set('documentator/settings', $documentatorSettings);
@@ -75,6 +78,6 @@ class EditController extends UbirimiController
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
         $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-        require_once __DIR__ . '/../../../Resources/views/administration/globalpermissions/Edit.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/globalpermissions/Edit.php', get_defined_vars());
     }
 }

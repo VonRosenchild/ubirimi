@@ -25,8 +25,8 @@ class ViewController extends UbirimiController
 
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
         $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-        $globalsPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $globalsPermissions = $this->getRepository('yongo.permission.globalPermission')->getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-        require_once __DIR__ . '/../../../Resources/views/administration/globalpermissions/View.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/globalpermissions/View.php', get_defined_vars());
     }
 }

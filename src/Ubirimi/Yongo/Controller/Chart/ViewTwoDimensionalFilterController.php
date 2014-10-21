@@ -33,7 +33,7 @@ class ViewTwoDimensionalFilterController extends UbirimiController
         }
 
         $usersAsAssignee = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
-        $issueStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
+        $issueStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $clientId, 'array');
 
         $twoDimensionalData = $this->getRepository('yongo.issue.issue')->get2DimensionalFilter($projectId, 'array');
 

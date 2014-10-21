@@ -46,9 +46,9 @@ class AutocompleteGoalController extends UbirimiController
             $standardKeyWords[] = $SLA['name'];
         }
 
-        $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
-        $priorities = Settings::getAllIssueSettings('priority', $session->get('client/id'));
-        $resolutions = Settings::getAllIssueSettings('resolution', $session->get('client/id'));
+        $statuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
+        $priorities = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('priority', $session->get('client/id'));
+        $resolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $session->get('client/id'));
         $types = Type::getAll($session->get('client/id'));
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
 

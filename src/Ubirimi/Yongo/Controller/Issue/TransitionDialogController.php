@@ -34,7 +34,7 @@ class TransitionDialogController extends UbirimiController
         $allUsers = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
         $screenData = Screen::getDataById($screenId);
         $screenMetadata = Screen::getMetaDataById($screenId);
-        $resolutions = Settings::getAllIssueSettings('resolution', $clientId);
+        $resolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
         $projectComponents = $this->getRepository('yongo.project.project')->getComponents($projectId);
         $projectVersions = $this->getRepository('yongo.project.project')->getVersions($projectId);
         $htmlOutput = '';

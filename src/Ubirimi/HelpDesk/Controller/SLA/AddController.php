@@ -40,7 +40,7 @@ class AddController extends UbirimiController
         }
         $slaCalendars = Calendar::getByProjectId($projectId);
 
-        $availableStatuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
+        $availableStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
 
         if ($request->request->has('confirm_new_sla')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));

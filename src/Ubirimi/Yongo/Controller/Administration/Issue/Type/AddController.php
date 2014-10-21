@@ -31,7 +31,7 @@ class AddController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
                 $iconName = 'generic.png';
-                $newIssueTypeId = Settings::createIssueType($session->get('client/id'), $name, $description, $subTaskFlag, $iconName, $currentDate);
+                $newIssueTypeId = $this->getRepository('yongo.issue.settings')->createIssueType($session->get('client/id'), $name, $description, $subTaskFlag, $iconName, $currentDate);
 
                 $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),

@@ -26,7 +26,7 @@ class AddController extends UbirimiController
         }
 
         $workflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
-        $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
+        $statuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
         $linkedStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
 
         $addStepPossible = true;

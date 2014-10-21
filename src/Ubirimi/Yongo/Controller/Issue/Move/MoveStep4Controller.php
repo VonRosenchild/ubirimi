@@ -103,10 +103,10 @@ class MoveStep4Controller extends UbirimiController
         $previousData = $session->get('move_issue');
         $menuSelectedCategory = 'issue';
 
-        $newStatusName = Settings::getById($session->get('move_issue/new_status'), 'status', 'name');
+        $newStatusName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_status'), 'status', 'name');
 
         $newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
-        $newTypeName = Settings::getById($session->get('move_issue/new_type'), 'type', 'name');
+        $newTypeName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_type'), 'type', 'name');
 
         $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
         $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);

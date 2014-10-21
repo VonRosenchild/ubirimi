@@ -41,7 +41,7 @@ class EditController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        $availableStatuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
+        $availableStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
 
         if ($request->request->has('confirm_update_sla')) {
 

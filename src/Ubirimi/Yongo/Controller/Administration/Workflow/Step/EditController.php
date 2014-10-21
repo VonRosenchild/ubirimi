@@ -25,7 +25,7 @@ class EditController extends UbirimiController
         $workflowId = $step['workflow_id'];
 
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
-        $statuses = Settings::getAllIssueSettings('status', $session->get('client/id'));
+        $statuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
 
         $emptyName = false;
 
