@@ -19,7 +19,7 @@ class AddController extends UbirimiController
         $currentDate = Util::getServerCurrentDateTime();
         if ($userIds) {
             for ($i = 0; $i < count($userIds); $i++) {
-                $this->getRepository('yongo.issue.watcher')->addWatcher($issueId, $userIds[$i], $currentDate);
+                $this->getRepository('yongo.issue.watcher')->add($issueId, $userIds[$i], $currentDate);
             }
 
             // update the date_updated field

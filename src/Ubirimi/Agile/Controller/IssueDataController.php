@@ -33,15 +33,15 @@ class IssueDataController extends UbirimiController
         $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
 
         $comments = $this->getRepository('yongo.issue.comment')->getByIssueId($issueId, 'desc');
-        $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
+        $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
 
-        $versionsAffected = Version::getByIssueIdAndProjectId(
+        $versionsAffected = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_AFFECTED_VERSION_FLAG
         );
 
-        $versionsTargeted = Version::getByIssueIdAndProjectId(
+        $versionsTargeted = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_FIX_VERSION_FLAG

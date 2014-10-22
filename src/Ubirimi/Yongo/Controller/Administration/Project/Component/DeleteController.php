@@ -21,7 +21,7 @@ class DeleteController extends UbirimiController
         $componentId = $request->request->get('component_id');
         $component = $this->getRepository('yongo.project.project')->getComponentById($componentId);
 
-        Component::deleteById($componentId);
+        $this->getRepository('yongo.issue.component')->deleteById($componentId);
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository('ubirimi.general.log')->add(

@@ -35,7 +35,7 @@ class DuplicateController extends UbirimiController
         $issueReturnValues = $this->getRepository('yongo.issue.issue')->add($project, $currentDate, $issueSystemFields, $loggedInUserId);
         $issueId = $issueReturnValues[0];
 
-        $components = Component::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id']);
+        $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id']);
         if ($components) {
             $components_arr = array();
             while ($component = $components->fetch_array(MYSQLI_ASSOC))
@@ -44,7 +44,7 @@ class DuplicateController extends UbirimiController
             $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $components_arr, 'issue_component');
         }
 
-        $versions = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
+        $versions = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
         if ($versions) {
             $versions_arr = array();
             while ($version = $versions->fetch_array(MYSQLI_ASSOC))
@@ -53,7 +53,7 @@ class DuplicateController extends UbirimiController
             $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $versions_arr, 'issue_version', $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
         }
 
-        $targets = Version::getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
+        $targets = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
         if ($targets) {
             $targets_arr = array();
             while ($target = $targets->fetch_array(MYSQLI_ASSOC))

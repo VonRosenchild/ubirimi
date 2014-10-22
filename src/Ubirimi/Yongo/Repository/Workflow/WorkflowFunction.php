@@ -31,14 +31,14 @@ class WorkflowFunction
         while ($functions && $function = $functions->fetch_array(MYSQLI_ASSOC)) {
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY) {
-                Issue::updateHistory($issueId, $loggedInUserId, $issueFieldChanges, $currentDate);
+                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateHistory($issueId, $loggedInUserId, $issueFieldChanges, $currentDate);
                 foreach ($issueFieldChanges as $key => $value) {
                     if ($value[0] == Field::FIELD_RESOLUTION_CODE) {
                         if ($value[2]) {
-                            Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
+                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
                         } else {
                             // clear the resolved date
-                            Issue::updateById($issueId, array('date_resolved' => null), $currentDate);
+                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => null), $currentDate);
                         }
                     }
                 }
@@ -51,7 +51,7 @@ class WorkflowFunction
                 $finalStatusName = Settings::getById($finalStatusId, 'status', 'name');
                 $initialStatusName = Settings::getById($issueData[Field::FIELD_STATUS_CODE], 'status', 'name');
                 $issueFieldChanges[] = array(Field::FIELD_STATUS_CODE, $initialStatusName, $finalStatusName, $issueData[Field::FIELD_STATUS_CODE], $finalStatusId);
-                Issue::updateField($issueId, 'status_id', $finalStatusId);
+                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateField($issueId, 'status_id', $finalStatusId);
             }
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE) {
@@ -71,7 +71,7 @@ class WorkflowFunction
                             $updateValue = $field_value_arr[1];
                         }
 
-                        Issue::updateById($issueId, array(Field::FIELD_RESOLUTION_CODE => $updateValue), $currentDate);
+                        UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array(Field::FIELD_RESOLUTION_CODE => $updateValue), $currentDate);
                         $oldResolution = Settings::getById($issueData[Field::FIELD_RESOLUTION_CODE], 'resolution', 'name');
                         if ($updateValue)
                             $newResolution = Settings::getById($updateValue, 'resolution', 'name');
@@ -83,10 +83,10 @@ class WorkflowFunction
                         }
 
                         if ($updateValue) {
-                            Issue::updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
+                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
                         } else {
                             // clear the resolved date
-                            Issue::updateById($issueId, array('date_resolved' => null), $currentDate);
+                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => null), $currentDate);
                         }
                         break;
                 }

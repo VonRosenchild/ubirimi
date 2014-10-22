@@ -38,7 +38,7 @@ class ViewController extends UbirimiController
 
         $queues = Queue::getByProjectId($projectId);
         if ($queues) {
-            $whereSQL = Issue::prepareWhereClauseFromQueue(
+            $whereSQL = $this->getRepository('yongo.issue.issue')->prepareWhereClauseFromQueue(
                 $queueSelected['definition'],
                 $session->get('user/id'),
                 $projectId,

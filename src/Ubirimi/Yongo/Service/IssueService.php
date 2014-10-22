@@ -30,7 +30,7 @@ class IssueService extends UbirimiService
     {
         $currentDate = Util::getServerCurrentDateTime();
 
-        $issueReturnValues = Issue::add(
+        $issueReturnValues = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->add(
             $project,
             $currentDate,
             $issueSystemFieldsData,
@@ -47,9 +47,9 @@ class IssueService extends UbirimiService
 
         // if a parent is set check if the parent issue id is part of a sprint. if yes also add the child
         if ($issueId) {
-            $sprints = Sprint::getByIssueId($clientId, $issueId);
+            $sprints = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getByIssueId($clientId, $issueId);
             while ($sprints && $sprint = $sprints->fetch_array(MYSQLI_ASSOC)) {
-                Sprint::addIssues($sprint['id'], array($newIssueId), $loggedInUserId);
+                UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->addIssues($sprint['id'], array($newIssueId), $loggedInUserId);
             }
         }
 
@@ -63,7 +63,7 @@ class IssueService extends UbirimiService
 
         // save custom fields
         if (count($issueCustomFieldsData)) {
-            CustomField::saveCustomFieldsData(
+            UbirimiContainer::get()['repository']->get('yongo.issue.customField')->saveCustomFieldsData(
                 $newIssueId,
                 $issueCustomFieldsData,
                 $currentDate
@@ -71,7 +71,7 @@ class IssueService extends UbirimiService
         }
 
         if (isset($issueSystemFieldsData['component'])) {
-            Issue::addComponentVersion(
+            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addComponentVersion(
                 $newIssueId,
                 $issueSystemFieldsData['component'],
                 'issue_component'
@@ -79,7 +79,7 @@ class IssueService extends UbirimiService
         }
 
         if (isset($issueSystemFieldsData['affects_version'])) {
-            Issue::addComponentVersion(
+            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addComponentVersion(
                 $newIssueId,
                 $issueSystemFieldsData['affects_version'],
                 'issue_version',
@@ -88,7 +88,7 @@ class IssueService extends UbirimiService
         }
 
         if (isset($issueSystemFieldsData['fix_version'])) {
-            Issue::addComponentVersion(
+            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addComponentVersion(
                 $newIssueId,
                 $issueSystemFieldsData['fix_version'],
                 'issue_version',
@@ -101,10 +101,10 @@ class IssueService extends UbirimiService
         $issue = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getById($newIssueId);
 
         // add the current logged in user to the list of watchers
-        Watcher::addWatcher($newIssueId, $loggedInUserId, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.issue.watcher')->add($newIssueId, $loggedInUserId, $currentDate);
 
         // add sla information for this issue
-        Issue::addPlainSLAData($newIssueId, $projectId);
+        UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addPlainSLAData($newIssueId, $projectId);
 
         return $issue;
     }

@@ -64,9 +64,9 @@ class MoveStep3Controller extends UbirimiController
         $targetProjectComponents = $this->getRepository('yongo.project.project')->getComponents($targetProjectId);
         $targetVersions = $this->getRepository('yongo.project.project')->getVersions($targetProjectId);
 
-        $issueComponents = Component::getByIssueIdAndProjectId($issue['id'], $projectId);
-        $issueFixVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
-        $issueAffectedVersions = Version::getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
+        $issueComponents = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issue['id'], $projectId);
+        $issueFixVersions = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
+        $issueAffectedVersions = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
 
         $sourceAssignee = $issue['assignee'];
         $assignableUsersTargetProjectArray = $this->getRepository('yongo.project.project')->getUsersWithPermission($session->get('move_issue/new_project'), Permission::PERM_ASSIGNABLE_USER, 'array');

@@ -38,13 +38,13 @@ class ListIssueController extends UbirimiController
         }
 
         if ($request->request->has('search')) {
-            $searchParameters = Issue::prepareDataForSearchFromPostGet($projectIds, $request->request->all(), $request->query->all());
+            $searchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromPostGet($projectIds, $request->request->all(), $request->query->all());
 
             $redirectLink = str_replace("%7C", "|", http_build_query($searchParameters));
 
             return new RedirectResponse('/helpdesk/customer-portal/tickets?' . $redirectLink);
         } else {
-            $getSearchParameters = Issue::prepareDataForSearchFromURL($request->query->all(), 30);
+            $getSearchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromURL($request->query->all(), 30);
             $getSearchParameters['helpdesk_flag'] = 1;
             // check to see if the project Ids are all belonging to the client
             $getProjectIds = $request->request->has('project') ? explode('|', $request->query->get('project')) : null;

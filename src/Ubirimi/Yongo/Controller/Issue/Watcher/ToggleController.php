@@ -22,7 +22,7 @@ class ToggleController extends UbirimiController
         $currentDate = Util::getServerCurrentDateTime();
 
         if ($action == 'add') {
-            $this->getRepository('yongo.issue.watcher')->addWatcher($issueId, $loggedInUserId, $currentDate);
+            $this->getRepository('yongo.issue.watcher')->add($issueId, $loggedInUserId, $currentDate);
         } else if ($action == 'remove') {
             $this->getRepository('yongo.issue.watcher')->deleteByUserIdAndIssueId($issueId, $loggedInUserId);
         }

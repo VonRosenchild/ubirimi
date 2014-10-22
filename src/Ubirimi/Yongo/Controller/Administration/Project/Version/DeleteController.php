@@ -21,7 +21,7 @@ class DeleteController extends UbirimiController
         $releaseId = $request->request->get('release_id');
         $release = $this->getRepository('yongo.project.project')->getVersionById($releaseId);
 
-        Version::deleteVersionById($releaseId);
+        $this->getRepository('yongo.issue.version')->deleteVersionById($releaseId);
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository('ubirimi.general.log')->add(

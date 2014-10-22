@@ -761,7 +761,7 @@ class Issue
         UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueId($issueId);
 
         Watcher::deleteByIssueId($issueId);
-        Issue::deleteSLADataByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get('yongo.issue.issue')->deleteSLADataByIssueId($issueId);
         WorkLog::deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get('yongo.issue.attachment')->deleteByIssueId($issueId);
         CustomField::deleteCustomFieldsData($issueId);
@@ -1184,19 +1184,19 @@ class Issue
         if (array_key_exists(Field::FIELD_AFFECTS_VERSION_CODE, $data)) {
             UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
             if ($data[Field::FIELD_AFFECTS_VERSION_CODE])
-                Issue::addComponentVersion($issueId, $data['affects_version'], 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
+                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addComponentVersion($issueId, $data['affects_version'], 'issue_version', UbirimiContainer::get()['repository']->get('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
         }
 
         if (array_key_exists(Field::FIELD_FIX_VERSION_CODE, $data)) {
             UbirimiContainer::get()['repository']->get('yongo.issue.version')->deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
             if ($data[Field::FIELD_FIX_VERSION_CODE])
-                Issue::addComponentVersion($issueId, $data['fix_version'], 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
+                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addComponentVersion($issueId, $data['fix_version'], 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
         }
 
         if (array_key_exists(Field::FIELD_COMPONENT_CODE, $data)) {
             UbirimiContainer::get()['repository']->get('yongo.issue.component')->deleteByIssueId($issueId);
             if ($data[Field::FIELD_COMPONENT_CODE])
-                Issue::addComponentVersion($issueId, $data['component'], 'issue_component');
+                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addComponentVersion($issueId, $data['component'], 'issue_component');
         }
     }
 
@@ -1216,13 +1216,13 @@ class Issue
         $fieldChanges = array();
         $issueId = $oldIssueData['id'];
 
-        if (Issue::issueFieldChanged(Field::FIELD_SUMMARY_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_SUMMARY_CODE, $oldIssueData, $newIssueData)) {
             $fieldChanges[] = array(Field::FIELD_SUMMARY_CODE,
                                     $oldIssueData[Field::FIELD_SUMMARY_CODE],
                                     $newIssueData[Field::FIELD_SUMMARY_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_PROJECT_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_PROJECT_CODE, $oldIssueData, $newIssueData)) {
             $fieldChanges[] = array(Field::FIELD_PROJECT_CODE,
                                     $oldIssueData[Field::FIELD_PROJECT_CODE],
                                     $newIssueData[Field::FIELD_PROJECT_CODE],
@@ -1230,24 +1230,24 @@ class Issue
                                     $newIssueData['issue_project_id']);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_DESCRIPTION_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_DESCRIPTION_CODE, $oldIssueData, $newIssueData)) {
             $fieldChanges[] = array(Field::FIELD_DESCRIPTION_CODE,
                                     $oldIssueData[Field::FIELD_DESCRIPTION_CODE],
                                     $newIssueData[Field::FIELD_DESCRIPTION_CODE]);
         }
-        if (Issue::issueFieldChanged(Field::FIELD_ENVIRONMENT_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_ENVIRONMENT_CODE, $oldIssueData, $newIssueData)) {
             $fieldChanges[] = array(Field::FIELD_ENVIRONMENT_CODE,
                                     $oldIssueData[Field::FIELD_ENVIRONMENT_CODE],
                                     $newIssueData[Field::FIELD_ENVIRONMENT_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_DUE_DATE_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_DUE_DATE_CODE, $oldIssueData, $newIssueData)) {
             $fieldChanges[] = array(Field::FIELD_DUE_DATE_CODE,
                                     $oldIssueData[Field::FIELD_DUE_DATE_CODE],
                                     $newIssueData[Field::FIELD_DUE_DATE_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_ISSUE_TYPE_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_ISSUE_TYPE_CODE, $oldIssueData, $newIssueData)) {
             $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
             $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
             $fieldChanges[] = array(Field::FIELD_ISSUE_TYPE_CODE,
@@ -1257,7 +1257,7 @@ class Issue
                                     $newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_PRIORITY_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_PRIORITY_CODE, $oldIssueData, $newIssueData)) {
             $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($oldIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
             $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($newIssueData[Field::FIELD_PRIORITY_CODE], 'priority');
 
@@ -1268,7 +1268,7 @@ class Issue
                                     $newIssueData[Field::FIELD_PRIORITY_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_STATUS_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_STATUS_CODE, $oldIssueData, $newIssueData)) {
             $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($oldIssueData[Field::FIELD_STATUS_CODE], 'status');
             $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($newIssueData[Field::FIELD_STATUS_CODE], 'status');
             $fieldChanges[] = array(Field::FIELD_STATUS_CODE,
@@ -1278,7 +1278,7 @@ class Issue
                                     $newIssueData[Field::FIELD_STATUS_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_RESOLUTION_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_RESOLUTION_CODE, $oldIssueData, $newIssueData)) {
             $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($oldIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
             $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($newIssueData[Field::FIELD_RESOLUTION_CODE], 'resolution');
 
@@ -1289,7 +1289,7 @@ class Issue
                                     $newIssueData[Field::FIELD_RESOLUTION_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_ASSIGNEE_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_ASSIGNEE_CODE, $oldIssueData, $newIssueData)) {
             $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($oldIssueData[Field::FIELD_ASSIGNEE_CODE]);
             $fieldChangedOldValue = $fieldChangedOldValueRow['first_name'] . ' ' . $fieldChangedOldValueRow['last_name'];
 
@@ -1302,7 +1302,7 @@ class Issue
                                     $newIssueData[Field::FIELD_ASSIGNEE_CODE]);
         }
 
-        if (Issue::issueFieldChanged(Field::FIELD_REPORTER_CODE, $oldIssueData, $newIssueData)) {
+        if (UbirimiContainer::get()['repository']->get('yongo.issue.issue')->issueFieldChanged(Field::FIELD_REPORTER_CODE, $oldIssueData, $newIssueData)) {
             $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($oldIssueData[Field::FIELD_REPORTER_CODE]);
             $fieldChangedOldValue = $fieldChangedOldValueRow['first_name'] . ' ' . $fieldChangedOldValueRow['last_name'];
             $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($newIssueData[Field::FIELD_REPORTER_CODE]);
@@ -1464,7 +1464,7 @@ class Issue
                         $newIds = $fieldChanges[$i][4];
                     }
 
-                    Issue::addHistory($issueId,
+                    UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addHistory($issueId,
                                       $loggedInUserId,
                                       $fieldChanges[$i][0],
                                       $fieldChanges[$i][1],
@@ -1538,9 +1538,9 @@ class Issue
         $issueData = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         if ($userAssignedId != -1) {
-            Issue::updateField($issueId, 'user_assigned_id', $userAssignedId);
+            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateField($issueId, 'user_assigned_id', $userAssignedId);
         } else {
-            Issue::setUnassignedById($issueId);
+            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->setUnassignedById($issueId);
         }
 
         $oldAssignee = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($issueData['assignee']);
@@ -1551,7 +1551,7 @@ class Issue
 
         $date = Util::getServerCurrentDateTime();
 
-        Issue::addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $oldAssignee['id'], $newAssignee['id'], $date);
+        UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addHistory($issueId, $loggedInUserId, Field::FIELD_ASSIGNEE_CODE, $oldAssigneeName, $newAssigneeName, $oldAssignee['id'], $newAssignee['id'], $date);
 
         if (!empty($comment)) {
             UbirimiContainer::get()['repository']->get('yongo.issue.comment')->add($issueId, $loggedInUserId, $comment, $date);
@@ -1647,7 +1647,7 @@ class Issue
     public function prepareWhereClauseFromQueue($queueDefinition, $userId, $projectId, $clientId) {
 
         $value = mb_strtolower($queueDefinition);
-        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId, 'array', "LENGTH('name') DESC");
+        $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId, 'array', "LENGTH('name') DESC");
 
         foreach ($SLAs as $SLA) {
             if (stripos($value, mb_strtolower($SLA['name'])) !== false) {
@@ -1699,7 +1699,7 @@ class Issue
     }
 
     public function updateSLADataForProject($clientId, $projectId, $userId, $clientSettings) {
-        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId);
 
         if ($SLAs) {
 
@@ -1710,10 +1710,10 @@ class Issue
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
                 while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                    $slaData = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
+                    $slaData = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
 
                     if ($slaData[0]) {
-                        Issue::updateSLAValueOnly($issue['id'], $SLA['id'], $slaData[0]);
+                        UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateSLAValueOnly($issue['id'], $SLA['id'], $slaData[0]);
                     }
                 }
                 if ($issues) {
@@ -1726,16 +1726,16 @@ class Issue
     public function updateSLAValue($issue, $clientId, $clientSettings) {
         $slasPrintData = array();
         $projectId = $issue['issue_project_id'];
-        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId);
 
         if ($SLAs) {
             // check issue against the SLAs
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
-                $slaData = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
+                $slaData = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getOffsetForIssue($SLA, $issue, $clientId, $clientSettings);
                 if ($slaData) {
                     $slasPrintData[] = $slaData;
-                    UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->updateDataForSLA($issue['id'], $slaData['slaId'], $slaData['intervalMinutes'], $slaData['goalId'], $slaData['startDate'], $slaData['endDate']);
+                    UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->updateDataForSLA($issue['id'], $slaData['slaId'], $slaData['intervalMinutes'], $slaData['goalId'], $slaData['startDate'], $slaData['endDate']);
                 }
             }
         }
@@ -1744,7 +1744,7 @@ class Issue
     }
 
     public function addPlainSLAData($issueId, $projectId) {
-        $SLAs = UbirimiContainer::get()['repository']->get('helpdesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId);
         if ($SLAs) {
             while ($SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
                 $query = "INSERT INTO yongo_issue_sla(yongo_issue_id, help_sla_id) VALUES (?, ?)";

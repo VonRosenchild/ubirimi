@@ -48,14 +48,14 @@ class ViewIssueController extends UbirimiController
 
         /* before going further, check to is if the issue id a valid id -- end */
 
-        $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
-        $versionsAffected = Version::getByIssueIdAndProjectId(
+        $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
+        $versionsAffected = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_AFFECTED_VERSION_FLAG
         );
 
-        $versionsTargeted = Version::getByIssueIdAndProjectId(
+        $versionsTargeted = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_FIX_VERSION_FLAG
@@ -88,7 +88,7 @@ class ViewIssueController extends UbirimiController
             $countAttachments = count($attachments);
 
             $atLeastOneSLA = false;
-            $slasPrintData = Issue::updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+            $slasPrintData = $this->getRepository('yongo.issue.issue')->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
 
             foreach ($slasPrintData as $slaData) {
                 if ($slaData['goal']) {

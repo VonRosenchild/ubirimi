@@ -101,7 +101,7 @@ class EditController extends UbirimiController
                 }
 
                 // clear all this SLA information for all issues in this project
-                Issue::clearSLAData($slaId);
+                $this->getRepository('yongo.issue.issue')->clearSLAData($slaId);
 
                 return new RedirectResponse('/helpdesk/sla/' . $SLA['project_id'] . '/' . $slaId);
             }

@@ -1502,7 +1502,7 @@ class Project
                 // delete issues from disk, if any
                 Util::deleteDir(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issue['id']);
 
-                Issue::deleteById($issue['id']);
+                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->deleteById($issue['id']);
             }
         }
 
@@ -1626,7 +1626,7 @@ class Project
 
         for ($i = 0; $i < count($issueIdsLevel); $i++) {
 
-            Issue::updateById($issueIdsLevel[$i][0], array(Field::FIELD_ISSUE_SECURITY_LEVEL_CODE => $issueIdsLevel[$i][1]), $date);
+            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueIdsLevel[$i][0], array(Field::FIELD_ISSUE_SECURITY_LEVEL_CODE => $issueIdsLevel[$i][1]), $date);
         }
     }
 
@@ -1842,7 +1842,7 @@ class Project
         $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
         if ($issues) {
             while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
-                Issue::addPlainSLAData($issue['id'], $projectId);
+                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->addPlainSLAData($issue['id'], $projectId);
             }
         }
     }

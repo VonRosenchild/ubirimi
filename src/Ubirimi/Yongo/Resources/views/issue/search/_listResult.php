@@ -1,4 +1,5 @@
 <?php
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\LinkHelper;
 use Ubirimi\Util;
@@ -19,7 +20,7 @@ $arrayIds = array();
                 <?php
                     $arrayIds[] = $issue['id'];
 
-                    $slaData = Issue::updateSLAValue($issue, $clientId, $clientSettings);
+                    $slaData = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateSLAValue($issue, $clientId, $clientSettings);
                 ?>
                 <tr>
                     <?php for ($i = 0; $i < count($columns); $i++): ?>

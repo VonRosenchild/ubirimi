@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 
 class Watcher
 {
-    public function addWatcher($issueId, $userId, $currentDate) {
+    public function add($issueId, $userId, $currentDate) {
         $query = "INSERT INTO yongo_issue_watch(yongo_issue_id, user_id, date_created) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

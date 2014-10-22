@@ -113,7 +113,7 @@ class AddController extends UbirimiController
                 $issuesData = $this->getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
                 if ($issuesData->num_rows) {
                     while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
-                        Issue::addPlainSLADataBySLAId($issue['id'], $slaId);
+                        $this->getRepository('yongo.issue.issue')->addPlainSLADataBySLAId($issue['id'], $slaId);
                     }
                 }
 

@@ -15,8 +15,8 @@ class WorkflowService extends UbirimiService
     {
         $workflowUsed = UbirimiContainer::get()['repository']->get('yongo.project.project')->getWorkflowUsedForType($projectId, $issueTypeId);
         $creationData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getDataForCreation($workflowUsed['id']);
-        $eventData = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE);
+        $eventData = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE);
 
-        return $this->getRepository('yongo.workflow.workflowFunction')->hasEvent($creationData['id'], 'event=' . $eventData['id']);
+        return UbirimiContainer::get()['repository']->get('yongo.workflow.workflowFunction')->hasEvent($creationData['id'], 'event=' . $eventData['id']);
     }
 }

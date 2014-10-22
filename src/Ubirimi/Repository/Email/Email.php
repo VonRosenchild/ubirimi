@@ -112,7 +112,7 @@ class Email {
 
     public function triggerNewIssueNotification($clientId, $issue, $project, $loggedInUserId) {
 
-        $eventCreatedId = Event::getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
+        $eventCreatedId = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getByClientIdAndCode($clientId, Event::EVENT_ISSUE_CREATED_CODE, 'id');
         $users = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersForNotification($project['id'], $eventCreatedId, $issue, $loggedInUserId);
 
         while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
@@ -146,7 +146,7 @@ class Email {
         $projectId = $issue['issue_project_id'];
         $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
         $versionsFixed = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-        $components = Component::getByIssueIdAndProjectId($issueId, $projectId);
+        $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
         $clientDomain = Util::getSubdomain();
 
         $customFieldsSingleValue = CustomField::getCustomFieldsData($issueId);
