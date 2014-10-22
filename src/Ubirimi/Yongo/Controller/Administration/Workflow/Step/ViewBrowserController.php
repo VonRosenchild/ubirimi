@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -22,8 +23,7 @@ class ViewBrowserController extends UbirimiController
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
         if ($workflow['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $menuSelectedCategory = 'issue';

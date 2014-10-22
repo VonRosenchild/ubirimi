@@ -35,15 +35,7 @@ $(function () {
             if (key == 'screen_transition') {
 
                 var options = {
-
-
                     dialogClass: "ubirimi-dialog",
-
-
-
-
-
-
                     title: 'Set transition settings',
                     buttons: [
                         {
@@ -85,6 +77,7 @@ $(function () {
                 $("#setTransitionScreen").load("/yongo/administration/ajax/workflow/render-transition-screen/" + id_from + '/' + id_to + '/' + workflow_id, [], function () {
                     $("#setTransitionScreen").dialog(options);
                     $("#setTransitionScreen").dialog("open");
+                    $('.select2InputSmall').select2();
                 });
             } else if (key == 'delete_transition') {
                 var firstTransitionData = $('#first_transition').val();

@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Repository\Newsletter;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Ubirimi\Repository\Newsletter;
     use Ubirimi\Util;
 
     if (isset($_POST['subscribe'])) {
@@ -12,7 +13,7 @@
 
             if (!$isDuplicate) {
                 Newsletter::addSubscription($emailAddress, $currentDate);
-                header('Location: /subscribe-newsletter-done');
+                return new RedirectResponse('/subscribe-newsletter-done');
             }
         }
     }

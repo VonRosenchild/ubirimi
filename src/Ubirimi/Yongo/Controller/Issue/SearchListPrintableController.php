@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -33,21 +34,18 @@ class SearchListPrintableController extends UbirimiController
         if ($getProjectIds) {
             $projectsData = $this->getRepository('yongo.project.project')->getByIds($getProjectIds);
             if (!$projectsData) {
-                header('Location: /general-settings/bad-link-access-denied');
-                die();
+                return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
             while ($projectsData && $data = $projectsData->fetch_array(MYSQLI_ASSOC)) {
 
                 if (Util::checkUserIsLoggedIn()) {
                     if ($data['client_id'] != $clientId) {
-                        header('Location: /general-settings/bad-link-access-denied');
-                        die();
+                        return new RedirectResponse('/general-settings/bad-link-access-denied');
                     }
                 } else {
                     $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($data['id']), Permission::PERM_BROWSE_PROJECTS);
                     if (!$hasBrowsingPermission) {
-                        header('Location: /general-settings/bad-link-access-denied');
-                        die();
+                        return new RedirectResponse('/general-settings/bad-link-access-denied');
                     }
                 }
             }
@@ -81,13 +79,15 @@ class SearchListPrintableController extends UbirimiController
 
         $parseURLData = parse_url($_SERVER['REQUEST_URI']);
 
-        if (isset($parseURLData['query'])) {
-            if (Util::searchQueryNotEmpty($getSearchParameters)) {
+        if (!$parseURLData['query']) {
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
+        }
 
-                $issues = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
-                $issuesCount = $issues->num_rows;
-                $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';
-            }
+        if (Util::searchQueryNotEmpty($getSearchParameters)) {
+
+            $issues = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
+            $issuesCount = $issues->num_rows;
+            $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';
         }
 
         $columns = array('code',
@@ -101,6 +101,7 @@ class SearchListPrintableController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Print List';
         $menuSelectedCategory = null;
+
         require_once __DIR__ . '/../../Resources/views/issue/search/SearchListPrintable.php';
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -38,11 +39,12 @@ class AddDataController extends UbirimiController
                 $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);
             }
 
-            header('Location: /yongo/administration/workflow/transition-post-functions/' . $workflowDataId);
+            return new RedirectResponse('/yongo/administration/workflow/transition-post-functions/' . $workflowDataId);
         }
 
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Post Function Data';
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/AddData.php';
+
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/AddData.php', get_defined_vars());
     }
 }

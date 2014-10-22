@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -46,7 +47,7 @@ class EditController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
             $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Post Function', $currentDate);
 
-            header('Location: /yongo/administration/workflow/transition-post-functions/' . $workflowDataId);
+            return new RedirectResponse('/yongo/administration/workflow/transition-post-functions/' . $workflowDataId);
         }
 
         $workflowPostFunctionDataId = $request->get('id');

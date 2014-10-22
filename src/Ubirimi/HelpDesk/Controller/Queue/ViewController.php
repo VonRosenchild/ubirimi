@@ -22,7 +22,7 @@ class ViewController extends UbirimiController
         $page = $request->get('page', 1);
 
         $project = $this->getRepository('yongo.project.project')->getById($projectId);
-        $queueSelected = Queue::getById($queueId);
+        $queueSelected = $this->getRepository('helpDesk.queue.queue')->getById($queueId);
 
         $columns = explode('#', $queueSelected['columns']);
 
@@ -32,7 +32,7 @@ class ViewController extends UbirimiController
             $SLAs->data_seek(0);
         }
 
-        $queues = Queue::getByProjectId($projectId);
+        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
         if ($queues) {
             $whereSQL = $this->getRepository('yongo.issue.issue')->prepareWhereClauseFromQueue(
                 $queueSelected['definition'],

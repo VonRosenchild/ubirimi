@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Move;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -31,8 +32,7 @@ class MoveStep4Controller extends UbirimiController
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);

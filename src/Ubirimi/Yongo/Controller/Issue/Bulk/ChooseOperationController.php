@@ -29,7 +29,7 @@ class ChooseOperationController extends UbirimiController
             }
             if ($operation) {
                 UbirimiContainer::get()['session']->set('bulk_change_operation_type', $operation);
-                header('Location: /yongo/issue/bulk-operation-details');
+                return new RedirectResponse('/yongo/issue/bulk-operation-details');
             } else {
                 $operationSelected = false;
             }

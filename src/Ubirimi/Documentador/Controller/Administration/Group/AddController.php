@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\Group;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -35,7 +36,7 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository('ubirimi.user.group')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name, $description, $currentDate);
 
-                header('Location: /documentador/administration/groups');
+                return new RedirectResponse('/documentador/administration/groups');
             }
         }
 

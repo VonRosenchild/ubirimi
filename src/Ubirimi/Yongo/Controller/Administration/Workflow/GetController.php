@@ -27,7 +27,7 @@ class GetController extends UbirimiController
 
         $positions = array();
 
-        $position_result = Position::getByWorkflowId($workflowId);
+        $position_result = $this->getRepository('yongo.workflow.position')->getByWorkflowId($workflowId);
         if ($position_result) {
             while ($position = $position_result->fetch_array(MYSQLI_ASSOC)) {
                 $positions[] = $position;

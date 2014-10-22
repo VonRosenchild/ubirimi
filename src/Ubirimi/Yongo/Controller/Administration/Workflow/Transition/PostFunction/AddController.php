@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFunction;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -25,7 +26,7 @@ class AddController extends UbirimiController
         if (isset($_POST['add_new_post_function'])) {
             $functionId = isset($_POST['function']) ? $_POST['function'] : null;
             if ($functionId) {
-                header('Location: /yongo/administration/workflow/transition-add-post-function-data/' . $workflowDataId . '?function_id=' . $functionId);
+                return new RedirectResponse('/yongo/administration/workflow/transition-add-post-function-data/' . $workflowDataId . '?function_id=' . $functionId);
             } else {
                 $errors['no_function_selected'] = true;
             }

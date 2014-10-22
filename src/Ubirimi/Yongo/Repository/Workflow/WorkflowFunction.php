@@ -48,8 +48,8 @@ class WorkflowFunction
 
                 $finalStatusId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getStepById($workflowData['workflow_step_id_to'], 'linked_issue_status_id');
 
-                $finalStatusName = Settings::getById($finalStatusId, 'status', 'name');
-                $initialStatusName = Settings::getById($issueData[Field::FIELD_STATUS_CODE], 'status', 'name');
+                $finalStatusName = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($finalStatusId, 'status', 'name');
+                $initialStatusName = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($issueData[Field::FIELD_STATUS_CODE], 'status', 'name');
                 $issueFieldChanges[] = array(Field::FIELD_STATUS_CODE, $initialStatusName, $finalStatusName, $issueData[Field::FIELD_STATUS_CODE], $finalStatusId);
                 UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateField($issueId, 'status_id', $finalStatusId);
             }
@@ -72,9 +72,9 @@ class WorkflowFunction
                         }
 
                         UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array(Field::FIELD_RESOLUTION_CODE => $updateValue), $currentDate);
-                        $oldResolution = Settings::getById($issueData[Field::FIELD_RESOLUTION_CODE], 'resolution', 'name');
+                        $oldResolution = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($issueData[Field::FIELD_RESOLUTION_CODE], 'resolution', 'name');
                         if ($updateValue)
-                            $newResolution = Settings::getById($updateValue, 'resolution', 'name');
+                            $newResolution = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($updateValue, 'resolution', 'name');
                         else
                             $newResolution = null;
 
@@ -139,11 +139,11 @@ class WorkflowFunction
                     switch ($field_name) {
 
                         case Field::FIELD_RESOLUTION_CODE:
-                            $fieldValueData = Settings::getById($field_value, 'resolution');
+                            $fieldValueData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($field_value, 'resolution');
                             break;
 
                         case Field::FIELD_PRIORITY_CODE:
-                            $fieldValueData = Settings::getById($field_value, 'priority');
+                            $fieldValueData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($field_value, 'priority');
                             break;
                     }
 

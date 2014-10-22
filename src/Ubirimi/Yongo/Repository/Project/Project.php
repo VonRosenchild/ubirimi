@@ -1798,19 +1798,19 @@ class Project
 
         // queue 1: my open tickets
         $queueDefinition = 'assignee=currentUser() AND status = Open AND resolution = Unresolved';
-        Queue::save($userId, $projectId, 'My Open Tickets', 'My Open Tickets', $queueDefinition, $defaultColumns, $currentDate);
+        UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->save($userId, $projectId, 'My Open Tickets', 'My Open Tickets', $queueDefinition, $defaultColumns, $currentDate);
 
         // queue 2: need triage
         $queueDefinition = 'status = Open AND resolution = Unresolved';
-        Queue::save($userId, $projectId, 'Needs Triage', 'Needs Triage', $queueDefinition, $defaultColumns, $currentDate);
+        UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->save($userId, $projectId, 'Needs Triage', 'Needs Triage', $queueDefinition, $defaultColumns, $currentDate);
 
         // queue 3: sla at risk
         $queueDefinition = 'resolution = Unresolved AND (Time waiting for support < 30 AND Time waiting for support > 0 OR Time to resolution < 30 AND Time to resolution > 0)';
-        Queue::save($userId, $projectId, 'SLA at risk', 'SLA at risk', $queueDefinition, $defaultColumns, $currentDate);
+        UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->save($userId, $projectId, 'SLA at risk', 'SLA at risk', $queueDefinition, $defaultColumns, $currentDate);
 
         // queue 4: sla at risk
         $queueDefinition = 'resolution = Unresolved AND (Time waiting for support < 0 OR Time to resolution < 0)';
-        Queue::save($userId, $projectId, 'SLA breached', 'SLA breached', $queueDefinition, $defaultColumns, $currentDate);
+        UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->save($userId, $projectId, 'SLA breached', 'SLA breached', $queueDefinition, $defaultColumns, $currentDate);
 
         // add the default SLA calendar
         $dataDefaultCalendar = array();
@@ -1827,7 +1827,7 @@ class Project
         // add the default SLAs
 
         // sla 1: time to first response
-        $status = Settings::getByName($clientId, 'status', 'In Progress');
+        $status = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'In Progress');
         $slaId = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->save($projectId, 'Time to first response', 'Time to first response', 'start_issue_created', 'stop_status_set_' . $status['id'], $currentDate);
 
         // sla 2: time to resolution
@@ -1858,9 +1858,9 @@ class Project
             SLACalendar::deleteById($calendar['id']);
         }
 
-        $queues = Queue::getByProjectId($projectId);
+        $queues = UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->getByProjectId($projectId);
         while ($queues && $queue = $queues->fetch_array(MYSQLI_ASSOC)) {
-            Queue::deleteById($queue['id']);
+            UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->deleteById($queue['id']);
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Move;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -28,8 +29,7 @@ class MoveStep1Controller extends UbirimiController
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
@@ -69,7 +69,7 @@ class MoveStep1Controller extends UbirimiController
             }
 
             if ($selectIssueTypeForSubtasks) {
-                header('Location: /yongo/issue/move/subtask-issue-type/' . $issueId);
+                return new RedirectResponse('/yongo/issue/move/subtask-issue-type/' . $issueId);
             } else {
                 // check if step 2 is necessary
                 $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($newProjectId, $newIssueTypeId);
@@ -83,13 +83,12 @@ class MoveStep1Controller extends UbirimiController
                 }
 
                 if ($step2Necessary) {
-                    header('Location: /yongo/issue/move/status/' . $issueId);
+                    return new RedirectResponse('/yongo/issue/move/status/' . $issueId);
                 } else {
                     UbirimiContainer::get()['session']->set('move_issue/new_status', $issue['status']);
-                    header('Location: /yongo/issue/move/fields/' . $issueId);
+                    return new RedirectResponse('/yongo/issue/move/fields/' . $issueId);
                 }
             }
-            die();
         }
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
         $projectForMoving = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_CREATE_ISSUE);

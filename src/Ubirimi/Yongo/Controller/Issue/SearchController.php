@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -57,9 +58,7 @@ class SearchController extends UbirimiController
             $searchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromPostGet($projectIds, $_POST, $_GET);
 
             $redirectLink = str_replace("%7C", "|", http_build_query($searchParameters));
-            header('Location: /yongo/issue/search?' . $redirectLink);
-
-            exit;
+            return new RedirectResponse('/yongo/issue/search?' . $redirectLink);
         } else {
             $getFilter = $request->get('filter');
             $currentSearchPage = $request->get('page');
@@ -71,8 +70,7 @@ class SearchController extends UbirimiController
 
             if ($getProjectIds) {
                 if (!$this->getRepository('yongo.project.project')->checkProjectsBelongToClient($clientId, $getProjectIds)) {
-                    header('Location: /general-settings/bad-link-access-denied');
-                    die();
+                    return new RedirectResponse('/general-settings/bad-link-access-denied');
                 }
             }
 

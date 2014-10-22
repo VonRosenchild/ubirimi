@@ -21,7 +21,7 @@ class AddController extends UbirimiController
         $emptyName = false;
         $queueExists = false;
 
-        $queues = Queue::getByProjectId($projectId);
+        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
         $selectedQueueId = -1;
         if ($queues) {
             $firstQueue = $queues->fetch_array(MYSQLI_ASSOC);
@@ -38,7 +38,7 @@ class AddController extends UbirimiController
             }
 
             // check for duplication
-            $queue = Queue::getByName($projectId, mb_strtolower($name));
+            $queue = $this->getRepository('helpDesk.queue.queue')->getByName($projectId, mb_strtolower($name));
             if ($queue)
                 $queueExists = true;
 
@@ -46,7 +46,7 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $defaultColumns = 'code#summary#priority#status#created#updated#reporter#assignee';
 
-                $queueId = Queue::save(
+                $queueId = $this->getRepository('helpDesk.queue.queue')->save(
                     $session->get('user/id'),
                     $projectId,
                     $name,

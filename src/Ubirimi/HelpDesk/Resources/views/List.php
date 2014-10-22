@@ -1,4 +1,5 @@
 <?php
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Queue\Queue;
 use Ubirimi\LinkHelper;
 
@@ -37,7 +38,7 @@ require_once __DIR__ . '/../../../Yongo/Resources/views/_header.php';
                         </td>
                         <td>
                             <?php
-                                $queues = Queue::getByProjectId($project['id']);
+                                $queues = UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->getByProjectId($project['id']);
                                 $queueSelectedId = -1;
                                 if ($queues) {
                                     $queue = $queues->fetch_array(MYSQLI_ASSOC);

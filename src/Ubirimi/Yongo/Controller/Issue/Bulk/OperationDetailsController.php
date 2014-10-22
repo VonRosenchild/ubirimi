@@ -21,7 +21,7 @@ class OperationDetailsController extends UbirimiController
             $sendEmail = isset($_POST['send_email']) ? 1 : 0;
             UbirimiContainer::get()['session']->set('bulk_change_send_operation_email', $sendEmail);
 
-            header('Location: /yongo/issue/bulk-change-confirmation');
+            return new RedirectResponse('/yongo/issue/bulk-change-confirmation');
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Bulk: Operation Details';

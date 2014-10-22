@@ -375,7 +375,7 @@ class Workflow
     }
 
     public function createInitialData($clientId, $workflowId) {
-        $statusOpen = Settings::getByName($clientId, 'status', 'Open');
+        $statusOpen = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Open');
 
         $q = 'insert into workflow_step(workflow_id, linked_issue_status_id, name, initial_step_flag) ' .
              'values(?, ?, ?, ?)';

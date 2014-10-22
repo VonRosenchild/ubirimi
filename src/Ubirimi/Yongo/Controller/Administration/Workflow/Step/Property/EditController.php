@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -49,7 +50,7 @@ class EditController extends UbirimiController
 
                     $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Step Property', $currentDate);
 
-                    header('Location: /yongo/administration/workflow/view-step-properties/' . $stepId);
+                    return new RedirectResponse('/yongo/administration/workflow/view-step-properties/' . $stepId);
                 }
             }
         }

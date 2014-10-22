@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\Space;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -23,8 +24,7 @@ class EditController extends UbirimiController
         $pages = $this->getRepository('documentador.entity.entity')->getAllBySpaceId($spaceId);
 
         if ($space['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $emptyName = false;
@@ -49,9 +49,9 @@ class EditController extends UbirimiController
                 $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador space ' . $name, $currentDate);
 
                 if ($backLink == 'space_tools') {
-                    header('Location: /documentador/administration/space-tools/overview/' . $spaceId);
+                    return new RedirectResponse('/documentador/administration/space-tools/overview/' . $spaceId);
                 } else {
-                    header('Location: /documentador/administration/spaces');
+                    return new RedirectResponse('/documentador/administration/spaces');
                 }
             }
         }

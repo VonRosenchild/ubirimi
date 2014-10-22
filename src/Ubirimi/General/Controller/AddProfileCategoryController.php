@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Ubirimi\General\Repository\UserProfileCategory\UserProfileCategory;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
@@ -27,7 +28,7 @@ Util::checkUserIsLoggedInAndRedirect();
 
             $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD Profile Category ' . $name, $date);
 
-            header('Location: /general-settings/users/profile-manager');
+            return new RedirectResponse('/general-settings/users/profile-manager');
         }
     }
     $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS . ' / Create User Profile Category';

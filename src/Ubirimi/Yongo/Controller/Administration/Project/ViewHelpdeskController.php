@@ -24,13 +24,13 @@ class ViewHelpdeskController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
             $SLAs->data_seek(0);
         }
 
-        $queues = Queue::getByProjectId($projectId);
+        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
         $queueSelectedId = -1;
         if ($queues) {
             $queue = $queues->fetch_array(MYSQLI_ASSOC);

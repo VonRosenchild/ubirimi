@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Move;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -27,8 +28,7 @@ class MoveStep3Controller extends UbirimiController
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
@@ -47,8 +47,7 @@ class MoveStep3Controller extends UbirimiController
             $session->set('move_issue/new_fix_version', $newIssueFixVersions);
             $session->set('move_issue/new_affects_version', $newIssueAffectsVersions);
 
-            header('Location: /yongo/issue/move/confirmation/' . $issueId);
-            die();
+            return new RedirectResponse('/yongo/issue/move/confirmation/' . $issueId);
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];

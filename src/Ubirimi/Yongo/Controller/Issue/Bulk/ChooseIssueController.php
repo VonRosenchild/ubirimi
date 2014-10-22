@@ -95,7 +95,7 @@ class ChooseIssueController extends UbirimiController
             }
             if (count($issueIdsArray)) {
                 UbirimiContainer::get()['session']->set('bulk_change_issue_ids', $issueIdsArray);
-                header('Location: /yongo/issue/bulk-operation');
+                return new RedirectResponse('/yongo/issue/bulk-operation');
             } else {
                 $errorNoIssuesSelected = true;
             }

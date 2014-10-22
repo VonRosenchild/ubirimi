@@ -35,8 +35,7 @@ class ActivityController extends UbirimiController
         $userId = $request->get('id');
         $user = $this->getRepository('ubirimi.user.user')->getById($userId);
         if ($user['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $menuSelectedCategory = 'documentator';

@@ -29,16 +29,16 @@ class ViewController extends UbirimiController
             . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
             . ' / Help Desks';
 
-        $queues = Queue::getByProjectId($projectId);
+        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
         if ($queues) {
             $queueSelected = $queues->fetch_array(MYSQLI_ASSOC);
         }
-        $slaSelected = Sla::getById($slaSelectedId);
+        $slaSelected = $this->getRepository('helpDesk.sla.sla')->getById($slaSelectedId);
 
         $startConditions = explode("#", $slaSelected['start_condition']);
         $stopConditions = explode("#", $slaSelected['stop_condition']);
 
-        $goals = Sla::getGoals($slaSelectedId);
+        $goals = $this->getRepository('helpDesk.sla.sla')->getGoals($slaSelectedId);
         $allRemainingIssuesDefinitionFound = false;
 
         return $this->render(__DIR__ . '/../../Resources/views/sla/View.php', get_defined_vars());

@@ -2,6 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Repository\ServerSettings;
@@ -17,7 +18,7 @@ class MaintenanceController extends UbirimiController
 
             ServerSettings::updateMaintenanceMessage($message);
 
-            header('Location: /administration/maintenance');
+            return new RedirectResponse('/administration/maintenance');
         }
 
         $serverSettings = ServerSettings::get();

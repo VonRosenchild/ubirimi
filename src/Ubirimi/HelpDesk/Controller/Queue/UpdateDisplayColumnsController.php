@@ -18,7 +18,7 @@ class UpdateDisplayColumnsController extends UbirimiController
         $queueId = $request->request->get('id');
         $columns = $request->request->get('data');
 
-        Queue::updateColumns($queueId, $columns);
+        $this->getRepository('helpDesk.queue.queue')->updateColumns($queueId, $columns);
 
         return new RedirectResponse('');
     }

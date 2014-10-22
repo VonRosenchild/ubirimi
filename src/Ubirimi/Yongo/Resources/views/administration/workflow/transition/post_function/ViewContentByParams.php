@@ -1,9 +1,13 @@
-<?php if ($postFunctions): ?>
+<?php
+
+use Ubirimi\Container\UbirimiContainer;
+
+if ($postFunctions): ?>
     <?php $index = 1 ?>
     <div>Already added post functions: </div>
     <?php while ($postFunction = $postFunctions->fetch_array(MYSQLI_ASSOC)): ?>
         <div>
-            <span><?php echo $index++ . '. ' . WorkflowFunction::getFunctionDescription($postFunction); ?></span>
+            <span><?php echo $index++ . '. ' . UbirimiContainer::get()['repository']->get('yongo.workflow.workflowFunction')->getFunctionDescription($postFunction); ?></span>
         </div>
     <?php endwhile ?>
     <hr size="1" />

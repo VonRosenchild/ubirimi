@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\SpaceTools;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
@@ -21,8 +22,7 @@ class OverviewController extends UbirimiController
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         require_once __DIR__ . '/../../../Resources/views/administration/spacetools/Overview.php';

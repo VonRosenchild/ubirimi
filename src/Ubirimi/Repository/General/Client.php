@@ -763,24 +763,24 @@ class Client
 
         $createStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, null, 'Create Issue', 1);
 
-        $statusOpenIdData = Settings::getByName($clientId, 'status', 'Open');
+        $statusOpenIdData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Open');
         $statusOpenId = $statusOpenIdData['id'];
         $openStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
 
-        $statusInProgressIdData = Settings::getByName($clientId, 'status', 'In Progress');
+        $statusInProgressIdData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'In Progress');
         $statusInProgressId = $statusInProgressIdData['id'];
 
         $inProgressStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
 
-        $statusClosedIdData = Settings::getByName($clientId, 'status', 'Closed');
+        $statusClosedIdData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Closed');
         $statusClosedId = $statusClosedIdData['id'];
         $closedStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
 
-        $statusResolvedIdData = Settings::getByName($clientId, 'status', 'Resolved');
+        $statusResolvedIdData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Resolved');
         $statusResolvedId = $statusResolvedIdData['id'];
         $resolvedStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
 
-        $statusReopenedIdData = Settings::getByName($clientId, 'status', 'Reopened');
+        $statusReopenedIdData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Reopened');
         $statusReopenedId = $statusReopenedIdData['id'];
         $reopenedStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
 

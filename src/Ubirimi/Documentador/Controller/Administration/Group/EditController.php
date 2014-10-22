@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\Group;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -19,8 +20,7 @@ class EditController extends UbirimiController
         $group = $this->getRepository('ubirimi.user.group')->getMetadataById($Id);
 
         if ($group['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $name = $group['name'];
@@ -47,7 +47,7 @@ class EditController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository('ubirimi.user.group')->updateById($Id, $name, $description, $currentDate);
 
-                header('Location: /documentador/administration/groups');
+                return new RedirectResponse('/documentador/administration/groups');
             }
         }
         $menuSelectedCategory = 'doc_users';

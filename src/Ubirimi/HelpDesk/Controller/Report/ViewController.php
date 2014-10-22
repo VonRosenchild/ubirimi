@@ -30,13 +30,13 @@ class ViewController extends UbirimiController
             . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
             . ' / Help Desks';
 
-        $queues = Queue::getByProjectId($projectId);
+        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
 
         if ($queues) {
             $queueSelected = $queues->fetch_array(MYSQLI_ASSOC);
         }
 
-        $slaSelected = Sla::getById($slaSelectedId);
+        $slaSelected = $this->getRepository('helpDesk.sla.sla')->getById($slaSelectedId);
 
         $dateTo = date('Y-m-d');
         $dateFrom = new \DateTime($dateTo, new \DateTimeZone($clientSettings['timezone']));

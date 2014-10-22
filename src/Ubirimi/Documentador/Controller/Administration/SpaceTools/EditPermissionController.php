@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\SpaceTools;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -22,8 +23,7 @@ class EditPermissionController extends UbirimiController
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         if (isset($_POST['update_configuration'])) {
@@ -71,7 +71,7 @@ class EditPermissionController extends UbirimiController
 
             $this->getRepository('documentador.space.space')->updatePermissionsAnonymous($spaceId, $parameters);
 
-            header('Location: /documentador/administration/space-tools/permissions/' . $spaceId);
+            return new RedirectResponse('/documentador/administration/space-tools/permissions/' . $spaceId);
         }
 
         $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);

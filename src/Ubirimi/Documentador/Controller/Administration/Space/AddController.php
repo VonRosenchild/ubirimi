@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\Space;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
@@ -66,7 +67,7 @@ class AddController extends UbirimiController
                     // add space permissions for groups
                     $this->getRepository('documentador.space.space')->setDefaultPermissions($clientId, $spaceId);
 
-                    header('Location: /documentador/administration/spaces');
+                    return new RedirectResponse('/documentador/administration/spaces');
                 }
             }
         }

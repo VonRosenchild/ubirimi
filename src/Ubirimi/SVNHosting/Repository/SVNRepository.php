@@ -11,7 +11,6 @@ use Ubirimi\Util;
 class SVNRepository
 {
     public function getByCode($code, $clientId) {
-        return false;
 
         $query = 'select id, name, code from project where client_id = ? and LOWER(code) = LOWER(?) ';
         if ($projectId) $query .= 'and id != ?';

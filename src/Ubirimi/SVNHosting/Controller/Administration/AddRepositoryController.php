@@ -43,8 +43,7 @@ class AddRepositoryController extends UbirimiController
 
             if (empty($code)) {
                 $emptyCode = true;
-            }
-            else {
+            } else {
                 $svn_repository_exists = SVNRepository::getByCode(mb_strtolower($code), $clientId);
                 if ($svn_repository_exists) {
                     $duplicateCode = true;

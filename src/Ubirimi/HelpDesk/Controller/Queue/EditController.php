@@ -17,7 +17,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $queueId = $request->get('id');
-        $queue = Queue::getById($queueId);
+        $queue = $this->getRepository('helpDesk.queue.queue')->getById($queueId);
         $projectId = $queue['project_id'];
 
         $emptyName = false;
@@ -33,7 +33,7 @@ class EditController extends UbirimiController
             }
 
             // check for duplication
-            $queue = Queue::getByName($queueId, mb_strtolower($name), $projectId);
+            $queue = $this->getRepository('helpDesk.queue.queue')->getByName($queueId, mb_strtolower($name), $projectId);
             if ($queue) {
                 $queueExists = true;
             }
@@ -41,7 +41,7 @@ class EditController extends UbirimiController
             if (!$queueExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Queue::updateById($queueId, $name, $description, $description, $currentDate);
+                $this->getRepository('helpDesk.queue.queue')->updateById($queueId, $name, $description, $description, $currentDate);
 
                 return new RedirectResponse('/helpdesk/queues/' . $projectId . '/' . $queueId);
             }

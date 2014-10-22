@@ -138,8 +138,8 @@ class Board
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $openStatusData = Settings::getByName($clientId, 'status', 'Open');
-        $reopenedStatusData = Settings::getByName($clientId, 'status', 'Reopened');
+        $openStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Open');
+        $reopenedStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Reopened');
         UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $openStatusData['id']);
         UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $reopenedStatusData['id']);
 
@@ -152,7 +152,7 @@ class Board
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $inProgressStatusData = Settings::getByName($clientId, 'status', 'In Progress');
+        $inProgressStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'In Progress');
 
         UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $inProgressStatusData['id']);
 
@@ -165,8 +165,8 @@ class Board
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $resolvedStatusData = Settings::getByName($clientId, 'status', 'Resolved');
-        $closedStatusData = Settings::getByName($clientId, 'status', 'Closed');
+        $resolvedStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Resolved');
+        $closedStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Closed');
 
         UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $resolvedStatusData['id']);
         UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $closedStatusData['id']);
@@ -238,7 +238,7 @@ class Board
     }
 
     public function getUnmappedStatuses($clientId, $boardId, $resultType = null) {
-        $clientStatuses = Settings::getAllIssueSettings('status', $clientId, 'array');
+        $clientStatuses = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('status', $clientId, 'array');
 
         $query = "select issue_status.id, issue_status.name " .
             "from agile_board " .

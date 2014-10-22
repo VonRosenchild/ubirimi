@@ -18,9 +18,9 @@ class DeleteController extends UbirimiController
         $queueId = $request->request->get('id');
         $projectId = $request->request->get('project_id');
 
-        Queue::deleteById($queueId);
+        $this->getRepository('helpDesk.queue.queue')->deleteById($queueId);
 
-        $queues = Queue::getByProjectId($projectId);
+        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
         $queueToGoId = -1;
 
         if ($queues) {

@@ -20,8 +20,7 @@ class ContentTrashController extends UbirimiController
         $space = $this->getRepository('documentador.space.space')->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
         $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 

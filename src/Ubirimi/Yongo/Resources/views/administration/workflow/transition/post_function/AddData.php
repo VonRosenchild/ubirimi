@@ -17,7 +17,7 @@
 
         <form name="add_post_function_data" action="/yongo/administration/workflow/transition-add-post-function-data/<?php echo $workflowDataId ?>?function_id=<?php echo $postFunctionId ?>" method="post">
             <?php if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>
-                <?php $resolutions = Settings::getAllIssueSettings('resolution', $clientId); ?>
+                <?php $resolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId); ?>
                 <div>Add required parameters to the function <b><?php echo $postFunctionSelected['name'] ?></b></div>
                 <table width="100%">
                     <tr>

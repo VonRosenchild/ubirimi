@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\User;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -37,8 +38,7 @@ class FavouritesController extends UbirimiController
         $user = $this->getRepository('ubirimi.user.user')->getById($userId);
 
         if ($user['client_id'] != $clientId) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $menuSelectedCategory = 'documentator';

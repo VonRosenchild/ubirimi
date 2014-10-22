@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -41,7 +42,7 @@ class AddDataController extends UbirimiController
 
                 $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
-                header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
+                return new RedirectResponse('/yongo/administration/workflow/transition-conditions/' . $workflowDataId);
             } else
                 if ($conditionId == Condition::CONDITION_ONLY_REPORTER) {
 
@@ -51,7 +52,7 @@ class AddDataController extends UbirimiController
 
                     $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
-                    header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
+                    return new RedirectResponse('/yongo/administration/workflow/transition-conditions/' . $workflowDataId);
                 }
         } else {
 
@@ -69,7 +70,7 @@ class AddDataController extends UbirimiController
 
                 $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
-                header('Location: /yongo/administration/workflow/transition-conditions/' . $workflowDataId);
+                return new RedirectResponse('/yongo/administration/workflow/transition-conditions/' . $workflowDataId);
             }
         }
 

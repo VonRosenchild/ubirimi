@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Move;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -26,8 +27,7 @@ class MoveStep1SubtaskController extends UbirimiController
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
-            header('Location: /general-settings/bad-link-access-denied');
-            die();
+            return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
@@ -57,10 +57,10 @@ class MoveStep1SubtaskController extends UbirimiController
 
             if ($newSubtaskIssueTypeId) {
                 if ($step2Necessary) {
-                    header('Location: /yongo/issue/move/status/' . $issueId);
+                    return new RedirectResponse('/yongo/issue/move/status/' . $issueId);
                 } else {
                     UbirimiContainer::get()['session']->set('move_issue/new_status', $issue['status']);
-                    header('Location: /yongo/issue/move/fields/' . $issueId);
+                    return new RedirectResponse('/yongo/issue/move/fields/' . $issueId);
                 }
             } else {
                 $errorNoNewSubtaskIssueTypeSelected = true;

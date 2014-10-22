@@ -5,11 +5,6 @@
     use Ubirimi\Yongo\Repository\Field\Field;
 
     require_once __DIR__ . '/../../_header.php';
-
-    if (!$parseURLData['query']) {
-        header('Location: /general-settings/bad-link-access-denied');
-        die();
-    }
 ?>
 <body>
 
