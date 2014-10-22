@@ -48,8 +48,8 @@ class AddController extends UbirimiController
 
         $menuSelectedCategory = 'documentator';
 
-        if (isset($_POST['add_page'])) {
-            $name = Util::cleanRegularInputField($_POST['name']);
+        if ($request->request->has('add_page')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
             $content = $request->request->get('content');
 
             $page = new Entity(Type::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, $parentEntityId, $name, $content);

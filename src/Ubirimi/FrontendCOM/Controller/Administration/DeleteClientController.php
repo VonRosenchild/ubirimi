@@ -4,6 +4,6 @@
 
     Util::checkSuperUserIsLoggedIn();
 
-    $clientId = $_POST['id'];
+    $clientId = $request->request->get('id');
 
     $this->getRepository('ubirimi.general.client')->deleteById($clientId);

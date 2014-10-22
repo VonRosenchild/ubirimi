@@ -32,9 +32,9 @@ class EditController extends UbirimiController
 
         $value = $stepProperty['value'];
 
-        if (isset($_POST['edit_property'])) {
-            $keyId = Util::cleanRegularInputField($_POST['key']);
-            $value = Util::cleanRegularInputField($_POST['value']);
+        if ($request->request->has('edit_property')) {
+            $keyId = Util::cleanRegularInputField($request->request->get('key'));
+            $value = Util::cleanRegularInputField($request->request->get('value'));
 
             if (empty($value))
                 $emptyValue = true;

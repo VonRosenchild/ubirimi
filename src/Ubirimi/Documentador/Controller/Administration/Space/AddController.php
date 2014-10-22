@@ -25,10 +25,10 @@ class AddController extends UbirimiController
         $doubleCode = false;
         $doubleName = false;
 
-        if (isset($_POST['add_space'])) {
-            $name = Util::cleanRegularInputField($_POST['name']);
-            $code = Util::cleanRegularInputField($_POST['code']);
-            $description = Util::cleanRegularInputField($_POST['description']);
+        if ($request->request->has('add_space')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $code = Util::cleanRegularInputField($request->request->get('code'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
             $currentDate = Util::getServerCurrentDateTime();
 
             if (empty($name))

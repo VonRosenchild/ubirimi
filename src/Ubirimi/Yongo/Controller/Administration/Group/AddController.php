@@ -31,7 +31,7 @@ class AddController extends UbirimiController
             }
 
             if (!$emptyName && !$duplicateName) {
-                $description = Util::cleanRegularInputField($_POST['description']);
+                $description = Util::cleanRegularInputField($request->request->get('description'));
                 $currentDate = Util::getServerCurrentDateTime();
 
                 $this->getRepository('ubirimi.user.group')->add(

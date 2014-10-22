@@ -23,7 +23,7 @@ class AssignController extends UbirimiController
 
         $issueId = $request->request->get('issue_id');
         $userAssignedId = $request->request->get('user_assigned_id');
-        $comment = Util::cleanRegularInputField($_POST['comment']);
+        $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
         $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
         $this->getRepository('yongo.issue.issue')->updateAssignee($session->get('client/id'), $issueId, $session->get('user/id'), $userAssignedId, $comment);

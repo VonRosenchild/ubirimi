@@ -31,10 +31,10 @@ class EditSettingsController extends UbirimiController
 
         if ($request->request->has('update_configuration')) {
 
-            $language = Util::cleanRegularInputField($_POST['language']);
-            $timezone = Util::cleanRegularInputField($_POST['zone']);
+            $language = Util::cleanRegularInputField($request->request->get('language'));
+            $timezone = Util::cleanRegularInputField($request->request->get('zone'));
             $titleName = Util::cleanRegularInputField($_POST['title_name']);
-            $operatingMode = Util::cleanRegularInputField($_POST['mode']);
+            $operatingMode = Util::cleanRegularInputField($request->request->get('mode'));
 
             $parameters = array(array('field' => 'title_name', 'value' => $titleName, 'type' => 's'),
                 array('field' => 'operating_mode', 'value' => $operatingMode, 'type' => 's'),

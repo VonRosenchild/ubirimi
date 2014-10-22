@@ -3,7 +3,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Ubirimi\Repository\Newsletter;
     use Ubirimi\Util;
 
-    if (isset($_POST['subscribe'])) {
+    if (isset($request->request->get('subscribe'))) {
         $emailAddress = Util::cleanRegularInputField($_POST['email_address']);
         $validEmailAddress = Util::isValidEmail($emailAddress);
 

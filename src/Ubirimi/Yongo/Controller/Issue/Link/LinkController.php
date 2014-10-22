@@ -28,7 +28,7 @@ class LinkController extends UbirimiController
         $linkTypeId = $linkTypeData[0];
         $type = $linkTypeData[1];
         $linkedIssues = $request->request->get('linked_issues');
-        $comment = Util::cleanRegularInputField($_POST['comment']);
+        $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
         $date = Util::getServerCurrentDateTime();
         LinkType::addLink($issueId, $linkTypeId, $type, $linkedIssues, $date);

@@ -23,7 +23,7 @@ class AddController extends UbirimiController
 
         $errors = array('no_function_selected' => false);
 
-        if (isset($_POST['add_new_post_function'])) {
+        if ($request->request->has('add_new_post_function')) {
             $functionId = isset($_POST['function']) ? $_POST['function'] : null;
             if ($functionId) {
                 return new RedirectResponse('/yongo/administration/workflow/transition-add-post-function-data/' . $workflowDataId . '?function_id=' . $functionId);

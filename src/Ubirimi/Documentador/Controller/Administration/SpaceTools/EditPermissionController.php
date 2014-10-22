@@ -26,7 +26,7 @@ class EditPermissionController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        if (isset($_POST['update_configuration'])) {
+        if ($request->request->has('update_configuration')) {
 
             // deal with the groups
             // delete all the permissions for all groups

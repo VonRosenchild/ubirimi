@@ -25,7 +25,7 @@ class OperationConfirmationController extends UbirimiController
         $smtpSettings = $session->get('client/settings/smtp');
 
         $issues = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => UbirimiContainer::get()['session']->get('bulk_change_issue_ids'), $loggedInUserId));
-        if (isset($_POST['confirm'])) {
+        if ($request->request->has('confirm')) {
 
             if (UbirimiContainer::get()['session']->get('bulk_change_operation_type') == 'delete') {
                 $issueIds = UbirimiContainer::get()['session']->get('bulk_change_issue_ids');

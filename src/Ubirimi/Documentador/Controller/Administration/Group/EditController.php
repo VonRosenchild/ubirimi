@@ -29,9 +29,9 @@ class EditController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        if (isset($_POST['update_group'])) {
-            $name = Util::cleanRegularInputField($_POST['name']);
-            $description = Util::cleanRegularInputField($_POST['description']);
+        if ($request->request->has('update_group')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
             if (empty($name))
                 $emptyName = true;

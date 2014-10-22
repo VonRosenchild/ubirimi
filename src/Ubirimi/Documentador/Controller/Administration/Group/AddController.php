@@ -20,8 +20,8 @@ class AddController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        if (isset($_POST['new_group'])) {
-            $name = Util::cleanRegularInputField($_POST['name']);
+        if ($request->request->has('new_group')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
             if (empty($name))
                 $emptyName = true;
 
@@ -32,7 +32,7 @@ class AddController extends UbirimiController
             }
 
             if (!$emptyName && !$duplicateName) {
-                $description = Util::cleanRegularInputField($_POST['description']);
+                $description = Util::cleanRegularInputField($request->request->get('description'));
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository('ubirimi.user.group')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name, $description, $currentDate);
 

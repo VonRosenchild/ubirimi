@@ -23,7 +23,7 @@ class AddAdministratorController extends UbirimiController
         $regularUsers = $this->getRepository('ubirimi.user.user')->getNotSVNAdministrators($clientId);
         $noUsersSelected = false;
 
-        if (isset($_POST['confirm_new_svn_administrator'])) {
+        if ($request->request->has('confirm_new_svn_administrator')) {
             $users = $request->request->get('user');
 
             if ($users) {

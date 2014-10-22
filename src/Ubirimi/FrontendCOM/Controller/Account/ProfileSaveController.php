@@ -33,9 +33,9 @@ class ProfileSaveController extends UbirimiController
         $contactEmail = Util::cleanRegularInputField($_POST['contact_email']);
         $address1 = Util::cleanRegularInputField($_POST['address_1']);
         $address2 = Util::cleanRegularInputField($_POST['address_2']);
-        $city = Util::cleanRegularInputField($_POST['city']);
-        $district = Util::cleanRegularInputField($_POST['district']);
-        $country = Util::cleanRegularInputField($_POST['country']);
+        $city = Util::cleanRegularInputField($request->request->get('city'));
+        $district = Util::cleanRegularInputField($request->request->get('district'));
+        $country = Util::cleanRegularInputField($request->request->get('country'));
 
         if (empty($companyName)) {
             $errors['empty_company_name'] = true;

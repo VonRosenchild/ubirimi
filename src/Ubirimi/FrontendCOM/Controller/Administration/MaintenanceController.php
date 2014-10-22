@@ -13,7 +13,7 @@ class MaintenanceController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        if (isset($_POST['update'])) {
+        if (isset($request->request->get('update'))) {
             $message = $_POST['maintenance_message'];
 
             ServerSettings::updateMaintenanceMessage($message);

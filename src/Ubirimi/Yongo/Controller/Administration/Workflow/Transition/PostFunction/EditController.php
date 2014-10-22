@@ -19,7 +19,7 @@ class EditController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        if (isset($_POST['edit_parameters'])) {
+        if ($request->request->has('edit_parameters')) {
             $functionId = $request->request->get('function_id');
             $workflowDataId = $request->request->get('workflow_data_id');
 

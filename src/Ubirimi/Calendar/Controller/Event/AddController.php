@@ -17,7 +17,7 @@ class AddController extends UbirimiController
         $clientId = $session->get('client/id');
         $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
 
-        $name = Util::cleanRegularInputField($_POST['name']);
+        $name = Util::cleanRegularInputField($request->request->get('name'));
         $description = $request->request->get('description');
         $location = $request->request->get('location');
         $calendarId = $request->request->get('calendar');

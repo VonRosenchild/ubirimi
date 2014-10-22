@@ -53,7 +53,7 @@ class SearchController extends UbirimiController
             $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectIds($projectIds);
         }
 
-        if (isset($_POST['search'])) {
+        if ($request->request->has('search')) {
 
             $searchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromPostGet($projectIds, $_POST, $_GET);
 

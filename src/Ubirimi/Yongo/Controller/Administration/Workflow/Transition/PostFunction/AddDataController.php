@@ -26,7 +26,7 @@ class AddDataController extends UbirimiController
 
         $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
 
-        if (isset($_POST['add_parameters'])) {
+        if ($request->request->has('add_parameters')) {
 
             if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE) {
                 $field_name = $request->request->get('issue_field');

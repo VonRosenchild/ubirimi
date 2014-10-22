@@ -54,7 +54,7 @@
 
             <fieldset>
                 <label for="ccity">City <span class="error">*</span></label>
-                <input id="ccity" type="text" name="city" value="<?php echo isset($_POST['city']) ? $_POST['city'] : $clientData['city'] ?>" />
+                <input id="ccity" type="text" name="city" value="<?php echo isset($request->request->get('city')) ? $request->request->get('city') : $clientData['city'] ?>" />
                 <?php if ($errors['empty_city']): ?>
                     <br />
                     <span class="error">The city can not be empty</span>
@@ -63,7 +63,7 @@
 
             <fieldset>
                 <label for="cdistrict">District <span class="error">*</span></label>
-                <input id="cdistrict" type="text" name="district" value="<?php echo isset($_POST['district']) ? $_POST['district'] : $clientData['district'] ?>" />
+                <input id="cdistrict" type="text" name="district" value="<?php echo isset($request->request->get('district')) ? $request->request->get('district') : $clientData['district'] ?>" />
                 <?php if ($errors['empty_district']): ?>
                     <br />
                     <span class="error">The district can not be empty</span>
@@ -77,7 +77,7 @@
                         <option value="-1"></option>
                         <?php while ($country = $countries->fetch_array(MYSQLI_ASSOC)): ?>
                             <?php $textSelected = ''; ?>
-                            <?php if (isset($_POST['country']) && $_POST['country'] == $country['id']): ?>
+                            <?php if (isset($request->request->get('country')) && $request->request->get('country') == $country['id']): ?>
                                 <?php $textSelected = 'selected="selected"' ?>
                             <?php elseif ($clientData['sys_country_id'] == $country['id']): ?>
                                 <?php $textSelected = 'selected="selected"' ?>

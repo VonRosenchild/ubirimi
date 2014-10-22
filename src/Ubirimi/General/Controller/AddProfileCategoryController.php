@@ -11,9 +11,9 @@ Util::checkUserIsLoggedInAndRedirect();
     $session->set('selected_product_id', -1);
     $menuSelectedCategory = 'general_user';
 
-    if (isset($_POST['new_profile_category'])) {
-        $name = Util::cleanRegularInputField($_POST['name']);
-        $description = Util::cleanRegularInputField($_POST['description']);
+    if ($request->request->has('new_profile_category')) {
+        $name = Util::cleanRegularInputField($request->request->get('name'));
+        $description = Util::cleanRegularInputField($request->request->get('description'));
 
         if (empty($name))
             $emptyName = true;

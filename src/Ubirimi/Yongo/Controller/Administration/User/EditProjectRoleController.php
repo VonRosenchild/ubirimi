@@ -27,7 +27,7 @@ class EditProjectRoleController extends UbirimiController
             $groupIds[] = $group['id'];
         }
 
-        if (isset($_POST['edit_user_project_role'])) {
+        if ($request->request->has('edit_user_project_role')) {
             $currentDate = Util::getServerCurrentDateTime();
             $this->getRepository('yongo.permission.role')->gdeleteRolesForUser($userId);
             foreach ($request->request as $key => $value) {

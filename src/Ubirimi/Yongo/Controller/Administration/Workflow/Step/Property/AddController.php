@@ -31,9 +31,9 @@ class AddController extends UbirimiController
         $emptyValue = false;
         $duplicateKey = false;
 
-        if (isset($_POST['add_property'])) {
-            $keyId = Util::cleanRegularInputField($_POST['key']);
-            $value = Util::cleanRegularInputField($_POST['value']);
+        if ($request->request->has('add_property')) {
+            $keyId = Util::cleanRegularInputField($request->request->get('key'));
+            $value = Util::cleanRegularInputField($request->request->get('value'));
 
             if (empty($value))
                 $emptyValue = true;

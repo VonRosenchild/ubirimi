@@ -30,17 +30,19 @@ class EditController extends UbirimiController
         $emptyName = false;
         $emptyCode = false;
 
-        if (isset($_POST['edit_space'])) {
-            $name = Util::cleanRegularInputField($_POST['name']);
-            $code = Util::cleanRegularInputField($_POST['code']);
-            $homepageId = Util::cleanRegularInputField($_POST['homepage']);
-            $description = Util::cleanRegularInputField($_POST['description']);
+        if ($request->request->has('edit_space')) {
+            $name = Util::cleanRegularInputField($request->request->get('name'));
+            $code = Util::cleanRegularInputField($request->request->get('code'));
+            $homepageId = Util::cleanRegularInputField($request->request->get('homepage'));
+            $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
-            if (empty($code))
+            if (empty($code)) {
                 $emptyCode = true;
+            }
 
             if (!$emptyName && !$emptyCode) {
                 $currentDate = Util::getServerCurrentDateTime();

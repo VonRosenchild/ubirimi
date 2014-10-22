@@ -14,7 +14,7 @@ class ValidateTimeSpentController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $time = trim($_POST['time']);
+        $time = trim($request->request->get('time'));
 
         $valid = true;
         $time = str_replace(" ", '', $time);
