@@ -6,12 +6,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\HelpDesk\Repository\Sla\Calendar;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Settings;
 
 class EditController extends UbirimiController
 {
@@ -22,7 +19,7 @@ class EditController extends UbirimiController
 
         $slaId = $request->get('id');
 
-        $SLA = Sla::getById($slaId);
+        $SLA = $this->getRepository('helpDesk.sla.sla')->getById($slaId);
         $project = $this->getRepository('yongo.project.project')->getById($SLA['project_id']);
 
         $startConditions = explode("#", $SLA['start_condition']);
@@ -30,7 +27,7 @@ class EditController extends UbirimiController
 
         $slaConditions = array_merge($startConditions, $stopConditions);
         $slaCalendars = Calendar::getByProjectId($SLA['project_id']);
-        $goals = Sla::getGoals($slaId);
+        $goals = $this->getRepository('helpDesk.sla.sla')->getGoals($slaId);
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';
 
@@ -52,7 +49,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
             }
 
-            $slaExists = Sla::getByName(mb_strtolower($name), $SLA['project_id'], $slaId);
+            $slaExists = $this->getRepository('helpDesk.sla.sla')->getByName(mb_strtolower($name), $SLA['project_id'], $slaId);
             if ($slaExists) {
                 $duplicateName = true;
             }
@@ -81,15 +78,15 @@ class EditController extends UbirimiController
 
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Sla::updateById($slaId, $name, $description, $startCondition, $stopCondition, $currentDate);
+                $this->getRepository('helpDesk.sla.sla')->updateById($slaId, $name, $description, $startCondition, $stopCondition, $currentDate);
 
-                Sla::deleteGoalsBySLAId($slaId);
+                $this->getRepository('helpDesk.sla.sla')->deleteGoalsBySLAId($slaId);
                 // add the goals of the sla
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 16) == 'goal_definition_') {
                         $index = str_replace('goal_definition_', '', $key);
                         if ($value && $request->request->get('goal_value_' . $index)) {
-                            Sla::addGoal(
+                            $this->getRepository('helpDesk.sla.sla')->addGoal(
                                 $slaId,
                                 $request->request->get('goal_calendar_' . $index),
                                 $value,

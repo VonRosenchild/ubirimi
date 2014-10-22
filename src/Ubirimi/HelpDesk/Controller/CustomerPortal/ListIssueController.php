@@ -5,12 +5,9 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class ListIssueController extends UbirimiController
 {
@@ -75,7 +72,7 @@ class ListIssueController extends UbirimiController
             }
         }
 
-        $SLAs = Sla::getByProjectIds(array(229));
+        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectIds(array(229));
 
         $columns = array('code', 'summary', 'priority', 'status', 'created', 'updated', 'reporter', 'assignee', 'settings_menu');
         if (Util::checkUserIsLoggedIn()) {

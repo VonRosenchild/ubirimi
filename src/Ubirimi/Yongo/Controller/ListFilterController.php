@@ -4,10 +4,9 @@ namespace Ubirimi\Yongo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
 use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class ListFilterController extends UbirimiController
 {
@@ -15,12 +14,12 @@ class ListFilterController extends UbirimiController
     {
         if (Util::checkUserIsLoggedIn()) {
             $clientSettings = $session->get('client/settings');
-            $filters = Filter::getAllByUser($session->get('user/id'));
+            $filters = $this->getRepository('yongo.issue.filter')->getAllByUser($session->get('user/id'));
         } else {
             $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
             $loggedInUserId = null;
             $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
-            $filters = Filter::getAllByClientId($clientId);
+            $filters = $this->getRepository('yongo.issue.filter')->getAllByClientId($clientId);
         }
 
         $loggedInUserId = $session->get('user/id');

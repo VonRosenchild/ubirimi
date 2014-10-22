@@ -36,7 +36,7 @@ require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
                 </thead>
                 <tbody>
                 <?php while ($calendar = $calendars->fetch_array(MYSQLI_ASSOC)): ?>
-                    <?php $slasCalendar = Sla::getByCalendarId($clientId, $calendar['id']) ?>
+                    <?php $slasCalendar = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByCalendarId($clientId, $calendar['id']) ?>
                     <input type="hidden" id="delete_possible_<?php echo $calendar['id'] ?>" value="<?php if ($slasCalendar) echo '0'; else echo '1' ?>" />
                     <tr id="table_row_<?php echo $calendar['id'] ?>">
                         <td width="22">

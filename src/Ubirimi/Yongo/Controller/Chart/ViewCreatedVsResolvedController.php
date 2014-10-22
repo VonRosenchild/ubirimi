@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class ViewCreatedVsResolvedController extends UbirimiController
 {

@@ -2,15 +2,10 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
-use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class TransitionScreenController extends UbirimiController
 {

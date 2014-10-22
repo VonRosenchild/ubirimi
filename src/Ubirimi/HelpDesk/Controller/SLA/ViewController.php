@@ -6,9 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\HelpDesk\Repository\Queue\Queue;
 use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\SystemProduct;
 
 class ViewController extends UbirimiController
 {
@@ -21,7 +21,7 @@ class ViewController extends UbirimiController
         $slaSelectedId = $request->get('sla_id');
 
         $project = $this->getRepository('yongo.project.project')->getById($projectId);
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';

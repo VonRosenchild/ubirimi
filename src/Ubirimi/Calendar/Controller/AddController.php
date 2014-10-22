@@ -5,7 +5,6 @@ namespace Ubirimi\Calendar\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Calendar\Repository\Calendar\Calendar;
 use Ubirimi\Calendar\Repository\Reminder\Period;
 use Ubirimi\Calendar\Repository\Reminder\Type;
 use Ubirimi\SystemProduct;

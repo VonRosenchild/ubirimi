@@ -1,8 +1,8 @@
 <?php
 
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../include/header.php';
+require_once __DIR__ . '/../include/header.php';
 
     Util::checkUserIsLoggedInAndRedirect();
 

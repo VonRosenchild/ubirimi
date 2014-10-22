@@ -4,13 +4,9 @@ namespace Ubirimi\Yongo\Controller\Issue\Move;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Yongo\Repository\Issue\Version;
 
 
 class MoveStep2Controller extends UbirimiController

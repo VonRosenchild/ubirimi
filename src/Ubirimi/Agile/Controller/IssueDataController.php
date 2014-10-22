@@ -4,17 +4,10 @@ namespace Ubirimi\Agile\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
-
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Attachment;
-use Ubirimi\Yongo\Repository\Issue\Comment;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\Version;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class IssueDataController extends UbirimiController
 {

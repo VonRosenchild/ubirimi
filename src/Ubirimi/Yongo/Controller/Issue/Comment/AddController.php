@@ -13,9 +13,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Comment;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class AddController extends UbirimiController
 {

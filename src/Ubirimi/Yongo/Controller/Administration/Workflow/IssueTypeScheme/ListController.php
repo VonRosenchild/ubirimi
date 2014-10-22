@@ -4,9 +4,9 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\IssueTypeScheme;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 
 class ListController extends UbirimiController

@@ -5,13 +5,10 @@ namespace Ubirimi\Yongo\Controller\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Repository\User\User;
-use Ubirimi\UbirimiController;
-use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class AssignController extends UbirimiController
 {

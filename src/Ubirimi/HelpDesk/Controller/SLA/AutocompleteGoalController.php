@@ -5,10 +5,8 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Settings;
 use Ubirimi\Yongo\Repository\Issue\Type;
 
 class AutocompleteGoalController extends UbirimiController
@@ -41,7 +39,7 @@ class AutocompleteGoalController extends UbirimiController
             'Unresolved'
         );
 
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
         while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
             $standardKeyWords[] = $SLA['name'];
         }

@@ -96,7 +96,7 @@ class Sprint
                 $resultArray[] = $issue['parent_id'];
             }
 
-            return UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $resultArray), $loggedInUserId);
+            return UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('issue_id' => $resultArray), $loggedInUserId);
         } else
             return null;
     }

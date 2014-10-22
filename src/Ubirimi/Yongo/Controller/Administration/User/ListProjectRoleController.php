@@ -4,14 +4,9 @@ namespace Ubirimi\Yongo\Controller\Administration\User;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-
-use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Permission\Role;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class ListProjectRoleController extends UbirimiController
 {

@@ -617,7 +617,7 @@ class Util {
                 $slaIds = explode("_", $column);
                 $slaId = $slaIds[1];
 
-                $slaColumn = Sla::getById($slaId);
+                $slaColumn = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getById($slaId);
                 $columnName = $slaColumn['name'];
             } else {
                 $columnName = str_replace("_", ' ', ucfirst($column));

@@ -5,14 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
 
-
-use Ubirimi\Repository\User\User;
-use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AddLevelDataController extends UbirimiController
 {

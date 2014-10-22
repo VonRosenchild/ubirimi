@@ -5,10 +5,9 @@ namespace Ubirimi\HelpDesk\Controller\SLA\Calendar;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\HelpDesk\Repository\Sla\Calendar;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\SystemProduct;
 
 class ListController extends UbirimiController
 {
@@ -28,7 +27,7 @@ class ListController extends UbirimiController
         $project = $this->getRepository('yongo.project.project')->getById($projectId);
         $calendars = Calendar::getByProjectId($projectId);
 
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
             $SLAs->data_seek(0);

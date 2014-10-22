@@ -33,7 +33,7 @@ class FiltersController extends UbirimiController
             $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
         }
 
-        $customFilters = Filter::getAllByUser($session->get('user/id'));
+        $customFilters = $this->getRepository('yongo.issue.filter')->getAllByUser($session->get('user/id'));
 
         return $this->render(__DIR__ . '/../../Resources/views/menu/Filters.php', get_defined_vars());
     }

@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
-use Ubirimi\Yongo\Repository\Issue\Watcher;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 

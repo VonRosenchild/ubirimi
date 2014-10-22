@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\SystemProduct;
-use Ubirimi\Util;
 use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class ViewUserSummaryController extends UbirimiController
 {

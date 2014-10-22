@@ -4,7 +4,6 @@ namespace Ubirimi\HelpDesk\Controller\SLA\Calendar;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -15,7 +14,7 @@ class DeleteDialogController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $calendarId = $request->get('id');
-        $slasWithCalendar = Sla::getByCalendarId($session->get('client/id'), $calendarId);
+        $slasWithCalendar = $this->getRepository('helpDesk.sla.sla')->getByCalendarId($session->get('client/id'), $calendarId);
 
         $slas = array();
         if ($slasWithCalendar) {

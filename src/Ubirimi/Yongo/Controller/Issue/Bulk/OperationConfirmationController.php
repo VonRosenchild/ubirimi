@@ -13,7 +13,6 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Issue\Attachment;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class OperationConfirmationController extends UbirimiController
 {

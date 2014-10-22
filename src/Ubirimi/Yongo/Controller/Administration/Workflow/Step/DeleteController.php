@@ -3,14 +3,10 @@
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step;
 
 use Guzzle\Http\Message\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
-use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class DeleteController extends UbirimiController
 {

@@ -4,14 +4,10 @@ namespace Ubirimi\HelpDesk\Controller\Queue;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Queue\Queue;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class ViewController extends UbirimiController
 {
@@ -30,7 +26,7 @@ class ViewController extends UbirimiController
 
         $columns = explode('#', $queueSelected['columns']);
 
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
             $SLAs->data_seek(0);

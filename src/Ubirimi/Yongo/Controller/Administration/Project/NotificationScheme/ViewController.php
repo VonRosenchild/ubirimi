@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Repository\User\User;
 use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;

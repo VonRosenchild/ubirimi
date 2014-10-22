@@ -2,14 +2,13 @@
 
 namespace Ubirimi\Yongo\Controller\User;
 
+use Nyholm\ZebraImage\ZebraImage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\User\User;
-use Nyholm\ZebraImage\ZebraImage;
-use Ubirimi\Container\UbirimiContainer;
 
 class UploadProfilePictureController extends UbirimiController
 {

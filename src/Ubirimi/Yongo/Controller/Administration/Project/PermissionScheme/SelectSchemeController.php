@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
 use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 class SelectSchemeController extends UbirimiController

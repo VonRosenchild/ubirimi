@@ -6,22 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-
 use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Attachment;
-use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\CustomField;
-use Ubirimi\Yongo\Repository\Issue\LinkType;
-use Ubirimi\Yongo\Repository\Issue\Version;
-use Ubirimi\Yongo\Repository\Issue\Watcher;
-use Ubirimi\Yongo\Repository\Issue\WorkLog;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\StepProperty;
 
 class ViewController extends UbirimiController

@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
 
 class DeleteController extends UbirimiController
 {
@@ -16,7 +15,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $filterId = $request->request->get('filter_id');
 
-        Filter::deleteById($filterId);
+        $this->getRepository('yongo.issue.filter')->deleteById($filterId);
 
         return new Response('');
     }

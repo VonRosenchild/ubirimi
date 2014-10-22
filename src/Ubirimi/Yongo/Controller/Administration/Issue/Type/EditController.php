@@ -10,8 +10,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Type;
 
-use Ubirimi\Yongo\Repository\Issue\Settings;
-
 class EditController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

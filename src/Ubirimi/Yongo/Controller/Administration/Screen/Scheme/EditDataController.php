@@ -9,7 +9,6 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Screen\Scheme;
-use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class EditDataController extends UbirimiController
 {

@@ -5,11 +5,10 @@ namespace Ubirimi\Yongo\Controller\Administration\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
-
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+
 
 class ListController extends UbirimiController
 {

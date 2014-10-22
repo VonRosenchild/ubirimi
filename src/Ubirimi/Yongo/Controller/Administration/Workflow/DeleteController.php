@@ -5,11 +5,9 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\UbirimiController;
-
 use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class DeleteController extends UbirimiController
 {

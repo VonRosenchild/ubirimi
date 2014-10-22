@@ -6,10 +6,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use ubirimi\svn\SVNRepository;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-
-use Ubirimi\SystemProduct;
 
 class EditRepositoryController extends UbirimiController
 {

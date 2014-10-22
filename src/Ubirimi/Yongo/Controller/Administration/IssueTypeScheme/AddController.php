@@ -6,10 +6,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
-
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Type;
+use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 
 class AddController extends UbirimiController
 {

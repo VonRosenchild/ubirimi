@@ -8,8 +8,6 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
-
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class IndexController extends UbirimiController

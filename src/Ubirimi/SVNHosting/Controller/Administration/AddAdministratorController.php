@@ -9,7 +9,6 @@ use ubirimi\svn\SVNRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\User\User;
 
 class AddAdministratorController extends UbirimiController
 {

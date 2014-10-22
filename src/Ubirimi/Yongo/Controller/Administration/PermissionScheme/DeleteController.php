@@ -4,11 +4,9 @@ namespace Ubirimi\Yongo\Controller\Administration\PermissionScheme;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\UbirimiController;
-
 use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
 
 class DeleteController extends UbirimiController
 {

@@ -117,11 +117,11 @@ class Filter
     }
 
     public function toggleFavourite($userId, $filterId, $date) {
-        $isFavourite = Filter::checkFilterIsFavouriteForUserId($filterId, $userId);
+        $isFavourite = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->checkFilterIsFavouriteForUserId($filterId, $userId);
         if ($isFavourite) {
-            Filter::deleteFavouriteByFilterIdAndUserId($userId, $filterId);
+            UbirimiContainer::get()['repository']->get('yongo.issue.filter')->deleteFavouriteByFilterIdAndUserId($userId, $filterId);
         } else {
-            Filter::addFavourite($userId, $filterId, $date);
+            UbirimiContainer::get()['repository']->get('yongo.issue.filter')->addFavourite($userId, $filterId, $date);
         }
     }
 

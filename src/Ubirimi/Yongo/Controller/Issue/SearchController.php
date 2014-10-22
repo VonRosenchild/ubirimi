@@ -3,15 +3,11 @@
 namespace Ubirimi\Yongo\Controller\Issue;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
@@ -53,7 +49,7 @@ class SearchController extends UbirimiController
             $searchCriteria = $this->getRepository('yongo.issue.issue')->getSearchParameters($projectsForBrowsing, $clientId);
             $issuesResult = null;
 
-            $SLAs = Sla::getByProjectIds($projectIds);
+            $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectIds($projectIds);
         }
 
         if (isset($_POST['search'])) {
@@ -105,7 +101,7 @@ class SearchController extends UbirimiController
         }
 
         $hasGlobalBulkPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE);
-        $customFilters = Filter::getAllByUser($loggedInUserId);
+        $customFilters = $this->getRepository('yongo.issue.filter')->getAllByUser($loggedInUserId);
 
         if ($getFilter) {
             $menuSelectedCategory = 'filters';

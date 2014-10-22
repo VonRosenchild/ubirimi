@@ -5,11 +5,9 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
 use Ubirimi\SystemProduct;
-use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
 use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class EditDataFilterController extends UbirimiController
 {
@@ -27,7 +25,7 @@ class EditDataFilterController extends UbirimiController
         }
 
         $boardProjects = $this->getRepository('agile.board.board')->getProjects($boardId, 'array');
-        $filter = Filter::getById($board['filter_id']);
+        $filter = $this->getRepository('yongo.issue.filter')->getById($board['filter_id']);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CHEETAH_NAME

@@ -12,7 +12,7 @@ while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fe
     if ($onlyMyIssuesFlag) {
         $parameters['assignee'] = $loggedInUserId;
     }
-    $strategyIssue = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($parameters, $loggedInUserId);
+    $strategyIssue = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($parameters, $loggedInUserId);
     $parentChildrenIssueIds[] = $issue['id'];
 
     if ($strategyIssue) {

@@ -312,7 +312,7 @@ class Board
     public function getBacklogIssues($clientId, $boardData, $onlyMyIssuesFlag, $loggedInUserId, $searchText, $completeStatuses) {
         $filterId = $boardData['filter_id'];
 
-        $filterData = Filter::getById($filterId);
+        $filterData = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->getById($filterId);
         $definition = $filterData['definition'];
         $definitionArray = explode('&', $definition);
         $searchParameters = array();

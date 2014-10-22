@@ -8,10 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
-
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
-use Ubirimi\Yongo\Repository\Screen\Screen;
+use Ubirimi\Yongo\Repository\Screen\Scheme;
 
 class AddController extends UbirimiController
 {

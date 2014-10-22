@@ -2,15 +2,13 @@
 
 namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\Condition;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Workflow\Condition;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ListController extends UbirimiController
 {

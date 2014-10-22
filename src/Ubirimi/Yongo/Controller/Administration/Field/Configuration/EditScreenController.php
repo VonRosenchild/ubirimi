@@ -5,12 +5,10 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Configuration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\UbirimiController;
 use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Configuration;
-use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class EditScreenVisibilityController extends UbirimiController
 {

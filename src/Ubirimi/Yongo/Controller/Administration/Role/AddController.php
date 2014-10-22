@@ -9,8 +9,6 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-use Ubirimi\Yongo\Repository\Permission\Role;
-
 class AddController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

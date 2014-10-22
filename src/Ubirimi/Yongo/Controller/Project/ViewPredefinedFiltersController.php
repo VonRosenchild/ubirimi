@@ -1,8 +1,8 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Util;
+use Ubirimi\LinkHelper;
+use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+Util::checkUserIsLoggedInAndRedirect();
 
     $projectId = $request->get('id');
 

@@ -3,7 +3,6 @@
 namespace Ubirimi\Yongo\Controller\Issue;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;

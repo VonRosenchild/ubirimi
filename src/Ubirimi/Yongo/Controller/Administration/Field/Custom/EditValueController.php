@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-
 use Ubirimi\Yongo\Repository\Field\Field;
 
 class EditValueController extends UbirimiController

@@ -40,8 +40,8 @@ require_once __DIR__ . '/../_header.php';
                         <td><?php echo $filter['description'] ?></td>
                         <td>
                             <?php
-                                $isFavourite = Filter::checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
-                                $subscriptions = Filter::getSubscriptions($filter['id']);
+                                $isFavourite = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
+                                $subscriptions = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->getSubscriptions($filter['id']);
                                 if ($isFavourite)
                                     echo '<img id="toggle_filter_favourite_' . $filter['id'] . '" title="Remove Filter from Favourites" src="/img/favourite_full.png" />';
                                 else

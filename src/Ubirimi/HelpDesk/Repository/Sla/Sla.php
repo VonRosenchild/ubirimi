@@ -163,9 +163,9 @@ class Sla
 
         $value = mb_strtolower($goal['definition']);
         $currentSLAId = $goal['help_sla_id'];
-        $curentSLA = Sla::getById($currentSLAId);
+        $curentSLA = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getById($currentSLAId);
 
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId);
         while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
             if (($index = stripos(mb_strtolower($value), mb_strtolower($SLA['name']))) !== false) {
@@ -319,7 +319,7 @@ class Sla
     }
 
     public function getGoalForIssueId($slaId, $issueId, $projectId, $clientId) {
-        $goals = Sla::getGoals($slaId);
+        $goals = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getGoals($slaId);
         $goalValue = null;
         $goalId = null;
         $goalCalendarId = null;
@@ -331,7 +331,7 @@ class Sla
                 $goalId = $goal['id'];
                 $goalCalendarId = $goal['help_sla_calendar_id'];
             } else {
-                $definitionSQL = Sla::transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
+                $definitionSQL = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
 
                 $issueFound = false;
                 if ($stmtGoal = UbirimiContainer::get()['db.connection']->prepare($definitionSQL)) {
@@ -356,7 +356,7 @@ class Sla
 
     public function getOffsetForIssue($SLA, $issue, $clientId, $clientSettings) {
         $issueId = $issue['id'];
-        $goalData = Sla::getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
+        $goalData = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
         $goalId = $goalData['id'];
 
         if ($goalId == null) {
@@ -365,7 +365,7 @@ class Sla
         $goalValue = $goalData['value'];
         $slaCalendarData = Calendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
-        $SLA = Sla::getById($SLA['id']);
+        $SLA = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getById($SLA['id']);
 
         $historyData = History::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
 
@@ -381,8 +381,8 @@ class Sla
 
         // find start and stop dates
         foreach ($historyData as $history) {
-            $startConditionSLADate = Sla::checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
-            $stopConditionSLADate = Sla::checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
+            $startConditionSLADate = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
+            $stopConditionSLADate = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
 
             if ($startConditionSLADate && !in_array($startConditionSLADate, $startConditionSLADates) && $startConditionSLADate > end($stopConditionSLADates)) {
                 if (count($startConditionSLADates) - count($stopConditionSLADates) == 0) {

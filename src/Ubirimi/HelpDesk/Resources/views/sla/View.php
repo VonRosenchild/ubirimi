@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\Util;
 
@@ -59,13 +60,13 @@ require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
                             <tr>
                                 <td align="left" valign="top">
                                     <?php for ($i = 0; $i < count($startConditions); $i++): ?>
-                                        <div class="slaCondition"><?php echo Sla::transformConditionForView($startConditions[$i]) ?></div>
+                                        <div class="slaCondition"><?php echo UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->transformConditionForView($startConditions[$i]) ?></div>
                                     <?php endfor ?>
                                 </td>
                                 <td></td>
                                 <td align="left" valign="top">
                                     <?php for ($i = 0; $i < count($stopConditions); $i++): ?>
-                                        <div class="slaCondition"><?php echo Sla::transformConditionForView($stopConditions[$i]) ?></div>
+                                        <div class="slaCondition"><?php echo UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->transformConditionForView($stopConditions[$i]) ?></div>
                                     <?php endfor ?>
                                 </td>
                             </tr>

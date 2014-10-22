@@ -5,10 +5,9 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\SystemProduct;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ViewAsTextController extends UbirimiController
 {

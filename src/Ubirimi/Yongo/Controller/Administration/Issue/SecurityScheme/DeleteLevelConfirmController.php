@@ -4,11 +4,9 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
-use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class DeleteLevelConfirmController extends UbirimiController
 {

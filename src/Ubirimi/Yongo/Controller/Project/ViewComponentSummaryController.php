@@ -5,12 +5,9 @@ namespace Ubirimi\Yongo\Controller\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
-
 use Ubirimi\SystemProduct;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class ViewComponentSummaryController extends UbirimiController
 {

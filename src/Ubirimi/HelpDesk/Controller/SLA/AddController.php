@@ -5,14 +5,10 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Sla\Calendar;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Settings;
 
 class AddController extends UbirimiController
 {
@@ -34,7 +30,7 @@ class AddController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        $SLAs = Sla::getByProjectId($projectId);
+        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
         }
@@ -50,7 +46,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $slaExists = Sla::getByName(mb_strtolower($name), $projectId);
+            $slaExists = $this->getRepository('helpDesk.sla.sla')->getByName(mb_strtolower($name), $projectId);
             if ($slaExists) {
                 $duplicateName = true;
             }
@@ -79,7 +75,7 @@ class AddController extends UbirimiController
 
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $slaId = Sla::save(
+                $slaId = $this->getRepository('helpDesk.sla.sla')->save(
                     $projectId,
                     $name,
                     $description,
@@ -98,7 +94,7 @@ class AddController extends UbirimiController
                                 $value = 'all_remaining_issues';
                             }
 
-                            Sla::addGoal(
+                            $this->getRepository('helpDesk.sla.sla')->addGoal(
                                 $slaId,
                                 $request->request->get('goal_calendar_' . $index),
                                 $value,

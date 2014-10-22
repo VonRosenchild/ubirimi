@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Entity\Yongo\Project as ProjectEntity;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -14,7 +15,6 @@ use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Project\Category;
-use Ubirimi\Entity\Yongo\Project as ProjectEntity;
 
 class AddController extends UbirimiController
 {

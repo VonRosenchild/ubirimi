@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
-use Ubirimi\Repository\User\User;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\SVNHosting\Event\SVNHostingEvent;
 use Ubirimi\SVNHosting\Event\SVNHostingEvents;

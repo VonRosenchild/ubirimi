@@ -9,8 +9,6 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class SaveIssueTransitionNoScreenController extends UbirimiController
 {

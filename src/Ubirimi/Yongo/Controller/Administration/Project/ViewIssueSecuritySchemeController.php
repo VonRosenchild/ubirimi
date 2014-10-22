@@ -9,7 +9,6 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class ViewIssueSecuritySchemeController extends UbirimiController
 {

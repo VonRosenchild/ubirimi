@@ -11,7 +11,6 @@ use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
-use Ubirimi\Repository\User\User;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;

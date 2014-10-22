@@ -1828,16 +1828,16 @@ class Project
 
         // sla 1: time to first response
         $status = Settings::getByName($clientId, 'status', 'In Progress');
-        $slaId = Sla::save($projectId, 'Time to first response', 'Time to first response', 'start_issue_created', 'stop_status_set_' . $status['id'], $currentDate);
+        $slaId = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->save($projectId, 'Time to first response', 'Time to first response', 'start_issue_created', 'stop_status_set_' . $status['id'], $currentDate);
 
         // sla 2: time to resolution
-        $slaId = Sla::save($projectId, 'Time to resolution', 'Time to resolution', 'start_issue_created', 'stop_resolution_set', $currentDate);
-        Sla::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 1440);
+        $slaId = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->save($projectId, 'Time to resolution', 'Time to resolution', 'start_issue_created', 'stop_resolution_set', $currentDate);
+        UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 1440);
 
         // sla 3: time waiting for support
-        $slaId = Sla::save($projectId, 'Time waiting for support', 'Time waiting for support', 'start_issue_created', 'stop_resolution_set', $currentDate);
-        Sla::addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 24);
-        Sla::addGoal($slaId, $defaultSLACalendarId, 'priority = Critical', '', 96);
+        $slaId = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->save($projectId, 'Time waiting for support', 'Time waiting for support', 'start_issue_created', 'stop_resolution_set', $currentDate);
+        UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 24);
+        UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->addGoal($slaId, $defaultSLACalendarId, 'priority = Critical', '', 96);
 
         $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
         if ($issues) {
@@ -1848,9 +1848,9 @@ class Project
     }
 
     public function removeHelpdeskData($projectId) {
-        $slas = Sla::getByProjectId($projectId);
+        $slas = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId);
         while ($slas && $sla = $slas->fetch_array(MYSQLI_ASSOC)) {
-            Sla::deleteById($sla['id']);
+            UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->deleteById($sla['id']);
         }
 
         $calendars = SLACalendar::getByProjectId($projectId);

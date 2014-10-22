@@ -8,7 +8,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
 
-
 class AssignUsersConfirmController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
