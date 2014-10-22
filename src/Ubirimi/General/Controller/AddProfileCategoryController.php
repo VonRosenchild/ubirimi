@@ -1,10 +1,10 @@
 <?php
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-    use Ubirimi\General\Repository\UserProfileCategory\UserProfileCategory;
+use Ubirimi\General\Repository\UserProfileCategory\UserProfileCategory;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+Util::checkUserIsLoggedInAndRedirect();
 
     $emptyName = false;
     $session->set('selected_product_id', -1);

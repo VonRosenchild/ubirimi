@@ -11,7 +11,7 @@ class TypeScheme
     private $clientId;
     private $type;
 
-    function __construct($clientId, $name, $description, $type) {
+    function __construct($clientId = null, $name = null, $description = null, $type = null) {
         $this->clientId = $clientId;
         $this->name = $name;
         $this->description = $description;

@@ -1,17 +1,30 @@
 <?php
-    use Ubirimi\Repository\Email\EmailQueue;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller;
 
-    $menuSelectedCategory = 'general_mail';
-    $session->set('selected_product_id', -1);
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $total = 0;
-    $mailsInQueue = EmailQueue::getByClientId($clientId);
-    if ($mailsInQueue)
-        $total = $mailsInQueue->num_rows;
+class MailQueueController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientId = $session->get('client/id');
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Mail Queue';
+        $menuSelectedCategory = 'general_mail';
+        $session->set('selected_product_id', -1);
 
-    require_once __DIR__ . '/../Resources/views/MailQueue.php';
+        $total = 0;
+        $mailsInQueue = EmailQueue::getByClientId($clientId);
+        if ($mailsInQueue) {
+            $total = $mailsInQueue->num_rows;
+        }
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Mail Queue';
+
+        return $this->render(__DIR__ . '/../Resources/views/MailQueue.php', get_defined_vars());
+    }
+}

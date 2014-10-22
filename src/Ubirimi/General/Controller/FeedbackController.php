@@ -1,27 +1,44 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Event\UbirimiEvent;
-    use Ubirimi\Event\UbirimiEvents;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\Util;
 
-    Util::checkUserIsLoggedInAndRedirect();
+namespace Ubirimi\General\Controller;
 
-    $like = $_POST['like'];
-    $improve = $_POST['improve'];
-    $newFeatures = $_POST['new_features'];
-    $experience = $_POST['experience'];
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Event\UbirimiEvent;
+use Ubirimi\Event\UbirimiEvents;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $userData = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
+class FeedbackController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-    $event = new UbirimiEvent(
-        array(
-            'userData' => $userData,
-            'like' => $like,
-            'improve' => $improve,
-            'newFeatures' => $newFeatures,
-            'experience' => $experience
-        )
-    );
+        $loggedInUserId = $session->get('user/id');
 
-    UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::FEEDBACK, $event);
+        $like = $request->request->get('like');
+        $improve = $request->request->get('improve');
+        $newFeatures = $request->request->get('new_features');
+        $experience = $request->request->get('experience');
+
+        $userData = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
+
+        $event = new UbirimiEvent(
+            array(
+                'userData' => $userData,
+                'like' => $like,
+                'improve' => $improve,
+                'newFeatures' => $newFeatures,
+                'experience' => $experience
+            )
+        );
+
+        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::FEEDBACK, $event);
+
+        return new Response('');
+    }
+
+}

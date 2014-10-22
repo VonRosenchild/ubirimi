@@ -5,7 +5,6 @@ namespace Ubirimi\General\Controller\Menu;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
-
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Filter;
 use Ubirimi\Yongo\Repository\Permission\Permission;

@@ -5,12 +5,10 @@ namespace Ubirimi\General\Controller\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
+use ubirimi\svn\SVNRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Container\UbirimiContainer;
-
-use Ubirimi\Repository\User\User;
-use ubirimi\svn\SVNRepository;
 
 class AddController extends UbirimiController
 {

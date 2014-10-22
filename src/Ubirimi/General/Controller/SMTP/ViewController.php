@@ -4,9 +4,9 @@ namespace Ubirimi\General\Controller\SMTP;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\SMTPServer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\SMTPServer;
 
 class ViewController extends UbirimiController
 {

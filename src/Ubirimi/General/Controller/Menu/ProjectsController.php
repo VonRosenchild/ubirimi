@@ -4,14 +4,11 @@ namespace Ubirimi\General\Controller\Menu;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-
-use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Repository\User\User;
-use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class ProjectsController extends UbirimiController
 {

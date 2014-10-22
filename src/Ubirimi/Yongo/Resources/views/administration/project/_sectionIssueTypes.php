@@ -20,9 +20,7 @@
                         <div>Scheme:</div>
                         <div>
                             <?php
-                                $issueTypeScheme = TypeScheme::getMetaDataById($project['issue_type_scheme_id']);
                                 echo '<a href="/yongo/administration/project/issue-types/' . $project['id'] . '">' . $issueTypeScheme['name'] . '</a>';
-                                $issueTypeSchemeData = TypeScheme::getDataById($project['issue_type_scheme_id']);
                                 while ($issueType = $issueTypeSchemeData->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<div>' . $issueType['name'] . '</div>';
                                 }

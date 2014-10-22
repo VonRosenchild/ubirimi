@@ -5,10 +5,9 @@ namespace Ubirimi\General\Controller\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\UbirimiController;
-use Ubirimi\Repository\User\User;
-use Ubirimi\Util;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class ChangePasswordController extends UbirimiController
 {

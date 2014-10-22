@@ -23,7 +23,8 @@ class ViewController extends UbirimiController
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $workflows = Scheme::getWorkflows($project['workflow_scheme_id']);
+        $workflows = $this->getRepository('yongo.workflow.scheme')->getWorkflows($project['workflow_scheme_id']);
+
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Scheme';

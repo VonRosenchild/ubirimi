@@ -1,11 +1,10 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    $styleSelectedMenu = 'style="background-color: #EEEEEE;';
+$styleSelectedMenu = 'style="background-color: #EEEEEE;';
 
     if (!isset($menuSelectedCategory)) {
         $menuSelectedCategory = null;

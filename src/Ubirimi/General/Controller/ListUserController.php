@@ -1,16 +1,29 @@
 <?php
 
+namespace Ubirimi\General\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-Util::checkUserIsLoggedInAndRedirect();
+class ListUserController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        Util::checkUserIsLoggedInAndRedirect();
 
-$session->set('selected_product_id', -1);
-$filterGroupId = isset($_GET['group_id']) ? $_GET['group_id'] : null;
+        $clientId = $session->get('client/id');
 
-$users = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getUsers($clientId, $filterGroupId, null, 1);
-$menuSelectedCategory = 'general_user';
+        $session->set('selected_product_id', -1);
+        $filterGroupId = $request->get('group_id');
 
-$sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Users';
+        $users = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getUsers($clientId, $filterGroupId, null, 1);
+        $menuSelectedCategory = 'general_user';
 
-require_once __DIR__ . '/../Resources/views/ListUser.php';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Users';
+
+        return $this->render(__DIR__ . '/../Resources/views/ListUser.php', get_defined_vars());
+    }
+}

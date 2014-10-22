@@ -192,7 +192,7 @@ class Issue
                 $queryProjectPartAssignee = array();
 
                 for ($i = 0; $i <count($parameters['project']); $i++) {
-                    $permissions = Scheme::getDataByProjectIdAndPermissionId($parameters['project'][$i], Permission::PERM_BROWSE_PROJECTS);
+                    $permissions = UbirimiContainer::get()['repository']->get('yongo.permission.scheme')->getDataByProjectIdAndPermissionId($parameters['project'][$i], Permission::PERM_BROWSE_PROJECTS);
 
                     while ($permissions && $permission = $permissions->fetch_array(MYSQLI_ASSOC)) {
 

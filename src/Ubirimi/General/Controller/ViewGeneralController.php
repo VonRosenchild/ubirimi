@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class ViewGeneralController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

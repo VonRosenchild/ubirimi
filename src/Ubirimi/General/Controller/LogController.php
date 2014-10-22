@@ -1,17 +1,30 @@
 <?php
 
-    use Ubirimi\Util;
+namespace Ubirimi\General\Controller;
 
-    Util::checkUserIsLoggedInAndRedirect();
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
-    $session->set('selected_product_id', -1);
-    $menuSelectedCategory = 'general_overview';
+class LogController extends UbirimiController
+{
+    public function indexAction(Request $request, SessionInterface $session)
+    {
 
-    $from = $request->get('from');
-    $to = $request->get('to');
+        Util::checkUserIsLoggedInAndRedirect();
+        $clientId = $session->get('client/id');
 
-    $logs = $this->getRepository('ubirimi.general.log')->getByClientIdAndInterval($clientId, $from, $to);
+        $session->set('selected_product_id', -1);
+        $menuSelectedCategory = 'general_overview';
 
-    $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Logs';
+        $from = $request->get('from');
+        $to = $request->get('to');
 
-    require_once __DIR__ . '/../Resources/views/Log.php';
+        $logs = $this->getRepository('ubirimi.general.log')->getByClientIdAndInterval($clientId, $from, $to);
+
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Logs';
+
+        return $this->render(__DIR__ . '/../Resources/views/Log.php', get_defined_vars());
+    }
+}

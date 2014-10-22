@@ -19,11 +19,6 @@ use Ubirimi\Yongo\Repository\Workflow\Scheme;
                 <tr>
                     <td valign="top" width="330">
                         <div>Workflow Scheme</div>
-                        <?php
-                            $workflowScheme = UbirimiContainer::get()['repository']->get('yongo.project.project')->getWorkflowScheme($projectId);
-
-                            $workflows = Scheme::getWorkflows($workflowScheme['id']);
-                        ?>
                         <div><a href="/yongo/administration/project/workflows/<?php echo $projectId ?>"><?php echo $workflowScheme['name'] ?></a></div>
                         <div>Workflows</div>
                         <?php while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)): ?>
