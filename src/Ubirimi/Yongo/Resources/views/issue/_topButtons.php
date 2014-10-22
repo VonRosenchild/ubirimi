@@ -108,7 +108,7 @@ use Ubirimi\Yongo\Repository\Permission\Permission;
                                         $workflowMenuEnabled = 1; ?>
                                     <?php
                                     $workflowDataId = $workflowStep['id'];
-                                    $transitionEvent = Event::getEventByWorkflowDataId($workflowDataId);
+                                    $transitionEvent = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getEventByWorkflowDataId($workflowDataId);
                                     $hasEventPermission = false;
 
                                     switch ($transitionEvent['code']) {

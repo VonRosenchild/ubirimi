@@ -71,7 +71,7 @@ class SaveIssueTransitionController extends UbirimiController
             foreach ($issueCustomFieldsData as $key => $value) {
                 $keyData = explode("_", $key);
 
-                $oldIssueCustomFieldsData[$keyData[0]] = CustomField::getCustomFieldsDataByFieldId($issueId, $key);
+                $oldIssueCustomFieldsData[$keyData[0]] = $this->getRepository('yongo.issue.customField')->getCustomFieldsDataByFieldId($issueId, $key);
                 unset($issueCustomFieldsData[$key]);
                 $issueCustomFieldsData[$keyData[0]] = $value;
             }
@@ -92,7 +92,7 @@ class SaveIssueTransitionController extends UbirimiController
 
                 // save custom fields
                 if (count($issueCustomFieldsData)) {
-                    CustomField::updateCustomFieldsData($issueId, $issueCustomFieldsData, $currentDate);
+                    $this->getRepository('yongo.issue.customField')->updateCustomFieldsData($issueId, $issueCustomFieldsData, $currentDate);
                 }
             } catch (\Exception $e) {
 

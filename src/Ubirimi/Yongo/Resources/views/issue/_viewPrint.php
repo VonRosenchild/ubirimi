@@ -1,21 +1,6 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\Issue;
-    use Ubirimi\Yongo\Repository\Issue\Attachment;
-    use Ubirimi\Yongo\Repository\Issue\Component;
-    use Ubirimi\Yongo\Repository\Issue\Version;
-
-    $issueId = $issue['id'];
-
-    $components = Component::getByIssueIdAndProjectId($issueId, $issue['issue_project_id']);
-    $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
-    $versions_targeted = Version::getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
-    $attachments = Attachment::getByIssueId($issueId);
-    $countAttachments = 0;
-    if ($attachments) {
-        $countAttachments = $attachments->num_rows;
-    }
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Field;
 ?>
 
     <div class="issueSummaryTitle"><?php echo $issue['summary'] ?></div>
@@ -66,8 +51,8 @@
             <td colspan="3"><?php echo $issue['status_name'] ?></td>
             <td>Fix version/s</td>
             <td>
-                <?php if ($versions_targeted): ?>
-                    <?php while ($version = $versions_targeted->fetch_array(MYSQLI_ASSOC)): ?>
+                <?php if ($versionsTargeted): ?>
+                    <?php while ($version = $versionsTargeted->fetch_array(MYSQLI_ASSOC)): ?>
                         <span><?php echo $version['name'] ?></span>
                     <?php endwhile ?>
                 <?php else: ?>

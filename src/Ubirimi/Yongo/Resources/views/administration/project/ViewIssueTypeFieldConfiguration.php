@@ -1,8 +1,9 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
-    use Ubirimi\Yongo\Repository\Screen\Screen;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 
@@ -71,7 +72,7 @@
                                 <td><?php echo $field['name'] ?></td>
                                 <td align="left">
 
-                                    <?php $screens = Screen::getByFieldId($clientId, $field['id']) ?>
+                                    <?php $screens = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByFieldId($clientId, $field['id']) ?>
                                     <?php if ($screens): ?>
                                     <ul>
                                         <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>

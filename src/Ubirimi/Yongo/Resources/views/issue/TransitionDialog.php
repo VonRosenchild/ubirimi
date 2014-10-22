@@ -164,7 +164,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                     break;
 
                 case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
-                    $customFieldsDataUserPickerMultipleUserData = CustomField::getUserPickerData($issueId, $field['field_id']);
+                    $customFieldsDataUserPickerMultipleUserData = UbirimiContainer::get()['repository']->get('yongo.issue.customField')->getUserPickerData($issueId, $field['field_id']);
                     $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
 
                     $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';

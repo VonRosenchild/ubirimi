@@ -16,7 +16,7 @@ class CopyController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $screenId = $request->get('id');
-        $screen = Screen::getMetaDataById($screenId);
+        $screen = $this->getRepository('yongo.screen.screen')->getMetaDataById($screenId);
 
         if ($screen['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,7 +33,7 @@ class CopyController extends UbirimiController
                 $emptyScreenName = true;
 
             // check for duplication
-            $screen_row_exists = Screen::getByName($session->get('client/id'), mb_strtolower($name));
+            $screen_row_exists = $this->getRepository('yongo.screen.screen')->getByName($session->get('client/id'), mb_strtolower($name));
 
             if ($screen_row_exists)
                 $screenExists = true;
@@ -43,9 +43,9 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedScreenId = $copiedScreen->save($currentDate);
 
-                $screenData = Screen::getDataById($screenId);
+                $screenData = $this->getRepository('yongo.screen.screen')->getDataById($screenId);
                 while ($data = $screenData->fetch_array(MYSQLI_ASSOC)) {
-                    Screen::addData($copiedScreenId, $data['field_id'], $data['position'], $currentDate);
+                    $this->getRepository('yongo.screen.screen')->addData($copiedScreenId, $data['field_id'], $data['position'], $currentDate);
                 }
 
                 return new RedirectResponse('/yongo/administration/screens');

@@ -24,18 +24,18 @@ class EditScreenVisibilityController extends UbirimiController
         $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
 
         $field = $this->getRepository('yongo.field.field')->getById($fieldId);
-        $screens = Screen::getAll($session->get('client/id'));
+        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
 
         if ($request->request->has('edit_field_configuration_screen')) {
             $currentDate = Util::getServerCurrentDateTime();
-            Screen::deleteDataByFieldId($fieldId);
+            $this->getRepository('yongo.screen.screen')->deleteDataByFieldId($fieldId);
             foreach ($request->request as $key => $value) {
                 if (substr($key, 0, 13) == 'field_screen_') {
                     $data = str_replace('field_screen_', '', $key);
                     $values = explode('_', $data);
                     $fieldSelectedId = $values[0];
                     $screenSelectedId = $values[1];
-                    Screen::addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
+                    $this->getRepository('yongo.screen.screen')->addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
                 }
             }
 

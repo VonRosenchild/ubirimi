@@ -57,7 +57,7 @@ class Screen
 
     public function addData($screenId, $fieldId, $position, $currentDate) {
         if ($position == null) {
-            $position = Screen::getLastOrderNumber($screenId);
+            $position = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getLastOrderNumber($screenId);
 
             // todo: cred ca aici position ar trebui incrementat
         }
@@ -235,9 +235,9 @@ class Screen
     }
 
     public function updatePositionForField($screenId, $fieldId, $position) {
-        $field = Screen::getFieldById($screenId, $fieldId);
+        $field = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getFieldById($screenId, $fieldId);
 
-        $field2 = Screen::getFieldByOrder($screenId, $position);
+        $field2 = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getFieldByOrder($screenId, $position);
 
         $query = "update screen_data set `position` = ? " .
             "where screen_id = ? and field_id = ? " .

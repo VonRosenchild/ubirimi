@@ -19,7 +19,7 @@ class EditController extends UbirimiController
 
         $screenId = $request->get('id');
 
-        $screen = Screen::getMetaDataById($screenId);
+        $screen = $this->getRepository('yongo.screen.screen')->getMetaDataById($screenId);
         if ($screen['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -35,14 +35,14 @@ class EditController extends UbirimiController
                 $emptyScreenName = true;
 
             // check for duplication
-            $screen_row_exists = Screen::getByNameAndId($session->get('client/id'), mb_strtolower($name), $screenId);
+            $screen_row_exists = $this->getRepository('yongo.screen.screen')->getByNameAndId($session->get('client/id'), mb_strtolower($name), $screenId);
 
             if ($screen_row_exists)
                 $screenExists = true;
 
             if (!$screenExists && !$emptyScreenName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Screen::updateMetadataById($screenId, $name, $description, $currentDate);
+                $this->getRepository('yongo.screen.screen')->updateMetadataById($screenId, $name, $description, $currentDate);
 
                 $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),

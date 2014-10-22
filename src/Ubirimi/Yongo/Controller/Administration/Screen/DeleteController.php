@@ -18,8 +18,8 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $screen = Screen::getMetaDataById($Id);
-        Screen::deleteById($Id);
+        $screen = $this->getRepository('yongo.screen.screen')->getMetaDataById($Id);
+        $this->getRepository('yongo.screen.screen')->deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

@@ -20,7 +20,7 @@ class ConfigureController extends UbirimiController
 
         $screenId = $request->get('id');
 
-        $screenMetadata = Screen::getMetaDataById($screenId);
+        $screenMetadata = $this->getRepository('yongo.screen.screen')->getMetaDataById($screenId);
         if ($screenMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -29,7 +29,7 @@ class ConfigureController extends UbirimiController
         $fieldId = $request->get('field_id');
 
         if ($fieldId && $position) {
-            Screen::updatePositionForField($screenId, $fieldId, $position);
+            $this->getRepository('yongo.screen.screen')->updatePositionForField($screenId, $fieldId, $position);
 
             return new RedirectResponse('/yongo/administration/screen/configure/' . $screenId);
         }
@@ -41,8 +41,8 @@ class ConfigureController extends UbirimiController
 
             if ($fieldId != -1) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $lastOrder = Screen::getLastOrderNumber($screenId);
-                Screen::addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
+                $lastOrder = $this->getRepository('yongo.screen.screen')->getLastOrderNumber($screenId);
+                $this->getRepository('yongo.screen.screen')->addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
 
                 $this->getRepository('ubirimi.general.log')->add(
                     $session->get('client/id'),
@@ -56,7 +56,7 @@ class ConfigureController extends UbirimiController
             }
         }
 
-        $screenData = Screen::getDataById($screenId);
+        $screenData = $this->getRepository('yongo.screen.screen')->getDataById($screenId);
         $menuSelectedCategory = 'issue';
 
         $source = $request->get('source');

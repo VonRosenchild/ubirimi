@@ -16,7 +16,7 @@ class DeleteFieldController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $screenDataId = $request->request->get('screen_data_id');
 
-        Screen::deleteDataById($screenDataId);
+        $this->getRepository('yongo.screen.screen')->deleteDataById($screenDataId);
 
         return new Response('');
     }

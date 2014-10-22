@@ -77,7 +77,7 @@
                             <?php endif ?>
                         </td>
                         <td width="500px">
-                            <?php $screens = Screen::getByFieldId($clientId, $field['id']) ?>
+                            <?php $screens = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByFieldId($clientId, $field['id']) ?>
                             <?php if ($screens): ?>
                                 <ul>
                                 <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>

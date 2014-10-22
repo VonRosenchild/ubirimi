@@ -40,7 +40,7 @@ class AddController extends UbirimiController
                     if (substr($key, 0, 6) == 'field_') {
                         $order++;
                         $fieldId = str_replace('field_', '', $key);
-                        Screen::addData($screenId, $fieldId, $order, $currentDate);
+                        $this->getRepository('yongo.screen.screen')->addData($screenId, $fieldId, $order, $currentDate);
                     }
                 }
 

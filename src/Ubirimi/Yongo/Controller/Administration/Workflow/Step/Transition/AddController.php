@@ -34,7 +34,7 @@ class AddController extends UbirimiController
 
         $workflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
         $statuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
-        $screens = Screen::getAll($session->get('client/id'));
+        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
 
         $emptyName = false;
 

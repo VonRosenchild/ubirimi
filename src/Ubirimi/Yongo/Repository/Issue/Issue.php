@@ -764,7 +764,7 @@ class Issue
         UbirimiContainer::get()['repository']->get('yongo.issue.issue')->deleteSLADataByIssueId($issueId);
         WorkLog::deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get('yongo.issue.attachment')->deleteByIssueId($issueId);
-        CustomField::deleteCustomFieldsData($issueId);
+        UbirimiContainer::get()['repository']->get('yongo.issue.customField')->deleteCustomFieldsData($issueId);
 
         UbirimiContainer::get()['repository']->get('agile.board.board')->deleteIssuesFromSprints(array($issueId));
 

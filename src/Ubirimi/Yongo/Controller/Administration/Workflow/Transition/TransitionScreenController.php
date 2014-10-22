@@ -28,7 +28,7 @@ class TransitionScreenController extends UbirimiController
 
         $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
         $transitionName = $workflowData['transition_name'];
-        $screens = Screen::getAll($clientId);
+        $screens = $this->getRepository('yongo.screen.screen')->getAll($clientId);
         $initialStep = $this->getRepository('yongo.workflow.workflow')->getInitialStep($workflowId);
 
         return $this->render(__DIR__ . '/../../../../Resources/views/administration/workflow/transition/TransitionScreen.php', get_defined_vars());

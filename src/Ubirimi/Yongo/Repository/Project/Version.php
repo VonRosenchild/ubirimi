@@ -24,11 +24,11 @@ class Version
 
     public function deleteByProjectId($projectId)
     {
-        $versions = $this->getRepository('yongo.project.project')->getVersions($projectId);
+        $versions = UbirimiContainer::get()['repository']->get('yongo.project.project')->getVersions($projectId);
 
         while ($versions && $version = $versions->fetch_array(MYSQLI_ASSOC)) {
             $versionId = $version['id'];
-            Version::deleteById($versionId);
+            UbirimiContainer::get()['repository']->get('yongo.project.version')->deleteById($versionId);
         }
     }
 

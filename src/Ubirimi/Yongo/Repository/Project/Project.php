@@ -609,7 +609,7 @@ class Project
 
         UbirimiContainer::get()['repository']->get('yongo.project.project')->deleteIssuesByProjectId($Id);
         Component::deleteByProjectId($Id);
-        Version::deleteByProjectId($Id);
+        UbirimiContainer::get()['repository']->get('yongo.project.version')->deleteByProjectId($Id);
         Custom::deleteDataByProjectId($Id);
         UbirimiContainer::get()['repository']->get('agile.board.board')->deleteByProjectId($Id);
 

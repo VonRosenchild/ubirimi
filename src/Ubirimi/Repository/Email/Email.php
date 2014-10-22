@@ -144,13 +144,13 @@ class Email {
     private function sendEmailNewIssue($clientId, $issue, $userToNotify) {
         $issueId = $issue['id'];
         $projectId = $issue['issue_project_id'];
-        $versionsAffected = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-        $versionsFixed = Version::getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-        $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
+        $versionsAffected = UbirimiContainer::get()['repository']->get('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versionsFixed = UbirimiContainer::get()['repository']->get('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+        $components = UbirimiContainer::get()['repository']->get('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
         $clientDomain = Util::getSubdomain();
 
-        $customFieldsSingleValue = CustomField::getCustomFieldsData($issueId);
-        $customFieldsUserPickerMultiple = CustomField::getUserPickerData($issueId);
+        $customFieldsSingleValue = UbirimiContainer::get()['repository']->get('yongo.issue.customField')->getCustomFieldsData($issueId);
+        $customFieldsUserPickerMultiple = UbirimiContainer::get()['repository']->get('yongo.issue.customField')->getUserPickerData($issueId);
 
         $subject = Email::$smtpSettings['email_prefix'] . ' ' .
                             "[Issue] - New issue CREATED " .

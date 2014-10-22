@@ -18,7 +18,7 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $screenSchemeDataId = $request->get('id');
 
-        $screens = Screen::getAll($session->get('client/id'));
+        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
         $screenSchemeData = Scheme::getDataByScreenDataId($screenSchemeDataId);
         $screenSchemeId = $screenSchemeData['screen_scheme_id'];
         $operationId = $screenSchemeData['sys_operation_id'];

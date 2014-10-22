@@ -174,56 +174,56 @@ class Client
 
     public function createDefaultScreenData($clientId, $currentDate) {
 
-        $screen = Screen::getByName($clientId, 'Default Screen');
+        $screen = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByName($clientId, 'Default Screen');
 
         $summaryField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
-        Screen::addData($screen['id'], $summaryField['id'], 1, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $summaryField['id'], 1, $currentDate);
 
         $issueTypeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
-        Screen::addData($screen['id'], $issueTypeField['id'], 2, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $issueTypeField['id'], 2, $currentDate);
         $priorityField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
-        Screen::addData($screen['id'], $priorityField['id'], 3, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $priorityField['id'], 3, $currentDate);
         $dueDateField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
-        Screen::addData($screen['id'], $dueDateField['id'], 4, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $dueDateField['id'], 4, $currentDate);
         $componentsField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
-        Screen::addData($screen['id'], $componentsField['id'], 5, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $componentsField['id'], 5, $currentDate);
 
         $affectsVersionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
-        Screen::addData($screen['id'], $affectsVersionField['id'], 6, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $affectsVersionField['id'], 6, $currentDate);
         $fixVersionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
-        Screen::addData($screen['id'], $fixVersionField['id'], 7, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $fixVersionField['id'], 7, $currentDate);
 
         $assigneeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        Screen::addData($screen['id'], $assigneeField['id'], 8, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $assigneeField['id'], 8, $currentDate);
 
         $reporterField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_REPORTER_CODE);
-        Screen::addData($screen['id'], $reporterField['id'], 9, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $reporterField['id'], 9, $currentDate);
         $environmentField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
-        Screen::addData($screen['id'], $environmentField['id'], 10, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $environmentField['id'], 10, $currentDate);
 
         $descriptionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
-        Screen::addData($screen['id'], $descriptionField['id'], 11, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $descriptionField['id'], 11, $currentDate);
         $attachmentField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
-        Screen::addData($screen['id'], $attachmentField['id'], 12, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $attachmentField['id'], 12, $currentDate);
 
         $timeTrackingField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
-        Screen::addData($screen['id'], $timeTrackingField['id'], 13, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $timeTrackingField['id'], 13, $currentDate);
 
-        $screen = Screen::getByName($clientId, 'Resolve Issue Screen');
+        $screen = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByName($clientId, 'Resolve Issue Screen');
         $assigneeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        Screen::addData($screen['id'], $assigneeField['id'], 1, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $assigneeField['id'], 1, $currentDate);
 
         $fixVersionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
-        Screen::addData($screen['id'], $fixVersionField['id'], 2, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $fixVersionField['id'], 2, $currentDate);
         $resolutionField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
-        Screen::addData($screen['id'], $resolutionField['id'], 3, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $resolutionField['id'], 3, $currentDate);
 
         $commentField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_COMMENT_CODE);
-        Screen::addData($screen['id'], $commentField['id'], 4, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $commentField['id'], 4, $currentDate);
 
-        $screen = Screen::getByName($clientId, 'Workflow Screen');
+        $screen = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByName($clientId, 'Workflow Screen');
         $assigneeField = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        Screen::addData($screen['id'], $assigneeField['id'], 1, $currentDate);
+        UbirimiContainer::get()['repository']->get('yongo.screen.screen')->addData($screen['id'], $assigneeField['id'], 1, $currentDate);
     }
 
     public function createDefaultNotificationScheme($clientId, $currentDate) {
@@ -396,9 +396,9 @@ class Client
         }
         Scheme::deleteByClientId($clientId);
 
-        $screens = Screen::getByClientId($clientId);
+        $screens = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByClientId($clientId);
         while ($screens && $screen = $screens->fetch_array(MYSQLI_ASSOC)) {
-            Screen::deleteById($screen['id']);
+            UbirimiContainer::get()['repository']->get('yongo.screen.screen')->deleteById($screen['id']);
         }
         Scheme::deleteByClientId($clientId);
 
@@ -718,7 +718,7 @@ class Client
     }
 
     public function createDefaultScreenSchemeData($clientId, $screenSchemeId, $currentDate) {
-        $defaultScreenData = Screen::getByName($clientId, 'Default Screen');
+        $defaultScreenData = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByName($clientId, 'Default Screen');
         $defaultScreenId = $defaultScreenData['id'];
 
         $query = "INSERT INTO screen_scheme_data(screen_scheme_id, sys_operation_id, screen_id, date_created) VALUES " .
@@ -755,10 +755,10 @@ class Client
 
     public function createDefaultWorkflowData($clientId, $workflowId, $currentDate)
     {
-        $screenResolutionData = Screen::getByName($clientId, 'Resolve Issue Screen');
+        $screenResolutionData = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByName($clientId, 'Resolve Issue Screen');
         $screenResolutionId = $screenResolutionData['id'];
 
-        $screenWorkflowData = Screen::getByName($clientId, 'Workflow Screen');
+        $screenWorkflowData = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByName($clientId, 'Workflow Screen');
         $screenWorkflowId = $screenWorkflowData['id'];
 
         $createStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createDefaultStep($workflowId, null, 'Create Issue', 1);

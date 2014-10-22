@@ -14,7 +14,7 @@ class ListController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $screens = Screen::getAll($session->get('client/id'));
+        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

@@ -45,7 +45,7 @@ require_once __DIR__ . '/../../_header.php';
                             <?php endif ?>
                         </td>
                         <td>
-                            <?php $screens = Screen::getByFieldId($clientId, $field['id']) ?>
+                            <?php $screens = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByFieldId($clientId, $field['id']) ?>
                             <?php if ($screens): ?>
                                 <ul>
                                     <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>

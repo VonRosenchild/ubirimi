@@ -41,6 +41,17 @@ class PrintController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
+        $issueId = $issue['id'];
+
+        $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $issue['issue_project_id']);
+        $versionsAffected = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $versionsTargeted = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $issue['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
+        $attachments = $this->getRepository('yongo.issue.attachment')->getByIssueId($issueId);
+        $countAttachments = 0;
+        if ($attachments) {
+            $countAttachments = $attachments->num_rows;
+        }
+
         return $this->render(__DIR__ . '/../../Resources/views/issue/Print.php', get_defined_vars());
     }
 }

@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\SystemOperation;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 ?>
 <div class="parentDialog" style="padding-left: 0; margin-right: 0; min-height: 50px; overflow: auto;">
     <div id="errorsMandatoryFieldsNotPresentOnScreen"></div>

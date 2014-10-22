@@ -74,7 +74,7 @@ class CustomField
                         $stmt->execute();
                     }
                 } else {
-                    $valueField = CustomField::getCustomFieldsDataByFieldId($issueId, $fieldId);
+                    $valueField = UbirimiContainer::get()['repository']->get('yongo.issue.customField')->getCustomFieldsDataByFieldId($issueId, $fieldId);
 
                     if ($valueField) {
                         $query = "update issue_custom_field_data set `value` = ?, date_updated = ? where issue_id = ? and field_id = ? limit 1";

@@ -82,7 +82,7 @@ class ViewIssueController extends UbirimiController
                 'array'
             );
 
-            $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
+            $customFieldsData = $this->getRepository('yongo.issue.customField')->getCustomFieldsData($issue['id']);
 
             $attachments = Attachment::getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
@@ -99,8 +99,8 @@ class ViewIssueController extends UbirimiController
             $watchers = Watcher::getByIssueId($issueId);
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
-            $customFieldsData = CustomField::getCustomFieldsData($issue['id']);
-            $customFieldsDataUserPickerMultipleUser = CustomField::getUserPickerData($issue['id']);
+            $customFieldsData = $this->getRepository('yongo.issue.customField')->getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = $this->getRepository('yongo.issue.customField')->getUserPickerData($issue['id']);
         }
 
         $menuSelectedCategory = 'issue';

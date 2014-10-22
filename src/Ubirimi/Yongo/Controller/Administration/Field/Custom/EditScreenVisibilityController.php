@@ -26,13 +26,13 @@ class EditScreenVisibilityController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $screens = Screen::getAll($session->get('client/id'));
+        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
 
         if ($request->request->has('edit_field_custom_screen')) {
             $currentDate = Util::getServerCurrentDateTime();
 
             while ($screen = $screens->fetch_array(MYSQLI_ASSOC)) {
-                Screen::deleteDataByScreenIdAndFieldId($screen['id'], $fieldId);
+                $this->getRepository('yongo.screen.screen')->deleteDataByScreenIdAndFieldId($screen['id'], $fieldId);
             }
 
             foreach ($request->request as $key => $value) {
@@ -41,7 +41,7 @@ class EditScreenVisibilityController extends UbirimiController
                     $values = explode('_', $data);
                     $fieldSelectedId = $values[0];
                     $screenSelectedId = $values[1];
-                    Screen::addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
+                    $this->getRepository('yongo.screen.screen')->addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
                 }
             }
 

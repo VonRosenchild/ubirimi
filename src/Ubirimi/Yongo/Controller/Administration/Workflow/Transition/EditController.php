@@ -23,7 +23,7 @@ class EditController extends UbirimiController
         $workflowId = $workflowData['workflow_id'];
         $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
 
-        $screens = Screen::getAll($session->get('client/id'));
+        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
         $steps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
 
         if ($request->request->has('edit_transition')) {

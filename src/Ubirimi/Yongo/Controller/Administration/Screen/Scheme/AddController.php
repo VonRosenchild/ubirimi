@@ -21,7 +21,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
 
-        $allScreens = Screen::getAll($session->get('client/id'));
+        $allScreens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
         $allOperations = SystemOperation::getAll();
 
         if ($request->request->has('new_screen_scheme')) {
