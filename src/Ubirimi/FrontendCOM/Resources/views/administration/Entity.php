@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\Repository\User\User;
 
 require_once __DIR__ . '/_header.php';
@@ -43,8 +44,8 @@ require_once __DIR__ . '/_header.php';
                 <td><?php echo $entity['name']; ?></td>
                 <td>
                     <?php
-                    $space = Space::getById($entity['documentator_space_id']);
-                    echo $space['name'];
+                        $space = Space::getById($entity['documentator_space_id']);
+                        echo $space['name'];
                     ?>
                 </td>
                 <td>

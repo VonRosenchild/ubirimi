@@ -1,7 +1,6 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\Util;
 
 require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';

@@ -2,6 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 

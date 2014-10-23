@@ -2,18 +2,17 @@
 
 namespace Ubirimi\Service;
 
-use Ubirimi\Calendar\Repository\Calendar;
-
-
+use Ubirimi\Calendar\Repository\Calendar\Calendar;
+use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Calendar\Repository\Reminder\Type;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\Event\UserEvent;
-
-
 use Ubirimi\Repository\User\User as UserRepository;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+
 
 class UserService extends UbirimiService
 {
@@ -56,7 +55,7 @@ class UserService extends UbirimiService
 
         if (!$data['isCustomer']) {
             // add default reminders
-            Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
+            Calendar::addReminder($calendarId, Type::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
 
             // add the newly created user to the Ubirimi Users Global Permission Groups
             $groups = GlobalPermission::getDataByPermissionId($data['clientId'], GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);

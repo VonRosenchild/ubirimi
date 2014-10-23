@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Service\UbirimiService;
+use Ubirimi\Yongo\Repository\Issue\Event;
 
 class IssueEmailService extends UbirimiService
 {

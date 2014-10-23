@@ -4,6 +4,9 @@ namespace Ubirimi\Documentador\Repository\Space;
 
 use Ubirimi\Container\UbirimiContainer;
 
+use Ubirimi\Documentador\Repository\Entity\Attachment;
+use Ubirimi\Documentador\Repository\Entity\Comment;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
@@ -222,12 +225,12 @@ class Space {
         $spaceEntities = Entity::getAllBySpaceId($spaceId);
         if ($spaceEntities) {
             while ($spaceEntity = $spaceEntities->fetch_array(MYSQLI_ASSOC)) {
-                EntityComment::deleteCommentsByEntityId($spaceEntity['id']);
+                Comment::deleteCommentsByEntityId($spaceEntity['id']);
                 Entity::removeAsFavouriteForUsers($spaceEntity['id']);
                 Entity::deleteRevisionsByEntityId($spaceEntity['id']);
 
                 Entity::deleteFilesByEntityId($spaceEntity['id']);
-                EntityAttachment::deleteByEntityId($spaceEntity['id'], $spaceId);
+                Attachment::deleteByEntityId($spaceEntity['id'], $spaceId);
                 Entity::deleteById($spaceEntity['id']);
 
                 // delete any files, if any
@@ -495,11 +498,11 @@ class Space {
 
         if ($entities) {
             while ($entity = $entities->fetch_array(MYSQLI_ASSOC)) {
-                EntityComment::deleteCommentsByEntityId($entity['id']);
+                Comment::deleteCommentsByEntityId($entity['id']);
                 Entity::removeAsFavouriteForUsers($entity['id']);
                 Entity::deleteRevisionsByEntityId($entity['id']);
                 Entity::deleteFilesByEntityId($entity['id']);
-                EntityAttachment::deleteByEntityId($entity['id'], $spaceId);
+                Attachment::deleteByEntityId($entity['id'], $spaceId);
 
                 Entity::deleteById($entity['id']);
             }

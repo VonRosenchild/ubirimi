@@ -1,7 +1,6 @@
 <?php
-    use Ubirimi\Repository\User\User;
 
-    require __DIR__ . '/_header.php';
+require __DIR__ . '/_header.php';
 ?>
 <body>
     <?php require __DIR__ . '/_menu.php'; ?>

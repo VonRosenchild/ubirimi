@@ -5,8 +5,8 @@ namespace Ubirimi\FrontendCOM\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Repository\User\User;
-use Ubirimi\Container\UbirimiContainer;use Ubirimi\UbirimiController;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\UbirimiController;
 
 class SigninController extends UbirimiController
 {

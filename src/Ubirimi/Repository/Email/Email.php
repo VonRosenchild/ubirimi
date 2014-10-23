@@ -9,14 +9,9 @@ use Swift_SendmailTransport;
 use Swift_SmtpTransport;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\SMTPServer;
-use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Version;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class Email {
 

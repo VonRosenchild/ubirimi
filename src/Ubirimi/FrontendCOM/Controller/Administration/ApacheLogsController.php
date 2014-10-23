@@ -2,8 +2,8 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
-use Ubirimi\UbirimiController;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
 class ApacheLogsController extends UbirimiController

@@ -1,11 +1,8 @@
 <?php
 
-use Ubirimi\Repository\User\User;
-
 use Ubirimi\Util;
-
-
 use Ubirimi\Yongo\Repository\Issue\History;
+
 
 //    require_once __DIR__ . '/../web/bootstrap_cli.php';
 

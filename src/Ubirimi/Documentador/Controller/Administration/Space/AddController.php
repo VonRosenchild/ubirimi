@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Entity\Type;
 use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -60,7 +61,7 @@ class AddController extends UbirimiController
 
                     // set default home page
                     $content = '<p><span style="font-size:24px"><strong>Welcome to your new space!</strong></span></p><div class="message-content" style="font-family: Arial, sans-serif; font-size: 14px;"><p>Documentador spaces are great for sharing content and news with your team. This is your home page. You can customize this page in anyway you like.</p></div>';
-                    $page = new Entity(EntityType::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, null, $name . ' Home', $content);
+                    $page = new Entity(Type::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, null, $name . ' Home', $content);
                     $pageId = $page->save($currentDate);
                     $this->getRepository('documentador.space.space')->setHomePageId($spaceId, $pageId);
 

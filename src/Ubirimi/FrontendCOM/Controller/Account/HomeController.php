@@ -5,8 +5,6 @@ namespace Ubirimi\FrontendCOM\Controller\Account;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
-
-use Ubirimi\Repository\User\User;
 use Ubirimi\Util;
 
 class HomeController extends UbirimiController

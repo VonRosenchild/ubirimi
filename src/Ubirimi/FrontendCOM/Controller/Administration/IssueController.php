@@ -5,8 +5,6 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class IssueController extends UbirimiController
 {

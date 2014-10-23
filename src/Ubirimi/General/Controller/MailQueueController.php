@@ -4,6 +4,7 @@ namespace Ubirimi\General\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Email\EmailQueue;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 

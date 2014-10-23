@@ -2,8 +2,8 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\UbirimiController;
-
 use Ubirimi\Util;
 
 

@@ -2,35 +2,31 @@
 
 namespace Ubirimi\Repository\General;
 
-
-use Ubirimi\Calendar\Repository\Calendar;
+use Paymill\Models\Request\Client as PaymillClient;
+use Paymill\Request as PaymillRequest;
+use Ubirimi\Calendar\Repository\Calendar\Calendar;
+use Ubirimi\Calendar\Repository\Reminder\Period;
 use Ubirimi\Container\UbirimiContainer;
-
-use Ubirimi\Repository\User\User;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\SMTPServer;
 use ubirimi\svn\SVNRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Field\Configuration;
 use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\Event;
 use Ubirimi\Yongo\Repository\Issue\LinkType;
 use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
-use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Issue\Type;
 use Ubirimi\Yongo\Repository\Issue\TypeScheme;
 use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
-use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Screen\Screen;
-use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\Condition;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
-use Paymill\Models\Request\Client as PaymillClient;
-use Paymill\Request as PaymillRequest;
 
 class Client
 {
@@ -1803,7 +1799,7 @@ class Client
         $calendarId = Calendar::save($userData['id'], $userData['first_name'] . ' ' . $userData['last_name'], 'My default calendar', '#A1FF9E', $clientCreatedDate, 1);
 
         // add default reminders
-        Calendar::addReminder($calendarId, CalendarReminderType::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
+        Calendar::addReminder($calendarId, \Ubirimi\Calendar\Repository\Reminder\Type::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
     }
 
     public function getCurrentMonthAndDayPayingCustomers() {

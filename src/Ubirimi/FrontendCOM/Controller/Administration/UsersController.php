@@ -4,7 +4,6 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\User\User;
 
 class UsersController extends UbirimiController
 {

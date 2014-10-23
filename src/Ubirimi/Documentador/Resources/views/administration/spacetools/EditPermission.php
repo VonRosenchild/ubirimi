@@ -1,7 +1,7 @@
 <?php
+use Ubirimi\Container\UbirimiContainer;
 
-
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>

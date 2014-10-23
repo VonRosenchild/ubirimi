@@ -5,8 +5,6 @@ namespace Ubirimi\HelpDesk\Repository\Sla;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\History;
-use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Yongo\Repository\Issue\Type;
 
 class Sla
 {

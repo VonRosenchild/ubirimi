@@ -2,9 +2,9 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Repository\Email\EmailQueue;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Email\EmailQueue;
 
 class MailQueueController extends UbirimiController
 {

@@ -2,18 +2,14 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Space\Space;
+use ubirimi\svn\SVNRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
-
-
-
-use Ubirimi\Repository\User\User;
-use ubirimi\svn\SVNRepository;
-use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class IndexController extends UbirimiController
 {

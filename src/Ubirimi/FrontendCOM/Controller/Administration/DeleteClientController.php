@@ -1,8 +1,8 @@
 <?php
 
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    Util::checkSuperUserIsLoggedIn();
+Util::checkSuperUserIsLoggedIn();
 
     $clientId = $request->request->get('id');
 

@@ -2,19 +2,18 @@
 
 namespace Ubirimi\FrontendCOM\Controller;
 
+use Paymill\Models\Request\Client as PaymillClient;
+use Paymill\Models\Request\Payment as PaymillPayment;
+use Paymill\Models\Request\Subscription as PaymillSubscription;
+use Paymill\Request as PaymillRequest;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-
-use Ubirimi\Repository\GeneralTaskQueue;
-use Ubirimi\Repository\User\User;
-use Ubirimi\UbirimiController;use Ubirimi\Util;
-use Paymill\Request as PaymillRequest;
-use Paymill\Models\Request\Client as PaymillClient;
-use Paymill\Models\Request\Subscription as PaymillSubscription;
-use Paymill\Models\Request\Payment as PaymillPayment;
 use Ubirimi\PaymentUtil;
+use Ubirimi\Repository\GeneralTaskQueue;
+use Ubirimi\UbirimiController;
+use Ubirimi\Util;
 
 class SignupController extends UbirimiController
 {

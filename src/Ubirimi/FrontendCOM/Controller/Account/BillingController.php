@@ -2,14 +2,13 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Account;
 
+use Paymill\Models\Request\Client as PaymillClient;
+use Paymill\Request as PaymillRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Paymill\Request as PaymillRequest;
-use Paymill\Models\Request\Client as PaymillClient;
 
 class BillingController extends UbirimiController
 {

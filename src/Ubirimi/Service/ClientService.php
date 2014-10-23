@@ -3,10 +3,8 @@
 namespace Ubirimi\Service;
 
 use Ubirimi\Container\UbirimiContainer;
-
-use Ubirimi\Util;
-use Ubirimi\Repository\User\User;
 use Ubirimi\Repository\Email\EmailQueue;
+use Ubirimi\Util;
 
 class ClientService
 {

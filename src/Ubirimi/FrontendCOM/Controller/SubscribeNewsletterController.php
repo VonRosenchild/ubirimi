@@ -1,7 +1,7 @@
 <?php
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Ubirimi\Repository\Newsletter;
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
 if ($request->request->has('subscribe')) {
     $emailAddress = Util::cleanRegularInputField($re['email_address']);

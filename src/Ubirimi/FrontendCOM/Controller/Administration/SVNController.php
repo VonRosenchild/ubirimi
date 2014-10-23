@@ -2,8 +2,8 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
-use Ubirimi\UbirimiController;
 use ubirimi\svn\SVNRepository;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
 class SVNController extends UbirimiController

@@ -4,7 +4,6 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
 
 class ProjectsController extends UbirimiController
 {

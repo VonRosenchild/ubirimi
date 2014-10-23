@@ -1,11 +1,10 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    $loggedInUserFirstName = $session->get('user/first_name');
+$loggedInUserFirstName = $session->get('user/first_name');
     $loggedInUserLastName = $session->get('user/last_name');
 
     Util::renderMaintenanceMessage();

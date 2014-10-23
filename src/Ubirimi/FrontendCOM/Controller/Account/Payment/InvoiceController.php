@@ -4,9 +4,9 @@ namespace Ubirimi\FrontendCOM\Controller\Account\Payment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\Invoice as InvoiceRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Repository\Invoice as InvoiceRepository;
 
 
 class InvoiceController extends UbirimiController

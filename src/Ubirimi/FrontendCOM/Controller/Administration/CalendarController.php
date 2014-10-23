@@ -3,7 +3,6 @@
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
-
 use Ubirimi\Util;
 
 class CalendarController extends UbirimiController

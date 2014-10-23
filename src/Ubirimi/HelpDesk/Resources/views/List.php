@@ -1,8 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\HelpDesk\Repository\Queue\Queue;
 use Ubirimi\LinkHelper;
-
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 

@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Repository\User;
 
-use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Calendar\Repository\Calendar\Calendar;
 use Ubirimi\Container\UbirimiContainer;
 
 class User
@@ -113,7 +113,6 @@ class User
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete calendar related entities
-
         Calendar::deleteByUserId($userId);
 
         // todo: delete documentador related entities

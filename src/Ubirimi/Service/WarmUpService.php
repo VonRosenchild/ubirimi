@@ -4,12 +4,10 @@ namespace Ubirimi\Service;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-
-use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Yongo\Repository\Permission\Permission;
 
 /**
  * Warm up data in the session needed in a general context: Client or Customer.

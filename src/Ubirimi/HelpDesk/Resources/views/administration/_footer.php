@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Container\UbirimiContainer;
 
 ?>
 <div style="margin: 10px;" align="center">

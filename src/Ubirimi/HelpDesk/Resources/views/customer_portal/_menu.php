@@ -1,8 +1,7 @@
 <?php
-    use Ubirimi\Repository\User\User;
-    use Ubirimi\SystemProduct;
+use Ubirimi\SystemProduct;
 
-    $styleSelectedMenu = 'style="background-color: #EEEEEE;';
+$styleSelectedMenu = 'style="background-color: #EEEEEE;';
 ?>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#003466">

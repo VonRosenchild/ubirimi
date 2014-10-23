@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Repository\Project;
 
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\HelpDesk\Repository\Sla\Calendar;
 use Ubirimi\LinkHelper;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
@@ -1822,7 +1823,7 @@ class Project
             $dataDefaultCalendar[$i]['to_minute'] = '59';
         }
 
-        $defaultSLACalendarId = SLACalendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, 1, $currentDate);
+        $defaultSLACalendarId = Calendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, 1, $currentDate);
 
         // add the default SLAs
 
@@ -1853,9 +1854,9 @@ class Project
             UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->deleteById($sla['id']);
         }
 
-        $calendars = SLACalendar::getByProjectId($projectId);
+        $calendars = Calendar::getByProjectId($projectId);
         while ($calendars && $calendar = $calendars->fetch_array(MYSQLI_ASSOC)) {
-            SLACalendar::deleteById($calendar['id']);
+            Calendar::deleteById($calendar['id']);
         }
 
         $queues = UbirimiContainer::get()['repository']->get('helpDesk.queue.queue')->getByProjectId($projectId);
