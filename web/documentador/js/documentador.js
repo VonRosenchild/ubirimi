@@ -3,10 +3,10 @@ $('document').ready(function () {
     $(window).scroll(function(){
         console.log($(this).scrollTop());
         if ($(this).scrollTop() == 0) {
-            $('.doc-left-side').css('top', '124px');
+            $('.doc-left-side').css('top', '123px');
         } else if ($(this).scrollTop() < 108) {
-            $('.doc-left-side').css('top', 124 - ($(this).scrollTop()) + 'px');
-            $('.doc-left-side').css('height', ($(window).height() - 123 + $(this).scrollTop()) + 10 + 'px');
+            $('.doc-left-side').css('top', 123 - ($(this).scrollTop()) + 'px');
+            $('.doc-left-side').css('height', ($(window).height() - 122 + $(this).scrollTop()) + 10 + 'px');
         } else {
             $('.doc-left-side').css('top', '-1px');
         }
