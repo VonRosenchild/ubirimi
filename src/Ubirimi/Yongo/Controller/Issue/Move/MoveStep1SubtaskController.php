@@ -32,7 +32,7 @@ class MoveStep1SubtaskController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
         $errorNoNewSubtaskIssueTypeSelected = false;
-        if (isset($_POST['move_issue_step_1_subtask'])) {
+        if ($request->request->has('move_issue_step_1_subtask')) {
 
             // keep the new sub task issue types
             $newSubtaskIssueTypeId = null;
@@ -73,6 +73,6 @@ class MoveStep1SubtaskController extends UbirimiController
         $oldSubtaskIssueType = UbirimiContainer::get()['session']->get('move_issue/sub_task_old_issue_type');
         $newSubtaskIssueType = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes(UbirimiContainer::get()['session']->get('move_issue/new_project'));
 
-        require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep1Subtask.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/issue/move/MoveStep1Subtask.php', get_defined_vars());
     }
 }

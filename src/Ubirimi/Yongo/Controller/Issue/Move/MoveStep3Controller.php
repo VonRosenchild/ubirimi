@@ -33,14 +33,14 @@ class MoveStep3Controller extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        if (isset($_POST['move_issue_step_3'])) {
+        if ($request->request->has('move_issue_step_3')) {
 
             $newIssueComponents = $request->request->get('new_component');
             $newIssueFixVersions = $request->request->get('new_fix_version');
             $newIssueAffectsVersions = $request->request->get('new_affects_version');
 
             if (array_key_exists('new_assignee', $_POST)) {
-                $session->set('move_issue/new_assignee', $_POST['new_assignee']);
+                $session->set('move_issue/new_assignee', $request->request->get('new_assignee'));
             }
 
             $session->set('move_issue/new_component', $newIssueComponents);

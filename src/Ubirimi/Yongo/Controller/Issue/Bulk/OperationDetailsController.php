@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Bulk;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -17,7 +18,7 @@ class OperationDetailsController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $menuSelectedCategory = 'issue';
 
-        if (isset($_POST['next_step_4'])) {
+        if ($request->request->has('next_step_4')) {
             $sendEmail = isset($_POST['send_email']) ? 1 : 0;
             UbirimiContainer::get()['session']->set('bulk_change_send_operation_email', $sendEmail);
 
@@ -26,6 +27,6 @@ class OperationDetailsController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Bulk: Operation Details';
 
-        require_once __DIR__ . '/../../../Resources/views/issue/bulk/OperationDetails.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/issue/bulk/OperationDetails.php', get_defined_vars());
     }
 }

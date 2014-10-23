@@ -19,8 +19,7 @@ class ViewContentController extends UbirimiController
         $function = $this->getRepository('yongo.workflow.workflowFunction')->getById($functionId);
         $issueResolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
 
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/ViewContent.php';
-
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/ViewContent.php', get_defined_vars());
     }
 }
 

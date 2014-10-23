@@ -52,6 +52,6 @@ class EditController extends UbirimiController
         }
         $menuSelectedCategory = 'doc_users';
 
-        require_once __DIR__ . '/../../../Resources/views/administration/group/Edit.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/group/Edit.php', get_defined_vars());
     }
 }

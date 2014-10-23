@@ -34,9 +34,9 @@ class MoveStep1Controller extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        if (isset($_POST['move_issue_step_1'])) {
-            $newProjectId = Util::cleanRegularInputField($_POST['move_to_project']);
-            $newIssueTypeId = Util::cleanRegularInputField($_POST['move_to_issue_type']);
+        if ($request->request->has('move_issue_step_1')) {
+            $newProjectId = Util::cleanRegularInputField($request->request->get('move_to_project'));
+            $newIssueTypeId = Util::cleanRegularInputField($request->request->get('move_to_issue_type'));
 
             UbirimiContainer::get()['session']->set('move_issue', array(
                     'id' => $issueId,

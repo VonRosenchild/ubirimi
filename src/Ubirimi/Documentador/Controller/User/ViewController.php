@@ -43,6 +43,6 @@ class ViewController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Summary';
 
-        require_once __DIR__ . '/../../Resources/views/user/View.php';
+        return $this->render(__DIR__ . '/../../Resources/views/user/View.php', get_defined_vars());
     }
 }

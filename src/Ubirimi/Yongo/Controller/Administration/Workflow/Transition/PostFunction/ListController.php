@@ -29,6 +29,7 @@ class ListController extends UbirimiController
 
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Transition Post Function';
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/View.php';
+
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/View.php', get_defined_vars());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\User;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
@@ -43,6 +44,6 @@ class ActivityController extends UbirimiController
         $activities = $this->getRepository('ubirimi.user.user')->getDocumentatorActivityStream($userId);
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Activity';
 
-        require_once __DIR__ . '/../../Resources/views/user/Activity.php';
+        return $this->render(__DIR__ . '/../../Resources/views/user/Activity.php', get_defined_vars());
     }
 }

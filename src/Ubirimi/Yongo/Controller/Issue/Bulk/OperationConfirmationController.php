@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Bulk;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -56,6 +57,6 @@ class OperationConfirmationController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Bulk: Operation Confirmation';
 
-        require_once __DIR__ . '/../../../Resources/views/issue/bulk/OperationConfirmation.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/issue/bulk/OperationConfirmation.php', get_defined_vars());
     }
 }

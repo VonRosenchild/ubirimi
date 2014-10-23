@@ -74,6 +74,6 @@ class AddController extends UbirimiController
 
         $menuSelectedCategory = 'doc_spaces';
 
-        require_once __DIR__ . '/../../../Resources/views/administration/space/Add.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/space/Add.php', get_defined_vars());
     }
 }

@@ -25,6 +25,6 @@ class ListController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Step Properties';
 
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/List.php';
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/List.php', get_defined_vars());
     }
 }

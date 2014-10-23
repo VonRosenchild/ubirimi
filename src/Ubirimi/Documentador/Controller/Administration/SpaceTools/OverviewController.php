@@ -25,7 +25,7 @@ class OverviewController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        require_once __DIR__ . '/../../../Resources/views/administration/spacetools/Overview.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/spacetools/Overview.php', get_defined_vars());
     }
 }
 

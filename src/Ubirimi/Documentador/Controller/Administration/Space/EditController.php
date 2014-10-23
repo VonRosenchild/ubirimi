@@ -60,6 +60,6 @@ class EditController extends UbirimiController
 
         $menuSelectedCategory = 'doc_spaces';
 
-        require_once __DIR__ . '/../../../Resources/views/administration/space/Edit.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/space/Edit.php', get_defined_vars());
     }
 }

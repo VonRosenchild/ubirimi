@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Bulk;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -16,11 +17,14 @@ class ChooseOperationController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
+        $loggedInUserId = $session->get('user/id');
+
         $menuSelectedCategory = 'issue';
 
         $operation = null;
         $operationSelected = true;
-        if (isset($_POST['next_step_3'])) {
+        if ($request->request->has('next_step_3')) {
 
             foreach ($_POST as $key => $value) {
                 if (substr($key, 0, 10) == "operation_") {
@@ -56,6 +60,6 @@ class ChooseOperationController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Bulk: Choose Operation';
 
-        require_once __DIR__ . '/../../../Resources/views/issue/bulk/ChooseOperation.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/issue/bulk/ChooseOperation.php', get_defined_vars());
     }
 }

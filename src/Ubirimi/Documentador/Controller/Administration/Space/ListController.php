@@ -13,6 +13,9 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $clientId = $session->get('client/id');
+        $loggedInUserId = $session->get('user/id');
+
         $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
         $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
 
@@ -25,7 +28,7 @@ class ListController extends UbirimiController
 
         $menuSelectedCategory = 'doc_spaces';
 
-        require_once __DIR__ . '/../../../Resources/views/administration/space/List.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/space/List.php', get_defined_vars());
     }
 }
 

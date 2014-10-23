@@ -42,6 +42,6 @@ class AddController extends UbirimiController
 
         $menuSelectedCategory = 'doc_users';
 
-        require_once __DIR__ . '/../../../Resources/views/administration/group/Add.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/group/Add.php', get_defined_vars());
     }
 }

@@ -13,10 +13,12 @@ class ViewEditFieldsController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $loggedInUserId = $session->get('user/id');
+
         $issueId = $request->request->get('issue_id');
         $issueTypeId = $request->request->get('issue_type_id');
         $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
-        require_once __DIR__ . '/../../Resources/views/issue/ViewEditDialog.php';
+        return $this->render(__DIR__ . '/../../Resources/views/issue/ViewEditDialog.php', get_defined_vars());
     }
 }

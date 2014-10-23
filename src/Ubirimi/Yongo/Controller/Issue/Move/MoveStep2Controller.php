@@ -32,8 +32,8 @@ class MoveStep2Controller extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        if (isset($_POST['move_issue_step_2'])) {
-            $newStatusId = Util::cleanRegularInputField($_POST['move_to_status']);
+        if ($request->request->has('move_issue_step_2')) {
+            $newStatusId = Util::cleanRegularInputField($request->request->get('move_to_status'));
 
             $session->set('move_issue/new_status', $newStatusId);
 
@@ -62,6 +62,6 @@ class MoveStep2Controller extends UbirimiController
         $newProjectName = $newProject['name'];
         $newTypeName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_type'), 'type', 'name');
 
-        require_once __DIR__ . '/../../../Resources/views/issue/move/MoveStep2.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/issue/move/MoveStep2.php', get_defined_vars());
     }
 }

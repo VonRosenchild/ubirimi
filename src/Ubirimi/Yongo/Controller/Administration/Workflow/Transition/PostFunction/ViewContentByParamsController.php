@@ -23,7 +23,6 @@ class ViewContentByParamsController extends UbirimiController
 
         $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getByWorkflowDataId($workflowDataId);
 
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/ViewContentByParams.php';
-
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/ViewContentByParams.php', get_defined_vars());
     }
 }

@@ -68,6 +68,6 @@ class EditController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Post Function';
 
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/EditData.php';
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/EditData.php', get_defined_vars());
     }
 }

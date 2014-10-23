@@ -58,6 +58,6 @@ class EditController extends UbirimiController
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow Step Property';
 
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/Edit.php';
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/Edit.php', get_defined_vars());
     }
 }

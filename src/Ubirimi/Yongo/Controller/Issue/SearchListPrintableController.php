@@ -102,6 +102,6 @@ class SearchListPrintableController extends UbirimiController
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Print List';
         $menuSelectedCategory = null;
 
-        require_once __DIR__ . '/../../Resources/views/issue/search/SearchListPrintable.php';
+        return $this->render(__DIR__ . '/../../Resources/views/issue/search/SearchListPrintable.php', get_defined_vars());
     }
 }

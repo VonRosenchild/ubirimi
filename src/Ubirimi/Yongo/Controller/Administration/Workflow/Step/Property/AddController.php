@@ -55,6 +55,6 @@ class AddController extends UbirimiController
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Step Property';
 
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/Add.php';
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/step/property/Add.php', get_defined_vars());
     }
 }

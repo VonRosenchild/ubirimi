@@ -19,6 +19,6 @@ class ListController extends UbirimiController
 
         $menuSelectedCategory = 'doc_users';
 
-        require_once __DIR__ . '/../../../Resources/views/administration/group/List.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/group/List.php', get_defined_vars());
     }
 }

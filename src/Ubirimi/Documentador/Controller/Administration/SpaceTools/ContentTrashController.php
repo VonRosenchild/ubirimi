@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Documentador\Controller\Administration\SpaceTools;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
@@ -26,6 +27,6 @@ class ContentTrashController extends UbirimiController
 
         $deletedPages = $this->getRepository('documentador.space.space')->getDeletedPages($spaceId);
 
-        require_once __DIR__ . '/../../../Resources/views/administration/spacetools/ContentTrash.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/spacetools/ContentTrash.php', get_defined_vars());
     }
 }

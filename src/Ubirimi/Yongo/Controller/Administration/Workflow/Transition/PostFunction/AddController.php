@@ -35,6 +35,6 @@ class AddController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Post Function';
 
-        require_once __DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/Add.php';
+        return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/Add.php', get_defined_vars());
     }
 }

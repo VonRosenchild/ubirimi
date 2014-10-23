@@ -47,6 +47,6 @@ class FavouritesController extends UbirimiController
         $pages = $this->getRepository('documentador.entity.entity')->getFavouritePagesByClientIdAndUserId($clientId, $userId);
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Favourites';
 
-        require_once __DIR__ . '/../../Resources/views/user/Favourites.php';
+        return $this->render(__DIR__ . '/../../Resources/views/user/Favourites.php', get_defined_vars());
     }
 }

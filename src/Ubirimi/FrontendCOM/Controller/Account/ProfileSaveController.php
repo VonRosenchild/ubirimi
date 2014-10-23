@@ -29,10 +29,10 @@ class ProfileSaveController extends UbirimiController
             'empty_district' => false
         );
 
-        $companyName = Util::cleanRegularInputField($_POST['company_name']);
-        $contactEmail = Util::cleanRegularInputField($_POST['contact_email']);
-        $address1 = Util::cleanRegularInputField($_POST['address_1']);
-        $address2 = Util::cleanRegularInputField($_POST['address_2']);
+        $companyName = Util::cleanRegularInputField($request->request->get('company_name'));
+        $contactEmail = Util::cleanRegularInputField($request->request->get('contact_email'));
+        $address1 = Util::cleanRegularInputField($request->request->get('address_1'));
+        $address2 = Util::cleanRegularInputField($request->request->get('address_2'));
         $city = Util::cleanRegularInputField($request->request->get('city'));
         $district = Util::cleanRegularInputField($request->request->get('district'));
         $country = Util::cleanRegularInputField($request->request->get('country'));

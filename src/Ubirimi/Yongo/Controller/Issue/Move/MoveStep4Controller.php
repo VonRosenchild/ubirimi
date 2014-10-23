@@ -37,7 +37,7 @@ class MoveStep4Controller extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        if (isset($_POST['move_issue_step_4'])) {
+        if ($request->request->get('move_issue_step_4')) {
             $currentDate = Util::getServerCurrentDateTime();
 
             $oldIssueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);

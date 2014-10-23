@@ -81,6 +81,6 @@ class EditPermissionController extends UbirimiController
 
         $anonymousAccessSettings = $this->getRepository('documentador.space.space')->getAnonymousAccessSettings($spaceId);
 
-        require_once __DIR__ . '/../../../Resources/views/administration/spacetools/EditPermission.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/administration/spacetools/EditPermission.php', get_defined_vars());
     }
 }

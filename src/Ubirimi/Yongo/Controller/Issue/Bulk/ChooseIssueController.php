@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Controller\Issue\Bulk;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -15,6 +16,9 @@ class ChooseIssueController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
+        $loggedInUserId = $session->get('user/id');
+
         $issuesPerPage = $session->get('user/issues_per_page');
 
         $searchParameters = array();
@@ -86,7 +90,7 @@ class ChooseIssueController extends UbirimiController
 
         $errorNoIssuesSelected = false;
 
-        if (isset($_POST['next_step_2'])) {
+        if ($request->request->has('next_step_2')) {
             $issueIdsArray = array();
             foreach ($_POST as $key => $value) {
                 if (substr($key, 0, 15) == "issue_checkbox_") {
@@ -103,6 +107,6 @@ class ChooseIssueController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Bulk: Choose Issues';
 
-        require_once __DIR__ . '/../../../Resources/views/issue/bulk/ChooseIssue.php';
+        return $this->render(__DIR__ . '/../../../Resources/views/issue/bulk/ChooseIssue.php', get_defined_vars());
     }
 }

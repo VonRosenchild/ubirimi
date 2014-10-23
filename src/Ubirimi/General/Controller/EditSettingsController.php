@@ -33,7 +33,7 @@ class EditSettingsController extends UbirimiController
 
             $language = Util::cleanRegularInputField($request->request->get('language'));
             $timezone = Util::cleanRegularInputField($request->request->get('zone'));
-            $titleName = Util::cleanRegularInputField($_POST['title_name']);
+            $titleName = Util::cleanRegularInputField($request->request->get('title_name'));
             $operatingMode = Util::cleanRegularInputField($request->request->get('mode'));
 
             $parameters = array(array('field' => 'title_name', 'value' => $titleName, 'type' => 's'),

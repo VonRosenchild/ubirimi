@@ -19,6 +19,8 @@ class SaveIssueTransitionController extends UbirimiController
         $loggedInUserId = UbirimiContainer::get()['session']->get('user/id');
 
         $issueId = $request->request->get('issue_id');
+
+        var_dump($_POST); die();
         $fieldTypes = isset($_POST['field_types']) ? $_POST['field_types'] : array();
         $fieldValues = isset($_POST['field_values']) ? $_POST['field_values'] : array();
 
