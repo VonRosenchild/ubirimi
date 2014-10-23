@@ -18,7 +18,7 @@ class EditController extends UbirimiController
 
         $categoryId = $request->get('id');
         $projectId = $session->get('selected_project_id');
-        $category = Category::getById($categoryId);
+        $category = $this->getRepository('yongo.project.category')->getById($categoryId);
 
         if ($category['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

@@ -19,10 +19,10 @@ class DeleteController extends UbirimiController
         $remainingTime = $request->request->get('remaining');
         $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
-        $workLog = WorkLog::getById($workLogId);
+        $workLog = $this->getRepository('yongo.issue.workLog')->getById($workLogId);
         $timeSpent = $workLog['time_spent'];
 
-        WorkLog::deleteById($workLogId);
+        $this->getRepository('yongo.issue.workLog')->deleteById($workLogId);
 
         $issueQueryParameters = array('issue_id' => $issueId);
         $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
@@ -31,7 +31,7 @@ class DeleteController extends UbirimiController
         if ($remainingTime == 'automatic')
             $remainingTime = '+' . $timeSpent;
 
-        $remainingTime = WorkLog::adjustRemainingEstimate(
+        $remainingTime = $this->getRepository('yongo.issue.workLog')->adjustRemainingEstimate(
             $issue,
             $timeSpent,
             $remainingTime,

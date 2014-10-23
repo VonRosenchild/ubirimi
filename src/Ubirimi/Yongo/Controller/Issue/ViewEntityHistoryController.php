@@ -26,7 +26,7 @@ class ViewEntityHistoryController extends UbirimiController
         $issueId = $request->request->get('issue_id');
         $userId = $request->request->get('user_id');
         $projectId = $request->request->get('project_id');
-        $historyList = History::getByIssueIdAndUserId($issueId, $userId, $projectId);
+        $historyList = $this->getRepository('yongo.issue.history')->getByIssueIdAndUserId($issueId, $userId, $projectId);
         $color = null;
 
         $hoursPerDay = $yongoSettings['time_tracking_hours_per_day'];

@@ -9,7 +9,7 @@ use Ubirimi\Calendar\Repository\Reminder\Period;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\Repository\SMTPServer;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Configuration;
@@ -1759,10 +1759,10 @@ class Client
     }
 
     public function deleteSVNRepositories($clientId) {
-        $repositories = SVNRepository::getAllByClientId($clientId);
+        $repositories = Repository::getAllByClientId($clientId);
         if ($repositories) {
             while ($repository = $repositories->fetch_array(MYSQLI_ASSOC)) {
-                SVNRepository::deleteAllById($repository['id']);
+                Repository::deleteAllById($repository['id']);
             }
         }
     }

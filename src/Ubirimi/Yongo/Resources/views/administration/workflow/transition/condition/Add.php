@@ -14,11 +14,13 @@
 
         <form name="add_post_function" action="/yongo/administration/workflow/add-condition-data/<?php echo $workflowDataId ?>" method="post">
             <table class="table table-hover table-condensed">
-                <tr>
-                    <td width="24"></td>
-                    <td width="200">Name</td>
-                    <td>Description</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th width="24"></th>
+                        <th width="200">Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
                 <?php while ($conditions && $condition = $conditions->fetch_array(MYSQLI_ASSOC)): ?>
                     <?php
                         echo '<tr>';

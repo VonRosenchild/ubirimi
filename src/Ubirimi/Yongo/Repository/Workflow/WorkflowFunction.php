@@ -158,7 +158,7 @@ class WorkflowFunction
                 } else if (strstr($postFunction['definition_data'], '=')) {
                     $definitionData = explode('=', $postFunction['definition_data']);
                     $eventId = $definitionData[1];
-                    $event = Event::getById($eventId);
+                    $event = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getById($eventId);
                     $description = 'Fire a <b>' . $event['name'] . '</b> event that can be processed by the listeners.';
                 }
 

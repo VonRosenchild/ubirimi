@@ -1,18 +1,18 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
-    require_once __DIR__ . '/../../../_header.php';
+require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' .
+            '<a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . ' </a> > Transition: ' . $workflowData['transition_name'] . ' > Create Post Function';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' .
-                          '<a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . ' </a> > Transition: ' . $workflowData['transition_name'] . ' > Create Post Function';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <form name="add_post_function" action="/yongo/administration/workflow/transition-add-post-function/<?php echo $workflowDataId ?>" method="post">
             <table class="table table-hover table-condensed">

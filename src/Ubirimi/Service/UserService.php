@@ -9,7 +9,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\Event\UserEvent;
 use Ubirimi\Repository\User\User as UserRepository;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
@@ -66,7 +66,7 @@ class UserService extends UbirimiService
 
         if (isset($data['svnRepoId'])) {
             /* also add user to svn_repository_user table */
-            SVNRepository::addUser($data['svnRepoId'], $userId);
+            Repository::addUser($data['svnRepoId'], $userId);
 
             $userEvent = new UserEvent(UserEvent::STATUS_NEW_SVN, $data['firstName'], $data['lastName'], $data['username'], null, $data['email'], array('repositoryName' => $data['svnRepositoryName']));
             UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::USER, $userEvent);

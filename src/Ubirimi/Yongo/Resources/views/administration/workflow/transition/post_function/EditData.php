@@ -11,11 +11,11 @@ require_once __DIR__ . '/../../../_header.php';
 <body>
 
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflowPostFunctionData['workflow_id'] . '">' . $workflowPostFunctionData['workflow_name'] . '</a> > Transition: ' . $workflowPostFunctionData['transition_name'] . ' > Edit Parameters To Function';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflowPostFunctionData['workflow_id'] . '">' . $workflowPostFunctionData['workflow_name'] . '</a> > Transition: ' . $workflowPostFunctionData['transition_name'] . ' > Edit Parameters To Function';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <form name="edit_post_function_data" action="/yongo/administration/workflow/edit-post-function-data/<?php echo $workflowPostFunctionDataId; ?>" method="post">
             <?php if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>
@@ -60,8 +60,8 @@ require_once __DIR__ . '/../../../_header.php';
                     <tr>
                         <td width="150">Event</td>
                         <td>
-                            <?php $events = Event::getByClient($clientId); ?>
-                            <select name="fire_event" class="inputTextCombo">
+                            <?php $events = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getByClient($clientId); ?>
+                            <select name="fire_event" class="select2Input">
 
                                 <?php while ($event = $events->fetch_array(MYSQLI_ASSOC)): ?>
                                     <option value="<?php echo $event['id'] ?>"><?php echo $event['name'] ?></option>

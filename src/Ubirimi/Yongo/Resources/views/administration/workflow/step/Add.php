@@ -5,11 +5,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Create Step';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Create Step';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
         <?php if ($addStepPossible): ?>
             <form name="add_step" action="/yongo/administration/workflow/add-step/<?php echo $workflowId ?>" method="post">
                 <table width="100%">
@@ -27,7 +27,7 @@
                     <tr>
                         <td valign="top">Linked Status</td>
                         <td>
-                            <select name="linked_status" class="inputTextCombo">
+                            <select name="linked_status" class="select2Input">
                                 <?php while ($status = $statuses->fetch_array(MYSQLI_ASSOC)): ?>
                                     <?php if (!in_array($status['id'], $linkedStatuses)): ?>
                                         <option value="<?php echo $status['id'] ?>"><?php echo $status['name'] ?></option>

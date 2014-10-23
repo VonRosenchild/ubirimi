@@ -18,7 +18,7 @@ class DeleteDialogController extends UbirimiController
         $remainingEstimate = $request->get('remaining');
         $remainingEstimate = trim(str_replace(array('w', 'd', 'h', 'm'), array('w ', 'd ', 'h ', 'm'), $remainingEstimate));
 
-        $workLog = WorkLog::getById($workLogId);
+        $workLog = $this->getRepository('yongo.issue.workLog')->getById($workLogId);
 
         $mode = 'delete';
 

@@ -1,16 +1,16 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../_header.php';
+require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Step: ' . $step['name'] . ' > Properties';
+        Util::renderBreadCrumb($breadcrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Step: ' . $step['name'] . ' > Properties';
-            Util::renderBreadCrumb($breadcrumb);
-        ?>
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li><a href="/yongo/administration/workflow/view-step/<?php echo $stepId ?>">Summary</a></li>

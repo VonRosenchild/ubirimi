@@ -1,22 +1,22 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../_header.php';
+require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Step: ' . $step['name'] . ' > Update Property';
+        Util::renderBreadCrumb($breadcrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Step: ' . $step['name'] . ' > Update Property';
-            Util::renderBreadCrumb($breadcrumb);
-        ?>
 
         <form name="add_step" action="/yongo/administration/workflow/edit-step-property/<?php echo $stepPropertyId ?>" method="post">
             <table width="100%">
                 <tr>
                     <td valign="top" width="150">Key <span class="error">*</span></td>
                     <td>
-                        <select name="key" class="inputTextCombo">
+                        <select name="key" class="select2Input">
                             <?php while ($propertyData = $allProperties->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($propertyData['id'] == $stepProperty['sys_workflow_step_property_id']) echo 'selected="selected"' ?> value="<?php echo $propertyData['id'] ?>"><?php echo $propertyData['name'] ?></option>
                             <?php endwhile ?>

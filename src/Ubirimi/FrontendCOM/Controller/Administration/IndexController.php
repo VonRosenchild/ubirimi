@@ -6,7 +6,7 @@ use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\Documentador\Repository\Space\Space;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -25,13 +25,13 @@ class IndexController extends UbirimiController
         $entities = Entity::getAll();
         $agileBoards = $this->getRepository('agile.board.board')->getAll();
         $agileSprints = Sprint::getAllSprintsForClients();
-        $svnRepos = SVNRepository::getAll();
+        $svnRepos = Repository::getAll();
 
         $clientsToday = $this->getRepository('ubirimi.general.client')->getAll(array('today' => true));
         $projectsToday = $this->getRepository('yongo.project.project')->getAll(array('today' => true));
         $usersToday = $this->getRepository('ubirimi.user.user')->getAll(array('today' => true));
         $issuesToday = UbirimiContainer::getRepository('yongo.issue.issue')->getAll(array('today' => true));
-        $svnReposToday = SVNRepository::getAll(array('today' => true));
+        $svnReposToday = Repository::getAll(array('today' => true));
 
         $selectedOption = 'statistics';
 

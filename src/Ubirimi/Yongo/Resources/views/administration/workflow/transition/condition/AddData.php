@@ -1,30 +1,31 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Workflow\Condition;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Workflow\Condition;
 
-    require_once __DIR__ . '/../../../_header.php';
+require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Transition: ' . $workflowData['transition_name'] . ' > Conditions';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Transition: ' . $workflowData['transition_name'] . ' > Conditions';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
         <form name="add_cond_parameters" action="/yongo/administration/workflow/add-condition-data/<?php echo $workflowDataId ?>?condition_id=<?php echo $conditionId ?>" method="post">
             <?php if ($conditionId == Condition::CONDITION_PERMISSION): ?>
-                <?php $permissionCategories = Permission::getCategories() ?>
+                <?php $permissionCategories = UbirimiContainer::get()['repository']->get('yongo.permission.permission')->getCategories() ?>
                 <div>Add required paramters to condition</div>
                 <table width="100%">
                     <tr>
                         <td width="200">Permission</td>
                         <td>
-                            <select name="permission" class="inputTextCombo">
+                            <select name="permission" class="select2InputMedium">
                                 <?php while ($category = $permissionCategories->fetch_array(MYSQLI_ASSOC)): ?>
                                     <optgroup label="<?php echo $category['name'] ?>">
-                                        <?php $permissions = Permission::getByCategory($category['id']) ?>
+                                        <?php $permissions = UbirimiContainer::get()['repository']->get('yongo.permission.permission')->getByCategory($category['id']) ?>
                                         <?php while ($permission = $permissions->fetch_array(MYSQLI_ASSOC)): ?>
                                             <option value="<?php echo $permission['id'] ?>"><?php echo $permission['name'] ?></option>
                                         <?php endwhile ?>

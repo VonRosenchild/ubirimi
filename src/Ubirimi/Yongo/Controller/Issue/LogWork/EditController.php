@@ -25,14 +25,14 @@ class EditController extends UbirimiController
         $dateStarted = \DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
         $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
-        $workLog = WorkLog::getById($workLogId);
+        $workLog = $this->getRepository('yongo.issue.workLog')->getById($workLogId);
 
-        WorkLog::updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
+        $this->getRepository('yongo.issue.workLog')->updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
 
         $issueQueryParameters = array('issue_id' => $issueId);
         $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
 
-        $remaining = WorkLog::adjustRemainingEstimate(
+        $remaining = $this->getRepository('yongo.issue.workLog')->adjustRemainingEstimate(
             $issue,
             null,
             "+" . $workLog['time_spent'],
@@ -45,7 +45,7 @@ class EditController extends UbirimiController
 
         $issue['remaining_estimate'] = $remaining;
 
-        $remainingTimePost = WorkLog::adjustRemainingEstimate(
+        $remainingTimePost = $this->getRepository('yongo.issue.workLog')->adjustRemainingEstimate(
             $issue,
             $timeSpent,
             $remainingTimePost,

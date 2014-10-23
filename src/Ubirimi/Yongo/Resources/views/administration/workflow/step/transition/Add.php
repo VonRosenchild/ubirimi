@@ -5,11 +5,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Create Transition';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Create Transition';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <form name="add_transition" action="/yongo/administration/workflow/add-transition/<?php echo $workflowStepId ?>" method="post">
             <table width="100%">

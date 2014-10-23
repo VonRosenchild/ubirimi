@@ -24,7 +24,7 @@ class ViewController extends UbirimiController
         $issueId = $request->request->get('issue_id');
         $projectId = $request->request->get('project_id');
 
-        $workLogs = WorkLog::getByIssueId($issueId);
+        $workLogs = $this->getRepository('yongo.issue.workLog')->getByIssueId($issueId);
 
         $hasEditOwnWorklogsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_OWN_WORKLOGS, $session->get('user/id'));
         $hasEditAllWorklogsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ALL_WORKLOGS, $session->get('user/id'));

@@ -5,11 +5,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Step: ' . $step['name'] . ' > Delete Transitions';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Step: ' . $step['name'] . ' > Delete Transitions';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <div>Select transitions you want to delete for the <b><?php echo $step['name'] ?></b> step.</div>
         <form action="/yongo/administration/workflow/delete-transitions/<?php echo $stepId ?>" method="post" name="delete_transitions">

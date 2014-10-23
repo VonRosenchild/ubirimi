@@ -12,7 +12,7 @@ use Ubirimi\Yongo\Repository\Permission\Scheme;
 use Ubirimi\Yongo\Repository\Notification\Scheme;
 use Ubirimi\Yongo\Repository\Project\Category;
 use Ubirimi\Yongo\Repository\Project\Project;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
@@ -406,7 +406,7 @@ function installUser($data)
 
     if (isset($data['svnRepoId'])) {
         /* also add user to svn_repository_user table */
-        SVNRepository::addUser($data['svnRepoId'], $userId);
+        Repository::addUser($data['svnRepoId'], $userId);
 
     }
 

@@ -56,6 +56,7 @@ class EditController extends UbirimiController
 
         $postFunctionId = $workflowPostFunctionData['function_id'];
         $definitionData = $workflowPostFunctionData['definition_data'];
+
         switch ($postFunctionId) {
             case WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE:
                 $data = explode("###", $definitionData);
@@ -67,7 +68,7 @@ class EditController extends UbirimiController
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Post Function';
-
+        $menuSelectedCategory = 'issue';
         return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/EditData.php', get_defined_vars());
     }
 }

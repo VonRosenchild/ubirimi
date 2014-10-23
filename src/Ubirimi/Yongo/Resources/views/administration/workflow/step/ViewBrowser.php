@@ -8,12 +8,12 @@ require_once __DIR__ . '/../../_header.php';
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-    <div class="pageContent">
 
-        <?php
-            $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Step: ' . $step['name'] . ' > Summary';
-            Util::renderBreadCrumb($breadcrumb);
-        ?>
+    <?php
+        $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Step: ' . $step['name'] . ' > Summary';
+        Util::renderBreadCrumb($breadcrumb);
+    ?>
+    <div class="pageContent">
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li><a href="/yongo/administration/workflow/view-step/<?php echo $stepId ?>">Summary</a></li>

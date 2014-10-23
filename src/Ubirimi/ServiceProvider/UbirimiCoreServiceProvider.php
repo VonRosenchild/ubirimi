@@ -95,7 +95,7 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
                         __DIR__ . '/../Yongo/Resources/views/email/',
                         __DIR__ . '/../General/Resources/views/email/',
                         __DIR__ . '/../Calendar/Resources/views/email/',
-                        __DIR__ . '/../SVNHosting/Resources/views/email/',
+                        __DIR__ . '/../SvnHosting/Resources/views/email/',
                         __DIR__ . '/../FrontendCOM/Resources/views/email/',
                         __DIR__ . '/../Resources/views/'
                     ))

@@ -10,11 +10,11 @@ require_once __DIR__ . '/../../../_header.php';
 <body>
 
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Transition: ' . $workflowData['transition_name'] . ' > Create Parameters To Function';
+        Util::renderBreadCrumb($breadcrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadcrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > <a class="linkNoUnderline" href="/yongo/administration/workflow/view-as-text/' . $workflow['id'] . '">' . $workflow['name'] . '</a> > Transition: ' . $workflowData['transition_name'] . ' > Create Parameters To Function';
-            Util::renderBreadCrumb($breadcrumb);
-        ?>
 
         <form name="add_post_function_data" action="/yongo/administration/workflow/transition-add-post-function-data/<?php echo $workflowDataId ?>?function_id=<?php echo $postFunctionId ?>" method="post">
             <?php if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>

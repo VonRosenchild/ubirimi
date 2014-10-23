@@ -14,7 +14,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $projectCategories = Category::getAll($session->get('client/id'));
+        $projectCategories = $this->getRepository('yongo.project.category')->getAll($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

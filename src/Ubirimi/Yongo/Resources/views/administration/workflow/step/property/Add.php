@@ -1,22 +1,22 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../_header.php';
+require_once __DIR__ . '/../../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Step: ' . $step['name'] . ' > Create Property';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/workflows">Workflows</a> > ' . $workflowMetadata['name'] . ' > Step: ' . $step['name'] . ' > Create Property';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <form name="add_step" action="/yongo/administration/workflow/add-step-property/<?php echo $stepId ?>" method="post">
             <table width="100%">
                 <tr>
                     <td valign="top" width="150">Key <span class="error">*</span></td>
                     <td>
-                        <select name="key" class="inputTextCombo">
+                        <select name="key" class="select2Input">
                             <?php while ($property = $allProperties->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $property['id'] ?>"><?php echo $property['name'] ?></option>
                             <?php endwhile ?>

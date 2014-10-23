@@ -15,6 +15,7 @@ class AddDataController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 

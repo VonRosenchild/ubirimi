@@ -2,7 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -12,7 +12,7 @@ class SVNController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $svnRepositories = SVNRepository::getAll(array('sort_by' => 'svn_repository.date_created', 'sort_order' => 'desc'));
+        $svnRepositories = Repository::getAll(array('sort_by' => 'svn_repository.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'svns';
 
