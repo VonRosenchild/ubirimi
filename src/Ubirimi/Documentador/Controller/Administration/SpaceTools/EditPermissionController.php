@@ -32,7 +32,9 @@ class EditPermissionController extends UbirimiController
             // delete all the permissions for all groups
             $this->getRepository('documentador.space.space')->removePermissionsForAllGroups($spaceId);
             $groupPermissions = array();
-            foreach ($_POST as $key => $value) {
+
+            $requestParameters = $request->request->all();
+            foreach ($requestParameters as $key => $value) {
 
                 if (substr($key, 0, 26) == 'space_group_all_view_flag_') {
                     $groupId = str_replace('space_group_all_view_flag_', '', $key);
@@ -50,7 +52,7 @@ class EditPermissionController extends UbirimiController
             // delete all the permissions for all users
             $this->getRepository('documentador.space.space')->removePermissionsForAllUsers($spaceId);
             $usersPermissions = array();
-            foreach ($_POST as $key => $value) {
+            foreach ($requestParameters as $key => $value) {
 
                 if (substr($key, 0, 25) == 'space_user_all_view_flag_') {
                     $userId = str_replace('space_user_all_view_flag_', '', $key);
@@ -65,7 +67,7 @@ class EditPermissionController extends UbirimiController
             $this->getRepository('documentador.space.space')->updateUserPermissions($spaceId, $usersPermissions);
 
             // deal with anonymous access
-            $anonymous_all_view_flag = isset($_POST['anonymous_all_view_flag']) ? $_POST['anonymous_all_view_flag'] : 0;
+            $anonymous_all_view_flag = $request->request->get('anonymous_all_view_flag');
 
             $parameters = array(array('field' => 'all_view_flag', 'value' => $anonymous_all_view_flag, 'type' => 'i'));
 

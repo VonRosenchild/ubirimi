@@ -28,8 +28,8 @@ class SaveIssueTransitionController extends UbirimiController
         $attachIdsToBeKept = isset($_POST['attach_ids']) ? $_POST['attach_ids'] : array();
         $attIdsSession = $session->has('added_attachments_in_screen') ? $session->get('added_attachments_in_screen') : array();
 
-        $fieldTypesCustom = isset($_POST['field_types_custom']) ? $_POST['field_types_custom'] : null;
-        $fieldValuesCustom = isset($_POST['field_values_custom']) ? $_POST['field_values_custom'] : null;
+        $fieldTypesCustom = $request->request->get('field_types_custom');
+        $fieldValuesCustom = $request->request->get('field_values_custom');
 
         $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
         $issueCustomFieldsData = array();

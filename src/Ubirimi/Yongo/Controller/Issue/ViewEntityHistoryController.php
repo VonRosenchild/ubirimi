@@ -23,9 +23,9 @@ class ViewEntityHistoryController extends UbirimiController
             $yongoSettings = $this->getRepository('ubirimi.general.client')->getYongoSettings($clientId);
         }
 
-        $issueId = isset($_POST['issue_id']) ? $_POST['issue_id'] : null;
-        $userId = isset($_POST['user_id']) ? $_POST['user_id'] : null;
-        $projectId = isset($_POST['project_id']) ? $_POST['project_id'] : null;
+        $issueId = $request->request->get('issue_id');
+        $userId = $request->request->get('user_id');
+        $projectId = $request->request->get('project_id');
         $historyList = History::getByIssueIdAndUserId($issueId, $userId, $projectId);
         $color = null;
 

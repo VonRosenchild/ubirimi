@@ -16,7 +16,7 @@ class UpdateController extends UbirimiController
 
         $transition_name = $request->request->get('transition_name');
         $workflowId = $request->request->get('workflow_id');
-        $screenId = isset($_POST['screen_id']) ? $_POST['screen_id'] : null;
+        $screenId = $request->request->get('screen_id');
         $idFrom = $request->request->get('id_from');
         $idTo = $request->request->get('id_to');
 

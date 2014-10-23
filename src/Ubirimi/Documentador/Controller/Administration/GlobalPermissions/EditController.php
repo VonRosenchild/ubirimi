@@ -40,7 +40,9 @@ class EditController extends UbirimiController
 
             $date = Util::getServerCurrentDateTime();
 
-            foreach ($_POST as $key => $value) {
+            $requestParameters = $request->request->all();
+
+            foreach ($requestParameters as $key => $value) {
                 if (substr($key, 0, 5) == 'group') {
                     $data = explode("_", $key);
                     $globalsPermissionId = $data[1];
@@ -57,7 +59,7 @@ class EditController extends UbirimiController
                 $this->getRepository('yongo.permission.globalPermission')->deleteByPermissionId($clientId, $globalsPermission['id'], 'user');
             }
 
-            foreach ($_POST as $key => $value) {
+            foreach ($requestParameters as $key => $value) {
                 if (substr($key, 0, 4) == 'user') {
                     $data = explode("_", $key);
                     $globalsPermissionId = $data[1];
