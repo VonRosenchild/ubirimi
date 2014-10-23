@@ -5,7 +5,6 @@ namespace Ubirimi\SVNHosting\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,13 +19,13 @@ class ViewUserSummaryController extends UbirimiController
         $svnRepoId = $request->get('id');
         $clientId = $session->get('client/id');
 
-        $svnRepo = Repository::getById($svnRepoId);
+        $svnRepo = $this->getRepository('svnHosting.repository')->getById($svnRepoId);
 
         if ($svnRepo['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $svnRepoUserList = Repository::getUserList($svnRepoId, 'array');
+        $svnRepoUserList = $this->getRepository('svnHosting.repository')->getUserList($svnRepoId, 'array');
         $isSVNAdministrator = $session->get('user/svn_administrator_flag');
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_SVN_HOSTING);
 

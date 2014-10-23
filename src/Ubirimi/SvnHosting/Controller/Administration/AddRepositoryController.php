@@ -9,7 +9,6 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\Event\UserEvent;
-use Ubirimi\SvnHosting\Repository\Repository;
 use ubirimi\svn\SVNUtils;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -44,7 +43,7 @@ class AddRepositoryController extends UbirimiController
             if (empty($code)) {
                 $emptyCode = true;
             } else {
-                $svn_repository_exists = Repository::getByCode(mb_strtolower($code), $clientId);
+                $svn_repository_exists = $this->getRepository('svnHosting.repository')->getByCode(mb_strtolower($code), $clientId);
                 if ($svn_repository_exists) {
                     $duplicateCode = true;
                 }
@@ -52,7 +51,7 @@ class AddRepositoryController extends UbirimiController
 
             if (!$emptyName && !$emptyCode && !$duplicateName && !$duplicateCode) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $repoId = Repository::addRepo($clientId, $session->get('user/id'), $name, $description, $code, $currentDate);
+                $repoId = $this->getRepository('svnHosting.repository')->addRepo($clientId, $session->get('user/id'), $name, $description, $code, $currentDate);
 
                 $repoPath = UbirimiContainer::get()['subversion.path'] . Util::slugify($session->get('client/company_domain')) . '/' . Util::slugify($name);
                 /* create the repository on disk */
@@ -60,15 +59,15 @@ class AddRepositoryController extends UbirimiController
                 @mkdir(UbirimiContainer::get()['subversion.path'] . Util::slugify($session->get('client/company_domain')) . '/' . Util::slugify($name), 0700, true);
 
                 try {
-                    Repository::createSvn($repoPath);
+                    $this->getRepository('svnHosting.repository')->createSvn($repoPath);
                     SVNUtils::createStandardDirectories($repoPath);
 
                     /* add the user */
-                    Repository::addUser($repoId, $session->get('user/id'));
-                    Repository::updateUserPermissions($repoId, $session->get('user/id'), 1, 1);
+                    $this->getRepository('svnHosting.repository')->addUser($repoId, $session->get('user/id'));
+                    $this->getRepository('svnHosting.repository')->updateUserPermissions($repoId, $session->get('user/id'), 1, 1);
 
                     /* apache config */
-                    Repository::apacheConfig(Util::slugify($session->get('client/company_domain')), Util::slugify($name));
+                    $this->getRepository('svnHosting.repository')->apacheConfig(Util::slugify($session->get('client/company_domain')), Util::slugify($name));
                 }
                 catch (\Exception $e) {
 

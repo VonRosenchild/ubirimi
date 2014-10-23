@@ -5,7 +5,6 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -20,7 +19,7 @@ class DeleteAdministratorController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        Repository::deleteAdministratorById($clientId, $Id);
+        $this->getRepository('svnHosting.repository')->deleteAdministratorById($clientId, $Id);
 
         // if the deleted administrator is the logged in user than refresh the session data
         if ($Id == $loggedInUserId) {

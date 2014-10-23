@@ -5,7 +5,6 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,7 +17,7 @@ class ConfirmDeleteAdministratorController extends UbirimiController
         $clientId = $session->get('client/id');
         $Id = $request->get('id');
 
-        $svnAdministrators = Repository::getAdministratorsByClientId($clientId);
+        $svnAdministrators = $this->getRepository('svnHosting.repository')->getAdministratorsByClientId($clientId);
         if ($svnAdministrators && 1 == $svnAdministrators->num_rows) {
             return new Response('It is not possible to delete the last SVN Administrator.');
         };
