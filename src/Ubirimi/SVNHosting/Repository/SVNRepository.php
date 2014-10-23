@@ -282,7 +282,7 @@ class SVNRepository
 
     public function deleteAllById($Id) {
         $repo = SVNRepository::getById($Id);
-        $client = $this->getRepository('ubirimi.general.client')->getById($repo['svn_repository.client_id']);
+        $client = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getById($repo['svn_repository.client_id']);
 
         self::deleteById($Id);
 
