@@ -4,7 +4,7 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,7 +18,7 @@ class ListAdministratorController extends UbirimiController
 
         $clientId = $session->get('client/id');
 
-        $svnAdministrators = SVNRepository::getAdministratorsByClientId($clientId);
+        $svnAdministrators = Repository::getAdministratorsByClientId($clientId);
         $isSVNAdministrator = $session->get('user/svn_administrator_flag');
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_SVN_HOSTING);
 

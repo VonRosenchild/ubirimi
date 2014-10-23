@@ -8,7 +8,7 @@ class SVNHostingController extends UbirimiController
 {
     public function indexAction()
     {
-        $content = 'product/SvnHosting.php';
+        $content = 'product/SVNHosting.php';
         $page = 'svn';
 
         return $this->render(__DIR__ . '/../../Resources/views/_main.php', get_defined_vars());

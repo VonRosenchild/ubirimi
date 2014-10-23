@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SVNHosting\Event\SVNHostingEvent;
 use Ubirimi\SVNHosting\Event\SVNHostingEvents;
 use Ubirimi\SystemProduct;
@@ -24,13 +24,13 @@ class ImportUsersController extends UbirimiController
         $usersIdsToImport = $request->request->get('users');
 
         foreach ($usersIdsToImport as $userToImport) {
-            SVNRepository::addUser($session->get('selected_svn_repo_id'), (int) $userToImport);
-            SVNRepository::updateUserPermissions($session->get('selected_svn_repo_id'), (int) $userToImport, 1, 1);
+            Repository::addUser($session->get('selected_svn_repo_id'), (int) $userToImport);
+            Repository::updateUserPermissions($session->get('selected_svn_repo_id'), (int) $userToImport, 1, 1);
 
             $userRec = $this->getRepository('ubirimi.user.user')->getById((int) $userToImport);
-            $svnRepo = SVNRepository::getById($session->get('selected_svn_repo_id'));
+            $svnRepo = Repository::getById($session->get('selected_svn_repo_id'));
 
-            SVNRepository::updateAuthz();
+            Repository::updateAuthz();
 
             $svnEvent = new SVNHostingEvent($svnRepo['name'], $userRec);
             $svnLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_SVN_HOSTING, sprintf('SVN users imported into SVN Repository [%s]', $svnRepo['name']));

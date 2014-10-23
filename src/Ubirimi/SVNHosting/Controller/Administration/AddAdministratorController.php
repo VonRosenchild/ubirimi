@@ -5,7 +5,7 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -27,7 +27,7 @@ class AddAdministratorController extends UbirimiController
             $users = $request->request->get('user');
 
             if ($users) {
-                SVNRepository::addAdministrator($users);
+                Repository::addAdministrator($users);
 
                 return new RedirectResponse('/svn-hosting/administration/administrators');
             } else {

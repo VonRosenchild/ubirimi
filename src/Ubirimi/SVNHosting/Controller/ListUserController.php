@@ -4,7 +4,7 @@ namespace Ubirimi\SVNHosting\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use ubirimi\svn\SVNRepository;
+
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -22,7 +22,7 @@ class ListUserController extends UbirimiController
         $isSVNAdministrator = $session->get('user/svn_administrator_flag');
         $menuSelectedCategory = 'svn';
 
-        $svnRepos = SVNRepository::getRepositoriesByUserId($clientId, $loggedInUserId, 'array');
+        $svnRepos = $this->getRepository('svnHosting.repository')->getRepositoriesByUserId($clientId, $loggedInUserId, 'array');
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_SVN_HOSTING);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_SVN_HOSTING_NAME. ' / My Repositories';

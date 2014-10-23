@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SVNHosting\Event\SVNHostingEvent;
 use Ubirimi\SVNHosting\Event\SVNHostingEvents;
 use Ubirimi\SystemProduct;
@@ -26,7 +26,7 @@ class ChangePasswordController extends UbirimiController
         $repoId = $request->query->get('repo_id', $request->request->get('repo_id'));
 
         $user = $this->getRepository('ubirimi.user.user')->getById($userId);
-        $svnRepo = SVNRepository::getById($repoId);
+        $svnRepo = Repository::getById($repoId);
 
         $errors = array('empty_password' => false, 'password_mismatch' => false);
 
@@ -41,10 +41,10 @@ class ChangePasswordController extends UbirimiController
                 $errors['password_mismatch'] = true;
 
             if (Util::hasNoErrors($errors)) {
-                SVNRepository::updateUserPassword($session->get('selected_svn_repo_id'), $userId, $password);
+                Repository::updateUserPassword($session->get('selected_svn_repo_id'), $userId, $password);
 
-                SVNRepository::updateHtpasswd($session->get('selected_svn_repo_id'), $session->get('client/company_domain'));
-                SVNRepository::updateAuthz();
+                Repository::updateHtpasswd($session->get('selected_svn_repo_id'), $session->get('client/company_domain'));
+                Repository::updateAuthz();
 
                 $svnEvent = new SVNHostingEvent($svnRepo['name'], $user, array('password' => $password));
                 $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_SVN_HOSTING, sprintf('SVN Change Password for [%s]', $svnRepo['name']));

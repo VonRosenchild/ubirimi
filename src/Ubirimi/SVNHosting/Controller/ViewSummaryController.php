@@ -5,7 +5,7 @@ namespace Ubirimi\SVNHosting\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,7 +18,7 @@ class ViewSummaryController extends UbirimiController
         $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
 
         $svnRepoId = $request->get('id');
-        $svnRepo = SVNRepository::getById($svnRepoId);
+        $svnRepo = $this->getRepository('svnHosting.repository')->getById($svnRepoId);
 
         $clientId = $session->get('client/id');
 

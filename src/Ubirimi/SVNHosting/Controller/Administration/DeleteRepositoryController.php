@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -22,12 +22,12 @@ class DeleteRepositoryController extends UbirimiController
 
         $Id = $request->request->get('svn_id');
 
-        $repo = SVNRepository::getById($Id);
+        $repo = Repository::getById($Id);
 
-        SVNRepository::deleteById($Id);
+        Repository::deleteById($Id);
 
-        SVNRepository::updateHtpasswd($repo['id'], $session->get('client/company_domain'));
-        SVNRepository::updateAuthz();
+        Repository::updateHtpasswd($repo['id'], $session->get('client/company_domain'));
+        Repository::updateAuthz();
 
         /* delete the content from hdd */
         $companyDomain = Util::getSubdomain();
@@ -35,7 +35,7 @@ class DeleteRepositoryController extends UbirimiController
         system("rm -rf $path");
 
         /* refresh apache config */
-        SVNRepository::refreshApacheConfig();
+        Repository::refreshApacheConfig();
 
         $this->getRepository('ubirimi.general.log')->add(
             $clientId,

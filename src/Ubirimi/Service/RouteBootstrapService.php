@@ -71,7 +71,7 @@ class RouteBootstrapService
         $routingPaths = array(
             __DIR__ . '/../Yongo/Resources/config',
             __DIR__ . '/../Documentador/Resources/config',
-            __DIR__ . '/../SvnHosting/Resources/config',
+            __DIR__ . '/../SVNHosting/Resources/config',
             __DIR__ . '/../Agile/Resources/config',
             __DIR__ . '/../HelpDesk/Resources/config',
             __DIR__ . '/../Calendar/Resources/config',
@@ -83,7 +83,7 @@ class RouteBootstrapService
         /* for these two projects, the administration routes are in routing_administration files, so load them separately */
         $routingPathsAdministration = array(
             __DIR__ . '/../Yongo/Resources/config',
-            __DIR__ . '/../SvnHosting/Resources/config'
+            __DIR__ . '/../SVNHosting/Resources/config'
         );
 
         $options = array('cache_dir' => UbirimiContainer::get()['app.cacheDir']);

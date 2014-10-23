@@ -1,6 +1,6 @@
 <?php
 
-namespace ubirimi\svn;
+namespace Ubirimi\SvnHosting\Repository;
 
 use Exception;
 use Ubirimi\ConsoleUtils;
@@ -8,11 +8,13 @@ use Ubirimi\Container\UbirimiContainer;
 
 use Ubirimi\Util;
 
-class SVNRepository
+class Repository
 {
     public function getByCode($code, $clientId) {
 
         $query = 'select id, name, code from project where client_id = ? and LOWER(code) = LOWER(?) ';
+
+        // todo: error
         if ($projectId) $query .= 'and id != ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -281,21 +283,21 @@ class SVNRepository
     }
 
     public function deleteAllById($Id) {
-        $repo = SVNRepository::getById($Id);
+        $repo = Repository::getById($Id);
         $client = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getById($repo['svn_repository.client_id']);
 
         self::deleteById($Id);
 
         /* update apache configs */
-        SVNRepository::updateHtpasswd($repo['id'], $client['company_domain']);
-        SVNRepository::updateAuthz();
+        Repository::updateHtpasswd($repo['id'], $client['company_domain']);
+        Repository::updateAuthz();
 
         /* delete from the disk */
         $path = UbirimiContainer::get()['subversion.path'] . Util::slugify($client['company_domain']) . '/' . Util::slugify($repo['name']);
         system("rm -rf $path");
 
         /* refresh apache config */
-        SVNRepository::refreshApacheConfig();
+        Repository::refreshApacheConfig();
     }
 
     public function deleteUserById($Id) {
@@ -328,7 +330,7 @@ class SVNRepository
     public function updateHtpasswd($repoId, $companyDomain) {
         $text = "";
 
-        $repository = SVNRepository::getById($repoId);
+        $repository = Repository::getById($repoId);
 
         $query = "SELECT user.username, svn_repository_user.password
                     FROM svn_repository_user

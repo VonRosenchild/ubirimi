@@ -5,7 +5,7 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use ubirimi\svn\SVNRepository;
+use Ubirimi\SvnHosting\Repository\Repository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -36,7 +36,7 @@ class EditRepositoryController extends UbirimiController
                 $emptyCode = true;
             }
             else {
-                $svn_repository_exists = SVNRepository::getByCode(mb_strtolower($code), $clientId);
+                $svn_repository_exists = Repository::getByCode(mb_strtolower($code), $clientId);
                 if ($svn_repository_exists) {
                     $duplicateCode = true;
                 }
@@ -44,14 +44,14 @@ class EditRepositoryController extends UbirimiController
 
             if (!$emptyCode && !$duplicateCode) {
                 $date = Util::getServerCurrentDateTime();
-                SVNRepository::updateRepo($description, $code, $repoId, $date);
+                Repository::updateRepo($description, $code, $repoId, $date);
 
                 $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $loggedInUserId, 'UPDATE SVN Repository ' . Util::slugify($code), $date);
 
                 return new RedirectResponse('/svn-hosting/administration/all-repositories');
             }
         } else {
-            $svnRepo = SVNRepository::getById($request->get('id'));
+            $svnRepo = Repository::getById($request->get('id'));
 
             if ($svnRepo['client_id'] != $clientId) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
