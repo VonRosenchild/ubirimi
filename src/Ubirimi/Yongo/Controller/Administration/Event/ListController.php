@@ -14,7 +14,7 @@ class ListController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $events = IssueEvent::getByClient($session->get('client/id'));
+        $events = $this->getRepository(IssueEvent::class)->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'system';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Events';

@@ -27,7 +27,7 @@ class ViewController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $permissionScheme = PermissionScheme::getMetaDataById($project['permission_scheme_id']);
+        $permissionScheme = $this->getRepository(PermissionScheme::class)->getMetaDataById($project['permission_scheme_id']);
         $permissionCategories = Permission::getCategories();
         $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),

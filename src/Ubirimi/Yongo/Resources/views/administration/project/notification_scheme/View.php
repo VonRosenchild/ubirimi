@@ -1,7 +1,8 @@
 <?php
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
@@ -59,7 +60,7 @@
                         </td>
                         <td>
                             <?php
-                                $notificationData = NotificationScheme::getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $notification['id']);
+                                $notificationData = UbirimiContainer::get()['repository']->get(NotificationScheme::class)->getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $notification['id']);
                                 if ($notificationData) {
                                     echo '<ul>';
                                     while ($data = $notificationData->fetch_array(MYSQLI_ASSOC)) {

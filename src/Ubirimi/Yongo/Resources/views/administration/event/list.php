@@ -49,7 +49,7 @@
                             <?php
                                 $canBeDeleted = 1;
 
-                                $notificationSchemes = IssueEvent::getNotificationSchemesByEventId($clientId, $event['id']);
+                                $notificationSchemes = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getNotificationSchemesByEventId($clientId, $event['id']);
                                 if ($notificationSchemes) {
                                     $canBeDeleted = 0;
                                     echo '<ul>';
@@ -62,7 +62,7 @@
                         </td>
                         <td>
                             <?php
-                                $workflows = IssueEvent::getWorkflowsByEventId($clientId, $event['id']);
+                                $workflows = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getWorkflowsByEventId($clientId, $event['id']);
                                 if ($workflows) {
                                     $canBeDeleted = 0;
                                     echo '<ul>';

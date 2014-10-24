@@ -53,7 +53,7 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
 
             $workflowDataId = $workflowStep['id'];
 
-            $transitionEvent = IssueEvent::getEventByWorkflowDataId($workflowDataId);
+            $transitionEvent = $this->getRepository(IssueEvent::class)->getEventByWorkflowDataId($workflowDataId);
             $hasEventPermission = false;
 
             switch ($transitionEvent['code']) {

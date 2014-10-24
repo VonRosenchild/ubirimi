@@ -31,7 +31,7 @@ class AddDataController extends UbirimiController
 
         $notificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataById($notificationSchemeId);
 
-        $events = IssueEvent::getByClient($session->get('client/id'));
+        $events = $this->getRepository(IssueEvent::class)->getByClient($session->get('client/id'));
 
         $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
         $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);

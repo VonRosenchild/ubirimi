@@ -32,7 +32,7 @@ class SelectSchemeController extends UbirimiController
             return new RedirectResponse('/yongo/administration/project/permissions/' . $projectId);
         }
 
-        $permissionSchemes = PermissionScheme::getByClientId($session->get('client/id'));
+        $permissionSchemes = $this->getRepository(PermissionScheme::class)->getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

@@ -28,8 +28,8 @@ class ViewController extends UbirimiController
         }
 
         $notificationSchemeId = $project['notification_scheme_id'];
-        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
-        $events = IssueEvent::getByClient($session->get('client/id'));
+        $notificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataById($notificationSchemeId);
+        $events = $this->getRepository(IssueEvent::class)->getByClient($session->get('client/id'));
 
         $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),

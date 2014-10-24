@@ -32,7 +32,7 @@ class SelectSchemeController extends UbirimiController
             return new RedirectResponse('/yongo/administration/project/notifications/' . $projectId);
         }
 
-        $notificationSchemes = NotificationScheme::getByClientId($session->get('client/id'));
+        $notificationSchemes = $this->getRepository(NotificationScheme::class)->getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

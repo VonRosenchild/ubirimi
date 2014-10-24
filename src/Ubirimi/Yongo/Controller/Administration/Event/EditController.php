@@ -22,7 +22,7 @@ class EditController extends UbirimiController
         $emptyName = false;
 
         $eventId = $request->get('id');
-        $event = IssueEvent::getById($eventId);
+        $event = $this->getRepository(IssueEvent::class)->getById($eventId);
 
         if ($event['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

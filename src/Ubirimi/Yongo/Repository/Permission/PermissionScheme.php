@@ -327,17 +327,20 @@ class PermissionScheme
     }
 
     public function addDefaultPermissions($permissionSchemeId, $roleAdministratorsId, $roleDevelopersId, $roleUsersId, $currentDate) {
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADMINISTER_PROJECTS, array($roleAdministratorsId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_BROWSE_PROJECTS, array($roleUsersId), $currentDate);
 
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CREATE_ISSUE, array($roleUsersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ISSUE, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGN_ISSUE, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGNABLE_USER, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_RESOLVE_ISSUE, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CLOSE_ISSUE, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_MODIFY_REPORTER, array($roleAdministratorsId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ISSUE, array($roleAdministratorsId), $currentDate);
+        $permissionRepository = UbirimiContainer::get()['repository']->get(PermissionScheme::class);
+
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADMINISTER_PROJECTS, array($roleAdministratorsId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_BROWSE_PROJECTS, array($roleUsersId), $currentDate);
+
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CREATE_ISSUE, array($roleUsersId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGN_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGNABLE_USER, array($roleDevelopersId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_RESOLVE_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CLOSE_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_MODIFY_REPORTER, array($roleAdministratorsId), $currentDate);
+        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ISSUE, array($roleAdministratorsId), $currentDate);
 
         PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADD_COMMENTS, array($roleUsersId), $currentDate);
         PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ALL_COMMENTS, array($roleDevelopersId), $currentDate);
@@ -371,10 +374,10 @@ class PermissionScheme
     }
 
     public function deleteByClientId($clientId) {
-        $permissionSchemes = PermissionScheme::getByClientId($clientId);
+        $permissionSchemes = UbirimiContainer::get()['repository']->get(PermissionScheme::class)->getByClientId($clientId);
         while ($permissionSchemes && $permissionScheme = $permissionSchemes->fetch_array(MYSQLI_ASSOC)) {
-            PermissionScheme::deleteDataByPermissionSchemeId($permissionScheme['id']);
-            PermissionScheme::deleteById($permissionScheme['id']);
+            UbirimiContainer::get()['repository']->get(PermissionScheme::class)->deleteDataByPermissionSchemeId($permissionScheme['id']);
+            UbirimiContainer::get()['repository']->get(PermissionScheme::class)->deleteById($permissionScheme['id']);
         }
     }
 

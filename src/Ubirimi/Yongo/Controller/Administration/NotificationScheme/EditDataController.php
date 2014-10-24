@@ -33,7 +33,7 @@ class EditDataController extends UbirimiController
             }
         }
 
-        $events = IssueEvent::getByClient($session->get('client/id'));
+        $events = $this->getRepository(IssueEvent::class)->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Notification Scheme';
 

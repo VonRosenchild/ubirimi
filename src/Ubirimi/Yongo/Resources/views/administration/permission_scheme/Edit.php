@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\LinkHelper;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
     use Ubirimi\SystemProduct;
     use Ubirimi\Yongo\Repository\Permission\Permission;
     use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
@@ -55,7 +56,7 @@
                             </td>
                             <td>
                                 <?php
-                                    $permData = PermissionScheme::getDataByPermissionId($permissionScheme['id'], $permission['id']);
+                                    $permData = UbirimiContainer::get()['repository']->get(PermissionScheme::class)->getDataByPermissionId($permissionScheme['id'], $permission['id']);
 
                                     if ($permData) {
                                         echo '<ul>';

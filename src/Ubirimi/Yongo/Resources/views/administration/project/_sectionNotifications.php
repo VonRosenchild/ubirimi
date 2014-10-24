@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
 ?>
 <table width="100%">
@@ -18,7 +19,7 @@
                     <td valign="top" width="330">
                         <span>Scheme:</span>
                         <?php
-                            $notificationScheme = NotificationScheme::getMetaDataById($project['notification_scheme_id']);
+                            $notificationScheme = UbirimiContainer::get()['repository']->get(NotificationScheme::class)->getMetaDataById($project['notification_scheme_id']);
                         ?>
                         <span><a href="/yongo/administration/project/notifications/<?php echo $projectId ?>"><?php echo $notificationScheme['name'] ?></a></span>
                     </td>

@@ -133,7 +133,7 @@ class IssueEvent
             $definitionData = explode("=", $data['definition_data']);
             $eventId = $definitionData[1];
 
-            $event = IssueEvent::getById($eventId);
+            $event = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getById($eventId);
             return $event;
         } else
             return null;

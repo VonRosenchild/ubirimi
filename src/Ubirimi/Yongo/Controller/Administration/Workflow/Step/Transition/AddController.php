@@ -71,7 +71,7 @@ class AddController extends UbirimiController
                     'update_issue_history'
                 );
 
-                $eventId = IssueEvent::getByClientIdAndCode(
+                $eventId = $this->getRepository(IssueEvent::class)->getByClientIdAndCode(
                     $session->get('client/id'),
                     IssueEvent::EVENT_GENERIC_CODE,
                     'id'

@@ -19,9 +19,9 @@ class DeleteController extends UbirimiController
 
         $eventId = $request->request->get('id');
 
-        $event = IssueEvent::getById($eventId);
+        $event = $this->getRepository(IssueEvent::class)->getById($eventId);
 
-        IssueEvent::deleteById($eventId);
+        $this->getRepository(IssueEvent::class)->deleteById($eventId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

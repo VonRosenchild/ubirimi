@@ -68,7 +68,7 @@ class IssueEmailService extends UbirimiService
             Email::$smtpSettings = $this->session->get('client/settings/smtp');
 
             // notify people
-            $eventId = IssueEvent::getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_ISSUE_COMMENTED_CODE, 'id');
+            $eventId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_ISSUE_COMMENTED_CODE, 'id');
             $users = $this->getRepository(YongoProject::class)->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
@@ -89,7 +89,7 @@ class IssueEmailService extends UbirimiService
             Email::$smtpSettings = $smtpSettings;
 
             $issue = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $this->session->get('user/id'));
-            $eventId = IssueEvent::getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_ISSUE_COMMENTED_CODE, 'id');
+            $eventId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_ISSUE_COMMENTED_CODE, 'id');
             $users = $this->getRepository(YongoProject::class)->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
 
             while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {

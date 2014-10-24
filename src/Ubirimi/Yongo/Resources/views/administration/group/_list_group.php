@@ -33,7 +33,7 @@ use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
                 </td>
                 <td width="20%">
                     <?php
-                        $permissionSchemes = PermissionScheme::getByClientIdAndGroupBy($clientId, $group['id']);
+                        $permissionSchemes = UbirimiContainer::get()['repository']->get(PermissionScheme::class)->getByClientIdAndGroupBy($clientId, $group['id']);
                         if ($permissionSchemes) {
                             echo '<ul>';
                             while ($permission = $permissionSchemes->fetch_array(MYSQLI_ASSOC)) {
