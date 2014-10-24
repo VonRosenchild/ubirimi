@@ -1,5 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Entity\EntityComment;
 use Ubirimi\Documentador\Repository\Entity\EntityType;
 use Ubirimi\LinkHelper;
 
@@ -96,7 +97,7 @@ use Ubirimi\LinkHelper;
                         <div style="float: left; display: block; width: 100%">
                             <?php
                                 $htmlLayout = '';
-                                UbirimiContainer::get()['repository']->get('documentador.entity.comment')->getCommentsLayoutHTML($comments, $htmlLayout, null, 0);
+                                UbirimiContainer::get()['repository']->get(EntityComment::class)->getCommentsLayoutHTML($comments, $htmlLayout, null, 0);
                                 echo $htmlLayout;
                             ?>
                         </div>

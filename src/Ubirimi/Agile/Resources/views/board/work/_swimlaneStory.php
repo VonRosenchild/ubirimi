@@ -5,7 +5,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
 // get issues that have children. Those are shown first
-$allSprintIssuesWithChildren = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getIssuesBySprintIdWithChildren($sprintId, null, $loggedInUserId);
+$allSprintIssuesWithChildren = UbirimiContainer::get()['repository']->get(Sprint::class)->getIssuesBySprintIdWithChildren($sprintId, null, $loggedInUserId);
 $parentChildrenIssueIds = array();
 
 while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fetch_array(MYSQLI_ASSOC)) {
@@ -29,7 +29,7 @@ while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fe
     }
 }
 
-$allSprintIssuesWithoutChildren = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getIssuesBySprintIdWithoutChildren($sprintId, null, $loggedInUserId, $parentChildrenIssueIds);
+$allSprintIssuesWithoutChildren = UbirimiContainer::get()['repository']->get(Sprint::class)->getIssuesBySprintIdWithoutChildren($sprintId, null, $loggedInUserId, $parentChildrenIssueIds);
 
 if ($allSprintIssuesWithoutChildren) {
     if ($allSprintIssuesWithChildren) {

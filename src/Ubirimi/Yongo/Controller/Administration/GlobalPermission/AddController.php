@@ -19,26 +19,26 @@ class AddController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $allGroups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
+        $globalPermissions = $this->getRepository(GlobalPermission::class)->getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
 
         if ($request->request->has('confirm_new_permission')) {
             $permissionId = $request->request->get('permission');
             $groupId = $request->request->get('group');
             $currentDate = Util::getServerCurrentDateTime();
             $group = $this->getRepository(UbirimiGroup::class)->getMetadataById($groupId);
-            $permission = GlobalPermission::getById($permissionId);
+            $permission = $this->getRepository(GlobalPermission::class)->getById($permissionId);
 
             $date = Util::getServerCurrentDateTime();
 
             // check if the group is already added
-            $permissionData = GlobalPermission::getDataByPermissionIdAndGroupId(
+            $permissionData = $this->getRepository(GlobalPermission::class)->getDataByPermissionIdAndGroupId(
                 $session->get('client/id'),
                 $permissionId,
                 $groupId
             );
 
             if (!$permissionData) {
-                GlobalPermission::addDataForGroupId($session->get('client/id'), $permissionId, $groupId, $date);
+                $this->getRepository(GlobalPermission::class)->addDataForGroupId($session->get('client/id'), $permissionId, $groupId, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

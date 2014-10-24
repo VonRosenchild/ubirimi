@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Agile\Repository\Board\Board;
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\SystemProduct;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
@@ -31,11 +32,11 @@ class PlanController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $sprintsNotStarted = $this->getRepository('agile.sprint.sprint')->getNotStarted($boardId);
+        $sprintsNotStarted = $this->getRepository(Sprint::class)->getNotStarted($boardId);
 
         $boardProjects = $this->getRepository(Board::class)->getProjects($boardId, 'array');
-        $currentStartedSprint = $this->getRepository('agile.sprint.sprint')->getStarted($boardId);
-        $lastCompletedSprint = $this->getRepository('agile.sprint.sprint')->getLastCompleted($boardId);
+        $currentStartedSprint = $this->getRepository(Sprint::class)->getStarted($boardId);
+        $lastCompletedSprint = $this->getRepository(Sprint::class)->getLastCompleted($boardId);
 
         $lastColumn = $this->getRepository(Board::class)->getLastColumn($boardId);
         $completeStatuses = $this->getRepository(Board::class)->getColumnStatuses($lastColumn['id'], 'array', 'id');

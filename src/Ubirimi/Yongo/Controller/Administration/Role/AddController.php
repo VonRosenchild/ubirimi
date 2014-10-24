@@ -33,7 +33,7 @@ class AddController extends UbirimiController
 
             if (!$emptyName && !$alreadyExists) {
                 $date = Util::getServerCurrentDateTime();
-                $this->getRepository(Role::class)->gadd($session->get('client/id'), $name, $description, $date);
+                $this->getRepository(Role::class)->add($session->get('client/id'), $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

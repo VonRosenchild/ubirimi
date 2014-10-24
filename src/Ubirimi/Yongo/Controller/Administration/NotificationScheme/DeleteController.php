@@ -20,8 +20,8 @@ class DeleteController extends UbirimiController
         $notificationSchemeId = $request->request->get('id');
         $notificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataById($notificationSchemeId);
 
-        $this->getRepository(NotificationScheme::class)->gdeleteDataByNotificationSchemeId($notificationSchemeId);
-        $this->getRepository(NotificationScheme::class)->gdeleteById($notificationSchemeId);
+        $this->getRepository(NotificationScheme::class)->deleteDataByNotificationSchemeId($notificationSchemeId);
+        $this->getRepository(NotificationScheme::class)->deleteById($notificationSchemeId);
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository(UbirimiLog::class)->add(

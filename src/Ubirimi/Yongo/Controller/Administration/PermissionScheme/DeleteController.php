@@ -18,8 +18,8 @@ class DeleteController extends UbirimiController
 
         $permissionSchemeId = $request->request->get('id');
 
-        $this->getRepository(PermissionScheme::class)->gdeleteDataByPermissionSchemeId($permissionSchemeId);
-        $this->getRepository(PermissionScheme::class)->gdeleteById($permissionSchemeId);
+        $this->getRepository(PermissionScheme::class)->deleteDataByPermissionSchemeId($permissionSchemeId);
+        $this->getRepository(PermissionScheme::class)->deleteById($permissionSchemeId);
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository(UbirimiLog::class)->add(

@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Comment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\EntityComment;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $commentId = $request->request->get('id');
 
-        $this->getRepository('documentador.entity.comment')->deleteById($commentId);
+        $this->getRepository(EntityComment::class)->deleteById($commentId);
 
         return new Response('');
     }

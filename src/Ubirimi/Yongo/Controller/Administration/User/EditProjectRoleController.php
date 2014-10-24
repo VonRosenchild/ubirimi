@@ -34,12 +34,12 @@ class EditProjectRoleController extends UbirimiController
 
         if ($request->request->has('edit_user_project_role')) {
             $currentDate = Util::getServerCurrentDateTime();
-            $this->getRepository(Role::class)->gdeleteRolesForUser($userId);
+            $this->getRepository(Role::class)->deleteRolesForUser($userId);
             foreach ($request->request as $key => $value) {
                 if (substr($key, 0, 5) == 'role_') {
                     $data = str_replace('role_', '', $key);
                     $params = explode('_', $data);
-                    $this->getRepository(Role::class)->gaddProjectRoleForUser($userId, $params[0], $params[1], $currentDate);
+                    $this->getRepository(Role::class)->addProjectRoleForUser($userId, $params[0], $params[1], $currentDate);
                 }
             }
 

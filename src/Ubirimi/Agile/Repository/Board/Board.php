@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Agile\Repository\Board;
 
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueFilter;
@@ -398,7 +399,7 @@ class Board
     }
 
     public function transferNotDoneIssues($boardId, $sprintId, $completeStatuses) {
-        $nextSprint = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getNextNotStartedByBoardId($boardId, $sprintId);
+        $nextSprint = UbirimiContainer::get()['repository']->get(Sprint::class)->getNextNotStartedByBoardId($boardId, $sprintId);
 
         // set as done the completed issues
         $query = "select * " .
@@ -481,7 +482,7 @@ class Board
         $stmt->bind_param("i", $boardId);
         $stmt->execute();
 
-        $sprintIdsArray = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getByBoardId($boardId, 'array', 'id');
+        $sprintIdsArray = UbirimiContainer::get()['repository']->get(Sprint::class)->getByBoardId($boardId, 'array', 'id');
         for ($i = 0; $i < count($sprintIdsArray); $i++) {
             $query = "delete from agile_board_sprint_issue where agile_board_sprint_id = ?";
             $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

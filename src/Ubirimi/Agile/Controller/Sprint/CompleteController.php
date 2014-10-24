@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Agile\Repository\Board\Board;
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -19,13 +20,13 @@ class CompleteController extends UbirimiController
         $sprintId = $request->request->get('id');
         $boardId = $request->request->get('board_id');
 
-        $sprint = $this->getRepository('agile.sprint.sprint')->getById($sprintId);
+        $sprint = $this->getRepository(Sprint::class)->getById($sprintId);
         $lastColumn = $this->getRepository(Board::class)->getLastColumn($boardId);
         $completeStatuses = $this->getRepository(Board::class)->getColumnStatuses($lastColumn['id'], 'array', 'id');
 
         $this->getRepository(Board::class)->transferNotDoneIssues($boardId, $sprintId, $completeStatuses);
 
-        $this->getRepository('agile.sprint.sprint')->complete($sprintId);
+        $this->getRepository(Sprint::class)->complete($sprintId);
 
         return new Response('');
     }

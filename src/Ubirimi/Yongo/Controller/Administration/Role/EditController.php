@@ -40,7 +40,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$alreadyExists) {
                 $date = Util::getServerCurrentDateTime();
-                $this->getRepository(Role::class)->gupdateById($permissionRoleId, $name, $description, $date);
+                $this->getRepository(Role::class)->updateById($permissionRoleId, $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Page\Attachment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Entity\EntityAttachment;
 use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
@@ -50,7 +51,7 @@ class ViewController extends UbirimiController
         $menuSelectedCategory = 'documentator';
 
         if ($page) {
-            $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
+            $attachments = $this->getRepository(EntityAttachment::class)->getByEntityId($entityId);
         }
 
         return $this->render(__DIR__ . '/../../../Resources/views/page/attachment/View.php', get_defined_vars());

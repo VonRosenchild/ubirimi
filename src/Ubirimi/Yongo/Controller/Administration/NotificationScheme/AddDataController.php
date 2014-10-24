@@ -101,7 +101,7 @@ class AddDataController extends UbirimiController
                         }
                     }
                     if (!$duplication) {
-                        $this->getRepository(NotificationScheme::class)->gaddData(
+                        $this->getRepository(NotificationScheme::class)->addData(
                             $notificationSchemeId,
                             $eventIds[$i],
                             $notificationType,

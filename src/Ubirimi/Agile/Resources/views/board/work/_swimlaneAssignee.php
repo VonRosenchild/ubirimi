@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
 // get all the assignees of the issues in this sprint
-$allAssignees = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getAssigneesBySprintId($sprintId);
+$allAssignees = UbirimiContainer::get()['repository']->get(Sprint::class)->getAssigneesBySprintId($sprintId);
 
 while ($allAssignees && $user = $allAssignees->fetch_array(MYSQLI_ASSOC)) {
 

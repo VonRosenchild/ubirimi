@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Comment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\EntityComment;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -23,7 +24,7 @@ class AddController extends UbirimiController
         var_dump($pageId);
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository('documentador.entity.comment')->addComment($pageId, $loggedInUserId, $content, $date, $parentId);
+        $this->getRepository(EntityComment::class)->addComment($pageId, $loggedInUserId, $content, $date, $parentId);
 
         return new Response('');
     }

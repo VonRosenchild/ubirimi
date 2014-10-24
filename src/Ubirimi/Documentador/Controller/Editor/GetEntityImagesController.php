@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Entity\EntityAttachment;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,7 +17,7 @@ class GetEntityImagesController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $entityId = $session->get('current_edit_entity_id');
-        $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
+        $attachments = $this->getRepository(EntityAttachment::class)->getByEntityId($entityId);
 
         $index = 0;
         if ($attachments) {

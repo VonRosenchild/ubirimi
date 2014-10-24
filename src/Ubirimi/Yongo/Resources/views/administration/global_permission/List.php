@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
     require_once __DIR__ . '/../_header.php';
@@ -37,7 +38,7 @@
 
                             <td>
                                 <?php
-                                    $groups = GlobalPermission::getDataByPermissionId($clientId, $globalPermission['id']);
+                                    $groups = UbirimiContainer::get()['repository']->get(GlobalPermission::class)->getDataByPermissionId($clientId, $globalPermission['id']);
                                     if ($groups) {
                                         echo '<ul>';
                                         while ($group = $groups->fetch_array(MYSQLI_ASSOC)) {

@@ -60,7 +60,7 @@ class UserService extends UbirimiService
             UbirimiCalendar::addReminder($calendarId, Type::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
 
             // add the newly created user to the Ubirimi Users Global Permission Groups
-            $groups = GlobalPermission::getDataByPermissionId($data['clientId'], GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);
+            $groups = UbirimiContainer::get()['repository']->get(GlobalPermission::class)->getDataByPermissionId($data['clientId'], GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);
             while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
                 $this->getRepository(UbirimiGroup::class)->addData($group['id'], array($userId), $currentDate);
             }

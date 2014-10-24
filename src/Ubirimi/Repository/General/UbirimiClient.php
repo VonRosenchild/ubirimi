@@ -1503,7 +1503,7 @@ class UbirimiClient
         UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultScreenData($clientId, $clientCreatedDate);
 
         // create default permission roles
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultPermissionRoles($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultPermissionRoles($clientId, $clientCreatedDate);
 
         // create default group names
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addDefaultYongoGroups($clientId, $clientCreatedDate);
@@ -1518,10 +1518,10 @@ class UbirimiClient
         $groupDevelopers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Developers');
         $groupUsers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Users');
 
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
 
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
 
         // add in Administrators group the current user
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);

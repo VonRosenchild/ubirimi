@@ -5,9 +5,11 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php Util::renderBreadCrumb('Groups') ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Groups') ?>
 
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>

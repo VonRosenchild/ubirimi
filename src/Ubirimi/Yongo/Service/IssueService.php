@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Service;
 
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Service\UbirimiService;
 use Ubirimi\Util;
@@ -46,9 +47,9 @@ class IssueService extends UbirimiService
 
         // if a parent is set check if the parent issue id is part of a sprint. if yes also add the child
         if ($issueId) {
-            $sprints = UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->getByIssueId($clientId, $issueId);
+            $sprints = UbirimiContainer::get()['repository']->get(Sprint::class)->getByIssueId($clientId, $issueId);
             while ($sprints && $sprint = $sprints->fetch_array(MYSQLI_ASSOC)) {
-                UbirimiContainer::get()['repository']->get('agile.sprint.sprint')->addIssues($sprint['id'], array($newIssueId), $loggedInUserId);
+                UbirimiContainer::get()['repository']->get(Sprint::class)->addIssues($sprint['id'], array($newIssueId), $loggedInUserId);
             }
         }
 

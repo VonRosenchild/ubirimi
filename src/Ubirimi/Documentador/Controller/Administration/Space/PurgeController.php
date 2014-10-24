@@ -5,6 +5,8 @@ namespace Ubirimi\Documentador\Controller\Administration\Space;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Entity\EntityAttachment;
+use Ubirimi\Documentador\Repository\Entity\EntityComment;
 use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -23,12 +25,12 @@ class PurgeController extends UbirimiController
 
         $entity = $this->getRepository(Entity::class)->getById($entityId);
 
-        $this->getRepository('documentador.entity.comment')->deleteCommentsByEntityId($entityId);
+        $this->getRepository(EntityComment::class)->deleteCommentsByEntityId($entityId);
         $this->getRepository(Entity::class)->removeAsFavouriteForUsers($entityId);
         $this->getRepository(Entity::class)->deleteRevisionsByEntityId($entityId);
         $this->getRepository(Entity::class)->deleteFilesByEntityId($entityId);
 
-        $this->getRepository('documentador.entity.attachment')->deleteByEntityId($entityId, $entity['space_id']);
+        $this->getRepository(EntityAttachment::class)->deleteByEntityId($entityId, $entity['space_id']);
         $this->getRepository(Entity::class)->deleteById($entityId);
 
         $date = Util::getServerCurrentDateTime();

@@ -76,7 +76,7 @@ class AddDataController extends UbirimiController
                     }
 
                     if (!$duplication) {
-                        $this->getRepository(PermissionScheme::class)->gaddData(
+                        $this->getRepository(PermissionScheme::class)->addData(
                             $permissionSchemeId,
                             $sysPermissionIds[$i],
                             $permissionType,

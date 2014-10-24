@@ -1,4 +1,5 @@
 <?php
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
@@ -59,12 +60,12 @@ require_once __DIR__ . '/../../_header.php';
                                 <?php while ($globalsPermission = $globalsPermissions->fetch_array(MYSQLI_ASSOC)): ?>
                                     <td align="center">
                                         <?php
-                                        $data = GlobalPermission::getDataByPermissionIdAndGroupId($clientId, $globalsPermission['id'], $group['id']);
-                                        if ($data) {
-                                            echo 'YES';
-                                        } else {
-                                            echo 'NO';
-                                        }
+                                            $data = UbirimiContainer::get()['repository']->get(GlobalPermission::class)->getDataByPermissionIdAndGroupId($clientId, $globalsPermission['id'], $group['id']);
+                                            if ($data) {
+                                                echo 'YES';
+                                            } else {
+                                                echo 'NO';
+                                            }
                                         ?>
                                     </td>
                                 <?php endwhile ?>
@@ -96,12 +97,12 @@ require_once __DIR__ . '/../../_header.php';
                             <?php while ($globalsPermission = $globalsPermissions->fetch_array(MYSQLI_ASSOC)): ?>
                                 <td align="center">
                                     <?php
-                                    $data = GlobalPermission::getDataByPermissionIdAndUserId($clientId, $globalsPermission['id'], $user['id']);
-                                    if ($data) {
-                                        echo 'YES';
-                                    } else {
-                                        echo 'NO';
-                                    }
+                                        $data = UbirimiContainer::get()['repository']->get(GlobalPermission::class)->getDataByPermissionIdAndUserId($clientId, $globalsPermission['id'], $user['id']);
+                                        if ($data) {
+                                            echo 'YES';
+                                        } else {
+                                            echo 'NO';
+                                        }
                                     ?>
                                 </td>
                             <?php endwhile ?>

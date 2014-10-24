@@ -35,7 +35,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository(NotificationScheme::class)->gupdateMetaDataById($notificationSchemeId, $name, $description, $currentDate);
+                $this->getRepository(NotificationScheme::class)->updateMetaDataById($notificationSchemeId, $name, $description, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

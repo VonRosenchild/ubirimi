@@ -18,8 +18,8 @@ class DeleteDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $id = $request->get('id');
-        $permissionData = GlobalPermission::getDataById($id);
-        GlobalPermission::deleteById($id);
+        $permissionData = $this->getRepository(GlobalPermission::class)->getDataById($id);
+        $this->getRepository(GlobalPermission::class)->deleteById($id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

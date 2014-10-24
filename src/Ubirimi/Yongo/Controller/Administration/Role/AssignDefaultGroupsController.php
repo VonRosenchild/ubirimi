@@ -23,8 +23,8 @@ class AssignDefaultGroupsController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
         $permissionRole = $this->getRepository(Role::class)->getById($permissionRoleId);
-        $this->getRepository(Role::class)->gdeleteDefaultGroupsByPermissionRoleId($permissionRoleId);
-        $this->getRepository(Role::class)->gaddDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
+        $this->getRepository(Role::class)->deleteDefaultGroupsByPermissionRoleId($permissionRoleId);
+        $this->getRepository(Role::class)->addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
 
         $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),

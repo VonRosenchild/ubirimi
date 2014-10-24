@@ -20,7 +20,7 @@ class DeleteController extends UbirimiController
         $permissionRoleId = $request->request->get('perm_role_id');
 
         $permissionRole = $this->getRepository(Role::class)->getById($permissionRoleId);
-        $this->getRepository(Role::class)->gdeleteById($permissionRoleId);
+        $this->getRepository(Role::class)->deleteById($permissionRoleId);
 
         $date = Util::getServerCurrentDateTime();
 

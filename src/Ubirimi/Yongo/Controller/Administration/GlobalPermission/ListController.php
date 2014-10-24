@@ -18,7 +18,7 @@ class ListController extends UbirimiController
 
         $users = $this->getRepository(UbirimiClient::class)->getUsers($session->get('client/id'));
 
-        $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
+        $globalPermissions = $this->getRepository(GlobalPermission::class)->getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
         $menuSelectedCategory = 'user';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Global Permissions';

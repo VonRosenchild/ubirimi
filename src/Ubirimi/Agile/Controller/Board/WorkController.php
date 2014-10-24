@@ -32,7 +32,7 @@ class WorkController extends UbirimiController
         if ($sprintId == -1) {
             $sprint = null;
         } else {
-            $sprint = $this->getRepository('agile.sprint.sprint')->getById($sprintId);
+            $sprint = $this->getRepository(Sprint::class)->getById($sprintId);
             $sprintBoardId = $sprint['agile_board_id'];
             if ($sprintBoardId != $boardId) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -40,7 +40,7 @@ class WorkController extends UbirimiController
         }
 
         $columns = $this->getRepository(Board::class)->getColumns($boardId, 'array');
-        $lastCompletedSprint = $this->getRepository('agile.sprint.sprint')->getLastCompleted($boardId);
+        $lastCompletedSprint = $this->getRepository(Sprint::class)->getLastCompleted($boardId);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CHEETAH_NAME

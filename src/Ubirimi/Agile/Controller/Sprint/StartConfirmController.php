@@ -4,6 +4,7 @@ namespace Ubirimi\Agile\Controller\Sprint;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -14,7 +15,7 @@ class StartConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $sprintId = $request->get('id');
-        $sprint = $this->getRepository('agile.sprint.sprint')->getById($sprintId);
+        $sprint = $this->getRepository(Sprint::class)->getById($sprintId);
         $today = date("Y-m-d");
         $todayPlus2Weeks = date('Y-m-d', strtotime('+2 week', strtotime($today)));
 

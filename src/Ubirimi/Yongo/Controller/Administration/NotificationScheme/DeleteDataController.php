@@ -18,7 +18,7 @@ class DeleteDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeDataId = $request->request->get('notification_scheme_data_id');
-        $this->getRepository(NotificationScheme::class)->gdeleteDataById($notificationSchemeDataId);
+        $this->getRepository(NotificationScheme::class)->deleteDataById($notificationSchemeDataId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

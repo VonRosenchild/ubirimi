@@ -22,8 +22,8 @@ class AssignDefaultUsersController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
         $permissionRole = $this->getRepository(Role::class)->getById($permissionRoleId);
-        $this->getRepository(Role::class)->gdeleteDefaultUsersByPermissionRoleId($permissionRoleId);
-        $this->getRepository(Role::class)->gaddDefaultUsers($permissionRoleId, $userArray, $currentDate);
+        $this->getRepository(Role::class)->deleteDefaultUsersByPermissionRoleId($permissionRoleId);
+        $this->getRepository(Role::class)->addDefaultUsers($permissionRoleId, $userArray, $currentDate);
 
         $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),

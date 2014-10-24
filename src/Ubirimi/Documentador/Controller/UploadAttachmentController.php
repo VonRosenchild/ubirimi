@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Entity\EntityAttachment;
 use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -31,7 +32,7 @@ class UploadAttachmentController extends UbirimiController
         foreach ($_FILES['entity_upload_attachment']['name'] as $filename) {
             if (!empty($filename)) {
                 // check if this file already exists
-                $attachmentExists = $this->getRepository('documentador.entity.attachment')->getByEntityIdAndName($entityId, $filename);
+                $attachmentExists = $this->getRepository(EntityAttachment::class)->getByEntityIdAndName($entityId, $filename);
 
                 if ($attachmentExists) {
                     // get the last revision and increment it by one
@@ -43,7 +44,7 @@ class UploadAttachmentController extends UbirimiController
                     mkdir($pathBaseAttachments . $entity['space_id'] . '/' . $entityId . '/' . $attachmentId . '/' . $revisionNumber);
                 } else {
                     // add the file to the list of files
-                    $attachmentId = $this->getRepository('documentador.entity.attachment')->add($entityId, $filename, $currentDate);
+                    $attachmentId = $this->getRepository(EntityAttachment::class)->add($entityId, $filename, $currentDate);
 
                     $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment ' . $filename, $currentDate);
 
@@ -65,7 +66,7 @@ class UploadAttachmentController extends UbirimiController
 
                 // add revision to the file
 
-                $this->getRepository('documentador.entity.attachment')->addRevision($attachmentId, $loggedInUserId, $currentDate);
+                $this->getRepository(EntityAttachment::class)->addRevision($attachmentId, $loggedInUserId, $currentDate);
 
                 if ($revisionNumber > 1) {
                     $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment revision to ' . $filename, $currentDate);

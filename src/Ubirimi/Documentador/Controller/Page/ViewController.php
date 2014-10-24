@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Entity\EntityAttachment;
+use Ubirimi\Documentador\Repository\Entity\EntityComment;
 use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
@@ -69,11 +71,11 @@ class ViewController extends UbirimiController
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
 
-            $comments = $this->getRepository('documentador.entity.comment')->getComments($entityId, 'array');
+            $comments = $this->getRepository(EntityComment::class)->getComments($entityId, 'array');
             $lastRevision = $this->getRepository(Entity::class)->getLastRevisionByPageId($entityId);
             $childPages = $this->getRepository(Entity::class)->getChildren($entityId);
             $pageFiles = $this->getRepository(Entity::class)->getFilesByEntityId($entityId);
-            $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
+            $attachments = $this->getRepository(EntityAttachment::class)->getByEntityId($entityId);
         }
 
         return $this->render(__DIR__ . '/../../Resources/views/page/View.php', get_defined_vars());
