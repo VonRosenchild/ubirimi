@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class GetOutTransitionsByStepsController extends UbirimiController
 {
@@ -17,7 +18,7 @@ class GetOutTransitionsByStepsController extends UbirimiController
         $workflowId = $request->request->get('workflow_id');
         $stepIdFrom = $request->request->get('step_id_from');
         $stepIdTo = $request->request->get('step_id_to');
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+        $workflowData = $this->getRepository(Workflow::class)->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
 
         return new Response(json_encode($workflowData));
     }

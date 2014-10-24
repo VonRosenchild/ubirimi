@@ -1,6 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 ?>
 
@@ -19,7 +19,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
                 <tr>
                     <td valign="top" width="330">
                         <?php
-                            $components = UbirimiContainer::get()['repository']->get('yongo.project.project')->getComponents(array($projectId));
+                            $components = UbirimiContainer::get()['repository']->get(YongoProject::class)->getComponents(array($projectId));
                             if ($components) {
                                 while ($component = $components->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<div>' . $component['name'] . '</div>';

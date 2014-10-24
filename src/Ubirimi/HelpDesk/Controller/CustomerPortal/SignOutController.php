@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -16,7 +17,7 @@ class SignOutController extends UbirimiController
     {
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add(
+        $this->getRepository(UbirimiLog::class)->add(
             $session->has('client/id'),
             SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
             $session->get('user/id'),

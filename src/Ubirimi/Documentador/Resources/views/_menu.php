@@ -2,6 +2,7 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
@@ -10,7 +11,7 @@ $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 if (Util::checkUserIsLoggedIn()) {
 
     $hasAdministrationPermission = Util::userHasDocumentatorAdministrativePermission();
-    $spaces = UbirimiContainer::get()['repository']->get('documentador.space.space')->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+    $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
 }
 
 if (!isset($menuSelectedCategory)) {
@@ -33,7 +34,7 @@ Util::renderMaintenanceMessage();
                     <?php if (Util::checkUserIsLoggedIn()): ?>
                         <td style="height:44px;" id="menu_top_user" width="58px" align="center" class="product-menu">
                             <span>
-                                <img src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
+                                <img src="<?php echo UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
                             </span>
                             <span class="arrow" style="top: 12px;"></span>
                             &nbsp;
@@ -74,7 +75,7 @@ Util::renderMaintenanceMessage();
                         <?php if (Util::checkUserIsLoggedIn()): ?>
                             <?php
 
-                                $spaces = UbirimiContainer::get()['repository']->get('documentador.space.space')->getByClientId($clientId);
+                                $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientId($clientId);
                             ?>
                             <?php if ($spaces): ?>
                                 <input type="button" id="btnDocumentatorCreate" value="Create" />

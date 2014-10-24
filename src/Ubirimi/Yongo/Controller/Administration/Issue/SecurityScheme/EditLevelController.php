@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
 class EditLevelController extends UbirimiController
 {
@@ -17,8 +18,8 @@ class EditLevelController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeLevelId = $request->get('id');
-        $issueSecuritySchemeLevel = SecurityScheme::getLevelById($issueSecuritySchemeLevelId);
-        $issueSecurityScheme = SecurityScheme::getMetaDataById($issueSecuritySchemeLevel['issue_security_scheme_id']);
+        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
+        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeLevel['issue_security_scheme_id']);
 
         if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,9 +35,9 @@ class EditLevelController extends UbirimiController
 
             if (!$emptyName) {
                 $date = Util::getServerCurrentDateTime();
-                SecurityScheme::updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
+                IssueSecurityScheme::updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

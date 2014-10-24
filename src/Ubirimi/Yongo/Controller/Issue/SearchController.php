@@ -6,11 +6,17 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SearchController extends UbirimiController
 {
@@ -22,9 +28,9 @@ class SearchController extends UbirimiController
         } else {
             $issuesPerPage = 25;
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
 
         $clientId = $session->get('client/id');
@@ -36,7 +42,7 @@ class SearchController extends UbirimiController
         $selectedProductId = $session->get('selected_product_id');
         $cliMode = false;
 
-        $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
+        $projectsForBrowsing = $this->getRepository(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS);
 
         $searchParameters = array();
         $parseURLData = null;
@@ -47,15 +53,15 @@ class SearchController extends UbirimiController
             $projectsForBrowsing->data_seek(0);
             $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
-            $searchCriteria = $this->getRepository('yongo.issue.issue')->getSearchParameters($projectsForBrowsing, $clientId);
+            $searchCriteria = $this->getRepository(Issue::class)->getSearchParameters($projectsForBrowsing, $clientId);
             $issuesResult = null;
 
-            $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectIds($projectIds);
+            $SLAs = UbirimiContainer::get()['repository']->get(Sla::class)->getByProjectIds($projectIds);
         }
 
         if ($request->request->has('search')) {
 
-            $searchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromPostGet($projectIds, $_POST, $_GET);
+            $searchParameters = $this->getRepository(Issue::class)->prepareDataForSearchFromPostGet($projectIds, $_POST, $_GET);
 
             $redirectLink = str_replace("%7C", "|", http_build_query($searchParameters));
             return new RedirectResponse('/yongo/issue/search?' . $redirectLink);
@@ -63,13 +69,13 @@ class SearchController extends UbirimiController
             $getFilter = $request->get('filter');
             $currentSearchPage = $request->get('page');
 
-            $getSearchParameters = $this->getRepository('yongo.issue.issue')->prepareDataForSearchFromURL($_GET, $issuesPerPage);
+            $getSearchParameters = $this->getRepository(Issue::class)->prepareDataForSearchFromURL($_GET, $issuesPerPage);
 
             // check to see if the project Ids are all belonging to the client
             $getProjectIds = isset($_GET['project']) ? explode('|', $_GET['project']) : null;
 
             if ($getProjectIds) {
-                if (!$this->getRepository('yongo.project.project')->checkProjectsBelongToClient($clientId, $getProjectIds)) {
+                if (!$this->getRepository(YongoProject::class)->checkProjectsBelongToClient($clientId, $getProjectIds)) {
                     return new RedirectResponse('/general-settings/bad-link-access-denied');
                 }
             }
@@ -79,7 +85,7 @@ class SearchController extends UbirimiController
             if (isset($parseURLData['query']) && $projectsForBrowsing) {
                 if (Util::searchQueryNotEmpty($getSearchParameters)) {
 
-                    $issuesResult = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
+                    $issuesResult = $this->getRepository(Issue::class)->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
 
                     $issues = $issuesResult[0];
                     $issuesCount = $issuesResult[1];
@@ -98,8 +104,8 @@ class SearchController extends UbirimiController
             $columns[] = '';
         }
 
-        $hasGlobalBulkPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE);
-        $customFilters = $this->getRepository('yongo.issue.filter')->getAllByUser($loggedInUserId);
+        $hasGlobalBulkPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_BULK_CHANGE);
+        $customFilters = $this->getRepository(IssueFilter::class)->getAllByUser($loggedInUserId);
 
         if ($getFilter) {
             $menuSelectedCategory = 'filters';

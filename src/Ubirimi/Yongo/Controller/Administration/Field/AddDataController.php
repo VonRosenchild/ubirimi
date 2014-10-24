@@ -5,11 +5,13 @@ namespace Ubirimi\Yongo\Controller\Administration\Field;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Custom;
-use Ubirimi\Yongo\Repository\Field\Type;
+use Ubirimi\Yongo\Repository\Field\FieldType;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AddDataController extends UbirimiController
 {
@@ -17,8 +19,8 @@ class AddDataController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issueTypes = Type::getAll($session->get('client/id'));
-        $projects = $this->getRepository('yongo.project.project')->getByClientId($session->get('client/id'));
+        $issueTypes = FieldType::getAll($session->get('client/id'));
+        $projects = $this->getRepository(YongoProject::class)->getByClientId($session->get('client/id'));
 
         $fieldTypeCode = $request->get('type');
 
@@ -31,7 +33,7 @@ class AddDataController extends UbirimiController
             $issueType = $request->request->get('issue_type');
             $project = $request->request->get('project');
 
-            $fieldType = Type::getByCode($fieldTypeCode);
+            $fieldType = FieldType::getByCode($fieldTypeCode);
             $fieldTypeId = $fieldType['id'];
 
             if (empty($name)) {
@@ -56,7 +58,7 @@ class AddDataController extends UbirimiController
                     $date
                 );
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

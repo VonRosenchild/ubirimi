@@ -5,6 +5,9 @@ namespace Ubirimi\Documentador\Controller\Page;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -24,9 +27,9 @@ class EditController extends UbirimiController
 
         $entityId = $request->get('id');
 
-        $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
+        $page = $this->getRepository(Entity::class)->getById($entityId, $loggedInUserId);
         $spaceId = $page['space_id'];
-        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+        $space = $this->getRepository(Space::class)->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             return new RedirectResponse('general-settings/bad-link-access-denied');
@@ -38,7 +41,7 @@ class EditController extends UbirimiController
         $name = $page['name'];
 
         $now = date('Y-m-d H:i:s');
-        $activeSnapshots = $this->getRepository('documentador.entity.entity')->getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
+        $activeSnapshots = $this->getRepository(Entity::class)->getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
         $textWarningMultipleEdits = null;
         if ($activeSnapshots) {
             $textWarningMultipleEdits = 'This page is being edited by ';
@@ -53,7 +56,7 @@ class EditController extends UbirimiController
         }
 
         // see if the user editing the page has a draft saved
-        $lastUserSnapshot = $this->getRepository('documentador.entity.entity')->getLastSnapshot($entityId, $loggedInUserId);
+        $lastUserSnapshot = $this->getRepository(Entity::class)->getLastSnapshot($entityId, $loggedInUserId);
 
         if ($request->get('edit_page')) {
             $name = $request->request->get('name');
@@ -61,12 +64,12 @@ class EditController extends UbirimiController
 
             $date = Util::getServerCurrentDateTime();
 
-            $this->getRepository('documentador.entity.entity')->addRevision($entityId, $loggedInUserId, $page['content'], $date);
-            $this->getRepository('documentador.entity.entity')->updateById($entityId, $name, $content, $date);
+            $this->getRepository(Entity::class)->addRevision($entityId, $loggedInUserId, $page['content'], $date);
+            $this->getRepository(Entity::class)->updateById($entityId, $name, $content, $date);
 
-            $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
+            $this->getRepository(Entity::class)->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
-            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
+            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
 
             return new RedirectResponse('/documentador/page/view/' . $entityId);
         }

@@ -4,6 +4,7 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ProjectsController extends UbirimiController
 {
@@ -11,7 +12,7 @@ class ProjectsController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $projects = $this->getRepository('yongo.project.project')->getAll(array('sort_by' => 'project.date_created', 'sort_order' => 'desc'));
+        $projects = $this->getRepository(YongoProject::class)->getAll(array('sort_by' => 'project.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'projects';
 

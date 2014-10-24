@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ListController extends UbirimiController
 {
@@ -16,8 +17,8 @@ class ListController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $components = $this->getRepository('yongo.project.project')->getComponents($projectId, null, true);
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $components = $this->getRepository(YongoProject::class)->getComponents($projectId, null, true);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

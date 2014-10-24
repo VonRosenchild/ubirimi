@@ -5,13 +5,13 @@
  */
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\Comment;
-use Ubirimi\Yongo\Repository\Project\Component;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Project\ProjectComponent;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/bootstrap_cli.php';
@@ -24,13 +24,13 @@ $clientId = 1959;
 $valiId = 1959;
 
 $movidiusProjects = getProducts($connectionBugzilla);
-$ubirimiProjects = Project::getByClientId($clientId);
+$ubirimiProjects = YongoProject::getByClientId($clientId);
 $movidiusUsers = getUsers($connectionBugzilla);
-$ubirimiUsers = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
+$ubirimiUsers = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
 $ubirimiStatuses = getUbirimiStatuses($clientId);
 $ubirimiPriorities = getUbirimiPriorities($clientId);
 $movidiusComponents = getComponents($connectionBugzilla);
-$ubirimiComponents = Component::getAll();
+$ubirimiComponents = ProjectComponent::getAll();
 
 $issueNumbers = array();
 
@@ -183,7 +183,7 @@ function insertUbirimiIssue($bug)
     /* update component -- end */
 
     /* update issue number -- start */
-    Project::updateLastIssueNumber(
+    YongoProject::updateLastIssueNumber(
         $projectId,
         $issueNumbers[$projectId]
     );
@@ -195,7 +195,7 @@ function insertUbirimiIssue($bug)
         $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
 
         if (null !== $userId) {
-            UbirimiContainer::getRepository('yongo.issue.comment')->add(
+            UbirimiContainer::getRepository(IssueComment::class)->add(
                 $issue[0],
                 $userId,
                 $comment['thetext'],

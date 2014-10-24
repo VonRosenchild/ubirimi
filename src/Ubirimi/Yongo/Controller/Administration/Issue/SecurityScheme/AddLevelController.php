@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
 class AddLevelController extends UbirimiController
 {
@@ -18,7 +18,7 @@ class AddLevelController extends UbirimiController
 
         $emptyName = false;
         $issueSecuritySchemeId = $request->get('id');
-        $issueSecurityScheme = SecurityScheme::getMetaDataById($issueSecuritySchemeId);
+        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeId);
         if ($request->request->has('add_issue_security_scheme_level')) {
 
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -29,7 +29,7 @@ class AddLevelController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                SecurityScheme::addLevel($issueSecuritySchemeId, $name, $description, $currentDate);
+                IssueSecurityScheme::addLevel($issueSecuritySchemeId, $name, $description, $currentDate);
 
                 return new RedirectResponse('/yongo/administration/issue-security-scheme-levels/' . $issueSecuritySchemeId);
             }

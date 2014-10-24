@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\QuickNotes\Repository\Notebook;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -36,7 +37,7 @@ class AddController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
             $notebookId = Notebook::save($session->get('user/id'), $name, $description, $currentDate);
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_CALENDAR,
                 $session->get('user/id'),

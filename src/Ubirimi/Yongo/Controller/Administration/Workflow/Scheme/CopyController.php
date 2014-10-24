@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\Scheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 class CopyController extends UbirimiController
 {
@@ -17,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowSchemeId = $request->get('id');
-        $workflowScheme = Scheme::getMetaDataById($workflowSchemeId);
+        $workflowScheme = WorkflowScheme::getMetaDataById($workflowSchemeId);
 
         if ($workflowScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,7 +35,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $workflowSchemeAlreadyExisting = Scheme::getByClientIdAndName(
+            $workflowSchemeAlreadyExisting = WorkflowScheme::getByClientIdAndName(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -44,18 +45,18 @@ class CopyController extends UbirimiController
             }
 
             if (!$emptyName && !$workflowSchemeAlreadyExisting) {
-                $copiedWorkflowScheme = new Scheme($session->get('client/id'), $name, $description);
+                $copiedWorkflowScheme = new WorkflowScheme($session->get('client/id'), $name, $description);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedWorkflowSchemeId = $copiedWorkflowScheme->save($currentDate);
 
-                $workflowSchemeData = Scheme::getDataById($workflowSchemeId);
+                $workflowSchemeData = WorkflowScheme::getDataById($workflowSchemeId);
 
                 while ($workflowSchemeData && $data = $workflowSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedWorkflowScheme->addData($copiedWorkflowSchemeId, $data['workflow_id'], $currentDate);
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

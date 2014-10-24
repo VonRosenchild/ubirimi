@@ -8,6 +8,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 
 class MoveStep2Controller extends UbirimiController
@@ -21,9 +27,9 @@ class MoveStep2Controller extends UbirimiController
 
         $issueId = $request->get('id');
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
         $projectId = $issue['issue_project_id'];
-        $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
+        $issueProject = $this->getRepository(YongoProject::class)->getById($projectId);
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
@@ -39,9 +45,9 @@ class MoveStep2Controller extends UbirimiController
 
             // check if step 3 is necessary
 
-            $issueComponents = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issue['id'], $projectId);
-            $issueFixVersions = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
-            $issueAffectedVersions = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
+            $issueComponents = $this->getRepository(IssueComponent::class)->getByIssueIdAndProjectId($issue['id'], $projectId);
+            $issueFixVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
+            $issueAffectedVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
 
             if ($issueComponents || $issueFixVersions || $issueAffectedVersions) {
                 return new RedirectResponse('/yongo/issue/move/fields/' . $issueId);
@@ -51,16 +57,16 @@ class MoveStep2Controller extends UbirimiController
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
-        $currentWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue['type']);
+        $currentWorkflow = $this->getRepository(YongoProject::class)->getWorkflowUsedForType($projectId, $issue['type']);
 
         $previousData = $session->get('move_issue');
-        $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($previousData['new_project'], $previousData['new_type']);
-        $newStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($newWorkflow['id']);
+        $newWorkflow = $this->getRepository(YongoProject::class)->getWorkflowUsedForType($previousData['new_project'], $previousData['new_type']);
+        $newStatuses = $this->getRepository(Workflow::class)->getLinkedStatuses($newWorkflow['id']);
         $menuSelectedCategory = 'issue';
 
-        $newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
+        $newProject = $this->getRepository(YongoProject::class)->getById($session->get('move_issue/new_project'));
         $newProjectName = $newProject['name'];
-        $newTypeName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_type'), 'type', 'name');
+        $newTypeName = $this->getRepository(IssueSettings::class)->getById($session->get('move_issue/new_type'), 'type', 'name');
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/move/MoveStep2.php', get_defined_vars());
     }

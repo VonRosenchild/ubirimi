@@ -4,6 +4,7 @@ namespace Ubirimi;
 
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 
 class PaymentUtil
 {
@@ -76,7 +77,7 @@ class PaymentUtil
     public function getAmountByClientId($clientId)
     {
         $amount = 0;
-        $users = count($this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array'));
+        $users = count($this->getRepository(UbirimiClient::class)->getUsers($clientId, null, 'array'));
 
         switch ($users) {
             case $users <= 10:

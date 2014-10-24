@@ -14,6 +14,9 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 
 class EditController extends UbirimiController
 {
@@ -39,7 +42,7 @@ class EditController extends UbirimiController
             $attachIdsToBeKept = array();
         }
 
-        $oldIssueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $oldIssueData = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         $newIssueData = array();
         $newIssueData['issue_project_id'] = $oldIssueData['issue_project_id'];
@@ -78,29 +81,29 @@ class EditController extends UbirimiController
         }
 
         $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository('yongo.issue.issue')->updateById($issueId, $newIssueData, $currentDate);
+        $this->getRepository(Issue::class)->updateById($issueId, $newIssueData, $currentDate);
 
         $oldIssueCustomFieldsData = array();
         foreach ($newIssueCustomFieldsData as $key => $value) {
             $keyData = explode("_", $key);
 
-            $oldIssueCustomFieldsData[$keyData[0]] = $this->getRepository('yongo.issue.customField')->getCustomFieldsDataByFieldId($issueId, $key);
+            $oldIssueCustomFieldsData[$keyData[0]] = $this->getRepository(CustomField::class)->getCustomFieldsDataByFieldId($issueId, $key);
             unset($newIssueCustomFieldsData[$key]);
             $newIssueCustomFieldsData[$keyData[0]] = $value;
         }
 
-        $fieldChanges = $this->getRepository('yongo.issue.issue')->computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
+        $fieldChanges = $this->getRepository(Issue::class)->computeDifference($oldIssueData, $newIssueData, $oldIssueCustomFieldsData, $newIssueCustomFieldsData);
 
-        $this->getRepository('yongo.issue.issue')->updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
+        $this->getRepository(Issue::class)->updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
         // check if on the modal there is a comment field
         if (array_key_exists(Field::FIELD_COMMENT_CODE, $newIssueData) && !empty($newIssueData[Field::FIELD_COMMENT_CODE])) {
-            $this->getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
+            $this->getRepository(IssueComment::class)->add($issueId, $loggedInUserId, $newIssueData[Field::FIELD_COMMENT_CODE], $currentDate);
         }
 
         // update the custom fields value
         if ($fieldTypesCustom) {
-            $this->getRepository('yongo.issue.customField')->updateCustomFieldsData($issueId, $newIssueCustomFieldsData, $currentDate);
+            $this->getRepository(CustomField::class)->updateCustomFieldsData($issueId, $newIssueCustomFieldsData, $currentDate);
         }
 
         Util::manageModalAttachments($issueId, $loggedInUserId, $attachIdsToBeKept);

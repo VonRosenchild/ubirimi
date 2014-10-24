@@ -5,8 +5,10 @@ namespace Ubirimi\General\Controller\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class DeleteConfirmController extends UbirimiController
 {
@@ -23,9 +25,9 @@ class DeleteConfirmController extends UbirimiController
             $issues_reported_count = 0;
             $issues_assigned_count = 0;
 
-            $user = $this->getRepository('ubirimi.user.user')->getById($userId);
-            $issuesReported = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('reporter' => $userId));
-            $issuesAssigned = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('assignee' => $userId));
+            $user = $this->getRepository(UbirimiUser::class)->getById($userId);
+            $issuesReported = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('reporter' => $userId));
+            $issuesAssigned = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('assignee' => $userId));
 
             if (null != $issuesReported)
                 $issues_reported_count = $issuesReported->num_rows;

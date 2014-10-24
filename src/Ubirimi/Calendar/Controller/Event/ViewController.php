@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
+use Ubirimi\Calendar\Repository\Event\CalendarEvent;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,21 +22,21 @@ class ViewController extends UbirimiController
 
         $eventId = $request->get('id');
 
-        $event = $this->getRepository('calendar.event.event')->getById($eventId, 'array');
-        $myCalendarIds = $this->getRepository('calendar.calendar.calendar')->getByUserId($session->get('user/id'), 'array', 'id');
+        $event = $this->getRepository(CalendarEvent::class)->getById($eventId, 'array');
+        $myCalendarIds = $this->getRepository(UbirimiCalendar::class)->getByUserId($session->get('user/id'), 'array', 'id');
         $myEvent = in_array($event['calendar_id'], $myCalendarIds) ? true : false;
         if ($event['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $guests = $this->getRepository('calendar.event.event')->getGuests($eventId);
+        $guests = $this->getRepository(CalendarEvent::class)->getGuests($eventId);
 
         $menuSelectedCategory = 'calendars';
 
         $month = date('n');
         $year = date('Y');
 
-        $eventReminders = $this->getRepository('calendar.event.event')->getReminders($eventId);
+        $eventReminders = $this->getRepository(CalendarEvent::class)->getReminders($eventId);
         $sourcePageLink = $request->get('source');
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '

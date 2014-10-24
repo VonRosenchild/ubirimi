@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\History;
 
@@ -25,10 +26,10 @@ use Ubirimi\Yongo\Repository\Issue\History;
             $oldResolutionId = null;
             $newResolutionId = null;
             if ($record['old_value'])
-                $oldResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'status', $record['old_value']);
+                $oldResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'status', $record['old_value']);
 
             if ($record['new_value'])
-                $newResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'status', $record['new_value']);
+                $newResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'status', $record['new_value']);
 
             if ($oldResolution) {
                 $oldResolutionId = $oldResolution['id'];
@@ -47,11 +48,11 @@ use Ubirimi\Yongo\Repository\Issue\History;
 
             $oldUser = null;
             if ($record['old_value'])
-                $oldUser = $this->getRepository('ubirimi.user.user')->getByClientIdAndFullName($clientId, $record['old_value']);
+                $oldUser = $this->getRepository(UbirimiUser::class)->getByClientIdAndFullName($clientId, $record['old_value']);
 
             $newUser = null;
             if ($record['new_value'])
-                $newUser = $this->getRepository('ubirimi.user.user')->getByClientIdAndFullName($clientId, $record['new_value']);
+                $newUser = $this->getRepository(UbirimiUser::class)->getByClientIdAndFullName($clientId, $record['new_value']);
 
             if ($oldUser) {
                 $oldUserId = $oldUser['id'];
@@ -67,10 +68,10 @@ use Ubirimi\Yongo\Repository\Issue\History;
             $oldResolutionId = null;
             $newResolutionId = null;
             if ($record['old_value'])
-                $oldResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'resolution', $record['old_value']);
+                $oldResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'resolution', $record['old_value']);
 
             if ($record['new_value'])
-                $newResolution = \Ubirimi\Yongo\Repository\Issue\Settings::getByName($clientId, 'resolution', $record['new_value']);
+                $newResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'resolution', $record['new_value']);
 
             if ($oldResolution) {
                 $oldResolutionId = $oldResolution['id'];

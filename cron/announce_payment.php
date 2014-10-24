@@ -20,7 +20,7 @@ require_once __DIR__ . '/../web/bootstrap_cli.php';
 /*
  * this cronjob sends an email to the client notifying him that an invoice has been generated.
  */
-$clients = UbirimiContainer::get()['repository']->getRepository('ubirimi.general.client')->getCurrentMonthAndDayPayingCustomers();
+$clients = UbirimiContainer::get()['repository']->getRepository(UbirimiClient::class)->getCurrentMonthAndDayPayingCustomers();
 /**
  * send the email to every client administrator
 */
@@ -29,7 +29,7 @@ while ($clients && $client = $clients->fetch_array(MYSQLI_ASSOC)) {
     $clientId = $client['id'];
     $emailSubject = 'Ubirimi - Invoice UBR ' . $client['invoice_number'];
     $mailer = Util::getUbirmiMailer('contact');
-    $clientAdministrators = $this->getRepository('ubirimi.general.client')->getAdministrators($clientId);
+    $clientAdministrators = $this->getRepository(UbirimiClient::class)->getAdministrators($clientId);
     $clientAdministrator = $clientAdministrators->fetch_array(MYSQLI_ASSOC);
     $emailBody = Util::getTemplate('_announce_payment.php', array(
         'clientAdministrator' => $clientAdministrator['first_name'] . ' ' . $clientAdministrator['last_name'],

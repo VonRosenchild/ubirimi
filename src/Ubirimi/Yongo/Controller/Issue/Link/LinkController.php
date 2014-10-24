@@ -10,7 +10,10 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class LinkController extends UbirimiController
 {
@@ -21,8 +24,8 @@ class LinkController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $issueId = $request->request->get('id');
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
+        $issue = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $project = $this->getRepository(YongoProject::class)->getById($issue['issue_project_id']);
 
         $linkTypeData = explode('_', $request->request->get('link_type'));
         $linkTypeId = $linkTypeData[0];
@@ -34,7 +37,7 @@ class LinkController extends UbirimiController
         LinkType::addLink($issueId, $linkTypeId, $type, $linkedIssues, $date);
 
         if ($comment != '') {
-            $this->getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $comment, $date);
+            $this->getRepository(IssueComment::class)->add($issueId, $loggedInUserId, $comment, $date);
 
             $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, array('issueId' => $issueId, 'comment' => $comment));
             UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_LINK_EMAIL, $issueEvent);

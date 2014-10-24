@@ -5,6 +5,8 @@ namespace Ubirimi\Yongo\Controller\Administration\Group;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -25,7 +27,7 @@ class AddController extends UbirimiController
             }
 
             if (!$emptyName) {
-                $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $name);
+                $groupAlreadyExists = $this->getRepository(UbirimiGroup::class)->getByNameAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $name);
                 if ($groupAlreadyExists)
                     $duplicateName = true;
             }
@@ -34,7 +36,7 @@ class AddController extends UbirimiController
                 $description = Util::cleanRegularInputField($request->request->get('description'));
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository('ubirimi.user.group')->add(
+                $this->getRepository(UbirimiGroup::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $name,
@@ -42,7 +44,7 @@ class AddController extends UbirimiController
                     $currentDate
                 );
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

@@ -6,9 +6,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Agile\Repository\Board\Board;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class AddController extends UbirimiController
@@ -18,7 +21,7 @@ class AddController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+        $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS
@@ -42,7 +45,7 @@ class AddController extends UbirimiController
                 $definitionData = 'project=' . implode('|', $projectsInBoard);
                 $date = Util::getServerCurrentDateTime();
 
-                $filterId = $this->getRepository('yongo.issue.filter')->save(
+                $filterId = $this->getRepository(IssueFilter::class)->save(
                     $session->get('user/id'),
                     'Filter for ' . $name,
                     'Filter created automatically for agile board ' . $name,
@@ -55,7 +58,7 @@ class AddController extends UbirimiController
                 $boardId = $board->save($session->get('user/id'), $currentDate);
                 $board->addDefaultColumnData($session->get('client/id'), $boardId);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_CHEETAH,
                     $session->get('user/id'),

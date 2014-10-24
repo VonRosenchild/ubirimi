@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 
 require_once __DIR__ . '/../../_header.php';
@@ -34,7 +34,7 @@ require_once __DIR__ . '/../../_header.php';
             </thead>
             <tbody>
                 <?php while ($field = $allFields->fetch_array(MYSQLI_ASSOC)): ?>
-                    <?php $data = Configuration::getDataByConfigurationAndField($fieldConfigurationId, $field['id']) ?>
+                    <?php $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $field['id']) ?>
                     <tr>
                         <td>
                             <?php echo $field['name'] ?>
@@ -46,7 +46,7 @@ require_once __DIR__ . '/../../_header.php';
                             <?php endif ?>
                         </td>
                         <td>
-                            <?php $screens = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByFieldId($clientId, $field['id']) ?>
+                            <?php $screens = UbirimiContainer::get()['repository']->get(Screen::class)->getByFieldId($clientId, $field['id']) ?>
                             <?php if ($screens): ?>
                                 <ul>
                                     <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>

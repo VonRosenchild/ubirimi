@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Page;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -19,7 +20,7 @@ class AddFavouriteController extends UbirimiController
         $pageId = $request->request->get('id');
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository('documentador.entity.entity')->addFavourite($pageId, $loggedInUserId, $date);
+        $this->getRepository(Entity::class)->addFavourite($pageId, $loggedInUserId, $date);
 
         return new Response('');
     }

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SettingsController extends UbirimiController
 {
@@ -16,7 +17,7 @@ class SettingsController extends UbirimiController
         $clientSettings = $session->get('client/settings');
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'customer_portal';

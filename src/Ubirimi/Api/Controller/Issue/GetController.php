@@ -6,9 +6,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Container\UbirimiContainer;
 
 class GetController extends UbirimiController
 {
@@ -17,7 +17,7 @@ class GetController extends UbirimiController
         UbirimiContainer::get()['api.auth']->auth($request);
 
         $id = $request->get('id');
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($id);
+        $issue = UbirimiContainer::getRepository(Issue::class)->getById($id);
 
         if (null === $issue) {
             throw new NotFoundHttpException(sprintf('Issue [%d] not found', $id));

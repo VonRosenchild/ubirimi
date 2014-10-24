@@ -5,6 +5,7 @@ namespace Ubirimi\Agile\Controller\Board\Column;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $columnId = $request->request->get('id');
 
-        $this->getRepository('agile.board.board')->deleteColumn($columnId);
+        $this->getRepository(Board::class)->deleteColumn($columnId);
 
         return new Response('');
     }

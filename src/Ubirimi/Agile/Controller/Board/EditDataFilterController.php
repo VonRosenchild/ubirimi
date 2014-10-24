@@ -5,9 +5,11 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 class EditDataFilterController extends UbirimiController
 {
@@ -18,14 +20,14 @@ class EditDataFilterController extends UbirimiController
         $menuSelectedCategory = 'agile';
 
         $boardId = $request->get('id');
-        $board = $this->getRepository('agile.board.board')->getById($boardId);
+        $board = $this->getRepository(Board::class)->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $boardProjects = $this->getRepository('agile.board.board')->getProjects($boardId, 'array');
-        $filter = $this->getRepository('yongo.issue.filter')->getById($board['filter_id']);
+        $boardProjects = $this->getRepository(Board::class)->getProjects($boardId, 'array');
+        $filter = $this->getRepository(IssueFilter::class)->getById($board['filter_id']);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CHEETAH_NAME

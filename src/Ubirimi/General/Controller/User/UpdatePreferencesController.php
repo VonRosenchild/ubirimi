@@ -5,6 +5,7 @@ namespace Ubirimi\General\Controller\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -25,7 +26,7 @@ class UpdatePreferencesController extends UbirimiController
             array('field' => 'country_id', 'value' => $countryId, 'type' => 'i')
         );
 
-        $this->getRepository('ubirimi.user.user')->updatePreferences($userId, $parameters);
+        $this->getRepository(UbirimiUser::class)->updatePreferences($userId, $parameters);
 
         $session->set('user/issues_per_page', $issuesPerPage);
 

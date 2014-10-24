@@ -2,7 +2,7 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 require_once __DIR__ . '/../../../_header.php';
@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../../_header.php';
 
         <form name="add_post_function_data" action="/yongo/administration/workflow/transition-add-post-function-data/<?php echo $workflowDataId ?>?function_id=<?php echo $postFunctionId ?>" method="post">
             <?php if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>
-                <?php $resolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId); ?>
+                <?php $resolutions = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('resolution', $clientId); ?>
                 <div>Add required parameters to the function <b><?php echo $postFunctionSelected['name'] ?></b></div>
                 <table width="100%">
                     <tr>

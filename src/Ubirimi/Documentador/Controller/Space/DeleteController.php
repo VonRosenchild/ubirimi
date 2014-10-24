@@ -5,6 +5,8 @@ namespace Ubirimi\Documentador\Controller\Space;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,12 +22,12 @@ class DeleteController extends UbirimiController
 
         $spaceId = $request->request->get('id');
 
-        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
-        $this->getRepository('documentador.space.space')->deleteById($spaceId);
+        $space = $this->getRepository(Space::class)->getById($spaceId);
+        $this->getRepository(Space::class)->deleteById($spaceId);
 
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador space ' . $space['name'], $date);
+        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador space ' . $space['name'], $date);
 
         return new Response('');
     }

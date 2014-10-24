@@ -5,6 +5,7 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,16 +19,16 @@ class EditDataColumnController extends UbirimiController
         $menuSelectedCategory = 'agile';
 
         $boardId = $request->get('id');
-        $board = $this->getRepository('agile.board.board')->getById($boardId);
+        $board = $this->getRepository(Board::class)->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $columns = $this->getRepository('agile.board.board')->getColumns($boardId, 'array');
+        $columns = $this->getRepository(Board::class)->getColumns($boardId, 'array');
 
         $columnWidth = 100 / (count($columns) + 1);
-        $unmappedStatuses = $this->getRepository('agile.board.board')->getUnmappedStatuses($session->get('client/id'), $boardId, 'array');
+        $unmappedStatuses = $this->getRepository(Board::class)->getUnmappedStatuses($session->get('client/id'), $boardId, 'array');
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CHEETAH_NAME

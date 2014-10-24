@@ -9,6 +9,8 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class EditController extends UbirimiController
 {
@@ -19,14 +21,14 @@ class EditController extends UbirimiController
         $backLink = $request->get('back');
         $projectId = $request->get('project_id');
 
-        $permissionScheme = $this->getRepository('yongo.permission.scheme')->getMetaDataById($Id);
+        $permissionScheme = $this->getRepository(PermissionScheme::class)->getMetaDataById($Id);
 
         if ($permissionScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         if ($projectId) {
-            $project = $this->getRepository('yongo.project.project')->getById($projectId);
+            $project = $this->getRepository(YongoProject::class)->getById($projectId);
             if ($project['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }

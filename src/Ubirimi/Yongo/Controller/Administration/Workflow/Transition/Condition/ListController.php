@@ -10,6 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Workflow\Condition;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ListController extends UbirimiController
 {
@@ -19,8 +20,8 @@ class ListController extends UbirimiController
 
         $clientId = $session->get('client/id');
         $workflowDataId = $request->get('id');
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
-        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
+        $workflowData = $this->getRepository(Workflow::class)->getDataById($workflowDataId);
+        $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowData['workflow_id']);
 
         if ($workflow['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

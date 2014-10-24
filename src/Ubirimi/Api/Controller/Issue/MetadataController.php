@@ -5,12 +5,12 @@ namespace Ubirimi\Api\Controller\Issue;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
-use Ubirimi\UbirimiController;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\UbirimiController;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class MetadataController extends UbirimiController
 {
@@ -20,17 +20,17 @@ class MetadataController extends UbirimiController
 
         $returnData = array('projects' => array());
 
-        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+        $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $request->get('api_client_id'),
             $request->get('api_user_id'),
             Permission::PERM_CREATE_ISSUE
         );
 
         foreach ($projects as $project) {
-            $issueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($project['id'], 0, 'array');
+            $issueTypes = $this->getRepository(YongoProject::class)->getIssueTypes($project['id'], 0, 'array');
 
             foreach ($issueTypes as &$issueType) {
-                $screenData = $this->getRepository('yongo.project.project')->getScreenData(
+                $screenData = $this->getRepository(YongoProject::class)->getScreenData(
                     array('issue_type_screen_scheme_id' => $project['issue_type_screen_scheme_id']),
                     $issueType['id'],
                     SystemOperation::OPERATION_CREATE,

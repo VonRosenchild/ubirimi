@@ -9,6 +9,8 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewProjectIssuesSummaryController extends UbirimiController
 {
@@ -19,7 +21,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
         $clientSettings = $session->get('client/settings');
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -31,7 +33,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             'helpdesk_flag' => 1
         );
 
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
+        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -94,7 +96,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             'helpdesk_flag' => 1
         );
 
-        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
+        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -106,7 +108,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             $countUnresolvedWithoutComponent = $issues->num_rows;
         }
 
-        $components = $this->getRepository('yongo.project.project')->getComponents($projectId);
+        $components = $this->getRepository(YongoProject::class)->getComponents($projectId);
         $statsComponent = array();
         while ($components && $component = $components->fetch_array(MYSQLI_ASSOC)) {
             $issueQueryParameters = array(
@@ -115,7 +117,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
                 'helpdesk_flag' => 1
             );
 
-            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(
+            $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(
                 $issueQueryParameters,
                 $session->get('user/id'),
                 null,

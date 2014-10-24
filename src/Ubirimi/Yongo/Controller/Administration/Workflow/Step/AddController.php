@@ -5,9 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class AddController extends UbirimiController
 {
@@ -17,15 +20,15 @@ class AddController extends UbirimiController
 
         $workflowId = $request->get('id');
 
-        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+        $workflowMetadata = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
 
         if ($workflowMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $workflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
-        $statuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
-        $linkedStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
+        $workflowSteps = $this->getRepository(Workflow::class)->getSteps($workflowId);
+        $statuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $session->get('client/id'));
+        $linkedStatuses = $this->getRepository(Workflow::class)->getLinkedStatuses($workflowId, 'array', 'linked_issue_status_id');
 
         $addStepPossible = true;
         if (count($linkedStatuses) == $statuses->num_rows) {
@@ -42,7 +45,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateStep = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndName($workflowId, $name);
+            $duplicateStep = $this->getRepository(Workflow::class)->getStepByWorkflowIdAndName($workflowId, $name);
             if ($duplicateStep) {
                 $duplicateName = true;
             }
@@ -51,9 +54,9 @@ class AddController extends UbirimiController
                 $currentDate = $date = Util::getServerCurrentDateTime();
                 $StatusId = $request->request->get('linked_status');
 
-                $this->getRepository('yongo.workflow.workflow')->addStep($workflowId, $name, $StatusId, 0, $currentDate);
+                $this->getRepository(Workflow::class)->addStep($workflowId, $name, $StatusId, 0, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

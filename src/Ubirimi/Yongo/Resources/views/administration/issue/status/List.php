@@ -51,7 +51,7 @@ use Ubirimi\Util;
                                 <td><?php echo $status['name']; ?></td>
                                 <td><?php echo $status['description']; ?></td>
                                 <td>
-                                    <?php $workflows = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getByIssueStatusId($status['id']); ?>
+                                    <?php $workflows = UbirimiContainer::get()['repository']->get(Workflow::class)->getByIssueStatusId($status['id']); ?>
                                     <?php if ($workflows): ?>
                                         <div>Active</div>
                                     <?php else: ?>

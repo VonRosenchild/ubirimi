@@ -5,9 +5,12 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Type;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
 class AutocompleteGoalController extends UbirimiController
 {
@@ -39,16 +42,16 @@ class AutocompleteGoalController extends UbirimiController
             'Unresolved'
         );
 
-        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = $this->getRepository(Sla::class)->getByProjectId($projectId);
         while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
             $standardKeyWords[] = $SLA['name'];
         }
 
-        $statuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
-        $priorities = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('priority', $session->get('client/id'));
-        $resolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $session->get('client/id'));
-        $types = Type::getAll($session->get('client/id'));
-        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
+        $statuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $session->get('client/id'));
+        $priorities = $this->getRepository(IssueSettings::class)->getAllIssueSettings('priority', $session->get('client/id'));
+        $resolutions = $this->getRepository(IssueSettings::class)->getAllIssueSettings('resolution', $session->get('client/id'));
+        $types = IssueType::getAll($session->get('client/id'));
+        $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
 
         while ($types && $type = $types->fetch_array(MYSQLI_ASSOC)) {
             $standardKeyWords[] = $type['name'];

@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Role;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,7 +19,7 @@ class AssignGroupsConfirmController extends UbirimiController
         $permissionRoleId = $request->get('role_id');
         $role = $this->getRepository('yongo.permission.role')->getPermissionRoleById($permissionRoleId);
 
-        $allGroups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $allGroups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $roleGroups = $this->getRepository('yongo.permission.role')->getDefaultGroups($permissionRoleId);
 
         $role_groups_arr_ids = array();

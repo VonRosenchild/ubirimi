@@ -4,6 +4,7 @@ namespace Ubirimi\Documentador\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,7 +17,7 @@ class ListUsersController extends UbirimiController
 
         $filterGroupId = isset($_GET['group_id']) ? $_GET['group_id'] : null;
 
-        $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId, $filterGroupId);
+        $users = $this->getRepository(UbirimiClient::class)->getUsers($clientId, $filterGroupId);
 
         $menuSelectedCategory = 'doc_users';
 

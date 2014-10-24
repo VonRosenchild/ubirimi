@@ -2,6 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -12,7 +13,7 @@ class LogController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $logs = $this->getRepository('ubirimi.general.log')->getAll();
+        $logs = $this->getRepository(UbirimiLog::class)->getAll();
 
         $selectedOption = 'log';
 

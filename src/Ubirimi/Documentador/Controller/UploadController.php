@@ -5,6 +5,8 @@ namespace Ubirimi\Documentador\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -27,12 +29,12 @@ class UploadController extends UbirimiController
             foreach ($_FILES['entity_upload_file']['name'] as $filename) {
                 if (!empty($filename)) {
                     // check if this file already exists
-                    $fileExists = $this->getRepository('documentador.entity.entity')->getFileByName($entityId, $filename);
+                    $fileExists = $this->getRepository(Entity::class)->getFileByName($entityId, $filename);
 
                     if ($fileExists) {
                         // get the last revision and increment it by one
                         $fileId = $fileExists['id'];
-                        $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByFileId($fileId);
+                        $revisions = $this->getRepository(Entity::class)->getRevisionsByFileId($fileId);
                         $revisionNumber = $revisions->num_rows + 1;
 
                         // create the revision folder
@@ -48,9 +50,9 @@ class UploadController extends UbirimiController
 
                     } else {
                         // add the file to the list of files
-                        $fileId = $this->getRepository('documentador.entity.entity')->addFile($entityId, $filename, $currentDate);
+                        $fileId = $this->getRepository(Entity::class)->addFile($entityId, $filename, $currentDate);
 
-                        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity file ' . $filename, $currentDate);
+                        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity file ' . $filename, $currentDate);
 
                         $revisionNumber = 1;
 
@@ -63,10 +65,10 @@ class UploadController extends UbirimiController
 
                     // add revision to the file
 
-                    $this->getRepository('documentador.entity.entity')->addFileRevision($fileId, $loggedInUserId, $currentDate);
+                    $this->getRepository(Entity::class)->addFileRevision($fileId, $loggedInUserId, $currentDate);
 
                     if ($revisionNumber > 1) {
-                        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity file revision to ' . $filename, $currentDate);
+                        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity file revision to ' . $filename, $currentDate);
                     }
                     $baseFileName = pathinfo($filename, PATHINFO_FILENAME);
                     $extension = pathinfo($filename, PATHINFO_EXTENSION);

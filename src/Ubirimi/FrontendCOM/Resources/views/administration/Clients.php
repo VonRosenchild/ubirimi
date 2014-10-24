@@ -1,6 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
@@ -47,15 +48,15 @@ require_once __DIR__ . '/_header.php';
                 <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $client['id'] ?>"/></td>
                 <td><?php echo $client['company_name'] ?></td>
                 <td>
-                    <strong><?php echo count($this->getRepository('ubirimi.general.client')->getProjects($client['id'], 'array')) ?></strong>P
+                    <strong><?php echo count($this->getRepository(UbirimiClient::class)->getProjects($client['id'], 'array')) ?></strong>P
                     <strong>
                         <?php
-                            $users = $this->getRepository('ubirimi.user.user')->getByClientId($client['id']);
+                            $users = $this->getRepository(UbirimiUser::class)->getByClientId($client['id']);
                             echo $users === null ? '0' : $users->num_rows;
                         ?></strong>U
                     <strong>
                     <?php
-                        $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('client_id' => $client['id']));
+                        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('client_id' => $client['id']));
                         echo $issues === null ? '0' : $issues->num_rows;
                     ?></strong>I
                 </td>

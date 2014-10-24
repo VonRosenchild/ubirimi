@@ -5,6 +5,8 @@ namespace Ubirimi\SVNHosting\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -14,10 +16,10 @@ class ViewSummaryController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
 
         $svnRepoId = $request->get('id');
-        $svnRepo = $this->getRepository('svnHosting.repository')->getById($svnRepoId);
+        $svnRepo = $this->getRepository(SvnRepository::class)->getById($svnRepoId);
 
         $clientId = $session->get('client/id');
 

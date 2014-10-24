@@ -4,9 +4,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Role;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AssignGroupsDialogController extends UbirimiController
 {
@@ -18,8 +20,8 @@ class AssignGroupsDialogController extends UbirimiController
         $projectId = $request->get('project_id');
         $role = $this->getRepository('yongo.permission.role')->getPermissionRoleById($permissionRoleId);
 
-        $all_groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $role_groups = $this->getRepository('yongo.project.project')->getGroupsInRole($projectId, $permissionRoleId);
+        $all_groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $role_groups = $this->getRepository(YongoProject::class)->getGroupsInRole($projectId, $permissionRoleId);
 
         $role_groups_arr_ids = array();
         while ($role_groups && $group = $role_groups->fetch_array(MYSQLI_ASSOC))

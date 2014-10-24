@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class SaveDataController extends UbirimiController
 {
@@ -19,7 +20,7 @@ class SaveDataController extends UbirimiController
         $idTo = $request->request->get('id_to');
         $name = $request->request->get('name');
 
-        $this->getRepository('yongo.workflow.workflow')->createNewSingleDataRecord($project_workflow_id, $idFrom, $idTo, $name);
+        $this->getRepository(Workflow::class)->createNewSingleDataRecord($project_workflow_id, $idFrom, $idTo, $name);
 
         return new Response('');
     }

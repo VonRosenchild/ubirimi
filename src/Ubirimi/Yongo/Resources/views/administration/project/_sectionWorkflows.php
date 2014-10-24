@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 ?>
     <table width="100%">

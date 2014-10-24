@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\User;
+    use Ubirimi\Repository\User\UbirimiUser;
     use Ubirimi\Util;
 
     require_once __DIR__ . '/../_header.php';
@@ -70,7 +70,7 @@ use Ubirimi\LinkHelper;
                                         <img id="profile-picture"
                                              style="width: 150px; height: 150px; vertical-align: top"
                                              title="<?php echo $user['first_name'] . ' ' . $user['last_name'] ?>"
-                                             src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture($user, 'big') ?>" />
+                                             src="<?php echo UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getUserAvatarPicture($user, 'big') ?>" />
                                         <img id="loading" style="display: none" src="/img/loader.gif" />
                                     </span>
                                     <?php if ($loggedInUserId == $userId): ?>

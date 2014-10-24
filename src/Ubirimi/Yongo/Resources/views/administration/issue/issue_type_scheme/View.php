@@ -1,8 +1,8 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -33,7 +33,7 @@ require_once __DIR__ . '/../../_header.php';
                 </td>
                 <td>
                     <?php
-                        $dataIssueTypeScheme = TypeScheme::getDataById($issueTypeScheme['id']);
+                        $dataIssueTypeScheme = IssueTypeScheme::getDataById($issueTypeScheme['id']);
                         while ($data = $dataIssueTypeScheme->fetch_array(MYSQLI_ASSOC)) {
                             echo '<div>' . $data['name'] . '</div>';
                         }
@@ -41,7 +41,7 @@ require_once __DIR__ . '/../../_header.php';
                 </td>
                 <td valign="top">
                     <?php
-                        $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByIssueTypeScheme($issueTypeScheme['id']);
+                        $projects = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByIssueTypeScheme($issueTypeScheme['id']);
                         if ($projects) {
                             echo '<ul>';
                             while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

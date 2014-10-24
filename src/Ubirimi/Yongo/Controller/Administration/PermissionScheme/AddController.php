@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\PermissionScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 
 
 class AddController extends UbirimiController
@@ -27,11 +28,11 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $permissionScheme = new Scheme($session->get('client/id'), $name, $description);
+                $permissionScheme = new PermissionScheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $permissionSchemeId = $permissionScheme->save($currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

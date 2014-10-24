@@ -4,9 +4,10 @@ namespace Ubirimi\Documentador\Repository\Space;
 
 use Ubirimi\Container\UbirimiContainer;
 
-use Ubirimi\Documentador\Repository\Entity\Attachment;
-use Ubirimi\Documentador\Repository\Entity\Comment;
+use Ubirimi\Documentador\Repository\Entity\EntityAttachment;
+use Ubirimi\Documentador\Repository\Entity\EntityComment;
 use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
@@ -225,12 +226,12 @@ class Space {
         $spaceEntities = Entity::getAllBySpaceId($spaceId);
         if ($spaceEntities) {
             while ($spaceEntity = $spaceEntities->fetch_array(MYSQLI_ASSOC)) {
-                Comment::deleteCommentsByEntityId($spaceEntity['id']);
+                EntityComment::deleteCommentsByEntityId($spaceEntity['id']);
                 Entity::removeAsFavouriteForUsers($spaceEntity['id']);
                 Entity::deleteRevisionsByEntityId($spaceEntity['id']);
 
                 Entity::deleteFilesByEntityId($spaceEntity['id']);
-                Attachment::deleteByEntityId($spaceEntity['id'], $spaceId);
+                EntityAttachment::deleteByEntityId($spaceEntity['id'], $spaceId);
                 Entity::deleteById($spaceEntity['id']);
 
                 // delete any files, if any
@@ -432,8 +433,8 @@ class Space {
 
     public function setDefaultPermissions($clientId, $spaceId) {
 
-        $groupAdministrators = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Documentador Administrators');
-        $groupUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getByName($clientId, 'Documentador Users');
+        $groupAdministrators = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Documentador Administrators');
+        $groupUsers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Documentador Users');
 
         if ($groupAdministrators) {
             $groupAdministratorsId = $groupAdministrators['id'];
@@ -498,11 +499,11 @@ class Space {
 
         if ($entities) {
             while ($entity = $entities->fetch_array(MYSQLI_ASSOC)) {
-                Comment::deleteCommentsByEntityId($entity['id']);
+                EntityComment::deleteCommentsByEntityId($entity['id']);
                 Entity::removeAsFavouriteForUsers($entity['id']);
                 Entity::deleteRevisionsByEntityId($entity['id']);
                 Entity::deleteFilesByEntityId($entity['id']);
-                Attachment::deleteByEntityId($entity['id'], $spaceId);
+                EntityAttachment::deleteByEntityId($entity['id'], $spaceId);
 
                 Entity::deleteById($entity['id']);
             }

@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,14 +19,14 @@ class ActivityStreamController extends UbirimiController
             $issuesPerPage = $session->get('user/issues_per_page');
             $clientSettings = $session->get('client/settings');;
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $issuesPerPage = 25;
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Activity Stream';
 
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
-        $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
+        $projectsMenu = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,

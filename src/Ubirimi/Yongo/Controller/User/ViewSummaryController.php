@@ -5,6 +5,9 @@ namespace Ubirimi\Yongo\Controller\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,20 +23,20 @@ class ViewSummaryController extends UbirimiController
         $projectId = $session->get('selected_project_id');
         $userId = $request->get('id');
         $loggedInUserId = $session->get('user/id');
-        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
+        $user = $this->getRepository(UbirimiUser::class)->getById($userId);
 
         if ($user['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
 
-        $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
+        $groups = $this->getRepository(UbirimiGroup::class)->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $stats = $this->getRepository('yongo.issue.statistic')->getUnresolvedIssuesByProjectForUser($userId);
 
-        $hasAdministrationGlobalPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
-        $hasSystemAdministrationGlobalPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasAdministrationGlobalPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
+        $hasSystemAdministrationGlobalPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
 
-        $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projectsForBrowsing = $this->getRepository(UbirimiClient::class)->getProjectsByPermission($session->get('client/id'), $session->get('user/id'), Permission::PERM_BROWSE_PROJECTS, 'array');
         $projectIds = array();
 
         if ($projectsForBrowsing) {

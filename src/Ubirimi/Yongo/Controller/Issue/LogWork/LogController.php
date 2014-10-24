@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
 
 class LogController extends UbirimiController
@@ -34,16 +35,16 @@ class LogController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
 
             $issueQueryParameters = array('issue_id' => $issueId);
-            $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+            $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
 
             WorkLog::addLog($issueId, $loggedInUserId, $timeSpentPost, $dateStartedString, $comment, $currentDate);
             $remainingTime = WorkLog::adjustRemainingEstimate($issue, $timeSpentPost, $remainingTime, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
 
             $fieldChanges = array(array('time_spent', null, $timeSpentPost), array('remaining_estimate', $issue['remaining_estimate'], $remainingTime));
-            $this->getRepository('yongo.issue.issue')->updateHistory($issue['id'], $loggedInUserId, $fieldChanges, $currentDate);
+            $this->getRepository(Issue::class)->updateHistory($issue['id'], $loggedInUserId, $fieldChanges, $currentDate);
 
             // update the date_updated field
-            $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+            $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
         }
 
         return new Response($remainingTime);

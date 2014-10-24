@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class AddStringController extends UbirimiController
 {
@@ -18,7 +19,7 @@ class AddStringController extends UbirimiController
 
         $conditionData = $this->getRepository('yongo.workflow.condition')->getByTransitionId($transitionId);
         if (!$conditionData)
-            $this->getRepository('yongo.workflow.workflow')->addCondition($transitionId, '');
+            $this->getRepository(Workflow::class)->addCondition($transitionId, '');
 
         if ($type == 'open_bracket')
             $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, '(');

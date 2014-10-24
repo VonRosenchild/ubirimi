@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\QuickNotes\Repository\Notebook;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -24,7 +25,7 @@ class DeleteController extends UbirimiController
 
         Notebook::deleteById($notebookId);
 
-        $this->getRepository('ubirimi.general.log')->add(
+        $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_QUICK_NOTES,
             $session->get('user/id'),

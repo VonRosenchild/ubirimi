@@ -5,11 +5,13 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Custom;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class EditScreenVisibilityController extends UbirimiController
 {
@@ -18,19 +20,19 @@ class EditScreenVisibilityController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldId = $request->get('id');
-        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
+        $field = $this->getRepository(Field::class)->getById($fieldId);
 
         if ($field['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
+        $screens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
 
         if ($request->request->has('edit_field_custom_screen')) {
             $currentDate = Util::getServerCurrentDateTime();
 
             while ($screen = $screens->fetch_array(MYSQLI_ASSOC)) {
-                $this->getRepository('yongo.screen.screen')->deleteDataByScreenIdAndFieldId($screen['id'], $fieldId);
+                $this->getRepository(Screen::class)->deleteDataByScreenIdAndFieldId($screen['id'], $fieldId);
             }
 
             foreach ($request->request as $key => $value) {
@@ -39,18 +41,18 @@ class EditScreenVisibilityController extends UbirimiController
                     $values = explode('_', $data);
                     $fieldSelectedId = $values[0];
                     $screenSelectedId = $values[1];
-                    $this->getRepository('yongo.screen.screen')->addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
+                    $this->getRepository(Screen::class)->addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
                 }
             }
 
             // make field visible in all the field configurations
 
-            $fieldConfigurations = Configuration::getByClientId($session->get('client/id'));
+            $fieldConfigurations = FieldConfiguration::getByClientId($session->get('client/id'));
             while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {
-                Configuration::addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
+                FieldConfiguration::addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
             }
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

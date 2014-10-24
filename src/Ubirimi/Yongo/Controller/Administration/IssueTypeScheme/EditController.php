@@ -5,11 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\IssueTypeScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Type;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
 class EditController extends UbirimiController
 {
@@ -22,14 +23,14 @@ class EditController extends UbirimiController
         $emptyName = false;
         $typeExists = false;
 
-        $issueTypeScheme = TypeScheme::getMetaDataById($issueTypeSchemeId);
+        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
 
         if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $allIssueTypes = Type::getAll($session->get('client/id'));
-        $schemeIssueTypes = TypeScheme::getDataById($issueTypeSchemeId);
+        $allIssueTypes = IssueType::getAll($session->get('client/id'));
+        $schemeIssueTypes = IssueTypeScheme::getDataById($issueTypeSchemeId);
 
         $type = $issueTypeScheme['type'];
         $name = $issueTypeScheme['name'];
@@ -44,16 +45,16 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                TypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
-                TypeScheme::deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
+                IssueTypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
+                IssueTypeScheme::deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 11) == 'issue_type_') {
                         $issueTypeId = str_replace('issue_type_', '', $key);
-                        TypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
+                        IssueTypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
                     }
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

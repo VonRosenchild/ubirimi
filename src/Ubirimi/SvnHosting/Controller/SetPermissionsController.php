@@ -5,6 +5,7 @@ namespace Ubirimi\SVNHosting\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -19,10 +20,10 @@ class SetPermissionsController extends UbirimiController
         $hasRead = Util::cleanRegularInputField($request->request->get('has_read'));
         $hasWrite = Util::cleanRegularInputField($request->request->get('has_write'));
 
-        $this->getRepository('svnHosting.repository')->updateUserPermissions($repoId, $Id, $hasRead, $hasWrite);
+        $this->getRepository(SvnRepository::class)->updateUserPermissions($repoId, $Id, $hasRead, $hasWrite);
 
-        $this->getRepository('svnHosting.repository')->updateHtpasswd($repoId, $session->get('client/company_domain'));
-        $this->getRepository('svnHosting.repository')->updateAuthz();
+        $this->getRepository(SvnRepository::class)->updateHtpasswd($repoId, $session->get('client/company_domain'));
+        $this->getRepository(SvnRepository::class)->updateAuthz();
 
         return new Response('');
     }

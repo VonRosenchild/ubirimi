@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Group;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -15,7 +16,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
 
         $menuSelectedCategory = 'user';
 

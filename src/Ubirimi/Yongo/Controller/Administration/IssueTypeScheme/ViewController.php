@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
 class ViewController extends UbirimiController
 {
@@ -16,7 +16,7 @@ class ViewController extends UbirimiController
 
         $issueTypeSchemeId = $request->get('id');
 
-        $issueTypeScheme = TypeScheme::getById($issueTypeSchemeId);
+        $issueTypeScheme = IssueTypeScheme::getById($issueTypeSchemeId);
 
 //        if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
 //            return new RedirectResponse('/general-settings/bad-link-access-denied');

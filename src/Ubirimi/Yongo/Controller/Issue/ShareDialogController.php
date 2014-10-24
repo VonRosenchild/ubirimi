@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,7 +19,7 @@ class ShareDialogController extends UbirimiController
 
         $issueId = $request->get('id');
 
-        $users = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($clientId, 0);
+        $users = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getByClientId($clientId, 0);
         $subdomain = Util::getSubdomain();
 
         return $this->render(__DIR__ . '/../../Resources/views/issue/ShareDialog.php', get_defined_vars());

@@ -5,11 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
 class EditDataController extends UbirimiController
 {
@@ -18,11 +19,11 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypeScreenSchemeDataId = $request->get('id');
-        $screenSchemes = Scheme::getMetaDataByClientId($session->get('client/id'));
-        $issueTypeScreenSchemeData = TypeScreenScheme::getDataById($issueTypeScreenSchemeDataId);
+        $screenSchemes = ScreenScheme::getMetaDataByClientId($session->get('client/id'));
+        $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataById($issueTypeScreenSchemeDataId);
 
         $screenSchemeId = $issueTypeScreenSchemeData['issue_type_screen_scheme_id'];
-        $issueTypeScreenSchemeMetaData = TypeScreenScheme::getMetaDataById($screenSchemeId);
+        $issueTypeScreenSchemeMetaData = IssueTypeScreenScheme::getMetaDataById($screenSchemeId);
 
         if ($issueTypeScreenSchemeMetaData['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,9 +35,9 @@ class EditDataController extends UbirimiController
             $screenSchemeId = Util::cleanRegularInputField($request->request->get('screen_scheme'));
             $issueTypeId = Util::cleanRegularInputField($request->request->get('issue_type'));
 
-            TypeScreenScheme::updateDataById($screenSchemeId, $issueTypeId, $issueTypeScreenSchemeMetaData['id']);
+            IssueTypeScreenScheme::updateDataById($screenSchemeId, $issueTypeId, $issueTypeScreenSchemeMetaData['id']);
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

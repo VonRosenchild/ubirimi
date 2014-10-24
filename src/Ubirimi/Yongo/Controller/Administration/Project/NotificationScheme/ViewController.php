@@ -5,12 +5,14 @@ namespace Ubirimi\Yongo\Controller\Administration\Project\NotificationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Event;
-use Ubirimi\Yongo\Repository\Notification\Scheme;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewController extends UbirimiController
 {
@@ -19,23 +21,23 @@ class ViewController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $notificationSchemeId = $project['notification_scheme_id'];
-        $notificationScheme = Scheme::getMetaDataById($notificationSchemeId);
-        $events = Event::getByClient($session->get('client/id'));
+        $notificationScheme = NotificationScheme::getMetaDataById($notificationSchemeId);
+        $events = IssueEvent::getByClient($session->get('client/id'));
 
-        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS

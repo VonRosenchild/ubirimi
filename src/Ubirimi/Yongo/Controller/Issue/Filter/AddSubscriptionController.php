@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 class AddSubscriptionController extends UbirimiController
 {
@@ -37,7 +38,7 @@ class AddSubscriptionController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $this->getRepository('yongo.issue.filter')->addSubscription($filterId, $loggedInUserId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $currentDate);
+        $this->getRepository(IssueFilter::class)->addSubscription($filterId, $loggedInUserId, $userId, $groupId, $cronExpression, $emailWhenEmptyFlag, $currentDate);
 
         return new Response('');
     }

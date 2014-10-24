@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 
 class EditMetadataController extends UbirimiController
 {
@@ -18,7 +19,7 @@ class EditMetadataController extends UbirimiController
 
         $fieldConfigurationSchemeId = $request->get('id');
 
-        $fieldConfigurationScheme = ConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,9 +36,9 @@ class EditMetadataController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                ConfigurationScheme::updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
+                FieldConfigurationScheme::updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

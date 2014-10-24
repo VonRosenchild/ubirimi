@@ -5,6 +5,7 @@ namespace Ubirimi\FrontendCOM\Controller\Account;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\PaymentUtil;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,9 +19,9 @@ class BillingUpdateController extends UbirimiController
         $clientId = $session->get('client/id');
         $content = 'account/BillingUpdate.php';
 
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
         $paymentUtil = new PaymentUtil();
-        $usersClient = $this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array');
+        $usersClient = $this->getRepository(UbirimiClient::class)->getUsers($clientId, null, 'array');
         $numberUsers = count($usersClient);
         $amount = $paymentUtil->getAmountByUsersCount($numberUsers);
         $VAT = 0;

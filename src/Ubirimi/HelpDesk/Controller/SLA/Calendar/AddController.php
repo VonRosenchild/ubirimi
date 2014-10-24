@@ -5,7 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\SLA\Calendar;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\HelpDesk\Repository\Sla\Calendar;
+use Ubirimi\HelpDesk\Repository\Sla\SlaCalendar;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -36,7 +36,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $slaCalendarExisting = Calendar::getByName($name, $projectId);
+            $slaCalendarExisting = SlaCalendar::getByName($name, $projectId);
             if ($slaCalendarExisting) {
                 $duplicateName = true;
             }
@@ -55,7 +55,7 @@ class AddController extends UbirimiController
 
                     $currentDate = Util::getServerCurrentDateTime();
 
-                    Calendar::addCalendar($projectId, $name, $description, $dataCalendar, 0, $currentDate);
+                    SlaCalendar::addCalendar($projectId, $name, $description, $dataCalendar, 0, $currentDate);
 
                     return new RedirectResponse('/helpdesk/sla/calendar/' . $projectId);
                 }

@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\NotificationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Notification\Scheme;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
 
 class CopyController extends UbirimiController
@@ -18,7 +19,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeId = $request->get('id');
-        $notificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataById($notificationSchemeId);
+        $notificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataById($notificationSchemeId);
 
         if ($notificationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +36,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateNotificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataByNameAndClientId(
+            $duplicateNotificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -44,11 +45,11 @@ class CopyController extends UbirimiController
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedNotificationScheme = new Scheme($session->get('client/id'), $name, $description);
+                $copiedNotificationScheme = new NotificationScheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedNotificationSchemeId = $copiedNotificationScheme->save($currentDate);
 
-                $notificationSchemeData = $this->getRepository('yongo.notification.scheme')->getDataByNotificationSchemeId($notificationSchemeId);
+                $notificationSchemeData = $this->getRepository(NotificationScheme::class)->getDataByNotificationSchemeId($notificationSchemeId);
                 while ($notificationSchemeData && $data = $notificationSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedNotificationScheme->addDataRaw(
                         $copiedNotificationSchemeId,
@@ -65,7 +66,7 @@ class CopyController extends UbirimiController
                     );
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

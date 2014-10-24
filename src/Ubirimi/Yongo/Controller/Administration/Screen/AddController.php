@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class AddController extends UbirimiController
@@ -18,7 +20,7 @@ class AddController extends UbirimiController
         $menuSelectedCategory = 'issue';
         $emptyName = false;
 
-        $fields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
+        $fields = $this->getRepository(Field::class)->getByClient($session->get('client/id'));
 
         if ($request->request->has('add_screen')) {
 
@@ -38,11 +40,11 @@ class AddController extends UbirimiController
                     if (substr($key, 0, 6) == 'field_') {
                         $order++;
                         $fieldId = str_replace('field_', '', $key);
-                        $this->getRepository('yongo.screen.screen')->addData($screenId, $fieldId, $order, $currentDate);
+                        $this->getRepository(Screen::class)->addData($screenId, $fieldId, $order, $currentDate);
                     }
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

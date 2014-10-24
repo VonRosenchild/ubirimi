@@ -5,6 +5,8 @@ namespace Ubirimi\Yongo\Controller\Administration\GlobalPermission;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -16,14 +18,14 @@ class AddController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $allGroups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $allGroups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
 
         if ($request->request->has('confirm_new_permission')) {
             $permissionId = $request->request->get('permission');
             $groupId = $request->request->get('group');
             $currentDate = Util::getServerCurrentDateTime();
-            $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
+            $group = $this->getRepository(UbirimiGroup::class)->getMetadataById($groupId);
             $permission = GlobalPermission::getById($permissionId);
 
             $date = Util::getServerCurrentDateTime();
@@ -38,7 +40,7 @@ class AddController extends UbirimiController
             if (!$permissionData) {
                 GlobalPermission::addDataForGroupId($session->get('client/id'), $permissionId, $groupId, $date);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

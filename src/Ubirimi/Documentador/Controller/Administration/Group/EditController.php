@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Administration\Group;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -17,7 +18,7 @@ class EditController extends UbirimiController
 
         $clientId = $session->get('client/id');
         $Id = $request->get('id');
-        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($Id);
+        $group = $this->getRepository(UbirimiGroup::class)->getMetadataById($Id);
 
         if ($group['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +38,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO, mb_strtolower($name), $Id);
+                $groupAlreadyExists = $this->getRepository(UbirimiGroup::class)->getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO, mb_strtolower($name), $Id);
 
                 if ($groupAlreadyExists)
                     $duplicateName = true;
@@ -45,7 +46,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$duplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('ubirimi.user.group')->updateById($Id, $name, $description, $currentDate);
+                $this->getRepository(UbirimiGroup::class)->updateById($Id, $name, $description, $currentDate);
 
                 return new RedirectResponse('/documentador/administration/groups');
             }

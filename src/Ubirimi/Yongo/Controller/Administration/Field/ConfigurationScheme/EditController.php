@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 
 class EditController extends UbirimiController
 {
@@ -16,13 +16,13 @@ class EditController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $fieldConfigurationSchemeId = $request->get('id');
-        $fieldConfigurationScheme = ConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurationSchemeData = ConfigurationScheme::getDataByFieldConfigurationSchemeId(
+        $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataByFieldConfigurationSchemeId(
             $fieldConfigurationSchemeId
         );
 

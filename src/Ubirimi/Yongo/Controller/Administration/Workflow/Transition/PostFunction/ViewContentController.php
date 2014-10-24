@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 class ViewContentController extends UbirimiController
 {
@@ -17,7 +18,7 @@ class ViewContentController extends UbirimiController
         $functionId = $request->request->get('function_id');
 
         $function = $this->getRepository('yongo.workflow.workflowFunction')->getById($functionId);
-        $issueResolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
+        $issueResolutions = $this->getRepository(IssueSettings::class)->getAllIssueSettings('resolution', $clientId);
 
         return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/ViewContent.php', get_defined_vars());
     }

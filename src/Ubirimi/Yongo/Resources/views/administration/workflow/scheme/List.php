@@ -1,8 +1,8 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -54,7 +54,7 @@ require_once __DIR__ . '/../../_header.php';
 
                                 <td width="400px">
                                     <ul>
-                                        <?php $workflows = Scheme::getDataById($scheme['id']) ?>
+                                        <?php $workflows = WorkflowScheme::getDataById($scheme['id']) ?>
                                         <?php if ($workflows): ?>
                                             <?php while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)): ?>
                                                 <li>
@@ -65,7 +65,7 @@ require_once __DIR__ . '/../../_header.php';
                                     </ul>
                                 </td>
                                 <td width="300px">
-                                    <?php $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByWorkflowSchemeId($scheme['id']) ?>
+                                    <?php $projects = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByWorkflowSchemeId($scheme['id']) ?>
                                     <?php if ($projects): ?>
                                         <ul>
                                             <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

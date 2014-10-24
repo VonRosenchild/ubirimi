@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
 
 class EditController extends UbirimiController
@@ -18,7 +20,7 @@ class EditController extends UbirimiController
 
         $screenId = $request->get('id');
 
-        $screen = $this->getRepository('yongo.screen.screen')->getMetaDataById($screenId);
+        $screen = $this->getRepository(Screen::class)->getMetaDataById($screenId);
         if ($screen['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -34,16 +36,16 @@ class EditController extends UbirimiController
                 $emptyScreenName = true;
 
             // check for duplication
-            $screen_row_exists = $this->getRepository('yongo.screen.screen')->getByNameAndId($session->get('client/id'), mb_strtolower($name), $screenId);
+            $screen_row_exists = $this->getRepository(Screen::class)->getByNameAndId($session->get('client/id'), mb_strtolower($name), $screenId);
 
             if ($screen_row_exists)
                 $screenExists = true;
 
             if (!$screenExists && !$emptyScreenName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.screen.screen')->updateMetadataById($screenId, $name, $description, $currentDate);
+                $this->getRepository(Screen::class)->updateMetadataById($screenId, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

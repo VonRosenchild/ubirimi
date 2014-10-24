@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SelectSchemeController extends UbirimiController
 {
@@ -17,17 +18,17 @@ class SelectSchemeController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $fieldConfigurationSchemes = ConfigurationScheme::getByClient($session->get('client/id'));
+        $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 
         if ($request->request->has('associate')) {
             $issueTypeFieldSchemeId = $request->request->get('issue_type_field_scheme');
-            $this->getRepository('yongo.project.project')->updateFieldConfigurationScheme($projectId, $issueTypeFieldSchemeId);
+            $this->getRepository(YongoProject::class)->updateFieldConfigurationScheme($projectId, $issueTypeFieldSchemeId);
 
             return new RedirectResponse('/yongo/administration/project/fields/' . $projectId);
         }

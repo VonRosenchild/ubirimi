@@ -1,25 +1,28 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 if (!strstr($_SERVER['REQUEST_URI'], '/yongo/issue')) {
     $session->remove('array_ids');
     $session->remove('last_search_parameters');
 }
 
-$projectsMenu = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+$projectsMenu = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
 if ($projectsMenu) {
     $projectsForBrowsing = array();
     for ($i = 0; $i < count($projectsMenu); $i++)
         $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
 
-    $filters = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->getAllByUser($loggedInUserId);
+    $filters = UbirimiContainer::get()['repository']->get(IssueFilter::class)->getAllByUser($loggedInUserId);
 
     if (null == $session->get('selected_project_id')) {
         if ($projectsMenu) {
@@ -28,30 +31,30 @@ if ($projectsMenu) {
     }
 
     $selectedProjectId = $session->get('selected_project_id');
-    $selectedProjectMenu = UbirimiContainer::get()['repository']->get('yongo.project.project')->getById($session->get('selected_project_id'));
+    $selectedProjectMenu = UbirimiContainer::get()['repository']->get(YongoProject::class)->getById($session->get('selected_project_id'));
 }
 
-$hasAdministerProjectsPermission = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
+$hasAdministerProjectsPermission = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
 $hasCreateIssuePermission = false;
 if (isset($projectsForBrowsing) && count($projectsForBrowsing)) {
-    $hasCreateIssuePermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectsForBrowsing, Permission::PERM_CREATE_ISSUE, $loggedInUserId);
+    $hasCreateIssuePermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectsForBrowsing, Permission::PERM_CREATE_ISSUE, $loggedInUserId);
 }
 
 $styleSelectedMenu = 'style="background-color: #EEEEEE;';
 
-$projectsWithCreatePermission = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_CREATE_ISSUE);
+$projectsWithCreatePermission = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_CREATE_ISSUE);
 
 if (!isset($menuSelectedCategory))
     $menuSelectedCategory = null;
 
-$hasAdministrationPermission = $hasAdministerProjectsPermission || UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+$hasAdministrationPermission = $hasAdministerProjectsPermission || UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS) || UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
 
 Util::renderMaintenanceMessage();
 
 if ($session->has('client/products')) {
     $clientProducts = $session->get('client/products');
 } else {
-    $clientProducts = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProducts(UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getClientIdAnonymous(), 'array');
+    $clientProducts = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getProducts(UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getClientIdAnonymous(), 'array');
 }
 ?>
 
@@ -68,7 +71,7 @@ if ($session->has('client/products')) {
                     <?php if (Util::checkUserIsLoggedIn()): ?>
                         <td style="height:44px;" id="menu_top_user" width="58px" align="center" class="product-menu">
                             <span>
-                                <img src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
+                                <img src="<?php echo UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getUserAvatarPicture($session->get('user'), 'small') ?>" title="<?php echo $session->get('user/first_name') . ' ' . $session->get('user/last_name') ?>" height="33px" style="vertical-align: middle" />
                             </span>
                             <span class="arrow" style="top: 12px;"></span>
                             &nbsp;

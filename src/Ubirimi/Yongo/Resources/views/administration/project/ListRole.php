@@ -1,5 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 require_once __DIR__ . '/../_header.php';
 ?>
@@ -62,7 +63,7 @@ require_once __DIR__ . '/../_header.php';
                         <td width="200"><?php echo $role['name'] ?></td>
                         <td>
                             <?php
-                                $users = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersInRole($projectId, $role['id']);
+                                $users = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersInRole($projectId, $role['id']);
                                 $usersNames = array();
                                 while ($users && $user = $users->fetch_array(MYSQLI_ASSOC))
                                     $usersNames[] = $user['first_name'] . ' ' . $user['last_name']
@@ -71,7 +72,7 @@ require_once __DIR__ . '/../_header.php';
                         </td>
                         <td>
                             <?php
-                                $groups = UbirimiContainer::get()['repository']->get('yongo.project.project')->getGroupsInRole($projectId, $role['id']);
+                                $groups = UbirimiContainer::get()['repository']->get(YongoProject::class)->getGroupsInRole($projectId, $role['id']);
                                 $groupNames = array();
                                 while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
                                     $groupNames[] = $group['group_name'];

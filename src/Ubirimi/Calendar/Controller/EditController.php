@@ -5,6 +5,8 @@ namespace Ubirimi\Calendar\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -16,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $calendarId = $request->get('id');
-        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
+        $calendar = $this->getRepository(UbirimiCalendar::class)->getById($calendarId);
 
         if ($calendar['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,15 +37,15 @@ class EditController extends UbirimiController
             }
 
             // check for duplication
-            $calendarDuplicate = $this->getRepository('calendar.calendar.calendar')->getByName($session->get('user/id'), mb_strtolower($name), $calendarId);
+            $calendarDuplicate = $this->getRepository(UbirimiCalendar::class)->getByName($session->get('user/id'), mb_strtolower($name), $calendarId);
             if ($calendarDuplicate) {
                 $calendarExists = true;
             }
             if (!$calendarExists && !$emptyName) {
                 $date = Util::getServerCurrentDateTime();
-                $this->getRepository('calendar.calendar.calendar')->updateById($calendarId, $name, $description, $color, $date);
+                $this->getRepository(UbirimiCalendar::class)->updateById($calendarId, $name, $description, $color, $date);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_CALENDAR,
                     $session->get('user/id'),

@@ -6,7 +6,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
-use Ubirimi\Documentador\Repository\Entity\Type;
+use Ubirimi\Documentador\Repository\Entity\EntityType;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -25,7 +27,7 @@ class AddController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
         $spaceId = $request->get('space_id');
-        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+        $space = $this->getRepository(Space::class)->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +39,7 @@ class AddController extends UbirimiController
 
         if (empty($parentEntityId)) {
             // set the parent to the home page of the space if it exists
-            $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+            $space = $this->getRepository(Space::class)->getById($spaceId);
             $homeEntityId = $space['home_entity_id'];
             if ($homeEntityId) {
                 $parentEntityId = $homeEntityId;
@@ -52,11 +54,11 @@ class AddController extends UbirimiController
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $content = $request->request->get('content');
 
-            $page = new Entity(Type::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, $parentEntityId, $name, $content);
+            $page = new Entity(EntityType::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, $parentEntityId, $name, $content);
             $currentDate = Util::getServerCurrentDateTime();
             $pageId = $page->save($currentDate);
 
-            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador Entity ' . $name, $currentDate);
+            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador Entity ' . $name, $currentDate);
 
             return new RedirectResponse('/documentador/page/view/' . $pageId);
         }

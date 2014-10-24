@@ -6,7 +6,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\SvnHosting\Repository\Repository;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -20,7 +22,7 @@ class AddController extends UbirimiController
 
         $clientDomain = $session->get('client/company_domain');
 
-        $groupDevelopers = $this->getRepository('ubirimi.user.group')->getByName($session->get('client/id'), 'Developers');
+        $groupDevelopers = $this->getRepository(UbirimiGroup::class)->getByName($session->get('client/id'), 'Developers');
 
         $errors = array(
             'empty_email' => false,
@@ -38,7 +40,7 @@ class AddController extends UbirimiController
         $svnRepoId = $request->query->get('fsvn');
 
         if ($svnRepoId) {
-            $svnRepo = Repository::getById($svnRepoId);
+            $svnRepo = SvnRepository::getById($svnRepoId);
             if ($svnRepo['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
@@ -61,13 +63,13 @@ class AddController extends UbirimiController
             if (!Util::validateUsername($username))
                 $errors['invalid_username'] = true;
             else {
-                $existingUser = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId($username, $session->get('client/id'));
+                $existingUser = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientId($username, $session->get('client/id'));
 
                 if ($existingUser)
                     $errors['duplicate_username'] = true;
             }
 
-            $emailData = $this->getRepository('ubirimi.user.user')->getUserByClientIdAndEmailAddress($session->get('client/id'), mb_strtolower($email));
+            $emailData = $this->getRepository(UbirimiUser::class)->getUserByClientIdAndEmailAddress($session->get('client/id'), mb_strtolower($email));
             if ($emailData)
                 $errors['email_already_exists'] = true;
 

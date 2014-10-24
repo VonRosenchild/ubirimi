@@ -6,8 +6,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
-use Ubirimi\Documentador\Repository\Entity\Type;
+use Ubirimi\Documentador\Repository\Entity\EntityType;
 use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -39,11 +40,11 @@ class AddController extends UbirimiController
                 $emptySpaceCode = true;
 
             if (!$emptySpaceName && !$emptySpaceCode) {
-                $doubleSpace = $this->getRepository('documentador.space.space')->getByCodeAndClientId($clientId, $code);
+                $doubleSpace = $this->getRepository(Space::class)->getByCodeAndClientId($clientId, $code);
                 if ($doubleSpace)
                     $doubleCode = true;
 
-                $doubleSpace = $this->getRepository('documentador.space.space')->getByNameAndClientId($clientId, $name);
+                $doubleSpace = $this->getRepository(Space::class)->getByNameAndClientId($clientId, $name);
                 if ($doubleSpace)
                     $doubleName = true;
 
@@ -54,19 +55,19 @@ class AddController extends UbirimiController
                     $space = new Space($clientId, $loggedInUserId, $name, $code, $description);
                     $spaceId = $space->save($currentDate);
 
-                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador space ' . $name, $date);
+                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador space ' . $name, $date);
 
                     // set space permission for current user
-                    $this->getRepository('documentador.space.space')->addUserAllPermissions($spaceId, $loggedInUserId);
+                    $this->getRepository(Space::class)->addUserAllPermissions($spaceId, $loggedInUserId);
 
                     // set default home page
                     $content = '<p><span style="font-size:24px"><strong>Welcome to your new space!</strong></span></p><div class="message-content" style="font-family: Arial, sans-serif; font-size: 14px;"><p>Documentador spaces are great for sharing content and news with your team. This is your home page. You can customize this page in anyway you like.</p></div>';
-                    $page = new Entity(Type::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, null, $name . ' Home', $content);
+                    $page = new Entity(EntityType::ENTITY_BLANK_PAGE, $spaceId, $loggedInUserId, null, $name . ' Home', $content);
                     $pageId = $page->save($currentDate);
-                    $this->getRepository('documentador.space.space')->setHomePageId($spaceId, $pageId);
+                    $this->getRepository(Space::class)->setHomePageId($spaceId, $pageId);
 
                     // add space permissions for groups
-                    $this->getRepository('documentador.space.space')->setDefaultPermissions($clientId, $spaceId);
+                    $this->getRepository(Space::class)->setDefaultPermissions($clientId, $spaceId);
 
                     return new RedirectResponse('/documentador/administration/spaces');
                 }

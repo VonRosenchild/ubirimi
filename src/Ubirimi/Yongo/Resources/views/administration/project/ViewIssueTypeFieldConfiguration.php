@@ -1,6 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 use Ubirimi\Yongo\Repository\Screen\Screen;
 
 require_once __DIR__ . '/../_header.php';
@@ -53,7 +53,7 @@ require_once __DIR__ . '/../_header.php';
                 </tr>
                 <tr>
                     <td valign="top" width="180">
-                        <?php $issueTypes = ConfigurationScheme::getIssueTypesForFieldConfiguration($project['issue_type_field_configuration_id'], $fieldConfiguration['id']); ?>
+                        <?php $issueTypes = FieldConfigurationScheme::getIssueTypesForFieldConfiguration($project['issue_type_field_configuration_id'], $fieldConfiguration['id']); ?>
                         <div><b>These <?php echo $issueTypes->num_rows ?> issue types...</b></div>
                         <?php while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                             <div><?php echo $issueType['name'] ?></div>
@@ -72,7 +72,7 @@ require_once __DIR__ . '/../_header.php';
                                 <td><?php echo $field['name'] ?></td>
                                 <td align="left">
 
-                                    <?php $screens = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->getByFieldId($clientId, $field['id']) ?>
+                                    <?php $screens = UbirimiContainer::get()['repository']->get(Screen::class)->getByFieldId($clientId, $field['id']) ?>
                                     <?php if ($screens): ?>
                                     <ul>
                                         <?php while ($screen = $screens->fetch_array(MYSQLI_ASSOC)): ?>

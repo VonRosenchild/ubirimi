@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AssignGroupsController extends UbirimiController
 {
@@ -19,8 +20,8 @@ class AssignGroupsController extends UbirimiController
         $projectId = $request->request->get('project_id');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository('yongo.project.project')->deleteGroupsByPermissionRole($projectId, $permissionRoleId);
-        $this->getRepository('yongo.project.project')->addGroupsForPermissionRole($projectId, $permissionRoleId, $groupArrayIds, $currentDate);
+        $this->getRepository(YongoProject::class)->deleteGroupsByPermissionRole($projectId, $permissionRoleId);
+        $this->getRepository(YongoProject::class)->addGroupsForPermissionRole($projectId, $permissionRoleId, $groupArrayIds, $currentDate);
 
         return new Response('');
     }

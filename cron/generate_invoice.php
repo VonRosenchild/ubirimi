@@ -18,7 +18,7 @@ require_once __DIR__ . '/../web/bootstrap_cli.php';
  * this cronjob generates a pdf invoice for every paying client
  */
 
-$clients = $this->getRepository('ubirimi.general.client')->getAll();
+$clients = $this->getRepository(UbirimiClient::class)->getAll();
 
 $invoiceUtil = new \Ubirimi\InvoiceUtil();
 $paymentUtil = new PaymentUtil();

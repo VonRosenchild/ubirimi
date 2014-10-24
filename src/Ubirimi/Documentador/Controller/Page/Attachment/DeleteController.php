@@ -5,6 +5,8 @@ namespace Ubirimi\Documentador\Controller\Page\Attachment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -21,13 +23,13 @@ class DeleteController extends UbirimiController
         $attachmentId = $request->request->get('id');
         $attachment = $this->getRepository('documentador.entity.attachment')->getById($attachmentId);
         $entityId = $attachment['documentator_entity_id'];
-        $space = $this->getRepository('documentador.entity.entity')->getById($entityId);
+        $space = $this->getRepository(Entity::class)->getById($entityId);
         $spaceId = $space['space_id'];
         $currentDate = Util::getServerCurrentDateTime();
 
         $this->getRepository('documentador.entity.attachment')->deleteById($spaceId, $entityId, $attachmentId);
 
-        $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador entity attachment ' . $attachment['name'], $currentDate);
+        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador entity attachment ' . $attachment['name'], $currentDate);
 
         $attachments = $this->getRepository('documentador.entity.attachment')->getByEntityId($entityId);
         if (!$attachments) {

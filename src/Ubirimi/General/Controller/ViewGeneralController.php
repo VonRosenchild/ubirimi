@@ -4,6 +4,7 @@ namespace Ubirimi\General\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,8 +17,8 @@ class ViewGeneralController extends UbirimiController
         $session->set('selected_product_id', -1);
 
         $menuSelectedCategory = 'general_overview';
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
-        $client = $this->getRepository('ubirimi.general.client')->getById($session->get('client/id'));
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
+        $client = $this->getRepository(UbirimiClient::class)->getById($session->get('client/id'));
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings';
 

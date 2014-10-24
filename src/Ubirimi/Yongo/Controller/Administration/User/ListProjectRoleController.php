@@ -4,9 +4,13 @@ namespace Ubirimi\Yongo\Controller\Administration\User;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ListProjectRoleController extends UbirimiController
 {
@@ -16,11 +20,11 @@ class ListProjectRoleController extends UbirimiController
 
         $userId = $request->get('id');
 
-        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
-        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
-        $projects = $this->getRepository('yongo.project.project')->getByClientId($session->get('client/id'));
+        $users = $this->getRepository(UbirimiClient::class)->getUsers($session->get('client/id'));
+        $user = $this->getRepository(UbirimiUser::class)->getById($userId);
+        $projects = $this->getRepository(YongoProject::class)->getByClientId($session->get('client/id'));
         $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
-        $groups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
+        $groups = $this->getRepository(UbirimiGroup::class)->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $groupIds = array();
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
             $groupIds[] = $group['id'];

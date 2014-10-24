@@ -4,6 +4,7 @@ namespace Ubirimi\Documentador\Controller\Administration\Space;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -20,9 +21,9 @@ class ListController extends UbirimiController
         $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
 
         if ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission) {
-            $spaces = $this->getRepository('documentador.space.space')->getByClientId($clientId);
+            $spaces = $this->getRepository(Space::class)->getByClientId($clientId);
         } else {
-            $spaces = $this->getRepository('documentador.space.space')->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+            $spaces = $this->getRepository(Space::class)->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
         }
         $clientSettings = $session->get('client/settings');
 

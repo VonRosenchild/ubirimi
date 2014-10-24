@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\User\User;
+    use Ubirimi\Repository\User\UbirimiUser;
 
     require_once __DIR__ . '/_header.php';
 ?>
@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <?php
-                        $users = $this->getRepository('ubirimi.user.user')->getByClientId($client['id']);
+                        $users = $this->getRepository(UbirimiUser::class)->getByClientId($client['id']);
                         if ($users)
                             echo $users->num_rows;
                         else echo 0;

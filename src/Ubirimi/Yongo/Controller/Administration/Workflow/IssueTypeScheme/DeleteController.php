@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
 class DeleteController extends UbirimiController
 {
@@ -16,8 +16,8 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $Id = $request->request->get('id');
 
-        TypeScheme::deleteDataByIssueTypeSchemeId($Id);
-        TypeScheme::deleteById($Id);
+        IssueTypeScheme::deleteDataByIssueTypeSchemeId($Id);
+        IssueTypeScheme::deleteById($Id);
 
         return new Response('');
     }

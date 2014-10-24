@@ -5,10 +5,14 @@ namespace Ubirimi\Yongo\Controller\Administration\PermissionScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 
 
 class AddDataController extends UbirimiController
@@ -20,11 +24,11 @@ class AddDataController extends UbirimiController
         $permissionSchemeId = $request->get('perm_scheme_id');
         $permissionId = $request->get('id');
 
-        $permissionScheme = $this->getRepository('yongo.permission.scheme')->getMetaDataById($permissionSchemeId);
+        $permissionScheme = $this->getRepository(PermissionScheme::class)->getMetaDataById($permissionSchemeId);
         $permissions = Permission::getAll();
 
-        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
-        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
+        $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
@@ -42,7 +46,7 @@ class AddDataController extends UbirimiController
                 for ($i = 0; $i < count($sysPermissionIds); $i++){
                     // check for duplicate information
                     $duplication = false;
-                    $dataPermission = $this->getRepository('yongo.permission.scheme')->getDataByPermissionSchemeIdAndPermissionId(
+                    $dataPermission = $this->getRepository(PermissionScheme::class)->getDataByPermissionSchemeIdAndPermissionId(
                         $permissionSchemeId,
                         $sysPermissionIds[$i]
                     );
@@ -71,7 +75,7 @@ class AddDataController extends UbirimiController
                     }
 
                     if (!$duplication) {
-                        $this->getRepository('yongo.permission.scheme')->gaddData(
+                        $this->getRepository(PermissionScheme::class)->gaddData(
                             $permissionSchemeId,
                             $sysPermissionIds[$i],
                             $permissionType,
@@ -81,7 +85,7 @@ class AddDataController extends UbirimiController
                             $currentDate
                         );
 
-                        $this->getRepository('ubirimi.general.log')->add(
+                        $this->getRepository(UbirimiLog::class)->add(
                             $session->get('client/id'),
                             SystemProduct::SYS_PRODUCT_YONGO,
                             $session->get('user/id'),

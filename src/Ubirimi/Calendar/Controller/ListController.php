@@ -4,6 +4,7 @@ namespace Ubirimi\Calendar\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -16,7 +17,7 @@ class ListController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
         $menuSelectedCategory = 'calendars';
-        $calendars = $this->getRepository('calendar.calendar.calendar')->getByUserId($session->get('user/id'));
+        $calendars = $this->getRepository(UbirimiCalendar::class)->getByUserId($session->get('user/id'));
 
         $month = date('n');
         $year = date('Y');

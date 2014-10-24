@@ -5,6 +5,7 @@ namespace Ubirimi\General\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -19,7 +20,7 @@ class ListUserController extends UbirimiController
         $session->set('selected_product_id', -1);
         $filterGroupId = $request->get('group_id');
 
-        $users = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getUsers($clientId, $filterGroupId, null, 1);
+        $users = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getUsers($clientId, $filterGroupId, null, 1);
         $menuSelectedCategory = 'general_user';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Users';

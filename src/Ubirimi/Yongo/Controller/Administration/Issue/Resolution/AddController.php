@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\Resolution;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 
 class AddController extends UbirimiController
@@ -27,14 +29,14 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $resolution = $this->getRepository('yongo.issue.settings')->getByName($session->get('client/id'), 'resolution', mb_strtolower($name));
+            $resolution = $this->getRepository(IssueSettings::class)->getByName($session->get('client/id'), 'resolution', mb_strtolower($name));
             if ($resolution)
                 $resolutionExists = true;
 
             if (!$resolutionExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository('yongo.issue.settings')->create(
+                $this->getRepository(IssueSettings::class)->create(
                     'issue_resolution',
                     $session->get('client/id'),
                     $name,
@@ -44,7 +46,7 @@ class AddController extends UbirimiController
                     $currentDate
                 );
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
+use Ubirimi\Calendar\Repository\Event\CalendarEvent;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -43,14 +45,14 @@ class ImportController extends UbirimiController
                     break;
                 }
             }
-            $calendarExists = $this->getRepository('calendar.calendar.calendar')->getByName($session->get('user/id'), $calendarName);
+            $calendarExists = $this->getRepository(UbirimiCalendar::class)->getByName($session->get('user/id'), $calendarName);
             if ($calendarExists) {
                 $calendarName .= '_' . time();
             }
 
             // deal with the events
             $date = Util::getServerCurrentDateTime();
-            $calendarId = $this->getRepository('calendar.calendar.calendar')->save($session->get('user/id'), $calendarName, null, '#A1FF9E', $date);
+            $calendarId = $this->getRepository(UbirimiCalendar::class)->save($session->get('user/id'), $calendarName, null, '#A1FF9E', $date);
 
             $defaultColor = 'A1FF9E';
             $events = $calendar->VEvent;
@@ -68,7 +70,7 @@ class ImportController extends UbirimiController
 
                 $endTime = $endTime->format('Y-m-d H:i:s');
 
-                $this->getRepository('calendar.event.event')->add(
+                $this->getRepository(CalendarEvent::class)->add(
                     $calendarId,
                     $session->get('user/id'),
                     $summary,

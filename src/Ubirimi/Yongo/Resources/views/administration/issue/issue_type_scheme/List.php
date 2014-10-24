@@ -1,8 +1,8 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -46,7 +46,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </td>
                                 <td>
                                     <?php
-                                        $dataIssueTypeScheme = TypeScheme::getDataById($scheme['id']);
+                                        $dataIssueTypeScheme = IssueTypeScheme::getDataById($scheme['id']);
                                         if ($dataIssueTypeScheme) {
                                             while ($data = $dataIssueTypeScheme->fetch_array(MYSQLI_ASSOC)) {
                                                 echo '<div>';
@@ -59,7 +59,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </td>
                                 <td>
                                     <?php
-                                        $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByIssueTypeScheme($scheme['id']);
+                                        $projects = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByIssueTypeScheme($scheme['id']);
                                         if ($projects) {
                                             while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {
                                                 echo '&#8226; <a href="/yongo/administration/project/' . $project['id'] . '">' . $project['name'] . '</a>';

@@ -5,10 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\Scheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 class ConfigureController extends UbirimiController
 {
@@ -18,15 +20,15 @@ class ConfigureController extends UbirimiController
 
         $Id = $request->get('id');
         $emptyName = false;
-        $workflowScheme = Scheme::getMetaDataById($Id);
+        $workflowScheme = WorkflowScheme::getMetaDataById($Id);
 
         if ($workflowScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $allWorkflows = $this->getRepository('yongo.workflow.workflow')->getAllByClientId($session->get('client/id'));
+        $allWorkflows = $this->getRepository(Workflow::class)->getAllByClientId($session->get('client/id'));
 
-        $schemeWorkflows = Scheme::getDataById($Id);
+        $schemeWorkflows = WorkflowScheme::getDataById($Id);
 
         $name = $workflowScheme['name'];
         $description = $workflowScheme['description'];
@@ -40,16 +42,16 @@ class ConfigureController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                Scheme::updateMetaDataById($Id, $name, $description);
-                Scheme::deleteDataByWorkflowSchemeId($Id);
+                WorkflowScheme::updateMetaDataById($Id, $name, $description);
+                WorkflowScheme::deleteDataByWorkflowSchemeId($Id);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 9) == 'workflow_') {
                         $workflowId = str_replace('workflow_', '', $key);
-                        Scheme::addData($Id, $workflowId, $currentDate);
+                        WorkflowScheme::addData($Id, $workflowId, $currentDate);
                     }
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

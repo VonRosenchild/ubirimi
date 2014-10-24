@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
 class ListController extends UbirimiController
 {
@@ -15,7 +15,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issueSecuritySchemes = SecurityScheme::getByClientId($session->get('client/id'));
+        $issueSecuritySchemes = IssueSecurityScheme::getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

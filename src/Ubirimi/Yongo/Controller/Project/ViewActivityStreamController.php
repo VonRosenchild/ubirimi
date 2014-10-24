@@ -4,10 +4,12 @@ namespace Ubirimi\Yongo\Controller\Project;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 
 class ViewActivityStreamController extends UbirimiController
@@ -18,15 +20,15 @@ class ViewActivityStreamController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
         $clientId = $session->get('client/id');
 
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
 
         if (Util::checkUserIsLoggedIn()) {
-            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $loggedInUserId);
+            $hasBrowsingPermission = $this->getRepository(YongoProject::class)->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $loggedInUserId);
         } else {
             $loggedInUserId = null;
             $httpHOST = Util::getHttpHost();
-            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS);
+            $hasBrowsingPermission = $this->getRepository(YongoProject::class)->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS);
         }
 
         if ($hasBrowsingPermission) {

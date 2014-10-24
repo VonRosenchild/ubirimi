@@ -2,6 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -12,7 +13,7 @@ class ClientsController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $clients = $this->getRepository('ubirimi.general.client')->getAll(array('sort_by' => 'client.date_created', 'sort_order' => 'desc'));
+        $clients = $this->getRepository(UbirimiClient::class)->getAll(array('sort_by' => 'client.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'clients';
 

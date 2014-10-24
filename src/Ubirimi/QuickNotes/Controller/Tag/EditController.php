@@ -5,6 +5,7 @@ namespace Ubirimi\QuickNotes\Controller\Tag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\UbirimiController;
 use Ubirimi\QuickNotes\Repository\Tag;
 
@@ -50,7 +51,7 @@ class EditController extends UbirimiController
                 $date = Util::getServerCurrentDateTime();
                 Tag::updateById($tagId, $name, $description, $date);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_QUICK_NOTES,
                     $session->get('user/id'),

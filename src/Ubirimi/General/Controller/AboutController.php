@@ -4,6 +4,7 @@ namespace Ubirimi\General\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -14,8 +15,8 @@ class AboutController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
             $loggedInUserId = null;
         }
 

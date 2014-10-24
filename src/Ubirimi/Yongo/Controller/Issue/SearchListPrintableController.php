@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SearchListPrintableController extends UbirimiController
 {
@@ -32,7 +34,7 @@ class SearchListPrintableController extends UbirimiController
         $getProjectIds = $request->get('project') ? explode('|', $request->get('project')) : null;
 
         if ($getProjectIds) {
-            $projectsData = $this->getRepository('yongo.project.project')->getByIds($getProjectIds);
+            $projectsData = $this->getRepository(YongoProject::class)->getByIds($getProjectIds);
             if (!$projectsData) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
@@ -43,7 +45,7 @@ class SearchListPrintableController extends UbirimiController
                         return new RedirectResponse('/general-settings/bad-link-access-denied');
                     }
                 } else {
-                    $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($data['id']), Permission::PERM_BROWSE_PROJECTS);
+                    $hasBrowsingPermission = $this->getRepository(YongoProject::class)->userHasPermission(array($data['id']), Permission::PERM_BROWSE_PROJECTS);
                     if (!$hasBrowsingPermission) {
                         return new RedirectResponse('/general-settings/bad-link-access-denied');
                     }
@@ -85,7 +87,7 @@ class SearchListPrintableController extends UbirimiController
 
         if (Util::searchQueryNotEmpty($getSearchParameters)) {
 
-            $issues = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
+            $issues = $this->getRepository(Issue::class)->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
             $issuesCount = $issues->num_rows;
             $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';
         }

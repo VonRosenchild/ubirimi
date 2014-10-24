@@ -5,6 +5,7 @@ namespace Ubirimi\General\Controller\SMTP;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -57,7 +58,7 @@ class EditController extends UbirimiController
                 $date
             );
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
                 $session->get('user/id'),

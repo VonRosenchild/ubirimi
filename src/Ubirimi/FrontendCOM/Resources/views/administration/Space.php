@@ -1,6 +1,7 @@
 <?php
 
-    use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 
     require_once __DIR__ . '/_header.php';
 ?>
@@ -45,13 +46,13 @@
                 <td><?php echo $space['description']; ?></td>
                 <td>
                     <?php
-                    $client = $this->getRepository('ubirimi.general.client')->getById($space['client_id']);
+                    $client = $this->getRepository(UbirimiClient::class)->getById($space['client_id']);
                     echo $client['company_name'];
                     ?>
                 </td>
                 <td>
                     <?php
-                    $user = $this->getRepository('ubirimi.user.user')->getById($space['user_created_id']);
+                    $user = $this->getRepository(UbirimiUser::class)->getById($space['user_created_id']);
                     echo $user['first_name'] . ' ' . $user['last_name'];
                     ?>
                 </td>

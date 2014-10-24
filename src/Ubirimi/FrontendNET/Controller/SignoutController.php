@@ -5,10 +5,10 @@ namespace Ubirimi\FrontendNET\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-
-use Ubirimi\SystemProduct;
 
 class SignoutController extends UbirimiController
 {
@@ -17,7 +17,7 @@ class SignoutController extends UbirimiController
         $clientBaseURL = $session->get('client/base_url');
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add($session->get('client/id'), SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $session->get('client/id'), 'LOG OUT', $date);
+        $this->getRepository(UbirimiLog::class)->add($session->get('client/id'), SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $session->get('client/id'), 'LOG OUT', $date);
 
         $session->invalidate();
 

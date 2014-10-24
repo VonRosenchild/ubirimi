@@ -5,6 +5,7 @@ namespace Ubirimi\Agile\Controller\Board\Column;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,9 +19,9 @@ class UpdateColumnController extends UbirimiController
         $StatusId = $request->request->get('status_id');
         $newColumnId = $request->request->get('new_column_id');
 
-        $this->getRepository('agile.board.board')->deleteStatusFromColumn($boardId, $StatusId);
+        $this->getRepository(Board::class)->deleteStatusFromColumn($boardId, $StatusId);
         if ($newColumnId)
-            $this->getRepository('agile.board.board')->addStatusToColumn($newColumnId, $StatusId);
+            $this->getRepository(Board::class)->addStatusToColumn($newColumnId, $StatusId);
 
         return new Response('');
     }

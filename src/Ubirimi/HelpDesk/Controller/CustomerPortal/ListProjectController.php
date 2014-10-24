@@ -4,6 +4,7 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -15,7 +16,7 @@ class ListProjectController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $clientSettings = $session->get('client/settings');
-        $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), null, null, true);
+        $projects = $this->getRepository(UbirimiClient::class)->getProjects($session->get('client/id'), null, null, true);
 
         $menuSelectedCategory = 'project';
 

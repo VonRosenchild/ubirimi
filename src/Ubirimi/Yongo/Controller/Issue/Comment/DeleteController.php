@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 
 class DeleteController extends UbirimiController
 {
@@ -15,7 +16,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $commentId = $request->request->get('id');
-        $this->getRepository('yongo.issue.comment')->deleteById($commentId);
+        $this->getRepository(IssueComment::class)->deleteById($commentId);
 
         return new Response('');
     }

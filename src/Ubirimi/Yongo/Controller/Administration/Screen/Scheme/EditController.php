@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen\Scheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
 
 class EditController extends UbirimiController
@@ -20,7 +21,7 @@ class EditController extends UbirimiController
         $screenSchemeId = $request->get('id');
 
         $emptyName = false;
-        $screenScheme = Scheme::getMetaDataById($screenSchemeId);
+        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
 
         if ($screenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,9 +36,9 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Scheme::updateMetaDataById($screenSchemeId, $name, $description, $currentDate);
+                ScreenScheme::updateMetaDataById($screenSchemeId, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

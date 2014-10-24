@@ -5,13 +5,16 @@ namespace Ubirimi\Yongo\Controller\Administration\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
-use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 use Ubirimi\Yongo\Repository\Project\Category;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 
 class EditController extends UbirimiController
@@ -24,18 +27,18 @@ class EditController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $projectId = $request->get('id');
-        $leadUsers = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
+        $leadUsers = $this->getRepository(UbirimiClient::class)->getUsers($session->get('client/id'));
 
         // todo: leadul sa fie adaugat in lista de useri pentru acest proiect
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $issueTypeScheme = TypeScheme::getByClientId($session->get('client/id'), 'project');
-        $issueTypeScreenScheme = TypeScreenScheme::getByClientId($session->get('client/id'));
-        $workflowScheme = Scheme::getMetaDataByClientId($session->get('client/id'));
+        $issueTypeScheme = IssueTypeScheme::getByClientId($session->get('client/id'), 'project');
+        $issueTypeScreenScheme = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
+        $workflowScheme = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
         $projectCategories = Category::getAll($session->get('client/id'));
 
         $emptyName = false;
@@ -61,7 +64,7 @@ class EditController extends UbirimiController
             if (empty($name)) {
                 $emptyName = true;
             } else {
-                $duplicateProjectByName = $this->getRepository('yongo.project.project')->getByName(mb_strtolower($name), $projectId, $session->get('client/id'));
+                $duplicateProjectByName = $this->getRepository(YongoProject::class)->getByName(mb_strtolower($name), $projectId, $session->get('client/id'));
                 if ($duplicateProjectByName) {
                     $duplicate_name = true;
                 }
@@ -70,16 +73,16 @@ class EditController extends UbirimiController
             if (empty($code)) {
                 $emptyCode = true;
             } else {
-                $project_exists = $this->getRepository('yongo.project.project')->getByCode(mb_strtolower($code), $projectId, $session->get('client/id'));
+                $project_exists = $this->getRepository(YongoProject::class)->getByCode(mb_strtolower($code), $projectId, $session->get('client/id'));
                 if ($project_exists)
                     $duplicateCode = true;
             }
 
             if (!$emptyName && !$emptyCode && !$duplicate_name && !$duplicateCode) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.project.project')->updateById($projectId, $leadId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $currentDate);
+                $this->getRepository(YongoProject::class)->updateById($projectId, $leadId, $name, $code, $description, $issueTypeSchemeId, $workflowSchemeId, $projectCategoryId, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

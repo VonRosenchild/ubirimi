@@ -1,7 +1,8 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 ?>
 <table class="table table-hover table-condensed" width="100%">
     <thead>
@@ -22,7 +23,7 @@ use Ubirimi\Yongo\Repository\Permission\Scheme;
                 <td width="30%"><?php echo $group['description'] ?></td>
                 <td width="10%">
                     <?php
-                        $usersInGroup = UbirimiContainer::get()['repository']->get('ubirimi.user.group')->getDataByGroupId($group['id']);
+                        $usersInGroup = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getDataByGroupId($group['id']);
                         if ($usersInGroup) {
                             echo '<a href="/yongo/administration/users/' . $group['id'] . '">' . $usersInGroup->num_rows . '</a>';
                         } else {
@@ -32,7 +33,7 @@ use Ubirimi\Yongo\Repository\Permission\Scheme;
                 </td>
                 <td width="20%">
                     <?php
-                        $permissionSchemes = Scheme::getByClientIdAndGroupBy($clientId, $group['id']);
+                        $permissionSchemes = PermissionScheme::getByClientIdAndGroupBy($clientId, $group['id']);
                         if ($permissionSchemes) {
                             echo '<ul>';
                             while ($permission = $permissionSchemes->fetch_array(MYSQLI_ASSOC)) {

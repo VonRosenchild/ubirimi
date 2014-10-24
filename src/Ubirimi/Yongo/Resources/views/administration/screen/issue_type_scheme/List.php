@@ -1,6 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -51,7 +52,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </td>
                                 <td width="500px">
                                     <?php
-                                        $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByIssueTypeScreenSchemeId($clientId, $scheme['id']);
+                                        $projects = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByIssueTypeScreenSchemeId($clientId, $scheme['id']);
                                         if ($projects) {
                                             echo '<ul>';
                                             while ($project = $projects->fetch_array(MYSQLI_ASSOC)) {

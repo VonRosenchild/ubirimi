@@ -5,9 +5,12 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\SystemProduct;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+
 
 class PlanController extends UbirimiController
 {
@@ -16,13 +19,13 @@ class PlanController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
         $boardId = $request->get('id');
         $searchQuery = $request->get('q');
         $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
 
         $session->set('last_selected_board_id', $boardId);
-        $board = $this->getRepository('agile.board.board')->getById($boardId);
+        $board = $this->getRepository(Board::class)->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -30,12 +33,12 @@ class PlanController extends UbirimiController
 
         $sprintsNotStarted = $this->getRepository('agile.sprint.sprint')->getNotStarted($boardId);
 
-        $boardProjects = $this->getRepository('agile.board.board')->getProjects($boardId, 'array');
+        $boardProjects = $this->getRepository(Board::class)->getProjects($boardId, 'array');
         $currentStartedSprint = $this->getRepository('agile.sprint.sprint')->getStarted($boardId);
         $lastCompletedSprint = $this->getRepository('agile.sprint.sprint')->getLastCompleted($boardId);
 
-        $lastColumn = $this->getRepository('agile.board.board')->getLastColumn($boardId);
-        $completeStatuses = $this->getRepository('agile.board.board')->getColumnStatuses($lastColumn['id'], 'array', 'id');
+        $lastColumn = $this->getRepository(Board::class)->getLastColumn($boardId);
+        $completeStatuses = $this->getRepository(Board::class)->getColumnStatuses($lastColumn['id'], 'array', 'id');
 
         $columns = array('type', 'code', 'summary', 'priority');
 

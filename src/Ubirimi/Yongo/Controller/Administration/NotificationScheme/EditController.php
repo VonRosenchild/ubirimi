@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\NotificationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
 
 class EditController extends UbirimiController
@@ -17,7 +19,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notificationSchemeId = $request->get('id');
-        $notificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataById($notificationSchemeId);
+        $notificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataById($notificationSchemeId);
 
         if ($notificationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,9 +35,9 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.notification.scheme')->gupdateMetaDataById($notificationSchemeId, $name, $description, $currentDate);
+                $this->getRepository(NotificationScheme::class)->gupdateMetaDataById($notificationSchemeId, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

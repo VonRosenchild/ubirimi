@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen\Scheme;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
 class DeleteController extends UbirimiController
 {
@@ -17,14 +18,14 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $screen = Scheme::getMetaDataById($Id);
+        $screen = ScreenScheme::getMetaDataById($Id);
 
-        Scheme::deleteDataByScreenSchemeId($Id);
-        Scheme::deleteById($Id);
+        ScreenScheme::deleteDataByScreenSchemeId($Id);
+        ScreenScheme::deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add(
+        $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('client/id'),

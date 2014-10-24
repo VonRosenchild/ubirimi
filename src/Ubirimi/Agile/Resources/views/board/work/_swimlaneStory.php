@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 
@@ -12,7 +13,7 @@ while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fe
     if ($onlyMyIssuesFlag) {
         $parameters['assignee'] = $loggedInUserId;
     }
-    $strategyIssue = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($parameters, $loggedInUserId);
+    $strategyIssue = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters($parameters, $loggedInUserId);
     $parentChildrenIssueIds[] = $issue['id'];
 
     if ($strategyIssue) {
@@ -45,6 +46,6 @@ if ($allSprintIssuesWithoutChildren) {
     }
 
     echo '<table width="100%" cellpadding="0" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-    UbirimiContainer::get()['repository']->get('agile.board.board')->renderIssues($allSprintIssuesWithoutChildren, $columns, $index);
+    UbirimiContainer::get()['repository']->get(Board::class)->renderIssues($allSprintIssuesWithoutChildren, $columns, $index);
     echo '</table>';
 }

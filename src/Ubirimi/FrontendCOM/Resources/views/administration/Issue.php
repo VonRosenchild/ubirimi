@@ -2,7 +2,8 @@
     require_once __DIR__ . '/_header.php';
 
 
-    use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 ?>
 <body>
 
@@ -40,8 +41,8 @@
             <tbody>
             <?php while ($issue = $issues->fetch_array(MYSQLI_ASSOC)): ?>
                 <?php
-                    $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
-                    $client = $this->getRepository('ubirimi.general.client')->getById($project['client_id']);
+                    $project = $this->getRepository(YongoProject::class)->getById($issue['issue_project_id']);
+                    $client = $this->getRepository(UbirimiClient::class)->getById($project['client_id']);
                 ?>
                 <tr id="table_row_<?php echo $issue['id'] ?>">
                     <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $issue['id'] ?>"/></td>

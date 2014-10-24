@@ -1,5 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Space\Space;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -36,7 +37,7 @@ require_once __DIR__ . '/../../_header.php';
                     </thead>
                     <tbody>
                         <?php while ($group = $groups->fetch_array(MYSQLI_ASSOC)): ?>
-                            <?php $groupPermission = UbirimiContainer::get()['repository']->get('documentador.space.space')->getGroupPermission($spaceId, $group['id']) ?>
+                            <?php $groupPermission = UbirimiContainer::get()['repository']->get(Space::class)->getGroupPermission($spaceId, $group['id']) ?>
                             <tr>
                                 <td><?php echo $group['name'] ?></td>
                                 <td align="center">
@@ -81,7 +82,7 @@ require_once __DIR__ . '/../../_header.php';
                 </thead>
                 <tbody>
                     <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
-                        <?php $userPermission = UbirimiContainer::get()['repository']->get('documentador.space.space')->getUserPermission($spaceId, $user['id']) ?>
+                        <?php $userPermission = UbirimiContainer::get()['repository']->get(Space::class)->getUserPermission($spaceId, $user['id']) ?>
                         <tr>
                             <td><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></td>
                             <td align="center">

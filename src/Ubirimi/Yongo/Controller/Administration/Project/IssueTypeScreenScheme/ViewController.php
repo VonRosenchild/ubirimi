@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewController extends UbirimiController
 {
@@ -17,13 +18,13 @@ class ViewController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $screenSchemes = TypeScreenScheme::getScreenSchemes($project['issue_type_screen_scheme_id']);
+        $screenSchemes = IssueTypeScreenScheme::getScreenSchemes($project['issue_type_screen_scheme_id']);
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Type Screen Scheme';

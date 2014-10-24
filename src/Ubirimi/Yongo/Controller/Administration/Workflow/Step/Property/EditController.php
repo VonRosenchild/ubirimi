@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step\Property;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class EditController extends UbirimiController
 {
@@ -20,13 +22,13 @@ class EditController extends UbirimiController
 
         $stepPropertyId = $request->get('id');
 
-        $stepProperty = $this->getRepository('yongo.workflow.workflow')->getStepPropertyById($stepPropertyId);
-        $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepProperty['workflow_step_id']);
+        $stepProperty = $this->getRepository(Workflow::class)->getStepPropertyById($stepPropertyId);
+        $step = $this->getRepository(Workflow::class)->getStepById($stepProperty['workflow_step_id']);
         $stepId = $step['id'];
         $workflowId = $step['workflow_id'];
 
-        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
-        $allProperties = $this->getRepository('yongo.workflow.workflow')->getSystemWorkflowProperties();
+        $workflowMetadata = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
+        $allProperties = $this->getRepository(Workflow::class)->getSystemWorkflowProperties();
         $emptyValue = false;
         $duplicateKey = false;
 
@@ -41,14 +43,14 @@ class EditController extends UbirimiController
 
             if (!$emptyValue) {
 
-                $duplicateKey = $this->getRepository('yongo.workflow.workflow')->getStepKeyByStepIdAndKeyId($stepId, $keyId, $stepProperty['id']);
+                $duplicateKey = $this->getRepository(Workflow::class)->getStepKeyByStepIdAndKeyId($stepId, $keyId, $stepProperty['id']);
 
                 if (!$duplicateKey) {
 
                     $currentDate = Util::getServerCurrentDateTime();
-                    $this->getRepository('yongo.workflow.workflow')->updateStepPropertyById($stepPropertyId, $keyId, $value, $currentDate);
+                    $this->getRepository(Workflow::class)->updateStepPropertyById($stepPropertyId, $keyId, $value, $currentDate);
 
-                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Step Property', $currentDate);
+                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Step Property', $currentDate);
 
                     return new RedirectResponse('/yongo/administration/workflow/view-step-properties/' . $stepId);
                 }

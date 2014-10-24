@@ -4,6 +4,8 @@ namespace Ubirimi\Service;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\EmailQueue;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Util;
 
 class ClientService
@@ -15,7 +17,7 @@ class ClientService
 
             $data = json_decode($pendingClientData['data'], true);
 
-            $clientId = $this->getRepository('ubirimi.general.client')->create(
+            $clientId = $this->getRepository(UbirimiClient::class)->create(
                 $data['companyName'],
                 $data['companyDomain'],
                 $data['baseURL'],
@@ -23,12 +25,12 @@ class ClientService
                 $data['country'],
                 $data['vatNumber'],
                 $data['paymillId'],
-                $this->getRepository('ubirimi.general.client')->INSTANCE_TYPE_ON_DEMAND,
+                $this->getRepository(UbirimiClient::class)->INSTANCE_TYPE_ON_DEMAND,
                 Util::getServerCurrentDateTime()
             );
 
             // create the user
-            $userId = $this->getRepository('ubirimi.user.user')->createAdministratorUser(
+            $userId = $this->getRepository(UbirimiUser::class)->createAdministratorUser(
                 $data['adminFirstName'],
                 $data['adminLastName'],
                 $data['adminUsername'],
@@ -40,9 +42,9 @@ class ClientService
             );
 
             $columns = 'code#summary#priority#status#created#type#updated#reporter#assignee';
-            $this->getRepository('ubirimi.user.user')->updateDisplayColumns($userId, $columns);
+            $this->getRepository(UbirimiUser::class)->updateDisplayColumns($userId, $columns);
 
-            $this->getRepository('ubirimi.general.client')->install($clientId);
+            $this->getRepository(UbirimiClient::class)->install($clientId);
             EmailQueue::add(
                 $clientId,
                 'accounts@ubirimi.com',

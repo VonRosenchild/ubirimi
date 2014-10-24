@@ -4,6 +4,7 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -17,7 +18,7 @@ class DashboardController extends UbirimiController
         $menuSelectedCategory = 'home';
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_HELP_DESK);
 
-        $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), null, null, true);
+        $projectsForBrowsing = $this->getRepository(UbirimiClient::class)->getProjects($session->get('client/id'), null, null, true);
 
         if ($projectsForBrowsing) {
             $projectIdsAndNames = Util::getAsArray($projectsForBrowsing, array('id', 'name'));

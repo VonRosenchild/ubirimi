@@ -4,8 +4,9 @@ namespace Ubirimi\Agile\Repository\Board;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
-use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 class Board
 {
@@ -138,10 +139,10 @@ class Board
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $openStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Open');
-        $reopenedStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Reopened');
-        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $openStatusData['id']);
-        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $reopenedStatusData['id']);
+        $openStatusData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Open');
+        $reopenedStatusData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Reopened');
+        UbirimiContainer::get()['repository']->get(Board::class)->addStatusToColumn($columnId, $openStatusData['id']);
+        UbirimiContainer::get()['repository']->get(Board::class)->addStatusToColumn($columnId, $reopenedStatusData['id']);
 
         // add In Progress column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
@@ -152,9 +153,9 @@ class Board
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $inProgressStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'In Progress');
+        $inProgressStatusData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'In Progress');
 
-        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $inProgressStatusData['id']);
+        UbirimiContainer::get()['repository']->get(Board::class)->addStatusToColumn($columnId, $inProgressStatusData['id']);
 
         // add Done column
         $query = "INSERT INTO agile_board_column(agile_board_id, position, name) VALUES (?, ?, ?)";
@@ -165,11 +166,11 @@ class Board
         $stmt->bind_param("iis", $boardId, $position, $columnName);
         $stmt->execute();
         $columnId = UbirimiContainer::get()['db.connection']->insert_id;
-        $resolvedStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Resolved');
-        $closedStatusData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Closed');
+        $resolvedStatusData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Resolved');
+        $closedStatusData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Closed');
 
-        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $resolvedStatusData['id']);
-        UbirimiContainer::get()['repository']->get('agile.board.board')->addStatusToColumn($columnId, $closedStatusData['id']);
+        UbirimiContainer::get()['repository']->get(Board::class)->addStatusToColumn($columnId, $resolvedStatusData['id']);
+        UbirimiContainer::get()['repository']->get(Board::class)->addStatusToColumn($columnId, $closedStatusData['id']);
     }
 
     public function getColumns($boardId, $resultType = null) {
@@ -224,7 +225,7 @@ class Board
     }
 
     public function deleteStatusFromColumn($boardId, $StatusId) {
-        $columns = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumns($boardId, 'array');
+        $columns = UbirimiContainer::get()['repository']->get(Board::class)->getColumns($boardId, 'array');
         $columnsIds = array();
         for ($i = 0; $i < count($columns); $i++) {
             $columnsIds[] = $columns[$i]['id'];
@@ -238,7 +239,7 @@ class Board
     }
 
     public function getUnmappedStatuses($clientId, $boardId, $resultType = null) {
-        $clientStatuses = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('status', $clientId, 'array');
+        $clientStatuses = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('status', $clientId, 'array');
 
         $query = "select issue_status.id, issue_status.name " .
             "from agile_board " .
@@ -312,7 +313,7 @@ class Board
     public function getBacklogIssues($clientId, $boardData, $onlyMyIssuesFlag, $loggedInUserId, $searchText, $completeStatuses) {
         $filterId = $boardData['filter_id'];
 
-        $filterData = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->getById($filterId);
+        $filterData = UbirimiContainer::get()['repository']->get(IssueFilter::class)->getById($filterId);
         $definition = $filterData['definition'];
         $definitionArray = explode('&', $definition);
         $searchParameters = array();
@@ -337,7 +338,7 @@ class Board
 
         $searchParameters['not_status'] = $completeStatuses;
 
-        return UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($searchParameters, $loggedInUserId);
+        return UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters($searchParameters, $loggedInUserId);
     }
 
     public function deleteIssuesFromSprints($issueIdArray) {
@@ -462,7 +463,7 @@ class Board
     }
 
     public function deleteById($boardId) {
-        $boardColumnsArray = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumns($boardId, 'array');
+        $boardColumnsArray = UbirimiContainer::get()['repository']->get(Board::class)->getColumns($boardId, 'array');
         if ($boardColumnsArray) {
             $boardColumnsIds = Util::array_column($boardColumnsArray, 'id');
             $query = "delete from agile_board_column_status where agile_board_column_id IN (" . implode(', ', $boardColumnsIds) . ')';

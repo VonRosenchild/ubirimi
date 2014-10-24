@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -62,7 +62,7 @@
                 </tr>
             </thead>
             <?php if ($issueSecurityScheme): ?>
-                <?php $issueSecuritySchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecurityScheme['id']); ?>
+                <?php $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecurityScheme['id']); ?>
                 <tbody>
                     <?php while ($level = $issueSecuritySchemeLevels->fetch_array(MYSQLI_ASSOC)): ?>
                         <tr>
@@ -74,7 +74,7 @@
                             </td>
                             <td>
                                 <?php
-                                    $notificationData = SecurityScheme::getDataByLevelId($level['id']);
+                                    $notificationData = IssueSecurityScheme::getDataByLevelId($level['id']);
                                     if ($notificationData) {
                                         echo '<ul>';
                                         while ($data = $notificationData->fetch_array(MYSQLI_ASSOC)) {

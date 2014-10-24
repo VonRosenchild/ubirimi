@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AssociateStep2Controller extends UbirimiController
 {
@@ -17,16 +18,16 @@ class AssociateStep2Controller extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $projectId = $request->get('id');
         $schemeId = $request->get('scheme_id');
-        $selectedScheme = SecurityScheme::getMetaDataById($schemeId);
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $selectedScheme = IssueSecurityScheme::getMetaDataById($schemeId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         $projectIssueSecuritySchemeId = $project['issue_security_scheme_id'];
         $projectIssueSecurityScheme = null;
         if ($projectIssueSecuritySchemeId)
-            $projectIssueSecurityScheme = SecurityScheme::getMetaDataById($projectIssueSecuritySchemeId);
+            $projectIssueSecurityScheme = IssueSecurityScheme::getMetaDataById($projectIssueSecuritySchemeId);
 
         $menuSelectedCategory = 'project';
-        $selectedSchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($schemeId);
+        $selectedSchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($schemeId);
 
         if ($request->request->has('cancel')) {
             return new RedirectResponse('/yongo/administration/project/issue-security/' . $projectId);
@@ -37,22 +38,22 @@ class AssociateStep2Controller extends UbirimiController
                     $newSecurityLevel = $request->request->get($key);
                     $oldSecurityLevel = str_replace('new_level_', '', $key);
                     if ($oldSecurityLevel == 0) {
-                        $this->getRepository('yongo.project.project')->updateAllIssuesSecurityLevel($projectId, $newSecurityLevel);
+                        $this->getRepository(YongoProject::class)->updateAllIssuesSecurityLevel($projectId, $newSecurityLevel);
                     } else {
                         $oldNewLevel[] = array($oldSecurityLevel, $newSecurityLevel);
                     }
                 } else if ($key == 'no_level_set') {
                     $newSecurityLevel = $request->request->get($key);
-                    $this->getRepository('yongo.project.project')->updateIssueSecurityLevelForUnsercuredIssues($projectId, $newSecurityLevel);
+                    $this->getRepository(YongoProject::class)->updateIssueSecurityLevelForUnsercuredIssues($projectId, $newSecurityLevel);
                 }
             }
 
             if (count($oldNewLevel)) {
                 $date = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.project.project')->updateIssuesSecurityLevel($projectId, $oldNewLevel, $date);
+                $this->getRepository(YongoProject::class)->updateIssuesSecurityLevel($projectId, $oldNewLevel, $date);
             }
 
-            $this->getRepository('yongo.project.project')->setIssueSecuritySchemeId($projectId, $schemeId);
+            $this->getRepository(YongoProject::class)->setIssueSecuritySchemeId($projectId, $schemeId);
 
             return new RedirectResponse('/yongo/administration/project/issue-security/' . $projectId);
         }

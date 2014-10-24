@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 class DeleteSubscriptionController extends UbirimiController
 {
@@ -15,11 +16,11 @@ class DeleteSubscriptionController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $subscriptionId = $request->get('id');
-        $subscription = $this->getRepository('yongo.issue.filter')->getSubscriptionById($subscriptionId);
+        $subscription = $this->getRepository(IssueFilter::class)->getSubscriptionById($subscriptionId);
 
-        $this->getRepository('yongo.issue.filter')->deleteSubscriptionById($subscriptionId);
+        $this->getRepository(IssueFilter::class)->deleteSubscriptionById($subscriptionId);
 
-        $subscriptions = $this->getRepository('yongo.issue.filter')->getSubscriptions($subscription['filter_id']);
+        $subscriptions = $this->getRepository(IssueFilter::class)->getSubscriptions($subscription['filter_id']);
         if ($subscriptions) {
             return new RedirectResponse('/yongo/filter/' . $subscription['filter_id'] . '/subscription');
         } else {

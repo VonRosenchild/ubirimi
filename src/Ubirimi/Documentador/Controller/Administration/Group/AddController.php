@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Administration\Group;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -26,7 +27,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name);
+                $groupAlreadyExists = $this->getRepository(UbirimiGroup::class)->getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name);
                 if ($groupAlreadyExists)
                     $duplicateName = true;
             }
@@ -34,7 +35,7 @@ class AddController extends UbirimiController
             if (!$emptyName && !$duplicateName) {
                 $description = Util::cleanRegularInputField($request->request->get('description'));
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('ubirimi.user.group')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name, $description, $currentDate);
+                $this->getRepository(UbirimiGroup::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $name, $description, $currentDate);
 
                 return new RedirectResponse('/documentador/administration/groups');
             }

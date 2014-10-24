@@ -4,6 +4,9 @@ namespace Ubirimi\Documentador\Controller\Page\Attachment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,24 +21,24 @@ class ViewController extends UbirimiController
 
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
             $loggedInUserId = $session->get('user/id');
-            $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
+            $page = $this->getRepository(Entity::class)->getById($entityId, $loggedInUserId);
             if ($page)
                 $spaceId = $page['space_id'];
 
             $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $page['name'] . ' / Attachments';
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
 
-            $settingsDocumentator = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
+            $settingsDocumentator = $this->getRepository(UbirimiClient::class)->getDocumentatorSettings($clientId);
 
             $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
 
-            $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
+            $page = $this->getRepository(Entity::class)->getById($entityId, $loggedInUserId);
             if ($page) {
                 $spaceId = $page['space_id'];
-                $spaceHasAnonymousAccess = $this->getRepository('documentador.space.space')->hasAnonymousAccess($spaceId);
+                $spaceHasAnonymousAccess = $this->getRepository(Space::class)->hasAnonymousAccess($spaceId);
 
                 if (!($documentatorUseAnonymous && $spaceHasAnonymousAccess)) {
                     Util::signOutAndRedirect();

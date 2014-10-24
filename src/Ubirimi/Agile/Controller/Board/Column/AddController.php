@@ -5,6 +5,7 @@ namespace Ubirimi\Agile\Controller\Board\Column;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,7 +19,7 @@ class AddController extends UbirimiController
         $name = $request->request->get('name');
         $description = $request->request->get('description');
 
-        $this->getRepository('agile.board.board')->addColumn($boardId, $name, $description);
+        $this->getRepository(Board::class)->addColumn($boardId, $name, $description);
 
         return new Response('');
     }

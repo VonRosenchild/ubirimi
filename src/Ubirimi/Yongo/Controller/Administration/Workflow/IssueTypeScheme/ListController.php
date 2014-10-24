@@ -7,14 +7,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
 class ListController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $issueTypeSchemes = TypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $issueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
         $menuSelectedCategory = 'issue';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Issue Type Schemes';

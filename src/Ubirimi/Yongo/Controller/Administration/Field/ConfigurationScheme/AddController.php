@@ -5,11 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
-use Ubirimi\Yongo\Repository\Issue\Type;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
 class AddController extends UbirimiController
 {
@@ -27,16 +28,16 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $fieldConfigurationScheme = new ConfigurationScheme($session->get('client/id'), $name, $description);
+                $fieldConfigurationScheme = new FieldConfigurationScheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $fieldConfigurationSchemeId = $fieldConfigurationScheme->save($currentDate);
 
-                $issueTypes = Type::getAll($session->get('client/id'));
+                $issueTypes = IssueType::getAll($session->get('client/id'));
                 while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
-                    ConfigurationScheme::addData($fieldConfigurationSchemeId, null, $issueType['id'], $currentDate);
+                    FieldConfigurationScheme::addData($fieldConfigurationSchemeId, null, $issueType['id'], $currentDate);
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

@@ -9,6 +9,9 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class MoveStep1SubtaskController extends UbirimiController
 {
@@ -21,9 +24,9 @@ class MoveStep1SubtaskController extends UbirimiController
 
         $issueId = $request->get('id');
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
         $projectId = $issue['issue_project_id'];
-        $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
+        $issueProject = $this->getRepository(YongoProject::class)->getById($projectId);
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
@@ -45,8 +48,8 @@ class MoveStep1SubtaskController extends UbirimiController
             }
 
             // check if step 2 is necessary
-            $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType(UbirimiContainer::get()['session']->get('move_issue/new_project'), UbirimiContainer::get()['session']->get('move_issue/new_type'));
-            $newStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($newWorkflow['id']);
+            $newWorkflow = $this->getRepository(YongoProject::class)->getWorkflowUsedForType(UbirimiContainer::get()['session']->get('move_issue/new_project'), UbirimiContainer::get()['session']->get('move_issue/new_type'));
+            $newStatuses = $this->getRepository(Workflow::class)->getLinkedStatuses($newWorkflow['id']);
 
             $step2Necessary = true;
             while ($newStatuses && $status = $newStatuses->fetch_array(MYSQLI_ASSOC)) {
@@ -71,7 +74,7 @@ class MoveStep1SubtaskController extends UbirimiController
         $menuSelectedCategory = 'issue';
 
         $oldSubtaskIssueType = UbirimiContainer::get()['session']->get('move_issue/sub_task_old_issue_type');
-        $newSubtaskIssueType = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes(UbirimiContainer::get()['session']->get('move_issue/new_project'));
+        $newSubtaskIssueType = $this->getRepository(YongoProject::class)->getSubTasksIssueTypes(UbirimiContainer::get()['session']->get('move_issue/new_project'));
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/move/MoveStep1Subtask.php', get_defined_vars());
     }

@@ -4,6 +4,8 @@ namespace Ubirimi\Yongo\Controller\Administration\User;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -17,9 +19,9 @@ class AssignGroupsConfirmController extends UbirimiController
         $userId = $request->get('user_id');
         $productId = $request->get('product_id');
 
-        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
-        $allProductGroups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), $productId);
-        $userGroups = $this->getRepository('ubirimi.user.group')->getByUserIdAndProductId($userId, $productId);
+        $user = $this->getRepository(UbirimiUser::class)->getById($userId);
+        $allProductGroups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), $productId);
+        $userGroups = $this->getRepository(UbirimiGroup::class)->getByUserIdAndProductId($userId, $productId);
 
         $user_groups_ids_arr = array();
 

@@ -5,6 +5,9 @@ namespace Ubirimi\Documentador\Controller\Administration\GlobalPermissions;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -29,7 +32,7 @@ class EditController extends UbirimiController
             $parameters = array(array('field' => 'anonymous_use_flag', 'value' => $anonymous_use_flag, 'type' => 'i'),
                 array('field' => 'anonymous_view_user_profile_flag', 'value' => $anonymous_view_user_profile_flag, 'type' => 'i'));
 
-            $this->getRepository('ubirimi.general.client')->updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $parameters);
+            $this->getRepository(UbirimiClient::class)->updateProductSettings($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $parameters);
 
             // deal with permissions added to groups
 
@@ -71,11 +74,11 @@ class EditController extends UbirimiController
 
             return new RedirectResponse('/documentador/administration/global-permissions');
         }
-        $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
+        $documentatorSettings = $this->getRepository(UbirimiClient::class)->getDocumentatorSettings($clientId);
         $session->set('documentator/settings', $documentatorSettings);
 
-        $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
-        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $users = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
+        $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/globalpermissions/Edit.php', get_defined_vars());
     }

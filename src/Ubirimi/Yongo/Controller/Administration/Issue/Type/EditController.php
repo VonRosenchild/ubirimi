@@ -5,10 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\Type;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Type;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
 class EditController extends UbirimiController
 {
@@ -17,7 +19,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $issueType = Type::getById($Id);
+        $issueType = IssueType::getById($Id);
 
         if ($issueType['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,15 +36,15 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $type = $this->getRepository('yongo.issue.settings')->getByName($session->get('client/id'), 'type', mb_strtolower($name), $Id);
+            $type = $this->getRepository(IssueSettings::class)->getByName($session->get('client/id'), 'type', mb_strtolower($name), $Id);
             if ($type)
                 $typeExists = true;
 
             if (!$typeExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Type::updateById($Id, $name, $description, $currentDate);
+                IssueType::updateById($Id, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

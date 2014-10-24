@@ -1,8 +1,9 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\LinkHelper;
 
-    use Ubirimi\Repository\User\User;
+    use Ubirimi\Repository\User\UbirimiUser;
     use Ubirimi\SystemProduct;
     use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
@@ -17,7 +18,7 @@ use Ubirimi\LinkHelper;
         <?php if (Util::checkUserIsLoggedIn()): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
-                    <?php if (UbirimiContainer::get()['repository']->get('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE)): ?>
+                    <?php if (UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE)): ?>
                         <td><a id="btnNew" href="/documentador/administration/spaces/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create New Space</a></td>
                     <?php endif ?>
                 </tr>
@@ -59,7 +60,7 @@ use Ubirimi\LinkHelper;
                             <?php if (Util::checkUserIsLoggedIn()): ?>
                                 <td width="150px" align="center">
                                     <?php
-                                        $isFavourite = UbirimiContainer::get()['repository']->get('documentador.space.space')->checkSpaceIsFavouriteForUserId($space['space_id'], $loggedInUserId);
+                                        $isFavourite = UbirimiContainer::get()['repository']->get(Space::class)->checkSpaceIsFavouriteForUserId($space['space_id'], $loggedInUserId);
                                         if ($isFavourite)
                                             echo '<img id="remove_space_from_favourites_' . $space['space_id'] . '" title="Remove Space from Favourites" src="/img/favourite_full.png" />';
                                         else

@@ -9,11 +9,17 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\LinkHelper;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class MoveStep4Controller extends UbirimiController
 {
@@ -26,9 +32,9 @@ class MoveStep4Controller extends UbirimiController
 
         $issueId = $request->get('id');
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
         $projectId = $issue['issue_project_id'];
-        $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
+        $issueProject = $this->getRepository(YongoProject::class)->getById($projectId);
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
@@ -40,49 +46,49 @@ class MoveStep4Controller extends UbirimiController
         if ($request->request->get('move_issue_step_4')) {
             $currentDate = Util::getServerCurrentDateTime();
 
-            $oldIssueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-            $oldIssueData['component'] = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
+            $oldIssueData = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+            $oldIssueData['component'] = $this->getRepository(IssueComponent::class)->getByIssueIdAndProjectId($issueId, $projectId, 'array', 'name');
             if ($oldIssueData['component'] == null) {
                 $oldIssueData['component'] = array();
             }
-            $oldIssueData['affects_version'] = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+            $oldIssueData['affects_version'] = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
             if ($oldIssueData['affects_version'] == null) {
                 $oldIssueData['affects_version'] = array();
             }
-            $oldIssueData['fix_version'] = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+            $oldIssueData['fix_version'] = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG, 'array', 'name');
             if ($oldIssueData['fix_version'] == null) {
                 $oldIssueData['fix_version'] = array();
             }
 
-            $this->getRepository('yongo.issue.component')->deleteByIssueId($issueId);
-            $this->getRepository('yongo.issue.version')->deleteByIssueIdAndFlag($issueId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
-            $this->getRepository('yongo.issue.version')->deleteByIssueIdAndFlag($issueId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
+            $this->getRepository(IssueComponent::class)->deleteByIssueId($issueId);
+            $this->getRepository(IssueVersion::class)->deleteByIssueIdAndFlag($issueId, $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
+            $this->getRepository(IssueVersion::class)->deleteByIssueIdAndFlag($issueId, $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
 
             if ($session->has('move_issue/new_assignee')) {
-                $this->getRepository('yongo.issue.issue')->updateAssigneeRaw($issueId, $session->get('move_issue/new_assignee'));
+                $this->getRepository(Issue::class)->updateAssigneeRaw($issueId, $session->get('move_issue/new_assignee'));
             }
 
             if (count($session->get('move_issue/new_component'))) {
-                $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $session->get('move_issue/new_component'), 'issue_component');
+                $this->getRepository(Issue::class)->addComponentVersion($issueId, $session->get('move_issue/new_component'), 'issue_component');
             }
 
             if (count($session->get('move_issue/new_fix_version'))) {
-                $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $session->get('move_issue/new_fix_version'), 'issue_version', $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
+                $this->getRepository(Issue::class)->addComponentVersion($issueId, $session->get('move_issue/new_fix_version'), 'issue_version', $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
             }
 
             if (count($session->get('move_issue/new_affects_version'))) {
-                $this->getRepository('yongo.issue.issue')->addComponentVersion($issueId, $session->get('move_issue/new_affects_version'), 'issue_version', $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
+                $this->getRepository(Issue::class)->addComponentVersion($issueId, $session->get('move_issue/new_affects_version'), 'issue_version', $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
             }
 
             $newProjectId = $session->get('move_issue/new_project');
 
             // move the issue
-            $this->getRepository('yongo.issue.issue')->move($issueId, $newProjectId, $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
+            $this->getRepository(Issue::class)->move($issueId, $newProjectId, $session->get('move_issue/new_type'), $session->get('move_issue/sub_task_new_issue_type'));
 
             $session->remove('move_issue');
-            $newIssueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-            $fieldChanges = $this->getRepository('yongo.issue.issue')->computeDifference($oldIssueData, $newIssueData, array(), array());
-            $this->getRepository('yongo.issue.issue')->updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
+            $newIssueData = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+            $fieldChanges = $this->getRepository(Issue::class)->computeDifference($oldIssueData, $newIssueData, array(), array());
+            $this->getRepository(Issue::class)->updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
             $issueEvent = new IssueEvent(null, null, IssueEvent::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
             $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);
@@ -99,32 +105,32 @@ class MoveStep4Controller extends UbirimiController
         $previousData = $session->get('move_issue');
         $menuSelectedCategory = 'issue';
 
-        $newStatusName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_status'), 'status', 'name');
+        $newStatusName = $this->getRepository(IssueSettings::class)->getById($session->get('move_issue/new_status'), 'status', 'name');
 
-        $newProject = $this->getRepository('yongo.project.project')->getById($session->get('move_issue/new_project'));
-        $newTypeName = $this->getRepository('yongo.issue.settings')->getById($session->get('move_issue/new_type'), 'type', 'name');
+        $newProject = $this->getRepository(YongoProject::class)->getById($session->get('move_issue/new_project'));
+        $newTypeName = $this->getRepository(IssueSettings::class)->getById($session->get('move_issue/new_type'), 'type', 'name');
 
-        $issueComponents = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issue['id'], $projectId);
-        $issueFixVersions = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_FIX_VERSION_FLAG);
-        $issueAffectedVersions = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository('yongo.issue.issue')->ISSUE_AFFECTED_VERSION_FLAG);
+        $issueComponents = $this->getRepository(IssueComponent::class)->getByIssueIdAndProjectId($issue['id'], $projectId);
+        $issueFixVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
+        $issueAffectedVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
 
         $newIssueComponents = null;
         $newIssueFixVersions = null;
         $newIssueAffectsVersions = null;
 
         if (count($session->get('move_issue/new_component'))) {
-            $newIssueComponents = $this->getRepository('yongo.issue.component')->getByIds($session->get('move_issue/new_component'));
+            $newIssueComponents = $this->getRepository(IssueComponent::class)->getByIds($session->get('move_issue/new_component'));
         }
 
         if (count($session->get('move_issue/new_fix_version'))) {
-            $newIssueFixVersions = $this->getRepository('yongo.issue.version')->getByIds($session->get('move_issue/new_fix_version'));
+            $newIssueFixVersions = $this->getRepository(IssueVersion::class)->getByIds($session->get('move_issue/new_fix_version'));
         }
 
         if (count($session->get('move_issue/new_affects_version'))) {
-            $newIssueAffectsVersions = $this->getRepository('yongo.issue.version')->getByIds($session->get('move_issue/new_affects_version'));
+            $newIssueAffectsVersions = $this->getRepository(IssueVersion::class)->getByIds($session->get('move_issue/new_affects_version'));
         }
 
-        $newUserAssignee = $this->getRepository('ubirimi.user.user')->getById($session->get('move_issue/new_assignee'));
+        $newUserAssignee = $this->getRepository(UbirimiUser::class)->getById($session->get('move_issue/new_assignee'));
 
         return $this->render(__DIR__ . '/../../../Resources/views/issue/move/MoveStep4.php', get_defined_vars());
     }

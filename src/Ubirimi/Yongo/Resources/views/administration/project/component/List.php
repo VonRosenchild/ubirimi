@@ -1,6 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -61,7 +61,7 @@ require_once __DIR__ . '/../../_header.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php UbirimiContainer::get()['repository']->get('yongo.project.project')->renderTreeComponents($components, 0) ?>
+                    <?php UbirimiContainer::get()['repository']->get(YongoProject::class)->renderTreeComponents($components, 0) ?>
                 </tbody>
             </table>
             <div class="ubirimiModalDialog" id="modalDeleteProjectComponent"></div>

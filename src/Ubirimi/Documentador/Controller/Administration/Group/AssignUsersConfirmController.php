@@ -4,6 +4,8 @@ namespace Ubirimi\Documentador\Controller\Administration\Group;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,9 +18,9 @@ class AssignUsersConfirmController extends UbirimiController
         $clientId = $session->get('client/id');
         $groupId = $request->get('id');
 
-        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($groupId);
-        $allUsers = $this->getRepository('ubirimi.general.client')->getUsers($clientId);
-        $groupUsers = $this->getRepository('ubirimi.user.group')->getDataByGroupId($groupId);
+        $group = $this->getRepository(UbirimiGroup::class)->getMetadataById($groupId);
+        $allUsers = $this->getRepository(UbirimiClient::class)->getUsers($clientId);
+        $groupUsers = $this->getRepository(UbirimiGroup::class)->getDataByGroupId($groupId);
 
         $groupUsersArrayIds = array();
 

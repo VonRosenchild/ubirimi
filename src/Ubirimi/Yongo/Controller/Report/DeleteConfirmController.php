@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Report;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -21,7 +22,7 @@ class DeleteConfirmController extends UbirimiController
             return new Response('Are you sure you want to delete this report?');
         }
 
-        $boards = $this->getRepository('agile.board.board')->getByFilterId($filterId);
+        $boards = $this->getRepository(Board::class)->getByFilterId($filterId);
 
         $message = 'This report can not be deleted due to the following reasons:';
         $message .= '<br />';

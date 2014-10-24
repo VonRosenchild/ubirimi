@@ -5,11 +5,11 @@ namespace Ubirimi\FrontendNET\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Container\UbirimiContainer;
-
-use Ubirimi\Repository\User\User;
 
 class SignupController extends UbirimiController
 {
@@ -20,9 +20,9 @@ class SignupController extends UbirimiController
         $httpHOST = Util::getHttpHost();
         $clientDomain = Util::getSubdomain();
 
-        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         $countries = Util::getCountries();
 
         $errors = array('empty_email' => false,
@@ -54,12 +54,12 @@ class SignupController extends UbirimiController
                 $errors['email_not_valid'] = true;
             }
 
-            $emailData = $this->getRepository('ubirimi.user.user')->getUserByClientIdAndEmailAddress($clientId, mb_strtolower($email));
+            $emailData = $this->getRepository(UbirimiUser::class)->getUserByClientIdAndEmailAddress($clientId, mb_strtolower($email));
 
             if (!Util::validateUsername($username)) {
                 $errors['invalid_username'] = true;
             } else {
-                $userData = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId($username, $clientId);
+                $userData = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientId($username, $clientId);
                 if ($userData) {
                     $errors['duplicate_username'] = true;
                 }

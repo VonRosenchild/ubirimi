@@ -5,11 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Type;
-use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 
 class AddController extends UbirimiController
 {
@@ -19,7 +20,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
 
-        $allIssueTypes = Type::getAll($session->get('client/id'));
+        $allIssueTypes = IssueType::getAll($session->get('client/id'));
 
         if ($request->request->has('new_issue_type_screen_scheme')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -29,16 +30,16 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $issueTypeScreenScheme = new TypeScreenScheme($session->get('client/id'), $name, $description);
+                $issueTypeScreenScheme = new IssueTypeScreenScheme($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $issueTypeScreenSchemeId = $issueTypeScreenScheme->save($currentDate);
 
-                $issueTypes = Type::getAll($session->get('client/id'));
+                $issueTypes = IssueType::getAll($session->get('client/id'));
                 while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
-                    TypeScreenScheme::addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
+                    IssueTypeScreenScheme::addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

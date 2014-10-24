@@ -1,6 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -50,7 +51,7 @@ require_once __DIR__ . '/../../_header.php';
                             <div class="smallDescription"><?php echo $fieldConfigurationScheme['description'] ?></div>
                         </td>
                         <td width="500px">
-                            <?php $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByIssueTypeFieldConfigurationScheme($clientId, $fieldConfigurationScheme['id']) ?>
+                            <?php $projects = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByIssueTypeFieldConfigurationScheme($clientId, $fieldConfigurationScheme['id']) ?>
                             <?php if ($projects): ?>
                                 <ul>
                                 <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

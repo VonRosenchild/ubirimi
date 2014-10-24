@@ -1,9 +1,10 @@
 <?php
 
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Util;
 
 Util::checkSuperUserIsLoggedIn();
 
     $clientId = $request->request->get('id');
 
-    $this->getRepository('ubirimi.general.client')->deleteById($clientId);
+    $this->getRepository(UbirimiClient::class)->deleteById($clientId);

@@ -10,6 +10,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ChooseOperationController extends UbirimiController
 {
@@ -51,7 +52,7 @@ class ChooseOperationController extends UbirimiController
         // check for delete permission in each project
         $deletePermissionInAllProjects = true;
         for ($i = 0; $i < count($projectsIds); $i++) {
-            $hasDeletePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectsIds[$i], Permission::PERM_DELETE_ISSUE, $loggedInUserId);
+            $hasDeletePermission = $this->getRepository(YongoProject::class)->userHasPermission($projectsIds[$i], Permission::PERM_DELETE_ISSUE, $loggedInUserId);
             if (!$hasDeletePermission) {
                 $deletePermissionInAllProjects = false;
                 break;

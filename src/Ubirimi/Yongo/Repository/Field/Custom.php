@@ -3,8 +3,8 @@
 namespace Ubirimi\Yongo\Repository\Field;
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Issue\Type;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class Custom {
 
@@ -56,7 +56,7 @@ class Custom {
         $query = "INSERT INTO field(client_id, sys_field_type_id, name, description, system_flag, all_issue_type_flag, all_project_flag, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $systemFlag = 0;
-        $fieldTypeResult = Type::getByCode($fieldType);
+        $fieldTypeResult = IssueType::getByCode($fieldType);
         $fieldTypeId = $fieldTypeResult['id'];
 
         $allIssueTypeFlag = (count($issueType) == 1 && $issueType[0] == -1) ? 1 : 0;
@@ -72,7 +72,7 @@ class Custom {
         // add data if necessary
 
         if ($allIssueTypeFlag) {
-            $issueTypeResult = Type::getAll($clientId);
+            $issueTypeResult = IssueType::getAll($clientId);
             $issueType = array();
             while ($type = $issueTypeResult->fetch_array(MYSQLI_ASSOC)) {
                 $issueType[] = $type['id'];
@@ -89,7 +89,7 @@ class Custom {
         }
 
         if ($allProjectFlag) {
-            $projectResult = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByClientId($clientId);
+            $projectResult = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByClientId($clientId);
             $project = array();
             while ($pr = $projectResult->fetch_array(MYSQLI_ASSOC)) {
                 $project[] = $pr['id'];

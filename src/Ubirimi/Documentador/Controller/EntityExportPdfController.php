@@ -4,6 +4,7 @@ namespace Ubirimi\Documentador\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,7 +17,7 @@ class EntityExportPdfController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
         $pageId = $request->get('id');
 
-        $page = $this->getRepository('documentador.entity.entity')->getById($pageId, $loggedInUserId);
+        $page = $this->getRepository(Entity::class)->getById($pageId, $loggedInUserId);
 
         // create new PDF document
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

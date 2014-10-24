@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\Transition\PostFuncti
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class AddDataController extends UbirimiController
@@ -22,8 +24,8 @@ class AddDataController extends UbirimiController
         $workflowDataId = $request->get('id');
         $postFunctionId = $request->get('function_id');
         $postFunctionSelected = $this->getRepository('yongo.workflow.workflowFunction')->getById($postFunctionId);
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
-        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
+        $workflowData = $this->getRepository(Workflow::class)->getDataById($workflowDataId);
+        $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowData['workflow_id']);
 
         $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
 
@@ -37,7 +39,7 @@ class AddDataController extends UbirimiController
                 $this->getRepository('yongo.workflow.workflowFunction')->addPostFunction($workflowDataId, $postFunctionId, $value);
 
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);
+                $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);
             }
 
             return new RedirectResponse('/yongo/administration/workflow/transition-post-functions/' . $workflowDataId);

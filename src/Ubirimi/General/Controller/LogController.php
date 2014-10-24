@@ -4,6 +4,7 @@ namespace Ubirimi\General\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -21,7 +22,7 @@ class LogController extends UbirimiController
         $from = $request->get('from');
         $to = $request->get('to');
 
-        $logs = $this->getRepository('ubirimi.general.log')->getByClientIdAndInterval($clientId, $from, $to);
+        $logs = $this->getRepository(UbirimiLog::class)->getByClientIdAndInterval($clientId, $from, $to);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Logs';
 

@@ -5,6 +5,7 @@ namespace Ubirimi\General\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -26,8 +27,8 @@ class EditSettingsController extends UbirimiController
             'Atlantic' => 32, 'Australia' => 64, 'Europe' => 128, 'Indian' => 256, 'Pacific' => 512);
         $timeZoneCountry = $timezoneData[1];
 
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
 
         if ($request->request->has('update_configuration')) {
 
@@ -41,7 +42,7 @@ class EditSettingsController extends UbirimiController
                 array('field' => 'language', 'value' => $language, 'type' => 's'),
                 array('field' => 'timezone', 'value' => $timezone, 'type' => 's'));
 
-            $this->getRepository('ubirimi.general.client')->updateProductSettings($clientId, 'client_settings', $parameters);
+            $this->getRepository(UbirimiClient::class)->updateProductSettings($clientId, 'client_settings', $parameters);
 
             $session->set('client/settings/language', $language);
             $session->set('client/settings/timezone', $timezone);

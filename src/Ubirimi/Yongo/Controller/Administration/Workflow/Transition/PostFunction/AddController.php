@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class AddController extends UbirimiController
 {
@@ -16,8 +17,8 @@ class AddController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowDataId = $request->get('id');
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataById($workflowDataId);
-        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowData['workflow_id']);
+        $workflowData = $this->getRepository(Workflow::class)->getDataById($workflowDataId);
+        $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowData['workflow_id']);
 
         $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
 

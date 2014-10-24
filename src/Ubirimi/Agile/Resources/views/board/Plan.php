@@ -1,4 +1,5 @@
 <?php
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
@@ -137,7 +138,7 @@ require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
                                 }
                             }
 
-                            $issues = UbirimiContainer::get()['repository']->get('agile.board.board')->getBacklogIssues($clientId, $board, $onlyMyIssuesFlag, $loggedInUserId, $searchQuery, $completeStatuses);
+                            $issues = UbirimiContainer::get()['repository']->get(Board::class)->getBacklogIssues($clientId, $board, $onlyMyIssuesFlag, $loggedInUserId, $searchQuery, $completeStatuses);
 
                             $params = array('issues' => $issues, 'render_checkbox' => true, 'show_header' => false, 'in_backlog' => true);
                             echo '<div class="headerPageText" style="padding-bottom: 4px; padding-top: 4px">Backlog</div>';

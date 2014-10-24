@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 class ToggleFavouriteController extends UbirimiController
 {
@@ -17,6 +18,6 @@ class ToggleFavouriteController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $this->getRepository('yongo.issue.filter')->toggleFavourite($userId, $filterId, $currentDate);
+        $this->getRepository(IssueFilter::class)->toggleFavourite($userId, $filterId, $currentDate);
     }
 }

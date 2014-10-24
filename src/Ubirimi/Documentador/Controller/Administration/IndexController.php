@@ -4,6 +4,7 @@ namespace Ubirimi\Documentador\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -19,7 +20,7 @@ class IndexController extends UbirimiController
 
         $menuSelectedCategory = 'doc_administration';
 
-        $spacesWithAdminPermission = $this->getRepository('documentador.space.space')->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
+        $spacesWithAdminPermission = $this->getRepository(Space::class)->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
 
         $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
         $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');

@@ -7,8 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class SaveIssueTransitionNoScreenController extends UbirimiController
 {
@@ -25,12 +28,12 @@ class SaveIssueTransitionNoScreenController extends UbirimiController
         $workflowId = $request->request->get('workflow_id');
         $issueId = $request->request->get('issue_id');
 
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
 
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $workflowStepIdFrom, $workflowStepIdTo);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $workflowData = $this->getRepository(Workflow::class)->getDataByStepIdFromAndStepIdTo($workflowId, $workflowStepIdFrom, $workflowStepIdTo);
+        $issue = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
-        $canBeExecuted = $this->getRepository('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issue);
+        $canBeExecuted = $this->getRepository(Workflow::class)->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issue);
 
         if ($canBeExecuted) {
 
@@ -43,7 +46,7 @@ class SaveIssueTransitionNoScreenController extends UbirimiController
             $this->getRepository('yongo.workflow.workflowFunction')->triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
 
             // update the date_updated field
-            $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $date), $date);
+            $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $date), $date);
 
             return new Response('success');
 

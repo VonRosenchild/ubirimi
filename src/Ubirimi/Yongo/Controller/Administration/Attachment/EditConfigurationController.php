@@ -5,6 +5,8 @@ namespace Ubirimi\Yongo\Controller\Administration\Attachment;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,7 +20,7 @@ class EditConfigurationController extends UbirimiController
 
         $menuSelectedCategory = 'system';
 
-        $settings = $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id'));
+        $settings = $this->getRepository(UbirimiClient::class)->getYongoSettings($session->get('client/id'));
 
         if ($request->request->has('update_configuration')) {
             $allowAttachmentsFlag = $request->request->get('allow_attachments_flag');
@@ -31,7 +33,7 @@ class EditConfigurationController extends UbirimiController
                 )
             );
 
-            $this->getRepository('ubirimi.general.client')->updateProductSettings(
+            $this->getRepository(UbirimiClient::class)->updateProductSettings(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $parameters
@@ -39,7 +41,7 @@ class EditConfigurationController extends UbirimiController
 
             $currentDate = Util::getServerCurrentDateTime();
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

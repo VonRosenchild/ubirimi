@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Configuration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 
 class EditDataController extends UbirimiController
 {
@@ -21,16 +22,16 @@ class EditDataController extends UbirimiController
         $visibleFlag = $request->get('visible_flag');
         $requiredFlag = $request->get('required_flag');
 
-        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
-        $data = Configuration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
+        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
         if (!$data)
-            Configuration::addSimpleData($fieldConfigurationId, $fieldId);
+            FieldConfiguration::addSimpleData($fieldConfigurationId, $fieldId);
 
-        Configuration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
+        FieldConfiguration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add(
+        $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

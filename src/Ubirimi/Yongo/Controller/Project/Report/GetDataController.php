@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class GetDataController extends UbirimiController
 {
@@ -17,7 +18,7 @@ class GetDataController extends UbirimiController
 
         if ($statisticType == 'assignee') {
             $issueQueryParameters = array('project' => array($projectId));
-            $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+            $issues = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
             $issuesAssignee = array();
             while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {

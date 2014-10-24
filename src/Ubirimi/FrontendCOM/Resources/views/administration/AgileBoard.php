@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Repository\User\User;
+    use Ubirimi\Repository\User\UbirimiUser;
 
     require_once __DIR__ . '/_header.php';
 ?>
@@ -45,7 +45,7 @@
                 <td><?php echo $agileBoard['swimlane_strategy']; ?></td>
                 <td>
                     <?php
-                    $user = $this->getRepository('ubirimi.user.user')->getById($agileBoard['user_created_id']);
+                    $user = $this->getRepository(UbirimiUser::class)->getById($agileBoard['user_created_id']);
                     echo $user['first_name'] . ' ' . $user['last_name'];
                     ?>
                 </td>

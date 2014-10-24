@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 class SelectSchemeController extends UbirimiController
 {
@@ -18,7 +19,7 @@ class SelectSchemeController extends UbirimiController
 
         $projectId = $request->get('id');
 
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -28,7 +29,7 @@ class SelectSchemeController extends UbirimiController
             return new RedirectResponse('/yongo/administration/project/workflows/update-status/' . $projectId . '/' . $workflowSchemeId);
         }
 
-        $workflowSchemes = Scheme::getMetaDataByClientId($session->get('client/id'));
+        $workflowSchemes = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Select Project Workflow Scheme';

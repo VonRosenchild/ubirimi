@@ -4,12 +4,12 @@ namespace Ubirimi\Yongo\Repository\Workflow;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\Event;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class WorkflowFunction
 {
@@ -24,21 +24,21 @@ class WorkflowFunction
         $workflowDataId = $workflowData['id'];
         $issueId = $issueData['id'];
         $projectId = $issueData['issue_project_id'];
-        $project = UbirimiContainer::get()['repository']->get('yongo.project.project')->getById($projectId);
+        $project = UbirimiContainer::get()['repository']->get(YongoProject::class)->getById($projectId);
         $functions = WorkflowFunction::getByWorkflowDataId($workflowDataId);
-        $loggedInUser = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getById($loggedInUserId);
+        $loggedInUser = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getById($loggedInUserId);
 
         while ($functions && $function = $functions->fetch_array(MYSQLI_ASSOC)) {
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY) {
-                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateHistory($issueId, $loggedInUserId, $issueFieldChanges, $currentDate);
+                UbirimiContainer::get()['repository']->get(Issue::class)->updateHistory($issueId, $loggedInUserId, $issueFieldChanges, $currentDate);
                 foreach ($issueFieldChanges as $key => $value) {
                     if ($value[0] == Field::FIELD_RESOLUTION_CODE) {
                         if ($value[2]) {
-                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
+                            UbirimiContainer::get()['repository']->get(Issue::class)->updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
                         } else {
                             // clear the resolved date
-                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => null), $currentDate);
+                            UbirimiContainer::get()['repository']->get(Issue::class)->updateById($issueId, array('date_resolved' => null), $currentDate);
                         }
                     }
                 }
@@ -46,12 +46,12 @@ class WorkflowFunction
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP) {
 
-                $finalStatusId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getStepById($workflowData['workflow_step_id_to'], 'linked_issue_status_id');
+                $finalStatusId = UbirimiContainer::get()['repository']->get(Workflow::class)->getStepById($workflowData['workflow_step_id_to'], 'linked_issue_status_id');
 
-                $finalStatusName = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($finalStatusId, 'status', 'name');
-                $initialStatusName = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($issueData[Field::FIELD_STATUS_CODE], 'status', 'name');
+                $finalStatusName = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getById($finalStatusId, 'status', 'name');
+                $initialStatusName = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getById($issueData[Field::FIELD_STATUS_CODE], 'status', 'name');
                 $issueFieldChanges[] = array(Field::FIELD_STATUS_CODE, $initialStatusName, $finalStatusName, $issueData[Field::FIELD_STATUS_CODE], $finalStatusId);
-                UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateField($issueId, 'status_id', $finalStatusId);
+                UbirimiContainer::get()['repository']->get(Issue::class)->updateField($issueId, 'status_id', $finalStatusId);
             }
 
             if ($function['sys_workflow_post_function_id'] == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE) {
@@ -71,10 +71,10 @@ class WorkflowFunction
                             $updateValue = $field_value_arr[1];
                         }
 
-                        UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array(Field::FIELD_RESOLUTION_CODE => $updateValue), $currentDate);
-                        $oldResolution = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($issueData[Field::FIELD_RESOLUTION_CODE], 'resolution', 'name');
+                        UbirimiContainer::get()['repository']->get(Issue::class)->updateById($issueId, array(Field::FIELD_RESOLUTION_CODE => $updateValue), $currentDate);
+                        $oldResolution = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getById($issueData[Field::FIELD_RESOLUTION_CODE], 'resolution', 'name');
                         if ($updateValue)
-                            $newResolution = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($updateValue, 'resolution', 'name');
+                            $newResolution = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getById($updateValue, 'resolution', 'name');
                         else
                             $newResolution = null;
 
@@ -83,10 +83,10 @@ class WorkflowFunction
                         }
 
                         if ($updateValue) {
-                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
+                            UbirimiContainer::get()['repository']->get(Issue::class)->updateById($issueId, array('date_resolved' => $currentDate), $currentDate);
                         } else {
                             // clear the resolved date
-                            UbirimiContainer::get()['repository']->get('yongo.issue.issue')->updateById($issueId, array('date_resolved' => null), $currentDate);
+                            UbirimiContainer::get()['repository']->get(Issue::class)->updateById($issueId, array('date_resolved' => null), $currentDate);
                         }
                         break;
                 }
@@ -98,7 +98,7 @@ class WorkflowFunction
                 $eventData = explode("=", $definition_data);
                 $eventId = $eventData[1];
 
-                $users = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersForNotification($projectId, $eventId, $issueData, $loggedInUserId);
+                $users = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersForNotification($projectId, $eventId, $issueData, $loggedInUserId);
 
                 if ($users && Email::$smtpSettings) {
                     while ($user = $users->fetch_array(MYSQLI_ASSOC)) {
@@ -139,11 +139,11 @@ class WorkflowFunction
                     switch ($field_name) {
 
                         case Field::FIELD_RESOLUTION_CODE:
-                            $fieldValueData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($field_value, 'resolution');
+                            $fieldValueData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getById($field_value, 'resolution');
                             break;
 
                         case Field::FIELD_PRIORITY_CODE:
-                            $fieldValueData = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($field_value, 'priority');
+                            $fieldValueData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getById($field_value, 'priority');
                             break;
                     }
 
@@ -158,7 +158,7 @@ class WorkflowFunction
                 } else if (strstr($postFunction['definition_data'], '=')) {
                     $definitionData = explode('=', $postFunction['definition_data']);
                     $eventId = $definitionData[1];
-                    $event = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getById($eventId);
+                    $event = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getById($eventId);
                     $description = 'Fire a <b>' . $event['name'] . '</b> event that can be processed by the listeners.';
                 }
 

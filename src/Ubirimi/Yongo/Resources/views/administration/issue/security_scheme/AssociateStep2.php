@@ -1,8 +1,8 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -54,12 +54,12 @@ require_once __DIR__ . '/../../_header.php';
                 <?php
                     $projectLevels = null;
                     if ($projectIssueSecuritySchemeId)
-                        $projectLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($projectIssueSecuritySchemeId);
+                        $projectLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($projectIssueSecuritySchemeId);
 
                     $issuesWithSecurityLevelSet = false;
                     if ($projectLevels) {
                         while ($projectLevel = $projectLevels->fetch_array(MYSQLI_ASSOC)) {
-                            $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId, 'security_scheme_level' => $projectLevel['id']));
+                            $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('project' => $projectId, 'security_scheme_level' => $projectLevel['id']));
                             if ($issues) {
                                 $issuesWithSecurityLevelSet = true;
                                 echo $header;
@@ -82,7 +82,7 @@ require_once __DIR__ . '/../../_header.php';
                         }
 
                         // deal with issues without an issue security level
-                        $issues = UbirimiContainer::get()['repository']->get('yongo.project.project')->getIssuesWithNoSecurityScheme($projectId);
+                        $issues = UbirimiContainer::get()['repository']->get(YongoProject::class)->getIssuesWithNoSecurityScheme($projectId);
 
                         if ($issues) {
                             echo $header;
@@ -113,7 +113,7 @@ require_once __DIR__ . '/../../_header.php';
                     } else {
                         echo '<tr>';
                             echo '<td>';
-                                $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
+                                $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('project' => $projectId));
                                 $countIssues = 0;
                                 if ($issues) {
                                     $countIssues = $issues->num_rows;

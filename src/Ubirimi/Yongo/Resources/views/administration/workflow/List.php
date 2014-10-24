@@ -1,8 +1,8 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Yongo\Repository\Workflow\Scheme;
+    use Ubirimi\Yongo\Repository\Project\YongoProject;
+    use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
     require_once __DIR__ . '/../_header.php';
 ?>
@@ -61,7 +61,7 @@ use Ubirimi\Util;
                             <?php echo $workflow['issue_type_scheme_name'] ?>
                         </td>
                         <td width="400px">
-                            <?php $workflowSchemes = Scheme::getByWorkflowId($workflow['id']) ?>
+                            <?php $workflowSchemes = WorkflowScheme::getByWorkflowId($workflow['id']) ?>
                             <?php if ($workflowSchemes): ?>
                             <ul>
                                 <?php while ($workflowScheme = $workflowSchemes->fetch_array(MYSQLI_ASSOC)): ?>
@@ -75,7 +75,7 @@ use Ubirimi\Util;
                         </td>
                         <td>
                             <?php
-                                $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByWorkflowId($workflow['id']);
+                                $projects = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByWorkflowId($workflow['id']);
                                 if ($projects) {
                                     echo 'Active';
                                 } else {

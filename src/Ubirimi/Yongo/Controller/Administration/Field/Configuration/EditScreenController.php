@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class EditScreenVisibilityController extends UbirimiController
 {
@@ -19,21 +21,21 @@ class EditScreenVisibilityController extends UbirimiController
         $fieldConfigurationId = $request->get('field_configuration_id');
         $fieldId = $request->get('id');
 
-        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
 
-        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
-        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
+        $field = $this->getRepository(Field::class)->getById($fieldId);
+        $screens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
 
         if ($request->request->has('edit_field_configuration_screen')) {
             $currentDate = Util::getServerCurrentDateTime();
-            $this->getRepository('yongo.screen.screen')->deleteDataByFieldId($fieldId);
+            $this->getRepository(Screen::class)->deleteDataByFieldId($fieldId);
             foreach ($request->request as $key => $value) {
                 if (substr($key, 0, 13) == 'field_screen_') {
                     $data = str_replace('field_screen_', '', $key);
                     $values = explode('_', $data);
                     $fieldSelectedId = $values[0];
                     $screenSelectedId = $values[1];
-                    $this->getRepository('yongo.screen.screen')->addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
+                    $this->getRepository(Screen::class)->addData($screenSelectedId, $fieldSelectedId, null, $currentDate);
                 }
             }
 

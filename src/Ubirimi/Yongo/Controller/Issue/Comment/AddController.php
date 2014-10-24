@@ -13,6 +13,9 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AddController extends UbirimiController
 {
@@ -27,9 +30,9 @@ class AddController extends UbirimiController
 
         $date = Util::getServerCurrentDateTime();
 
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $project = $this->getRepository('yongo.project.project')->getById($issue['issue_project_id']);
-        $this->getRepository('yongo.issue.comment')->add($issueId, $session->get('user/id'), $content, $date);
+        $issue = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $project = $this->getRepository(YongoProject::class)->getById($issue['issue_project_id']);
+        $this->getRepository(IssueComment::class)->add($issueId, $session->get('user/id'), $content, $date);
 
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $content);
         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'ADD Yongo issue comment ' . $issue['project_code'] . '-' . $issue['nr']);

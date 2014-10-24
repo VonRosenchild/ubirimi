@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\UbirimiEvent;
 use Ubirimi\Event\UbirimiEvents;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -24,7 +25,7 @@ class FeedbackController extends UbirimiController
         $newFeatures = $request->request->get('new_features');
         $experience = $request->request->get('experience');
 
-        $userData = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
+        $userData = $this->getRepository(UbirimiUser::class)->getById($loggedInUserId);
 
         $event = new UbirimiEvent(
             array(

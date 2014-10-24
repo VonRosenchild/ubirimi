@@ -1,6 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 require_once __DIR__ . '/../_header.php';
@@ -56,7 +56,7 @@ require_once __DIR__ . '/../_header.php';
                 </tr>
                 <tr>
                     <td valign="top" width="180">
-                        <?php $issueTypes = TypeScheme::getDataById($workflow['issue_type_scheme_id']); ?>
+                        <?php $issueTypes = IssueTypeScheme::getDataById($workflow['issue_type_scheme_id']); ?>
                         <div><b>These <?php echo $issueTypes->num_rows ?> issue types...</b></div>
                         <?php while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                             <div><?php echo $issueType['name'] ?></div>
@@ -69,13 +69,13 @@ require_once __DIR__ . '/../_header.php';
                                 <td width="400">Step Name</td>
                                 <td align="left">Transition</td>
                             </tr>
-                            <?php $steps = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getSteps($workflow['id']) ?>
+                            <?php $steps = UbirimiContainer::get()['repository']->get(Workflow::class)->getSteps($workflow['id']) ?>
                             <?php while ($step = $steps->fetch_array(MYSQLI_ASSOC)): ?>
                                 <tr>
                                     <td><?php echo $step['step_name'] ?></td>
                                     <td align="left">
                                         <?php
-                                            $transitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getTransitionsForStepId($workflow['id'], $step['id']); ?>
+                                            $transitions = UbirimiContainer::get()['repository']->get(Workflow::class)->getTransitionsForStepId($workflow['id'], $step['id']); ?>
                                         <?php if ($transitions): ?>
                                             <?php for ($i = 0; $i < $transitions->num_rows; $i++): ?>
                                                 <?php $transition = $transitions->fetch_array(MYSQLI_ASSOC) ?>

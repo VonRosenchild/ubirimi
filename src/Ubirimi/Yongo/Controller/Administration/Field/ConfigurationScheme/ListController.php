@@ -7,14 +7,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 
 class ListController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $fieldConfigurationSchemes = ConfigurationScheme::getByClient($session->get('client/id'));
+        $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

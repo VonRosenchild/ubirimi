@@ -5,10 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class EditMetadataController extends UbirimiController
 {
@@ -18,8 +20,8 @@ class EditMetadataController extends UbirimiController
 
         $workflowId = $request->get('id');
 
-        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
-        $workflowIssueTypeSchemes = TypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
+        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
 
         if ($workflow['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -38,9 +40,9 @@ class EditMetadataController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository('yongo.workflow.workflow')->updateMetaDataById($workflowId, $name, $description, $workflowIssueTypeSchemeId, $currentDate);
+                $this->getRepository(Workflow::class)->updateMetaDataById($workflowId, $name, $description, $workflowIssueTypeSchemeId, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

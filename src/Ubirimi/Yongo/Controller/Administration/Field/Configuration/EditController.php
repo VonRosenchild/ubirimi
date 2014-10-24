@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 
 class EditController extends UbirimiController
 {
@@ -16,7 +17,7 @@ class EditController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $fieldConfigurationId = $request->get('id');
-        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
 
         if ($fieldConfiguration['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -24,7 +25,7 @@ class EditController extends UbirimiController
 
         $emptyName = false;
 
-        $allFields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
+        $allFields = $this->getRepository(Field::class)->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'issue';
 
         $source = $request->get('source');

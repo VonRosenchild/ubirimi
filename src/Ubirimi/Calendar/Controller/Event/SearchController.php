@@ -4,6 +4,7 @@ namespace Ubirimi\Calendar\Controller\Event;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Event\CalendarEvent;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,7 +21,7 @@ class SearchController extends UbirimiController
         $menuSelectedCategory = 'calendars';
         $query = $request->get('search_query');
         // todo: search only my events or shared with me
-        $events = $this->getRepository('calendar.event.event')->getByText($session->get('user/id'), $query);
+        $events = $this->getRepository(CalendarEvent::class)->getByText($session->get('user/id'), $query);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '
             . SystemProduct::SYS_PRODUCT_CALENDAR_NAME

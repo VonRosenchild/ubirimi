@@ -4,6 +4,7 @@ namespace Ubirimi\Documentador\Controller\Administration\Group;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -15,7 +16,7 @@ class ListController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $clientId = $session->get('client/id');
-        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
         $menuSelectedCategory = 'doc_users';
 

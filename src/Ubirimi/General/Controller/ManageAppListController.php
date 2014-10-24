@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -43,16 +44,16 @@ class ManageAppListController extends UbirimiController
         }
 
         if ($visible) {
-            $this->getRepository('ubirimi.general.client')->addProduct($session->get('client/id'), $productId, $currentDate);
+            $this->getRepository(UbirimiClient::class)->addProduct($session->get('client/id'), $productId, $currentDate);
         } else {
-            $this->getRepository('ubirimi.general.client')->deleteProduct($session->get('client/id'), $productId);
+            $this->getRepository(UbirimiClient::class)->deleteProduct($session->get('client/id'), $productId);
             if ($productId == SystemProduct::SYS_PRODUCT_YONGO) {
-                $this->getRepository('ubirimi.general.client')->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_HELP_DESK);
-                $this->getRepository('ubirimi.general.client')->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_CHEETAH);
+                $this->getRepository(UbirimiClient::class)->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_HELP_DESK);
+                $this->getRepository(UbirimiClient::class)->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_CHEETAH);
             }
         }
 
-        $clientProducts = $this->getRepository('ubirimi.general.client')->getProducts($session->get('client/id'), 'array');
+        $clientProducts = $this->getRepository(UbirimiClient::class)->getProducts($session->get('client/id'), 'array');
 
         UbirimiContainer::get()['session']->remove("client/products");
 
@@ -61,7 +62,7 @@ class ManageAppListController extends UbirimiController
                 UbirimiContainer::get()['session']->set("client/products/{$key}", $value);
             });
         } else {
-            $this->getRepository('ubirimi.general.client')->addProduct($session->get('client/id'), $productId, $currentDate);
+            $this->getRepository(UbirimiClient::class)->addProduct($session->get('client/id'), $productId, $currentDate);
             $session->set('client/products', array(array('sys_product_id' => $productId)));
         }
 

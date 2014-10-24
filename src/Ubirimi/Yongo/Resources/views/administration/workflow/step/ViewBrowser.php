@@ -35,7 +35,7 @@ require_once __DIR__ . '/../../_header.php';
             <tr>
                 <td>
                     <?php
-                        $transitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getIncomingTransitionsForStep($workflow['id'], $stepId); ?>
+                        $transitions = UbirimiContainer::get()['repository']->get(Workflow::class)->getIncomingTransitionsForStep($workflow['id'], $stepId); ?>
                     <?php if ($transitions): ?>
                         <table>
                             <?php while ($transition = $transitions->fetch_array(MYSQLI_ASSOC)): ?>
@@ -49,7 +49,7 @@ require_once __DIR__ . '/../../_header.php';
                 <td valign="top" align="center"><?php echo $step['name'] ?></td>
                 <td valign="top">
                     <?php
-                        $transitions = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getOutgoingTransitionsForStep($workflow['id'], $stepId); ?>
+                        $transitions = UbirimiContainer::get()['repository']->get(Workflow::class)->getOutgoingTransitionsForStep($workflow['id'], $stepId); ?>
                     <?php if ($transitions): ?>
                         <table>
                             <?php while ($transition = $transitions->fetch_array(MYSQLI_ASSOC)): ?>

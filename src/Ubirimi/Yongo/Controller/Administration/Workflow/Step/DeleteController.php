@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class DeleteController extends UbirimiController
 {
@@ -16,7 +17,7 @@ class DeleteController extends UbirimiController
 
         $stepId = $request->request->get('id');
 
-        $this->getRepository('yongo.workflow.workflow')->deleteStepById($stepId);
+        $this->getRepository(Workflow::class)->deleteStepById($stepId);
 
         return new Response('');
     }

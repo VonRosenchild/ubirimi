@@ -3,7 +3,7 @@
 namespace Ubirimi;
 
 use Ubirimi\Container\UbirimiContainer;
-
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Repository\Invoice;
 
 class InvoiceUtil
@@ -31,10 +31,10 @@ class InvoiceUtil
     {
         $customerId = $clientId;
 
-        $client = $this->getRepository('ubirimi.general.client')->getById($customerId);
-        $clientCountry = $this->getRepository('ubirimi.general.client')->getCountryById($client['sys_country_id']);
+        $client = $this->getRepository(UbirimiClient::class)->getById($customerId);
+        $clientCountry = $this->getRepository(UbirimiClient::class)->getCountryById($client['sys_country_id']);
 
-        $clientAdministrators = $this->getRepository('ubirimi.general.client')->getAdministrators($customerId);
+        $clientAdministrators = $this->getRepository(UbirimiClient::class)->getAdministrators($customerId);
         $firstClientAdministrator = $clientAdministrators->fetch_array(MYSQLI_ASSOC);
 
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

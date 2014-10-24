@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Event;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Event;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 
 class AddController extends UbirimiController
 {
@@ -31,10 +32,10 @@ class AddController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $event = new Event($session->get('client/id'), $name, $description);
+                $event = new IssueEvent($session->get('client/id'), $name, $description);
                 $event->save($currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

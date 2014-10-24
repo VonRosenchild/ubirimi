@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration\GlobalPermission;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -15,7 +16,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
+        $users = $this->getRepository(UbirimiClient::class)->getUsers($session->get('client/id'));
 
         $globalPermissions = GlobalPermission::getAllByProductId(SystemProduct::SYS_PRODUCT_YONGO);
         $menuSelectedCategory = 'user';

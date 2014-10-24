@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 
 
 class CopyController extends UbirimiController
@@ -18,7 +19,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationSchemeId = $request->get('id');
-        $fieldConfigurationScheme = ConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +36,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateFieldConfigurationScheme = ConfigurationScheme::getMetaDataByNameAndClientId(
+            $duplicateFieldConfigurationScheme = FieldConfigurationScheme::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -46,7 +47,7 @@ class CopyController extends UbirimiController
             if (!$emptyName && !$duplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $copiedFieldConfigurationScheme = new ConfigurationScheme(
+                $copiedFieldConfigurationScheme = new FieldConfigurationScheme(
                     $session->get('client/id'),
                     $name,
                     $description
@@ -54,7 +55,7 @@ class CopyController extends UbirimiController
 
                 $copiedFieldConfigurationSchemeId = $copiedFieldConfigurationScheme->save($currentDate);
 
-                $fieldConfigurationSchemeData = ConfigurationScheme::getDataByFieldConfigurationSchemeId(
+                $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataByFieldConfigurationSchemeId(
                     $fieldConfigurationSchemeId
                 );
 
@@ -67,7 +68,7 @@ class CopyController extends UbirimiController
                     );
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

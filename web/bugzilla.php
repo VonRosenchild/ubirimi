@@ -1,12 +1,12 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Repository\User\User;
-use Ubirimi\Yongo\Repository\Issue\Comment;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/bootstrap_cli.php';
@@ -29,7 +29,7 @@ try {
         'companyDomain' => 'movidius',
         'baseURL' => 'http://movidius.ubirimi_net.lan',
         'companyEmail' => 'contact@movidius.ro',
-        $this->getRepository('ubirimi.general.client')->INSTANCE_TYPE_ON_DEMAND,
+        $this->getRepository(UbirimiClient::class)->INSTANCE_TYPE_ON_DEMAND,
         Util::getServerCurrentDateTime()
     );
 
@@ -69,8 +69,8 @@ try {
     insertMovidiusDatabase();
 
     /* delete old clients -- start */
-//    foreach ($this->getRepository('ubirimi.general.client')->getAll() as $client) {
-//        $this->getRepository('ubirimi.general.client')->deleteById($client['id']);
+//    foreach ($this->getRepository(UbirimiClient::class)->getAll() as $client) {
+//        $this->getRepository(UbirimiClient::class)->deleteById($client['id']);
 //    }
     /* delete old clients -- end */
 
@@ -80,7 +80,7 @@ try {
 
     /* install products into projects -- start */
     $movidiusProjects = getProducts($connectionBugzilla);
-    $ubirimiProjects = Project::getByClientId($clientId);
+    $ubirimiProjects = YongoProject::getByClientId($clientId);
 
 //    foreach ($movidiusProjects as &$product) {
 //        $projectId = installProject($clientId, $valiId, $product['name'], $product['description']);
@@ -109,7 +109,7 @@ try {
 
     /* install users -- start */
     $movidiusUsers = getUsers($connectionBugzilla);
-    $ubirimiUsers = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
+    $ubirimiUsers = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
 
 //    foreach ($movidiusUsers as &$movidiusUser) {
 //        $firstName = substr($movidiusUser['realname'], 0, strpos($movidiusUser['realname'], ' '));
@@ -166,7 +166,7 @@ try {
                 $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
 
                 if (null !== $userId) {
-                    UbirimiContainer::getRepository('yongo.issue.comment')->add(
+                    UbirimiContainer::getRepository(IssueComment::class)->add(
                         $issue[0],
                         $userId,
                         $comment['thetext'],

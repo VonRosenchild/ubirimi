@@ -4,6 +4,7 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -15,10 +16,10 @@ class IndexController extends UbirimiController
 
         $httpHOST = Util::getHttpHost();
 
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettingsByBaseURL($httpHOST);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettingsByBaseURL($httpHOST);
         $clientId = $clientSettings['id'];
 
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
 
         $sectionPageTitle = $client['company_name'] . ' - Welcome to Customer Portal';
 

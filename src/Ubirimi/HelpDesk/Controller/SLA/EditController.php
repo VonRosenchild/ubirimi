@@ -5,10 +5,14 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\HelpDesk\Repository\Sla\Calendar;
+use Ubirimi\HelpDesk\Repository\Sla\SlaCalendar;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class EditController extends UbirimiController
 {
@@ -19,15 +23,15 @@ class EditController extends UbirimiController
 
         $slaId = $request->get('id');
 
-        $SLA = $this->getRepository('helpDesk.sla.sla')->getById($slaId);
-        $project = $this->getRepository('yongo.project.project')->getById($SLA['project_id']);
+        $SLA = $this->getRepository(Sla::class)->getById($slaId);
+        $project = $this->getRepository(YongoProject::class)->getById($SLA['project_id']);
 
         $startConditions = explode("#", $SLA['start_condition']);
         $stopConditions = explode("#", $SLA['stop_condition']);
 
         $slaConditions = array_merge($startConditions, $stopConditions);
-        $slaCalendars = Calendar::getByProjectId($SLA['project_id']);
-        $goals = $this->getRepository('helpDesk.sla.sla')->getGoals($slaId);
+        $slaCalendars = SlaCalendar::getByProjectId($SLA['project_id']);
+        $goals = $this->getRepository(Sla::class)->getGoals($slaId);
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';
 
@@ -38,7 +42,7 @@ class EditController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        $availableStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
+        $availableStatuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $session->get('client/id'));
 
         if ($request->request->has('confirm_update_sla')) {
 
@@ -49,7 +53,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
             }
 
-            $slaExists = $this->getRepository('helpDesk.sla.sla')->getByName(mb_strtolower($name), $SLA['project_id'], $slaId);
+            $slaExists = $this->getRepository(Sla::class)->getByName(mb_strtolower($name), $SLA['project_id'], $slaId);
             if ($slaExists) {
                 $duplicateName = true;
             }
@@ -78,15 +82,15 @@ class EditController extends UbirimiController
 
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository('helpDesk.sla.sla')->updateById($slaId, $name, $description, $startCondition, $stopCondition, $currentDate);
+                $this->getRepository(Sla::class)->updateById($slaId, $name, $description, $startCondition, $stopCondition, $currentDate);
 
-                $this->getRepository('helpDesk.sla.sla')->deleteGoalsBySLAId($slaId);
+                $this->getRepository(Sla::class)->deleteGoalsBySLAId($slaId);
                 // add the goals of the sla
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 16) == 'goal_definition_') {
                         $index = str_replace('goal_definition_', '', $key);
                         if ($value && $request->request->get('goal_value_' . $index)) {
-                            $this->getRepository('helpDesk.sla.sla')->addGoal(
+                            $this->getRepository(Sla::class)->addGoal(
                                 $slaId,
                                 $request->request->get('goal_calendar_' . $index),
                                 $value,
@@ -98,7 +102,7 @@ class EditController extends UbirimiController
                 }
 
                 // clear all this SLA information for all issues in this project
-                $this->getRepository('yongo.issue.issue')->clearSLAData($slaId);
+                $this->getRepository(Issue::class)->clearSLAData($slaId);
 
                 return new RedirectResponse('/helpdesk/sla/' . $SLA['project_id'] . '/' . $slaId);
             }

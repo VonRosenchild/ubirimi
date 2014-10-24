@@ -3,9 +3,8 @@
 namespace Ubirimi\Yongo\ServiceProvider;
 
 use Ubirimi\Container\ServiceProviderInterface;
-
-use Ubirimi\Yongo\Service\IssueService;
 use Ubirimi\Yongo\Service\IssueEmailService;
+use Ubirimi\Yongo\Service\IssueService;
 use Ubirimi\Yongo\Service\ProjectService;
 use Ubirimi\Yongo\Service\WorkflowService;
 

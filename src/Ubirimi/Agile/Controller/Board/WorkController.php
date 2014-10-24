@@ -5,6 +5,7 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,7 +21,7 @@ class WorkController extends UbirimiController
         $sprintId = $request->get('id');
         $boardId = $request->get('board_id');
         $onlyMyIssuesFlag = $request->query->has('only_my') ? 1 : 0;
-        $board = $this->getRepository('agile.board.board')->getById($boardId);
+        $board = $this->getRepository(Board::class)->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -38,7 +39,7 @@ class WorkController extends UbirimiController
             }
         }
 
-        $columns = $this->getRepository('agile.board.board')->getColumns($boardId, 'array');
+        $columns = $this->getRepository(Board::class)->getColumns($boardId, 'array');
         $lastCompletedSprint = $this->getRepository('agile.sprint.sprint')->getLastCompleted($boardId);
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / '

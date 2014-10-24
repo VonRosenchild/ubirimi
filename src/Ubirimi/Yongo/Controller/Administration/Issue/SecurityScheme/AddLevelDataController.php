@@ -5,10 +5,13 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
 
 class AddLevelDataController extends UbirimiController
@@ -19,15 +22,15 @@ class AddLevelDataController extends UbirimiController
 
         $levelId = $request->get('id');
 
-        $level = SecurityScheme::getLevelById($levelId);
-        $issueSecurityScheme = SecurityScheme::getMetaDataById($level['issue_security_scheme_id']);
+        $level = IssueSecurityScheme::getLevelById($levelId);
+        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($level['issue_security_scheme_id']);
 
         if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $users = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'));
-        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
+        $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
+        $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
@@ -43,7 +46,7 @@ class AddLevelDataController extends UbirimiController
 
                 // check for duplicate information
                 $duplication = false;
-                $dataLevel = SecurityScheme::getDataByLevelId($levelId);
+                $dataLevel = IssueSecurityScheme::getDataByLevelId($levelId);
 
                 if ($dataLevel) {
 
@@ -55,21 +58,21 @@ class AddLevelDataController extends UbirimiController
                         if ($data['permission_role_id'] && $data['permission_role_id'] && $role)
                             $duplication = true;
 
-                        if ($levelDataType == SecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_LEAD)
+                        if ($levelDataType == IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_PROJECT_LEAD)
                             if ($data['project_lead'])
                                 $duplication = true;
-                        if ($levelDataType == SecurityScheme::SECURITY_SCHEME_DATA_TYPE_CURRENT_ASSIGNEE)
+                        if ($levelDataType == IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_CURRENT_ASSIGNEE)
                             if ($data['current_assignee'])
                                 $duplication = true;
-                        if ($levelDataType == SecurityScheme::SECURITY_SCHEME_DATA_TYPE_REPORTER)
+                        if ($levelDataType == IssueSecurityScheme::SECURITY_SCHEME_DATA_TYPE_REPORTER)
                             if ($data['reporter'])
                                 $duplication = true;
                     }
                 }
                 if (!$duplication) {
-                    SecurityScheme::addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
+                    IssueSecurityScheme::addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
 
-                    $this->getRepository('ubirimi.general.log')->add(
+                    $this->getRepository(UbirimiLog::class)->add(
                         $session->get('client/id'),
                         SystemProduct::SYS_PRODUCT_YONGO,
                         $session->get('user/id'),

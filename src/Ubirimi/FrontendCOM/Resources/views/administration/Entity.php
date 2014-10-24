@@ -1,7 +1,7 @@
 <?php
 
 use Ubirimi\Documentador\Repository\Space\Space;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 
 require_once __DIR__ . '/_header.php';
 ?>
@@ -50,7 +50,7 @@ require_once __DIR__ . '/_header.php';
                 </td>
                 <td>
                     <?php
-                    $user = $this->getRepository('ubirimi.user.user')->getById($entity['user_created_id']);
+                    $user = $this->getRepository(UbirimiUser::class)->getById($entity['user_created_id']);
                     echo $user['first_name'] . ' ' . $user['last_name'];
                     ?>
                 </td>

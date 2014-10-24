@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewController extends UbirimiController
 {
@@ -17,14 +19,14 @@ class ViewController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurations = ConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
-        $allFields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
+        $fieldConfigurations = FieldConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
+        $allFields = $this->getRepository(Field::class)->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Type Field Configuration';

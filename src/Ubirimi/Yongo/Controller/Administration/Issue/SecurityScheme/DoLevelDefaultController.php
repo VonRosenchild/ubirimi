@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
 class DoLevelDefaultController extends UbirimiController
 {
@@ -16,10 +16,10 @@ class DoLevelDefaultController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $securityLevelId = $request->get('id');
-        $securityLevel = SecurityScheme::getLevelById($securityLevelId);
-        $securityScheme = SecurityScheme::getMetaDataById($securityLevel['issue_security_scheme_id']);
-        SecurityScheme::makeAllLevelsNotDefault($securityScheme['id']);
-        SecurityScheme::setLevelDefault($securityLevelId);
+        $securityLevel = IssueSecurityScheme::getLevelById($securityLevelId);
+        $securityScheme = IssueSecurityScheme::getMetaDataById($securityLevel['issue_security_scheme_id']);
+        IssueSecurityScheme::makeAllLevelsNotDefault($securityScheme['id']);
+        IssueSecurityScheme::setLevelDefault($securityLevelId);
 
         return new RedirectResponse('/yongo/administration/issue-security-scheme-levels/' . $securityScheme['id']);
     }

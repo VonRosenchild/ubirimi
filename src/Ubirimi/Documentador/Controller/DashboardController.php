@@ -4,6 +4,9 @@ namespace Ubirimi\Documentador\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -23,7 +26,7 @@ class DashboardController extends UbirimiController
 
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / Dashboard';
         }
 
@@ -33,11 +36,11 @@ class DashboardController extends UbirimiController
 
         if ($type == 'spaces') {
             if (Util::checkUserIsLoggedIn())
-                $spaces = $this->getRepository('documentador.space.space')->getByClientId($session->get('client/id'), 1);
+                $spaces = $this->getRepository(Space::class)->getByClientId($session->get('client/id'), 1);
             else
-                $spaces = $this->getRepository('documentador.space.space')->getByClientIdAndAnonymous($session->get('client/id'));
+                $spaces = $this->getRepository(Space::class)->getByClientIdAndAnonymous($session->get('client/id'));
         } else if ($type == 'pages') {
-            $pages = $this->getRepository('documentador.entity.entity')->getFavouritePagesByClientIdAndUserId($session->get('client/id'), $loggedInUserId);
+            $pages = $this->getRepository(Entity::class)->getFavouritePagesByClientIdAndUserId($session->get('client/id'), $loggedInUserId);
         }
 
         return $this->render(__DIR__ . '/../Resources/views/Dashboard.php', get_defined_vars());

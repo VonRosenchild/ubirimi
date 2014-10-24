@@ -5,12 +5,14 @@ namespace Ubirimi\Yongo\Controller\Administration\Project\PermissionScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewController extends UbirimiController
 {
@@ -19,21 +21,21 @@ class ViewController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $permissionScheme = Scheme::getMetaDataById($project['permission_scheme_id']);
+        $permissionScheme = PermissionScheme::getMetaDataById($project['permission_scheme_id']);
         $permissionCategories = Permission::getCategories();
-        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS

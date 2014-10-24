@@ -8,9 +8,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Event\CalendarEvent;
 use Ubirimi\Calendar\Event\CalendarEvents;
 use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -26,12 +28,12 @@ class ShareController extends UbirimiController
         $userIds = $request->request->get('user_id');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository('calendar.calendar.calendar')->deleteSharesByCalendarId($calendarId);
-        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
-        $userThatShares = $this->getRepository('ubirimi.user.user')->getById($session->get('user/id'));
+        $this->getRepository(UbirimiCalendar::class)->deleteSharesByCalendarId($calendarId);
+        $calendar = $this->getRepository(UbirimiCalendar::class)->getById($calendarId);
+        $userThatShares = $this->getRepository(UbirimiUser::class)->getById($session->get('user/id'));
 
         if ($userIds) {
-            $this->getRepository('calendar.calendar.calendar')->shareWithUsers($calendarId, $userIds, $currentDate);
+            $this->getRepository(UbirimiCalendar::class)->shareWithUsers($calendarId, $userIds, $currentDate);
             $calendarEvent = new CalendarEvent(
                 $calendar,
                 array(

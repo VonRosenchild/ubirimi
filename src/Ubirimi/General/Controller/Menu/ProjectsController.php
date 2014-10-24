@@ -4,11 +4,14 @@ namespace Ubirimi\General\Controller\Menu;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ProjectsController extends UbirimiController
 {
@@ -18,14 +21,14 @@ class ProjectsController extends UbirimiController
             $selectedProjectId = $session->get('selected_project_id');
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
             $selectedProjectId = null;
         }
 
         if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_YONGO) {
             $urlPrefix = '/yongo/project/';
-            $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+            $projectsMenu = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_BROWSE_PROJECTS,
@@ -33,7 +36,7 @@ class ProjectsController extends UbirimiController
             );
         } else {
             $urlPrefix = '/helpdesk/customer-portal/project/';
-            $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjects(
+            $projectsMenu = $this->getRepository(UbirimiClient::class)->getProjects(
                 $session->get('client/id'),
                 'array',
                 null,
@@ -43,15 +46,15 @@ class ProjectsController extends UbirimiController
 
         $selectedProjectMenu = null;
         if ($selectedProjectId) {
-            $selectedProjectMenu = $this->getRepository('yongo.project.project')->getById($selectedProjectId);
+            $selectedProjectMenu = $this->getRepository(YongoProject::class)->getById($selectedProjectId);
         }
-        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS

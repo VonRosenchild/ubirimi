@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -15,9 +17,9 @@ class SignUpController extends UbirimiController
     {
         $httpHOST = Util::getHttpHost();
 
-        $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
 
         $errors = array(
             'empty_email' => false,
@@ -43,7 +45,7 @@ class SignUpController extends UbirimiController
                 $errors['email_not_valid'] = true;
             }
 
-            $emailData = $this->getRepository('ubirimi.user.user')->getUserByClientIdAndEmailAddress($clientId, mb_strtolower($email));
+            $emailData = $this->getRepository(UbirimiUser::class)->getUserByClientIdAndEmailAddress($clientId, mb_strtolower($email));
 
             if ($emailData)
                 $errors['email_already_exists'] = true;

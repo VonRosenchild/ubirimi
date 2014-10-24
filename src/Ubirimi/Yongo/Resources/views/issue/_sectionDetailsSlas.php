@@ -17,7 +17,7 @@ use Ubirimi\HelpDesk\Repository\Sla\Sla;
                 </td>
                 <td valign="top">
                     <span class="<?php if (($slaData['goalValue'] - $slaData['intervalMinutes']) < 0) echo 'slaNegative'; else echo 'slaPositive' ?>">
-                        <?php echo UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->formatOffset($slaData['goalValue'] - $slaData['intervalMinutes']) ?>
+                        <?php echo UbirimiContainer::get()['repository']->get(Sla::class)->formatOffset($slaData['goalValue'] - $slaData['intervalMinutes']) ?>
                     </span>
                     &nbsp;
                     <?php if ($slaData['endDate']): ?>

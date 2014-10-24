@@ -5,9 +5,12 @@ namespace Ubirimi\Yongo\Controller\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewComponentIssuesController extends UbirimiController
 {
@@ -18,22 +21,22 @@ class ViewComponentIssuesController extends UbirimiController
             $clientId = $session->get('client/id');
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $loggedInUserId = null;
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
 
         $componentId = $request->get('id');
-        $component = $this->getRepository('yongo.project.project')->getComponentById($componentId);
+        $component = $this->getRepository(YongoProject::class)->getComponentById($componentId);
         $projectId = $component['project_id'];
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'component' => $componentId);
-        $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issues = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $count = 0;
         $statsPriority = array();

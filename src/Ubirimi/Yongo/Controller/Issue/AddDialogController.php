@@ -5,11 +5,13 @@ namespace Ubirimi\Yongo\Controller\Issue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AddDialogController extends UbirimiController
 {
@@ -25,17 +27,17 @@ class AddDialogController extends UbirimiController
         }
 
         if ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_YONGO) {
-            $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+            $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_CREATE_ISSUE
             );
         } else {
-            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), null, null, true);
+            $projects = $this->getRepository(UbirimiClient::class)->getProjects($session->get('client/id'), null, null, true);
         }
 
-        $projectData = $this->getRepository('yongo.project.project')->getById($selectedProjectId);
-        $issueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($selectedProjectId, 0);
+        $projectData = $this->getRepository(YongoProject::class)->getById($selectedProjectId);
+        $issueTypes = $this->getRepository(YongoProject::class)->getIssueTypes($selectedProjectId, 0);
 
         $firstIssueType = $issueTypes->fetch_array(MYSQLI_ASSOC);
         $issueTypeId = $firstIssueType['id'];

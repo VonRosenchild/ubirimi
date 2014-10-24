@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Page;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -17,7 +18,7 @@ class RemoveFavouriteController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $pageId = $request->request->get('id');
-        $this->getRepository('documentador.entity.entity')->removeAsFavouriteForUserId($pageId, $loggedInUserId);
+        $this->getRepository(Entity::class)->removeAsFavouriteForUserId($pageId, $loggedInUserId);
 
         return new Response('');
     }

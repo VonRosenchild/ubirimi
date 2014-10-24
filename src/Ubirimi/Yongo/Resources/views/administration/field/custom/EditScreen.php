@@ -34,7 +34,7 @@ require_once __DIR__ . '/../../_header.php';
                     <tr>
                         <td><?php echo $screen['name'] ?></td>
                         <td>
-                            <?php $fieldInScreen = UbirimiContainer::get()['repository']->get('yongo.screen.screen')->checkFieldInScreen($clientId, $screen['id'], $fieldId); ?>
+                            <?php $fieldInScreen = UbirimiContainer::get()['repository']->get(Screen::class)->checkFieldInScreen($clientId, $screen['id'], $fieldId); ?>
                             <input type="checkbox" <?php if ($fieldInScreen) echo 'checked="checked"' ?> name="field_screen_<?php echo $fieldId ?>_<?php echo $screen['id'] ?>" />
                         </td>
                     </tr>

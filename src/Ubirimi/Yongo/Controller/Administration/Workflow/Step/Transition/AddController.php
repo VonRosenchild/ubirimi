@@ -5,10 +5,14 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\Step\Transition;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Event;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Screen\Screen;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class AddController extends UbirimiController
@@ -19,18 +23,18 @@ class AddController extends UbirimiController
 
         $workflowStepId = $request->get('id');
 
-        $workflowStep = $this->getRepository('yongo.workflow.workflow')->getStepById($workflowStepId);
+        $workflowStep = $this->getRepository(Workflow::class)->getStepById($workflowStepId);
         $workflowId = $workflowStep['workflow_id'];
-        $steps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
+        $steps = $this->getRepository(Workflow::class)->getSteps($workflowId);
 
-        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+        $workflowMetadata = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
         if ($workflowMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $workflowSteps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId);
-        $statuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
-        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
+        $workflowSteps = $this->getRepository(Workflow::class)->getSteps($workflowId);
+        $statuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $session->get('client/id'));
+        $screens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
 
         $emptyName = false;
 
@@ -46,7 +50,7 @@ class AddController extends UbirimiController
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $transitionId = $this->getRepository('yongo.workflow.workflow')->addTransition(
+                $transitionId = $this->getRepository(Workflow::class)->addTransition(
                     $workflowId,
                     $screen,
                     $workflowStepId,
@@ -55,31 +59,31 @@ class AddController extends UbirimiController
                     $description
                 );
 
-                $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition(
+                $this->getRepository(Workflow::class)->addPostFunctionToTransition(
                     $transitionId,
                     WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP,
                     'set_issue_status'
                 );
 
-                $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition(
+                $this->getRepository(Workflow::class)->addPostFunctionToTransition(
                     $transitionId,
                     WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY,
                     'update_issue_history'
                 );
 
-                $eventId = Event::getByClientIdAndCode(
+                $eventId = IssueEvent::getByClientIdAndCode(
                     $session->get('client/id'),
-                    Event::EVENT_GENERIC_CODE,
+                    IssueEvent::EVENT_GENERIC_CODE,
                     'id'
                 );
 
-                $this->getRepository('yongo.workflow.workflow')->addPostFunctionToTransition(
+                $this->getRepository(Workflow::class)->addPostFunctionToTransition(
                     $transitionId,
                     WorkflowFunction::FUNCTION_FIRE_EVENT,
                     'event=' . $eventId
                 );
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

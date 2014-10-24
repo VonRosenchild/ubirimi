@@ -2,8 +2,8 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\Event;
-use Ubirimi\Yongo\Repository\Issue\Settings;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 require_once __DIR__ . '/../../../_header.php';
@@ -19,7 +19,7 @@ require_once __DIR__ . '/../../../_header.php';
 
         <form name="edit_post_function_data" action="/yongo/administration/workflow/edit-post-function-data/<?php echo $workflowPostFunctionDataId; ?>" method="post">
             <?php if ($postFunctionId == WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE): ?>
-                <?php $resolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId); ?>
+                <?php $resolutions = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('resolution', $clientId); ?>
                 <div>Edit required parameters to the function <b><?php echo $workflowPostFunctionData['name'] ?></b></div>
                 <table width="100%">
                     <tr>
@@ -60,7 +60,7 @@ require_once __DIR__ . '/../../../_header.php';
                     <tr>
                         <td width="150">Event</td>
                         <td>
-                            <?php $events = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getByClient($clientId); ?>
+                            <?php $events = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClient($clientId); ?>
                             <select name="fire_event" class="select2Input">
 
                                 <?php while ($event = $events->fetch_array(MYSQLI_ASSOC)): ?>

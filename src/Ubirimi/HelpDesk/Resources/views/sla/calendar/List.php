@@ -1,7 +1,8 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\HelpDesk\Repository\Sla\Calendar;
+use Ubirimi\HelpDesk\Repository\Sla\SlaCalendar;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\Util;
 
 require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
@@ -36,7 +37,7 @@ require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
                 </thead>
                 <tbody>
                 <?php while ($calendar = $calendars->fetch_array(MYSQLI_ASSOC)): ?>
-                    <?php $slasCalendar = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByCalendarId($clientId, $calendar['id']) ?>
+                    <?php $slasCalendar = UbirimiContainer::get()['repository']->get(Sla::class)->getByCalendarId($clientId, $calendar['id']) ?>
                     <input type="hidden" id="delete_possible_<?php echo $calendar['id'] ?>" value="<?php if ($slasCalendar) echo '0'; else echo '1' ?>" />
                     <tr id="table_row_<?php echo $calendar['id'] ?>">
                         <td width="22">
@@ -50,7 +51,7 @@ require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
                         <td><?php echo $calendar['description']; ?></td>
                         <td>
                             <?php
-                                $data = Calendar::getCalendarDataByCalendarId($calendar['id']);
+                                $data = SlaCalendar::getCalendarDataByCalendarId($calendar['id']);
                                 $dowMap = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
                             ?>
                             <table style="width: 350px">

@@ -5,6 +5,8 @@ namespace Ubirimi\Yongo\Controller\Administration\Group;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -17,7 +19,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $group = $this->getRepository('ubirimi.user.group')->getMetadataById($Id);
+        $group = $this->getRepository(UbirimiGroup::class)->getMetadataById($Id);
 
         if ($group['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +39,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $groupAlreadyExists = $this->getRepository('ubirimi.user.group')->getByNameAndProductId(
+                $groupAlreadyExists = $this->getRepository(UbirimiGroup::class)->getByNameAndProductId(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     mb_strtolower($name),
@@ -50,9 +52,9 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$duplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('ubirimi.user.group')->updateById($Id, $name, $description, $currentDate);
+                $this->getRepository(UbirimiGroup::class)->updateById($Id, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

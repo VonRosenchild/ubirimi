@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\Watcher;
 
 class AddController extends UbirimiController
 {
@@ -19,11 +21,11 @@ class AddController extends UbirimiController
         $currentDate = Util::getServerCurrentDateTime();
         if ($userIds) {
             for ($i = 0; $i < count($userIds); $i++) {
-                $this->getRepository('yongo.issue.watcher')->add($issueId, $userIds[$i], $currentDate);
+                $this->getRepository(Watcher::class)->add($issueId, $userIds[$i], $currentDate);
             }
 
             // update the date_updated field
-            $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+            $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
         }
     }
 }

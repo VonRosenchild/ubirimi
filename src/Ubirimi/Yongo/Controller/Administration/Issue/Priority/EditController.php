@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\Priority;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 class EditController extends UbirimiController
 {
@@ -16,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $issuePriority = $this->getRepository('yongo.issue.settings')->getById($Id, 'priority');
+        $issuePriority = $this->getRepository(IssueSettings::class)->getById($Id, 'priority');
 
         if ($issuePriority['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,7 +36,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $priority = $this->getRepository('yongo.issue.settings')->getByName(
+            $priority = $this->getRepository(IssueSettings::class)->getByName(
                 $session->get('client/id'),
                 'priority',
                 mb_strtolower($name),
@@ -46,9 +48,9 @@ class EditController extends UbirimiController
 
             if (!$priorityExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.issue.settings')->updateById($Id, 'priority', $name, $description, $color, $currentDate);
+                $this->getRepository(IssueSettings::class)->updateById($Id, 'priority', $name, $description, $color, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

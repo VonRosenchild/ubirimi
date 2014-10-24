@@ -8,12 +8,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SaveController extends UbirimiController
 {
@@ -21,7 +23,7 @@ class SaveController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
 
         $timeTrackingDefaultUnit = $session->get('yongo/settings/time_tracking_default_unit');
 
@@ -63,7 +65,7 @@ class SaveController extends UbirimiController
             $projectId = $issueSystemFieldsData['project'];
         }
 
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if (array_key_exists(Field::FIELD_ASSIGNEE_CODE, $issueSystemFieldsData)) {
             // assignee field is placed on screen

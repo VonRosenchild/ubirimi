@@ -13,13 +13,13 @@ use Ubirimi\Container\ServiceProviderInterface;
 use Ubirimi\LoginTimeService\LoginTimeService;
 use Ubirimi\Service\BugzillaConnectorService;
 use Ubirimi\Service\ClientService;
+use Ubirimi\Service\DatabaseConnectorService;
+use Ubirimi\Service\EmailService;
+use Ubirimi\Service\LogService;
 use Ubirimi\Service\PasswordService;
 use Ubirimi\Service\RepositoryService;
-use Ubirimi\Service\WarmUpService;
-use Ubirimi\Service\LogService;
-use Ubirimi\Service\EmailService;
 use Ubirimi\Service\UserService;
-use Ubirimi\Service\DatabaseConnectorService;
+use Ubirimi\Service\WarmUpService;
 
 class UbirimiCoreServiceProvider implements ServiceProviderInterface
 {

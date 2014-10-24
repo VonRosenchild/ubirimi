@@ -9,6 +9,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class ChooseIssueController extends UbirimiController
 {
@@ -78,7 +79,7 @@ class ChooseIssueController extends UbirimiController
             UbirimiContainer::get()['session']->set('bulk_change_choose_issue_query_url', $parseURLData['query']);
             if (Util::searchQueryNotEmpty($getSearchParameters)) {
 
-                $issues = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
+                $issues = $this->getRepository(Issue::class)->getByParameters($getSearchParameters, $loggedInUserId, null, $loggedInUserId);
 
                 $issuesCount = $issues->num_rows;
                 $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';

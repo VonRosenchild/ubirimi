@@ -5,6 +5,8 @@ namespace Ubirimi\Documentador\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,7 +22,7 @@ class SearchController extends UbirimiController
                 . ' / Search';
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
 
             $sectionPageTitle = SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME . ' / Search';
@@ -35,7 +37,7 @@ class SearchController extends UbirimiController
         $searchQuery = $request->get('search_query');
         $menuSelectedCategory = 'documentator';
 
-        $pages = $this->getRepository('documentador.space.space')->searchForPages($session->get('client/id'), $searchQuery);
+        $pages = $this->getRepository(Space::class)->searchForPages($session->get('client/id'), $searchQuery);
 
         return $this->render(__DIR__ . '/../Resources/views/Search.php', get_defined_vars());
     }

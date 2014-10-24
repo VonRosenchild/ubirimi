@@ -5,9 +5,12 @@ namespace Ubirimi\Yongo\Controller\Project;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewVersionIssuesController extends UbirimiController
 {
@@ -18,22 +21,22 @@ class ViewVersionIssuesController extends UbirimiController
             $clientId = $session->get('client/id');
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $loggedInUserId = null;
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
 
         $versionId = $request->get('id');
-        $version = $this->getRepository('yongo.project.project')->getVersionById($versionId);
+        $version = $this->getRepository(YongoProject::class)->getVersionById($versionId);
         $projectId = $version['project_id'];
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         $issueQueryParameters = array('project' => $projectId, 'resolution' => array(-2), 'version' => $versionId);
-        $issues = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issues = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
 
         $count = 0;
 

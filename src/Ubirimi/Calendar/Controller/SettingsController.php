@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Repository\Calendar;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,17 +20,17 @@ class SettingsController extends UbirimiController
 
         $calendarId = $request->get('id');
 
-        $calendar = $this->getRepository('calendar.calendar.calendar')->getById($calendarId);
+        $calendar = $this->getRepository(UbirimiCalendar::class)->getById($calendarId);
 
-        $defaultReminders = $this->getRepository('calendar.calendar.calendar')->getReminders($calendarId);
+        $defaultReminders = $this->getRepository(UbirimiCalendar::class)->getReminders($calendarId);
         if ($calendar['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         if ($request->request->has('edit_calendar_settings')) {
             $date = Util::getServerCurrentDateTime();
-            $this->getRepository('calendar.calendar.calendar')->deleteReminders($calendarId);
-            $this->getRepository('calendar.calendar.calendar')->deleteSharesByCalendarId($calendarId);
+            $this->getRepository(UbirimiCalendar::class)->deleteReminders($calendarId);
+            $this->getRepository(UbirimiCalendar::class)->deleteSharesByCalendarId($calendarId);
 
             // reminder information
             foreach ($request->request as $key => $value) {
@@ -40,12 +42,12 @@ class SettingsController extends UbirimiController
 
                     // add the reminder
                     if (is_numeric($reminderValue)) {
-                        $this->getRepository('calendar.calendar.calendar')->addReminder($calendarId, $reminderType, $reminderPeriod, $reminderValue);
+                        $this->getRepository(UbirimiCalendar::class)->addReminder($calendarId, $reminderType, $reminderPeriod, $reminderValue);
                     }
                 }
             }
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_CALENDAR,
                 $session->get('user/id'),

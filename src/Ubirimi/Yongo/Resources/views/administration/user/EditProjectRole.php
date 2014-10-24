@@ -1,6 +1,7 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\User\UbirimiUser;
 
 require_once __DIR__ . '/../_header.php';
 ?>
@@ -39,9 +40,9 @@ require_once __DIR__ . '/../_header.php';
                         <td align="center">
                             <?php
 
-                                $userIsDirectMemberOfProjectRole = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->checkUserInProjectRoleId($userId, $project['id'], $role['id']);
+                                $userIsDirectMemberOfProjectRole = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->checkUserInProjectRoleId($userId, $project['id'], $role['id']);
 
-                                $groups = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getGroupsForUserIdAndRoleId($userId, $project['id'], $role['id'], $groupIds);
+                                $groups = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getGroupsForUserIdAndRoleId($userId, $project['id'], $role['id'], $groupIds);
                             ?>
                             <input name="role_<?php echo $project['id'] . '_' . $role['id'] ?>" type="checkbox" <?php if ($userIsDirectMemberOfProjectRole) echo 'checked="checked"'; ?> />
                             <?php $dataArray = array() ?>

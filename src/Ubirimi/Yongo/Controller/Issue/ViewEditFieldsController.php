@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class ViewEditFieldsController extends UbirimiController
 {
@@ -17,7 +18,7 @@ class ViewEditFieldsController extends UbirimiController
 
         $issueId = $request->request->get('issue_id');
         $issueTypeId = $request->request->get('issue_type_id');
-        $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $issueData = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
 
         return $this->render(__DIR__ . '/../../Resources/views/issue/ViewEditDialog.php', get_defined_vars());
     }

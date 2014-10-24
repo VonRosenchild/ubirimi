@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Attachment;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 
 class DeleteController extends UbirimiController
 {
@@ -17,9 +17,9 @@ class DeleteController extends UbirimiController
 
         $attachmentId = $request->request->get('att_id');
 
-        $attachment = Attachment::getById($attachmentId);
+        $attachment = IssueAttachment::getById($attachmentId);
 
-        Attachment::deleteById($attachmentId);
+        IssueAttachment::deleteById($attachmentId);
 
         $pathToAttachment = UbirimiContainer::get()['asset.root_folder'] . UbirimiContainer::get()['asset.yongo_issue_attachments'];
 

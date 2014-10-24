@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class SaveController extends UbirimiController
@@ -21,7 +22,7 @@ class SaveController extends UbirimiController
         $IdTo = $request->request->get('id_to');
         $functionId = $field_values[0];
 
-        $data = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $IdFrom, $IdTo);
+        $data = $this->getRepository(Workflow::class)->getDataByStepIdFromAndStepIdTo($workflowId, $IdFrom, $IdTo);
 
         $value = '';
 

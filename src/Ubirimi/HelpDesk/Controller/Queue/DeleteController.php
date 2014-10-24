@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\Queue;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -17,9 +18,9 @@ class DeleteController extends UbirimiController
         $queueId = $request->request->get('id');
         $projectId = $request->request->get('project_id');
 
-        $this->getRepository('helpDesk.queue.queue')->deleteById($queueId);
+        $this->getRepository(Queue::class)->deleteById($queueId);
 
-        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
+        $queues = $this->getRepository(Queue::class)->getByProjectId($projectId);
         $queueToGoId = -1;
 
         if ($queues) {

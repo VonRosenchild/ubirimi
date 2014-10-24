@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\Report;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -20,7 +21,7 @@ class GetDataController extends UbirimiController
         $dateFrom = $request->get('date_from');
         $dateTo = $request->get('date_to');
 
-        $issues = $this->getRepository('helpDesk.sla.sla')->getIssues($slaId, $dateFrom, $dateTo);
+        $issues = $this->getRepository(Sla::class)->getIssues($slaId, $dateFrom, $dateTo);
 
         $dates = array();
         $succeeded = array();

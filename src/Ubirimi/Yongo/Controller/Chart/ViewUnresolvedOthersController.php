@@ -4,8 +4,10 @@ namespace Ubirimi\Yongo\Controller\Chart;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class ViewUnresolvedOthersController extends UbirimiController
@@ -16,7 +18,7 @@ class ViewUnresolvedOthersController extends UbirimiController
             $clientId = $session->get('client/id');
             $loggedInUserId = $session->get('user/id');
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $loggedInUserId = null;
         }
 
@@ -24,7 +26,7 @@ class ViewUnresolvedOthersController extends UbirimiController
         $selectedProjectId = $projectId;
         if ($projectId == -1) {
             $projects = array();
-            $projectsForBrowsing = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+            $projectsForBrowsing = $this->getRepository(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
             for ($i = 0; $i < count($projectsForBrowsing); $i++) {
                 $projects[] = $projectsForBrowsing[$i]['id'];
@@ -40,12 +42,12 @@ class ViewUnresolvedOthersController extends UbirimiController
             $issueQueryParameters['not_assignee'] = $loggedInUserId;
         }
 
-        $issuesUnresolvedOthers = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
+        $issuesUnresolvedOthers = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId, null, $loggedInUserId);
 
         $renderParameters = array('issues' => $issuesUnresolvedOthers, 'render_checkbox' => false, 'show_header' =>true);
         $renderColumns = array('code', 'summary', 'priority', 'assignee');
 
-        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
         $projectIdsNames = array();
         for ($i = 0; $i < count($projects); $i++) {

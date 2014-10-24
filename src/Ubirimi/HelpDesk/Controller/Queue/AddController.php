@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\Queue;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,7 +21,7 @@ class AddController extends UbirimiController
         $emptyName = false;
         $queueExists = false;
 
-        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
+        $queues = $this->getRepository(Queue::class)->getByProjectId($projectId);
         $selectedQueueId = -1;
         if ($queues) {
             $firstQueue = $queues->fetch_array(MYSQLI_ASSOC);
@@ -37,7 +38,7 @@ class AddController extends UbirimiController
             }
 
             // check for duplication
-            $queue = $this->getRepository('helpDesk.queue.queue')->getByName($projectId, mb_strtolower($name));
+            $queue = $this->getRepository(Queue::class)->getByName($projectId, mb_strtolower($name));
             if ($queue)
                 $queueExists = true;
 
@@ -45,7 +46,7 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $defaultColumns = 'code#summary#priority#status#created#updated#reporter#assignee';
 
-                $queueId = $this->getRepository('helpDesk.queue.queue')->save(
+                $queueId = $this->getRepository(Queue::class)->save(
                     $session->get('user/id'),
                     $projectId,
                     $name,

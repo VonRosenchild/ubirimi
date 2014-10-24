@@ -37,7 +37,7 @@ require_once __DIR__ . '/../../../_header.php';
             <br />
             <div>
                 <span>Condition passes logical examination: </span>
-                <?php if (UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkLogicalConditionsByTransitionId($workflowDataId)): ?>
+                <?php if (UbirimiContainer::get()['repository']->get(Workflow::class)->checkLogicalConditionsByTransitionId($workflowDataId)): ?>
                     <span style="background-color: greenyellow; padding: 4px">YES</span>
                 <?php else: ?>
                     <span style="background-color: red; padding: 4px">NO</span>

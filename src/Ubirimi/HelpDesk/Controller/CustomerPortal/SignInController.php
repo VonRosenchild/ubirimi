@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -16,7 +18,7 @@ class SignInController extends UbirimiController
         $signInError = null;
 
         $httpHOST = Util::getHttpHost();
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettingsByBaseURL($httpHOST);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettingsByBaseURL($httpHOST);
 
         $clientId = $clientSettings['id'];
 
@@ -28,7 +30,7 @@ class SignInController extends UbirimiController
             $username = $request->request->get('username');
             $password = $request->request->get('password');
 
-            $userData = $this->getRepository('ubirimi.user.user')->getCustomerByEmailAddressAndClientId($username, $clientId);
+            $userData = $this->getRepository(UbirimiUser::class)->getCustomerByEmailAddressAndClientId($username, $clientId);
 
             if ($userData['id']) {
                 if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {

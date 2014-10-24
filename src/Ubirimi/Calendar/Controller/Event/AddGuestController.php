@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Calendar\Event\CalendarEvent as CalEvent;
 use Ubirimi\Calendar\Event\CalendarEvents;
+use Ubirimi\Calendar\Repository\Event\CalendarEvent;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -25,10 +27,10 @@ class AddGuestController extends UbirimiController
         $userIds = $request->request->get('user_id');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository('calendar.event.event')->shareWithUsers($eventId, $userIds, $currentDate);
+        $this->getRepository(CalendarEvent::class)->shareWithUsers($eventId, $userIds, $currentDate);
 
-        $event = $this->getRepository('calendar.event.event')->getById($eventId, 'array');
-        $userThatShares = $this->getRepository('ubirimi.user.user')->getById($session->get('user/id'));
+        $event = $this->getRepository(CalendarEvent::class)->getById($eventId, 'array');
+        $userThatShares = $this->getRepository(UbirimiUser::class)->getById($session->get('user/id'));
 
         $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Add Guest for Event ' . $event['name']);
         $calendarEvent = new CalEvent(

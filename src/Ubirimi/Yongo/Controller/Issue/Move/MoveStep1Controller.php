@@ -6,10 +6,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class MoveStep1Controller extends UbirimiController
 {
@@ -23,9 +27,9 @@ class MoveStep1Controller extends UbirimiController
         $issueId = $request->get('id');
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
         $projectId = $issue['issue_project_id'];
-        $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
+        $issueProject = $this->getRepository(YongoProject::class)->getById($projectId);
 
         // before going further, check to is if the issue project belongs to the client
         if ($clientId != $issueProject['client_id']) {
@@ -51,10 +55,10 @@ class MoveStep1Controller extends UbirimiController
 
             $childrenIssues = null;
             if ($issue['parent_id'] == null) {
-                $childrenIssues = $this->getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issue['id']));
+                $childrenIssues = $this->getRepository(Issue::class)->getByParameters(array('parent_id' => $issue['id']));
             }
 
-            $newProjectIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($newProjectId, 0, 'array', 'id');
+            $newProjectIssueTypes = $this->getRepository(YongoProject::class)->getIssueTypes($newProjectId, 0, 'array', 'id');
             $selectIssueTypeForSubstaks = false;
 
             if ($childrenIssues) {
@@ -72,8 +76,8 @@ class MoveStep1Controller extends UbirimiController
                 return new RedirectResponse('/yongo/issue/move/subtask-issue-type/' . $issueId);
             } else {
                 // check if step 2 is necessary
-                $newWorkflow = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($newProjectId, $newIssueTypeId);
-                $newStatuses = $this->getRepository('yongo.workflow.workflow')->getLinkedStatuses($newWorkflow['id']);
+                $newWorkflow = $this->getRepository(YongoProject::class)->getWorkflowUsedForType($newProjectId, $newIssueTypeId);
+                $newStatuses = $this->getRepository(Workflow::class)->getLinkedStatuses($newWorkflow['id']);
 
                 $step2Necessary = true;
                 while ($newStatuses && $status = $newStatuses->fetch_array(MYSQLI_ASSOC)) {
@@ -91,10 +95,10 @@ class MoveStep1Controller extends UbirimiController
             }
         }
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
-        $projectForMoving = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_CREATE_ISSUE);
+        $projectForMoving = $this->getRepository(UbirimiClient::class)->getProjectsByPermission($session->get('client/id'), $loggedInUserId, Permission::PERM_CREATE_ISSUE);
         $firstProject = $projectForMoving->fetch_array(MYSQLI_ASSOC);
 
-        $moveToIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($firstProject['id'], 0);
+        $moveToIssueTypes = $this->getRepository(YongoProject::class)->getIssueTypes($firstProject['id'], 0);
         $projectForMoving->data_seek(0);
         $menuSelectedCategory = 'issue';
 

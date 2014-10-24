@@ -5,6 +5,8 @@ namespace Ubirimi\Documentador\Controller\Administration\SpaceTools;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,17 +20,17 @@ class PermissionController extends UbirimiController
         $menuSelectedCategory = 'doc_spaces';
 
         $spaceId = $request->get('id');
-        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+        $space = $this->getRepository(Space::class)->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $documentatorSettings = $this->getRepository('ubirimi.general.client')->getDocumentatorSettings($clientId);
-        $anonymousAccessSettings = $this->getRepository('documentador.space.space')->getAnonymousAccessSettings($spaceId);
+        $documentatorSettings = $this->getRepository(UbirimiClient::class)->getDocumentatorSettings($clientId);
+        $anonymousAccessSettings = $this->getRepository(Space::class)->getAnonymousAccessSettings($spaceId);
 
-        $usersWithPermissionForSpace = $this->getRepository('documentador.space.space')->getUsersWithPermissions($spaceId);
-        $groupsWithPermissionForSpace = $this->getRepository('documentador.space.space')->getGroupsWithPermissions($spaceId);
+        $usersWithPermissionForSpace = $this->getRepository(Space::class)->getUsersWithPermissions($spaceId);
+        $groupsWithPermissionForSpace = $this->getRepository(Space::class)->getGroupsWithPermissions($spaceId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/spacetools/Permission.php', get_defined_vars());
     }

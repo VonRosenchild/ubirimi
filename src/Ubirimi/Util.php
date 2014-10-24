@@ -5,8 +5,11 @@ namespace Ubirimi;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\Repository\Email\Email;
+use Ubirimi\Repository\General\ServerSettings;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 use ZipArchive;
 
 class Util {
@@ -220,12 +223,12 @@ class Util {
 
             for ($i = 0; $i < count($attIdsSession); $i++) {
                 $attachmentId = $attIdsSession[$i];
-                $attachment = UbirimiContainer::getRepository('yongo.issue.attachment')->getById($attachmentId);
+                $attachment = UbirimiContainer::getRepository(IssueAttachment::class)->getById($attachmentId);
 
                 if (!in_array($attachmentId, $attachIdsToBeKept)) {
 
                     // the attachment must be deleted
-                    UbirimiContainer::getRepository('yongo.issue.attachment')->deleteById($attachmentId);
+                    UbirimiContainer::getRepository(IssueAttachment::class)->deleteById($attachmentId);
 
                     if (file_exists(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name'])) {
                         unlink(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name']);
@@ -266,7 +269,7 @@ class Util {
                         rename(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . 'user_' . $loggedInUserId . '/' . $attachment['id'], Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId . '/' . $attachment['id']);
 
                         // update the attachment
-                        UbirimiContainer::getRepository('yongo.issue.attachment')->updateByIdAndIssueId($attachmentId, $issueId);
+                        UbirimiContainer::getRepository(IssueAttachment::class)->updateByIdAndIssueId($attachmentId, $issueId);
                     }
                 }
             }
@@ -617,7 +620,7 @@ class Util {
                 $slaIds = explode("_", $column);
                 $slaId = $slaIds[1];
 
-                $slaColumn = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getById($slaId);
+                $slaColumn = UbirimiContainer::get()['repository']->get(Sla::class)->getById($slaId);
                 $columnName = $slaColumn['name'];
             } else {
                 $columnName = str_replace("_", ' ', ucfirst($column));
@@ -1012,7 +1015,7 @@ class Util {
 
     public static function renderMaintenanceMessage() {
         // get the server settings
-        $serverSettings = UbirimiContainer::get()['repository']->get('ubirimi.general.serverSettings')->get();
+        $serverSettings = UbirimiContainer::get()['repository']->get(ServerSettings::class)->get();
 
         if ($serverSettings) {
             echo '<div class="warningMessage">' . $serverSettings['maintenance_server_message'] . '</div>';
@@ -1122,7 +1125,7 @@ class Util {
             /** QUERY THE DATABASE FOR AN ENTRY FOR THIS DAY !!  IF MATCHES FOUND, PRINT THEM !! **/
             $issueQueryParameters = array('date_due' => $date, 'project' => $projectId);
 
-            $issues = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters($issueQueryParameters, $userId);
+            $issues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters($issueQueryParameters, $userId);
             if ($issues) {
                 $calendar .= '<div>Issues: <a href="/yongo/issue/search?project=' . $projectId . '&date_due_after=' . $date . '&date_due_before=' . $date . '">' . $issues->num_rows . '</a></div>';
 

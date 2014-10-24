@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Issue;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\History;
@@ -18,9 +19,9 @@ class ViewEntityHistoryController extends UbirimiController
             $clientSettings = $session->get('client/settings');
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
-            $yongoSettings = $this->getRepository('ubirimi.general.client')->getYongoSettings($clientId);
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
+            $yongoSettings = $this->getRepository(UbirimiClient::class)->getYongoSettings($clientId);
         }
 
         $issueId = $request->request->get('issue_id');

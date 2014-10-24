@@ -13,7 +13,8 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
-use Ubirimi\Yongo\Repository\Issue\Attachment;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 
 class OperationConfirmationController extends UbirimiController
 {
@@ -25,14 +26,14 @@ class OperationConfirmationController extends UbirimiController
         $menuSelectedCategory = 'issue';
         $smtpSettings = $session->get('client/settings/smtp');
 
-        $issues = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => UbirimiContainer::get()['session']->get('bulk_change_issue_ids'), $loggedInUserId));
+        $issues = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => UbirimiContainer::get()['session']->get('bulk_change_issue_ids'), $loggedInUserId));
         if ($request->request->has('confirm')) {
 
             if (UbirimiContainer::get()['session']->get('bulk_change_operation_type') == 'delete') {
                 $issueIds = UbirimiContainer::get()['session']->get('bulk_change_issue_ids');
                 for ($i = 0; $i < count($issueIds); $i++) {
                     if (UbirimiContainer::get()['session']->get('bulk_change_send_operation_email')) {
-                        $issue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueIds[$i]), $loggedInUserId);
+                        $issue = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueIds[$i]), $loggedInUserId);
 
                         $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_DELETE);
                         $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr']);
@@ -41,14 +42,14 @@ class OperationConfirmationController extends UbirimiController
                         UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
                     }
 
-                    $this->getRepository('yongo.issue.issue')->deleteById($issueIds[$i]);
-                    Attachment::deleteByIssueId($issueIds[$i]);
+                    $this->getRepository(Issue::class)->deleteById($issueIds[$i]);
+                    IssueAttachment::deleteByIssueId($issueIds[$i]);
 
                     // also delete the substaks
-                    $childrenIssues = $this->getRepository('yongo.issue.issue')->getByParameters(array('parent_id' => $issueIds[$i]), $loggedInUserId);
+                    $childrenIssues = $this->getRepository(Issue::class)->getByParameters(array('parent_id' => $issueIds[$i]), $loggedInUserId);
                     while ($childrenIssues && $childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)) {
-                        $this->getRepository('yongo.issue.issue')->deleteById($childIssue['id']);
-                        Attachment::deleteByIssueId($childIssue['id']);
+                        $this->getRepository(Issue::class)->deleteById($childIssue['id']);
+                        IssueAttachment::deleteByIssueId($childIssue['id']);
                     }
                 }
             }

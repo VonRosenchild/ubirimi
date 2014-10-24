@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Organization\Customer;
 use Ubirimi\HelpDesk\Repository\Organization\Organization;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -39,7 +40,7 @@ class AddController extends UbirimiController
                 $errors['email_not_valid'] = true;
             }
 
-            $emailData = $this->getRepository('ubirimi.user.user')->getUserByClientIdAndEmailAddress(
+            $emailData = $this->getRepository(UbirimiUser::class)->getUserByClientIdAndEmailAddress(
                 $session->get('client/id'),
                 mb_strtolower($email)
             );

@@ -5,9 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Project\Component;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 
 class EditController extends UbirimiController
@@ -17,9 +20,9 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $componentId = $request->get('id');
-        $component = $this->getRepository('yongo.project.project')->getComponentById($componentId);
+        $component = $this->getRepository(YongoProject::class)->getComponentById($componentId);
         $projectId = $component['project_id'];
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,15 +39,15 @@ class EditController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $components_duplicate = $this->getRepository('yongo.project.project')->getComponentByName($projectId, $name, $componentId);
+            $components_duplicate = $this->getRepository(YongoProject::class)->getComponentByName($projectId, $name, $componentId);
             if ($components_duplicate)
                 $alreadyExists = true;
 
             if (!$emptyName && !$alreadyExists) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository('yongo.project.project')->updateComponentById($componentId, $name, $description, $leader, $currentDate);
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(YongoProject::class)->updateComponentById($componentId, $name, $description, $leader, $currentDate);
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),
@@ -56,7 +59,7 @@ class EditController extends UbirimiController
             }
         }
 
-        $users = $this->getRepository('ubirimi.general.client')->getUsers($session->get('client/id'));
+        $users = $this->getRepository(UbirimiClient::class)->getUsers($session->get('client/id'));
         $menuSelectedCategory = 'project';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Project Component';
 

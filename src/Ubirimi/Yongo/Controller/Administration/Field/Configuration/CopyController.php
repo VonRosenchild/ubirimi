@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Configuration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 
 
 class CopyController extends UbirimiController
@@ -18,7 +19,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationId = $request->get('id');
-        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
 
         if ($fieldConfiguration['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +36,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateFieldConfiguration = Configuration::getMetaDataByNameAndClientId(
+            $duplicateFieldConfiguration = FieldConfiguration::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -44,12 +45,12 @@ class CopyController extends UbirimiController
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedFieldConfiguration = new Configuration($session->get('client/id'), $name, $description);
+                $copiedFieldConfiguration = new FieldConfiguration($session->get('client/id'), $name, $description);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedFieldConfigurationId = $copiedFieldConfiguration->save($currentDate);
 
-                $fieldConfigurationData = Configuration::getDataByConfigurationId($fieldConfigurationId);
+                $fieldConfigurationData = FieldConfiguration::getDataByConfigurationId($fieldConfigurationId);
 
                 while ($fieldConfigurationData && $data = $fieldConfigurationData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedFieldConfiguration->addCompleteData(
@@ -61,7 +62,7 @@ class CopyController extends UbirimiController
                     );
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

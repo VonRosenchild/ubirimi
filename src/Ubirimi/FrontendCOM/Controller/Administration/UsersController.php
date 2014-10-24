@@ -2,6 +2,7 @@
 
 namespace Ubirimi\FrontendCOM\Controller\Administration;
 
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -11,7 +12,7 @@ class UsersController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $users = $this->getRepository('ubirimi.user.user')->getAll(array('sort_by' => 'user.date_created', 'sort_order' => 'desc', 'limit' => 50));
+        $users = $this->getRepository(UbirimiUser::class)->getAll(array('sort_by' => 'user.date_created', 'sort_order' => 'desc', 'limit' => 50));
 
         $selectedOption = 'users';
 

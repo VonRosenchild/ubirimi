@@ -5,6 +5,8 @@ namespace Ubirimi\FrontendCOM\Controller\Administration;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class IssueController extends UbirimiController
 {
@@ -12,14 +14,14 @@ class IssueController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array(
+        $issuesResult = UbirimiContainer::getRepository(Issue::class)->getByParameters(array(
                 'sort' => 'created',
                 'sort_order' => 'desc',
                 'issues_per_page' => 500,
                 'page' => 1)
         );
 
-        $this->getRepository('yongo.project.project')->getById("issue_project_id");
+        $this->getRepository(YongoProject::class)->getById("issue_project_id");
 
         $issues = $issuesResult[0];
         $selectedOption = 'issues';

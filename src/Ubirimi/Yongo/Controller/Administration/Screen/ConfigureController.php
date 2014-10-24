@@ -5,9 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class ConfigureController extends UbirimiController
 {
@@ -17,7 +20,7 @@ class ConfigureController extends UbirimiController
 
         $screenId = $request->get('id');
 
-        $screenMetadata = $this->getRepository('yongo.screen.screen')->getMetaDataById($screenId);
+        $screenMetadata = $this->getRepository(Screen::class)->getMetaDataById($screenId);
         if ($screenMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -26,22 +29,22 @@ class ConfigureController extends UbirimiController
         $fieldId = $request->get('field_id');
 
         if ($fieldId && $position) {
-            $this->getRepository('yongo.screen.screen')->updatePositionForField($screenId, $fieldId, $position);
+            $this->getRepository(Screen::class)->updatePositionForField($screenId, $fieldId, $position);
 
             return new RedirectResponse('/yongo/administration/screen/configure/' . $screenId);
         }
 
-        $fields = $this->getRepository('yongo.field.field')->getByClient($session->get('client/id'));
+        $fields = $this->getRepository(Field::class)->getByClient($session->get('client/id'));
 
         if ($request->request->has('add_screen_field')) {
             $fieldId = Util::cleanRegularInputField($request->request->get('field'));
 
             if ($fieldId != -1) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $lastOrder = $this->getRepository('yongo.screen.screen')->getLastOrderNumber($screenId);
-                $this->getRepository('yongo.screen.screen')->addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
+                $lastOrder = $this->getRepository(Screen::class)->getLastOrderNumber($screenId);
+                $this->getRepository(Screen::class)->addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),
@@ -53,7 +56,7 @@ class ConfigureController extends UbirimiController
             }
         }
 
-        $screenData = $this->getRepository('yongo.screen.screen')->getDataById($screenId);
+        $screenData = $this->getRepository(Screen::class)->getDataById($screenId);
         $menuSelectedCategory = 'issue';
 
         $source = $request->get('source');

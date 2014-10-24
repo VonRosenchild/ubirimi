@@ -7,10 +7,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\Attachment;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class SaveIssueTransitionController extends UbirimiController
 {
@@ -36,7 +41,7 @@ class SaveIssueTransitionController extends UbirimiController
         $fieldTypesCustom = $request->request->get('field_types_custom');
         $fieldValuesCustom = $request->request->get('field_values_custom');
 
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         $issueCustomFieldsData = array();
 
         for ($i = 0; $i < count($fieldTypesCustom); $i++) {
@@ -50,18 +55,18 @@ class SaveIssueTransitionController extends UbirimiController
         for ($i = 0; $i < count($attIdsSession); $i++) {
             $attachmentId = $attIdsSession[$i];
             if (!in_array($attachmentId, $attachIdsToBeKept)) {
-                $attachment = $this->getRepository('yongo.issue.attachment')->getById($attachmentId);
-                Attachment::deleteById($attachmentId);
+                $attachment = $this->getRepository(IssueAttachment::class)->getById($attachmentId);
+                IssueAttachment::deleteById($attachmentId);
                 unlink('./../../..' . $attachment['path'] . '/' . $attachment['name']);
             }
         }
 
         $session->remove('added_attachments_in_screen');
-        $issueData = $this->getRepository('yongo.issue.issue')->getById($issueId, $loggedInUserId);
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
+        $issueData = $this->getRepository(Issue::class)->getById($issueId, $loggedInUserId);
+        $workflowData = $this->getRepository(Workflow::class)->getDataByStepIdFromAndStepIdTo($workflowId, $stepIdFrom, $stepIdTo);
 
         // check if the transition can be executed with respect to the transition conditions
-        $canBeExecuted = $this->getRepository('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issueData);
+        $canBeExecuted = $this->getRepository(Workflow::class)->checkConditionsByTransitionId($workflowData['id'], $loggedInUserId, $issueData);
 
         if ($canBeExecuted) {
             $currentDate = Util::getServerCurrentDateTime();
@@ -76,28 +81,28 @@ class SaveIssueTransitionController extends UbirimiController
             foreach ($issueCustomFieldsData as $key => $value) {
                 $keyData = explode("_", $key);
 
-                $oldIssueCustomFieldsData[$keyData[0]] = $this->getRepository('yongo.issue.customField')->getCustomFieldsDataByFieldId($issueId, $key);
+                $oldIssueCustomFieldsData[$keyData[0]] = $this->getRepository(CustomField::class)->getCustomFieldsDataByFieldId($issueId, $key);
                 unset($issueCustomFieldsData[$key]);
                 $issueCustomFieldsData[$keyData[0]] = $value;
             }
 
-            $fieldChanges = $this->getRepository('yongo.issue.issue')->computeDifference($issueData, $newIssueSystemFieldsData, $oldIssueCustomFieldsData, $issueCustomFieldsData);
+            $fieldChanges = $this->getRepository(Issue::class)->computeDifference($issueData, $newIssueSystemFieldsData, $oldIssueCustomFieldsData, $issueCustomFieldsData);
 
             if (in_array(Field::FIELD_COMMENT_CODE, $fieldTypes)) {
                 if ($fieldValues[array_search('comment', $fieldTypes)]) {
                     $commentText = $fieldValues[array_search('comment', $fieldTypes)];
 
-                    $this->getRepository('yongo.issue.comment')->add($issueId, $loggedInUserId, $commentText, $currentDate);
+                    $this->getRepository(IssueComment::class)->add($issueId, $loggedInUserId, $commentText, $currentDate);
                     $fieldChanges[] = array('comment', $commentText);
                 }
             }
 
             try {
-                $this->getRepository('yongo.issue.issue')->updateById($issueId, $newIssueSystemFieldsData, $currentDate);
+                $this->getRepository(Issue::class)->updateById($issueId, $newIssueSystemFieldsData, $currentDate);
 
                 // save custom fields
                 if (count($issueCustomFieldsData)) {
-                    $this->getRepository('yongo.issue.customField')->updateCustomFieldsData($issueId, $issueCustomFieldsData, $currentDate);
+                    $this->getRepository(CustomField::class)->updateCustomFieldsData($issueId, $issueCustomFieldsData, $currentDate);
                 }
             } catch (\Exception $e) {
 
@@ -111,7 +116,7 @@ class SaveIssueTransitionController extends UbirimiController
             $this->getRepository('yongo.workflow.workflowFunction')->triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
 
             // update the date_updated field
-            $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+            $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
             return new Response('success');
         } else {

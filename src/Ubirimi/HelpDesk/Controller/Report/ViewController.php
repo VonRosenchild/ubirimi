@@ -4,9 +4,12 @@ namespace Ubirimi\HelpDesk\Controller\Report;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewController extends UbirimiController
 {
@@ -18,8 +21,8 @@ class ViewController extends UbirimiController
         $projectId = $request->get('id');
         $slaSelectedId = $request->get('sla_id');
 
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
-        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
+        $SLAs = $this->getRepository(Sla::class)->getByProjectId($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'reports';
@@ -28,13 +31,13 @@ class ViewController extends UbirimiController
             . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
             . ' / Help Desks';
 
-        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
+        $queues = $this->getRepository(Queue::class)->getByProjectId($projectId);
 
         if ($queues) {
             $queueSelected = $queues->fetch_array(MYSQLI_ASSOC);
         }
 
-        $slaSelected = $this->getRepository('helpDesk.sla.sla')->getById($slaSelectedId);
+        $slaSelected = $this->getRepository(Sla::class)->getById($slaSelectedId);
 
         $dateTo = date('Y-m-d');
         $dateFrom = new \DateTime($dateTo, new \DateTimeZone($clientSettings['timezone']));

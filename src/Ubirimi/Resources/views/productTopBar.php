@@ -1,5 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
@@ -7,7 +8,7 @@ use Ubirimi\Util;
 if ($session->has('client/products')) {
     $productsArray = $session->get('client/products');
 } else {
-    $productsArray = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getProducts(UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getClientIdAnonymous(), 'array');
+    $productsArray = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getProducts(UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getClientIdAnonymous(), 'array');
 }
 ?>
 <input type="hidden" value="<?php echo $session->get('selected_product_id') ?>" id="product_id" />

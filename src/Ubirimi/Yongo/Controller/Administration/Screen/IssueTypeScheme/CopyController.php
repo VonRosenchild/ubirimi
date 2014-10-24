@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen\IssueTypeScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 
 
 class CopyController extends UbirimiController
@@ -18,7 +19,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypeScreenSchemeId = $request->get('id');
-        $issueTypeScreenScheme = TypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
+        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
 
         if ($issueTypeScreenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,23 +36,23 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateIssueTypeScreenScheme = TypeScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            $duplicateIssueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
             if ($duplicateIssueTypeScreenScheme)
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedIssueTypeScreenScheme = new TypeScreenScheme($session->get('client/id'), $name, $description);
+                $copiedIssueTypeScreenScheme = new IssueTypeScreenScheme($session->get('client/id'), $name, $description);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedIssueTypeScreenSchemeId = $copiedIssueTypeScreenScheme->save($currentDate);
 
-                $issueTypeScreenSchemeData = TypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
+                $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
 
                 while ($issueTypeScreenSchemeData && $data = $issueTypeScreenSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedIssueTypeScreenScheme->addDataComplete($copiedIssueTypeScreenSchemeId, $data['issue_type_id'], $data['screen_scheme_id'], $currentDate);
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

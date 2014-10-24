@@ -1,8 +1,11 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 echo '<table border="0" cellpadding="2" cellspacing="0" id="tableFieldList" class="modal-table">';
     echo '<tr>';
@@ -97,7 +100,7 @@ while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                         break;
 
                     case Field::FIELD_ASSIGNEE_CODE:
-                        $allowUnassignedIssuesFlag = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
+                        $allowUnassignedIssuesFlag = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
                         $textDisabled = '';
                         if (!$userHasAssignIssuePermission)
@@ -140,7 +143,7 @@ while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                         if ($projectComponents) {
                             echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                             $printedComponents = array();
-                            UbirimiContainer::get()['repository']->get('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
+                            UbirimiContainer::get()['repository']->get(YongoProject::class)->renderTreeComponentsInCombobox($projectComponents, 0, $arrIssueComponents, $printedComponents);
                             echo '</select>';
                         } else {
                             echo '<span>None</span>';
@@ -191,7 +194,7 @@ while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                         break;
 
                     case $fieldCodeNULL:
-                        $fieldValue = UbirimiContainer::get()['repository']->get('yongo.field.field')->getCustomFieldValueByFieldId($issueId, $field['field_id']);
+                        $fieldValue = UbirimiContainer::get()['repository']->get(Field::class)->getCustomFieldValueByFieldId($issueId, $field['field_id']);
                         // deal with the custom fields
                         switch ($field['type_code']) {
                             case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
@@ -222,7 +225,7 @@ while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
 
                             case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
 
-                                $possibleValues = UbirimiContainer::get()['repository']->get('yongo.field.field')->getDataByFieldId($field['field_id']);
+                                $possibleValues = UbirimiContainer::get()['repository']->get(Field::class)->getDataByFieldId($field['field_id']);
 
                                 echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                                 echo '<option value="">None</option>';
@@ -237,7 +240,7 @@ while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                                 break;
 
                             case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
-                                $customFieldsDataUserPickerMultipleUserData = UbirimiContainer::get()['repository']->get('yongo.issue.customField')->getUserPickerData($issueId, $field['field_id']);
+                                $customFieldsDataUserPickerMultipleUserData = UbirimiContainer::get()['repository']->get(CustomField::class)->getUserPickerData($issueId, $field['field_id']);
 
                                 $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
 

@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Event;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class EditDataController extends UbirimiController
 {
@@ -19,19 +21,19 @@ class EditDataController extends UbirimiController
         $backLink = $request->get('back');
         $projectId = $request->get('project_id');
 
-        $notificationScheme = $this->getRepository('yongo.notification.scheme')->getMetaDataById($notificationSchemeId);
+        $notificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataById($notificationSchemeId);
         if ($notificationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
         if ($projectId) {
-            $project = $this->getRepository('yongo.project.project')->getById($projectId);
+            $project = $this->getRepository(YongoProject::class)->getById($projectId);
             if ($project['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
         }
 
-        $events = Event::getByClient($session->get('client/id'));
+        $events = IssueEvent::getByClient($session->get('client/id'));
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Notification Scheme';
 

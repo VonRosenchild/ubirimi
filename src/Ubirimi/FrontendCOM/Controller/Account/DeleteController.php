@@ -5,6 +5,7 @@ namespace Ubirimi\FrontendCOM\Controller\Account;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -15,7 +16,7 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $clientId = $session->get('client/id');
 
-        $this->getRepository('ubirimi.general.client')->deleteById($clientId);
+        $this->getRepository(UbirimiClient::class)->deleteById($clientId);
 
         return new RedirectResponse('/sign-out');
     }

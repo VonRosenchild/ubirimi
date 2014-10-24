@@ -6,14 +6,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+use Ubirimi\Yongo\Repository\Issue\LinkType;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
+use Ubirimi\Yongo\Repository\Issue\Watcher;
+use Ubirimi\Yongo\Repository\Issue\WorkLog;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Workflow\StepProperty;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ViewController extends UbirimiController
 {
@@ -22,26 +32,25 @@ class ViewController extends UbirimiController
         $issueId = $request->get('id');
 
         if (Util::checkUserIsLoggedIn()) {
-            $issue = $this->getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
+            $issue = $this->getRepository(Issue::class)->getById($issueId, $session->get('user/id'));
             $clientSettings = $session->get('client/settings');
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $session->set('client/id', $clientId);
             $session->set('user/id', null);
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
-            $issue = $this->getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
-            $session->set('yongo/settings', $this->getRepository('ubirimi.general.client')->getYongoSettings($session->get('client/id')));
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
+            $issue = $this->getRepository(Issue::class)->getById($issueId, $session->get('user/id'));
+            $session->set('yongo/settings', $this->getRepository(UbirimiClient::class)->getYongoSettings($session->get('client/id')));
         }
 
         $issueValid = true;
-
         if ($issue) {
             $projectId = $issue['issue_project_id'];
             $session->set('selected_project_id', $projectId);
 
-            $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
-            $hasBrowsingPermission = $this->getRepository('yongo.project.project')->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $session->get('user/id'), $issueId);
+            $issueProject = $this->getRepository(YongoProject::class)->getById($projectId);
+            $hasBrowsingPermission = $this->getRepository(YongoProject::class)->userHasPermission(array($projectId), Permission::PERM_BROWSE_PROJECTS, $session->get('user/id'), $issueId);
         } else {
             $issueValid = false;
         }
@@ -59,33 +68,33 @@ class ViewController extends UbirimiController
 
             $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
 
-            $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
-            $versionsAffected = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-            $versionsTargeted = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+            $components = $this->getRepository(IssueComponent::class)->getByIssueIdAndProjectId($issueId, $projectId);
+            $versionsAffected = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+            $versionsTargeted = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
 
             $arrayListResultIds = null;
             if ($session->has('array_ids')) {
                 $arrayListResultIds = $session->get('array_ids');
                 $index = array_search($issueId, $arrayListResultIds);
             }
-            $hasCreatePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CREATE_ISSUE, $session->get('user/id'));
-            $hasEditPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
+            $hasCreatePermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_CREATE_ISSUE, $session->get('user/id'));
+            $hasEditPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $session->get('user/id'));
 
-            $hasDeletePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_ISSUE, $session->get('user/id'));
-            $hasAssignPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $session->get('user/id'));
-            $hasAssignablePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGNABLE_USER, $session->get('user/id'));
+            $hasDeletePermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_DELETE_ISSUE, $session->get('user/id'));
+            $hasAssignPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $session->get('user/id'));
+            $hasAssignablePermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_ASSIGNABLE_USER, $session->get('user/id'));
 
-            $hasLinkIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_LINK_ISSUE, $session->get('user/id'));
-            $hasWorkOnIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_WORK_ON_ISSUE, $session->get('user/id'));
-            $hasMoveIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_MOVE_ISSUE, $session->get('user/id'));
-            $hasCreateAttachmentPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CREATE_ATTACHMENTS, $session->get('user/id'));
+            $hasLinkIssuePermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_LINK_ISSUE, $session->get('user/id'));
+            $hasWorkOnIssuePermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_WORK_ON_ISSUE, $session->get('user/id'));
+            $hasMoveIssuePermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_MOVE_ISSUE, $session->get('user/id'));
+            $hasCreateAttachmentPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_CREATE_ATTACHMENTS, $session->get('user/id'));
 
-            $hasAddCommentsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ADD_COMMENTS, $session->get('user/id'));
+            $hasAddCommentsPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_ADD_COMMENTS, $session->get('user/id'));
 
-            $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
+            $workflowUsed = $this->getRepository(YongoProject::class)->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
 
-            $step = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
-            $stepProperties = $this->getRepository('yongo.workflow.workflow')->getStepProperties($step['id'], 'array');
+            $step = $this->getRepository(Workflow::class)->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
+            $stepProperties = $this->getRepository(Workflow::class)->getStepProperties($step['id'], 'array');
 
             $issueEditableProperty = true;
             for ($i = 0; $i < count($stepProperties); $i++) {
@@ -93,37 +102,37 @@ class ViewController extends UbirimiController
                     $issueEditableProperty = false;
             }
 
-            $workflowActions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowUsed['id'], $step['id']);
-            $screenData = $this->getRepository('yongo.project.project')->getScreenData($issueProject, $issue[Field::FIELD_ISSUE_TYPE_CODE], SystemOperation::OPERATION_CREATE, 'array');
+            $workflowActions = $this->getRepository(Workflow::class)->getTransitionsForStepId($workflowUsed['id'], $step['id']);
+            $screenData = $this->getRepository(YongoProject::class)->getScreenData($issueProject, $issue[Field::FIELD_ISSUE_TYPE_CODE], SystemOperation::OPERATION_CREATE, 'array');
 
             $childrenIssues = null;
             $parentIssue = null;
             if ($issue['parent_id'] == null) {
-                $childrenIssues = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
+                $childrenIssues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters(array('parent_id' => $issue['id']), $session->get('user/id'), null, $session->get('user/id'));
             } else {
-                $parentIssue = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
+                $parentIssue = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issue['parent_id']), $session->get('user/id'), null, $session->get('user/id'));
             }
 
-            $customFieldsData = $this->getRepository('yongo.issue.customField')->getCustomFieldsData($issue['id']);
-            $customFieldsDataUserPickerMultipleUser = $this->getRepository('yongo.issue.customField')->getUserPickerData($issue['id']);
+            $customFieldsData = $this->getRepository(CustomField::class)->getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = $this->getRepository(CustomField::class)->getUserPickerData($issue['id']);
 
-            $subTaskIssueTypes = $this->getRepository('yongo.project.project')->getSubTasksIssueTypes($projectId);
+            $subTaskIssueTypes = $this->getRepository(YongoProject::class)->getSubTasksIssueTypes($projectId);
 
-            $attachments = $this->getRepository('yongo.issue.attachment')->getByIssueId($issue['id'], true);
+            $attachments = $this->getRepository(IssueAttachment::class)->getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
             if ($countAttachments) {
-                $hasDeleteOwnAttachmentsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
-                $hasDeleteAllAttachmentsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
+                $hasDeleteOwnAttachmentsPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
+                $hasDeleteAllAttachmentsPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_DELETE_OWN_ATTACHMENTS, $session->get('user/id'));
             }
 
             // get the worklogs
-            $workLogs = $this->getRepository('yongo.issue.workLog')->getByIssueId($issueId);
+            $workLogs = $this->getRepository(WorkLog::class)->getByIssueId($issueId);
 
             // get the watchers, if any
-            $watchers = $this->getRepository('yongo.issue.watcher')->getByIssueId($issueId);
+            $watchers = $this->getRepository(Watcher::class)->getByIssueId($issueId);
 
-            $linkedIssues = $this->getRepository('yongo.issue.linkType')->getLinksByParentId($issueId);
-            $linkIssueTypes = $this->getRepository('yongo.issue.linkType')->getByClientId($session->get('client/id'));
+            $linkedIssues = $this->getRepository(LinkType::class)->getLinksByParentId($issueId);
+            $linkIssueTypes = $this->getRepository(LinkType::class)->getByClientId($session->get('client/id'));
             $issueLinkingFlag = $session->get('yongo/settings/issue_linking_flag');
             $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
             $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');
@@ -132,11 +141,11 @@ class ViewController extends UbirimiController
 
             $slasPrintData = null;
             if ($issueProject['help_desk_enabled_flag']) {
-                $slasPrintData = $this->getRepository('yongo.issue.issue')->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+                $slasPrintData = $this->getRepository(Issue::class)->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
             }
 
             // voters and watchers
-            $hasViewVotersAndWatchersPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectId, Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $session->get('user/id'));
+            $hasViewVotersAndWatchersPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectId, Permission::PERM_VIEW_VOTERS_AND_WATCHERS, $session->get('user/id'));
             $recentIssues = $session->get('yongo/recent_issues');
 
             if (!isset($recentIssues)) {

@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 require_once __DIR__ . '/../../_header.php';
@@ -58,7 +58,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </td>
                                 <td>
                                     <?php
-                                        $screenSchemes = Scheme::getByScreenId($clientId, $screen['id']);
+                                        $screenSchemes = ScreenScheme::getByScreenId($clientId, $screen['id']);
                                         if ($screenSchemes) {
                                             echo '<ul>';
                                             while ($screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {
@@ -70,7 +70,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </td>
                                 <td width="500px">
                                     <?php
-                                        $workflows = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getByScreen($clientId, $screen['id']);
+                                        $workflows = UbirimiContainer::get()['repository']->get(Workflow::class)->getByScreen($clientId, $screen['id']);
                                         if ($workflows) {
                                             echo '<ul>';
                                             while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {

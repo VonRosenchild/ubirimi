@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -35,7 +36,7 @@ class UploadProfilePictureController extends UbirimiController
 
             move_uploaded_file($tmp_name, $uploadPath . "/" . $originalFileName);
 
-            $this->getRepository('ubirimi.user.user')->updateAvatar($originalFileName, $userId);
+            $this->getRepository(UbirimiUser::class)->updateAvatar($originalFileName, $userId);
 
             $newFileName = $uploadPath . "/" . $originalFileName;
             $newThumbnailName = $uploadPath . "/" . $filename . '_150.' . $extension;

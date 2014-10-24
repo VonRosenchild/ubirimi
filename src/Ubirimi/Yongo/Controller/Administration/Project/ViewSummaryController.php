@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewSummaryController extends UbirimiController
 {
@@ -16,7 +17,7 @@ class ViewSummaryController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -29,7 +30,7 @@ class ViewSummaryController extends UbirimiController
         $issueTypeScheme = $this->getRepository('yongo.issue.typeScheme')->getMetaDataById($project['issue_type_scheme_id']);
         $issueTypeSchemeData = $this->getRepository('yongo.issue.typeScheme')->getDataById($project['issue_type_scheme_id']);
 
-        $workflowScheme = $this->getRepository('yongo.project.project')->getWorkflowScheme($projectId);
+        $workflowScheme = $this->getRepository(YongoProject::class)->getWorkflowScheme($projectId);
 
         $workflows = $this->getRepository('yongo.workflow.scheme')->getWorkflows($workflowScheme['id']);
 

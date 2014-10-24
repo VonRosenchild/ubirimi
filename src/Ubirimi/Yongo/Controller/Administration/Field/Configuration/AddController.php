@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Configuration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 
 class AddController extends UbirimiController
 {
@@ -27,11 +28,11 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $fieldConfiguration = new Configuration($session->get('client/id'), $name, $description);
+                $fieldConfiguration = new FieldConfiguration($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $fieldConfiguration->save($currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

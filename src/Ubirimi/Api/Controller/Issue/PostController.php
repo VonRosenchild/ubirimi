@@ -5,8 +5,9 @@ namespace Ubirimi\Api\Controller\Issue;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\UbirimiController;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\UbirimiController;
 
 
 class PostController extends UbirimiController
@@ -15,12 +16,12 @@ class PostController extends UbirimiController
     {
         UbirimiContainer::get()['api.auth']->auth($request);
 
-        $timeTrackingDefaultUnit = $this->getRepository('ubirimi.general.client')->getYongoSetting(
+        $timeTrackingDefaultUnit = $this->getRepository(UbirimiClient::class)->getYongoSetting(
             $request->get('api_client_id'),
             'time_tracking_default_unit'
         );
 
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($request->get('api_client_id'));
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($request->get('api_client_id'));
 
         $issue = UbirimiContainer::get()['issue']->save(
             array('id' => $request->get('projectId')),

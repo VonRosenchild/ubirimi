@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
@@ -16,15 +17,15 @@ class GetActivityStreamChunkController extends UbirimiController
             $clientId = $session->get('client/id');
             $clientSettings = $session->get('client/settings');;
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
         $date = $request->request->get('date');
         $project = $request->request->get('project');
 
         if ($project == 'all') {
-            $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+            $projectsMenu = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_BROWSE_PROJECTS,

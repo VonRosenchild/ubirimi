@@ -2,8 +2,8 @@
 
 namespace Ubirimi\Calendar\ServiceProvider;
 
-use Ubirimi\Container\ServiceProviderInterface;
 use Ubirimi\Calendar\Service\EmailService;
+use Ubirimi\Container\ServiceProviderInterface;
 
 class CalendarServiceProvider implements ServiceProviderInterface
 {

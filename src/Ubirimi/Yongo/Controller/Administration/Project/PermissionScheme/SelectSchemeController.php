@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SelectSchemeController extends UbirimiController
 {
@@ -17,7 +18,7 @@ class SelectSchemeController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -26,12 +27,12 @@ class SelectSchemeController extends UbirimiController
 
             $permissionSchemeId = $request->request->get('perm_scheme');
 
-            $this->getRepository('yongo.project.project')->updatePermissionScheme($projectId, $permissionSchemeId);
+            $this->getRepository(YongoProject::class)->updatePermissionScheme($projectId, $permissionSchemeId);
 
             return new RedirectResponse('/yongo/administration/project/permissions/' . $projectId);
         }
 
-        $permissionSchemes = Scheme::getByClientId($session->get('client/id'));
+        $permissionSchemes = PermissionScheme::getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

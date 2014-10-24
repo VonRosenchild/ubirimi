@@ -1,8 +1,10 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 
 while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
     $htmlOutput .= '<tr>';
@@ -33,7 +35,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
             break;
 
         case Field::FIELD_ASSIGNEE_CODE:
-            $allowUnassignedIssuesFlag = UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
+            $allowUnassignedIssuesFlag = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getYongoSetting($clientId, 'allow_unassigned_issues_flag');
 
             $htmlOutput .= '<select ' . $requiredHTML . ' id="field_type_assignee" name="' . $field['field_code'] . '" class="select2Input">';
             if ($allowUnassignedIssuesFlag)
@@ -125,7 +127,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
         // deal with the custom fields
         case $fieldCodeNULL:
 
-            $fieldValue = UbirimiContainer::get()['repository']->get('yongo.field.field')->getCustomFieldValueByFieldId($issueId, $field['field_id']);
+            $fieldValue = UbirimiContainer::get()['repository']->get(Field::class)->getCustomFieldValueByFieldId($issueId, $field['field_id']);
             switch ($field['type_code']) {
                 case Field::CUSTOM_FIELD_TYPE_SMALL_TEXT_CODE:
                     $htmlOutput .= '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputTextLarge" type="text" value="' . $fieldValue['value'] . '" name="' . $field['type_code'] . '" />';
@@ -154,7 +156,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                     break;
 
                 case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
-                    $possibleValues = UbirimiContainer::get()['repository']->get('yongo.field.field')->getDataByFieldId($field['field_id']);
+                    $possibleValues = UbirimiContainer::get()['repository']->get(Field::class)->getDataByFieldId($field['field_id']);
                     $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                     $htmlOutput .= '<option value="">None</option>';
                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
@@ -164,7 +166,7 @@ while ($screenData && $field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                     break;
 
                 case Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE:
-                    $customFieldsDataUserPickerMultipleUserData = UbirimiContainer::get()['repository']->get('yongo.issue.customField')->getUserPickerData($issueId, $field['field_id']);
+                    $customFieldsDataUserPickerMultipleUserData = UbirimiContainer::get()['repository']->get(CustomField::class)->getUserPickerData($issueId, $field['field_id']);
                     $customFieldsDataUserPickerMultipleUser = $customFieldsDataUserPickerMultipleUserData[$field['field_id']];
 
                     $htmlOutput .= '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="select2Input mousetrap" type="text" multiple="multiple" name="' . $field['type_code'] . '[]">';

@@ -1,41 +1,42 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 
-    use Ubirimi\Util;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Util;
     use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
-    use Ubirimi\Yongo\Repository\Issue\Settings;
+    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
     use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Project\Project;
-    use Ubirimi\Repository\User\User;
+    use Ubirimi\Yongo\Repository\Project\YongoProject;
+    use Ubirimi\Repository\User\UbirimiUser;
     use Ubirimi\Yongo\Helper\IssueHelper;
 
-    $screenData = UbirimiContainer::get()['repository']->get('yongo.project.project')->getScreenData($projectData, $issueTypeId, $sysOperationId);
+    $screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->getScreenData($projectData, $issueTypeId, $sysOperationId);
 
     $projectId = $projectData['id'];
-    $projectComponents = UbirimiContainer::get()['repository']->get('yongo.project.project')->getComponents($projectId);
+    $projectComponents = UbirimiContainer::get()['repository']->get(YongoProject::class)->getComponents($projectId);
 
     $issueSecuritySchemeId = $projectData['issue_security_scheme_id'];
     $issueSecuritySchemeLevels = null;
 
     if ($issueSecuritySchemeId) {
-        $issueSecuritySchemeLevels = SecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+        $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
     }
 
-    $projectVersions = UbirimiContainer::get()['repository']->get('yongo.project.project')->getVersions($projectId);
-    $issuePriorities = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('priority', $clientId);
-    $issueResolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
-    $assignableUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
-    $reporterUsers = UbirimiContainer::get()['repository']->get('yongo.project.project')->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
-    $allUsers = UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getByClientId($session->get('client/id'));
+    $projectVersions = UbirimiContainer::get()['repository']->get(YongoProject::class)->getVersions($projectId);
+    $issuePriorities = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('priority', $clientId);
+    $issueResolutions = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('resolution', $clientId);
+    $assignableUsers = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
+    $reporterUsers = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersWithPermission($projectId, Permission::PERM_CREATE_ISSUE);
+    $allUsers = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getByClientId($session->get('client/id'));
 
-    $userHasModifyReporterPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
-    $userHasAssignIssuePermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
-    $userHasSetSecurityLevelPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
+    $userHasModifyReporterPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
+    $userHasAssignIssuePermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_ASSIGN_ISSUE, $loggedInUserId);
+    $userHasSetSecurityLevelPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_SET_SECURITY_LEVEL, $loggedInUserId);
 
     $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
     $timeTrackingFieldId = null;
-    $fieldData = UbirimiContainer::get()['repository']->get('yongo.project.project')->getFieldInformation($projectData['issue_type_field_configuration_id'], $issueTypeId, 'array');
+    $fieldData = UbirimiContainer::get()['repository']->get(YongoProject::class)->getFieldInformation($projectData['issue_type_field_configuration_id'], $issueTypeId, 'array');
 
     $fieldCodeNULL = null;
     $fieldsPlacedOnScreen = array();
@@ -86,7 +87,7 @@ use Ubirimi\Container\UbirimiContainer;
                                 $projectData['lead_id'],
                                 null === $userHasAssignIssuePermission,
                                 $arrayData['required_flag'],
-                                1 === UbirimiContainer::get()['repository']->get('ubirimi.general.client')->getYongoSetting($clientId, 'allow_unassigned_issues_flag')
+                                1 === UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getYongoSetting($clientId, 'allow_unassigned_issues_flag')
                             );
                             break;
 
@@ -136,7 +137,7 @@ use Ubirimi\Container\UbirimiContainer;
                             if ($projectComponents) {
                                 echo '<select size="3" ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 650px;">';
                                 $printedComponents = array();
-                                UbirimiContainer::get()['repository']->get('yongo.project.project')->renderTreeComponentsInCombobox($projectComponents, 0, null, $printedComponents);
+                                UbirimiContainer::get()['repository']->get(YongoProject::class)->renderTreeComponentsInCombobox($projectComponents, 0, null, $printedComponents);
                                 echo '</select>';
                             } else {
                                 echo '<span ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '">None</span>';
@@ -208,7 +209,7 @@ use Ubirimi\Container\UbirimiContainer;
                                     echo '<input ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '_' . $field['type_code'] . '" class="inputText mousetrap" name="' . $field['field_code'] . '" type="text" value="" />';
                                     break;
                                 case Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CHOICE_CODE:
-                                    $possibleValues = UbirimiContainer::get()['repository']->get('yongo.field.field')->getDataByFieldId($field['field_id']);
+                                    $possibleValues = UbirimiContainer::get()['repository']->get(Field::class)->getDataByFieldId($field['field_id']);
                                     echo '<select ' . $requiredHTML . ' id="field_custom_type_' . $field['field_id'] . '" name="' . $field['type_code'] . '" class="mousetrap select2InputMedium">';
                                     echo '<option value="">None</option>';
                                     while ($possibleValues && $customValue = $possibleValues->fetch_array(MYSQLI_ASSOC)) {
@@ -273,7 +274,7 @@ use Ubirimi\Container\UbirimiContainer;
                  * if there is a default level set do nothing. if not add it to the warnings
                  */
 
-                $defaultLevel = SecurityScheme::getDefaultLevel($projectData['issue_security_scheme_id']);
+                $defaultLevel = IssueSecurityScheme::getDefaultLevel($projectData['issue_security_scheme_id']);
                 echo '<tr>';
                     echo '<td>';
                     if (!$defaultLevel) {

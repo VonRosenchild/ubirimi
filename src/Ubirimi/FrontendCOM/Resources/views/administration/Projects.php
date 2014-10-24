@@ -40,7 +40,7 @@ require_once __DIR__ . '/_header.php';
                     <td><?php echo $project['name']; ?></td>
                     <td>
                         <?php
-                            $issuesResult = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array('project' => $project['id']));
+                            $issuesResult = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('project' => $project['id']));
                             if ($issuesResult) {
                                 echo $issuesResult->num_rows;
                             } else {

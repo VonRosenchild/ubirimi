@@ -4,6 +4,7 @@ namespace Ubirimi\Calendar\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -17,7 +18,7 @@ class ListSharedWithMeController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_CALENDAR);
         $menuSelectedCategory = 'calendars';
 
-        $calendarsSharedWithMe = $this->getRepository('calendar.calendar.calendar')->getSharedWithUserId($session->get('user/id'));
+        $calendarsSharedWithMe = $this->getRepository(UbirimiCalendar::class)->getSharedWithUserId($session->get('user/id'));
 
         $month = date('n');
         $year = date('Y');

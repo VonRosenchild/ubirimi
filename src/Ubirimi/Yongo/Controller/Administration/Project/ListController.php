@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Project;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -26,9 +27,9 @@ class ListController extends UbirimiController
         }
 
         if ($hasGlobalAdministrationPermission && $hasGlobalSystemAdministrationPermission) {
-            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array');
+            $projects = $this->getRepository(UbirimiClient::class)->getProjects($session->get('client/id'), 'array');
         } else if ($hasAdministerProjectsPermission) {
-            $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+            $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
                 $session->get('client/id'),
                 $session->get('user/id'),
                 Permission::PERM_ADMINISTER_PROJECTS,

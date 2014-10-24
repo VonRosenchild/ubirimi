@@ -5,10 +5,13 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\Type;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Type;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
 
 class DeleteController extends UbirimiController
@@ -21,16 +24,16 @@ class DeleteController extends UbirimiController
         $newId = $request->request->get('new_id');
 
         if ($newId) {
-            $projects = $this->getRepository('ubirimi.general.client')->getProjects($session->get('client/id'), 'array', 'id');
-            $this->getRepository('yongo.issue.issue')->updateType($projects, $oldId, $newId);
+            $projects = $this->getRepository(UbirimiClient::class)->getProjects($session->get('client/id'), 'array', 'id');
+            $this->getRepository(Issue::class)->updateType($projects, $oldId, $newId);
         }
 
-        $issueType = Type::getById($oldId);
-        Type::deleteById($oldId);
+        $issueType = IssueType::getById($oldId);
+        IssueType::deleteById($oldId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add(
+        $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

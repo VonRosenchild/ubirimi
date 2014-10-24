@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\IssueTypeScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
 
 class CopyController extends UbirimiController
@@ -20,7 +21,7 @@ class CopyController extends UbirimiController
         $issueTypeSchemeId = $request->get('id');
         $type = $request->get('type');
 
-        $issueTypeScheme = TypeScheme::getMetaDataById($issueTypeSchemeId);
+        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
 
         if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +38,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateIssueTypeScheme = TypeScheme::getMetaDataByNameAndClientId(
+            $duplicateIssueTypeScheme = IssueTypeScheme::getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -46,18 +47,18 @@ class CopyController extends UbirimiController
                 $duplicateName = true;
 
             if (!$emptyName && !$duplicateName) {
-                $copiedIssueTypeScheme = new TypeScheme($session->get('client/id'), $name, $description, $type);
+                $copiedIssueTypeScheme = new IssueTypeScheme($session->get('client/id'), $name, $description, $type);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedIssueTypeSchemeId = $copiedIssueTypeScheme->save($currentDate);
 
-                $issueTypeSchemeData = TypeScheme::getDataById($issueTypeSchemeId);
+                $issueTypeSchemeData = IssueTypeScheme::getDataById($issueTypeSchemeId);
 
                 while ($issueTypeSchemeData && $data = $issueTypeSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedIssueTypeScheme->addData($copiedIssueTypeSchemeId, $data['issue_type_id'], $currentDate);
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

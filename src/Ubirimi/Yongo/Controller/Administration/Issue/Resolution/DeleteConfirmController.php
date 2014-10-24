@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 class DeleteConfirmController extends UbirimiController
 {
@@ -15,7 +16,7 @@ class DeleteConfirmController extends UbirimiController
 
         $Id = $request->get('id');
 
-        $resolutions = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('resolution', $session->get('client/id'));
+        $resolutions = $this->getRepository(IssueSettings::class)->getAllIssueSettings('resolution', $session->get('client/id'));
 
         return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/resolution/DeleteConfirm.php', get_defined_vars());
     }

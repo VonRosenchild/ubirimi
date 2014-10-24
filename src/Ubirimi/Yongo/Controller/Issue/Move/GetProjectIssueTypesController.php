@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class GetProjectIssueTypesController extends UbirimiController
 {
@@ -15,7 +16,7 @@ class GetProjectIssueTypesController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->request->get('id');
-        $moveToIssueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($projectId, 0, 'array');
+        $moveToIssueTypes = $this->getRepository(YongoProject::class)->getIssueTypes($projectId, 0, 'array');
 
         return new JsonResponse(json_encode($moveToIssueTypes));
 

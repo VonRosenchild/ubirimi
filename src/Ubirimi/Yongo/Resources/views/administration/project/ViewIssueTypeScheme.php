@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Field\Configuration;
-    use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
     require_once __DIR__ . '/../_header.php';
@@ -66,7 +66,7 @@ use Ubirimi\Yongo\Repository\Field\Configuration;
                         <td><?php echo $data['description'] ?></td>
                         <td>
                             <?php
-                                $workflows = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getByIssueType($data['issue_type_id'], $clientId);
+                                $workflows = UbirimiContainer::get()['repository']->get(Workflow::class)->getByIssueType($data['issue_type_id'], $clientId);
                                 if ($workflows) {
                                     echo '<ul>';
                                     while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {
@@ -78,7 +78,7 @@ use Ubirimi\Yongo\Repository\Field\Configuration;
                         </td>
                         <td>
                             <?php
-                                $fieldConfigurations = Configuration::getByIssueType($data['issue_type_id'], $clientId);
+                                $fieldConfigurations = FieldConfiguration::getByIssueType($data['issue_type_id'], $clientId);
                                 if ($fieldConfigurations) {
                                     echo '<ul>';
                                     while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {
@@ -90,7 +90,7 @@ use Ubirimi\Yongo\Repository\Field\Configuration;
                         </td>
                         <td>
                             <?php
-                                $screenSchemes = Scheme::getByIssueType($data['issue_type_id'], $clientId);
+                                $screenSchemes = ScreenScheme::getByIssueType($data['issue_type_id'], $clientId);
                                 if ($screenSchemes) {
                                     echo '<ul>';
                                     while ($screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {

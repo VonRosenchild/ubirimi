@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class CopyController extends UbirimiController
 {
@@ -16,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowId = $request->get('id');
-        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+        $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
 
         if ($workflow['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,16 +35,16 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $workflowAlreadyExisting = $this->getRepository('yongo.workflow.workflow')->getByClientIdAndName($session->get('client/id'), $name);
+            $workflowAlreadyExisting = $this->getRepository(Workflow::class)->getByClientIdAndName($session->get('client/id'), $name);
             if ($workflowAlreadyExisting) {
                 $duplicateName = true;
             }
 
             if (!$emptyName && !$workflowAlreadyExisting) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.workflow.workflow')->copy($session->get('client/id'), $workflowId, $name, $description, $currentDate);
+                $this->getRepository(Workflow::class)->copy($session->get('client/id'), $workflowId, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

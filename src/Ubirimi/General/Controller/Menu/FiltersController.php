@@ -4,9 +4,10 @@ namespace Ubirimi\General\Controller\Menu;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class FiltersController extends UbirimiController
@@ -17,11 +18,11 @@ class FiltersController extends UbirimiController
 
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
         }
 
-        $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+        $projectsMenu = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,
@@ -33,7 +34,7 @@ class FiltersController extends UbirimiController
             $projectsForBrowsing[$i] = $projectsMenu[$i]['id'];
         }
 
-        $customFilters = $this->getRepository('yongo.issue.filter')->getAllByUser($session->get('user/id'));
+        $customFilters = $this->getRepository(IssueFilter::class)->getAllByUser($session->get('user/id'));
 
         return $this->render(__DIR__ . '/../../Resources/views/menu/Filters.php', get_defined_vars());
     }

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class UpdateController extends UbirimiController
 {
@@ -20,7 +21,7 @@ class UpdateController extends UbirimiController
         $idFrom = $request->request->get('id_from');
         $idTo = $request->request->get('id_to');
 
-        $this->getRepository('yongo.workflow.workflow')->updateTransitionData($workflowId, $transition_name, $screenId, $idFrom, $idTo);
+        $this->getRepository(Workflow::class)->updateTransitionData($workflowId, $transition_name, $screenId, $idFrom, $idTo);
 
         return new Response('');
     }

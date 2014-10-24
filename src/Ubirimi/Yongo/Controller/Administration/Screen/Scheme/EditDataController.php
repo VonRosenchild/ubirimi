@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Screen\Screen;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
 class EditDataController extends UbirimiController
 {
@@ -17,12 +18,12 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $screenSchemeDataId = $request->get('id');
 
-        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
-        $screenSchemeData = Scheme::getDataByScreenDataId($screenSchemeDataId);
+        $screens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
+        $screenSchemeData = ScreenScheme::getDataByScreenDataId($screenSchemeDataId);
         $screenSchemeId = $screenSchemeData['screen_scheme_id'];
         $operationId = $screenSchemeData['sys_operation_id'];
         $selectedScreenId = $screenSchemeData['screen_id'];
-        $screenSchemeMetaData = Scheme::getMetaDataById($screenSchemeData['screen_scheme_id']);
+        $screenSchemeMetaData = ScreenScheme::getMetaDataById($screenSchemeData['screen_scheme_id']);
 
         if ($screenSchemeMetaData['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -32,7 +33,7 @@ class EditDataController extends UbirimiController
             $screenId = Util::cleanRegularInputField($request->request->get('screen'));
             $operationId = Util::cleanRegularInputField($request->request->get('operation'));
 
-            Scheme::updateDataById($screenSchemeId, $operationId, $screenId);
+            ScreenScheme::updateDataById($screenSchemeId, $operationId, $screenId);
 
             return new RedirectResponse('/yongo/administration/screen/configure-scheme/' . $screenSchemeId);
         }

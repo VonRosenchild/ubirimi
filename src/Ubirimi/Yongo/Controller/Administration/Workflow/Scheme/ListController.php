@@ -7,14 +7,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 class ListController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $workflowSchemes = Scheme::getMetaDataByClientId($session->get('client/id'));
+        $workflowSchemes = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
         $menuSelectedCategory = 'issue';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Schemes';

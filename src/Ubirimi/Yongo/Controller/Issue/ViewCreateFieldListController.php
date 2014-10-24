@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewCreateFieldListController extends UbirimiController
 {
@@ -17,9 +18,9 @@ class ViewCreateFieldListController extends UbirimiController
 
         $issueTypeId = $request->request->get('issue_type_id');
         $sysOperationId = $request->request->get('operation_id');
-        $projectData = $this->getRepository('yongo.project.project')->getById($projectId);
+        $projectData = $this->getRepository(YongoProject::class)->getById($projectId);
 
-        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issueTypeId);
+        $workflowUsed = $this->getRepository(YongoProject::class)->getWorkflowUsedForType($projectId, $issueTypeId);
 
         return $this->render(__DIR__ . '/../../Resources/views/issue/ViewCreateFieldList.php', get_defined_vars());
     }

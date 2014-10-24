@@ -5,6 +5,9 @@ namespace Ubirimi\Documentador\Controller\Administration\SpaceTools;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\User\UbirimiGroup;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,7 +23,7 @@ class EditPermissionController extends UbirimiController
         $menuSelectedCategory = 'doc_spaces';
 
         $spaceId = $request->get('id');
-        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
+        $space = $this->getRepository(Space::class)->getById($spaceId);
 
         if ($space['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -30,7 +33,7 @@ class EditPermissionController extends UbirimiController
 
             // deal with the groups
             // delete all the permissions for all groups
-            $this->getRepository('documentador.space.space')->removePermissionsForAllGroups($spaceId);
+            $this->getRepository(Space::class)->removePermissionsForAllGroups($spaceId);
             $groupPermissions = array();
 
             $requestParameters = $request->request->all();
@@ -46,11 +49,11 @@ class EditPermissionController extends UbirimiController
                 }
             }
 
-            $this->getRepository('documentador.space.space')->updateGroupPermissions($spaceId, $groupPermissions);
+            $this->getRepository(Space::class)->updateGroupPermissions($spaceId, $groupPermissions);
 
             // deal with the users
             // delete all the permissions for all users
-            $this->getRepository('documentador.space.space')->removePermissionsForAllUsers($spaceId);
+            $this->getRepository(Space::class)->removePermissionsForAllUsers($spaceId);
             $usersPermissions = array();
             foreach ($requestParameters as $key => $value) {
 
@@ -64,22 +67,22 @@ class EditPermissionController extends UbirimiController
                 }
             }
 
-            $this->getRepository('documentador.space.space')->updateUserPermissions($spaceId, $usersPermissions);
+            $this->getRepository(Space::class)->updateUserPermissions($spaceId, $usersPermissions);
 
             // deal with anonymous access
             $anonymous_all_view_flag = $request->request->get('anonymous_all_view_flag');
 
             $parameters = array(array('field' => 'all_view_flag', 'value' => $anonymous_all_view_flag, 'type' => 'i'));
 
-            $this->getRepository('documentador.space.space')->updatePermissionsAnonymous($spaceId, $parameters);
+            $this->getRepository(Space::class)->updatePermissionsAnonymous($spaceId, $parameters);
 
             return new RedirectResponse('/documentador/administration/space-tools/permissions/' . $spaceId);
         }
 
-        $users = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
-        $groups = $this->getRepository('ubirimi.user.group')->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $users = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
+        $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
-        $anonymousAccessSettings = $this->getRepository('documentador.space.space')->getAnonymousAccessSettings($spaceId);
+        $anonymousAccessSettings = $this->getRepository(Space::class)->getAnonymousAccessSettings($spaceId);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/spacetools/EditPermission.php', get_defined_vars());
     }

@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\NotificationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Notification\Scheme;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
 
 class AddController extends UbirimiController
@@ -28,10 +29,10 @@ class AddController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $notificationScheme = new Scheme($session->get('client/id'), $name, $description);
+                $notificationScheme = new NotificationScheme($session->get('client/id'), $name, $description);
                 $notificationSchemeId = $notificationScheme->save($currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

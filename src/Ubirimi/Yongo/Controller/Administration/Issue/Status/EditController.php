@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\Status;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 class EditController extends UbirimiController
 {
@@ -16,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $issueStatus = $this->getRepository('yongo.issue.settings')->getById($Id, 'status');
+        $issueStatus = $this->getRepository(IssueSettings::class)->getById($Id, 'status');
 
         if ($issueStatus['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,7 +35,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             // check for duplication
-            $status = $this->getRepository('yongo.issue.settings')->getByName(
+            $status = $this->getRepository(IssueSettings::class)->getByName(
                 $session->get('client/id'),
                 'status',
                 mb_strtolower($name),
@@ -45,9 +47,9 @@ class EditController extends UbirimiController
 
             if (!$statusExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.issue.settings')->updateById($Id, 'status', $name, $description, null, $currentDate);
+                $this->getRepository(IssueSettings::class)->updateById($Id, 'status', $name, $description, null, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

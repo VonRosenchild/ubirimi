@@ -9,10 +9,15 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\Attachment;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Issue\Watcher;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ViewIssueController extends UbirimiController
 {
@@ -22,7 +27,7 @@ class ViewIssueController extends UbirimiController
 
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issue = UbirimiContainer::getRepository('yongo.issue.issue')->getById($issueId, $session->get('user/id'));
+        $issue = UbirimiContainer::getRepository(Issue::class)->getById($issueId, $session->get('user/id'));
         $issueId = $issue['id'];
         $projectId = $issue['issue_project_id'];
         $clientSettings = $session->get('client/settings');
@@ -33,7 +38,7 @@ class ViewIssueController extends UbirimiController
             . $issue['nr'] . ' ' . $issue['summary'];
 
         $session->set('selected_project_id', $projectId);
-        $issueProject = $this->getRepository('yongo.project.project')->getById($projectId);
+        $issueProject = $this->getRepository(YongoProject::class)->getById($projectId);
 
         /* before going further, check to is if the issue id a valid id -- start */
         $issueValid = true;
@@ -43,14 +48,14 @@ class ViewIssueController extends UbirimiController
 
         /* before going further, check to is if the issue id a valid id -- end */
 
-        $components = $this->getRepository('yongo.issue.component')->getByIssueIdAndProjectId($issueId, $projectId);
-        $versionsAffected = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId(
+        $components = $this->getRepository(IssueComponent::class)->getByIssueIdAndProjectId($issueId, $projectId);
+        $versionsAffected = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_AFFECTED_VERSION_FLAG
         );
 
-        $versionsTargeted = $this->getRepository('yongo.issue.version')->getByIssueIdAndProjectId(
+        $versionsTargeted = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId(
             $issueId,
             $projectId,
             Issue::ISSUE_FIX_VERSION_FLAG
@@ -62,28 +67,28 @@ class ViewIssueController extends UbirimiController
             $index = array_search($issueId, $arrayListResultIds);
         }
 
-        $workflowUsed = $this->getRepository('yongo.project.project')->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
+        $workflowUsed = $this->getRepository(YongoProject::class)->getWorkflowUsedForType($projectId, $issue[Field::FIELD_ISSUE_TYPE_CODE]);
 
-        $step = $this->getRepository('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
-        $stepProperties = $this->getRepository('yongo.workflow.workflow')->getStepProperties($step['id'], 'array');
+        $step = $this->getRepository(Workflow::class)->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
+        $stepProperties = $this->getRepository(Workflow::class)->getStepProperties($step['id'], 'array');
 
         if ($issueValid) {
 
-            $workflowActions = $this->getRepository('yongo.workflow.workflow')->getTransitionsForStepId($workflowUsed['id'], $step['id']);
-            $screenData = $this->getRepository('yongo.project.project')->getScreenData(
+            $workflowActions = $this->getRepository(Workflow::class)->getTransitionsForStepId($workflowUsed['id'], $step['id']);
+            $screenData = $this->getRepository(YongoProject::class)->getScreenData(
                 $issueProject,
                 $issue[Field::FIELD_ISSUE_TYPE_CODE],
                 SystemOperation::OPERATION_CREATE,
                 'array'
             );
 
-            $customFieldsData = $this->getRepository('yongo.issue.customField')->getCustomFieldsData($issue['id']);
+            $customFieldsData = $this->getRepository(CustomField::class)->getCustomFieldsData($issue['id']);
 
-            $attachments = Attachment::getByIssueId($issue['id'], true);
+            $attachments = IssueAttachment::getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
 
             $atLeastOneSLA = false;
-            $slasPrintData = $this->getRepository('yongo.issue.issue')->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
+            $slasPrintData = $this->getRepository(Issue::class)->updateSLAValue($issue, $session->get('client/id'), $clientSettings);
 
             foreach ($slasPrintData as $slaData) {
                 if ($slaData['goal']) {
@@ -94,8 +99,8 @@ class ViewIssueController extends UbirimiController
             $watchers = Watcher::getByIssueId($issueId);
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
-            $customFieldsData = $this->getRepository('yongo.issue.customField')->getCustomFieldsData($issue['id']);
-            $customFieldsDataUserPickerMultipleUser = $this->getRepository('yongo.issue.customField')->getUserPickerData($issue['id']);
+            $customFieldsData = $this->getRepository(CustomField::class)->getCustomFieldsData($issue['id']);
+            $customFieldsDataUserPickerMultipleUser = $this->getRepository(CustomField::class)->getUserPickerData($issue['id']);
         }
 
         $menuSelectedCategory = 'issue';

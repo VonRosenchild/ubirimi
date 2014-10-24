@@ -4,8 +4,8 @@ namespace Ubirimi\Yongo\Repository\Workflow;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\Settings;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class Workflow
 {
@@ -150,7 +150,7 @@ class Workflow
         $stmt->bind_param("i", $Id);
         $stmt->execute();
 
-        $steps = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getSteps($Id);
+        $steps = UbirimiContainer::get()['repository']->get(Workflow::class)->getSteps($Id);
         if ($steps) {
             while ($step = $steps->fetch_array(MYSQLI_ASSOC)) {
                 $query = "delete from workflow_step_property where workflow_step_id = ?";
@@ -249,7 +249,7 @@ class Workflow
     }
 
     public function getDataForCreation($workflowId) {
-        $initialStep = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getInitialStep($workflowId);
+        $initialStep = UbirimiContainer::get()['repository']->get(Workflow::class)->getInitialStep($workflowId);
 
         $query = "select workflow_data.id, workflow_step.linked_issue_status_id " .
             "from workflow_data " .
@@ -375,7 +375,7 @@ class Workflow
     }
 
     public function createInitialData($clientId, $workflowId) {
-        $statusOpen = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getByName($clientId, 'status', 'Open');
+        $statusOpen = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Open');
 
         $q = 'insert into workflow_step(workflow_id, linked_issue_status_id, name, initial_step_flag) ' .
              'values(?, ?, ?, ?)';
@@ -627,7 +627,7 @@ class Workflow
     }
 
     public function checkLogicalConditionsByTransitionId($workflowDataId) {
-        $conditionData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getConditionByTransitionId($workflowDataId);
+        $conditionData = UbirimiContainer::get()['repository']->get(Workflow::class)->getConditionByTransitionId($workflowDataId);
         $conditionString = $conditionData['definition_data'];
 
         $conditionString = str_replace("[[AND]]", ' && ', $conditionString);
@@ -658,7 +658,7 @@ class Workflow
     }
 
     public function checkConditionsByTransitionId($workflowDataId, $userId, $issueData) {
-        $conditionData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getConditionByTransitionId($workflowDataId);
+        $conditionData = UbirimiContainer::get()['repository']->get(Workflow::class)->getConditionByTransitionId($workflowDataId);
         $conditionString = $conditionData['definition_data'];
 
         $conditionString = str_replace("[[AND]]", ' && ', $conditionString);
@@ -693,7 +693,7 @@ class Workflow
         for ($i = 0; $i < count($permissions); $i++) {
             $permissionId = (int)str_replace('perm_id=', '', $permissions[$i]);
 
-            $hasPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission(array($issueData['issue_project_id']), $permissionId, $userId);
+            $hasPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission(array($issueData['issue_project_id']), $permissionId, $userId);
             if ($hasPermission)
                 $text = ' 1 ';
             else
@@ -757,22 +757,22 @@ class Workflow
     }
 
     public function copy($clientId, $workflowId, $name, $description, $date) {
-        $oldWorkflow = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getMetaDataById($workflowId);
-        $newWorkflowId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->createNewMetaData($clientId, $oldWorkflow['issue_type_scheme_id'], $name, $description, $date);
+        $oldWorkflow = UbirimiContainer::get()['repository']->get(Workflow::class)->getMetaDataById($workflowId);
+        $newWorkflowId = UbirimiContainer::get()['repository']->get(Workflow::class)->createNewMetaData($clientId, $oldWorkflow['issue_type_scheme_id'], $name, $description, $date);
 
         // duplicate the steps
-        $oldWorkflowSteps = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getSteps($workflowId, 1);
+        $oldWorkflowSteps = UbirimiContainer::get()['repository']->get(Workflow::class)->getSteps($workflowId, 1);
         $stepsLinking = array();
         while ($oldStep = $oldWorkflowSteps->fetch_array(MYSQLI_ASSOC)) {
-            $newStepId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addStep($newWorkflowId, $oldStep['step_name'], $oldStep['status_id'], $oldStep['initial_step_flag'], $date);
+            $newStepId = UbirimiContainer::get()['repository']->get(Workflow::class)->addStep($newWorkflowId, $oldStep['step_name'], $oldStep['status_id'], $oldStep['initial_step_flag'], $date);
             $stepsLinking[$oldStep['id']] = $newStepId;
         }
 
         // duplicate the data
         $dataLinking = array();
-        $oldWorkflowData = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getDataByWorkflowId($workflowId);
+        $oldWorkflowData = UbirimiContainer::get()['repository']->get(Workflow::class)->getDataByWorkflowId($workflowId);
         while ($oldWorkflowRow = $oldWorkflowData->fetch_array(MYSQLI_ASSOC)) {
-            $newDataId = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addTransition($newWorkflowId, $oldWorkflowRow['screen_id'], $stepsLinking[$oldWorkflowRow['ws1id']], $stepsLinking[$oldWorkflowRow['ws2id']], $oldWorkflowRow['transition_name'], $oldWorkflowRow['transition_description']);
+            $newDataId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($newWorkflowId, $oldWorkflowRow['screen_id'], $stepsLinking[$oldWorkflowRow['ws1id']], $stepsLinking[$oldWorkflowRow['ws2id']], $oldWorkflowRow['transition_name'], $oldWorkflowRow['transition_description']);
             $dataLinking[$oldWorkflowRow['id']] = $newDataId;
         }
 
@@ -786,7 +786,7 @@ class Workflow
         foreach ($dataLinking as $oldDataId => $newDataId) {
             $oldFunctionData = WorkflowFunction::getByWorkflowDataId($oldDataId);
             while ($oldFunctionData && $oldFunctionRow = $oldFunctionData->fetch_array(MYSQLI_ASSOC)) {
-                UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addPostFunctionToTransition($newDataId, $oldFunctionRow['function_id'], $oldFunctionRow['definition_data']);
+                UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($newDataId, $oldFunctionRow['function_id'], $oldFunctionRow['definition_data']);
             }
         }
 
@@ -795,7 +795,7 @@ class Workflow
 
             $oldConditionData = Condition::getByTransitionId($oldDataId);
             if ($oldConditionData) {
-                UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->addCondition($newDataId, $oldConditionData['definition_data']);
+                UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($newDataId, $oldConditionData['definition_data']);
             }
         }
     }

@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Container\UbirimiContainer;
+
 ?>
 <?php if (true === UbirimiContainer::get()['app.googleAnalytics']): ?>
     <script>

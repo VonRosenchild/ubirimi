@@ -2,6 +2,7 @@
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Ubirimi\General\Repository\UserProfileCategory\UserProfileCategory;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
@@ -26,7 +27,7 @@ Util::checkUserIsLoggedInAndRedirect();
             $date = Util::getServerCurrentDateTime();
             UserProfileCategory::add($clientId, $name, $description, $date);
 
-            $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD Profile Category ' . $name, $date);
+            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD Profile Category ' . $name, $date);
 
             return new RedirectResponse('/general-settings/users/profile-manager');
         }

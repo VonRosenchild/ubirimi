@@ -7,6 +7,7 @@ use Paymill\Request as PaymillRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -20,7 +21,7 @@ class BillingController extends UbirimiController
         $clientId = $session->get('client/id');
         $content = 'account/Billing.php';
 
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
 
         $emptyCountry = false;
         if ($client['sys_country_id'] == null) {

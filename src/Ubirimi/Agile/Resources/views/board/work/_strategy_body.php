@@ -1,10 +1,11 @@
 <?php
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 
     use Ubirimi\Yongo\Repository\Workflow\Workflow;
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\Yongo\Repository\Project\YongoProject;
     use Ubirimi\Yongo\Repository\Field\Field;
 ?>
 <table width="100%" cellpadding="0px" cellspacing="0px" border="0" class="agile_work_<?php echo $index ?>">
@@ -23,7 +24,7 @@ use Ubirimi\Repository\User\User;
             ?>
             <td width="<?php echo (100 / count($columns)) ?>%" id="column_data_<?php echo $columns[$i]['id'] . '_' . $index ?>" valign="top" class="droppableAgileColumn_<?php echo $index ?> pageContentSmall">
                 <?php
-                    $statuses = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumnStatuses($columns[$i]['id'], 'array');
+                    $statuses = UbirimiContainer::get()['repository']->get(Board::class)->getColumnStatuses($columns[$i]['id'], 'array');
                 ?>
                 <div style="display: none; position: absolute; margin: 4px;" id="statuses_for_column_<?php echo $columns[$i]['id'] . '_' . $index ?>">
                     <?php for ($j = 0; $j < count($statuses); $j++): ?>
@@ -37,8 +38,8 @@ use Ubirimi\Repository\User\User;
                             if (!in_array($issue['status'], Util::array_column($statuses, 'id'))) {
                                 continue;
                             }
-                            $workflowUsed = UbirimiContainer::get()['repository']->get('yongo.project.project')->getWorkflowUsedForType($issue['issue_project_id'], $issue['type']);
-                            $stepWorkflowFrom = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
+                            $workflowUsed = UbirimiContainer::get()['repository']->get(YongoProject::class)->getWorkflowUsedForType($issue['issue_project_id'], $issue['type']);
+                            $stepWorkflowFrom = UbirimiContainer::get()['repository']->get(Workflow::class)->getStepByWorkflowIdAndStatusId($workflowUsed['id'], $issue[Field::FIELD_STATUS_CODE]);
                             $parentId = -1;
                             if ($issue['parent_id']) {
                                 $parentId = $issue['parent_id'];
@@ -73,7 +74,7 @@ use Ubirimi\Repository\User\User;
                                     </td>
                                     <td align="center" width="40px">
                                         <img src="<?php
-                                        echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture(array('id' => $issue['assignee'], 'avatar_picture' => $issue['assignee_avatar_picture']), 'small') ?>" title="<?php echo $issue['ua_first_name'] . ' ' . $issue['ua_last_name'] ?>" height="33px" style="vertical-align: middle;" />
+                                        echo UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getUserAvatarPicture(array('id' => $issue['assignee'], 'avatar_picture' => $issue['assignee_avatar_picture']), 'small') ?>" title="<?php echo $issue['ua_first_name'] . ' ' . $issue['ua_last_name'] ?>" height="33px" style="vertical-align: middle;" />
                                     </td>
                                 </tr>
                             </table>

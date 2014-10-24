@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class DesignController extends UbirimiController
 {
@@ -17,15 +18,15 @@ class DesignController extends UbirimiController
 
         $workflowId = $request->get('id');
 
-        $workflowMetadata = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+        $workflowMetadata = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
 
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByWorkflowId($workflowId);
+        $workflowData = $this->getRepository(Workflow::class)->getDataByWorkflowId($workflowId);
 
         if ($workflowMetadata['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $steps = $this->getRepository('yongo.workflow.workflow')->getSteps($workflowId, 1);
+        $steps = $this->getRepository(Workflow::class)->getSteps($workflowId, 1);
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Workflow';
 

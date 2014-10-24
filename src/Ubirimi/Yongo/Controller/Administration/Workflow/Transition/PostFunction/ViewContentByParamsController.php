@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ViewContentByParamsController extends UbirimiController
 {
@@ -18,7 +19,7 @@ class ViewContentByParamsController extends UbirimiController
         $workflowId = $request->get('workflow_id');
 
         $allPostFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
-        $workflowData = $this->getRepository('yongo.workflow.workflow')->getDataByStepIdFromAndStepIdTo($workflowId, $idFrom, $idTo);
+        $workflowData = $this->getRepository(Workflow::class)->getDataByStepIdFromAndStepIdTo($workflowId, $idFrom, $idTo);
         $workflowDataId = $workflowData['id'];
 
         $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getByWorkflowDataId($workflowDataId);

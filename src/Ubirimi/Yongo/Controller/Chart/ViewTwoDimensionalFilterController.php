@@ -4,8 +4,12 @@ namespace Ubirimi\Yongo\Controller\Chart;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
 class ViewTwoDimensionalFilterController extends UbirimiController
@@ -16,10 +20,10 @@ class ViewTwoDimensionalFilterController extends UbirimiController
             $clientId = $session->get('client/id');
             $loggedInUserId = $session->get('user/id');
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $loggedInUserId = null;
         }
-        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
+        $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_BROWSE_PROJECTS, 'array');
 
         $projectId = $request->request->get('id');
 
@@ -28,10 +32,10 @@ class ViewTwoDimensionalFilterController extends UbirimiController
             $projectIdsNames[] = array($projects[$i]['id'], $projects[$i]['name']);
         }
 
-        $usersAsAssignee = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
-        $issueStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $clientId, 'array');
+        $usersAsAssignee = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
+        $issueStatuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $clientId, 'array');
 
-        $twoDimensionalData = $this->getRepository('yongo.issue.issue')->get2DimensionalFilter($projectId, 'array');
+        $twoDimensionalData = $this->getRepository(Issue::class)->get2DimensionalFilter($projectId, 'array');
 
         return $this->render(__DIR__ . '/../../Resources/views/charts/ViewTwoDimensionalFilter.php', get_defined_vars());
     }

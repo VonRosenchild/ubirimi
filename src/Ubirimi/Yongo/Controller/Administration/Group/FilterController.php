@@ -4,6 +4,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Group;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -21,7 +22,7 @@ class FilterController extends UbirimiController
             $filters['name'] = $request->request->get('name_filter');
         }
 
-        $groups = $this->getRepository('ubirimi.general.client')->getGroupsByClientIdAndProductIdAndFilters(
+        $groups = $this->getRepository(UbirimiClient::class)->getGroupsByClientIdAndProductIdAndFilters(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $filters

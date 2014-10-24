@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SelectSchemeController extends UbirimiController
 {
@@ -17,19 +18,19 @@ class SelectSchemeController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
         
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $issueTypeScreenSchemes = TypeScreenScheme::getByClientId($session->get('client/id'));
+        $issueTypeScreenSchemes = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 
         if ($request->request->has('associate')) {
 
             $issueTypeScreenSchemeId = $request->request->get('issue_type_screen_scheme');
-            $this->getRepository('yongo.project.project')->updateIssueTypeScreenScheme($projectId, $issueTypeScreenSchemeId);
+            $this->getRepository(YongoProject::class)->updateIssueTypeScreenScheme($projectId, $issueTypeScreenSchemeId);
 
             return new RedirectResponse('/yongo/administration/project/screens/' . $projectId);
         }

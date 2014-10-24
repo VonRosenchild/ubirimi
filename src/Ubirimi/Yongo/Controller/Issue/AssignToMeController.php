@@ -7,10 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Event\IssueEvent;
 use Ubirimi\Yongo\Event\YongoEvents;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AssignToMeController extends UbirimiController
 {
@@ -25,17 +28,17 @@ class AssignToMeController extends UbirimiController
         $clientId = $session->get('client/id');
         $loggedInUserId = $session->get('user/id');
 
-        $issueData = $this->getRepository('yongo.issue.issue')->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
-        $this->getRepository('yongo.issue.issue')->updateAssignee($clientId, $issueId, $loggedInUserId, $loggedInUserId);
+        $issueData = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
+        $this->getRepository(Issue::class)->updateAssignee($clientId, $issueId, $loggedInUserId, $loggedInUserId);
 
         // update the date_updated field
-        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
-        $userAssigned = $this->getRepository('ubirimi.user.user')->getById($loggedInUserId);
+        $userAssigned = $this->getRepository(UbirimiUser::class)->getById($loggedInUserId);
         $newUserAssignedName = $userAssigned['first_name'] . ' ' . $userAssigned['last_name'];
         $oldUserAssignedName = $issueData['ua_first_name'] . ' ' . $issueData['ua_last_name'];
 
-        $project = $this->getRepository('yongo.project.project')->getById($issueData['issue_project_id']);
+        $project = $this->getRepository(YongoProject::class)->getById($issueData['issue_project_id']);
 
         $smtpSettings = UbirimiContainer::get()['session']->get('client/settings/smtp');
 

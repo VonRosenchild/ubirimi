@@ -1,7 +1,8 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 
 require_once __DIR__ . '/../../_header.php';
@@ -49,7 +50,7 @@ require_once __DIR__ . '/../../_header.php';
                             </td>
                             <td><?php echo $scheme['name']; ?></td>
                             <td width="300px">
-                                <?php $schemeIssueTypes = TypeScheme::getDataById($scheme['id']) ?>
+                                <?php $schemeIssueTypes = IssueTypeScheme::getDataById($scheme['id']) ?>
                                 <ul>
                                     <?php while ($schemeIssueTypes && $issueType = $schemeIssueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                                         <li><?php echo $issueType['name'] ?></li>
@@ -57,7 +58,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </ul>
                             </td>
                             <td>
-                                <?php $projects = UbirimiContainer::get()['repository']->get('yongo.project.project')->getByWorkflowIssueTypeScheme($clientId, $scheme['id']) ?>
+                                <?php $projects = UbirimiContainer::get()['repository']->get(YongoProject::class)->getByWorkflowIssueTypeScheme($clientId, $scheme['id']) ?>
                                 <?php if ($projects): ?>
                                 <ul>
                                     <?php while ($project = $projects->fetch_array(MYSQLI_ASSOC)): ?>

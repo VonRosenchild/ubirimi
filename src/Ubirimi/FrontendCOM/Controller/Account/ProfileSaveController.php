@@ -4,6 +4,7 @@ namespace Ubirimi\FrontendCOM\Controller\Account;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -60,7 +61,7 @@ class ProfileSaveController extends UbirimiController
         }
 
         if (Util::hasNoErrors($errors)) {
-            $this->getRepository('ubirimi.general.client')->updateById($session->get('client/id'),
+            $this->getRepository(UbirimiClient::class)->updateById($session->get('client/id'),
                 $companyName,
                 $address1,
                 $address2,
@@ -71,7 +72,7 @@ class ProfileSaveController extends UbirimiController
             );
 
             $session->set('profile_updated', true);
-            $clientData = $this->getRepository('ubirimi.general.client')->getById($session->get('client/id'));
+            $clientData = $this->getRepository(UbirimiClient::class)->getById($session->get('client/id'));
         }
         else {
             $session->remove('profile_updated');

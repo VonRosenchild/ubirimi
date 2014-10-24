@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class DeleteAllController extends UbirimiController
 {
@@ -15,7 +16,7 @@ class DeleteAllController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('transition_id');
-        $this->getRepository('yongo.workflow.workflow')->deleteDataById($Id);
+        $this->getRepository(Workflow::class)->deleteDataById($Id);
 
         return new Response('');
     }

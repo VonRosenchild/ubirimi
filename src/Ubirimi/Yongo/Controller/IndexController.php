@@ -4,9 +4,13 @@ namespace Ubirimi\Yongo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
@@ -19,16 +23,16 @@ class IndexController extends UbirimiController
             $issuesPerPage = $session->get('user/issues_per_page');
             $clientSettings = $session->get('client/settings');
         } else {
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $issuesPerPage = 25;
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Dashboard';
 
         $userAssignedId = $session->get('user/id');
-        $allProjects = $this->getRepository('ubirimi.general.client')->getProjects($clientId);
+        $allProjects = $this->getRepository(UbirimiClient::class)->getProjects($clientId);
 
-        $projects = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+        $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $clientId,
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,
@@ -57,7 +61,7 @@ class IndexController extends UbirimiController
             $issueQueryParameters['project'] = array(-1);
         }
 
-        $issues = $this->getRepository('yongo.issue.issue')->getByParameters(
+        $issues = $this->getRepository(Issue::class)->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -80,7 +84,7 @@ class IndexController extends UbirimiController
             $issueQueryParameters['not_assignee'] = $userAssignedId;
         }
 
-        $issuesUnresolvedOthers = $this->getRepository('yongo.issue.issue')->getByParameters(
+        $issuesUnresolvedOthers = $this->getRepository(Issue::class)->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -89,13 +93,13 @@ class IndexController extends UbirimiController
 
         $menuSelectedCategory = 'home';
 
-        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $clientId,
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS
         );
 
-        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission(
+        $hasGlobalSystemAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $clientId,
             $session->get('user/id'),
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS
@@ -103,11 +107,11 @@ class IndexController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        $usersAsAssignee = $this->getRepository('ubirimi.user.user')->getByClientId($clientId);
-        $issueStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $clientId, 'array');
+        $usersAsAssignee = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
+        $issueStatuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $clientId, 'array');
         $twoDimensionalData = null;
         if (count($projectIdsArray))
-            $twoDimensionalData = $this->getRepository('yongo.issue.issue')->get2DimensionalFilter(-1, 'array');
+            $twoDimensionalData = $this->getRepository(Issue::class)->get2DimensionalFilter(-1, 'array');
 
         return $this->render(__DIR__ . '/../Resources/views/Index.php', get_defined_vars());
     }

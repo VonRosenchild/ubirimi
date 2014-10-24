@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Editor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -22,7 +23,7 @@ class UploadImageController extends UbirimiController
         $extension = strtolower(pathinfo($_FILES['upload']['name'], PATHINFO_EXTENSION));
 
         $entityId = $session->get('current_edit_entity_id');
-        $entity = $this->getRepository('documentador.entity.entity')->getById($entityId);
+        $entity = $this->getRepository(Entity::class)->getById($entityId);
         $spaceId = $entity['space_id'];
 
         $currentDate = Util::getServerCurrentDateTime();
@@ -46,7 +47,7 @@ class UploadImageController extends UbirimiController
                 if ($attachment) {
                     // get the last revision and increment it by one
                     $attachmentId = $attachment['id'];
-                    $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByAttachmentId($attachmentId);
+                    $revisions = $this->getRepository(Entity::class)->getRevisionsByAttachmentId($attachmentId);
                     $revisionNumber = $revisions->num_rows + 1;
 
                     // create the revision folder

@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\Queue;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -16,7 +17,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $queueId = $request->get('id');
-        $queue = $this->getRepository('helpDesk.queue.queue')->getById($queueId);
+        $queue = $this->getRepository(Queue::class)->getById($queueId);
         $projectId = $queue['project_id'];
 
         $emptyName = false;
@@ -32,7 +33,7 @@ class EditController extends UbirimiController
             }
 
             // check for duplication
-            $queue = $this->getRepository('helpDesk.queue.queue')->getByName($queueId, mb_strtolower($name), $projectId);
+            $queue = $this->getRepository(Queue::class)->getByName($queueId, mb_strtolower($name), $projectId);
             if ($queue) {
                 $queueExists = true;
             }
@@ -40,7 +41,7 @@ class EditController extends UbirimiController
             if (!$queueExists && !$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository('helpDesk.queue.queue')->updateById($queueId, $name, $description, $description, $currentDate);
+                $this->getRepository(Queue::class)->updateById($queueId, $name, $description, $description, $currentDate);
 
                 return new RedirectResponse('/helpdesk/queues/' . $projectId . '/' . $queueId);
             }

@@ -5,11 +5,13 @@ namespace Ubirimi\Yongo\Controller\Administration\Screen\Scheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
-use Ubirimi\Yongo\Repository\Screen\Scheme;
+use Ubirimi\Yongo\Repository\Screen\Screen;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
 class AddController extends UbirimiController
 {
@@ -19,7 +21,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
 
-        $allScreens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
+        $allScreens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
         $allOperations = SystemOperation::getAll();
 
         if ($request->request->has('new_screen_scheme')) {
@@ -32,14 +34,14 @@ class AddController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                $screenScheme = new Scheme($session->get('client/id'), $name, $description);
+                $screenScheme = new ScreenScheme($session->get('client/id'), $name, $description);
                 $screenSchemeId = $screenScheme->save($currentDate);
                 while ($operation = $allOperations->fetch_array(MYSQLI_ASSOC)) {
                     $operationId = $operation['id'];
-                    Scheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
+                    ScreenScheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
                 }
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('client/id'),

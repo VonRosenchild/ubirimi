@@ -7,13 +7,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class ListController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $screens = $this->getRepository('yongo.screen.screen')->getAll($session->get('client/id'));
+        $screens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

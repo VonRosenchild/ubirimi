@@ -4,9 +4,11 @@ namespace Ubirimi\General\Controller\Menu;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class IssuesController extends UbirimiController
 {
@@ -16,11 +18,11 @@ class IssuesController extends UbirimiController
 
         } else {
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
         }
 
-        $projectsMenu = $this->getRepository('ubirimi.general.client')->getProjectsByPermission(
+        $projectsMenu = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,
@@ -33,7 +35,7 @@ class IssuesController extends UbirimiController
 
         $hasCreateIssuePermission = false;
         if (count($projectsForBrowsing)) {
-            $hasCreateIssuePermission = $this->getRepository('yongo.project.project')->userHasPermission(
+            $hasCreateIssuePermission = $this->getRepository(YongoProject::class)->userHasPermission(
                 $projectsForBrowsing,
                 Permission::PERM_CREATE_ISSUE,
                 $session->get('user/id')

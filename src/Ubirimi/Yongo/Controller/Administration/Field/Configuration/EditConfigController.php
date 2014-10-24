@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
 
 class EditConfigController extends UbirimiController
 {
@@ -18,15 +19,15 @@ class EditConfigController extends UbirimiController
         $fieldConfigurationId = $request->get('field_configuration_id');
         $fieldId = $request->get('id');
 
-        $fieldConfiguration = Configuration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
 
         if ($fieldConfiguration['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurationData = Configuration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
+        $fieldConfigurationData = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
         $description = $fieldConfigurationData['field_description'];
-        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
+        $field = $this->getRepository(Field::class)->getById($fieldId);
 
         if ($field['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,7 +37,7 @@ class EditConfigController extends UbirimiController
 
         if ($request->request->has('edit_field_configuration')) {
             $description = $request->request->get('description');
-            Configuration::updateFieldDescription($fieldConfigurationId, $fieldId, $description);
+            FieldConfiguration::updateFieldDescription($fieldConfigurationId, $fieldId, $description);
 
             return new RedirectResponse('/yongo/administration/field-configuration/edit/' . $fieldConfigurationId);
         }

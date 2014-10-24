@@ -1,7 +1,7 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
@@ -17,7 +17,7 @@ use Ubirimi\Util;
         <?php while ($comment = $comments->fetch_array(MYSQLI_ASSOC)): ?>
             <tr>
                 <td align="left" width="33px" valign="top" <?php if ($first) echo 'style="border-top: none; padding-right: 0px;"' ?>>
-                    <img style="height: 33px;" src="<?php echo UbirimiContainer::get()['repository']->get('ubirimi.user.user')->getUserAvatarPicture(array('avatar_picture' => $comment['avatar_picture'], 'id' => $comment['user_id']), 'small') ?>" />
+                    <img style="height: 33px;" src="<?php echo UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getUserAvatarPicture(array('avatar_picture' => $comment['avatar_picture'], 'id' => $comment['user_id']), 'small') ?>" />
                 </td>
                 <td valign="top" <?php if ($first) echo 'style="border-top: none;"' ?>>
                     <span>

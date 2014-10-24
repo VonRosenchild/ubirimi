@@ -4,9 +4,12 @@ namespace Ubirimi\Yongo\Controller\Issue\Comment;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewController extends UbirimiController
 {
@@ -18,20 +21,20 @@ class ViewController extends UbirimiController
         if (false === Util::checkUserIsLoggedIn()) {
             $loggedInUserId = null;
             $httpHOST = Util::getHttpHost();
-            $clientId = $this->getRepository('ubirimi.general.client')->getByBaseURL($httpHOST, 'array', 'id');
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         } else {
             $clientSettings = $session->get('client/settings');
         }
 
-        $projectData = $this->getRepository('yongo.project.project')->getByIssueId($Id);
-        $comments = $this->getRepository('yongo.issue.comment')->getByIssueId($Id);
+        $projectData = $this->getRepository(YongoProject::class)->getByIssueId($Id);
+        $comments = $this->getRepository(IssueComment::class)->getByIssueId($Id);
 
-        $hasAddCommentsPermission = $this->getRepository('yongo.project.project')->userHasPermission($projectData['id'], Permission::PERM_ADD_COMMENTS, $loggedInUserId);
-        $hasDeleteAllComments = $this->getRepository('yongo.project.project')->userHasPermission($projectData['id'], Permission::PERM_DELETE_ALL_COMMENTS, $loggedInUserId);
-        $hasDeleteOwnComments = $this->getRepository('yongo.project.project')->userHasPermission($projectData['id'], Permission::PERM_DELETE_OWN_COMMENTS, $loggedInUserId);
-        $hasEditAllComments = $this->getRepository('yongo.project.project')->userHasPermission($projectData['id'], Permission::PERM_EDIT_ALL_COMMENTS, $loggedInUserId);
-        $hasEditOwnComments = $this->getRepository('yongo.project.project')->userHasPermission($projectData['id'], Permission::PERM_EDIT_OWN_COMMENTS, $loggedInUserId);
+        $hasAddCommentsPermission = $this->getRepository(YongoProject::class)->userHasPermission($projectData['id'], Permission::PERM_ADD_COMMENTS, $loggedInUserId);
+        $hasDeleteAllComments = $this->getRepository(YongoProject::class)->userHasPermission($projectData['id'], Permission::PERM_DELETE_ALL_COMMENTS, $loggedInUserId);
+        $hasDeleteOwnComments = $this->getRepository(YongoProject::class)->userHasPermission($projectData['id'], Permission::PERM_DELETE_OWN_COMMENTS, $loggedInUserId);
+        $hasEditAllComments = $this->getRepository(YongoProject::class)->userHasPermission($projectData['id'], Permission::PERM_EDIT_ALL_COMMENTS, $loggedInUserId);
+        $hasEditOwnComments = $this->getRepository(YongoProject::class)->userHasPermission($projectData['id'], Permission::PERM_EDIT_OWN_COMMENTS, $loggedInUserId);
 
         $actionButtonsFlag = true;
 

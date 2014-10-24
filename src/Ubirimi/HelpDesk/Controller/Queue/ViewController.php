@@ -4,9 +4,13 @@ namespace Ubirimi\HelpDesk\Controller\Queue;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Queue\Queue;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ViewController extends UbirimiController
 {
@@ -20,20 +24,20 @@ class ViewController extends UbirimiController
         $queueId = $request->get('queue_id');
         $page = $request->get('page', 1);
 
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
-        $queueSelected = $this->getRepository('helpDesk.queue.queue')->getById($queueId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
+        $queueSelected = $this->getRepository(Queue::class)->getById($queueId);
 
         $columns = explode('#', $queueSelected['columns']);
 
-        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = $this->getRepository(Sla::class)->getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
             $SLAs->data_seek(0);
         }
 
-        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
+        $queues = $this->getRepository(Queue::class)->getByProjectId($projectId);
         if ($queues) {
-            $whereSQL = $this->getRepository('yongo.issue.issue')->prepareWhereClauseFromQueue(
+            $whereSQL = $this->getRepository(Issue::class)->prepareWhereClauseFromQueue(
                 $queueSelected['definition'],
                 $session->get('user/id'),
                 $projectId,
@@ -46,7 +50,7 @@ class ViewController extends UbirimiController
             $getSearchParameters['page'] = $page;
             $getSearchParameters['issues_per_page'] = 50;
 
-            $issuesResult = $this->getRepository('yongo.issue.issue')->getByParameters(
+            $issuesResult = $this->getRepository(Issue::class)->getByParameters(
                 $getSearchParameters,
                 $session->get('user/id'),
                 $whereSQL,

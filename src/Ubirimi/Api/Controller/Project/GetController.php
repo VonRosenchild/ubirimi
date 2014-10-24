@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class GetController extends UbirimiController
 {
@@ -18,7 +18,7 @@ class GetController extends UbirimiController
 
         $code = $request->get('code');
 
-        $project = $this->getRepository('yongo.project.project')->getByCode($code, null, $request->get('api_client_id'));
+        $project = $this->getRepository(YongoProject::class)->getByCode($code, null, $request->get('api_client_id'));
 
         if (false === $project) {
             throw new NotFoundHttpException(sprintf('Project [%s] not found', $code));

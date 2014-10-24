@@ -5,13 +5,14 @@ namespace Ubirimi\FrontendNET\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\UbirimiController;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\SystemProduct;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
-use Ubirimi\SystemProduct;
 
 class SigninController extends UbirimiController
 {
@@ -24,9 +25,9 @@ class SigninController extends UbirimiController
 
         $httpHOST = Util::getHttpHost();
 
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettingsByBaseURL($httpHOST);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettingsByBaseURL($httpHOST);
         $clientId = $clientSettings['id'];
-        $client = $this->getRepository('ubirimi.general.client')->getById($clientId);
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
         if ($client['is_payable'] && !$client['paymill_id']) {
             return new RedirectResponse($httpHOST . '/setup-payment');
         }
@@ -41,7 +42,7 @@ class SigninController extends UbirimiController
             $username = $request->request->get('username');
             $password = $request->request->get('password');
 
-            $userData = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId($username, $clientId);
+            $userData = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientId($username, $clientId);
             if ($userData['id']) {
                 if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {
                     $session->invalidate();
@@ -51,7 +52,7 @@ class SigninController extends UbirimiController
                     UbirimiContainer::get()['login.time']->userSaveLoginTime($userData['id']);
 
                     $date = Util::getServerCurrentDateTime();
-                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);
+                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);
 
                     if ($context) {
                         return new RedirectResponse($httpHOST . $context);

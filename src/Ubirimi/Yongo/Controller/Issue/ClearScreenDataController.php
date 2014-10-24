@@ -9,6 +9,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 
 class ClearScreenDataController extends UbirimiController
 {
@@ -26,7 +27,7 @@ class ClearScreenDataController extends UbirimiController
 
                 $attachmentId = $attIdsSession[$i];
 
-                $this->getRepository('yongo.issue.attachment')->deleteById($attachmentId);
+                $this->getRepository(IssueAttachment::class)->deleteById($attachmentId);
 
                 if ($issueId) {
                     Util::deleteDir(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId . '/' . $attachmentId);

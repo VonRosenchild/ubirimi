@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
 
 class DeleteController extends UbirimiController
@@ -19,19 +20,19 @@ class DeleteController extends UbirimiController
         $remainingTime = $request->request->get('remaining');
         $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
-        $workLog = $this->getRepository('yongo.issue.workLog')->getById($workLogId);
+        $workLog = $this->getRepository(WorkLog::class)->getById($workLogId);
         $timeSpent = $workLog['time_spent'];
 
-        $this->getRepository('yongo.issue.workLog')->deleteById($workLogId);
+        $this->getRepository(WorkLog::class)->deleteById($workLogId);
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $session->get('user/id'));
         $previousEstimate = $issue['remaining_estimate'];
 
         if ($remainingTime == 'automatic')
             $remainingTime = '+' . $timeSpent;
 
-        $remainingTime = $this->getRepository('yongo.issue.workLog')->adjustRemainingEstimate(
+        $remainingTime = $this->getRepository(WorkLog::class)->adjustRemainingEstimate(
             $issue,
             $timeSpent,
             $remainingTime,
@@ -47,10 +48,10 @@ class DeleteController extends UbirimiController
             array('remaining_estimate', $previousEstimate, $remainingTime),
             array('worklog_time_spent', $workLog['time_spent'], null));
 
-        $this->getRepository('yongo.issue.issue')->updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
+        $this->getRepository(Issue::class)->updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
 
         // update the date_updated field
-        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         return new Response($remainingTime);
     }

@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Custom;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Field;
 
 class ListValueController extends UbirimiController
 {
@@ -16,8 +18,8 @@ class ListValueController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldId = $request->get('id');
-        $field = $this->getRepository('yongo.field.field')->getById($fieldId);
-        $fieldData = $this->getRepository('yongo.field.field')->getDataByFieldId($fieldId);
+        $field = $this->getRepository(Field::class)->getById($fieldId);
+        $fieldData = $this->getRepository(Field::class)->getDataByFieldId($fieldId);
 
         if ($field['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -26,7 +28,7 @@ class ListValueController extends UbirimiController
         if ($request->request->has('edit_field_custom_screen')) {
             $currentDate = Util::getServerCurrentDateTime();
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

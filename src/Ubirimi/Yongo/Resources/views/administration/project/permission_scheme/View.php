@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Permission\Scheme;
+    use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 
     require_once __DIR__ . '/../../_header.php';
 ?>
@@ -66,7 +66,7 @@
                         </td>
                         <td>
                             <?php
-                                $permData = Scheme::getDataByPermissionId($permissionScheme['id'], $permission['id']);
+                                $permData = PermissionScheme::getDataByPermissionId($permissionScheme['id'], $permission['id']);
 
                                 if ($permData) {
                                     echo '<ul>';

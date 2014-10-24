@@ -4,11 +4,11 @@ namespace Ubirimi\FrontendNET\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\UbirimiController;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\UbirimiEvent;
 use Ubirimi\Event\UbirimiEvents;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
 class PasswordRecoverDoController extends UbirimiController
@@ -27,7 +27,7 @@ class PasswordRecoverDoController extends UbirimiController
 
             $baseURL = Util::getHttpHost();
 
-            $userData = $this->getRepository('ubirimi.user.user')->getByEmailAddressAndBaseURL($address, $baseURL);
+            $userData = $this->getRepository(UbirimiUser::class)->getByEmailAddressAndBaseURL($address, $baseURL);
 
             if ($userData) {
                 $password = Util::updatePasswordForUserId($userData['id']);

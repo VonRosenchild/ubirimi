@@ -1,8 +1,9 @@
 <?php
 
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Filter;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 require_once __DIR__ . '/../_header.php';
 ?>
@@ -34,14 +35,14 @@ require_once __DIR__ . '/../_header.php';
             <tbody>
                 <?php while ($filter = $filters->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr id="table_row_<?php echo $filter['id'] ?>">
-                        <?php $boards = UbirimiContainer::get()['repository']->get('agile.board.board')->getByFilterId($filter['id']) ?>
+                        <?php $boards = UbirimiContainer::get()['repository']->get(Board::class)->getByFilterId($filter['id']) ?>
                         <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $filter['id'] ?>" /></td>
                         <td><a href="/yongo/issue/search?filter=<?php echo $filter['id'] ?>&<?php echo $filter['definition'] ?>"><?php echo $filter['name'] ?></a></td>
                         <td><?php echo $filter['description'] ?></td>
                         <td>
                             <?php
-                                $isFavourite = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
-                                $subscriptions = UbirimiContainer::get()['repository']->get('yongo.issue.filter')->getSubscriptions($filter['id']);
+                                $isFavourite = UbirimiContainer::get()['repository']->get(IssueFilter::class)->checkFilterIsFavouriteForUserId($filter['id'], $loggedInUserId);
+                                $subscriptions = UbirimiContainer::get()['repository']->get(IssueFilter::class)->getSubscriptions($filter['id']);
                                 if ($isFavourite)
                                     echo '<img id="toggle_filter_favourite_' . $filter['id'] . '" title="Remove Filter from Favourites" src="/img/favourite_full.png" />';
                                 else

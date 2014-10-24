@@ -3,7 +3,7 @@
 namespace Ubirimi\Api\Service;
 
 use Symfony\Component\HttpFoundation\Request;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Service\PasswordService;
 
 class BasicAuthenticationService
@@ -25,7 +25,7 @@ class BasicAuthenticationService
         list($clientDomain, $username) = explode('#', substr($decodedHeader, 0, strpos($decodedHeader, ':')));
         $password = substr($decodedHeader, strpos($decodedHeader, ':') + 1);
 
-        $user = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientDomain($username, $clientDomain);
+        $user = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientDomain($username, $clientDomain);
 
         if (null === $user) {
             throw new \Exception(sprintf('Api Auth Failed. User [%s] not found', $username));

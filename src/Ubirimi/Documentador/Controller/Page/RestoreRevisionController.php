@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Page;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,13 +19,13 @@ class RestoreRevisionController extends UbirimiController
 
         $revisionId = $request->request->get('id');
         $pageId = $request->request->get('entity_id');
-        $page = $this->getRepository('documentador.entity.entity')->getById($pageId);
-        $revision = $this->getRepository('documentador.entity.entity')->getRevisionsByPageIdAndRevisionId($pageId, $revisionId);
+        $page = $this->getRepository(Entity::class)->getById($pageId);
+        $revision = $this->getRepository(Entity::class)->getRevisionsByPageIdAndRevisionId($pageId, $revisionId);
 
         $date = Util::getServerCurrentDateTime();
-        $this->getRepository('documentador.entity.entity')->addRevision($pageId, $loggedInUserId, $page['content'], $date);
+        $this->getRepository(Entity::class)->addRevision($pageId, $loggedInUserId, $page['content'], $date);
 
-        $this->getRepository('documentador.entity.entity')->updateContent($pageId, $revision['content']);
+        $this->getRepository(Entity::class)->updateContent($pageId, $revision['content']);
 
         return new Response('');
     }

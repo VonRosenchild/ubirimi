@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Custom;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -18,9 +19,9 @@ class EditValueController extends UbirimiController
 
         $valueId = $request->get('id');
 
-        $fieldValue = $this->getRepository('yongo.field.field')->getDataById($valueId);
+        $fieldValue = $this->getRepository(Field::class)->getDataById($valueId);
         $customFieldId = $fieldValue['field_id'];
-        $field = $this->getRepository('yongo.field.field')->getById($customFieldId);
+        $field = $this->getRepository(Field::class)->getById($customFieldId);
 
         $emptyValue = false;
         $duplicateValue = false;
@@ -33,7 +34,7 @@ class EditValueController extends UbirimiController
             }
 
             // check for duplication
-            $valueDataExists = $this->getRepository('yongo.field.field')->getDataByFieldIdAndValue($customFieldId, $value, $valueId);
+            $valueDataExists = $this->getRepository(Field::class)->getDataByFieldIdAndValue($customFieldId, $value, $valueId);
 
             if ($valueDataExists)
                 $duplicateValue = true;
@@ -42,7 +43,7 @@ class EditValueController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 Field::updateDataById($valueId, $value, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

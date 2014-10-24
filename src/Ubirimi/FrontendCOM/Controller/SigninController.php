@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 
 class SigninController extends UbirimiController
@@ -20,7 +21,7 @@ class SigninController extends UbirimiController
             $username = $request->request->get('username');
             $password = $request->request->get('password');
 
-            $userData = $this->getRepository('ubirimi.user.user')->getByUsernameAndAdministrator($username);
+            $userData = $this->getRepository(UbirimiUser::class)->getByUsernameAndAdministrator($username);
             if ($userData['id']) {
                 if (UbirimiContainer::get()['password']->check($password, $userData['password'])) {
                     $httpHOST = $request->server->get('HTTP_HOST');

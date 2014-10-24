@@ -6,12 +6,12 @@ use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\Email\EmailQueue;
 
 use Ubirimi\Repository\SMTPServer;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Util;
 
 use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Filter;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 /* check locking mechanism */
 if (file_exists(__DIR__ . '/run_filter_subscription.lock')) {
@@ -25,8 +25,8 @@ if (file_exists(__DIR__ . '/run_filter_subscription.lock')) {
 require_once __DIR__ . '/../../web/bootstrap_cli.php';
 
 $filterSubscriptionId = $argv[1];
-$filterSubscription = Filter::getSubscriptionById($filterSubscriptionId);
-$filter = Filter::getById($filterSubscription['filter_id']);
+$filterSubscription = IssueFilter::getSubscriptionById($filterSubscriptionId);
+$filter = IssueFilter::getById($filterSubscription['filter_id']);
 $definition = $filter['definition'];
 $searchParametersInFilter = explode('&', $definition);
 $searchParameters = array();
@@ -34,27 +34,27 @@ foreach ($searchParametersInFilter as $searchParameter) {
     $data = explode('=', $searchParameter);
     $searchParameters[$data[0]] = $data[1];
 }
-$user = UbirimiContainer::get()['respository']->get('ubirimi.user.user')->getById($filter['user_id']);
+$user = UbirimiContainer::get()['respository']->get(UbirimiUser::class)->getById($filter['user_id']);
 $smtpSettings = SMTPServer::getByClientId($user['client_id']);
-$clientSettings = UbirimiContainer::get()['respository']->get('ubirimi.general.client')->getSettings($user['client_id']);
+$clientSettings = UbirimiContainer::get()['respository']->get(UbirimiClient::class)->getSettings($user['client_id']);
 
-$client = UbirimiContainer::get()['respository']->get('ubirimi.general.client')->getById($user['client_id']);
+$client = UbirimiContainer::get()['respository']->get(UbirimiClient::class)->getById($user['client_id']);
 $subject = $smtpSettings['email_prefix'] . " Filter - " . $filter['name'];
 
 $usersToNotify = array();
 
 if ($filterSubscription['user_id']) {
-    $user = UbirimiContainer::get()['respository']->get('ubirimi.user.user')->getById($filterSubscription['user_id']);
+    $user = UbirimiContainer::get()['respository']->get(UbirimiUser::class)->getById($filterSubscription['user_id']);
     $usersToNotify[] = $user;
 } else if ($filterSubscription['group_id']) {
-    $users = UbirimiContainer::get()['respository']->get('ubirimi.user.group')->getDataByGroupId($filterSubscription['group_id']);
+    $users = UbirimiContainer::get()['respository']->get(UbirimiGroup::class)->getDataByGroupId($filterSubscription['group_id']);
     while ($users && $user = $users->fetch_array(MYSQLI_ASSOC)) {
         $usersToNotify[] = $user;
     }
 }
 
 foreach ($usersToNotify as $user) {
-    $issues = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters($searchParameters, $filterSubscription['user_id'], null, $filterSubscription['user_id']);
+    $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters($searchParameters, $filterSubscription['user_id'], null, $filterSubscription['user_id']);
 
     $columns = explode('#', $user['issues_display_columns']);
 

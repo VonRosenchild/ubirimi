@@ -5,6 +5,7 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -18,9 +19,9 @@ class DeleteController extends UbirimiController
         $slaId = $request->request->get('id');
         $projectId = $request->request->get('project_id');
 
-        $this->getRepository('helpDesk.sla.sla')->deleteById($slaId);
+        $this->getRepository(Sla::class)->deleteById($slaId);
 
-        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = $this->getRepository(Sla::class)->getByProjectId($projectId);
         $slaToGoId = -1;
 
         if ($SLAs) {

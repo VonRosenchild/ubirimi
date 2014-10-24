@@ -5,6 +5,9 @@ namespace Ubirimi\General\Controller\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\General\UbirimiLog;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,7 +23,7 @@ class EditController extends UbirimiController
         $userId = $request->get('id');
         $location = $request->get('location', 'user_list');
         if ($userId) {
-            $user = $this->getRepository('ubirimi.user.user')->getById($userId);
+            $user = $this->getRepository(UbirimiUser::class)->getById($userId);
             if ($user['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }
@@ -48,7 +51,7 @@ class EditController extends UbirimiController
             $lastName = Util::cleanRegularInputField($request->request->get('last_name'));
             $username = Util::cleanRegularInputField($request->request->get('username'));
 
-            $clientAdministrators = $this->getRepository('ubirimi.general.client')->getAdministrators(
+            $clientAdministrators = $this->getRepository(UbirimiClient::class)->getAdministrators(
                 $session->get('client/id'),
                 $userId
             );
@@ -99,7 +102,7 @@ class EditController extends UbirimiController
             if (!Util::validateUsername($username))
                 $errors['invalid_username'] = true;
             else {
-                $existingUser = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientId(
+                $existingUser = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientId(
                     $username,
                     $session->get('client/id'),
                     null,
@@ -113,7 +116,7 @@ class EditController extends UbirimiController
             if (Util::hasNoErrors($errors)) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository('ubirimi.user.user')->updateById(
+                $this->getRepository(UbirimiUser::class)->updateById(
                     $userId,
                     $firstName,
                     $lastName,
@@ -125,9 +128,9 @@ class EditController extends UbirimiController
                     $currentDate
                 );
 
-                $userUpdated = $this->getRepository('ubirimi.user.user')->getById($userId);
+                $userUpdated = $this->getRepository(UbirimiUser::class)->getById($userId);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
                     $session->get('user/id'),

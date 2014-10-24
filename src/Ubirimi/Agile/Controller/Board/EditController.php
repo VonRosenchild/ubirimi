@@ -5,9 +5,12 @@ namespace Ubirimi\Agile\Controller\Board;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Agile\Repository\Board\Board;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 
 class EditController extends UbirimiController
@@ -17,10 +20,10 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $menuSelectedCategory = 'agile';
-        $projects = $this->getRepository('yongo.project.project')->getByClientId($session->get('client/id'));
+        $projects = $this->getRepository(YongoProject::class)->getByClientId($session->get('client/id'));
 
         $boardId = $request->get('id');
-        $board = $this->getRepository('agile.board.board')->getById($boardId);
+        $board = $this->getRepository(Board::class)->getById($boardId);
 
         if ($board['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -41,9 +44,9 @@ class EditController extends UbirimiController
 
                 $date = Util::getServerCurrentDateTime();
 
-                $this->getRepository('agile.board.board')->updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
+                $this->getRepository(Board::class)->updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_CHEETAH,
                     $session->get('user/id'),

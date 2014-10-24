@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Screen\Screen;
 
 class DeleteFieldController extends UbirimiController
 {
@@ -15,7 +16,7 @@ class DeleteFieldController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $screenDataId = $request->request->get('screen_data_id');
 
-        $this->getRepository('yongo.screen.screen')->deleteDataById($screenDataId);
+        $this->getRepository(Screen::class)->deleteDataById($screenDataId);
 
         return new Response('');
     }

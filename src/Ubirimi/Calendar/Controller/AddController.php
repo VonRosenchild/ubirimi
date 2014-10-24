@@ -5,8 +5,10 @@ namespace Ubirimi\Calendar\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
 use Ubirimi\Calendar\Repository\Reminder\Period;
 use Ubirimi\Calendar\Repository\Reminder\Type;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -31,25 +33,25 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $calendarSameName = $this->getRepository('calendar.calendar.calendar')->getByName($session->get('user/id'), $name);
+            $calendarSameName = $this->getRepository(UbirimiCalendar::class)->getByName($session->get('user/id'), $name);
             if ($calendarSameName) {
                 $duplicateName = true;
             }
 
             if (!$emptyName && !$duplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $calendarId = $this->getRepository('calendar.calendar.calendar')->save($session->get('user/id'), $name, $description, $color, $currentDate);
+                $calendarId = $this->getRepository(UbirimiCalendar::class)->save($session->get('user/id'), $name, $description, $color, $currentDate);
 
                 // add default reminders
 
-                $this->getRepository('calendar.calendar.calendar')->addReminder(
+                $this->getRepository(UbirimiCalendar::class)->addReminder(
                     $calendarId,
                     Type::REMINDER_EMAIL,
                     Period::PERIOD_MINUTE,
                     30
                 );
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_CALENDAR,
                     $session->get('user/id'),

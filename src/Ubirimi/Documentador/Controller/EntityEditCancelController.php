@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -21,7 +22,7 @@ class EntityEditCancelController extends UbirimiController
         $spaceId = $request->get('space_id');
         $entityId = $request->get('entity_id');
 
-        $this->getRepository('documentador.entity.entity')->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
+        $this->getRepository(Entity::class)->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
         return new RedirectResponse('/documentador/pages/' . $spaceId);
     }

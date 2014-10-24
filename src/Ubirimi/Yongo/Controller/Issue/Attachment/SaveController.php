@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 
 class SaveController extends UbirimiController
 {
@@ -26,7 +27,7 @@ class SaveController extends UbirimiController
 
         if (!empty($comment)) {
             $currentDate = Util::getServerCurrentDateTime();
-            $this->getRepository('yongo.issue.comment')->add($issueId, $session->get('user/id'), $comment, $currentDate);
+            $this->getRepository(IssueComment::class)->add($issueId, $session->get('user/id'), $comment, $currentDate);
         }
     }
 }

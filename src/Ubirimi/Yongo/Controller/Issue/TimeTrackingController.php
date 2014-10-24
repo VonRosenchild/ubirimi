@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class TimeTrackingController extends UbirimiController
 {
@@ -18,7 +19,7 @@ class TimeTrackingController extends UbirimiController
         $issueId = $request->request->get('id');
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $loggedInUserId);
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
 
         $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
         $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');

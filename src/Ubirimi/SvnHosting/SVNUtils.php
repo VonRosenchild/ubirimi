@@ -3,11 +3,13 @@
     namespace ubirimi\svn;
 
     use Exception;
+    use Path;
     use SimpleXMLElement;
     use Symfony\Component\Console\Output\Output;
     use Ubirimi\ConsoleUtils;
     use Ubirimi\DirectoryUtils;
-    use Ubirimi\Yongo\Repository\Project\Project;
+    use Ubirimi\SvnHosting\Repository\SvnRepository;
+    use Ubirimi\Yongo\Repository\Project\YongoProject;
 
     /**
      * Usefull static method to manipulate an svn repository
@@ -73,7 +75,7 @@
          * Call the svnlook binary on an svn transaction.
          *
          * @param string svnlook command (see svnlook help)
-         * @param string repository path
+         * @param string SvnRepository path
          * @param string transaction (call TXN into svn hooks samples)
          * @return string Output of svnlook
          * @see http://svnbook.red-bean.com/en/1.1/ch09s03.html
@@ -89,7 +91,7 @@
          * Call the svnlook binary on an svn revision.
          *
          * @param string svnlook command (see svnlook help)
-         * @param string repository path
+         * @param string SvnRepository path
          * @param integer revision
          * @return string Output of svnlook
          * @see http://svnbook.red-bean.com/en/1.1/ch09s03.html
@@ -345,7 +347,7 @@
 
         /**
          *
-         * @param string Project name
+         * @param string YongoProject name
          * @param string Path into Subversion
          * @return string Return url of files into Subversion
          */

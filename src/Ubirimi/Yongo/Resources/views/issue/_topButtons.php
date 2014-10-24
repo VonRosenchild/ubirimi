@@ -2,8 +2,11 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Event;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+
 ?>
 
 <table cellspacing="0" border="0" cellpadding="0" width="100%">
@@ -53,32 +56,32 @@ use Ubirimi\Yongo\Repository\Permission\Permission;
                         $buttonsCount = 0;
                         while ($workflowActions && $workflowStep = $workflowActions->fetch_array(MYSQLI_ASSOC)) {
                             $workflowDataId = $workflowStep['id'];
-                            $transitionEvent = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getEventByWorkflowDataId($workflowDataId);
+                            $transitionEvent = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getEventByWorkflowDataId($workflowDataId);
                             $hasEventPermission = false;
 
                             switch ($transitionEvent['code']) {
 
-                                case Event::EVENT_ISSUE_CLOSED_CODE:
+                                case IssueEvent::EVENT_ISSUE_CLOSED_CODE:
 
-                                    $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
+                                    $hasEventPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
                                     break;
-                                case Event::EVENT_ISSUE_REOPENED_CODE:
+                                case IssueEvent::EVENT_ISSUE_REOPENED_CODE:
 
-                                case Event::EVENT_ISSUE_RESOLVED_CODE:
-                                    $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
+                                case IssueEvent::EVENT_ISSUE_RESOLVED_CODE:
+                                    $hasEventPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
                                     break;
-                                case Event::EVENT_ISSUE_WORK_STARTED_CODE:
-                                case Event::EVENT_ISSUE_WORK_STOPPED_CODE:
+                                case IssueEvent::EVENT_ISSUE_WORK_STARTED_CODE:
+                                case IssueEvent::EVENT_ISSUE_WORK_STOPPED_CODE:
 
-                                    $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
+                                    $hasEventPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
                                     break;
 
-                                case Event::EVENT_GENERIC_CODE:
+                                case IssueEvent::EVENT_GENERIC_CODE:
                                     $hasEventPermission = true;
                                     break;
                             }
 
-                            $canBeExecuted = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue);
+                            $canBeExecuted = UbirimiContainer::get()['repository']->get(Workflow::class)->checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue);
                             if ($workflowStep['screen_id']) {
                                 if ($hasEventPermission && $canBeExecuted) {
                                     echo '<td><a href="#" id="issue_transition_with_screen_' . $step['id'] . '_' . $workflowStep['workflow_step_id_to'] . '" class="btn ubirimi-btn">' . $workflowStep['transition_name'] . '</a></td>';
@@ -103,31 +106,31 @@ use Ubirimi\Yongo\Repository\Permission\Permission;
                                 <?php $workflowMenuEnabled = 0; ?>
                                 <?php while ($workflowActions && $workflowStep = $workflowActions->fetch_array(MYSQLI_ASSOC)): ?>
 
-                                    <?php $canBeExecuted = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue); ?>
+                                    <?php $canBeExecuted = UbirimiContainer::get()['repository']->get(Workflow::class)->checkConditionsByTransitionId($workflowStep['id'], $loggedInUserId, $issue); ?>
                                     <?php if ($canBeExecuted)
                                         $workflowMenuEnabled = 1; ?>
                                     <?php
                                     $workflowDataId = $workflowStep['id'];
-                                    $transitionEvent = UbirimiContainer::get()['repository']->get('yongo.issue.event')->getEventByWorkflowDataId($workflowDataId);
+                                    $transitionEvent = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getEventByWorkflowDataId($workflowDataId);
                                     $hasEventPermission = false;
 
                                     switch ($transitionEvent['code']) {
 
-                                        case Event::EVENT_ISSUE_CLOSED_CODE:
+                                        case IssueEvent::EVENT_ISSUE_CLOSED_CODE:
 
-                                            $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
+                                            $hasEventPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_CLOSE_ISSUE, $loggedInUserId);
                                             break;
 
-                                        case Event::EVENT_ISSUE_REOPENED_CODE:
-                                        case Event::EVENT_ISSUE_RESOLVED_CODE:
+                                        case IssueEvent::EVENT_ISSUE_REOPENED_CODE:
+                                        case IssueEvent::EVENT_ISSUE_RESOLVED_CODE:
 
-                                        $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
+                                        $hasEventPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_RESOLVE_ISSUE, $loggedInUserId);
                                             break;
-                                        case Event::EVENT_ISSUE_WORK_STARTED_CODE:
-                                        case Event::EVENT_ISSUE_WORK_STOPPED_CODE:
-                                            $hasEventPermission = UbirimiContainer::get()['repository']->get('yongo.project.project')->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
+                                        case IssueEvent::EVENT_ISSUE_WORK_STARTED_CODE:
+                                        case IssueEvent::EVENT_ISSUE_WORK_STOPPED_CODE:
+                                            $hasEventPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_EDIT_ISSUE, $loggedInUserId);
                                             break;
-                                        case Event::EVENT_GENERIC_CODE:
+                                        case IssueEvent::EVENT_GENERIC_CODE:
                                             $hasEventPermission = true;
                                             break;
                                     }

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
 class SaveConfirmController extends UbirimiController
 {
@@ -17,7 +18,7 @@ class SaveConfirmController extends UbirimiController
 
         $filter = null;
         if ($filterId != -1) {
-            $filter = $this->getRepository('yongo.issue.filter')->getById($filterId);
+            $filter = $this->getRepository(IssueFilter::class)->getById($filterId);
         }
 
         return $this->render(__DIR__ . '/../../Resources/views/filter/SaveConfirm.php', get_defined_vars());

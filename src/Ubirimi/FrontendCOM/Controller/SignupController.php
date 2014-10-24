@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\PaymentUtil;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Repository\GeneralTaskQueue;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -118,7 +120,7 @@ class SignupController extends UbirimiController
                 }
                 if (!$errors['company_domain_not_valid']) {
 
-                    $domainAvailable = $this->getRepository('ubirimi.general.client')->checkAvailableDomain($companyDomain);
+                    $domainAvailable = $this->getRepository(UbirimiClient::class)->checkAvailableDomain($companyDomain);
                     if (!$domainAvailable) {
                         $errors['company_domain_not_unique'] = true;
                     }
@@ -145,7 +147,7 @@ class SignupController extends UbirimiController
                 $errors['empty_admin_username'] = true;
             }
 
-            $usernameResult = $this->getRepository('ubirimi.user.user')->getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminUsername));
+            $usernameResult = $this->getRepository(UbirimiUser::class)->getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminUsername));
 
             if ($usernameResult) {
                 $errors['admin_email_already_exists'] = true;
@@ -166,7 +168,7 @@ class SignupController extends UbirimiController
             if (!$agreeTerms) {
                 $errors['not_agree_terms'] = true;
             }
-            $emailResult = $this->getRepository('ubirimi.user.user')->getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminEmailAddress));
+            $emailResult = $this->getRepository(UbirimiUser::class)->getByEmailAddressAndIsClientAdministrator(mb_strtolower($adminEmailAddress));
 
             if ($emailResult) {
                 $errors['admin_email_already_exists'] = true;

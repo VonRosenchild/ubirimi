@@ -1,6 +1,6 @@
 <?php
     use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
     require_once __DIR__ . '/../../_header.php';
 ?>
@@ -58,7 +58,7 @@
                             </td>
                             <td>
                                 <?php
-                                    $securitySchemeData = SecurityScheme::getDataByLevelId($level['id']);
+                                    $securitySchemeData = IssueSecurityScheme::getDataByLevelId($level['id']);
                                     if ($securitySchemeData) {
                                         echo '<ul>';
                                         while ($data = $securitySchemeData->fetch_array(MYSQLI_ASSOC)) {

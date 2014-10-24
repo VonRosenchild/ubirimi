@@ -6,9 +6,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\HelpDesk\Repository\Queue\Queue;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 
 class ViewHelpdeskController extends UbirimiController
@@ -18,19 +20,19 @@ class ViewHelpdeskController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectId = $request->get('id');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = $this->getRepository(Sla::class)->getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
             $SLAs->data_seek(0);
         }
 
-        $queues = $this->getRepository('helpDesk.queue.queue')->getByProjectId($projectId);
+        $queues = $this->getRepository(Queue::class)->getByProjectId($projectId);
         $queueSelectedId = -1;
         if ($queues) {
             $queue = $queues->fetch_array(MYSQLI_ASSOC);

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 
 class SearchListPrintableContentController extends UbirimiController
 {
@@ -58,7 +59,7 @@ class SearchListPrintableContentController extends UbirimiController
         if (isset($parseURLData['query'])) {
             if (Util::searchQueryNotEmpty($getSearchParameters)) {
 
-                $issues = $this->getRepository('yongo.issue.issue')->getByParameters($getSearchParameters, $loggedInUserId);
+                $issues = $this->getRepository(Issue::class)->getByParameters($getSearchParameters, $loggedInUserId);
                 $issuesCount = $issues->num_rows;
                 $getSearchParameters['link_to_page'] = '/yongo/issue/printable-list';
             }

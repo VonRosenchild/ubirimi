@@ -5,10 +5,14 @@ namespace Ubirimi\HelpDesk\Controller\SLA;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\HelpDesk\Repository\Sla\Calendar;
+use Ubirimi\HelpDesk\Repository\Sla\SlaCalendar;
+use Ubirimi\HelpDesk\Repository\Sla\Sla;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AddController extends UbirimiController
 {
@@ -19,7 +23,7 @@ class AddController extends UbirimiController
 
         $projectId = $request->get('project_id');
 
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';
@@ -30,13 +34,13 @@ class AddController extends UbirimiController
         $emptyName = false;
         $duplicateName = false;
 
-        $SLAs = $this->getRepository('helpDesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = $this->getRepository(Sla::class)->getByProjectId($projectId);
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
         }
-        $slaCalendars = Calendar::getByProjectId($projectId);
+        $slaCalendars = SlaCalendar::getByProjectId($projectId);
 
-        $availableStatuses = $this->getRepository('yongo.issue.settings')->getAllIssueSettings('status', $session->get('client/id'));
+        $availableStatuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $session->get('client/id'));
 
         if ($request->request->has('confirm_new_sla')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -46,7 +50,7 @@ class AddController extends UbirimiController
                 $emptyName = true;
             }
 
-            $slaExists = $this->getRepository('helpDesk.sla.sla')->getByName(mb_strtolower($name), $projectId);
+            $slaExists = $this->getRepository(Sla::class)->getByName(mb_strtolower($name), $projectId);
             if ($slaExists) {
                 $duplicateName = true;
             }
@@ -75,7 +79,7 @@ class AddController extends UbirimiController
 
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $slaId = $this->getRepository('helpDesk.sla.sla')->save(
+                $slaId = $this->getRepository(Sla::class)->save(
                     $projectId,
                     $name,
                     $description,
@@ -94,7 +98,7 @@ class AddController extends UbirimiController
                                 $value = 'all_remaining_issues';
                             }
 
-                            $this->getRepository('helpDesk.sla.sla')->addGoal(
+                            $this->getRepository(Sla::class)->addGoal(
                                 $slaId,
                                 $request->request->get('goal_calendar_' . $index),
                                 $value,
@@ -106,10 +110,10 @@ class AddController extends UbirimiController
                 }
 
                 // for every issue in this project add an empty line in yongo_issue_sla
-                $issuesData = $this->getRepository('yongo.issue.issue')->getByParameters(array('project' => $projectId));
+                $issuesData = $this->getRepository(Issue::class)->getByParameters(array('project' => $projectId));
                 if ($issuesData->num_rows) {
                     while ($issue = $issuesData->fetch_array(MYSQLI_ASSOC)) {
-                        $this->getRepository('yongo.issue.issue')->addPlainSLADataBySLAId($issue['id'], $slaId);
+                        $this->getRepository(Issue::class)->addPlainSLADataBySLAId($issue['id'], $slaId);
                     }
                 }
 

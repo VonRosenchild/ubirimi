@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\Watcher;
 
 class ToggleController extends UbirimiController
 {
@@ -22,12 +24,12 @@ class ToggleController extends UbirimiController
         $currentDate = Util::getServerCurrentDateTime();
 
         if ($action == 'add') {
-            $this->getRepository('yongo.issue.watcher')->add($issueId, $loggedInUserId, $currentDate);
+            $this->getRepository(Watcher::class)->add($issueId, $loggedInUserId, $currentDate);
         } else if ($action == 'remove') {
-            $this->getRepository('yongo.issue.watcher')->deleteByUserIdAndIssueId($issueId, $loggedInUserId);
+            $this->getRepository(Watcher::class)->deleteByUserIdAndIssueId($issueId, $loggedInUserId);
         }
 
         // update the date_updated field
-        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
     }
 }

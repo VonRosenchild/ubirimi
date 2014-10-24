@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow\Scheme;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 class DeleteController extends UbirimiController
 {
@@ -17,13 +18,13 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $workflowScheme = Scheme::getMetaDataById($Id);
-        Scheme::deleteDataByWorkflowSchemeId($Id);
-        Scheme::deleteById($Id);
+        $workflowScheme = WorkflowScheme::getMetaDataById($Id);
+        WorkflowScheme::deleteDataByWorkflowSchemeId($Id);
+        WorkflowScheme::deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add(
+        $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

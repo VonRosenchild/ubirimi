@@ -5,6 +5,7 @@ namespace Ubirimi\Documentador\Controller\Page\Attachment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\LinkHelper;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -16,9 +17,9 @@ class GetDataController extends UbirimiController
     {
         $attachmentId = $request->request->get('id');
         $attachment = $this->getRepository('documentador.entity.attachment')->getById($attachmentId);
-        $entity = $this->getRepository('documentador.entity.entity')->getById($attachment['documentator_entity_id']);
+        $entity = $this->getRepository(Entity::class)->getById($attachment['documentator_entity_id']);
         $spaceId = $entity['space_id'];
-        $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByAttachmentId($attachmentId);
+        $revisions = $this->getRepository(Entity::class)->getRevisionsByAttachmentId($attachmentId);
         $clientSettings = $session->get('client/settings');
 
         $index = 0;

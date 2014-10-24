@@ -4,6 +4,7 @@ namespace Ubirimi\FrontendCOM\Controller\Account;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -24,7 +25,7 @@ class ProfileController extends UbirimiController
             'empty_city' => false,
             'empty_district' => false);
 
-        $clientData = $this->getRepository('ubirimi.general.client')->getById($session->get('client/id'));
+        $clientData = $this->getRepository(UbirimiClient::class)->getById($session->get('client/id'));
 
         $content = 'account/Profile.php';
         $page = 'account_profile';

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
 
 class EditController extends UbirimiController
@@ -25,14 +26,14 @@ class EditController extends UbirimiController
         $dateStarted = \DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
         $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
-        $workLog = $this->getRepository('yongo.issue.workLog')->getById($workLogId);
+        $workLog = $this->getRepository(WorkLog::class)->getById($workLogId);
 
-        $this->getRepository('yongo.issue.workLog')->updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
+        $this->getRepository(WorkLog::class)->updateLogById($workLogId, $timeSpent, $dateStartedString, $comment);
 
         $issueQueryParameters = array('issue_id' => $issueId);
-        $issue = $this->getRepository('yongo.issue.issue')->getByParameters($issueQueryParameters, $session->get('user/id'));
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $session->get('user/id'));
 
-        $remaining = $this->getRepository('yongo.issue.workLog')->adjustRemainingEstimate(
+        $remaining = $this->getRepository(WorkLog::class)->adjustRemainingEstimate(
             $issue,
             null,
             "+" . $workLog['time_spent'],
@@ -45,7 +46,7 @@ class EditController extends UbirimiController
 
         $issue['remaining_estimate'] = $remaining;
 
-        $remainingTimePost = $this->getRepository('yongo.issue.workLog')->adjustRemainingEstimate(
+        $remainingTimePost = $this->getRepository(WorkLog::class)->adjustRemainingEstimate(
             $issue,
             $timeSpent,
             $remainingTimePost,
@@ -61,10 +62,10 @@ class EditController extends UbirimiController
             array('remaining_estimate', $previousIssueRemainingEstimate, $remainingTimePost)
         );
 
-        $this->getRepository('yongo.issue.issue')->updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
+        $this->getRepository(Issue::class)->updateHistory($issue['id'], $session->get('user/id'), $fieldChanges, $currentDate);
 
         // update the date_updated field
-        $this->getRepository('yongo.issue.issue')->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+        $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
 
         return new Response($remainingTimePost);
     }

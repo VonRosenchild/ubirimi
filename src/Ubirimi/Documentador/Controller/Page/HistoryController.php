@@ -4,6 +4,9 @@ namespace Ubirimi\Documentador\Controller\Page;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,14 +23,14 @@ class HistoryController extends UbirimiController
         $menuSelectedCategory = 'documentator';
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
 
         $entityId = $request->get('id');
-        $page = $this->getRepository('documentador.entity.entity')->getById($entityId, $loggedInUserId);
+        $page = $this->getRepository(Entity::class)->getById($entityId, $loggedInUserId);
 
         $spaceId = $page['space_id'];
-        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
-        $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByPageId($entityId);
+        $space = $this->getRepository(Space::class)->getById($spaceId);
+        $revisions = $this->getRepository(Entity::class)->getRevisionsByPageId($entityId);
 
         $revisionCount = ($revisions) ? $revisions->num_rows + 1 : 1;
 

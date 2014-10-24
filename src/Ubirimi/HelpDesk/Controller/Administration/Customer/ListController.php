@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\HelpDesk\Repository\Organization\Customer;
 use Ubirimi\HelpDesk\Repository\Organization\Organization;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -22,7 +23,7 @@ class ListController extends UbirimiController
             $organization = Organization::getById($organizationId);
             $breadCrumbTitle = 'Customers > ' . $organization['name'];
         } else {
-            $customers = $this->getRepository('ubirimi.user.user')->getByClientId($session->get('client/id'), 1);
+            $customers = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'), 1);
             $breadCrumbTitle = 'Customers > All';
         }
 

@@ -1,6 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Yongo\Repository\Project\Project;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 ?>
 <table width="100%">
@@ -19,7 +19,7 @@ use Ubirimi\Yongo\Repository\Project\Project;
                 <tr>
                     <td valign="top" width="330">
                         <?php
-                            $versions = UbirimiContainer::get()['repository']->get('yongo.project.project')->getVersions(array($projectId));
+                            $versions = UbirimiContainer::get()['repository']->get(YongoProject::class)->getVersions(array($projectId));
                             if ($versions) {
                                 while ($version = $versions->fetch_array(MYSQLI_ASSOC)) {
                                     echo '<div>' . $version['name'] . '</div>';

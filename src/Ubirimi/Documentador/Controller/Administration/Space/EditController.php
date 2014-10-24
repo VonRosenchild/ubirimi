@@ -5,6 +5,9 @@ namespace Ubirimi\Documentador\Controller\Administration\Space;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,8 +23,8 @@ class EditController extends UbirimiController
 
         $spaceId = $request->get('id');
         $backLink = isset($_GET['back']) ? $_GET['back'] : null;
-        $space = $this->getRepository('documentador.space.space')->getById($spaceId);
-        $pages = $this->getRepository('documentador.entity.entity')->getAllBySpaceId($spaceId);
+        $space = $this->getRepository(Space::class)->getById($spaceId);
+        $pages = $this->getRepository(Entity::class)->getAllBySpaceId($spaceId);
 
         if ($space['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -46,9 +49,9 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$emptyCode) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('documentador.space.space')->updateById($spaceId, $name, $code, $homepageId, $description, $currentDate);
+                $this->getRepository(Space::class)->updateById($spaceId, $name, $code, $homepageId, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador space ' . $name, $currentDate);
+                $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador space ' . $name, $currentDate);
 
                 if ($backLink == 'space_tools') {
                     return new RedirectResponse('/documentador/administration/space-tools/overview/' . $spaceId);

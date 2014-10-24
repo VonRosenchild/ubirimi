@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Attachment;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 
 class UploadTransitionAttachmentController extends UbirimiController
 {
@@ -33,7 +33,7 @@ class UploadTransitionAttachmentController extends UbirimiController
             $ext = substr($filename, strrpos($filename, '.') + 1);
             $filenameWithoutExtension = substr($filename, 0, strrpos($filename, '.'));
 
-            $attachmentId = Attachment::add($issueId,
+            $attachmentId = IssueAttachment::add($issueId,
                 Util::slugify($filenameWithoutExtension) . '.' . $ext,
                 $loggedInUserId,
                 Util::getServerCurrentDateTime());
@@ -64,7 +64,7 @@ class UploadTransitionAttachmentController extends UbirimiController
             $temp[] = $attachmentId;
             $session->set('added_attachments_in_screen', $temp);
 
-            Attachment::updateSizeById($attachmentId, $size);
+            IssueAttachment::updateSizeById($attachmentId, $size);
 
             if (Util::isImage(Util::getExtension($filename))) {
 

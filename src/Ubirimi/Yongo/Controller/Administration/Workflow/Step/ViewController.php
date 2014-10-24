@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ViewController extends UbirimiController
 {
@@ -16,9 +17,9 @@ class ViewController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $stepId = $request->get('id');
-        $step = $this->getRepository('yongo.workflow.workflow')->getStepById($stepId);
+        $step = $this->getRepository(Workflow::class)->getStepById($stepId);
         $workflowId = $step['workflow_id'];
-        $workflow = $this->getRepository('yongo.workflow.workflow')->getMetaDataById($workflowId);
+        $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
 
         if ($workflow['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

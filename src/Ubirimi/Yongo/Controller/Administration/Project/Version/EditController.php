@@ -5,9 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Project\Version;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 
 class EditController extends UbirimiController
@@ -17,9 +19,9 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $versionId = $request->get('id');
-        $version = $this->getRepository('yongo.project.project')->getVersionById($versionId);
+        $version = $this->getRepository(YongoProject::class)->getVersionById($versionId);
         $projectId = $version['project_id'];
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,15 +37,15 @@ class EditController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $releaseDuplicate = $this->getRepository('yongo.project.project')->getVersionByName($projectId, $name, $versionId);
+            $releaseDuplicate = $this->getRepository(YongoProject::class)->getVersionByName($projectId, $name, $versionId);
             if ($releaseDuplicate)
                 $alreadyExists = true;
 
             if (!$emptyName && !$alreadyExists) {
                 $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.project.project')->updateVersionById($versionId, $name, $description, $currentDate);
+                $this->getRepository(YongoProject::class)->updateVersionById($versionId, $name, $description, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

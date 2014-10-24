@@ -5,10 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Workflow;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class AddController extends UbirimiController
 {
@@ -18,7 +20,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
         $workflowExists = false;
-        $workflowIssueTypeSchemes = TypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
 
         if ($request->request->has('new_workflow')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -27,7 +29,7 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $duplicateWorkflow = $this->getRepository('yongo.workflow.workflow')->getByClientIdAndName($session->get('client/id'), mb_strtolower($name));
+            $duplicateWorkflow = $this->getRepository(Workflow::class)->getByClientIdAndName($session->get('client/id'), mb_strtolower($name));
             if ($duplicateWorkflow)
                 $workflowExists = true;
 
@@ -36,7 +38,7 @@ class AddController extends UbirimiController
 
                 $currentDate = $date = Util::getServerCurrentDateTime();
 
-                $workflowId = $this->getRepository('yongo.workflow.workflow')->createNewMetaData(
+                $workflowId = $this->getRepository(Workflow::class)->createNewMetaData(
                     $session->get('client/id'),
                     $workflowIssueTypeSchemeId,
                     $name,
@@ -44,9 +46,9 @@ class AddController extends UbirimiController
                     $currentDate
                 );
 
-                $this->getRepository('yongo.workflow.workflow')->createInitialData($session->get('client/id'), $workflowId);
+                $this->getRepository(Workflow::class)->createInitialData($session->get('client/id'), $workflowId);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

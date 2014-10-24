@@ -5,11 +5,12 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\ConfigurationScheme;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Configuration;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 
 class EditDataController extends UbirimiController
 {
@@ -18,11 +19,11 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationSchemeDataId = $request->get('id');
-        $fieldConfigurations = Configuration::getByClientId($session->get('client/id'));
-        $fieldConfigurationSchemeData = ConfigurationScheme::getDataById($fieldConfigurationSchemeDataId);
+        $fieldConfigurations = FieldConfiguration::getByClientId($session->get('client/id'));
+        $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataById($fieldConfigurationSchemeDataId);
 
         $fieldConfigurationSchemeId = $fieldConfigurationSchemeData['issue_type_field_configuration_id'];
-        $fieldConfigurationScheme = ConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -32,7 +33,7 @@ class EditDataController extends UbirimiController
             $fieldConfigurationId = Util::cleanRegularInputField($request->request->get('field_configuration'));
             $issueTypeId = Util::cleanRegularInputField($request->request->get('issue_type'));
 
-            ConfigurationScheme::updateDataById(
+            FieldConfigurationScheme::updateDataById(
                 $fieldConfigurationId,
                 $fieldConfigurationSchemeId,
                 $issueTypeId
@@ -40,7 +41,7 @@ class EditDataController extends UbirimiController
 
             $currentDate = Util::getServerCurrentDateTime();
 
-            $this->getRepository('ubirimi.general.log')->add(
+            $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),

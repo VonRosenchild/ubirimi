@@ -3,12 +3,12 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\GeneralTaskQueue;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\Component;
-use Ubirimi\Yongo\Repository\Issue\Version;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\Yongo\Repository\Issue\Comment;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
 
 /* check locking mechanism */
 if (file_exists('update_bugzilla.lock')) {
@@ -38,11 +38,11 @@ $severityConstants = array(
 );
 
 try {
-    $newIssuesUpdated = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array(
+    $newIssuesUpdated = UbirimiContainer::getRepository(Issue::class)->getByParameters(array(
         'date_updated_after' => $PILOT_TEAM_START_DATE
     ));
 
-    $newIssuesCreated = UbirimiContainer::getRepository('yongo.issue.issue')->getByParameters(array(
+    $newIssuesCreated = UbirimiContainer::getRepository(Issue::class)->getByParameters(array(
         'date_created_after' => $PILOT_TEAM_START_DATE
     ));
 
@@ -117,11 +117,11 @@ function processNewBugzillaBug($newIssue)
 {
     global $severityConstants;
 
-    $issueComponent = Component::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id']);
-    $issueVersion = Version::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
-    $project = Project::getById($newIssue['issue_project_id']);
+    $issueComponent = IssueComponent::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id']);
+    $issueVersion = IssueVersion::getByIssueIdAndProjectId($newIssue['id'], $newIssue['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
+    $project = YongoProject::getById($newIssue['issue_project_id']);
     $severity = CustomField::getCustomFieldsDataByFieldId($newIssue['id'], 29403);
-    $comments = UbirimiContainer::getRepository('yongo.issue.comment')->getByIssueId($newIssue['id']);
+    $comments = UbirimiContainer::getRepository(IssueComment::class)->getByIssueId($newIssue['id']);
 
     if (null !== $issueComponent) {
         $issueComponent = $issueComponent->fetch_array(MYSQLI_ASSOC);
@@ -164,8 +164,8 @@ function processNewBugzillaBug($newIssue)
 
 function insertBugzillaBug($assigned_to, $bug_severity, $bug_status, $component, $creation_ts, $date_updated, $priority, $project, $reporter, $resolution, $short_desc, $version)
 {
-    $ubirimiUser = $this->getRepository('ubirimi.user.user')->getById($assigned_to);
-    $ubirimiReporter = $this->getRepository('ubirimi.user.user')->getById($reporter);
+    $ubirimiUser = $this->getRepository(UbirimiUser::class)->getById($assigned_to);
+    $ubirimiReporter = $this->getRepository(UbirimiUser::class)->getById($reporter);
 
     $bugzillaUser = getBugzillaUserByEmail($ubirimiUser['email']);
     $bugzillaReporter = getBugzillaUserByEmail($ubirimiReporter['email']);

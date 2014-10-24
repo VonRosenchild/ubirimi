@@ -2,23 +2,23 @@
 
 
 use Ubirimi\Util;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Repository\Email\EmailQueue;
-use Ubirimi\Yongo\Repository\Issue\TypeScheme;
-use Ubirimi\Yongo\Repository\Issue\TypeScreenScheme;
-use Ubirimi\Yongo\Repository\Field\ConfigurationScheme;
-use Ubirimi\Yongo\Repository\Workflow\Scheme;
-use Ubirimi\Yongo\Repository\Permission\Scheme;
-use Ubirimi\Yongo\Repository\Notification\Scheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Project\Category;
-use Ubirimi\Yongo\Repository\Project\Project;
-use Ubirimi\SvnHosting\Repository\Repository;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\Calendar\Repository\Calendar;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
 
 
-use Ubirimi\Repository\User\User as UserRepository;
+use Ubirimi\Repository\User\UbirimiUser as UserRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Container\UbirimiContainer;
@@ -261,12 +261,12 @@ function updateIssueResolution($resolutionId, $issueId)
 
 function installComponent($valiId, $projectId, $name, $description)
 {
-    Project::addComponent($projectId, $name, $description, $valiId, null, Util::getServerCurrentDateTime());
+    YongoProject::addComponent($projectId, $name, $description, $valiId, null, Util::getServerCurrentDateTime());
 }
 
 function installVersion($projectId, $name, $description = null)
 {
-    Project::addVersion($projectId, $name, $description, Util::getServerCurrentDateTime());
+    YongoProject::addVersion($projectId, $name, $description, Util::getServerCurrentDateTime());
 }
 
 function getYongoProjectFromMovidusProject($movidiuProjects, $ubirimiProjects, $productId)
@@ -312,17 +312,17 @@ function getYongoPriorityFromMovidiusPriority($ubirimiPriorities, $priority)
 
 function installProject($clientId, $leadId, $name, $description)
 {
-    $issueTypeScheme = TypeScheme::getByClientId($clientId, 'project');
-    $issueTypeScreenScheme = TypeScreenScheme::getByClientId($clientId);
-    $fieldConfigurationSchemes = ConfigurationScheme::getByClient($clientId);
-    $workflowScheme = Scheme::getMetaDataByClientId($clientId);
-    $permissionScheme = Scheme::getByClientId($clientId);
-    $notificationScheme = Scheme::getByClientId($clientId);
+    $issueTypeScheme = IssueTypeScheme::getByClientId($clientId, 'project');
+    $issueTypeScreenScheme = IssueTypeScreenScheme::getByClientId($clientId);
+    $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($clientId);
+    $workflowScheme = WorkflowScheme::getMetaDataByClientId($clientId);
+    $permissionScheme = WorkflowScheme::getByClientId($clientId);
+    $notificationScheme = WorkflowScheme::getByClientId($clientId);
     $projectCategories = Category::getAll($clientId);
 
     $currentDate = Util::getServerCurrentDateTime();
 
-    $projectId = Project::add(
+    $projectId = YongoProject::add(
         $clientId,
         $issueTypeScheme->fetch_array(MYSQLI_ASSOC)['id'],
         $issueTypeScreenScheme->fetch_array(MYSQLI_ASSOC)['id'],
@@ -339,8 +339,8 @@ function installProject($clientId, $leadId, $name, $description)
         $currentDate
     );
 
-    Project::addDefaultUsers($clientId, $projectId, $currentDate);
-    Project::addDefaultGroups($clientId, $projectId, $currentDate);
+    YongoProject::addDefaultUsers($clientId, $projectId, $currentDate);
+    YongoProject::addDefaultGroups($clientId, $projectId, $currentDate);
 
     return $projectId;
 }
@@ -367,7 +367,7 @@ function installUser($data)
 {
     $currentDate = Util::getServerCurrentDateTime();
 
-    $issuesPerPage = $this->getRepository('ubirimi.general.client')->getYongoSetting($data['clientId'], 'issues_per_page');
+    $issuesPerPage = $this->getRepository(UbirimiClient::class)->getYongoSetting($data['clientId'], 'issues_per_page');
 
     if (array_key_exists('isCustomer', $data) && $data['isCustomer']) {
         $data['customer_service_desk_flag'] = 1;
@@ -400,13 +400,13 @@ function installUser($data)
         // add the newly created user to the Ubirimi Users Global Permission Groups
         $groups = GlobalPermission::getDataByPermissionId($data['clientId'], GlobalPermission::GLOBAL_PERMISSION_YONGO_USERS);
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
-            $this->getRepository('ubirimi.user.group')->addData($group['id'], array($userId), $currentDate);
+            $this->getRepository(UbirimiGroup::class)->addData($group['id'], array($userId), $currentDate);
         }
     }
 
     if (isset($data['svnRepoId'])) {
         /* also add user to svn_repository_user table */
-        Repository::addUser($data['svnRepoId'], $userId);
+        SvnRepository::addUser($data['svnRepoId'], $userId);
 
     }
 

@@ -5,6 +5,9 @@ namespace Ubirimi\HelpDesk\Repository\Sla;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\History;
+use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 class Sla
 {
@@ -161,9 +164,9 @@ class Sla
 
         $value = mb_strtolower($goal['definition']);
         $currentSLAId = $goal['help_sla_id'];
-        $curentSLA = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getById($currentSLAId);
+        $curentSLA = UbirimiContainer::get()['repository']->get(Sla::class)->getById($currentSLAId);
 
-        $SLAs = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getByProjectId($projectId);
+        $SLAs = UbirimiContainer::get()['repository']->get(Sla::class)->getByProjectId($projectId);
         while ($SLAs && $SLA = $SLAs->fetch_array(MYSQLI_ASSOC)) {
 
             if (($index = stripos(mb_strtolower($value), mb_strtolower($SLA['name']))) !== false) {
@@ -199,9 +202,9 @@ class Sla
         $value = str_ireplace('assignee', 'user_assigned_id', $value);
         $value = str_ireplace('reporter', 'user_reported_id', $value);
 
-        $statuses = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('status', $clientId);
-        $priorities = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('priority', $clientId);
-        $resolutions = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getAllIssueSettings('resolution', $clientId);
+        $statuses = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('status', $clientId);
+        $priorities = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('priority', $clientId);
+        $resolutions = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('resolution', $clientId);
         $types = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getAll($clientId);
 
         while ($statuses && $status = $statuses->fetch_array(MYSQLI_ASSOC)) {
@@ -258,9 +261,9 @@ class Sla
                     }
                 }
             } else if (strpos($conditions[$i], $type . '_comment_by_assignee') !== false) {
-                $assigneeID = UbirimiContainer::get()['repository']->get('yongo.issue.issue')->getAssigneeOnDate($issue['id'], $currentSLADate);
+                $assigneeID = UbirimiContainer::get()['repository']->get(Issue::class)->getAssigneeOnDate($issue['id'], $currentSLADate);
 
-                $comments = UbirimiContainer::get()['repository']->get('yongo.issue.comment')->getByUserIdAfterDate($issue['id'], $assigneeID, $currentSLADate);
+                $comments = UbirimiContainer::get()['repository']->get(IssueComment::class)->getByUserIdAfterDate($issue['id'], $assigneeID, $currentSLADate);
                 if ($comments) {
                     $comment = $comments->fetch_array(MYSQLI_ASSOC);
                     if ($conditionFulfilledDate) {
@@ -272,7 +275,7 @@ class Sla
                     }
                 } else {
                     $userAssigneeId = $issue['assignee'];
-                    $comments = UbirimiContainer::get()['repository']->get('yongo.issue.comment')->getByIssueIdAndUserId($issue['id'], $userAssigneeId);
+                    $comments = UbirimiContainer::get()['repository']->get(IssueComment::class)->getByIssueIdAndUserId($issue['id'], $userAssigneeId);
 
                     if ($comments) {
                         $firstComment = $comments->fetch_array(MYSQLI_ASSOC);
@@ -317,7 +320,7 @@ class Sla
     }
 
     public function getGoalForIssueId($slaId, $issueId, $projectId, $clientId) {
-        $goals = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getGoals($slaId);
+        $goals = UbirimiContainer::get()['repository']->get(Sla::class)->getGoals($slaId);
         $goalValue = null;
         $goalId = null;
         $goalCalendarId = null;
@@ -329,7 +332,7 @@ class Sla
                 $goalId = $goal['id'];
                 $goalCalendarId = $goal['help_sla_calendar_id'];
             } else {
-                $definitionSQL = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
+                $definitionSQL = UbirimiContainer::get()['repository']->get(Sla::class)->transformGoalDefinitionIntoSQL($goal, $issueId, $projectId, $clientId);
 
                 $issueFound = false;
                 if ($stmtGoal = UbirimiContainer::get()['db.connection']->prepare($definitionSQL)) {
@@ -354,16 +357,16 @@ class Sla
 
     public function getOffsetForIssue($SLA, $issue, $clientId, $clientSettings) {
         $issueId = $issue['id'];
-        $goalData = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
+        $goalData = UbirimiContainer::get()['repository']->get(Sla::class)->getGoalForIssueId($SLA['id'], $issueId, $issue['issue_project_id'], $clientId);
         $goalId = $goalData['id'];
 
         if ($goalId == null) {
             return null;
         }
         $goalValue = $goalData['value'];
-        $slaCalendarData = Calendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
+        $slaCalendarData = SlaCalendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
-        $SLA = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->getById($SLA['id']);
+        $SLA = UbirimiContainer::get()['repository']->get(Sla::class)->getById($SLA['id']);
 
         $historyData = History::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
 
@@ -379,8 +382,8 @@ class Sla
 
         // find start and stop dates
         foreach ($historyData as $history) {
-            $startConditionSLADate = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
-            $stopConditionSLADate = UbirimiContainer::get()['repository']->get('helpDesk.sla.sla')->checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
+            $startConditionSLADate = UbirimiContainer::get()['repository']->get(Sla::class)->checkConditionOnIssue($SLA['start_condition'], $issue, $history, 'start', $history['date_created']);
+            $stopConditionSLADate = UbirimiContainer::get()['repository']->get(Sla::class)->checkConditionOnIssue($SLA['stop_condition'], $issue, $history, 'stop', $history['date_created']);
 
             if ($startConditionSLADate && !in_array($startConditionSLADate, $startConditionSLADates) && $startConditionSLADate > end($stopConditionSLADates)) {
                 if (count($startConditionSLADates) - count($stopConditionSLADates) == 0) {
@@ -522,7 +525,7 @@ class Sla
         $condition = str_replace(array('start_', 'stop_'), '' , $condition);
         if (substr($condition, 0, 11) == 'status_set_') {
             $StatusId = str_replace('status_set_', '', $condition);
-            $statusName = UbirimiContainer::get()['repository']->get('yongo.issue.settings')->getById($StatusId, 'status', 'name');
+            $statusName = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getById($StatusId, 'status', 'name');
             $condition = 'Status Set ' . $statusName;
         } else if (substr($condition, 0, 11) == 'comment_by_assignee') {
             $condition = 'Comment: By Assignee';

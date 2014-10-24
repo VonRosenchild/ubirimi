@@ -169,7 +169,7 @@ class Field {
     }
 
     public function deleteByClientId($clientId) {
-        $fields = UbirimiContainer::get()['repository']->get('yongo.field.field')->getByClient($clientId);
+        $fields = UbirimiContainer::get()['repository']->get(Field::class)->getByClient($clientId);
         if ($fields) {
             while ($field = $fields->fetch_array(MYSQLI_ASSOC)) {
                 $fieldId = $field['id'];
@@ -264,7 +264,7 @@ class Field {
     }
 
     public function deleteDataById($customFieldDataId) {
-        $field = UbirimiContainer::get()['repository']->get('yongo.field.field')->getDataById($customFieldDataId);
+        $field = UbirimiContainer::get()['repository']->get(Field::class)->getDataById($customFieldDataId);
 
         $query = "delete from field_data where id = ? limit 1";
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

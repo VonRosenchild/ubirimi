@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\Repository\User\User;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\UbirimiController;
 
 class GetController extends UbirimiController
@@ -18,7 +18,7 @@ class GetController extends UbirimiController
 
         $username = $request->get('username');
 
-        $user = $this->getRepository('ubirimi.user.user')->getByUsernameAndClientDomain($username, $request->get('api_client_domain'));
+        $user = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientDomain($username, $request->get('api_client_domain'));
 
         if (null === $user) {
             throw new NotFoundHttpException(sprintf('User [%s] not found', $username));

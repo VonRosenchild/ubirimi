@@ -5,6 +5,8 @@ namespace Ubirimi\Documentador\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Documentador\Repository\Entity\Entity;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -19,7 +21,7 @@ class UploadAttachmentController extends UbirimiController
         $loggedInUserId = $session->get('user/id');
 
         $entityId = $request->get('id');
-        $entity = $this->getRepository('documentador.entity.entity')->getById($entityId);
+        $entity = $this->getRepository(Entity::class)->getById($entityId);
 
         $currentDate = Util::getServerCurrentDateTime();
 
@@ -34,7 +36,7 @@ class UploadAttachmentController extends UbirimiController
                 if ($attachmentExists) {
                     // get the last revision and increment it by one
                     $attachmentId = $attachmentExists['id'];
-                    $revisions = $this->getRepository('documentador.entity.entity')->getRevisionsByAttachmentId($attachmentId);
+                    $revisions = $this->getRepository(Entity::class)->getRevisionsByAttachmentId($attachmentId);
                     $revisionNumber = $revisions->num_rows + 1;
 
                     // create the revision folder
@@ -43,7 +45,7 @@ class UploadAttachmentController extends UbirimiController
                     // add the file to the list of files
                     $attachmentId = $this->getRepository('documentador.entity.attachment')->add($entityId, $filename, $currentDate);
 
-                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment ' . $filename, $currentDate);
+                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment ' . $filename, $currentDate);
 
                     $revisionNumber = 1;
 
@@ -66,7 +68,7 @@ class UploadAttachmentController extends UbirimiController
                 $this->getRepository('documentador.entity.attachment')->addRevision($attachmentId, $loggedInUserId, $currentDate);
 
                 if ($revisionNumber > 1) {
-                    $this->getRepository('ubirimi.general.log')->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment revision to ' . $filename, $currentDate);
+                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment revision to ' . $filename, $currentDate);
                 }
 
                 $baseFileName = pathinfo($filename, PATHINFO_FILENAME);
@@ -81,7 +83,7 @@ class UploadAttachmentController extends UbirimiController
 
                     $content = $entity['content'];
                     $content = str_replace($oldLink, $newLink, $content);
-                    $this->getRepository('documentador.entity.entity')->updateContent($entityId, $content);
+                    $this->getRepository(Entity::class)->updateContent($entityId, $content);
                 }
 
                 $index++;

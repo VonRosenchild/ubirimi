@@ -5,6 +5,7 @@ namespace Ubirimi\Yongo\Controller\Administration\Field\Custom;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -20,7 +21,7 @@ class AddValueController extends UbirimiController
         $duplicateValue = false;
 
         $customFieldId = $request->get('id');
-        $field = $this->getRepository('yongo.field.field')->getById($customFieldId);
+        $field = $this->getRepository(Field::class)->getById($customFieldId);
 
         if ($request->request->has('new_custom_value')) {
             $value = Util::cleanRegularInputField($request->request->get('value'));
@@ -28,7 +29,7 @@ class AddValueController extends UbirimiController
                 $emptyValue = true;
 
             if (!$emptyValue) {
-                $customValueExists = $this->getRepository('yongo.field.field')->getDataByFieldIdAndValue($customFieldId, $value);
+                $customValueExists = $this->getRepository(Field::class)->getDataByFieldIdAndValue($customFieldId, $value);
                 if ($customValueExists)
                     $duplicateValue = true;
             }
@@ -38,7 +39,7 @@ class AddValueController extends UbirimiController
 
                 Field::addData($customFieldId, $value, $currentDate);
 
-                $this->getRepository('ubirimi.general.log')->add(
+                $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
                     SystemProduct::SYS_PRODUCT_YONGO,
                     $session->get('user/id'),

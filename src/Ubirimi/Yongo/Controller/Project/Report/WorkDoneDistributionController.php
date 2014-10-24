@@ -5,11 +5,14 @@ namespace Ubirimi\Yongo\Controller\Project\Report;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class WorkDoneDistributionController extends UbirimiController
 {
@@ -21,16 +24,16 @@ class WorkDoneDistributionController extends UbirimiController
             $clientSettings = $session->get('client/settings');
         } else {
             $loggedInUserId = null;
-            $clientId = $this->getRepository('ubirimi.general.client')->getClientIdAnonymous();
-            $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($clientId);
+            $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
+            $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
 
         $projectId = $request->get('id');
         $dateFrom = $request->get('date_from');
         $dateTo = $request->get('date_to');
-        $project = $this->getRepository('yongo.project.project')->getById($projectId);
+        $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
-        $workData = $this->getRepository('yongo.project.project')->getWorkDoneDistributition($projectId, $dateFrom, $dateTo, 'array');
+        $workData = $this->getRepository(YongoProject::class)->getWorkDoneDistributition($projectId, $dateFrom, $dateTo, 'array');
         $workDataPrepared = array();
 
         if ($workData) {
@@ -39,7 +42,7 @@ class WorkDoneDistributionController extends UbirimiController
             }
         }
 
-        $issueTypes = $this->getRepository('yongo.project.project')->getIssueTypes($projectId, true, 'array');
+        $issueTypes = $this->getRepository(YongoProject::class)->getIssueTypes($projectId, true, 'array');
         if ($project['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
@@ -51,9 +54,9 @@ class WorkDoneDistributionController extends UbirimiController
             return new RedirectResponse('/yongo/project/reports/' . $projectId . '/work-done-distribution/' . $dateFrom . '/' . $dateTo);
         }
 
-        $hasGlobalAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
-        $hasGlobalSystemAdministrationPermission = $this->getRepository('ubirimi.user.user')->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
-        $hasAdministerProjectsPermission = $this->getRepository('ubirimi.general.client')->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
+        $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
+        $hasGlobalSystemAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission($clientId, $loggedInUserId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasAdministerProjectsPermission = $this->getRepository(UbirimiClient::class)->getProjectsByPermission($clientId, $loggedInUserId, Permission::PERM_ADMINISTER_PROJECTS);
 
         $hasAdministerProject = $hasGlobalSystemAdministrationPermission || $hasGlobalAdministrationPermission || $hasAdministerProjectsPermission;
 

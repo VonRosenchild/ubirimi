@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 
@@ -82,7 +83,7 @@ use Ubirimi\Util;
     </div>
 
     <?php
-        $lastColumnStatuses = UbirimiContainer::get()['repository']->get('agile.board.board')->getColumnStatuses($columns[count($columns) - 1]['id'], 'array', 'id');
+        $lastColumnStatuses = UbirimiContainer::get()['repository']->get(Board::class)->getColumnStatuses($columns[count($columns) - 1]['id'], 'array', 'id');
     ?>
     <div id="agileModalTransitionWithScreen"></div>
     <div id="agileModalUpdateParent"></div>

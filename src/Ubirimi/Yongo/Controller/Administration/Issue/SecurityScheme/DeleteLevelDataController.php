@@ -5,10 +5,11 @@ namespace Ubirimi\Yongo\Controller\Administration\Issue\SecurityScheme;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\SecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
 class DeleteLevelDataController extends UbirimiController
 {
@@ -17,15 +18,15 @@ class DeleteLevelDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeLevelDataId = $request->request->get('id');
-        $issueSecuritySchemeLevelData = SecurityScheme::getLevelDataById($issueSecuritySchemeLevelDataId);
+        $issueSecuritySchemeLevelData = IssueSecurityScheme::getLevelDataById($issueSecuritySchemeLevelDataId);
         $issueSecuritySchemeLevelId = $issueSecuritySchemeLevelData['issue_security_scheme_level_id'];
-        $issueSecuritySchemeLevel = SecurityScheme::getLevelById($issueSecuritySchemeLevelId);
+        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
 
-        SecurityScheme::deleteLevelDataById($issueSecuritySchemeLevelDataId);
+        IssueSecurityScheme::deleteLevelDataById($issueSecuritySchemeLevelDataId);
 
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository('ubirimi.general.log')->add(
+        $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),
             SystemProduct::SYS_PRODUCT_YONGO,
             $session->get('user/id'),

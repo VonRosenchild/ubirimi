@@ -1,5 +1,6 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\LinkHelper;
 
     use Ubirimi\SystemProduct;
@@ -35,7 +36,7 @@ dasdasdas
                         <?php endif ?>
                         <td><a id="btnEditPage" href="#" class="btn ubirimi-btn disabled"><i class="icon-edit"></i> Edit</a></td>
                         <td><a id="btnDeletePage" href="#" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete Page</a></td>
-                        <?php if (UbirimiContainer::get()['repository']->get('documentador.space.space')->userHasAdminSpacePermission($space['space_id'], $loggedInUserId)): ?>
+                        <?php if (UbirimiContainer::get()['repository']->get(Space::class)->userHasAdminSpacePermission($space['space_id'], $loggedInUserId)): ?>
                             <td><a href="/documentador/administration/space/edit/<?php echo $space['space_id'] ?>" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit Space</a></td>
                             <td><a id="btnDeleteSpaceFromPages" href="#" class="btn ubirimi-btn"><i class="icon-remove"></i> Delete Space</a></td>
                             <td><a href="/documentador/administration/space-tools/overview/<?php echo $spaceId ?>" class="btn ubirimi-btn">Space Tools</a></td>

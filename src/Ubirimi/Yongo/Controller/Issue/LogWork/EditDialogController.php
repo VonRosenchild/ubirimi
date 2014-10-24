@@ -19,7 +19,7 @@ class EditDialogController extends UbirimiController
         if (-1 != $remainingEstimate) {
             $remainingEstimate = trim(str_replace(array('w', 'd', 'h', 'm'), array('w ', 'd ', 'h ', 'm'), $remainingEstimate));
         }
-        $workLog = $this->getRepository('yongo.issue.workLog')->getById($workLogId);
+        $workLog = $this->getRepository(WorkLog::class)->getById($workLogId);
 
         $mode = 'edit';
 

@@ -7,14 +7,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\Type;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
 class ListSubtaskController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $types = Type::getAllSubTasks($session->get('client/id'));
+        $types = IssueType::getAllSubTasks($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

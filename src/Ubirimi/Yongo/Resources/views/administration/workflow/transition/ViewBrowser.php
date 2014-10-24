@@ -34,7 +34,7 @@ require_once __DIR__ . '/../../_header.php';
             </tr>
             <tr>
                 <td>
-                    <?php $steps = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getOriginatingStepsForTransition($workflow['id'], $workflowData['transition_name']); ?>
+                    <?php $steps = UbirimiContainer::get()['repository']->get(Workflow::class)->getOriginatingStepsForTransition($workflow['id'], $workflowData['transition_name']); ?>
                     <?php if ($steps): ?>
                         <table>
                             <?php while ($step = $steps->fetch_array(MYSQLI_ASSOC)): ?>
@@ -47,7 +47,7 @@ require_once __DIR__ . '/../../_header.php';
                 </td>
                 <td valign="top" align="center"><?php echo $workflowData['transition_name'] ?></td>
                 <td valign="top">
-                    <?php $steps = UbirimiContainer::get()['repository']->get('yongo.workflow.workflow')->getDestinationStepsForTransition($workflow['id'], $workflowData['transition_name']); ?>
+                    <?php $steps = UbirimiContainer::get()['repository']->get(Workflow::class)->getDestinationStepsForTransition($workflow['id'], $workflowData['transition_name']); ?>
                     <?php if ($steps): ?>
                         <table>
                             <?php while ($step = $steps->fetch_array(MYSQLI_ASSOC)): ?>
