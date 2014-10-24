@@ -4,7 +4,8 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\SvnHosting\Repository\Repository;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
@@ -17,9 +18,9 @@ class ConfirmImportUsersController extends UbirimiController
 
         $clientId = $session->get('client/id');
 
-        $users = $this->getRepository('ubirimi.general.client')->getUsers($clientId, null, 'array', 0);
+        $users = $this->getRepository(UbirimiClient::class)->getUsers($clientId, null, 'array', 0);
 
-        $existingUsers = Repository::getUserList($session->get('selected_svn_repo_id'), 'array');
+        $existingUsers = $this->getRepository(SvnRepository::class)->getUserList($session->get('selected_svn_repo_id'), 'array');
         $importableUsers = array();
 
         foreach ($users as $user) {

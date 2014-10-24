@@ -3,6 +3,7 @@
 namespace ubirimi\svn;
 
 use Exception;
+use Path;
 use SimpleXMLElement;
 use Ubirimi\ConsoleUtils;
 

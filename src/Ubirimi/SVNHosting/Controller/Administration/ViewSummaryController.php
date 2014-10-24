@@ -5,7 +5,8 @@ namespace Ubirimi\SVNHosting\Controller\Administration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\SvnHosting\Repository\Repository;
+use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -15,7 +16,7 @@ class ViewSummaryController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $clientSettings = $this->getRepository('ubirimi.general.client')->getSettings($session->get('client/id'));
+        $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
 
         $menuSelectedCategory = 'svn';
 
@@ -23,7 +24,7 @@ class ViewSummaryController extends UbirimiController
 
         $svnRepoId = $request->get('id');
 
-        $svnRepo = Repository::getById($svnRepoId);
+        $svnRepo = $this->getRepository(SvnRepository::class)->getById($svnRepoId);
         if ($svnRepo['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }

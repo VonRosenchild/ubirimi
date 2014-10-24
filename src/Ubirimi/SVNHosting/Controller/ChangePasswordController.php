@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
-use Ubirimi\SvnHosting\Repository\Repository;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SVNHosting\Event\SVNHostingEvent;
 use Ubirimi\SVNHosting\Event\SVNHostingEvents;
+use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -25,8 +26,8 @@ class ChangePasswordController extends UbirimiController
         $userId = $request->query->get('id', $request->request->get('id'));;
         $repoId = $request->query->get('repo_id', $request->request->get('repo_id'));
 
-        $user = $this->getRepository('ubirimi.user.user')->getById($userId);
-        $svnRepo = Repository::getById($repoId);
+        $user = $this->getRepository(UbirimiUser::class)->getById($userId);
+        $svnRepo = $this->getRepository(SvnRepository::class)->getById($repoId);
 
         $errors = array('empty_password' => false, 'password_mismatch' => false);
 
@@ -41,10 +42,10 @@ class ChangePasswordController extends UbirimiController
                 $errors['password_mismatch'] = true;
 
             if (Util::hasNoErrors($errors)) {
-                Repository::updateUserPassword($session->get('selected_svn_repo_id'), $userId, $password);
+                $this->getRepository(SvnRepository::class)->updateUserPassword($session->get('selected_svn_repo_id'), $userId, $password);
 
-                Repository::updateHtpasswd($session->get('selected_svn_repo_id'), $session->get('client/company_domain'));
-                Repository::updateAuthz();
+                $this->getRepository(SvnRepository::class)->updateHtpasswd($session->get('selected_svn_repo_id'), $session->get('client/company_domain'));
+                $this->getRepository(SvnRepository::class)->updateAuthz();
 
                 $svnEvent = new SVNHostingEvent($svnRepo['name'], $user, array('password' => $password));
                 $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_SVN_HOSTING, sprintf('SVN Change Password for [%s]', $svnRepo['name']));
