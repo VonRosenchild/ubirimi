@@ -46,7 +46,7 @@ class AddController extends UbirimiController
             if (!$emptyName && !$emptyOutwardDescription && !$emptyInwardDescription && !$linkTypeDuplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                LinkType::add(
+                $this->getRepository(LinkType::class)->add(
                     $session->get('client/id'),
                     $name,
                     $outwardDescription,

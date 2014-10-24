@@ -178,56 +178,59 @@ class UbirimiClient
 
     public function createDefaultScreenData($clientId, $currentDate) {
 
-        $screen = UbirimiContainer::get()['repository']->get(Screen::class)->getByName($clientId, 'Default Screen');
+        $screenRepository = UbirimiContainer::get()['repository']->get(Screen::class);
+        $fieldRepository = UbirimiContainer::get()['repository']->get(Field::class);
 
-        $summaryField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $summaryField['id'], 1, $currentDate);
+        $screen = $screenRepository->getByName($clientId, 'Default Screen');
 
-        $issueTypeField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $issueTypeField['id'], 2, $currentDate);
-        $priorityField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $priorityField['id'], 3, $currentDate);
-        $dueDateField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $dueDateField['id'], 4, $currentDate);
-        $componentsField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $componentsField['id'], 5, $currentDate);
+        $summaryField = $fieldRepository->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
+        $screenRepository->addData($screen['id'], $summaryField['id'], 1, $currentDate);
 
-        $affectsVersionField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $affectsVersionField['id'], 6, $currentDate);
-        $fixVersionField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $fixVersionField['id'], 7, $currentDate);
+        $issueTypeField = $fieldRepository->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
+        $screenRepository->addData($screen['id'], $issueTypeField['id'], 2, $currentDate);
+        $priorityField = $fieldRepository->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
+        $screenRepository->addData($screen['id'], $priorityField['id'], 3, $currentDate);
+        $dueDateField = $fieldRepository->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
+        $screenRepository->addData($screen['id'], $dueDateField['id'], 4, $currentDate);
+        $componentsField = $fieldRepository->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
+        $screenRepository->addData($screen['id'], $componentsField['id'], 5, $currentDate);
 
-        $assigneeField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $assigneeField['id'], 8, $currentDate);
+        $affectsVersionField = $fieldRepository->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
+        $screenRepository->addData($screen['id'], $affectsVersionField['id'], 6, $currentDate);
+        $fixVersionField = $fieldRepository->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $screenRepository->addData($screen['id'], $fixVersionField['id'], 7, $currentDate);
 
-        $reporterField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_REPORTER_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $reporterField['id'], 9, $currentDate);
-        $environmentField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $environmentField['id'], 10, $currentDate);
+        $assigneeField = $fieldRepository->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $screenRepository->addData($screen['id'], $assigneeField['id'], 8, $currentDate);
 
-        $descriptionField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $descriptionField['id'], 11, $currentDate);
-        $attachmentField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $attachmentField['id'], 12, $currentDate);
+        $reporterField = $fieldRepository->getByCode($clientId, Field::FIELD_REPORTER_CODE);
+        $screenRepository->addData($screen['id'], $reporterField['id'], 9, $currentDate);
+        $environmentField = $fieldRepository->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
+        $screenRepository->addData($screen['id'], $environmentField['id'], 10, $currentDate);
 
-        $timeTrackingField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $timeTrackingField['id'], 13, $currentDate);
+        $descriptionField = $fieldRepository->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
+        $screenRepository->addData($screen['id'], $descriptionField['id'], 11, $currentDate);
+        $attachmentField = $fieldRepository->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
+        $screenRepository->addData($screen['id'], $attachmentField['id'], 12, $currentDate);
 
-        $screen = UbirimiContainer::get()['repository']->get(Screen::class)->getByName($clientId, 'Resolve Issue Screen');
-        $assigneeField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $assigneeField['id'], 1, $currentDate);
+        $timeTrackingField = $fieldRepository->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
+        $screenRepository->addData($screen['id'], $timeTrackingField['id'], 13, $currentDate);
 
-        $fixVersionField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $fixVersionField['id'], 2, $currentDate);
-        $resolutionField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $resolutionField['id'], 3, $currentDate);
+        $screen = $screenRepository->getByName($clientId, 'Resolve Issue Screen');
+        $assigneeField = $fieldRepository->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $screenRepository->addData($screen['id'], $assigneeField['id'], 1, $currentDate);
 
-        $commentField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_COMMENT_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $commentField['id'], 4, $currentDate);
+        $fixVersionField = $fieldRepository->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
+        $screenRepository->addData($screen['id'], $fixVersionField['id'], 2, $currentDate);
+        $resolutionField = $fieldRepository->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
+        $screenRepository->addData($screen['id'], $resolutionField['id'], 3, $currentDate);
 
-        $screen = UbirimiContainer::get()['repository']->get(Screen::class)->getByName($clientId, 'Workflow Screen');
-        $assigneeField = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        UbirimiContainer::get()['repository']->get(Screen::class)->addData($screen['id'], $assigneeField['id'], 1, $currentDate);
+        $commentField = $fieldRepository->getByCode($clientId, Field::FIELD_COMMENT_CODE);
+        $screenRepository->addData($screen['id'], $commentField['id'], 4, $currentDate);
+
+        $screen = $screenRepository->getByName($clientId, 'Workflow Screen');
+        $assigneeField = $fieldRepository->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
+        $screenRepository->addData($screen['id'], $assigneeField['id'], 1, $currentDate);
     }
 
     public function createDefaultNotificationScheme($clientId, $currentDate) {
@@ -759,34 +762,36 @@ class UbirimiClient
 
     public function createDefaultWorkflowData($clientId, $workflowId, $currentDate)
     {
+        $workflowRepository = UbirimiContainer::get()['repository']->get(Workflow::class);
+        $issueSettingsRepository = UbirimiContainer::get()['repository']->get(IssueSettings::class);
+
         $screenResolutionData = UbirimiContainer::get()['repository']->get(Screen::class)->getByName($clientId, 'Resolve Issue Screen');
         $screenResolutionId = $screenResolutionData['id'];
 
         $screenWorkflowData = UbirimiContainer::get()['repository']->get(Screen::class)->getByName($clientId, 'Workflow Screen');
         $screenWorkflowId = $screenWorkflowData['id'];
+        $createStepId = $workflowRepository->createDefaultStep($workflowId, null, 'Create Issue', 1);
 
-        $createStepId = UbirimiContainer::get()['repository']->get(Workflow::class)->createDefaultStep($workflowId, null, 'Create Issue', 1);
-
-        $statusOpenIdData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Open');
+        $statusOpenIdData = $issueSettingsRepository->getByName($clientId, 'status', 'Open');
         $statusOpenId = $statusOpenIdData['id'];
-        $openStepId = UbirimiContainer::get()['repository']->get(Workflow::class)->createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
+        $openStepId = $workflowRepository->createDefaultStep($workflowId, $statusOpenId, 'Open', 0);
 
-        $statusInProgressIdData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'In Progress');
+        $statusInProgressIdData = $issueSettingsRepository->getByName($clientId, 'status', 'In Progress');
         $statusInProgressId = $statusInProgressIdData['id'];
 
-        $inProgressStepId = UbirimiContainer::get()['repository']->get(Workflow::class)->createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
+        $inProgressStepId = $workflowRepository->createDefaultStep($workflowId, $statusInProgressId, 'In Progress', 0);
 
-        $statusClosedIdData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Closed');
+        $statusClosedIdData = $issueSettingsRepository->getByName($clientId, 'status', 'Closed');
         $statusClosedId = $statusClosedIdData['id'];
-        $closedStepId = UbirimiContainer::get()['repository']->get(Workflow::class)->createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
+        $closedStepId = $workflowRepository->createDefaultStep($workflowId, $statusClosedId, 'Closed', 0);
 
-        $statusResolvedIdData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Resolved');
+        $statusResolvedIdData = $issueSettingsRepository->getByName($clientId, 'status', 'Resolved');
         $statusResolvedId = $statusResolvedIdData['id'];
-        $resolvedStepId = UbirimiContainer::get()['repository']->get(Workflow::class)->createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
+        $resolvedStepId = $workflowRepository->createDefaultStep($workflowId, $statusResolvedId, 'Resolved', 0);
 
-        $statusReopenedIdData = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getByName($clientId, 'status', 'Reopened');
+        $statusReopenedIdData = $issueSettingsRepository->getByName($clientId, 'status', 'Reopened');
         $statusReopenedId = $statusReopenedIdData['id'];
-        $reopenedStepId = UbirimiContainer::get()['repository']->get(Workflow::class)->createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
+        $reopenedStepId = $workflowRepository->createDefaultStep($workflowId, $statusReopenedId, 'Reopened', 0);
 
         $eventIssueWorkStoppedId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_WORK_STOPPED_CODE, 'id');
         $eventIssueCreatedId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE, 'id');
@@ -798,145 +803,145 @@ class UbirimiClient
         $eventIssueReopenedId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_REOPENED_CODE, 'id');
 
         // create issue -----> open
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, null, $createStepId, $openStepId, 'Create Issue', '');
+        $transitionId = $workflowRepository->addTransition($workflowId, null, $createStepId, $openStepId, 'Create Issue', '');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_CREATE_ISSUE, 'create_issue');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueCreatedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_CREATE_ISSUE, 'create_issue');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueCreatedId);
 
         // open ------> in progress
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, null, $openStepId, $inProgressStepId, 'Start Progress', '');
+        $transitionId = $workflowRepository->addTransition($workflowId, null, $openStepId, $inProgressStepId, 'Start Progress', '');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
         $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // open ------> closed
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenResolutionId, $openStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenResolutionId, $openStepId, $closedStepId, 'Close Issue', '');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // open ------> resolved
 
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenResolutionId, $openStepId, $resolvedStepId, 'Resolve Issue', '');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenResolutionId, $openStepId, $resolvedStepId, 'Resolve Issue', '');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // in progress ------> open
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, null, $inProgressStepId, $openStepId, 'Stop Progress', '');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $transitionId = $workflowRepository->addTransition($workflowId, null, $inProgressStepId, $openStepId, 'Stop Progress', '');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
 
         $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // in progress ------> resolved
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $resolvedStepId, 'Resolve Issue', '');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $resolvedStepId, 'Resolve Issue', '');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // in progress ------> closed
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenResolutionId, $inProgressStepId, $closedStepId, 'Close Issue', '');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // resolved ------> closed
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $closedStepId, 'Close Issue', '');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $closedStepId, 'Close Issue', '');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // resolved ------> reopened
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $reopenedStepId, 'Reopen Issue', '');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenWorkflowId, $resolvedStepId, $reopenedStepId, 'Reopen Issue', '');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // reopened ------> resolved
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $resolvedStepId, 'Resolve Issue', '');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $resolvedStepId, 'Resolve Issue', '');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueResolvedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // reopened ------> closed
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $closedStepId, 'Close Issue', '');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenResolutionId, $reopenedStepId, $closedStepId, 'Close Issue', '');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueClosedId);
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . '[[AND]]perm_id=' . Permission::PERM_CLOSE_ISSUE . ')';
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // reopened ------> In progress
 
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, null, $reopenedStepId, $inProgressStepId, 'Start Progress', '');
+        $transitionId = $workflowRepository->addTransition($workflowId, null, $reopenedStepId, $inProgressStepId, 'Start Progress', '');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
         $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // closed ------> reopened
-        $transitionId = UbirimiContainer::get()['repository']->get(Workflow::class)->addTransition($workflowId, $screenWorkflowId, $closedStepId, $reopenedStepId, 'Reopen Issue', '');
+        $transitionId = $workflowRepository->addTransition($workflowId, $screenWorkflowId, $closedStepId, $reopenedStepId, 'Reopen Issue', '');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_FIELD_VALUE, 'field_name=resolution###field_value=-1');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_SET_ISSUE_STATUS_AS_IN_WORKFLOW_STEP, 'set_issue_status');
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
+        $workflowRepository->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueReopenedId);
 
         $definitionData = '(perm_id=' . Permission::PERM_RESOLVE_ISSUE . ')';
 
-        UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
+        $workflowRepository->addCondition($transitionId, $definitionData);
 
         // save the position of the elements
         // create node
@@ -1449,58 +1454,59 @@ class UbirimiClient
     }
 
     public function installYongoProduct($clientId, $userId, $clientCreatedDate) {
+        $clientRepository = UbirimiContainer::get()['repository']->get(UbirimiClient::class);
 
         // set default YONGO Product Settings
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultYongoSettings($clientId);
+        $clientRepository->createDefaultYongoSettings($clientId);
 
         // add default issue priorities, statuses, resolutions
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssuePriorities($clientId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueStatuses($clientId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueResolutions($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultIssuePriorities($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultIssueStatuses($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultIssueResolutions($clientId, $clientCreatedDate);
 
         // create default Screens
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultScreens($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultScreens($clientId, $clientCreatedDate);
 
-        $screenSchemeId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultScreenScheme($clientId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
+        $screenSchemeId = $clientRepository->createDefaultScreenScheme($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultScreenSchemeData($clientId, $screenSchemeId, $clientCreatedDate);
 
         // create default issue types
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypes($clientId, $clientCreatedDate);
-        $issueTypeSchemeId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeScheme($clientId, 'project', $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
+        $clientRepository->createDefaultIssueTypes($clientId, $clientCreatedDate);
+        $issueTypeSchemeId = $clientRepository->createDefaultIssueTypeScheme($clientId, 'project', $clientCreatedDate);
+        $clientRepository->createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $clientCreatedDate);
 
         // create default workflow issue type scheme
-        $workflowIssueTypeSchemeId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+        $workflowIssueTypeSchemeId = $clientRepository->createDefaultIssueTypeScheme($clientId, 'workflow', $clientCreatedDate);
+        $clientRepository->createDefaultIssueTypeSchemeData($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
 
         // create default issue type screen scheme
-        $issueTypeScreenSchemeId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
+        $issueTypeScreenSchemeId = $clientRepository->createDefaultIssueTypeScreenScheme($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $clientCreatedDate);
 
         // create default events
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultEvents($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultEvents($clientId, $clientCreatedDate);
 
         // create default workflow
-        $workflowId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
+        $workflowId = $clientRepository->createDefaultWorkflow($clientId, $workflowIssueTypeSchemeId, $clientCreatedDate);
+        $clientRepository->createDefaultWorkflowData($clientId, $workflowId, $clientCreatedDate);
 
         // create default workflow scheme
-        $workflowSchemeId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultWorkflowScheme($clientId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
+        $workflowSchemeId = $clientRepository->createDefaultWorkflowScheme($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultWorkflowSchemeData($workflowSchemeId, $workflowId, $clientCreatedDate);
 
         // create Default Fields
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultFields($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultFields($clientId, $clientCreatedDate);
 
         // create default link issue options
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultLinkIssueOptions($clientId, $clientCreatedDate);
 
         // create default field configurations
-        $fieldConfigurationId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultFieldConfiguration($clientId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
-        $issueTypeFieldConfigurationId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
+        $fieldConfigurationId = $clientRepository->createDefaultFieldConfiguration($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultFieldConfigurationData($clientId, $fieldConfigurationId, $clientCreatedDate);
+        $issueTypeFieldConfigurationId = $clientRepository->createDefaultIssueTypeFieldConfiguration($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $clientCreatedDate);
 
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultScreenData($clientId, $clientCreatedDate);
+        $clientRepository->createDefaultScreenData($clientId, $clientCreatedDate);
 
         // create default permission roles
         UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultPermissionRoles($clientId, $clientCreatedDate);
@@ -1530,16 +1536,16 @@ class UbirimiClient
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addData($groupUsers['id'], array($userId), $clientCreatedDate);
 
         // create default permission scheme
-        $permissionSchemeId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultPermissionScheme($clientId, $clientCreatedDate);
+        $permissionSchemeId = $clientRepository->createDefaultPermissionScheme($clientId, $clientCreatedDate);
 
         NotificationScheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
 
         // create default notification scheme
-        $notificationSchemeId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultNotificationScheme($clientId, $clientCreatedDate);
+        $notificationSchemeId = $clientRepository->createDefaultNotificationScheme($clientId, $clientCreatedDate);
         NotificationScheme::addDefaultNotifications($clientId, $notificationSchemeId);
 
         // add global permission
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
+        $clientRepository->addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
     }
 
     public function toggleIssueLinkingFeature($clientId) {
@@ -1559,12 +1565,11 @@ class UbirimiClient
     }
 
     public function createDefaultLinkIssueOptions($clientId, $currentDate) {
-        LinkType::add($clientId, 'Relates', 'relates to', 'relates to', $currentDate);
-        LinkType::add($clientId, 'Duplicate', 'duplicates', 'is duplicated by', $currentDate);
-
-        LinkType::add($clientId, 'Blocks', 'blocks', 'is blocked by', $currentDate);
-
-        LinkType::add($clientId, 'Cloners', 'clones', 'is cloned by', $currentDate);
+        $linkTypeRepository = UbirimiContainer::get()['repository']->get(LinkType::class);
+        $linkTypeRepository->add($clientId, 'Relates', 'relates to', 'relates to', $currentDate);
+        $linkTypeRepository->add($clientId, 'Duplicate', 'duplicates', 'is duplicated by', $currentDate);
+        $linkTypeRepository->add($clientId, 'Blocks', 'blocks', 'is blocked by', $currentDate);
+        $linkTypeRepository->add($clientId, 'Cloners', 'clones', 'is cloned by', $currentDate);
     }
 
     public function updateTimeTrackingSettings($clientId, $hoursPerDay, $daysPerWeek, $defaultUnit) {
@@ -1621,22 +1626,23 @@ class UbirimiClient
     }
 
     public function install($clientId) {
-        $clientData = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getById($clientId);
-        $userData = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getUsers($clientId);
+        $clientRepository = UbirimiContainer::get()['repository']->get(UbirimiClient::class);
+        $clientData = $clientRepository->getById($clientId);
+        $userData = $clientRepository->getUsers($clientId);
         $user = $userData->fetch_array(MYSQLI_ASSOC);
         $userId = $user['id'];
 
         $clientCreatedDate = $clientData['date_created'];
 
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->installYongoProduct($clientId, $userId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->installCalendarProduct($clientId, $userId, $clientCreatedDate);
+        $clientRepository->installYongoProduct($clientId, $userId, $clientCreatedDate);
+        $clientRepository->installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
+        $clientRepository->installCalendarProduct($clientId, $userId, $clientCreatedDate);
 
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
 
         SMTPServer::add(
             $clientId,
@@ -1655,7 +1661,7 @@ class UbirimiClient
             $clientCreatedDate
         );
 
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->setInstalledFlag($clientId, 1);
+        $clientRepository->setInstalledFlag($clientId, 1);
     }
 
     public function addDefaultDocumentatorUserGroups($clientId, $date) {

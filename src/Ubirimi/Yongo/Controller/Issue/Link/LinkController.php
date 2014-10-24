@@ -34,7 +34,7 @@ class LinkController extends UbirimiController
         $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
         $date = Util::getServerCurrentDateTime();
-        LinkType::addLink($issueId, $linkTypeId, $type, $linkedIssues, $date);
+        $this->getRepository(LinkType::class)->addLink($issueId, $linkTypeId, $type, $linkedIssues, $date);
 
         if ($comment != '') {
             $this->getRepository(IssueComment::class)->add($issueId, $loggedInUserId, $comment, $date);
