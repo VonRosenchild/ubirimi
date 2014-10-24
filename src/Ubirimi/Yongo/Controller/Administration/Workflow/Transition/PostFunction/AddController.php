@@ -9,6 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class AddController extends UbirimiController
 {
@@ -20,7 +21,7 @@ class AddController extends UbirimiController
         $workflowData = $this->getRepository(Workflow::class)->getDataById($workflowDataId);
         $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowData['workflow_id']);
 
-        $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
+        $postFunctions = $this->getRepository(WorkflowFunction::class)->getAll();
 
         $errors = array('no_function_selected' => false);
 

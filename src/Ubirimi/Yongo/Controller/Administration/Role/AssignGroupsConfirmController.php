@@ -8,6 +8,7 @@ use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 
 class AssignGroupsConfirmController extends UbirimiController
@@ -17,10 +18,10 @@ class AssignGroupsConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $permissionRoleId = $request->get('role_id');
-        $role = $this->getRepository('yongo.permission.role')->getPermissionRoleById($permissionRoleId);
+        $role = $this->getRepository(Role::class)->getPermissionRoleById($permissionRoleId);
 
         $allGroups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roleGroups = $this->getRepository('yongo.permission.role')->getDefaultGroups($permissionRoleId);
+        $roleGroups = $this->getRepository(Role::class)->getDefaultGroups($permissionRoleId);
 
         $role_groups_arr_ids = array();
         while ($roleGroups && $group = $roleGroups->fetch_array(MYSQLI_ASSOC))

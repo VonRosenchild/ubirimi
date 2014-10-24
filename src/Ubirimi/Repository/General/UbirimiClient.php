@@ -29,9 +29,10 @@ use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 use Ubirimi\Yongo\Repository\Screen\Screen;
-use Ubirimi\Yongo\Repository\Workflow\Condition;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
@@ -811,7 +812,7 @@ class UbirimiClient
 
         UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
-        $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
+        $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
         UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
 
         // open ------> closed
@@ -843,7 +844,7 @@ class UbirimiClient
         UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
         UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStoppedId);
 
-        $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
+        $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
         UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
 
         // in progress ------> resolved
@@ -919,7 +920,7 @@ class UbirimiClient
         UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_UPDATE_ISSUE_CHANGE_HISTORY, 'update_issue_history');
         UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($transitionId, WorkflowFunction::FUNCTION_FIRE_EVENT, 'event=' . $eventIssueWorkStartedId);
 
-        $definitionData = '(cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE . ')';
+        $definitionData = '(cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE . ')';
 
         UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($transitionId, $definitionData);
 
@@ -1502,25 +1503,25 @@ class UbirimiClient
         UbirimiContainer::get()['repository']->get(UbirimiClient::class)->createDefaultScreenData($clientId, $clientCreatedDate);
 
         // create default permission roles
-        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultPermissionRoles($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultPermissionRoles($clientId, $clientCreatedDate);
 
         // create default group names
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addDefaultYongoGroups($clientId, $clientCreatedDate);
 
-        $roleAdministrators = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Administrators');
+        $roleAdministrators = UbirimiContainer::get()['repository']->getRepository(Role::class)->getByName($clientId, 'Administrators');
 
-        $roleDevelopers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Developers');
-        $roleUsers = UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->getByName($clientId, 'Users');
+        $roleDevelopers = UbirimiContainer::get()['repository']->getRepository(Role::class)->getByName($clientId, 'Developers');
+        $roleUsers = UbirimiContainer::get()['repository']->getRepository(Role::class)->getByName($clientId, 'Users');
 
         $groupAdministrators = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Administrators');
 
         $groupDevelopers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Developers');
         $groupUsers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Users');
 
-        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
-        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
 
-        UbirimiContainer::get()['repository']->getRepository('yongo.permission.role')->gaddDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->getRepository(Role::class)->gaddDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
 
         // add in Administrators group the current user
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);

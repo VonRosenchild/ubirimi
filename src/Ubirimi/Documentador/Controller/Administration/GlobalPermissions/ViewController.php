@@ -10,6 +10,7 @@ use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
 class ViewController extends UbirimiController
 {
@@ -25,7 +26,7 @@ class ViewController extends UbirimiController
 
         $users = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
         $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
-        $globalsPermissions = $this->getRepository('yongo.permission.globalPermission')->getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $globalsPermissions = $this->getRepository(GlobalPermission::class)->getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/globalpermissions/View.php', get_defined_vars());
     }

@@ -13,6 +13,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 
 class AddDataController extends UbirimiController
@@ -29,7 +30,7 @@ class AddDataController extends UbirimiController
 
         $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
         $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
+        $roles = $this->getRepository(Role::class)->getByClient($session->get('client/id'));
 
         if ($request->request->has('confirm_new_data')) {
 

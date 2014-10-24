@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class Statistic
+class IssueStatistic
 {
     public function getUnresolvedIssuesByProjectForUser($userId) {
         $q = 'select count(yongo_issue.id) as total, project.name, project.id as project_id ' .

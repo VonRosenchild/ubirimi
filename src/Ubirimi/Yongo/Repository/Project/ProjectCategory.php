@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Project;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class Category
+class ProjectCategory
 {
     public $name;
     public $description;

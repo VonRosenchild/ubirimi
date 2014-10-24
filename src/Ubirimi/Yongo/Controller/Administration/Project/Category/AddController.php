@@ -9,7 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Category;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
 class AddController extends UbirimiController
 {
@@ -27,13 +27,13 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
             else {
-                $data = Category::getByName($name, null, $session->get('client/id'));
+                $data = ProjectCategory::getByName($name, null, $session->get('client/id'));
                 if ($data)
                     $duplicateName = true;
             }
 
             if (!$emptyName && !$duplicateName) {
-                $projectCategory = new Category($session->get('client/id'), $name, $description);
+                $projectCategory = new ProjectCategory($session->get('client/id'), $name, $description);
                 $currentDate = Util::getServerCurrentDateTime();
                 $projectCategory->save($currentDate);
 

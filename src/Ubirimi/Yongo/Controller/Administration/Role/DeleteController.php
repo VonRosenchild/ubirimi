@@ -9,6 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class DeleteController extends UbirimiController
 {
@@ -18,8 +19,8 @@ class DeleteController extends UbirimiController
 
         $permissionRoleId = $request->request->get('perm_role_id');
 
-        $permissionRole = $this->getRepository('yongo.permission.role')->getById($permissionRoleId);
-        $this->getRepository('yongo.permission.role')->gdeleteById($permissionRoleId);
+        $permissionRole = $this->getRepository(Role::class)->getById($permissionRoleId);
+        $this->getRepository(Role::class)->gdeleteById($permissionRoleId);
 
         $date = Util::getServerCurrentDateTime();
 

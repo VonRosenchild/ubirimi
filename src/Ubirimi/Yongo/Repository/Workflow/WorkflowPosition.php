@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Workflow;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class Position
+class WorkflowPosition
 {
     public function getByWorkflowId($Id) {
         $query = "select * " .

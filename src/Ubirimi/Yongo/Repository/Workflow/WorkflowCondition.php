@@ -4,7 +4,7 @@ namespace Ubirimi\Yongo\Repository\Workflow;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class Condition
+class WorkflowCondition
 {
     const CONDITION_ONLY_ASSIGNEE = 1;
     const CONDITION_ONLY_REPORTER = 2;

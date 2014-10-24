@@ -1251,8 +1251,8 @@ class Issue
         }
 
         if (UbirimiContainer::get()['repository']->get(Issue::class)->issueFieldChanged(Field::FIELD_ISSUE_TYPE_CODE, $oldIssueData, $newIssueData)) {
-            $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
-            $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChangedOldValueRow = UbirimiContainer::get()['repository']->get(IssueType::class)->getById($oldIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
+            $fieldChangedNewValueRow = UbirimiContainer::get()['repository']->get(IssueType::class)->getById($newIssueData[Field::FIELD_ISSUE_TYPE_CODE]);
             $fieldChanges[] = array(Field::FIELD_ISSUE_TYPE_CODE,
                                     $fieldChangedOldValueRow['name'],
                                     $fieldChangedNewValueRow['name'],
@@ -1672,7 +1672,7 @@ class Issue
         $statuses = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('status', $clientId);
         $priorities = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('priority', $clientId);
         $resolutions = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('resolution', $clientId);
-        $types = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getAll($clientId);
+        $types = UbirimiContainer::get()['repository']->get(IssueType::class)->getAll($clientId);
 
         while ($statuses && $status = $statuses->fetch_array(MYSQLI_ASSOC)) {
             $value = str_ireplace(mb_strtolower($status['name']), $status['id'], $value);
@@ -1779,7 +1779,7 @@ class Issue
         $projectsForBrowsing->data_seek(0);
         $projectIds = Util::getAsArray($projectsForBrowsing, array('id'));
 
-        $allClientIssueTypes = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getByProjects($projectIds);
+        $allClientIssueTypes = UbirimiContainer::get()['repository']->get(IssueType::class)->getByProjects($projectIds);
         $criteria = array();
         $issueTypeArray = array();
         while ($allClientIssueTypes && $issueType = $allClientIssueTypes->fetch_array(MYSQLI_ASSOC)) {

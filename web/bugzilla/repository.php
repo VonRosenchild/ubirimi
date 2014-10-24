@@ -10,7 +10,7 @@ use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
-use Ubirimi\Yongo\Repository\Project\Category;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\Calendar\Repository\Calendar;
@@ -318,7 +318,7 @@ function installProject($clientId, $leadId, $name, $description)
     $workflowScheme = WorkflowScheme::getMetaDataByClientId($clientId);
     $permissionScheme = WorkflowScheme::getByClientId($clientId);
     $notificationScheme = WorkflowScheme::getByClientId($clientId);
-    $projectCategories = Category::getAll($clientId);
+    $projectCategories = ProjectCategory::getAll($clientId);
 
     $currentDate = Util::getServerCurrentDateTime();
 

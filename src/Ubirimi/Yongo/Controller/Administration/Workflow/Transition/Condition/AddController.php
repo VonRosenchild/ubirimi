@@ -9,6 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 
 class AddController extends UbirimiController
 {
@@ -25,7 +26,7 @@ class AddController extends UbirimiController
         if ($workflow['client_id'] != $clientId) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $conditions = $this->getRepository('yongo.workflow.condition')->getAll();
+        $conditions = $this->getRepository(WorkflowCondition::class)->getAll();
         $menuSelectedCategory = 'issue';
         $checkedHTML = 'checked="checked"';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Create Workflow Condition';

@@ -11,6 +11,7 @@ use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class EditProjectRoleController extends UbirimiController
@@ -24,7 +25,7 @@ class EditProjectRoleController extends UbirimiController
         $users = $this->getRepository(UbirimiClient::class)->getUsers($session->get('client/id'));
         $user = $this->getRepository(UbirimiUser::class)->getById($userId);
         $projects = $this->getRepository(YongoProject::class)->getByClientId($session->get('client/id'));
-        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
+        $roles = $this->getRepository(Role::class)->getByClient($session->get('client/id'));
         $groups = $this->getRepository(UbirimiGroup::class)->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
         $groupIds = array();
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
@@ -33,12 +34,12 @@ class EditProjectRoleController extends UbirimiController
 
         if ($request->request->has('edit_user_project_role')) {
             $currentDate = Util::getServerCurrentDateTime();
-            $this->getRepository('yongo.permission.role')->gdeleteRolesForUser($userId);
+            $this->getRepository(Role::class)->gdeleteRolesForUser($userId);
             foreach ($request->request as $key => $value) {
                 if (substr($key, 0, 5) == 'role_') {
                     $data = str_replace('role_', '', $key);
                     $params = explode('_', $data);
-                    $this->getRepository('yongo.permission.role')->gaddProjectRoleForUser($userId, $params[0], $params[1], $currentDate);
+                    $this->getRepository(Role::class)->gaddProjectRoleForUser($userId, $params[0], $params[1], $currentDate);
                 }
             }
 

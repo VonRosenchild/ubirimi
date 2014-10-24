@@ -12,6 +12,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class SaveIssueTransitionNoScreenController extends UbirimiController
 {
@@ -43,7 +44,7 @@ class SaveIssueTransitionNoScreenController extends UbirimiController
             }
 
             $date = Util::getServerCurrentDateTime();
-            $this->getRepository('yongo.workflow.workflowFunction')->triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
+            $this->getRepository(WorkflowFunction::class)->triggerPostFunctions($clientId, $issue, $workflowData, array(), $loggedInUserId, $date);
 
             // update the date_updated field
             $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $date), $date);

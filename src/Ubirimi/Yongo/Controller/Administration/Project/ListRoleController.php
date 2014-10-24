@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class ListRoleController extends UbirimiController
@@ -22,7 +23,7 @@ class ListRoleController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
+        $roles = $this->getRepository(Role::class)->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Project Roles';

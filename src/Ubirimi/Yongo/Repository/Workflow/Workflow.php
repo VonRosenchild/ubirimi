@@ -670,14 +670,14 @@ class Workflow
 
             $text = '';
             switch ($conditionId) {
-                case Condition::CONDITION_ONLY_ASSIGNEE:
+                case WorkflowCondition::CONDITION_ONLY_ASSIGNEE:
 
                     if ($userId == $issueData[Field::FIELD_ASSIGNEE_CODE])
                         $text = ' 1 ';
                     else
                         $text = ' 0 ';
                     break;
-                case Condition::CONDITION_ONLY_REPORTER:
+                case WorkflowCondition::CONDITION_ONLY_REPORTER:
 
                     if ($userId == $issueData[Field::FIELD_REPORTER_CODE])
                         $text = ' 1 ';
@@ -777,9 +777,9 @@ class Workflow
         }
 
         // duplicate the position
-        $oldPositions = Position::getByWorkflowId($workflowId);
+        $oldPositions = WorkflowPosition::getByWorkflowId($workflowId);
         while ($oldPosition = $oldPositions->fetch_array(MYSQLI_ASSOC)) {
-            Position::addSinglePositionRecord($newWorkflowId, $stepsLinking[$oldPosition['workflow_step_id']], $oldPosition['top_position'], $oldPosition['left_position']);
+            WorkflowPosition::addSinglePositionRecord($newWorkflowId, $stepsLinking[$oldPosition['workflow_step_id']], $oldPosition['top_position'], $oldPosition['left_position']);
         }
 
         // duplicate the post function data
@@ -793,7 +793,7 @@ class Workflow
         // duplicate workflow condition data
         foreach ($dataLinking as $oldDataId => $newDataId) {
 
-            $oldConditionData = Condition::getByTransitionId($oldDataId);
+            $oldConditionData = WorkflowCondition::getByTransitionId($oldDataId);
             if ($oldConditionData) {
                 UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($newDataId, $oldConditionData['definition_data']);
             }

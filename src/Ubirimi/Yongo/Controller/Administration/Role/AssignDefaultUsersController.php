@@ -9,6 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AssignDefaultUsersController extends UbirimiController
 {
@@ -20,9 +21,9 @@ class AssignDefaultUsersController extends UbirimiController
         $userArray = $request->request->get('user_arr');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $permissionRole = $this->getRepository('yongo.permission.role')->getById($permissionRoleId);
-        $this->getRepository('yongo.permission.role')->gdeleteDefaultUsersByPermissionRoleId($permissionRoleId);
-        $this->getRepository('yongo.permission.role')->gaddDefaultUsers($permissionRoleId, $userArray, $currentDate);
+        $permissionRole = $this->getRepository(Role::class)->getById($permissionRoleId);
+        $this->getRepository(Role::class)->gdeleteDefaultUsersByPermissionRoleId($permissionRoleId);
+        $this->getRepository(Role::class)->gaddDefaultUsers($permissionRoleId, $userArray, $currentDate);
 
         $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),

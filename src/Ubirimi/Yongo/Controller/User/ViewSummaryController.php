@@ -11,6 +11,7 @@ use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueStatistic;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
 
@@ -31,7 +32,7 @@ class ViewSummaryController extends UbirimiController
         $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($session->get('client/id'));
 
         $groups = $this->getRepository(UbirimiGroup::class)->getByUserIdAndProductId($userId, SystemProduct::SYS_PRODUCT_YONGO);
-        $stats = $this->getRepository('yongo.issue.statistic')->getUnresolvedIssuesByProjectForUser($userId);
+        $stats = $this->getRepository(IssueStatistic::class)->getUnresolvedIssuesByProjectForUser($userId);
 
         $hasAdministrationGlobalPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_ADMINISTRATORS);
         $hasSystemAdministrationGlobalPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $userId, GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);

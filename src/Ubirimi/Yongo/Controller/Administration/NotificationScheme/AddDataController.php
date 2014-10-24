@@ -15,6 +15,7 @@ use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Notification\Notification;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 
 class AddDataController extends UbirimiController
@@ -34,7 +35,7 @@ class AddDataController extends UbirimiController
 
         $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
         $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
-        $roles = $this->getRepository('yongo.permission.role')->getByClient($session->get('client/id'));
+        $roles = $this->getRepository(Role::class)->getByClient($session->get('client/id'));
 
         $fieldsUserPickerMultipleSelection = $this->getRepository(Field::class)->getByClientIdAndFieldTypeId($session->get('client/id'), Field::CUSTOM_FIELD_TYPE_USER_PICKER_MULTIPLE_USER_CODE_ID);
 

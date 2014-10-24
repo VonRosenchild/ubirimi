@@ -31,6 +31,6 @@ class SaveController extends UbirimiController
             $field_value = $field_values[2];
             $value = 'field_name=' . $field_name . '###field_value=' . $field_value;
         }
-        $this->getRepository('yongo.workflow.workflowFunction')->addPostFunction($data['id'], $functionId, $value);
+        $this->getRepository(WorkflowFunction::class)->addPostFunction($data['id'], $functionId, $value);
     }
 }

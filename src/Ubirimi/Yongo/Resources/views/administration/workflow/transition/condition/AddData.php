@@ -2,7 +2,7 @@
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Workflow\Condition;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 
 require_once __DIR__ . '/../../../_header.php';
 ?>
@@ -15,8 +15,8 @@ require_once __DIR__ . '/../../../_header.php';
     ?>
     <div class="pageContent">
         <form name="add_cond_parameters" action="/yongo/administration/workflow/add-condition-data/<?php echo $workflowDataId ?>?condition_id=<?php echo $conditionId ?>" method="post">
-            <?php if ($conditionId == Condition::CONDITION_PERMISSION): ?>
-                <?php $permissionCategories = UbirimiContainer::get()['repository']->get('yongo.permission.permission')->getCategories() ?>
+            <?php if ($conditionId == WorkflowCondition::CONDITION_PERMISSION): ?>
+                <?php $permissionCategories = UbirimiContainer::get()['repository']->get(Permission::class)->getCategories() ?>
                 <div>Add required paramters to condition</div>
                 <table width="100%">
                     <tr>
@@ -25,7 +25,7 @@ require_once __DIR__ . '/../../../_header.php';
                             <select name="permission" class="select2InputMedium">
                                 <?php while ($category = $permissionCategories->fetch_array(MYSQLI_ASSOC)): ?>
                                     <optgroup label="<?php echo $category['name'] ?>">
-                                        <?php $permissions = UbirimiContainer::get()['repository']->get('yongo.permission.permission')->getByCategory($category['id']) ?>
+                                        <?php $permissions = UbirimiContainer::get()['repository']->get(Permission::class)->getByCategory($category['id']) ?>
                                         <?php while ($permission = $permissions->fetch_array(MYSQLI_ASSOC)): ?>
                                             <option value="<?php echo $permission['id'] ?>"><?php echo $permission['name'] ?></option>
                                         <?php endwhile ?>

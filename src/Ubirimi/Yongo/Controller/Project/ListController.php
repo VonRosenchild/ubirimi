@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Project\Category;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
 class ListController extends UbirimiController
 {
@@ -30,7 +30,7 @@ class ListController extends UbirimiController
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Projects';
-        $projectCategories = Category::getAll($clientId);
+        $projectCategories = ProjectCategory::getAll($clientId);
         $includeCheckbox = false;
 
         return $this->render(__DIR__ . '/../../Resources/views/project/List.php', get_defined_vars());

@@ -7,6 +7,7 @@ use Ubirimi\Service\UbirimiService;
 use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class WorkflowService extends UbirimiService
 {
@@ -16,6 +17,6 @@ class WorkflowService extends UbirimiService
         $creationData = UbirimiContainer::get()['repository']->get(Workflow::class)->getDataForCreation($workflowUsed['id']);
         $eventData = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($clientId, IssueEvent::EVENT_ISSUE_CREATED_CODE);
 
-        return UbirimiContainer::get()['repository']->get('yongo.workflow.workflowFunction')->hasEvent($creationData['id'], 'event=' . $eventData['id']);
+        return UbirimiContainer::get()['repository']->get(WorkflowFunction::class)->hasEvent($creationData['id'], 'event=' . $eventData['id']);
     }
 }

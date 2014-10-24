@@ -9,6 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 class AddController extends UbirimiController
 {
@@ -26,13 +27,13 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $role = $this->getRepository('yongo.permission.role')->getByName($session->get('client/id'), $name);
+            $role = $this->getRepository(Role::class)->getByName($session->get('client/id'), $name);
             if ($role)
                 $alreadyExists = true;
 
             if (!$emptyName && !$alreadyExists) {
                 $date = Util::getServerCurrentDateTime();
-                $this->getRepository('yongo.permission.role')->gadd($session->get('client/id'), $name, $description, $date);
+                $this->getRepository(Role::class)->gadd($session->get('client/id'), $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

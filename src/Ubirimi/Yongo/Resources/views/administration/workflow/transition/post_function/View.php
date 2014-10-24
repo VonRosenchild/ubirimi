@@ -46,7 +46,7 @@ require_once __DIR__ . '/../../../_header.php';
                                 <input type="hidden" value="<?php echo $postFunction['user_deletable_flag'] ?>" id="post_function_deletable_<?php echo $postFunction['id'] ?>"/>
                             </td>
                             <td>
-                                <div><?php echo UbirimiContainer::get()['repository']->get('yongo.workflow.workflowFunction')->getFunctionDescription($postFunction) ?></div>
+                                <div><?php echo UbirimiContainer::get()['repository']->get(WorkflowFunction::class)->getFunctionDescription($postFunction) ?></div>
                             </td>
                         </tr>
                     <?php endwhile ?>

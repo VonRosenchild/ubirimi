@@ -9,7 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Project\Category;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 
 class EditController extends UbirimiController
 {
@@ -37,7 +37,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $dateUpdated = Util::getServerCurrentDateTime();
-                Category::updateById($categoryId, $name, $description, $dateUpdated);
+                ProjectCategory::updateById($categoryId, $name, $description, $dateUpdated);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

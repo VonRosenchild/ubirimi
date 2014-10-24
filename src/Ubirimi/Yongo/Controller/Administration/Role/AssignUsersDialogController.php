@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AssignUsersDialogController extends UbirimiController
@@ -17,7 +18,7 @@ class AssignUsersDialogController extends UbirimiController
 
         $permissionRoleId = $request->get('role_id');
         $projectId = $request->get('project_id');
-        $role = $this->getRepository('yongo.permission.role')->getPermissionRoleById($permissionRoleId);
+        $role = $this->getRepository(Role::class)->getPermissionRoleById($permissionRoleId);
 
         $allUsers = $this->getRepository(UbirimiClient::class)->getUsers($session->get('client/id'));
         $roleUsers = $this->getRepository(YongoProject::class)->getUsersInRole($projectId, $permissionRoleId);

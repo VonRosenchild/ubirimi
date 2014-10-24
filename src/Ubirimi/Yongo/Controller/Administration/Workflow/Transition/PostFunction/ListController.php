@@ -9,6 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class ListController extends UbirimiController
 {
@@ -26,7 +27,7 @@ class ListController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getByWorkflowDataId($workflowDataId);
+        $postFunctions = $this->getRepository(WorkflowFunction::class)->getByWorkflowDataId($workflowDataId);
 
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Transition Post Function';

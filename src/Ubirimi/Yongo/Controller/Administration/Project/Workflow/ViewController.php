@@ -9,6 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 class ViewController extends UbirimiController
 {
@@ -22,7 +23,7 @@ class ViewController extends UbirimiController
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $workflows = $this->getRepository('yongo.workflow.scheme')->getWorkflows($project['workflow_scheme_id']);
+        $workflows = $this->getRepository(WorkflowScheme::class)->getWorkflows($project['workflow_scheme_id']);
 
         $menuSelectedCategory = 'project';
 

@@ -16,7 +16,7 @@ use Ubirimi\Yongo\Repository\Field\FieldConfigurationScheme;
 use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
-use Ubirimi\Yongo\Repository\Project\Category;
+use Ubirimi\Yongo\Repository\Project\ProjectCategory;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AddController extends UbirimiController
@@ -39,7 +39,7 @@ class AddController extends UbirimiController
         $workflowScheme = \Ubirimi\Yongo\Repository\Workflow\WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
         $permissionScheme = \Ubirimi\Yongo\Repository\Permission\PermissionScheme::getByClientId($session->get('client/id'));
         $notificationScheme = NotificationScheme::getByClientId($session->get('client/id'));
-        $projectCategories = Category::getAll($session->get('client/id'));
+        $projectCategories = ProjectCategory::getAll($session->get('client/id'));
 
         if ($request->request->has('confirm_new_project')) {
 

@@ -9,7 +9,7 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Workflow\Condition;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ListController extends UbirimiController
@@ -27,7 +27,7 @@ class ListController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $condition = $this->getRepository('yongo.workflow.condition')->getByTransitionId($workflowDataId);
+        $condition = $this->getRepository(WorkflowCondition::class)->getByTransitionId($workflowDataId);
         $conditionString = $condition['definition_data'];
 
         $text_open_bracket = '<a class="button">(</a> ';
@@ -46,10 +46,10 @@ class ListController extends UbirimiController
 
             $text = '';
             switch ($conditionId) {
-                case Condition::CONDITION_ONLY_ASSIGNEE:
+                case WorkflowCondition::CONDITION_ONLY_ASSIGNEE:
                     $text = 'Only the assignee of the issue can execute the transition';
                     break;
-                case Condition::CONDITION_ONLY_REPORTER:
+                case WorkflowCondition::CONDITION_ONLY_REPORTER:
                     $text = 'Only the reporter of the issue can execute the transition';
                     break;
             }

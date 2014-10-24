@@ -23,7 +23,7 @@ require_once __DIR__ . '/../_header.php';
                 </tr>
             </table>
 
-            <?php $roles = UbirimiContainer::get()['repository']->get('yongo.permission.role')->getByClient($session->get('client/id')); ?>
+            <?php $roles = UbirimiContainer::get()['repository']->get(Role::class)->getByClient($session->get('client/id')); ?>
 
             <?php if ($roles): ?>
                 <table class="table table-hover table-condensed">

@@ -11,6 +11,7 @@ use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 
 class EditController extends UbirimiController
 {
@@ -22,7 +23,7 @@ class EditController extends UbirimiController
 
         $menuSelectedCategory = 'doc_users';
 
-        $globalsPermissions = $this->getRepository('yongo.permission.globalPermission')->getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+        $globalsPermissions = $this->getRepository(GlobalPermission::class)->getAllByProductId(SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
         if ($request->request->has('update_configuration')) {
 
@@ -38,7 +39,7 @@ class EditController extends UbirimiController
 
             // delete first all the permissions related to groups
             while ($globalsPermission = $globalsPermissions->fetch_array(MYSQLI_ASSOC)) {
-                $this->getRepository('yongo.permission.globalPermission')->deleteByPermissionId($clientId, $globalsPermission['id'], 'group');
+                $this->getRepository(GlobalPermission::class)->deleteByPermissionId($clientId, $globalsPermission['id'], 'group');
             }
 
             $date = Util::getServerCurrentDateTime();
@@ -51,7 +52,7 @@ class EditController extends UbirimiController
                     $globalsPermissionId = $data[1];
                     $groupId = $data[2];
 
-                    $this->getRepository('yongo.permission.globalPermission')->addDataForGroupId($clientId, $globalsPermissionId, $groupId, $date);
+                    $this->getRepository(GlobalPermission::class)->addDataForGroupId($clientId, $globalsPermissionId, $groupId, $date);
                 }
             }
 
@@ -59,7 +60,7 @@ class EditController extends UbirimiController
 
             // delete first all the permissions related to individual users
             while ($globalsPermission = $globalsPermissions->fetch_array(MYSQLI_ASSOC)) {
-                $this->getRepository('yongo.permission.globalPermission')->deleteByPermissionId($clientId, $globalsPermission['id'], 'user');
+                $this->getRepository(GlobalPermission::class)->deleteByPermissionId($clientId, $globalsPermission['id'], 'user');
             }
 
             foreach ($requestParameters as $key => $value) {
@@ -68,7 +69,7 @@ class EditController extends UbirimiController
                     $globalsPermissionId = $data[1];
                     $userId = $data[2];
 
-                    $this->getRepository('yongo.permission.globalPermission')->addDataForUserId($clientId, $globalsPermissionId, $userId);
+                    $this->getRepository(GlobalPermission::class)->addDataForUserId($clientId, $globalsPermissionId, $userId);
                 }
             }
 

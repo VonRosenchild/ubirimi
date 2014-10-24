@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowScheme;
 
 class ViewSummaryController extends UbirimiController
 {
@@ -27,12 +29,12 @@ class ViewSummaryController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / ' . $project['name'];
 
-        $issueTypeScheme = $this->getRepository('yongo.issue.typeScheme')->getMetaDataById($project['issue_type_scheme_id']);
-        $issueTypeSchemeData = $this->getRepository('yongo.issue.typeScheme')->getDataById($project['issue_type_scheme_id']);
+        $issueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getMetaDataById($project['issue_type_scheme_id']);
+        $issueTypeSchemeData = $this->getRepository(IssueTypeScheme::class)->getDataById($project['issue_type_scheme_id']);
 
         $workflowScheme = $this->getRepository(YongoProject::class)->getWorkflowScheme($projectId);
 
-        $workflows = $this->getRepository('yongo.workflow.scheme')->getWorkflows($workflowScheme['id']);
+        $workflows = $this->getRepository(WorkflowScheme::class)->getWorkflows($workflowScheme['id']);
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/project/ViewSummary.php', get_defined_vars());
     }

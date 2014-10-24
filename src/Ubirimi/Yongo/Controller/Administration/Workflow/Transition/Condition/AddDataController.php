@@ -9,7 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Condition;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class AddDataController extends UbirimiController
@@ -33,24 +33,24 @@ class AddDataController extends UbirimiController
 
         if ($conditionId) {
 
-            $conditionData = $this->getRepository('yongo.workflow.condition')->getByTransitionId($workflowDataId);
+            $conditionData = $this->getRepository(WorkflowCondition::class)->getByTransitionId($workflowDataId);
             if (!$conditionData) {
                 $this->getRepository(Workflow::class)->addCondition($workflowDataId, '');
             }
-            if ($conditionId == Condition::CONDITION_ONLY_ASSIGNEE) {
+            if ($conditionId == WorkflowCondition::CONDITION_ONLY_ASSIGNEE) {
 
-                $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_ASSIGNEE;
-                $this->getRepository('yongo.workflow.condition')->addConditionString($workflowDataId, $definitionData);
+                $definitionData = 'cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE;
+                $this->getRepository(WorkflowCondition::class)->addConditionString($workflowDataId, $definitionData);
 
                 $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
                 return new RedirectResponse('/yongo/administration/workflow/transition-conditions/' . $workflowDataId);
             } else
-                if ($conditionId == Condition::CONDITION_ONLY_REPORTER) {
+                if ($conditionId == WorkflowCondition::CONDITION_ONLY_REPORTER) {
 
-                    $definitionData = 'cond_id=' . Condition::CONDITION_ONLY_REPORTER;
+                    $definitionData = 'cond_id=' . WorkflowCondition::CONDITION_ONLY_REPORTER;
 
-                    $this->getRepository('yongo.workflow.condition')->addConditionString($workflowDataId, $definitionData);
+                    $this->getRepository(WorkflowCondition::class)->addConditionString($workflowDataId, $definitionData);
 
                     $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 
@@ -62,13 +62,13 @@ class AddDataController extends UbirimiController
 
         if ($request->request->has('confirm_new_condition_parameter')) {
             $conditionId = $request->get('condition_id');
-            if ($conditionId == Condition::CONDITION_PERMISSION) {
+            if ($conditionId == WorkflowCondition::CONDITION_PERMISSION) {
 
                 $permissionId = $request->request->get('permission');
 
                 $conditionString = 'perm_id=' . $permissionId;
 
-                $this->getRepository('yongo.workflow.condition')->addConditionString($workflowDataId, $conditionString);
+                $this->getRepository(WorkflowCondition::class)->addConditionString($workflowDataId, $conditionString);
 
                 $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
 

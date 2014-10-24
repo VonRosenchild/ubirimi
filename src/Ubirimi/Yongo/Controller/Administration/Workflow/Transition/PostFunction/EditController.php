@@ -31,7 +31,7 @@ class EditController extends UbirimiController
                     $fieldValue = $request->request->get('field_value');
                     $definitionData = 'field_name=' . $fieldCode . '###field_value=' . $fieldValue;
 
-                    $this->getRepository('yongo.workflow.workflowFunction')->updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
+                    $this->getRepository(WorkflowFunction::class)->updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
 
                     break;
 
@@ -40,7 +40,7 @@ class EditController extends UbirimiController
                     $event = $request->request->get('fire_event');
                     $definitionData = 'event=' . $event;
 
-                    $this->getRepository('yongo.workflow.workflowFunction')->updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
+                    $this->getRepository(WorkflowFunction::class)->updateByWorkflowDataIdAndFunctionId($workflowDataId, $functionId, $definitionData);
 
                     break;
             }
@@ -53,7 +53,7 @@ class EditController extends UbirimiController
 
         $workflowPostFunctionDataId = $request->get('id');
 
-        $workflowPostFunctionData = $this->getRepository('yongo.workflow.workflowFunction')->getDataById($workflowPostFunctionDataId);
+        $workflowPostFunctionData = $this->getRepository(WorkflowFunction::class)->getDataById($workflowPostFunctionDataId);
 
         $postFunctionId = $workflowPostFunctionData['function_id'];
         $definitionData = $workflowPostFunctionData['definition_data'];

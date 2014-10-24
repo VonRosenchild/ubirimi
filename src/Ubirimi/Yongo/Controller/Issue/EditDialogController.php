@@ -10,6 +10,7 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
@@ -50,7 +51,7 @@ class EditDialogController extends UbirimiController
         $issueSecuritySchemeId = $project['issue_security_scheme_id'];
         $issueSecuritySchemeLevels = null;
         if ($issueSecuritySchemeId) {
-            $issueSecuritySchemeLevels = $this->getRepository('yongo.issue.securityScheme')->getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+            $issueSecuritySchemeLevels = $this->getRepository(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
         }
 
         $projectComponents = UbirimiContainer::get()['repository']->get(YongoProject::class)->getComponents($projectId);

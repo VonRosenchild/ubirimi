@@ -9,6 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Permission\Role;
 
 
 class AssignDefaultGroupsController extends UbirimiController
@@ -21,9 +22,9 @@ class AssignDefaultGroupsController extends UbirimiController
         $groupArrayIds = $request->request->get('group_arr');
 
         $currentDate = Util::getServerCurrentDateTime();
-        $permissionRole = $this->getRepository('yongo.permission.role')->getById($permissionRoleId);
-        $this->getRepository('yongo.permission.role')->gdeleteDefaultGroupsByPermissionRoleId($permissionRoleId);
-        $this->getRepository('yongo.permission.role')->gaddDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
+        $permissionRole = $this->getRepository(Role::class)->getById($permissionRoleId);
+        $this->getRepository(Role::class)->gdeleteDefaultGroupsByPermissionRoleId($permissionRoleId);
+        $this->getRepository(Role::class)->gaddDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
 
         $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),

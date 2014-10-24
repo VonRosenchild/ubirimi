@@ -23,11 +23,11 @@ class AddDataController extends UbirimiController
 
         $workflowDataId = $request->get('id');
         $postFunctionId = $request->get('function_id');
-        $postFunctionSelected = $this->getRepository('yongo.workflow.workflowFunction')->getById($postFunctionId);
+        $postFunctionSelected = $this->getRepository(WorkflowFunction::class)->getById($postFunctionId);
         $workflowData = $this->getRepository(Workflow::class)->getDataById($workflowDataId);
         $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowData['workflow_id']);
 
-        $postFunctions = $this->getRepository('yongo.workflow.workflowFunction')->getAll();
+        $postFunctions = $this->getRepository(WorkflowFunction::class)->getAll();
 
         if ($request->request->has('add_parameters')) {
 
@@ -36,7 +36,7 @@ class AddDataController extends UbirimiController
                 $field_value = $request->request->get('field_value');
                 $value = 'field_name=' . $field_name . '###field_value=' . $field_value;
 
-                $this->getRepository('yongo.workflow.workflowFunction')->addPostFunction($workflowDataId, $postFunctionId, $value);
+                $this->getRepository(WorkflowFunction::class)->addPostFunction($workflowDataId, $postFunctionId, $value);
 
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowCondition;
 
 class AddStringController extends UbirimiController
 {
@@ -17,18 +18,18 @@ class AddStringController extends UbirimiController
         $transitionId = $request->request->get('transition_id');
         $type = $request->request->get('type');
 
-        $conditionData = $this->getRepository('yongo.workflow.condition')->getByTransitionId($transitionId);
+        $conditionData = $this->getRepository(WorkflowCondition::class)->getByTransitionId($transitionId);
         if (!$conditionData)
             $this->getRepository(Workflow::class)->addCondition($transitionId, '');
 
         if ($type == 'open_bracket')
-            $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, '(');
+            $this->getRepository(WorkflowCondition::class)->addConditionString($transitionId, '(');
         else if ($type == 'closed_bracket')
-            $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, ')');
+            $this->getRepository(WorkflowCondition::class)->addConditionString($transitionId, ')');
         else if ($type == 'operator_and')
 
-            $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, '[[AND]]');
+            $this->getRepository(WorkflowCondition::class)->addConditionString($transitionId, '[[AND]]');
         else if ($type == 'operator_or')
-        $this->getRepository('yongo.workflow.condition')->addConditionString($transitionId, '[[OR]]');
+        $this->getRepository(WorkflowCondition::class)->addConditionString($transitionId, '[[OR]]');
     }
 }

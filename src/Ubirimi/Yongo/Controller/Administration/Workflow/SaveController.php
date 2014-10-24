@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Workflow\Position;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowPosition;
 
 class SaveController extends UbirimiController
 {
@@ -24,9 +24,9 @@ class SaveController extends UbirimiController
             $good_positions[] = $values;
         }
 
-        Position::deleteByWorkflowId($Id);
+        WorkflowPosition::deleteByWorkflowId($Id);
 
-        Position::addPosition($Id, $good_positions);
+        WorkflowPosition::addPosition($Id, $good_positions);
 
         return new Response('');
     }

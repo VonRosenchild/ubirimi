@@ -8,6 +8,7 @@ use Ubirimi\Yongo\Repository\Issue\History;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
 class Sla
 {
@@ -205,7 +206,7 @@ class Sla
         $statuses = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('status', $clientId);
         $priorities = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('priority', $clientId);
         $resolutions = UbirimiContainer::get()['repository']->get(IssueSettings::class)->getAllIssueSettings('resolution', $clientId);
-        $types = UbirimiContainer::get()['repository']->get('yongo.issue.type')->getAll($clientId);
+        $types = UbirimiContainer::get()['repository']->get(IssueType::class)->getAll($clientId);
 
         while ($statuses && $status = $statuses->fetch_array(MYSQLI_ASSOC)) {
             $value = str_ireplace($status['name'], $status['id'], $value);

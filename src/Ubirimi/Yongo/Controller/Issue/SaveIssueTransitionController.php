@@ -16,6 +16,7 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Workflow\WorkflowFunction;
 
 class SaveIssueTransitionController extends UbirimiController
 {
@@ -113,7 +114,7 @@ class SaveIssueTransitionController extends UbirimiController
                 Email::$smtpSettings = $smtpSettings;
             }
 
-            $this->getRepository('yongo.workflow.workflowFunction')->triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
+            $this->getRepository(WorkflowFunction::class)->triggerPostFunctions($clientId, $issueData, $workflowData, $fieldChanges, $loggedInUserId, $currentDate);
 
             // update the date_updated field
             $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
