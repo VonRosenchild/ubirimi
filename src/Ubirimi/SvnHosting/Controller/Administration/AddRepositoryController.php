@@ -69,8 +69,7 @@ class AddRepositoryController extends UbirimiController
 
                     /* apache config */
                     $this->getRepository(SvnRepository::class)->apacheConfig(Util::slugify($session->get('client/company_domain')), Util::slugify($name));
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
 
                 }
 

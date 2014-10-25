@@ -9,7 +9,6 @@ use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class ConfirmImportUsersController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

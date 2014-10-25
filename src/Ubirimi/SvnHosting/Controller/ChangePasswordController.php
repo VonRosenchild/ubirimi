@@ -35,11 +35,13 @@ class ChangePasswordController extends UbirimiController
             $password = Util::cleanRegularInputField($request->request->get('password'));
             $passwordAgain = Util::cleanRegularInputField($request->request->get('password_again'));
 
-            if (empty($password))
+            if (empty($password)) {
                 $errors['empty_password'] = true;
+            }
 
-            if ($password != $passwordAgain)
+            if ($password != $passwordAgain) {
                 $errors['password_mismatch'] = true;
+            }
 
             if (Util::hasNoErrors($errors)) {
                 $this->getRepository(SvnRepository::class)->updateUserPassword($session->get('selected_svn_repo_id'), $userId, $password);
