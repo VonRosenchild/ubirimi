@@ -1,17 +1,16 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
-
 use Ubirimi\Repository\General\UbirimiClient;
+use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
-    use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-    use Ubirimi\Yongo\Repository\Permission\Permission;
-    use Ubirimi\Yongo\Repository\Project\YongoProject;
-    use Ubirimi\Repository\User\UbirimiUser;
-    use Ubirimi\Yongo\Helper\IssueHelper;
+use Ubirimi\Yongo\Helper\IssueHelper;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
-    $screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->getScreenData($projectData, $issueTypeId, $sysOperationId);
+$screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->getScreenData($projectData, $issueTypeId, $sysOperationId);
 
     $projectId = $projectData['id'];
     $projectComponents = UbirimiContainer::get()['repository']->get(YongoProject::class)->getComponents($projectId);

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Custom;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 
 class AddController extends UbirimiController
 {

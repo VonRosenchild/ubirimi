@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
 ?>
 <div class="btn-group" style="float: right; margin-left: 5px;">

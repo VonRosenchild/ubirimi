@@ -1,6 +1,7 @@
 <?php
 
 use Ubirimi\Agile\Repository\Board\Board;
+use Ubirimi\Agile\Repository\Sprint\Sprint;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 

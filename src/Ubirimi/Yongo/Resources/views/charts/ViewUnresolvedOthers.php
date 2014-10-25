@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
 ?>
 <?php if (count($projectIdsNames)): ?>

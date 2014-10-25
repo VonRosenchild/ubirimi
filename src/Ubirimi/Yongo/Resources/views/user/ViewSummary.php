@@ -1,10 +1,10 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\UbirimiUser;
-    use Ubirimi\Util;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 

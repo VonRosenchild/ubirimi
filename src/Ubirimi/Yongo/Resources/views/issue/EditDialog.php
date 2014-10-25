@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\SystemOperation;
+use Ubirimi\Yongo\Repository\Issue\SystemOperation;
+
 ?>
 <body>
     <div class="parentDialog" style="padding-left: 0px; margin-right: 0px; min-height: 300px; overflow: auto;">

@@ -1,9 +1,9 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\LinkHelper;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
 
-    $session = UbirimiContainer::get()['session'];
+$session = UbirimiContainer::get()['session'];
 ?>
 
 <div style="background-color: #ffffff; border-radius: 5px; border: #CCCCCC 1px solid; padding: 10px; margin: 10px;">

@@ -11,7 +11,6 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class DeleteController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

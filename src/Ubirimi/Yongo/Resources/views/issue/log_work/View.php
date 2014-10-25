@@ -1,7 +1,7 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
+$hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
     $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');
 ?>
 <?php if ($workLogs): ?>

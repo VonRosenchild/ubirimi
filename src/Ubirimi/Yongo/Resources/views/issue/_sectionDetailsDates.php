@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Field\Field;
 
 ?>
 <table width="100%" cellspacing="0" cellpadding="0">

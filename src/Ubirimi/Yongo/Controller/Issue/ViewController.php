@@ -14,15 +14,15 @@ use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
+use Ubirimi\Yongo\Repository\Issue\IssueComponent;
+use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Issue\LinkType;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Issue\Watcher;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
 use Ubirimi\Yongo\Repository\Permission\Permission;
-use Ubirimi\Yongo\Repository\Workflow\StepProperty;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
-use Ubirimi\Yongo\Repository\Issue\IssueComponent;
-use Ubirimi\Yongo\Repository\Issue\IssueVersion;
+use Ubirimi\Yongo\Repository\Workflow\StepProperty;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
 class ViewController extends UbirimiController

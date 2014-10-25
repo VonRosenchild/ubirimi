@@ -1,29 +1,30 @@
 <?php
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Issue\WorkLog;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\WorkLog;
 
-    // determine the percentages
-    // the biggest time is 100%
-    $originalEstimate = Util::transformLogTimeToMinutes($issue['original_estimate'], $hoursPerDay, $daysPerWeek);
-    $remainingEstimate = Util::transformLogTimeToMinutes($issue['remaining_estimate'], $hoursPerDay, $daysPerWeek);
-    $worklogs = UbirimiContainer::get()['repository']->get(WorkLog::class)->getByIssueId($issue['id']);
-    $minutesLogged = 0;
-    while ($worklogs && $worklog = $worklogs->fetch_array(MYSQLI_ASSOC)) {
-        $minutesLogged += Util::transformLogTimeToMinutes($worklog['time_spent'], $hoursPerDay, $daysPerWeek);
-    }
+// determine the percentages
+// the biggest time is 100%
+$originalEstimate = Util::transformLogTimeToMinutes($issue['original_estimate'], $hoursPerDay, $daysPerWeek);
+$remainingEstimate = Util::transformLogTimeToMinutes($issue['remaining_estimate'], $hoursPerDay, $daysPerWeek);
+$worklogs = UbirimiContainer::get()['repository']->get(WorkLog::class)->getByIssueId($issue['id']);
+$minutesLogged = 0;
+while ($worklogs && $worklog = $worklogs->fetch_array(MYSQLI_ASSOC)) {
+    $minutesLogged += Util::transformLogTimeToMinutes($worklog['time_spent'], $hoursPerDay, $daysPerWeek);
+}
 
-    $percOriginalEstimate = 100;
-    $percRemainingEstimate = 0;
-    $percMinuteskLogged = 0;
+$percOriginalEstimate = 100;
+$percRemainingEstimate = 0;
+$percMinuteskLogged = 0;
 
-    if ($minutesLogged) {
-        $max = max(array($originalEstimate, $remainingEstimate, $minutesLogged));
+if ($minutesLogged) {
+    $max = max(array($originalEstimate, $remainingEstimate, $minutesLogged));
 
-        // find the percentage for each value
-        $percOriginalEstimate = $originalEstimate * 100 / $max;
-        $percRemainingEstimate = $remainingEstimate * 100 / $max;
-        $percMinuteskLogged = $minutesLogged * 100 / $max;
-    }
+    // find the percentage for each value
+    $percOriginalEstimate = $originalEstimate * 100 / $max;
+    $percRemainingEstimate = $remainingEstimate * 100 / $max;
+    $percMinuteskLogged = $minutesLogged * 100 / $max;
+}
 ?>
 
 <table width="100%" id="contentTimeTracking">

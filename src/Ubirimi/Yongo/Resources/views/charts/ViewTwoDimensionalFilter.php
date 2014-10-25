@@ -1,8 +1,8 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
 
-    $selectedProjectId = $projectIdsNames[0][0];
+$selectedProjectId = $projectIdsNames[0][0];
     $selectedProjectId = -1;
     if (isset($projectId)) {
         $selectedProjectId = $projectId;

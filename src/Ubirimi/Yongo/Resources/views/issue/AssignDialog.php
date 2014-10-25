@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Field\Field;
+
 ?>
 <body>
 <table class="modal-table">

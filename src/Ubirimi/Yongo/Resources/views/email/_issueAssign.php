@@ -1,7 +1,7 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Container\UbirimiContainer;
 
-    $session = UbirimiContainer::get()['session'];
+$session = UbirimiContainer::get()['session'];
 ?>
 
 <div style="background-color: #ffffff; border-radius: 5px; border: #CCCCCC 1px solid; padding: 10px; margin: 10px;">

@@ -6,8 +6,8 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueEvent;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 

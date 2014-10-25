@@ -1,6 +1,7 @@
 <?php
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
+
 ?>
 
     <div class="issueSummaryTitle"><?php echo $issue['summary'] ?></div>

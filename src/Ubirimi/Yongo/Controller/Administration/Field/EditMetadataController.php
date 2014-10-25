@@ -9,7 +9,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Custom;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 
 class EditMetadataController extends UbirimiController
 {
@@ -40,7 +40,7 @@ class EditMetadataController extends UbirimiController
             if (!$emptyName) {
                 $date = Util::getServerCurrentDateTime();
 
-                CustomField::updateMetaDataById($Id, $name, $description, $date);
+                $this->getRepository(CustomField::class)->updateMetaDataById($Id, $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

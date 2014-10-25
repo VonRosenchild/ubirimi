@@ -1,8 +1,8 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\Yongo\Repository\Issue\SystemOperation;
+use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 
-    $sysOperationId = SystemOperation::OPERATION_CREATE;
+$sysOperationId = SystemOperation::OPERATION_CREATE;
 ?>
 <div style="padding-left: 0px; margin-right: 0px; max-height: 600px;">
     <div>

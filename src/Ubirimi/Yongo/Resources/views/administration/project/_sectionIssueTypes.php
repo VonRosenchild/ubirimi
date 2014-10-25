@@ -1,5 +1,4 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 
 ?>
 <table width="100%">

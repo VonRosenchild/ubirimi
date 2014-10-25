@@ -3,6 +3,7 @@
 use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\History;
+use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 
 
 //    require_once __DIR__ . '/../web/bootstrap_cli.php';

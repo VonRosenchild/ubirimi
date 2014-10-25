@@ -1,8 +1,8 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Field\Field;
 
-    $session = UbirimiContainer::get()['session'];
+$session = UbirimiContainer::get()['session'];
     $smallFields = array(Field::FIELD_AFFECTS_VERSION_CODE, Field::FIELD_FIX_VERSION_CODE, Field::FIELD_RESOLUTION_CODE, Field::FIELD_ASSIGNEE_CODE, Field::FIELD_COMPONENT_CODE,
                          Field::FIELD_DUE_DATE_CODE, Field::FIELD_PRIORITY_CODE, Field::FIELD_ISSUE_SECURITY_LEVEL_CODE, Field::FIELD_REPORTER_CODE, Field::FIELD_STATUS_CODE,
                          Field::FIELD_ISSUE_TYPE_CODE);

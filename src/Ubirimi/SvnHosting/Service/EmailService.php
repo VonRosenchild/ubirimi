@@ -2,6 +2,7 @@
 
 namespace Ubirimi\SVNHosting\Service;
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
 use Ubirimi\Service\UbirimiService;
 use Ubirimi\Util;

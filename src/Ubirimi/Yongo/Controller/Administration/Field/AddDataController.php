@@ -9,8 +9,8 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Field\Custom;
 use Ubirimi\Yongo\Repository\Field\FieldType;
+use Ubirimi\Yongo\Repository\Issue\CustomField;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class AddDataController extends UbirimiController

@@ -1,5 +1,6 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Field\Field;
+
 ?>
 <div style="max-height: 400px; overflow: auto; width: 800px">
     <div>Attach one or more files to the issue</div>

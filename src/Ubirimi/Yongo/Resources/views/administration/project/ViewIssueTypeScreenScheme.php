@@ -1,8 +1,8 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 

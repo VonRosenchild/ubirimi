@@ -1,7 +1,8 @@
 <?php
-    use Ubirimi\Yongo\Repository\Field\Field;
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
+use Ubirimi\Yongo\Repository\Field\Field;
+
 ?>
 <tr>
     <td colspan="3">

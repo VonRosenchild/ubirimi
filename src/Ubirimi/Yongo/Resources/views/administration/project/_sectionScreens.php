@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
+use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 
 ?>
 <table width="100%">

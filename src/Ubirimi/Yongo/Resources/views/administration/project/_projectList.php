@@ -1,6 +1,7 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
+
 ?>
 <table class="table table-hover table-condensed">
     <thead>

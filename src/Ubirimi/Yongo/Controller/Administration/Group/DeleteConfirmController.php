@@ -8,7 +8,6 @@ use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class DeleteConfirmController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

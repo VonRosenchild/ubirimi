@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
 
 ?>
 <table class="modal-table">

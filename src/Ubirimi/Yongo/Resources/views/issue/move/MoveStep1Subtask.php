@@ -1,8 +1,8 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\LinkHelper;
+use Ubirimi\Yongo\Repository\Issue\IssueType;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body style="background-color: #EEEEEE ;">
 

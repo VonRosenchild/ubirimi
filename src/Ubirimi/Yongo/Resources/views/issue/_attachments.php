@@ -1,6 +1,6 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
-    use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Util;
 
 ?>
 <tr>

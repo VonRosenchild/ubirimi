@@ -1,7 +1,7 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Container\UbirimiContainer;
 
-    $rootDomain = UbirimiContainer::get()['host.root_domain'];
+$rootDomain = UbirimiContainer::get()['host.root_domain'];
 ?>
 
 <div align="left">

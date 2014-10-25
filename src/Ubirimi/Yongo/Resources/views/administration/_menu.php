@@ -1,11 +1,11 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\UbirimiUser;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
+$session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
     $isSuperUser = $session->get('user/super_user_flag');
 

@@ -1,7 +1,7 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Container\UbirimiContainer;
 
-    require __DIR__ . '/_header.php';
+require __DIR__ . '/_header.php';
     $session = UbirimiContainer::get()['session'];
 ?>
 

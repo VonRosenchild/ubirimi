@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\Repository\User\UbirimiUser;
 

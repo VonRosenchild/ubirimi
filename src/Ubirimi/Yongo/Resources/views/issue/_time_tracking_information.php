@@ -1,5 +1,6 @@
 <?php
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
 
