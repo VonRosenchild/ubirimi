@@ -6,18 +6,18 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . '> Field Configuration Scheme > Select a Different Scheme</div>';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . '> Field Configuration Scheme > Select a Different Scheme</div>';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <form name="select_field_conf_scheme" method="post" action="/yongo/administration/project/select-issue-type-field-scheme/<?php echo $projectId ?>">
             <table width="100%">
                 <tr>
                     <td width="200">Field Configuration Scheme</td>
                     <td>
-                        <select name="issue_type_field_scheme" class="inputTextCombo">
+                        <select name="issue_type_field_scheme" class="select2InputMedium">
                             <?php while ($fieldConfigurationScheme = $fieldConfigurationSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option value="<?php echo $fieldConfigurationScheme['id'] ?>"><?php echo $fieldConfigurationScheme['name'] ?></option>
                             <?php endwhile ?>

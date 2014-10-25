@@ -6,11 +6,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . ' > Permission Scheme > Select a Different Scheme</div>';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . ' > Permission Scheme > Select a Different Scheme</div>';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <div class="infoBox">This page allows you to associate a permission scheme with this project.</div>
 

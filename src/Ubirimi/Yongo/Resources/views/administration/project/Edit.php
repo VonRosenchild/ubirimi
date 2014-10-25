@@ -6,12 +6,12 @@
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > ' . $project['name'] . ' > Edit Project';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <form name="add_project" action="/yongo/administration/project/edit/<?php echo $projectId ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > ' . $project['name'] . ' > Edit Project';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
             <table width="100%">
                 <tr>
                     <td valign="top" width="200">Name</td>

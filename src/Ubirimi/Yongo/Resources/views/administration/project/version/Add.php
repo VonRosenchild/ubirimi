@@ -4,17 +4,19 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        <a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > <a class="linkNoUnderline" href="/yongo/administration/project/<?php echo $projectId ?>"><?php echo $project['name'] ?></a> > <a class="linkNoUnderline" href="/yongo/administration/project/versions/<?php echo $projectId ?>">Versions</a> > Create Version
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="add_release" action="/yongo/administration/project/version/add/<?php echo $projectId ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            <a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > <a class="linkNoUnderline" href="/yongo/administration/project/<?php echo $projectId ?>"><?php echo $project['name'] ?></a> > <a class="linkNoUnderline" href="/yongo/administration/project/versions/<?php echo $projectId ?>">Versions</a> > Create Version
-                        </div>
-                    </td>
-                </tr>
-            </table>
             <table width="100%  ">
                 <tr>
                     <td valign="top" width="120">Name <span class="error">*</span></td>

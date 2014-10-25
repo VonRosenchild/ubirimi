@@ -6,11 +6,11 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . ' > Workflow Scheme > Select a Different Scheme</div>';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
-        <?php
-            $breadCrumb = '<a href="/yongo/administration/projects" class="linkNoUnderline">Projects</a> > ' . $project['name'] . ' > Workflow Scheme > Select a Different Scheme</div>';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
 
         <div>Select a workflow scheme you want to associate</div>
 
@@ -19,7 +19,7 @@
                 <tr>
                     <td width="200">Workflow Scheme</td>
                     <td>
-                        <select name="workflow_scheme" class="inputTextCombo">
+                        <select name="workflow_scheme" class="select2InputMedium">
                             <?php while ($workflowScheme = $workflowSchemes->fetch_array(MYSQLI_ASSOC)): ?>
                                 <option <?php if ($project['workflow_scheme_id'] == $workflowScheme['id']) echo 'selected="selected"' ?> value="<?php echo $workflowScheme['id'] ?>"><?php echo $workflowScheme['name'] ?></option>
                             <?php endwhile ?>

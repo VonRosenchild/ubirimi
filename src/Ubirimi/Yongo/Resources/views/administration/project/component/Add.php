@@ -5,12 +5,12 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <?php
+        $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > <a class="linkNoUnderline" href="/yongo/administration/project/' . $projectId . '">' . $project['name'] . '</a> > <a class="linkNoUnderline" href="/yongo/administration/project/components/' . $projectId . '">Components</a> > Create Component';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
     <div class="pageContent">
         <form name="add_component" action="/yongo/administration/project/component/add/<?php echo $projectId ?>" method="post">
-            <?php
-                $breadCrumb = '<a class="linkNoUnderline" href="/yongo/administration/projects">Projects</a> > <a class="linkNoUnderline" href="/yongo/administration/project/' . $projectId . '">' . $project['name'] . '</a> > <a class="linkNoUnderline" href="/yongo/administration/project/components/' . $projectId . '">Components</a> > Create Component';
-                Util::renderBreadCrumb($breadCrumb);
-            ?>
             <table width="100%">
                 <tr>
                     <td width="120" valign="top">Name <span class="error">*</span></td>

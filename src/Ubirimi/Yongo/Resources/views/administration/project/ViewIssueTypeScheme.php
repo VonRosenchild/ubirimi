@@ -9,9 +9,8 @@ require_once __DIR__ . '/../_header.php';
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td width="48px">
                     <img class="projectIcon" src="/img/project.png" height="48px"/>
@@ -24,6 +23,9 @@ require_once __DIR__ . '/../_header.php';
                 </td>
             </tr>
         </table>
+    </div>
+
+    <div class="pageContent">
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li><a href="/yongo/administration/project/<?php echo $projectId ?>">Summary</a></li>

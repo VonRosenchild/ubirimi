@@ -4,17 +4,20 @@
 <body>
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
+    <div class="headerPageBackground">
+        <table width="100%">
+            <tr>
+                <td>
+                    <div class="headerPageText">
+                        Projects > <?php echo $project['name'] ?> > <a class="linkNoUnderline" href="/yongo/administration/project/components/<?php echo $projectId ?>">Components</a> > Edit component
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div class="pageContent">
         <form name="edit_component" action="/yongo/administration/project/component/edit/<?php echo $componentId; ?>" method="post">
-            <table width="100%" class="headerPageBackground">
-                <tr>
-                    <td>
-                        <div class="headerPageText">
-                            Projects > <?php echo $project['name'] ?> > <a class="linkNoUnderline" href="/yongo/administration/project/components/<?php echo $projectId ?>">Components</a> > Edit component
-                        </div>
-                    </td>
-                </tr>
-            </table>
+
             <table width="100%">
                 <tr>
                     <td valign="top">Name <span class="error">*</span></td>
