@@ -12,7 +12,6 @@ use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class PlanController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

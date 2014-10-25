@@ -35,12 +35,12 @@ class AddController extends UbirimiController
             $description = Util::cleanRegularInputField($request->request->get('description'));
             $projectsInBoard = $request->request->get('project');
 
-            if (!$projectsInBoard)
+            if (!$projectsInBoard) {
                 $noProjectSelected = true;
-
-            if (empty($name))
+            }
+            if (empty($name)) {
                 $emptyName = true;
-
+            }
             if (!$emptyName && !$noProjectSelected) {
                 $definitionData = 'project=' . implode('|', $projectsInBoard);
                 $date = Util::getServerCurrentDateTime();

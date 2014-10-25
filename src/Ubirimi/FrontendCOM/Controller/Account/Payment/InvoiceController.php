@@ -8,7 +8,6 @@ use Ubirimi\Repository\Invoice as InvoiceRepository;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class InvoiceController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

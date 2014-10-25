@@ -31,8 +31,7 @@ class ContactSendController extends UbirimiController
 
         if (empty($email)) {
             $errors['empty_email'] = true;
-        }
-        else if (!Util::isValidEmail($email)) {
+        } else if (!Util::isValidEmail($email)) {
             $errors['email_not_valid'] = true;
         }
 

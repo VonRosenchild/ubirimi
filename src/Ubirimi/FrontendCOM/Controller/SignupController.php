@@ -228,7 +228,7 @@ class SignupController extends UbirimiController
                 $subscriptionResponse = $requestPaymill->create($subscription);
 
                 /* save data to the general task queue */
-                GeneralTaskQueue::savePendingClientData(json_encode(array(
+                UbirimiContainer::get()['repository']->get(GeneralTaskQueue::class)->savePendingClientData(json_encode(array(
                     'companyName' => $companyName,
                     'companyDomain' => $companyDomain,
                     'baseURL' => 'https://' . $companyDomain . '.ubirimi.net',
@@ -243,7 +243,6 @@ class SignupController extends UbirimiController
                 )));
 
                 $session->set('client_account_created', true);
-
 
                 $request->request->replace(array());
 

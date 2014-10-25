@@ -12,7 +12,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 
-
 class EditController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
@@ -37,8 +36,9 @@ class EditController extends UbirimiController
             $boardName = Util::cleanRegularInputField($request->request->get('name'));
             $boardDescription = Util::cleanRegularInputField($request->request->get('description'));
 
-            if (empty($boardName))
+            if (empty($boardName)) {
                 $emptyName = true;
+            }
 
             if (!$emptyName) {
 
