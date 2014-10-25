@@ -18,9 +18,9 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $customField = Custom::getById($Id);
+        $customField = $this->getRepository(CustomField::class)->getById($Id);
 
-        Custom::deleteById($Id);
+        $this->getRepository(CustomField::class)->deleteById($Id);
 
         $date = Util::getServerCurrentDateTime();
 

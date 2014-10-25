@@ -22,7 +22,7 @@ class SelectSchemeController extends UbirimiController
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($session->get('client/id'));
+        $fieldConfigurationSchemes = $this->getRepository(FieldConfigurationScheme::class)->getByClient($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

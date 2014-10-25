@@ -2,6 +2,7 @@
 
 namespace Ubirimi\Yongo\Service;
 
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Entity\Yongo\Project as ProjectEntity;
 use Ubirimi\Service\UbirimiService;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
@@ -12,7 +13,7 @@ class ProjectService extends UbirimiService
     {
         $currentDate = $project->getDateCreated();
 
-        $projectId = $this->getRepository(YongoProject::class)->add(
+        $projectId = UbirimiContainer::get()['repository']->get(YongoProject::class)->add(
             $project->getClientId(),
             $project->getIssueTypeSchemeId(),
             $project->getIssueTypeScreenSchemeId(),
@@ -29,12 +30,12 @@ class ProjectService extends UbirimiService
             $project->getDateCreated()
         );
 
-        $this->getRepository(YongoProject::class)->addDefaultUsers($project->getClientId(), $projectId, $currentDate);
-        $this->getRepository(YongoProject::class)->addDefaultGroups($project->getClientId(), $projectId, $currentDate);
+        UbirimiContainer::get()['repository']->get(YongoProject::class)->addDefaultUsers($project->getClientId(), $projectId, $currentDate);
+        UbirimiContainer::get()['repository']->get(YongoProject::class)->addDefaultGroups($project->getClientId(), $projectId, $currentDate);
 
         if ($project->getHelpDeskEnabledFlag()) {
 
-            $this->getRepository(YongoProject::class)->addDefaultInitialDataForHelpDesk($project->getClientId(), $projectId, $userId, $currentDate);
+            UbirimiContainer::get()['repository']->get(YongoProject::class)->addDefaultInitialDataForHelpDesk($project->getClientId(), $projectId, $userId, $currentDate);
        }
 
         return $projectId;

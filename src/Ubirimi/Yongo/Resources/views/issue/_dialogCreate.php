@@ -20,7 +20,7 @@ use Ubirimi\Util;
     $issueSecuritySchemeLevels = null;
 
     if ($issueSecuritySchemeId) {
-        $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+        $issueSecuritySchemeLevels = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
     }
 
     $projectVersions = UbirimiContainer::get()['repository']->get(YongoProject::class)->getVersions($projectId);

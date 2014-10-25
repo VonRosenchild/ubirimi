@@ -18,7 +18,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $smtpServerId = $request->get('id');
-        $smtpServer = SMTPServer::getById($smtpServerId);
+        $smtpServer = $this->getRepository(SMTPServer::class)->getById($smtpServerId);
         $session->set('selected_product_id', -1);
         $menuSelectedCategory = 'general_mail';
 
@@ -42,7 +42,7 @@ class EditController extends UbirimiController
 
             $date = Util::getServerCurrentDateTime();
 
-            SMTPServer::updateById(
+            $this->getRepository(SMTPServer::class)->updateById(
                 $smtpServerId,
                 $name,
                 $description,
@@ -66,7 +66,7 @@ class EditController extends UbirimiController
                 $date
             );
 
-            $session->set('client/settings/smtp', SMTPServer::getById($smtpServerId));
+            $session->set('client/settings/smtp', $this->getRepository(SMTPServer::class)->getById($smtpServerId));
 
             return new RedirectResponse('/general-settings/smtp-settings');
         }

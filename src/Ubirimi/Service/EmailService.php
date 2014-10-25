@@ -10,7 +10,7 @@ class EmailService extends UbirimiService
 {
     public function newUser($firstName, $lastName, $username, $password, $email, $clientDomain, $clientId)
     {
-        $smtpSettings = SMTPServer::getByClientId($clientId);
+        $smtpSettings = UbirimiContainer::get()['repository']->get(SMTPServer::class)->getByClientId($clientId);
         if ($smtpSettings) {
             EmailRepository::$smtpSettings = $smtpSettings;
         } else {
@@ -23,7 +23,7 @@ class EmailService extends UbirimiService
     public function newUserCustomer($firstName, $lastName, $password, $email, $clientDomain, $clientId)
     {
 
-        $smtpSettings = SMTPServer::getByClientId($clientId);
+        $smtpSettings = UbirimiContainer::get()['repository']->get(SMTPServer::class)->getByClientId($clientId);
         if ($smtpSettings) {
             EmailRepository::$smtpSettings = $smtpSettings;
         } else {

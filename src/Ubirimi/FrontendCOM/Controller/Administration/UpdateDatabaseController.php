@@ -26,7 +26,7 @@ use Ubirimi\Yongo\Repository\Issue\History;
             $oldResolutionId = null;
             $newResolutionId = null;
             if ($record['old_value'])
-                $oldResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'status', $record['old_value']);
+                $oldResolution = IssueSettings::getByName($clientId, 'status', $record['old_value']);
 
             if ($record['new_value'])
                 $newResolution = \Ubirimi\Yongo\Repository\Issue\IssueSettings::getByName($clientId, 'status', $record['new_value']);

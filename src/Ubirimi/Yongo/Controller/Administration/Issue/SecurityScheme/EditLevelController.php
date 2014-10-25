@@ -18,8 +18,8 @@ class EditLevelController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeLevelId = $request->get('id');
-        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
-        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeLevel['issue_security_scheme_id']);
+        $issueSecuritySchemeLevel = $this->getRepository(IssueSecurityScheme::class)->getLevelById($issueSecuritySchemeLevelId);
+        $issueSecurityScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($issueSecuritySchemeLevel['issue_security_scheme_id']);
 
         if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

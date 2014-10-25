@@ -216,11 +216,11 @@ class FieldConfiguration {
     }
 
     public function deleteByClientId($clientId) {
-        $fieldConfigurations = FieldConfiguration::getByClientId($clientId);
+        $fieldConfigurations = UbirimiContainer::get()['repository']->get(FieldConfiguration::class)->getByClientId($clientId);
 
         while ($fieldConfigurations && $fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {
-            FieldConfiguration::deleteDataByFieldConfigurationId($fieldConfiguration['id']);
-            FieldConfiguration::deleteById($fieldConfiguration['id']);
+            UbirimiContainer::get()['repository']->get(FieldConfiguration::class)->deleteDataByFieldConfigurationId($fieldConfiguration['id']);
+            UbirimiContainer::get()['repository']->get(FieldConfiguration::class)->deleteById($fieldConfiguration['id']);
         }
     }
 

@@ -9,7 +9,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 
-
 class DeleteValueController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
@@ -18,7 +17,7 @@ class DeleteValueController extends UbirimiController
 
         $customFieldDataId = $request->request->get('id');
 
-        Field::deleteDataById($customFieldDataId);
+        $this->getRepository(Field::class)->deleteDataById($customFieldDataId);
 
         return new Response('');
     }

@@ -28,8 +28,8 @@ class DeleteController extends UbirimiController
             $this->getRepository(Issue::class)->updateType($projects, $oldId, $newId);
         }
 
-        $issueType = IssueType::getById($oldId);
-        IssueType::deleteById($oldId);
+        $issueType = $this->getRepository(IssueType::class)->getById($oldId);
+        $this->getRepository(IssueType::class)->deleteById($oldId);
 
         $currentDate = Util::getServerCurrentDateTime();
 

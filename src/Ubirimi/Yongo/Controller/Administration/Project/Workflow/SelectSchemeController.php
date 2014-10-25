@@ -29,7 +29,7 @@ class SelectSchemeController extends UbirimiController
             return new RedirectResponse('/yongo/administration/project/workflows/update-status/' . $projectId . '/' . $workflowSchemeId);
         }
 
-        $workflowSchemes = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
+        $workflowSchemes = $this->getRepository(WorkflowScheme::class)->getMetaDataByClientId($session->get('client/id'));
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Select Project Workflow Scheme';

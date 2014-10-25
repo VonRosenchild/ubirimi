@@ -35,13 +35,13 @@ class AddController extends UbirimiController
         $emptyCode = false;
         $duplicateCode = false;
 
-        $issueTypeScheme = IssueTypeScheme::getByClientId($session->get('client/id'), 'project');
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
-        $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($session->get('client/id'));
-        $workflowScheme = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
+        $issueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getByClientId($session->get('client/id'), 'project');
+        $issueTypeScreenScheme = $this->getRepository(IssueTypeScreenScheme::class)->getByClientId($session->get('client/id'));
+        $fieldConfigurationSchemes = $this->getRepository(FieldConfigurationScheme::class)->getByClient($session->get('client/id'));
+        $workflowScheme = $this->getRepository(WorkflowScheme::class)->getMetaDataByClientId($session->get('client/id'));
         $permissionScheme = $this->getRepository(PermissionScheme::class)->getByClientId($session->get('client/id'));
         $notificationScheme = $this->getRepository(NotificationScheme::class)->getByClientId($session->get('client/id'));
-        $projectCategories = ProjectCategory::getAll($session->get('client/id'));
+        $projectCategories = $this->getRepository(ProjectCategory::class)->getAll($session->get('client/id'));
 
         if ($request->request->has('confirm_new_project')) {
 

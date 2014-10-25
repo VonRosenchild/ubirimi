@@ -54,7 +54,7 @@ require_once __DIR__ . '/../../_header.php';
                 <?php
                     $projectLevels = null;
                     if ($projectIssueSecuritySchemeId)
-                        $projectLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($projectIssueSecuritySchemeId);
+                        $projectLevels = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($projectIssueSecuritySchemeId);
 
                     $issuesWithSecurityLevelSet = false;
                     if ($projectLevels) {

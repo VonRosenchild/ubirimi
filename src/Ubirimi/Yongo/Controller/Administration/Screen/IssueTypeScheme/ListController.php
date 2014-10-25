@@ -14,7 +14,7 @@ class ListController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $issueTypeScreenSchemes = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
+        $issueTypeScreenSchemes = $this->getRepository(IssueTypeScreenScheme::class)->getByClientId($session->get('client/id'));
         $menuSelectedCategory = 'issue';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Type Screen Schemes';

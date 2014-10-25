@@ -108,7 +108,7 @@ class WorkflowFunction
                         }
 
                         if ($sendEmail) {
-                            Email::sendEmailIssueChanged($issueData, $project, $loggedInUser, $clientId, $issueFieldChanges, $user);
+                            UbirimiContainer::get()['repository']->get(Email::class)->sendEmailIssueChanged($issueData, $project, $loggedInUser, $clientId, $issueFieldChanges, $user);
                         }
                     }
                 }

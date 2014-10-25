@@ -23,14 +23,14 @@ class EditController extends UbirimiController
         $emptyName = false;
         $typeExists = false;
 
-        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
+        $issueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getMetaDataById($issueTypeSchemeId);
 
         if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $allIssueTypes = IssueType::getAll($session->get('client/id'));
-        $schemeIssueTypes = IssueTypeScheme::getDataById($issueTypeSchemeId);
+        $allIssueTypes = $this->getRepository(IssueType::class)->getAll($session->get('client/id'));
+        $schemeIssueTypes = $this->getRepository(IssueTypeScheme::class)->getDataById($issueTypeSchemeId);
 
         $type = $issueTypeScheme['type'];
         $name = $issueTypeScheme['name'];
@@ -46,11 +46,11 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 IssueTypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
-                IssueTypeScheme::deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
+                $this->getRepository(IssueTypeScheme::class)->deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 11) == 'issue_type_') {
                         $issueTypeId = str_replace('issue_type_', '', $key);
-                        IssueTypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
+                        $this->getRepository(IssueTypeScheme::class)->addData($issueTypeSchemeId, $issueTypeId, $currentDate);
                     }
                 }
 

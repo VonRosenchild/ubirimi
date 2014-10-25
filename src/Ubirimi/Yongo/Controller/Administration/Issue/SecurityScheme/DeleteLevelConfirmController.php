@@ -16,9 +16,9 @@ class DeleteLevelConfirmController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeLevelId = $request->get('id');
-        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
+        $issueSecuritySchemeLevel = $this->getRepository(IssueSecurityScheme::class)->getLevelById($issueSecuritySchemeLevelId);
         $issueSecuritySchemeId = $issueSecuritySchemeLevel['issue_security_scheme_id'];
-        $allLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+        $allLevels = $this->getRepository(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
 
         $issues = $this->getRepository(Issue::class)->getByParameters(
             array(

@@ -40,7 +40,7 @@ class AddController extends UbirimiController
         $svnRepoId = $request->query->get('fsvn');
 
         if ($svnRepoId) {
-            $svnRepo = SvnRepository::getById($svnRepoId);
+            $svnRepo = $this->getRepository(SvnRepository::class)->getById($svnRepoId);
             if ($svnRepo['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
             }

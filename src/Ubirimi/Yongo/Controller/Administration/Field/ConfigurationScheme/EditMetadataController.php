@@ -19,7 +19,7 @@ class EditMetadataController extends UbirimiController
 
         $fieldConfigurationSchemeId = $request->get('id');
 
-        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = $this->getRepository(FieldConfigurationScheme::class)->getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

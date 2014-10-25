@@ -27,7 +27,7 @@ class ViewIssueSecuritySchemeController extends UbirimiController
         $menuSelectedCategory = 'project';
         $issueSecurityScheme = null;
         if ($project['issue_security_scheme_id']) {
-            $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($project['issue_security_scheme_id']);
+            $issueSecurityScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($project['issue_security_scheme_id']);
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Security Scheme';

@@ -18,10 +18,10 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($Id);
+        $fieldConfigurationScheme = $this->getRepository(FieldConfigurationScheme::class)->getMetaDataById($Id);
 
-        FieldConfigurationScheme::deleteDataByFieldConfigurationSchemeId($Id);
-        FieldConfigurationScheme::deleteById($Id);
+        $this->getRepository(FieldConfigurationScheme::class)->deleteDataByFieldConfigurationSchemeId($Id);
+        $this->getRepository(FieldConfigurationScheme::class)->deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

@@ -15,7 +15,7 @@ class AddController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $types = Custom::getTypes();
+        $types = $this->getRepository(CustomField::class)->getTypes();
         $menuSelectedCategory = 'issue';
 
         $emptyType = false;

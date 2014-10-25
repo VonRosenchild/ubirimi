@@ -34,7 +34,7 @@ require_once __DIR__ . '/../../_header.php';
             </thead>
             <tbody>
                 <?php while ($field = $allFields->fetch_array(MYSQLI_ASSOC)): ?>
-                    <?php $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $field['id']) ?>
+                    <?php $data = UbirimiContainer::get()['repository']->get(FieldConfiguration::class)->getDataByConfigurationAndField($fieldConfigurationId, $field['id']) ?>
                     <tr>
                         <td>
                             <?php echo $field['name'] ?>

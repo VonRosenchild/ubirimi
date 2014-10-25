@@ -18,7 +18,7 @@ class EditMetadataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $customField = Custom::getById($Id);
+        $customField = $this->getRepository(CustomField::class)->getById($Id);
 
         if ($customField['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -40,7 +40,7 @@ class EditMetadataController extends UbirimiController
             if (!$emptyName) {
                 $date = Util::getServerCurrentDateTime();
 
-                Custom::updateMetaDataById($Id, $name, $description, $date);
+                CustomField::updateMetaDataById($Id, $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

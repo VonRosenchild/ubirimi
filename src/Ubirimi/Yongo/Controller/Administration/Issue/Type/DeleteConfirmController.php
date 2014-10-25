@@ -17,7 +17,7 @@ class DeleteConfirmController extends UbirimiController
 
         $Id = $request->get('id');
 
-        $types = IssueType::getAll($session->get('client/id'));
+        $types = $this->getRepository(IssueType::class)->getAll($session->get('client/id'));
 
         $issueQueryParameters = array(
             'type' => $Id,

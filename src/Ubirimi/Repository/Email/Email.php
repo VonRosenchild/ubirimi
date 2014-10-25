@@ -23,13 +23,13 @@ class Email {
     public static $smtpSettings;
 
     public function sendNewsletter($toEmailAddress, $content, $subject) {
-        $emailContent = Email::getEmailHeader();
+        $emailContent = UbirimiContainer::get()['repository']->get(Email::class)->getEmailHeader();
         $emailContent .= '<br />';
         $emailContent .= '<br />';
 
         $emailContent .= '<div style="color: #333333; font: 17px Trebuchet MS, sans-serif; white-space: wrap; padding-top: 5px;text-align: left;padding-left: 2px;">' . $content . '</div>';
 
-        $emailContent .= Email::getEmailFooter();
+        $emailContent .= UbirimiContainer::get()['repository']->get(Email::class)->getEmailFooter();
 
         if (strpos($_SERVER['HTTP_HOST'], 'localhost') === false) {
             $transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
@@ -46,7 +46,7 @@ class Email {
     public function sendNewUserNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $clientDomain) {
         $subject = Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - A new account has been created for you';
 
-        EmailQueue::add($clientId,
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
                         null,
@@ -64,7 +64,7 @@ class Email {
     public function sendNewCustomerNotificationEmail($clientId, $firstName, $lastName, $email, $password, $clientDomain) {
         $subject = Email::$smtpSettings['email_prefix'] . ' ' . 'Ubirimi - A new customer account has been created for you';
 
-        EmailQueue::add($clientId,
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
                         null,
@@ -81,7 +81,7 @@ class Email {
     }
 
     public function sendNewUserRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
-        EmailQueue::add($clientId,
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
                         null,
@@ -96,7 +96,7 @@ class Email {
     }
 
     public function sendUserChangedPasswordForRepositoryNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $repositoryName) {
-        EmailQueue::add($clientId,
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                         Email::$smtpSettings['from_address'],
                         $email,
                         null,
@@ -120,7 +120,7 @@ class Email {
                 continue;
             }
 
-            Email::sendEmailNewIssue($clientId, $issue, $user);
+            UbirimiContainer::get()['repository']->get(Email::class)->sendEmailNewIssue($clientId, $issue, $user);
         }
     }
 
@@ -137,7 +137,7 @@ class Email {
                 continue;
             }
 
-            Email::sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment, $loggedInUser);
+            UbirimiContainer::get()['repository']->get(Email::class)->sendEmailIssueAssign($issue, $clientId, $oldUserAssignedName, $newUserAssignedName, $user, $comment, $loggedInUser);
         }
     }
 
@@ -157,7 +157,7 @@ class Email {
                             $issue['project_code'] . '-' .
                             $issue['nr'];
 
-        EmailQueue::add($clientId,
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                         Email::$smtpSettings['from_address'],
                         $userToNotify['email'],
                         null,
@@ -215,7 +215,7 @@ class Email {
 
             $date = Util::getServerCurrentDateTime();
 
-            EmailQueue::add($clientId,
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                 Email::$smtpSettings['from_address'],
                 $user['email'],
                 null,
@@ -235,7 +235,7 @@ class Email {
 
     public function sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $fieldChanges, $userToNotify) {
         if (Email::$smtpSettings) {
-            EmailQueue::add($clientId,
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                 Email::$smtpSettings['from_address'],
                 $userToNotify['email'],
                 null,
@@ -264,7 +264,7 @@ class Email {
                 continue;
             }
 
-            Email::sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $changedFields, $user);
+            UbirimiContainer::get()['repository']->get(Email::class)->sendEmailIssueChanged($issue, $project, $loggedInUser, $clientId, $changedFields, $user);
         }
     }
 
@@ -296,7 +296,7 @@ class Email {
 
             $date = Util::getServerCurrentDateTime();
 
-            EmailQueue::add($clientId,
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                 Email::$smtpSettings['from_address'],
                 $userToNotify['email'],
                 null,
@@ -338,7 +338,7 @@ class Email {
                 $issue['project_code'] . '-' .
                 $issue['nr'];
 
-            EmailQueue::add($clientId,
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                 Email::$smtpSettings['from_address'],
                 $user['email'],
                 null,
@@ -361,13 +361,13 @@ class Email {
             if ($user['user_id'] == $loggedInUserId && !$user['notify_own_changes_flag']) {
                 continue;
             }
-            Email::sendEmailDeleteIssue($issue, $clientId, $user, $loggedInUser, $project);
+            UbirimiContainer::get()['repository']->get(Email::class)->sendEmailDeleteIssue($issue, $clientId, $user, $loggedInUser, $project);
         }
     }
 
     public function sendFeedback($userData, $like, $improve, $newFeatures, $experience) {
 
-        $text = Email::getEmailHeader();
+        $text = UbirimiContainer::get()['repository']->get(Email::class)->getEmailHeader();
         $text .= '<div style="color: #333333; font: 17px Trebuchet MS, sans-serif; white-space: nowrap; padding-top: 5px;text-align: left;padding-left: 2px;">' . $userData['first_name'] . ' ' . $userData['last_name'] . ' sent the following feedback: </div>';
         $text .= '<br />';
         $text .= '<table cellpadding="2" cellspacing="0" border="0">';
@@ -395,7 +395,7 @@ class Email {
         $text .= '<div>Client ID: ' . $userData['client_id'] . '</div>';
         $text .= '<div>Username: ' . $userData['username'] . '</div>';
 
-        $text .= Email::getEmailFooter();
+        $text .= UbirimiContainer::get()['repository']->get(Email::class)->getEmailFooter();
 
         if (strpos($_SERVER['HTTP_HOST'], 'localhost') === false) {
             $transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
@@ -418,7 +418,7 @@ class Email {
 
             $date = Util::getServerCurrentDateTime();
 
-            EmailQueue::add($clientId,
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                 Email::$smtpSettings['from_address'],
                 $userToSendEmailAddress,
                 null,
@@ -442,7 +442,7 @@ class Email {
 
             $date = Util::getServerCurrentDateTime();
 
-            EmailQueue::add($clientId,
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                 Email::$smtpSettings['from_address'],
                 $userToSendEmailAddress,
                 null,
@@ -464,7 +464,7 @@ class Email {
 
             $date = Util::getServerCurrentDateTime();
 
-            EmailQueue::add($clientId,
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
                 Email::$smtpSettings['from_address'],
                 $userToSendEmailAddress,
                 null,

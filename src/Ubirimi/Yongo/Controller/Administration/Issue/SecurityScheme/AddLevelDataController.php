@@ -23,8 +23,8 @@ class AddLevelDataController extends UbirimiController
 
         $levelId = $request->get('id');
 
-        $level = IssueSecurityScheme::getLevelById($levelId);
-        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($level['issue_security_scheme_id']);
+        $level = $this->getRepository(IssueSecurityScheme::class)->getLevelById($levelId);
+        $issueSecurityScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($level['issue_security_scheme_id']);
 
         if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -47,7 +47,7 @@ class AddLevelDataController extends UbirimiController
 
                 // check for duplicate information
                 $duplication = false;
-                $dataLevel = IssueSecurityScheme::getDataByLevelId($levelId);
+                $dataLevel = $this->getRepository(IssueSecurityScheme::class)->getDataByLevelId($levelId);
 
                 if ($dataLevel) {
 
@@ -71,7 +71,7 @@ class AddLevelDataController extends UbirimiController
                     }
                 }
                 if (!$duplication) {
-                    IssueSecurityScheme::addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
+                    $this->getRepository(IssueSecurityScheme::class)->addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
 
                     $this->getRepository(UbirimiLog::class)->add(
                         $session->get('client/id'),

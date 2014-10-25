@@ -765,7 +765,7 @@ class Issue
 
         Watcher::deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get(Issue::class)->deleteSLADataByIssueId($issueId);
-        WorkLog::deleteByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get(WorkLog::class)->deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get(IssueAttachment::class)->deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get(CustomField::class)->deleteCustomFieldsData($issueId);
 

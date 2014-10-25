@@ -16,7 +16,7 @@ class ViewController extends UbirimiController
 
         $issueTypeSchemeId = $request->get('id');
 
-        $issueTypeScheme = IssueTypeScheme::getById($issueTypeSchemeId);
+        $issueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getById($issueTypeSchemeId);
 
 //        if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
 //            return new RedirectResponse('/general-settings/bad-link-access-denied');

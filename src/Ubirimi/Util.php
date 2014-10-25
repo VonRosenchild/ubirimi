@@ -1060,7 +1060,7 @@ class Util {
     }
 
     public static function getUbirmiMailer($type = 'accounts') {
-        return Email::getMailer(self::getUbirimiSMTPSettings($type));
+        return UbirimiContainer::get()['repository']->get(Email::class)->getMailer(self::getUbirimiSMTPSettings($type));
     }
 
     public static function getAssetsFolder($productId, $context = null) {

@@ -1,10 +1,10 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
-    use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 
@@ -78,7 +78,7 @@ use Ubirimi\Yongo\Repository\Field\FieldConfiguration;
                         </td>
                         <td>
                             <?php
-                                $fieldConfigurations = FieldConfiguration::getByIssueType($data['issue_type_id'], $clientId);
+                                $fieldConfigurations = UbirimiContainer::get()['repository']->get(FieldConfiguration::class)->getByIssueType($data['issue_type_id'], $clientId);
                                 if ($fieldConfigurations) {
                                     echo '<ul>';
                                     while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {

@@ -18,16 +18,16 @@ class AssociateStep2Controller extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $projectId = $request->get('id');
         $schemeId = $request->get('scheme_id');
-        $selectedScheme = IssueSecurityScheme::getMetaDataById($schemeId);
+        $selectedScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($schemeId);
         $project = $this->getRepository(YongoProject::class)->getById($projectId);
 
         $projectIssueSecuritySchemeId = $project['issue_security_scheme_id'];
         $projectIssueSecurityScheme = null;
         if ($projectIssueSecuritySchemeId)
-            $projectIssueSecurityScheme = IssueSecurityScheme::getMetaDataById($projectIssueSecuritySchemeId);
+            $projectIssueSecurityScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($projectIssueSecuritySchemeId);
 
         $menuSelectedCategory = 'project';
-        $selectedSchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($schemeId);
+        $selectedSchemeLevels = $this->getRepository(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($schemeId);
 
         if ($request->request->has('cancel')) {
             return new RedirectResponse('/yongo/administration/project/issue-security/' . $projectId);

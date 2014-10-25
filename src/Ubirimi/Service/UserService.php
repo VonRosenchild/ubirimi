@@ -68,7 +68,7 @@ class UserService extends UbirimiService
 
         if (isset($data['svnRepoId'])) {
             /* also add user to svn_repository_user table */
-            SvnRepository::addUser($data['svnRepoId'], $userId);
+            UbirimiContainer::get()['repository']->get(SvnRepository::class)->addUser($data['svnRepoId'], $userId);
 
             $userEvent = new UserEvent(UserEvent::STATUS_NEW_SVN, $data['firstName'], $data['lastName'], $data['username'], null, $data['email'], array('repositoryName' => $data['svnRepositoryName']));
             UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::USER, $userEvent);

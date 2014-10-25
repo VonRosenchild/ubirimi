@@ -18,10 +18,10 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($Id);
+        $issueTypeScreenScheme = $this->getRepository(IssueTypeScreenScheme::class)->getMetaDataById($Id);
 
-        IssueTypeScreenScheme::deleteDataByIssueTypeScreenSchemeId($Id);
-        IssueTypeScreenScheme::deleteById($Id);
+        $this->getRepository(IssueTypeScreenScheme::class)->deleteDataByIssueTypeScreenSchemeId($Id);
+        $this->getRepository(IssueTypeScreenScheme::class)->deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

@@ -10,7 +10,7 @@ class FieldConfigurationScheme {
     public $description;
     public $clientId;
 
-    function __construct($clientId, $name, $description) {
+    function __construct($clientId = null, $name = null, $description = null) {
         $this->clientId = $clientId;
         $this->name = $name;
         $this->description = $description;
@@ -207,11 +207,11 @@ class FieldConfigurationScheme {
     }
 
     public function deleteByClientId($clientId) {
-        $fieldConfigurationSchemes = FieldConfigurationScheme::getByClient($clientId);
+        $fieldConfigurationSchemes = $this->getRepository(FieldConfigurationScheme::class)->getByClient($clientId);
 
         while ($fieldConfigurationSchemes && $fieldConfigurationScheme = $fieldConfigurationSchemes->fetch_array(MYSQLI_ASSOC)) {
-            FieldConfigurationScheme::deleteDataByFieldConfigurationSchemeId($fieldConfigurationScheme['id']);
-            FieldConfigurationScheme::deleteById($fieldConfigurationScheme['id']);
+            $this->getRepository(FieldConfigurationScheme::class)->deleteDataByFieldConfigurationSchemeId($fieldConfigurationScheme['id']);
+            $this->getRepository(FieldConfigurationScheme::class)->deleteById($fieldConfigurationScheme['id']);
         }
     }
 

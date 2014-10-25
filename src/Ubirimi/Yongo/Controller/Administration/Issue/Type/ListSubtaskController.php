@@ -14,7 +14,7 @@ class ListSubtaskController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $types = IssueType::getAllSubTasks($session->get('client/id'));
+        $types = $this->getRepository(IssueType::class)->getAllSubTasks($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

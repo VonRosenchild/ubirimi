@@ -14,7 +14,7 @@ class ListController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $types = IssueType::getAll($session->get('client/id'));
+        $types = $this->getRepository(IssueType::class)->getAll($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

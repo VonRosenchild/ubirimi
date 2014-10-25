@@ -27,7 +27,7 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
             else {
-                $data = ProjectCategory::getByName($name, null, $session->get('client/id'));
+                $data = $this->getRepository(ProjectCategory::class)->getByName($name, null, $session->get('client/id'));
                 if ($data)
                     $duplicateName = true;
             }

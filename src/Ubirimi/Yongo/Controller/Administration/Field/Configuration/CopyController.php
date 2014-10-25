@@ -19,7 +19,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationId = $request->get('id');
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = $this->getRepository(FieldConfiguration::class)->getMetaDataById($fieldConfigurationId);
 
         if ($fieldConfiguration['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,7 +36,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateFieldConfiguration = FieldConfiguration::getMetaDataByNameAndClientId(
+            $duplicateFieldConfiguration = $this->getRepository(FieldConfiguration::class)->getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -50,7 +50,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedFieldConfigurationId = $copiedFieldConfiguration->save($currentDate);
 
-                $fieldConfigurationData = FieldConfiguration::getDataByConfigurationId($fieldConfigurationId);
+                $fieldConfigurationData = $this->getRepository(FieldConfiguration::class)->getDataByConfigurationId($fieldConfigurationId);
 
                 while ($fieldConfigurationData && $data = $fieldConfigurationData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedFieldConfiguration->addCompleteData(

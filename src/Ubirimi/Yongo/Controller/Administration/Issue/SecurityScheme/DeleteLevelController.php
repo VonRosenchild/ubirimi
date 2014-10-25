@@ -25,7 +25,7 @@ class DeleteLevelController extends UbirimiController
             $newIssueSecuritySchemeLevelId
         );
 
-        IssueSecurityScheme::deleteLevelById($issueSecuritySchemeLevelId);
+        \deleteLevelById($issueSecuritySchemeLevelId);
 
         return new Response('');
     }

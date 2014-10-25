@@ -18,7 +18,7 @@ class AddLevelController extends UbirimiController
 
         $emptyName = false;
         $issueSecuritySchemeId = $request->get('id');
-        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeId);
+        $issueSecurityScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($issueSecuritySchemeId);
         if ($request->request->has('add_issue_security_scheme_level')) {
 
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -29,7 +29,7 @@ class AddLevelController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                IssueSecurityScheme::addLevel($issueSecuritySchemeId, $name, $description, $currentDate);
+                $this->getRepository(IssueSecurityScheme::class)->addLevel($issueSecuritySchemeId, $name, $description, $currentDate);
 
                 return new RedirectResponse('/yongo/administration/issue-security-scheme-levels/' . $issueSecuritySchemeId);
             }

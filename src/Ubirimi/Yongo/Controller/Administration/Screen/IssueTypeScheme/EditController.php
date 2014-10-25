@@ -20,7 +20,7 @@ class EditController extends UbirimiController
 
         $issueTypeScreenSchemeId = $request->get('id');
         $emptyName = false;
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
+        $issueTypeScreenScheme = $this->getRepository(IssueTypeScreenScheme::class)->getMetaDataById($issueTypeScreenSchemeId);
 
         if ($issueTypeScreenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

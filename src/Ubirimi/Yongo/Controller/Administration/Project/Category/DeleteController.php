@@ -18,8 +18,8 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $projectCategoryId = $request->request->get('id');
-        $projectCategory = ProjectCategory::getById($projectCategoryId);
-        ProjectCategory::deleteById($session->get('client/id'), $projectCategoryId);
+        $projectCategory = $this->getRepository(ProjectCategory::class)->getById($projectCategoryId);
+        $this->getRepository(ProjectCategory::class)->deleteById($session->get('client/id'), $projectCategoryId);
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository(UbirimiLog::class)->add(

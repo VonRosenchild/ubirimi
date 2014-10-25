@@ -25,7 +25,7 @@ class ViewController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurations = FieldConfigurationScheme::getFieldConfigurations($project['issue_type_field_configuration_id']);
+        $fieldConfigurations = $this->getRepository(FieldConfigurationScheme::class)->getFieldConfigurations($project['issue_type_field_configuration_id']);
         $allFields = $this->getRepository(Field::class)->getByClient($session->get('client/id'));
         $menuSelectedCategory = 'project';
 

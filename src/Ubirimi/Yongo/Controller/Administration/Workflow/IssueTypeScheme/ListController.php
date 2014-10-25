@@ -14,7 +14,7 @@ class ListController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
-        $issueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $issueTypeSchemes = $this->getRepository(IssueTypeScheme::class)->getByClientId($session->get('client/id'), 'workflow');
         $menuSelectedCategory = 'issue';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Workflow Issue Type Schemes';

@@ -37,7 +37,7 @@ class ListController extends UbirimiController
             );
         }
 
-        $projectCategories = ProjectCategory::getAll($session->get('client/id'));
+        $projectCategories = $this->getRepository(ProjectCategory::class)->getAll($session->get('client/id'));
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Projects';

@@ -19,13 +19,13 @@ class EditConfigController extends UbirimiController
         $fieldConfigurationId = $request->get('field_configuration_id');
         $fieldId = $request->get('id');
 
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = $this->getRepository(FieldConfiguration::class)->getMetaDataById($fieldConfigurationId);
 
         if ($fieldConfiguration['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurationData = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
+        $fieldConfigurationData = $this->getRepository(FieldConfiguration::class)->getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
         $description = $fieldConfigurationData['field_description'];
         $field = $this->getRepository(Field::class)->getById($fieldId);
 
@@ -37,7 +37,7 @@ class EditConfigController extends UbirimiController
 
         if ($request->request->has('edit_field_configuration')) {
             $description = $request->request->get('description');
-            FieldConfiguration::updateFieldDescription($fieldConfigurationId, $fieldId, $description);
+            $this->getRepository(FieldConfiguration::class)->updateFieldDescription($fieldConfigurationId, $fieldId, $description);
 
             return new RedirectResponse('/yongo/administration/field-configuration/edit/' . $fieldConfigurationId);
         }

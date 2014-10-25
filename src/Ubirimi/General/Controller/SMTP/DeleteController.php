@@ -5,6 +5,7 @@ namespace Ubirimi\General\Controller\SMTP;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\SystemProduct;
@@ -19,7 +20,7 @@ class DeleteController extends UbirimiController
 
         $smtpServerId = $request->request->get('id');
 
-        $smtpServer = SMTPServer::getById($smtpServerId);
+        $smtpServer = $this->getRepository(SMTPServer::class)->getById($smtpServerId);
         $date = Util::getServerCurrentDateTime();
 
         $this->getRepository(UbirimiLog::class)->add(
@@ -30,7 +31,7 @@ class DeleteController extends UbirimiController
             $date
         );
 
-        SMTPServer::deleteById($smtpServerId);
+        $this->getRepository(SMTPServer::class)->deleteById($smtpServerId);
         $session->remove('client/settings/smtp');
 
         return new Response('');

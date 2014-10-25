@@ -45,7 +45,7 @@ class ClientService
             $this->getRepository(UbirimiUser::class)->updateDisplayColumns($userId, $columns);
 
             $this->getRepository(UbirimiClient::class)->install($clientId);
-            EmailQueue::add(
+            UbirimiContainer::get()['repository']->get(EmailQueue::class)->add(
                 $clientId,
                 'accounts@ubirimi.com',
                 $data['adminEmail'],

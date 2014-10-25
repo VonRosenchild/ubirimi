@@ -37,7 +37,7 @@ class AddValueController extends UbirimiController
             if (!$emptyValue && !$duplicateValue) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                Field::addData($customFieldId, $value, $currentDate);
+                $this->getRepository(Field::class)->addData($customFieldId, $value, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

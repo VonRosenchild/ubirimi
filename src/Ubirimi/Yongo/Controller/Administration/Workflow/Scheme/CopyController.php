@@ -18,7 +18,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $workflowSchemeId = $request->get('id');
-        $workflowScheme = WorkflowScheme::getMetaDataById($workflowSchemeId);
+        $workflowScheme = $this->getRepository(WorkflowScheme::class)->getMetaDataById($workflowSchemeId);
 
         if ($workflowScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -35,7 +35,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $workflowSchemeAlreadyExisting = WorkflowScheme::getByClientIdAndName(
+            $workflowSchemeAlreadyExisting = $this->getRepository(WorkflowScheme::class)->getByClientIdAndName(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -50,7 +50,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedWorkflowSchemeId = $copiedWorkflowScheme->save($currentDate);
 
-                $workflowSchemeData = WorkflowScheme::getDataById($workflowSchemeId);
+                $workflowSchemeData = $this->getRepository(WorkflowScheme::class)->getDataById($workflowSchemeId);
 
                 while ($workflowSchemeData && $data = $workflowSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedWorkflowScheme->addData($copiedWorkflowSchemeId, $data['workflow_id'], $currentDate);

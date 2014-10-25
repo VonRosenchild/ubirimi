@@ -24,7 +24,7 @@ class ViewController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $screenSchemes = IssueTypeScreenScheme::getScreenSchemes($project['issue_type_screen_scheme_id']);
+        $screenSchemes = $this->getRepository(IssueTypeScreenScheme::class)->getScreenSchemes($project['issue_type_screen_scheme_id']);
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Type Screen Scheme';

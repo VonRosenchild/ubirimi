@@ -16,13 +16,13 @@ class EditController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $fieldConfigurationSchemeId = $request->get('id');
-        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = $this->getRepository(FieldConfigurationScheme::class)->getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataByFieldConfigurationSchemeId(
+        $fieldConfigurationSchemeData = $this->getRepository(FieldConfigurationScheme::class)->getDataByFieldConfigurationSchemeId(
             $fieldConfigurationSchemeId
         );
 

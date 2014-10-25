@@ -20,10 +20,10 @@ class EditDataController extends UbirimiController
 
         $issueTypeScreenSchemeDataId = $request->get('id');
         $screenSchemes = ScreenScheme::getMetaDataByClientId($session->get('client/id'));
-        $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataById($issueTypeScreenSchemeDataId);
+        $issueTypeScreenSchemeData = $this->getRepository(IssueTypeScreenScheme::class)->getDataById($issueTypeScreenSchemeDataId);
 
         $screenSchemeId = $issueTypeScreenSchemeData['issue_type_screen_scheme_id'];
-        $issueTypeScreenSchemeMetaData = IssueTypeScreenScheme::getMetaDataById($screenSchemeId);
+        $issueTypeScreenSchemeMetaData = $this->getRepository(IssueTypeScreenScheme::class)->getMetaDataById($screenSchemeId);
 
         if ($issueTypeScreenSchemeMetaData['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

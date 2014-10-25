@@ -47,9 +47,9 @@ class EditScreenVisibilityController extends UbirimiController
 
             // make field visible in all the field configurations
 
-            $fieldConfigurations = FieldConfiguration::getByClientId($session->get('client/id'));
+            $fieldConfigurations = $this->getRepository(FieldConfiguration::class)->getByClientId($session->get('client/id'));
             while ($fieldConfiguration = $fieldConfigurations->fetch_array(MYSQLI_ASSOC)) {
-                FieldConfiguration::addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
+                $this->getRepository(FieldConfiguration::class)->addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
             }
 
             $this->getRepository(UbirimiLog::class)->add(

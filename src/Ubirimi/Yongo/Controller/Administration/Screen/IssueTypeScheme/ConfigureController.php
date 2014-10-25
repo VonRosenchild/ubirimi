@@ -17,13 +17,13 @@ class ConfigureController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypeScreenSchemeId = $request->get('id');
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
+        $issueTypeScreenScheme = $this->getRepository(IssueTypeScreenScheme::class)->getMetaDataById($issueTypeScreenSchemeId);
 
         if ($issueTypeScreenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
+        $issueTypeScreenSchemeData = $this->getRepository(IssueTypeScreenScheme::class)->getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
         $menuSelectedCategory = 'issue';
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Issue Type Screen Scheme';
 

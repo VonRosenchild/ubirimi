@@ -20,7 +20,7 @@ class ConfigureController extends UbirimiController
 
         $Id = $request->get('id');
         $emptyName = false;
-        $workflowScheme = WorkflowScheme::getMetaDataById($Id);
+        $workflowScheme = $this->getRepository(WorkflowScheme::class)->getMetaDataById($Id);
 
         if ($workflowScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -28,7 +28,7 @@ class ConfigureController extends UbirimiController
 
         $allWorkflows = $this->getRepository(Workflow::class)->getAllByClientId($session->get('client/id'));
 
-        $schemeWorkflows = WorkflowScheme::getDataById($Id);
+        $schemeWorkflows = $this->getRepository(WorkflowScheme::class)->getDataById($Id);
 
         $name = $workflowScheme['name'];
         $description = $workflowScheme['description'];
@@ -43,11 +43,11 @@ class ConfigureController extends UbirimiController
 
             if (!$emptyName) {
                 WorkflowScheme::updateMetaDataById($Id, $name, $description);
-                WorkflowScheme::deleteDataByWorkflowSchemeId($Id);
+                $this->getRepository(WorkflowScheme::class)->deleteDataByWorkflowSchemeId($Id);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 9) == 'workflow_') {
                         $workflowId = str_replace('workflow_', '', $key);
-                        WorkflowScheme::addData($Id, $workflowId, $currentDate);
+                        $this->getRepository(WorkflowScheme::class)->addData($Id, $workflowId, $currentDate);
                     }
                 }
 

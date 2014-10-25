@@ -28,7 +28,7 @@ class AddController extends UbirimiController
         $emptyIssueTypeName = false;
         $issueTypeExists = false;
 
-        $allIssueTypes = IssueType::getAll($session->get('client/id'));
+        $allIssueTypes = $this->getRepository(IssueType::class)->getAll($session->get('client/id'));
 
         if ($request->request->has('new_type_scheme')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -47,7 +47,7 @@ class AddController extends UbirimiController
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 11) == 'issue_type_') {
                         $issueTypeId = str_replace('issue_type_', '', $key);
-                        IssueTypeScheme::addData($issueTypeSchemeId, $issueTypeId, $currentDate);
+                        $this->getRepository(IssueTypeScheme::class)->addData($issueTypeSchemeId, $issueTypeId, $currentDate);
                     }
                 }
 

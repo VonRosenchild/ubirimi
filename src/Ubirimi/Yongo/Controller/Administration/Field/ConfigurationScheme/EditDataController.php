@@ -19,11 +19,11 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $fieldConfigurationSchemeDataId = $request->get('id');
-        $fieldConfigurations = FieldConfiguration::getByClientId($session->get('client/id'));
-        $fieldConfigurationSchemeData = FieldConfigurationScheme::getDataById($fieldConfigurationSchemeDataId);
+        $fieldConfigurations = $this->getRepository(FieldConfiguration::class)->getByClientId($session->get('client/id'));
+        $fieldConfigurationSchemeData = $this->getRepository(FieldConfigurationScheme::class)->getDataById($fieldConfigurationSchemeDataId);
 
         $fieldConfigurationSchemeId = $fieldConfigurationSchemeData['issue_type_field_configuration_id'];
-        $fieldConfigurationScheme = FieldConfigurationScheme::getMetaDataById($fieldConfigurationSchemeId);
+        $fieldConfigurationScheme = $this->getRepository(FieldConfigurationScheme::class)->getMetaDataById($fieldConfigurationSchemeId);
 
         if ($fieldConfigurationScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,7 +33,7 @@ class EditDataController extends UbirimiController
             $fieldConfigurationId = Util::cleanRegularInputField($request->request->get('field_configuration'));
             $issueTypeId = Util::cleanRegularInputField($request->request->get('issue_type'));
 
-            FieldConfigurationScheme::updateDataById(
+            $this->getRepository(FieldConfigurationScheme::class)->updateDataById(
                 $fieldConfigurationId,
                 $fieldConfigurationSchemeId,
                 $issueTypeId

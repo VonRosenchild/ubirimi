@@ -22,12 +22,12 @@ class EditDataController extends UbirimiController
         $visibleFlag = $request->get('visible_flag');
         $requiredFlag = $request->get('required_flag');
 
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
-        $data = FieldConfiguration::getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
+        $fieldConfiguration = $this->getRepository(FieldConfiguration::class)->getMetaDataById($fieldConfigurationId);
+        $data = $this->getRepository(FieldConfiguration::class)->getDataByConfigurationAndField($fieldConfigurationId, $fieldId);
         if (!$data)
-            FieldConfiguration::addSimpleData($fieldConfigurationId, $fieldId);
+            $this->getRepository(FieldConfiguration::class)->addSimpleData($fieldConfigurationId, $fieldId);
 
-        FieldConfiguration::updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
+        $this->getRepository(FieldConfiguration::class)->updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
 
         $currentDate = Util::getServerCurrentDateTime();
 

@@ -16,10 +16,10 @@ class DoLevelDefaultController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $securityLevelId = $request->get('id');
-        $securityLevel = IssueSecurityScheme::getLevelById($securityLevelId);
-        $securityScheme = IssueSecurityScheme::getMetaDataById($securityLevel['issue_security_scheme_id']);
-        IssueSecurityScheme::makeAllLevelsNotDefault($securityScheme['id']);
-        IssueSecurityScheme::setLevelDefault($securityLevelId);
+        $securityLevel = $this->getRepository(IssueSecurityScheme::class)->getLevelById($securityLevelId);
+        $securityScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($securityLevel['issue_security_scheme_id']);
+        $this->getRepository(IssueSecurityScheme::class)->makeAllLevelsNotDefault($securityScheme['id']);
+        $this->getRepository(IssueSecurityScheme::class)->setLevelDefault($securityLevelId);
 
         return new RedirectResponse('/yongo/administration/issue-security-scheme-levels/' . $securityScheme['id']);
     }

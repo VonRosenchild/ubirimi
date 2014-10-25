@@ -401,26 +401,26 @@ class UbirimiClient
         while ($workflows && $workflow = $workflows->fetch_array(MYSQLI_ASSOC)) {
             UbirimiContainer::get()['repository']->get(Workflow::class)->deleteById($workflow['id']);
         }
-        NotificationScheme::deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(NotificationScheme::class)->deleteByClientId($clientId);
 
         $screens = UbirimiContainer::get()['repository']->get(Screen::class)->getByClientId($clientId);
         while ($screens && $screen = $screens->fetch_array(MYSQLI_ASSOC)) {
             UbirimiContainer::get()['repository']->get(Screen::class)->deleteById($screen['id']);
         }
-        NotificationScheme::deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(NotificationScheme::class)->deleteByClientId($clientId);
 
         UbirimiContainer::get()['repository']->get(UbirimiClient::class)->deleteYongoIssueTypes($clientId);
         UbirimiContainer::get()['repository']->get(UbirimiClient::class)->deleteYongoIssueStatuses($clientId);
         UbirimiContainer::get()['repository']->get(UbirimiClient::class)->deleteYongoIssueResolutions($clientId);
         UbirimiContainer::get()['repository']->get(UbirimiClient::class)->deleteYongoIssuePriorities($clientId);
-        Field::deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(Field::class)->deleteByClientId($clientId);
 
-        FieldConfiguration::deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(FieldConfiguration::class)->deleteByClientId($clientId);
 
-        FieldConfigurationScheme::deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(FieldConfigurationScheme::class)->deleteByClientId($clientId);
 
-        NotificationScheme::deleteByClientId($clientId);
-        NotificationScheme::deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(NotificationScheme::class)->deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(NotificationScheme::class)->deleteByClientId($clientId);
 
         IssueTypeScheme::deleteByClientId($clientId);
         IssueTypeScreenScheme::deleteByClientId($clientId);
@@ -1273,49 +1273,51 @@ class UbirimiClient
 
     public function createDefaultFieldConfigurationData($clientId, $fieldConfigurationId) {
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_AFFECTS_VERSION_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+
+        $fieldConfigurationRepository = UbirimiContainer::get()['repository']->get(FieldConfiguration::class);
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ASSIGNEE_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ATTACHMENT_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_COMMENT_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_COMPONENT_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_DESCRIPTION_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_DUE_DATE_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ENVIRONMENT_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_FIX_VERSION_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ISSUE_TYPE_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_PRIORITY_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_REPORTER_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_RESOLUTION_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
 
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_SUMMARY_CODE);
 
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 1, '');
         $field = UbirimiContainer::get()['repository']->get(Field::class)->getByCode($clientId, Field::FIELD_ISSUE_TIME_TRACKING_CODE);
-        FieldConfiguration::addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
+        $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
     }
 
     public function addDefaultDocumentatorGlobalPermissionData($clientId) {
@@ -1538,11 +1540,11 @@ class UbirimiClient
         // create default permission scheme
         $permissionSchemeId = $clientRepository->createDefaultPermissionScheme($clientId, $clientCreatedDate);
 
-        NotificationScheme::addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get(NotificationScheme::class)->addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
 
         // create default notification scheme
         $notificationSchemeId = $clientRepository->createDefaultNotificationScheme($clientId, $clientCreatedDate);
-        NotificationScheme::addDefaultNotifications($clientId, $notificationSchemeId);
+        UbirimiContainer::get()['repository']->get(NotificationScheme::class)->addDefaultNotifications($clientId, $notificationSchemeId);
 
         // add global permission
         $clientRepository->addYongoGlobalPermissionData($clientId, $groupAdministrators, $groupUsers);
@@ -1644,7 +1646,7 @@ class UbirimiClient
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
 
-        SMTPServer::add(
+        UbirimiContainer::get()['repository']->get(SMTPServer::class)->add(
             $clientId,
             'Ubirimi Mail Server',
             'The default Ubirimi mail server',
@@ -1773,19 +1775,19 @@ class UbirimiClient
     }
 
     public function deleteSVNRepositories($clientId) {
-        $repositories = SvnRepository::getAllByClientId($clientId);
+        $repositories = UbirimiContainer::get()['repository']->get(SvnRepository::class)->getAllByClientId($clientId);
         if ($repositories) {
             while ($repository = $repositories->fetch_array(MYSQLI_ASSOC)) {
-                SvnRepository::deleteAllById($repository['id']);
+                UbirimiContainer::get()['repository']->get(SvnRepository::class)->deleteAllById($repository['id']);
             }
         }
     }
 
     public function deleteSpaces($clientId) {
-        $spaces = Space::getByClientId($clientId);
+        $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientId($clientId);
         if ($spaces) {
             while ($space = $spaces->fetch_array(MYSQLI_ASSOC)) {
-                Space::deleteById($space['space_id']);
+                UbirimiContainer::get()['repository']->get(Space::class)->deleteById($space['space_id']);
             }
         }
     }

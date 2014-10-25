@@ -15,7 +15,7 @@ class ListController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issueSecuritySchemes = IssueSecurityScheme::getByClientId($session->get('client/id'));
+        $issueSecuritySchemes = $this->getRepository(IssueSecurityScheme::class)->getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'issue';
 

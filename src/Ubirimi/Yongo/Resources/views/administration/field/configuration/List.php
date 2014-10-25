@@ -57,7 +57,7 @@ require_once __DIR__ . '/../../_header.php';
                             <div class="smallDescription"><?php echo $fieldConfiguration['description'] ?></div>
                         </td>
                         <td width="500px">
-                            <?php $schemes = FieldConfigurationScheme::getFieldConfigurationsSchemesByFieldConfigurationId($clientId, $fieldConfiguration['id']) ?>
+                            <?php $schemes = UbirimiContainer::get()['repository']->get(FieldConfigurationScheme::class)->getFieldConfigurationsSchemesByFieldConfigurationId($clientId, $fieldConfiguration['id']) ?>
                             <?php if ($schemes): ?>
                                 <ul>
                                     <?php while ($scheme = $schemes->fetch_array(MYSQLI_ASSOC)): ?>

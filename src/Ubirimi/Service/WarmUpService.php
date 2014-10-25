@@ -116,7 +116,7 @@ class WarmUpService extends UbirimiService
     {
         $clientData = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getById($userData['client_id']);
         $clientSettings = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getSettings($userData['client_id']);
-        $clientSmtpSettings = SMTPServer::getByClientId($userData['client_id']);
+        $clientSmtpSettings = UbirimiContainer::get()['repository']->get(SMTPServer::class)->getByClientId($userData['client_id']);
 
         /**
          * store user record information in session under "user" namespace

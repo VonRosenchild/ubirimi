@@ -21,7 +21,7 @@ class EditMetadataController extends UbirimiController
         $workflowId = $request->get('id');
 
         $workflow = $this->getRepository(Workflow::class)->getMetaDataById($workflowId);
-        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $workflowIssueTypeSchemes = $this->getRepository(IssueTypeScheme::class)->getByClientId($session->get('client/id'), 'workflow');
 
         if ($workflow['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

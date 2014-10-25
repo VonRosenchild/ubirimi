@@ -613,7 +613,7 @@ class YongoProject
         UbirimiContainer::get()['repository']->get(YongoProject::class)->deleteIssuesByProjectId($Id);
         ProjectComponent::deleteByProjectId($Id);
         UbirimiContainer::get()['repository']->get(ProjectVersion::class)->deleteByProjectId($Id);
-        Custom::deleteDataByProjectId($Id);
+        CustomField::deleteDataByProjectId($Id);
         UbirimiContainer::get()['repository']->get(Board::class)->deleteByProjectId($Id);
 
         $query = "DELETE IGNORE FROM project_role_data WHERE project_id = " . $Id;
@@ -1374,37 +1374,6 @@ class YongoProject
         } else
             return null;
     }
-
-//    public function getFieldInformation($issueTypeScreenSchemeId, $issueTypeFieldConfigurationId, $issueTypeId, $operationId, $resultType = null) {
-//        $issueTypeFieldConfigurationData = FieldConfigurationScheme::getByIssueTypeFieldConfigurationIdAndIssueTypeId($issueTypeFieldConfigurationId, $issueTypeId);
-//        $fieldConfigurationId = $issueTypeFieldConfigurationData['field_configuration_id'];
-//
-//        $query = "SELECT screen_data.field_id " .
-//            "FROM issue_type_screen_scheme_data " .
-//            "left join screen_scheme_data on screen_scheme_data.scren_scheme_id = issue_type_screen_scheme_data.screen_scheme_id " .
-//            "left join screen_data on screen_data.screen_id = screen_scheme_data.screen_id " .
-//
-//            "left join field on field.id = field_configuration_data.field_id " .
-//            "WHERE issue_type_screen_scheme_data.issue_type_screen_scheme_id = ? and " .
-//            "screen_scheme_data.sys_operation_id = ? and " .
-//            "issue_type_screen_scheme_data.issue_type_id = ?";
-//
-//        if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
-//            $stmt->bind_param("iii", $issueTypeScreenSchemeId, $operationId, $issueTypeId);
-//            $stmt->execute();
-//            $result = $stmt->get_result();
-//            if ($result->num_rows) {
-//                if ($resultType == 'array') {
-//                    $resultData = array();
-//                    while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
-//                        $resultData[] = $data;
-//                    }
-//                    return $resultData;
-//                } else return $result;
-//            } else
-//                return null;
-//        }
-//    }
 
     public function getByWorkflowSchemeId($schemeId) {
         $query = 'SELECT * ' .

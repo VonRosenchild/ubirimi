@@ -11,13 +11,13 @@ class EmailService extends UbirimiService
     public function newUser($repositoryName, $firstName, $lastName, $username, $mail, $repositoryName)
     {
         Email::$smtpSettings = Util::getUbirimiSMTPSettings();
-        Email::sendNewUserRepositoryNotificationEmail($this->session->get('client/id'), $firstName, $lastName, $username, null, $mail, $repositoryName);
+        UbirimiContainer::get()['repository']->get(Email::class)->sendNewUserRepositoryNotificationEmail($this->session->get('client/id'), $firstName, $lastName, $username, null, $mail, $repositoryName);
     }
 
     public function passwordUpdate($repositoryName, $user, $password)
     {
         Email::$smtpSettings = Util::getUbirimiSMTPSettings();
-        Email::sendUserChangedPasswordForRepositoryNotificationEmail(
+        UbirimiContainer::get()['repository']->get(Email::class)->sendUserChangedPasswordForRepositoryNotificationEmail(
             $this->session->get('client/id'),
             $user['first_name'],
             $user['last_name'],
@@ -34,7 +34,7 @@ class EmailService extends UbirimiService
 
         if ($smtpSettings) {
             Email::$smtpSettings = $smtpSettings;
-            Email::sendNewUserRepositoryNotificationEmail(
+            UbirimiContainer::get()['repository']->get(Email::class)->sendNewUserRepositoryNotificationEmail(
                 $this->session->get('client/id'),
                 $user['first_name'],
                 $user['last_name'],

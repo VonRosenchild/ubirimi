@@ -26,8 +26,8 @@ class ViewIssueTypeSchemeController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $issueTypeDefaultScheme = IssueTypeScheme::getMetaDataById($project['issue_type_scheme_id']);
-        $issueTypeDefaultSchemeData = IssueTypeScheme::getDataById($issueTypeDefaultScheme['id']);
+        $issueTypeDefaultScheme = $this->getRepository(IssueTypeScheme::class)->getMetaDataById($project['issue_type_scheme_id']);
+        $issueTypeDefaultSchemeData = $this->getRepository(IssueTypeScheme::class)->getDataById($issueTypeDefaultScheme['id']);
 
         $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),

@@ -223,16 +223,16 @@ class Space {
     }
 
     public function deleteById($spaceId) {
-        $spaceEntities = Entity::getAllBySpaceId($spaceId);
+        $spaceEntities = UbirimiContainer::get()['repository']->get(Entity::class)->getAllBySpaceId($spaceId);
         if ($spaceEntities) {
             while ($spaceEntity = $spaceEntities->fetch_array(MYSQLI_ASSOC)) {
-                EntityComment::deleteCommentsByEntityId($spaceEntity['id']);
-                Entity::removeAsFavouriteForUsers($spaceEntity['id']);
-                Entity::deleteRevisionsByEntityId($spaceEntity['id']);
+                UbirimiContainer::get()['repository']->get(EntityComment::class)->deleteCommentsByEntityId($spaceEntity['id']);
+                UbirimiContainer::get()['repository']->get(Entity::class)->removeAsFavouriteForUsers($spaceEntity['id']);
+                UbirimiContainer::get()['repository']->get(Entity::class)->deleteRevisionsByEntityId($spaceEntity['id']);
 
-                Entity::deleteFilesByEntityId($spaceEntity['id']);
-                EntityAttachment::deleteByEntityId($spaceEntity['id'], $spaceId);
-                Entity::deleteById($spaceEntity['id']);
+                UbirimiContainer::get()['repository']->get(Entity::class)->deleteFilesByEntityId($spaceEntity['id']);
+                UbirimiContainer::get()['repository']->get(EntityAttachment::class)->deleteByEntityId($spaceEntity['id'], $spaceId);
+                UbirimiContainer::get()['repository']->get(Entity::class)->deleteById($spaceEntity['id']);
 
                 // delete any files, if any
                 $spaceBasePath = Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_DOCUMENTADOR, 'filelists');
@@ -240,7 +240,7 @@ class Space {
             }
         }
 
-        Space::deletePermissionsBySpaceId($spaceId);
+        UbirimiContainer::get()['repository']->get(Space::class)->deletePermissionsBySpaceId($spaceId);
 
         $query = "delete from documentator_space where id = ? limit 1";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -495,17 +495,17 @@ class Space {
     }
 
     public function deleteAllFromTrash($spaceId) {
-        $entities = Space::getDeletedPages($spaceId);
+        $entities = UbirimiContainer::get()['repository']->get(Space::class)->getDeletedPages($spaceId);
 
         if ($entities) {
             while ($entity = $entities->fetch_array(MYSQLI_ASSOC)) {
                 EntityComment::deleteCommentsByEntityId($entity['id']);
                 Entity::removeAsFavouriteForUsers($entity['id']);
-                Entity::deleteRevisionsByEntityId($entity['id']);
-                Entity::deleteFilesByEntityId($entity['id']);
+                UbirimiContainer::get()['repository']->get(Entity::class)->deleteRevisionsByEntityId($entity['id']);
+                UbirimiContainer::get()['repository']->get(Entity::class)->deleteFilesByEntityId($entity['id']);
                 EntityAttachment::deleteByEntityId($entity['id'], $spaceId);
 
-                Entity::deleteById($entity['id']);
+                UbirimiContainer::get()['repository']->get(Entity::class)->deleteById($entity['id']);
             }
         }
     }

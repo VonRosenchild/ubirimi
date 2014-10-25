@@ -23,7 +23,7 @@ class SelectSchemeController extends UbirimiController
         if ($project['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
-        $issueTypeScreenSchemes = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
+        $issueTypeScreenSchemes = $this->getRepository(IssueTypeScreenScheme::class)->getByClientId($session->get('client/id'));
 
         $menuSelectedCategory = 'project';
 

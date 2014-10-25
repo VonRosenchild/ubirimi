@@ -36,10 +36,10 @@ class EditController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $issueTypeScheme = IssueTypeScheme::getByClientId($session->get('client/id'), 'project');
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getByClientId($session->get('client/id'));
-        $workflowScheme = WorkflowScheme::getMetaDataByClientId($session->get('client/id'));
-        $projectCategories = ProjectCategory::getAll($session->get('client/id'));
+        $issueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getByClientId($session->get('client/id'), 'project');
+        $issueTypeScreenScheme = $this->getRepository(IssueTypeScreenScheme::class)->getByClientId($session->get('client/id'));
+        $workflowScheme = $this->getRepository(WorkflowScheme::class)->getMetaDataByClientId($session->get('client/id'));
+        $projectCategories = $this->getRepository(ProjectCategory::class)->getAll($session->get('client/id'));
 
         $emptyName = false;
         $duplicate_name = false;

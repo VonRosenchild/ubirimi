@@ -32,9 +32,9 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $fieldConfigurationSchemeId = $fieldConfigurationScheme->save($currentDate);
 
-                $issueTypes = IssueType::getAll($session->get('client/id'));
+                $issueTypes = $this->getRepository(IssueType::class)->getAll($session->get('client/id'));
                 while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
-                    FieldConfigurationScheme::addData($fieldConfigurationSchemeId, null, $issueType['id'], $currentDate);
+                    $this->getRepository(FieldConfigurationScheme::class)->addData($fieldConfigurationSchemeId, null, $issueType['id'], $currentDate);
                 }
 
                 $this->getRepository(UbirimiLog::class)->add(

@@ -12,7 +12,7 @@ class SVNController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $svnRepositories = SvnRepository::getAll(array('sort_by' => 'svn_repository.date_created', 'sort_order' => 'desc'));
+        $svnRepositories = $this->getRepository(SvnRepository::class)->getAll(array('sort_by' => 'svn_repository.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'svns';
 

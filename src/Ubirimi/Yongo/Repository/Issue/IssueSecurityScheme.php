@@ -71,7 +71,7 @@ class IssueSecurityScheme
     }
 
     public function deleteById($Id) {
-        $levels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($Id);
+        $levels = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($Id);
         while ($levels && $level = $levels->fetch_array(MYSQLI_ASSOC)) {
             $query = "delete from issue_security_scheme_level_data where issue_security_scheme_level_id = ?";
 

@@ -40,7 +40,7 @@ class AddController extends UbirimiController
 
             $date = Util::getServerCurrentDateTime();
 
-            SMTPServer::add(
+            $this->getRepository(SMTPServer::class)->add(
                 $session->get('client/id'),
                 $name,
                 $description,

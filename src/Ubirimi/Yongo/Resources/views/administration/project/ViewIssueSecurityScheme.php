@@ -1,7 +1,8 @@
 <?php
-    use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 
@@ -62,7 +63,7 @@
                 </tr>
             </thead>
             <?php if ($issueSecurityScheme): ?>
-                <?php $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecurityScheme['id']); ?>
+                <?php $issueSecuritySchemeLevels = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($issueSecurityScheme['id']); ?>
                 <tbody>
                     <?php while ($level = $issueSecuritySchemeLevels->fetch_array(MYSQLI_ASSOC)): ?>
                         <tr>
@@ -74,7 +75,7 @@
                             </td>
                             <td>
                                 <?php
-                                    $notificationData = IssueSecurityScheme::getDataByLevelId($level['id']);
+                                    $notificationData = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getDataByLevelId($level['id']);
                                     if ($notificationData) {
                                         echo '<ul>';
                                         while ($data = $notificationData->fetch_array(MYSQLI_ASSOC)) {

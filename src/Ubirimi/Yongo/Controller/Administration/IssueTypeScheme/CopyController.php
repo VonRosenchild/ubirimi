@@ -21,7 +21,7 @@ class CopyController extends UbirimiController
         $issueTypeSchemeId = $request->get('id');
         $type = $request->get('type');
 
-        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
+        $issueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getMetaDataById($issueTypeSchemeId);
 
         if ($issueTypeScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -38,7 +38,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateIssueTypeScheme = IssueTypeScheme::getMetaDataByNameAndClientId(
+            $duplicateIssueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getMetaDataByNameAndClientId(
                 $session->get('client/id'),
                 mb_strtolower($name)
             );
@@ -52,7 +52,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedIssueTypeSchemeId = $copiedIssueTypeScheme->save($currentDate);
 
-                $issueTypeSchemeData = IssueTypeScheme::getDataById($issueTypeSchemeId);
+                $issueTypeSchemeData = $this->getRepository(IssueTypeScheme::class)->getDataById($issueTypeSchemeId);
 
                 while ($issueTypeSchemeData && $data = $issueTypeSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedIssueTypeScheme->addData($copiedIssueTypeSchemeId, $data['issue_type_id'], $currentDate);

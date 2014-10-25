@@ -13,7 +13,7 @@ class AgileSprintController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $agileSprints = Sprint::getAllSprintsForClients();
+        $agileSprints = $this->getRepository(Sprint::class)->getAllSprintsForClients();
         $selectedOption = 'sprints';
 
         return $this->render(__DIR__ . '/../../Resources/views/administration/AgileSprint.php', get_defined_vars());

@@ -19,8 +19,8 @@ class DeleteController extends UbirimiController
 
         $issueTypeSchemeId = $request->request->get('id');
 
-        $issueTypeScheme = IssueTypeScheme::getMetaDataById($issueTypeSchemeId);
-        IssueTypeScheme::deleteById($issueTypeSchemeId);
+        $issueTypeScheme = $this->getRepository(IssueTypeScheme::class)->getMetaDataById($issueTypeSchemeId);
+        $this->getRepository(IssueTypeScheme::class)->deleteById($issueTypeSchemeId);
 
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository(UbirimiLog::class)->add(

@@ -17,7 +17,7 @@ class ListLevelController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeId = $request->get('id');
-        $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($issueSecuritySchemeId);
+        $issueSecurityScheme = $this->getRepository(IssueSecurityScheme::class)->getMetaDataById($issueSecuritySchemeId);
 
         if ($issueSecurityScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -25,7 +25,7 @@ class ListLevelController extends UbirimiController
 
         $menuSelectedCategory = 'issue';
 
-        $issueSecuritySchemeLevels = IssueSecurityScheme::getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
+        $issueSecuritySchemeLevels = $this->getRepository(IssueSecurityScheme::class)->getLevelsByIssueSecuritySchemeId($issueSecuritySchemeId);
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Security Scheme Levels';
 
         return $this->render(__DIR__ . '/../../../../Resources/views/administration/issue/security_scheme/ListLevel.php', get_defined_vars());

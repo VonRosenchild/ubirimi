@@ -13,7 +13,7 @@ class SpaceController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $spaces = Space::getAll(array('sort_by' => 'documentator_space.date_created', 'sort_order' => 'desc'));
+        $spaces = $this->getRepository(Space::class)->getAll(array('sort_by' => 'documentator_space.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'spaces';
 

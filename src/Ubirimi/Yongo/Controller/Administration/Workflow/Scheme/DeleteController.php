@@ -18,9 +18,9 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $workflowScheme = WorkflowScheme::getMetaDataById($Id);
-        WorkflowScheme::deleteDataByWorkflowSchemeId($Id);
-        WorkflowScheme::deleteById($Id);
+        $workflowScheme = $this->getRepository(WorkflowScheme::class)->getMetaDataById($Id);
+        $this->getRepository(WorkflowScheme::class)->deleteDataByWorkflowSchemeId($Id);
+        $this->getRepository(WorkflowScheme::class)->deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 

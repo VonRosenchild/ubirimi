@@ -286,7 +286,7 @@ class SvnRepository
     }
 
     public function deleteAllById($Id) {
-        $repo = SvnRepository::getById($Id);
+        $repo = UbirimiContainer::get()['repository']->get(SvnRepository::class)->getById($Id);
         $client = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getById($repo['svn_repository.client_id']);
 
         self::deleteById($Id);
@@ -333,7 +333,7 @@ class SvnRepository
     public function updateHtpasswd($repoId, $companyDomain) {
         $text = "";
 
-        $repository = SvnRepository::getById($repoId);
+        $repository = UbirimiContainer::get()['repository']->get(SvnRepository::class)->getById($repoId);
 
         $query = "SELECT user.username, svn_repository_user.password
                     FROM svn_repository_user

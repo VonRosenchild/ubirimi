@@ -25,18 +25,18 @@ class IndexController extends UbirimiController
         $clients = $this->getRepository(UbirimiClient::class)->getAll();
         $projects = $this->getRepository(YongoProject::class)->getAll();
         $users = $this->getRepository(UbirimiUser::class)->getAll();
-        $issues = UbirimiContainer::getRepository(Issue::class)->getAll();
-        $spaces = Space::getAllForAllClients();
-        $entities = Entity::getAll();
+        $issues = $this->getRepository(Issue::class)->getAll();
+        $spaces = $this->getRepository(Space::class)->getAllForAllClients();
+        $entities = $this->getRepository(Entity::class)->getAll();
         $agileBoards = $this->getRepository(Board::class)->getAll();
-        $agileSprints = Sprint::getAllSprintsForClients();
-        $svnRepos = SvnRepository::getAll();
+        $agileSprints = $this->getRepository(Sprint::class)->getAllSprintsForClients();
+        $svnRepos = $this->getRepository(SvnRepository::class)->getAll();
 
         $clientsToday = $this->getRepository(UbirimiClient::class)->getAll(array('today' => true));
         $projectsToday = $this->getRepository(YongoProject::class)->getAll(array('today' => true));
         $usersToday = $this->getRepository(UbirimiUser::class)->getAll(array('today' => true));
-        $issuesToday = UbirimiContainer::getRepository(Issue::class)->getAll(array('today' => true));
-        $svnReposToday = SvnRepository::getAll(array('today' => true));
+        $issuesToday = $this->getRepository(Issue::class)->getAll(array('today' => true));
+        $svnReposToday = $this->getRepository(SvnRepository::class)->getAll(array('today' => true));
 
         $selectedOption = 'statistics';
 

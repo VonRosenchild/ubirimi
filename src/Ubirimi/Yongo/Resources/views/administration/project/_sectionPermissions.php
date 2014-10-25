@@ -32,7 +32,7 @@ use Ubirimi\Yongo\Repository\Issue\IssueSecurityScheme;
                         <?php
                             $issueSecurityScheme = null;
                             if ($project['issue_security_scheme_id']) {
-                                $issueSecurityScheme = IssueSecurityScheme::getMetaDataById($project['issue_security_scheme_id']);
+                                $issueSecurityScheme = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getMetaDataById($project['issue_security_scheme_id']);
                             }
                         ?>
                         <?php if ($issueSecurityScheme): ?>

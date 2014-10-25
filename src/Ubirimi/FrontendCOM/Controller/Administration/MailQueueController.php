@@ -12,7 +12,7 @@ class MailQueueController extends UbirimiController
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $mails = EmailQueue::getAll();
+        $mails = $this->getRepository(EmailQueue::class)->getAll();
 
         $selectedOption = 'mail_queue';
 

@@ -20,7 +20,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
         $workflowExists = false;
-        $workflowIssueTypeSchemes = IssueTypeScheme::getByClientId($session->get('client/id'), 'workflow');
+        $workflowIssueTypeSchemes = $this->getRepository(IssueTypeScheme::class)->getByClientId($session->get('client/id'), 'workflow');
 
         if ($request->request->has('new_workflow')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));

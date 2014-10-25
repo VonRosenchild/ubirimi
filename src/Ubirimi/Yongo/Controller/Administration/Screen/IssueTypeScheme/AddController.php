@@ -20,7 +20,7 @@ class AddController extends UbirimiController
 
         $emptyName = false;
 
-        $allIssueTypes = IssueType::getAll($session->get('client/id'));
+        $allIssueTypes = $this->getRepository(IssueType::class)->getAll($session->get('client/id'));
 
         if ($request->request->has('new_issue_type_screen_scheme')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -34,9 +34,9 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $issueTypeScreenSchemeId = $issueTypeScreenScheme->save($currentDate);
 
-                $issueTypes = IssueType::getAll($session->get('client/id'));
+                $issueTypes = $this->getRepository(IssueType::class)->getAll($session->get('client/id'));
                 while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
-                    IssueTypeScreenScheme::addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
+                    $this->getRepository(IssueTypeScreenScheme::class)->addData($issueTypeScreenSchemeId, $issueType['id'], $currentDate);
                 }
 
                 $this->getRepository(UbirimiLog::class)->add(

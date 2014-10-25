@@ -19,7 +19,7 @@ class MailQueueController extends UbirimiController
         $session->set('selected_product_id', -1);
 
         $total = 0;
-        $mailsInQueue = EmailQueue::getByClientId($clientId);
+        $mailsInQueue = $this->getRepository(EmailQueue::class)->getByClientId($clientId);
         if ($mailsInQueue) {
             $total = $mailsInQueue->num_rows;
         }

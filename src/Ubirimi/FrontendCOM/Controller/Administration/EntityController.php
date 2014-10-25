@@ -6,14 +6,13 @@ use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class EntityController extends UbirimiController
 {
     public function indexAction()
     {
         Util::checkSuperUserIsLoggedIn();
 
-        $entities = Entity::getAll(array('sort_by' => 'documentator_entity.date_created', 'sort_order' => 'desc'));
+        $entities = $this->getRepository(Entity::class)->getAll(array('sort_by' => 'documentator_entity.date_created', 'sort_order' => 'desc'));
 
         $selectedOption = 'entity';
 

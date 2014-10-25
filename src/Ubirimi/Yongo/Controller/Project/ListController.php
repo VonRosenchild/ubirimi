@@ -30,7 +30,7 @@ class ListController extends UbirimiController
         $menuSelectedCategory = 'project';
 
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Projects';
-        $projectCategories = ProjectCategory::getAll($clientId);
+        $projectCategories = $this->getRepository(ProjectCategory::class)->getAll($clientId);
         $includeCheckbox = false;
 
         return $this->render(__DIR__ . '/../../Resources/views/project/List.php', get_defined_vars());

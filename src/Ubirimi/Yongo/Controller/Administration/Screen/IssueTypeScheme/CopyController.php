@@ -19,7 +19,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypeScreenSchemeId = $request->get('id');
-        $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($issueTypeScreenSchemeId);
+        $issueTypeScreenScheme = $this->getRepository(IssueTypeScreenScheme::class)->getMetaDataById($issueTypeScreenSchemeId);
 
         if ($issueTypeScreenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,7 +36,7 @@ class CopyController extends UbirimiController
                 $emptyName = true;
             }
 
-            $duplicateIssueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            $duplicateIssueTypeScreenScheme = $this->getRepository(IssueTypeScreenScheme::class)->getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
             if ($duplicateIssueTypeScreenScheme)
                 $duplicateName = true;
 
@@ -46,7 +46,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedIssueTypeScreenSchemeId = $copiedIssueTypeScreenScheme->save($currentDate);
 
-                $issueTypeScreenSchemeData = IssueTypeScreenScheme::getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
+                $issueTypeScreenSchemeData = $this->getRepository(IssueTypeScreenScheme::class)->getDataByIssueTypeScreenSchemeId($issueTypeScreenSchemeId);
 
                 while ($issueTypeScreenSchemeData && $data = $issueTypeScreenSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedIssueTypeScreenScheme->addDataComplete($copiedIssueTypeScreenSchemeId, $data['issue_type_id'], $data['screen_scheme_id'], $currentDate);

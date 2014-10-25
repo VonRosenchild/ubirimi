@@ -16,8 +16,8 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $Id = $request->request->get('id');
 
-        IssueTypeScheme::deleteDataByIssueTypeSchemeId($Id);
-        IssueTypeScheme::deleteById($Id);
+        $this->getRepository(IssueTypeScheme::class)->deleteDataByIssueTypeSchemeId($Id);
+        $this->getRepository(IssueTypeScheme::class)->deleteById($Id);
 
         return new Response('');
     }

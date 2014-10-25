@@ -17,7 +17,7 @@ class ViewController extends UbirimiController
         $session->set('selected_product_id', -1);
         $menuSelectedCategory = 'general_mail';
 
-        $smtpSettings = SMTPServer::getByClientId($session->get('client/id'));
+        $smtpSettings = $this->getRepository(SMTPServer::class)->getByClientId($session->get('client/id'));
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / SMTP Server Settings';
 

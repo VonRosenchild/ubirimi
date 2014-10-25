@@ -44,7 +44,7 @@ require_once __DIR__ . '/_header.php';
                 <td><?php echo $entity['name']; ?></td>
                 <td>
                     <?php
-                        $space = Space::getById($entity['documentator_space_id']);
+                        $space = UbirimiContainer::get()['repository']->get(Space::class)->getById($entity['documentator_space_id']);
                         echo $space['name'];
                     ?>
                 </td>

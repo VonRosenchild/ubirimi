@@ -328,40 +328,40 @@ class PermissionScheme
 
     public function addDefaultPermissions($permissionSchemeId, $roleAdministratorsId, $roleDevelopersId, $roleUsersId, $currentDate) {
 
-        $permissionRepository = UbirimiContainer::get()['repository']->get(PermissionScheme::class);
+        $permissionSchemeRepository = UbirimiContainer::get()['repository']->get(PermissionScheme::class);
 
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADMINISTER_PROJECTS, array($roleAdministratorsId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_BROWSE_PROJECTS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADMINISTER_PROJECTS, array($roleAdministratorsId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_BROWSE_PROJECTS, array($roleUsersId), $currentDate);
 
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CREATE_ISSUE, array($roleUsersId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ISSUE, array($roleDevelopersId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGN_ISSUE, array($roleDevelopersId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGNABLE_USER, array($roleDevelopersId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_RESOLVE_ISSUE, array($roleDevelopersId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CLOSE_ISSUE, array($roleDevelopersId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_MODIFY_REPORTER, array($roleAdministratorsId), $currentDate);
-        $permissionRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ISSUE, array($roleAdministratorsId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CREATE_ISSUE, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGN_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ASSIGNABLE_USER, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_RESOLVE_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CLOSE_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_MODIFY_REPORTER, array($roleAdministratorsId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ISSUE, array($roleAdministratorsId), $currentDate);
 
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADD_COMMENTS, array($roleUsersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ALL_COMMENTS, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ALL_COMMENTS, array($roleAdministratorsId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_OWN_COMMENTS, array($roleUsersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_OWN_COMMENTS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_ADD_COMMENTS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ALL_COMMENTS, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ALL_COMMENTS, array($roleAdministratorsId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_OWN_COMMENTS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_OWN_COMMENTS, array($roleUsersId), $currentDate);
 
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CREATE_ATTACHMENTS, array($roleUsersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ALL_ATTACHMENTS, array($roleAdministratorsId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_OWN_ATTACHMENTS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_CREATE_ATTACHMENTS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ALL_ATTACHMENTS, array($roleAdministratorsId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_OWN_ATTACHMENTS, array($roleUsersId), $currentDate);
 
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_WORK_ON_ISSUE, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_OWN_WORKLOGS, array($roleUsersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ALL_WORKLOGS, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_OWN_WORKLOGS, array($roleUsersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ALL_WORKLOGS, array($roleAdministratorsId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_WORK_ON_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_OWN_WORKLOGS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_EDIT_ALL_WORKLOGS, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_OWN_WORKLOGS, array($roleUsersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_DELETE_ALL_WORKLOGS, array($roleAdministratorsId), $currentDate);
 
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_LINK_ISSUE, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_LINK_ISSUE, array($roleDevelopersId), $currentDate);
 
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_VIEW_VOTERS_AND_WATCHERS, array($roleDevelopersId), $currentDate);
-        PermissionScheme::addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_MANAGE_WATCHERS, array($roleAdministratorsId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_VIEW_VOTERS_AND_WATCHERS, array($roleDevelopersId), $currentDate);
+        $permissionSchemeRepository->addRoleDataToPermissionId($permissionSchemeId, Permission::PERM_MANAGE_WATCHERS, array($roleAdministratorsId), $currentDate);
     }
 
     public function deleteById($permissionSchemeId) {

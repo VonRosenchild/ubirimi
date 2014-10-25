@@ -18,11 +18,11 @@ class DeleteLevelDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueSecuritySchemeLevelDataId = $request->request->get('id');
-        $issueSecuritySchemeLevelData = IssueSecurityScheme::getLevelDataById($issueSecuritySchemeLevelDataId);
+        $issueSecuritySchemeLevelData = $this->getRepository(IssueSecurityScheme::class)->getLevelDataById($issueSecuritySchemeLevelDataId);
         $issueSecuritySchemeLevelId = $issueSecuritySchemeLevelData['issue_security_scheme_level_id'];
-        $issueSecuritySchemeLevel = IssueSecurityScheme::getLevelById($issueSecuritySchemeLevelId);
+        $issueSecuritySchemeLevel = $this->getRepository(IssueSecurityScheme::class)->getLevelById($issueSecuritySchemeLevelId);
 
-        IssueSecurityScheme::deleteLevelDataById($issueSecuritySchemeLevelDataId);
+        $this->getRepository(IssueSecurityScheme::class)->deleteLevelDataById($issueSecuritySchemeLevelDataId);
 
         $date = Util::getServerCurrentDateTime();
 

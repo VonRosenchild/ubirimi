@@ -41,14 +41,14 @@ class AddDataController extends UbirimiController
             } else {
                 // check for duplicate name
 
-                $duplicateField = Custom::getByNameAndType($session->get('client/id'), $name, $fieldTypeId);
+                $duplicateField = $this->getRepository(CustomField::class)->getByNameAndType($session->get('client/id'), $name, $fieldTypeId);
                 if ($duplicateField)
                     $duplicateName = true;
             }
             if (!$emptyName && !$duplicateName) {
                 $date = Util::getServerCurrentDateTime();
 
-                $fieldId = Custom::create(
+                $fieldId = CustomField::create(
                     $session->get('client/id'),
                     $fieldTypeCode,
                     $name,

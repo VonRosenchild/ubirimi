@@ -37,8 +37,8 @@ class LogController extends UbirimiController
             $issueQueryParameters = array('issue_id' => $issueId);
             $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
 
-            WorkLog::addLog($issueId, $loggedInUserId, $timeSpentPost, $dateStartedString, $comment, $currentDate);
-            $remainingTime = WorkLog::adjustRemainingEstimate($issue, $timeSpentPost, $remainingTime, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
+            $this->getRepository(WorkLog::class)->addLog($issueId, $loggedInUserId, $timeSpentPost, $dateStartedString, $comment, $currentDate);
+            $remainingTime = $this->getRepository(WorkLog::class)->adjustRemainingEstimate($issue, $timeSpentPost, $remainingTime, $session->get('yongo/settings/time_tracking_hours_per_day'), $session->get('yongo/settings/time_tracking_days_per_week'), $loggedInUserId);
 
             $fieldChanges = array(array('time_spent', null, $timeSpentPost), array('remaining_estimate', $issue['remaining_estimate'], $remainingTime));
             $this->getRepository(Issue::class)->updateHistory($issue['id'], $loggedInUserId, $fieldChanges, $currentDate);

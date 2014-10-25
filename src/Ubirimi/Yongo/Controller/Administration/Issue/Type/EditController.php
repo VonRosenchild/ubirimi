@@ -19,7 +19,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->get('id');
-        $issueType = IssueType::getById($Id);
+        $issueType = $this->getRepository(IssueType::class)->getById($Id);
 
         if ($issueType['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');

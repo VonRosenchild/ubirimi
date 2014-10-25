@@ -21,7 +21,7 @@ class EditScreenVisibilityController extends UbirimiController
         $fieldConfigurationId = $request->get('field_configuration_id');
         $fieldId = $request->get('id');
 
-        $fieldConfiguration = FieldConfiguration::getMetaDataById($fieldConfigurationId);
+        $fieldConfiguration = $this->getRepository(FieldConfiguration::class)->getMetaDataById($fieldConfigurationId);
 
         $field = $this->getRepository(Field::class)->getById($fieldId);
         $screens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));

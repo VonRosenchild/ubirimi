@@ -19,7 +19,7 @@ class AssociateStep1Controller extends UbirimiController
         $projectId = $request->get('id');
         $project = $this->getRepository(YongoProject::class)->getById($projectId);
         $menuSelectedCategory = 'project';
-        $issueSecuritySchemes = IssueSecurityScheme::getByClientId($session->get('client/id'));
+        $issueSecuritySchemes = $this->getRepository(IssueSecurityScheme::class)->getByClientId($session->get('client/id'));
 
         if ($request->request->has('cancel')) {
             return new RedirectResponse('/yongo/administration/project/issue-security/' . $projectId);
