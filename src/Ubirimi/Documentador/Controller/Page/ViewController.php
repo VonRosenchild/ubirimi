@@ -24,8 +24,9 @@ class ViewController extends UbirimiController
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 
             $page = $this->getRepository(Entity::class)->getById($entityId, $session->get('user/id'));
-            if ($page)
+            if ($page) {
                 $spaceId = $page['space_id'];
+            }
 
             $sectionPageTitle = $session->get('client/settings/title_name')
                 . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME
@@ -57,13 +58,15 @@ class ViewController extends UbirimiController
         if ($page) {
             $parentEntityId = $page['parent_entity_id'];
             $parentPage = null;
-            if ($parentEntityId)
+            if ($parentEntityId) {
                 $parentPage = $this->getRepository(Entity::class)->getById($parentEntityId);
+            }
 
             $revisionId = $request->attributes->has('rev_id') ? str_replace('/', '', $request->get('rev_id')) : null;
 
-            if ($revisionId)
+            if ($revisionId) {
                 $revision = $this->getRepository(Entity::class)->getRevisionsByPageIdAndRevisionId($entityId, $revisionId);
+            }
 
             $space = $this->getRepository(Space::class)->getById($spaceId);
 

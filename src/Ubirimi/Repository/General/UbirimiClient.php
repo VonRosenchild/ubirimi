@@ -6,7 +6,7 @@ use Paymill\Models\Request\Client as PaymillClient;
 use Paymill\Request as PaymillRequest;
 use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
-use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Calendar\Repository\Reminder\ReminderPeriod;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\Repository\SMTPServer;
@@ -1815,7 +1815,7 @@ class UbirimiClient
         $calendarId = UbirimiCalendar::save($userData['id'], $userData['first_name'] . ' ' . $userData['last_name'], 'My default calendar', '#A1FF9E', $clientCreatedDate, 1);
 
         // add default reminders
-        UbirimiCalendar::addReminder($calendarId, \Ubirimi\Calendar\Repository\Reminder\Type::REMINDER_EMAIL, Period::PERIOD_MINUTE, 30);
+        UbirimiCalendar::addReminder($calendarId, \Ubirimi\Calendar\Repository\Reminder\ReminderType::REMINDER_EMAIL, ReminderPeriod::PERIOD_MINUTE, 30);
     }
 
     public function getCurrentMonthAndDayPayingCustomers() {

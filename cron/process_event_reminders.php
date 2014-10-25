@@ -1,8 +1,8 @@
 <?php
 
-
-use Ubirimi\Calendar\Repository\Reminder\Period;
-use Ubirimi\Calendar\Repository\Reminder\Reminder;
+use Ubirimi\Calendar\Repository\Reminder\ReminderPeriod;
+use Ubirimi\Calendar\Repository\Reminder\EventReminder;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
 
 use Ubirimi\Repository\SMTPServer;
@@ -19,7 +19,7 @@ if (file_exists(__DIR__ . '/process_event_reminders.lock')) {
 
 require_once __DIR__ . '/../web/bootstrap_cli.php';
 
-$reminders = Reminder::getRemindersToBeFired();
+$reminders = UbirimiContainer::get()['repository']->get(EventReminder::class)->getRemindersToBeFired();
 
 while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
     $currentDate = Util::getServerCurrentDateTime();
@@ -42,19 +42,19 @@ while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
         $dateTemporary = date_create(date('Y-m-d H:i:s', time()));
 
         switch ($reminderPeriod) {
-            case Period::PERIOD_MINUTE:
+            case ReminderPeriod::PERIOD_MINUTE:
                 date_add($dateTemporary, date_interval_create_from_date_string($reminderValue . ' minutes'));
                 $eventStartDateReminder = date_format($dateTemporary, 'Y-m-d H:i:s');
                 break;
-            case Period::PERIOD_HOUR:
+            case ReminderPeriod::PERIOD_HOUR:
                 date_add($dateTemporary, date_interval_create_from_date_string($reminderValue . ' hours'));
                 $eventStartDateReminder = date_format($dateTemporary, 'Y-m-d H:i:s');
                 break;
-            case Period::PERIOD_DAY:
+            case ReminderPeriod::PERIOD_DAY:
                 date_add($dateTemporary, date_interval_create_from_date_string($reminderValue . ' days'));
                 $eventStartDateReminder = date_format($dateTemporary, 'Y-m-d H:i:s');
                 break;
-            case Period::PERIOD_WEEK:
+            case ReminderPeriod::PERIOD_WEEK:
                 date_add($dateTemporary, date_interval_create_from_date_string($reminderValue . ' weeks'));
                 $eventStartDateReminder = date_format($dateTemporary, 'Y-m-d H:i:s');
                 break;
@@ -73,7 +73,7 @@ while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
 
             // update the reminder as fired
 
-            Reminder::setAsFired($reminder['id']);
+            UbirimiContainer::get()['repository']->get(EventReminder::class)->setAsFired($reminder['id']);
         }
     }
 }

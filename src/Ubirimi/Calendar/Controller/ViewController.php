@@ -120,6 +120,7 @@ class ViewController extends UbirimiController
         } else {
             $maximumDays = 35;
         }
+
         $daysLeft = $maximumDays - count($dates);
         for ($x = 1; $x <= $daysLeft; $x++) {
             $dates[] = $x . '_' . $nextMonth . '_' . $nextYear;

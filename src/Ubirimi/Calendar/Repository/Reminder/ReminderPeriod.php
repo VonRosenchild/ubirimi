@@ -2,7 +2,7 @@
 
 namespace Ubirimi\Calendar\Repository\Reminder;
 
-class Period
+class ReminderPeriod
 {
     const PERIOD_MINUTE = 1;
     const PERIOD_HOUR = 2;

@@ -1,6 +1,6 @@
 <?php
 
-use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Calendar\Repository\Reminder\ReminderPeriod;
 use Ubirimi\Util;
 use Ubirimi\LinkHelper;
 use Ubirimi\SystemProduct;
@@ -56,12 +56,12 @@ require_once __DIR__ . '/../_header.php';
                                    name="value_reminder_<?php echo $eventReminder['id'] ?>"
                                    style="width: 50px;" />
 
-                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_MINUTE) echo 'minutes' ?></span>
+                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_MINUTE) echo 'minutes' ?></span>
                             <span><?php
-                                    if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_HOUR) echo 'hours' ?></span>
+                                    if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_HOUR) echo 'hours' ?></span>
                             <span><?php
-                                    if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_DAY) echo 'days' ?></span>
-                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_WEEK) echo 'weeks' ?></span>
+                                    if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_DAY) echo 'days' ?></span>
+                            <span><?php if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_WEEK) echo 'weeks' ?></span>
                             <br />
                         <?php endwhile ?>
                     </div>

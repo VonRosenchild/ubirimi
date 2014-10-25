@@ -4,7 +4,7 @@ namespace Ubirimi\Calendar\Repository\Reminder;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class Reminder
+class EventReminder
 {
     public function getRemindersToBeFired() {
         $query = "SELECT cal_event.date_from, cal_event.name, " .

@@ -25,10 +25,12 @@ class AddEntityController extends UbirimiController
         $type = $request->request->get('type');
         $parentId = $request->request->get('parent_id');
         $spaceId = $request->request->get('space_id');
-        if ($type == 'file_list')
+
+        if ($type == 'file_list') {
             $pageType = EntityType::ENTITY_FILE_LIST;
-        else
+        } else {
             $pageType = EntityType::ENTITY_BLANK_PAGE;
+        }
 
         if ($parentId == -1) {
             // set the parent to the home page of the space if it exists

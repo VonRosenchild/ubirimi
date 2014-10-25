@@ -33,7 +33,7 @@ class UploadTransitionAttachmentController extends UbirimiController
             $ext = substr($filename, strrpos($filename, '.') + 1);
             $filenameWithoutExtension = substr($filename, 0, strrpos($filename, '.'));
 
-            $attachmentId = IssueAttachment::add($issueId,
+            $attachmentId = $this->getRepository(IssueAttachment::class)->add($issueId,
                 Util::slugify($filenameWithoutExtension) . '.' . $ext,
                 $loggedInUserId,
                 Util::getServerCurrentDateTime());
@@ -64,7 +64,7 @@ class UploadTransitionAttachmentController extends UbirimiController
             $temp[] = $attachmentId;
             $session->set('added_attachments_in_screen', $temp);
 
-            IssueAttachment::updateSizeById($attachmentId, $size);
+            $this->getRepository(IssueAttachment::class)->updateSizeById($attachmentId, $size);
 
             if (Util::isImage(Util::getExtension($filename))) {
 

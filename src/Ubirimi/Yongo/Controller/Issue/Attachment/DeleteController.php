@@ -17,9 +17,9 @@ class DeleteController extends UbirimiController
 
         $attachmentId = $request->request->get('att_id');
 
-        $attachment = IssueAttachment::getById($attachmentId);
+        $attachment = $this->getRepository(IssueAttachment::class)->getById($attachmentId);
 
-        IssueAttachment::deleteById($attachmentId);
+        $this->getRepository(IssueAttachment::class)->deleteById($attachmentId);
 
         $pathToAttachment = UbirimiContainer::get()['asset.root_folder'] . UbirimiContainer::get()['asset.yongo_issue_attachments'];
 

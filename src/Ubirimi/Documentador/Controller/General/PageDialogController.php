@@ -16,6 +16,5 @@ class PageDialogController extends UbirimiController
         $type = $request->get('type');
 
         return $this->render(__DIR__ . '/../../Resources/views/page/Dialog.php', get_defined_vars());
-
     }
 }

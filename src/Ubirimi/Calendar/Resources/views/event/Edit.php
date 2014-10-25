@@ -1,9 +1,9 @@
 <?php
 
-use Ubirimi\Calendar\Repository\Reminder\Period;
+use Ubirimi\Calendar\Repository\Reminder\ReminderPeriod;
 
 use Ubirimi\Calendar\Repository\Reminder\RepeatCycle;
-use Ubirimi\Calendar\Repository\Reminder\Type;
+use Ubirimi\Calendar\Repository\Reminder\ReminderType;
 use Ubirimi\Util;
 
 
@@ -103,7 +103,7 @@ require_once __DIR__ . '/../_header.php';
                                 <div id="reminder_content_<?php echo $eventReminder['id'] ?>">
                                     <select name="reminder_type_<?php echo $eventReminder['id'] ?>" class="select2InputSmall">
                                         <option value="<?php
-                                            echo Type::REMINDER_EMAIL ?>">Email</option>
+                                            echo ReminderType::REMINDER_EMAIL ?>">Email</option>
                                     </select>
                                     &nbsp;
                                     <input type="text"
@@ -114,14 +114,14 @@ require_once __DIR__ . '/../_header.php';
                                     &nbsp;
                                     <select name="reminder_period_<?php echo $eventReminder['id'] ?>" class="select2InputSmall">
                                         <option <?php
-                                            if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_MINUTE) echo 'selected="selected"' ?> value="<?php echo Period::PERIOD_MINUTE ?>">minutes</option>
+                                            if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_MINUTE) echo 'selected="selected"' ?> value="<?php echo ReminderPeriod::PERIOD_MINUTE ?>">minutes</option>
                                         <option <?php
-                                            if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_HOUR) echo 'selected="selected"' ?> value="<?php echo Period::PERIOD_HOUR ?>">hours</option>
+                                            if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_HOUR) echo 'selected="selected"' ?> value="<?php echo ReminderPeriod::PERIOD_HOUR ?>">hours</option>
                                         <option <?php
-                                            if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_DAY) echo 'selected="selected"' ?> value="<?php echo Period::PERIOD_DAY ?>">days</option>
+                                            if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_DAY) echo 'selected="selected"' ?> value="<?php echo ReminderPeriod::PERIOD_DAY ?>">days</option>
                                         <option <?php
-                                            if ($eventReminder['cal_event_reminder_period_id'] == Period::PERIOD_WEEK) echo 'selected="selected"' ?> value="<?php
-                                            echo Period::PERIOD_WEEK ?>">weeks</option>
+                                            if ($eventReminder['cal_event_reminder_period_id'] == ReminderPeriod::PERIOD_WEEK) echo 'selected="selected"' ?> value="<?php
+                                            echo ReminderPeriod::PERIOD_WEEK ?>">weeks</option>
                                     </select>
                                     <img src="/img/delete.png" id="delete_reminder_<?php echo $eventReminder['id'] ?>" title="Delete reminder" />
                                     <br />

@@ -18,7 +18,7 @@ class EmailService extends UbirimiService
             EmailRepository::$smtpSettings = Util::getUbirimiSMTPSettings();
         }
 
-        EmailRepository::sendNewUserNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $clientDomain);
+        UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendNewUserNotificationEmail($clientId, $firstName, $lastName, $username, $password, $email, $clientDomain);
     }
 
     public function newUserCustomer($firstName, $lastName, $password, $email, $clientDomain, $clientId)
@@ -31,12 +31,12 @@ class EmailService extends UbirimiService
             EmailRepository::$smtpSettings = Util::getUbirimiSMTPSettings();
         }
 
-        EmailRepository::sendNewCustomerNotificationEmail($clientId, $firstName, $lastName, $email, $password, $clientDomain);
+        UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendNewCustomerNotificationEmail($clientId, $firstName, $lastName, $email, $password, $clientDomain);
     }
 
     public function contact($name, $category, $message, $email)
     {
-        EmailRepository::sendContactMessage(
+        UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendContactMessage(
             array('domnulnopcea@gmail.com', 'domnuprofesor@gmail.com'),
             $name,
             $category,
@@ -47,11 +47,11 @@ class EmailService extends UbirimiService
 
     public function feedback($userData, $like, $improve, $newFeatures, $experience)
     {
-        EmailRepository::sendFeedback($userData, $like, $improve, $newFeatures, $experience);
+        UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendFeedback($userData, $like, $improve, $newFeatures, $experience);
     }
 
     public function passwordRecover($email, $password)
     {
-        EmailRepository::sendEmailRetrievePassword($email, $password);
+        UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendEmailRetrievePassword($email, $password);
     }
 }

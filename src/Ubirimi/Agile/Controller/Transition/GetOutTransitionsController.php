@@ -10,10 +10,7 @@ use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Workflow\Workflow;
 
-
-c ass GetOutTransitionsController exten
-
- UbirimiController
+class GetOutTransitionsController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {

@@ -24,11 +24,12 @@ class AssignUsersConfirmController extends UbirimiController
 
         $groupUsersArrayIds = array();
 
-        while ($groupUsers && $user = $groupUsers->fetch_array(MYSQLI_ASSOC))
+        while ($groupUsers && $user = $groupUsers->fetch_array(MYSQLI_ASSOC)) {
             $groupUsersArrayIds[] = $user['user_id'];
-        if ($groupUsers)
+        }
+        if ($groupUsers) {
             $groupUsers->data_seek(0);
-
+        }
         $firstSelected = true;
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/group/AssignUsersConfirm.php', get_defined_vars());

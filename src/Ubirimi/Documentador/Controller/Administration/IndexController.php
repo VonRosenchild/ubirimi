@@ -12,7 +12,6 @@ class IndexController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-
         Util::checkUserIsLoggedInAndRedirect();
 
         $loggedInUserId = $session->get('user/id');

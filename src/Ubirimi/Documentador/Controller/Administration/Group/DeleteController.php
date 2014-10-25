@@ -22,4 +22,3 @@ class DeleteController extends UbirimiController
         return new Response('');
     }
 }
-

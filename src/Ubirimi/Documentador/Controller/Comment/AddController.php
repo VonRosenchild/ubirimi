@@ -13,7 +13,6 @@ class AddController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-
         Util::checkUserIsLoggedInAndRedirect();
 
         $loggedInUserId = $session->get('user/id');
@@ -21,7 +20,6 @@ class AddController extends UbirimiController
         $content = Util::cleanRegularInputField($request->request->get('content'));
         $pageId = $request->request->get('entity_id');
         $parentId = $request->request->get('parent_comment_id');
-        var_dump($pageId);
         $date = Util::getServerCurrentDateTime();
 
         $this->getRepository(EntityComment::class)->addComment($pageId, $loggedInUserId, $content, $date, $parentId);

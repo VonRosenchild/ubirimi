@@ -11,7 +11,6 @@ class GetFileDataController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-
         $fileId = $request->request->get('id');
         $file = $this->getRepository(Entity::class)->getFileById($fileId);
 

@@ -23,8 +23,10 @@ class OperationConfirmationController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $loggedInUserId = $session->get('user/id');
+
         $menuSelectedCategory = 'issue';
-        $smtpSettings = $session->get('client/settings/smtp');
+        $clientSettings = $session->get('client/settings');
 
         $issues = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => UbirimiContainer::get()['session']->get('bulk_change_issue_ids'), $loggedInUserId));
         if ($request->request->has('confirm')) {
@@ -43,13 +45,13 @@ class OperationConfirmationController extends UbirimiController
                     }
 
                     $this->getRepository(Issue::class)->deleteById($issueIds[$i]);
-                    IssueAttachment::deleteByIssueId($issueIds[$i]);
+                    $this->getRepository(IssueAttachment::class)->deleteByIssueId($issueIds[$i]);
 
                     // also delete the substaks
                     $childrenIssues = $this->getRepository(Issue::class)->getByParameters(array('parent_id' => $issueIds[$i]), $loggedInUserId);
                     while ($childrenIssues && $childIssue = $childrenIssues->fetch_array(MYSQLI_ASSOC)) {
                         $this->getRepository(Issue::class)->deleteById($childIssue['id']);
-                        IssueAttachment::deleteByIssueId($childIssue['id']);
+                        $this->getRepository(IssueAttachment::class)->deleteByIssueId($childIssue['id']);
                     }
                 }
             }

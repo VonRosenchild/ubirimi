@@ -8,9 +8,8 @@ require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-
+    <?php Util::renderBreadCrumb('Bulk Operation Step 1 of 4 > Choose Issues'); ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Bulk Operation Step 1 of 4 > Choose Issues'); ?>
 
         <ul class="nav nav-tabs" style="padding: 0px;">
             <li class="active"><a href="/yongo/issue/bulk-choose?<?php echo $session->get('bulk_change_choose_issue_query_url') ?>">Choose Issues</a></li>

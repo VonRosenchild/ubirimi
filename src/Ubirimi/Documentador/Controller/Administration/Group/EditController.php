@@ -34,14 +34,15 @@ class EditController extends UbirimiController
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
-
+            }
             if (!$emptyName) {
                 $groupAlreadyExists = $this->getRepository(UbirimiGroup::class)->getByNameAndProductId($clientId, SystemProduct::SYS_PRODUCT_YONGO, mb_strtolower($name), $Id);
 
-                if ($groupAlreadyExists)
+                if ($groupAlreadyExists) {
                     $duplicateName = true;
+                }
             }
 
             if (!$emptyName && !$duplicateName) {

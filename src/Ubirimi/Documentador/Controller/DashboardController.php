@@ -35,10 +35,11 @@ class DashboardController extends UbirimiController
         $menuSelectedCategory = 'documentator';
 
         if ($type == 'spaces') {
-            if (Util::checkUserIsLoggedIn())
+            if (Util::checkUserIsLoggedIn()) {
                 $spaces = $this->getRepository(Space::class)->getByClientId($session->get('client/id'), 1);
-            else
+            } else {
                 $spaces = $this->getRepository(Space::class)->getByClientIdAndAnonymous($session->get('client/id'));
+            }
         } else if ($type == 'pages') {
             $pages = $this->getRepository(Entity::class)->getFavouritePagesByClientIdAndUserId($session->get('client/id'), $loggedInUserId);
         }

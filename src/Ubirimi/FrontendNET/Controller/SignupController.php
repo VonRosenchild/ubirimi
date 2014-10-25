@@ -65,23 +65,24 @@ class SignupController extends UbirimiController
                 }
             }
 
-            if ($emailData)
+            if ($emailData) {
                 $errors['email_already_exists'] = true;
-
-            if (empty($firstName))
+            }
+            if (empty($firstName)) {
                 $errors['empty_first_name'] = true;
-
-            if (empty($lastName))
+            }
+            if (empty($lastName)) {
                 $errors['empty_last_name'] = true;
-
-            if (empty($username))
+            }
+            if (empty($username)) {
                 $errors['empty_username'] = true;
-
-            if (empty($password))
+            }
+            if (empty($password)) {
                 $errors['empty_password'] = true;
-
-            if ($password != $passwordAgain)
+            }
+            if ($password != $passwordAgain) {
                 $errors['password_mismatch'] = true;
+            }
 
             if (Util::hasNoErrors($errors)) {
                 $userId = UbirimiContainer::get()['user']->newUser(
