@@ -6,8 +6,9 @@ require_once __DIR__ . '/_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
+    <?php Util::renderBreadCrumb('Ubirimi') ?>
+
     <div class="pageContent">
-        <?php Util::renderBreadCrumb('Ubirimi') ?>
         <div>
             Contact <a target="_blank" href="https://support.ubirimi.net/">Support</a>
             <br />

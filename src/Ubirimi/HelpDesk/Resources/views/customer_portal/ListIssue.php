@@ -1,9 +1,12 @@
 <?php
-    require_once __DIR__ . '/_header.php';
+use Ubirimi\Util;
+
+require_once __DIR__ . '/_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/_menu.php'; ?>
 
+    <?php echo Util::renderBreadCrumb('Search') ?>
     <div class="pageContent">
 
         <?php if (!$projectsForBrowsing): ?>

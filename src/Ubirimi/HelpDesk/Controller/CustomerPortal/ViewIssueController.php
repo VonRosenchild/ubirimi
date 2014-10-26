@@ -27,7 +27,7 @@ class ViewIssueController extends UbirimiController
 
         Util::checkUserIsLoggedInAndRedirect();
 
-        $issue = UbirimiContainer::getRepository(Issue::class)->getById($issueId, $session->get('user/id'));
+        $issue = $this->getRepository(Issue::class)->getById($issueId, $session->get('user/id'));
         $issueId = $issue['id'];
         $projectId = $issue['issue_project_id'];
         $clientSettings = $session->get('client/settings');
@@ -84,7 +84,7 @@ class ViewIssueController extends UbirimiController
 
             $customFieldsData = $this->getRepository(CustomField::class)->getCustomFieldsData($issue['id']);
 
-            $attachments = IssueAttachment::getByIssueId($issue['id'], true);
+            $attachments = $this->getRepository(IssueAttachment::class)->getByIssueId($issue['id'], true);
             $countAttachments = count($attachments);
 
             $atLeastOneSLA = false;
@@ -96,7 +96,7 @@ class ViewIssueController extends UbirimiController
                     break;
                 }
             }
-            $watchers = Watcher::getByIssueId($issueId);
+            $watchers = $this->getRepository(Watcher::class)->getByIssueId($issueId);
             $timeTrackingFlag = $session->get('yongo/settings/time_tracking_flag');
 
             $customFieldsData = $this->getRepository(CustomField::class)->getCustomFieldsData($issue['id']);

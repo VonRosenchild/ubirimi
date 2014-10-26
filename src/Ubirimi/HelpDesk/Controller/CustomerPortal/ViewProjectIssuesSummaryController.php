@@ -33,7 +33,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             'helpdesk_flag' => 1
         );
 
-        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(
+        $issues = $this->getRepository(Issue::class)->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
@@ -96,7 +96,7 @@ class ViewProjectIssuesSummaryController extends UbirimiController
             'helpdesk_flag' => 1
         );
 
-        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(
+        $issues = $this->getRepository(Issue::class)->getByParameters(
             $issueQueryParameters,
             $session->get('user/id'),
             null,
