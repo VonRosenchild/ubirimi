@@ -34,7 +34,7 @@ class SigninController extends UbirimiController
             return new RedirectResponse($httpHOST . '/yongo/my-dashboard');
         }
 
-        $context = isset($_GET['context']) ? $_GET['context'] : null;
+        $context = $request->get('context');
 
         if ($request->request->has('sign_in')) {
 
@@ -59,8 +59,12 @@ class SigninController extends UbirimiController
                         return new RedirectResponse($httpHOST . '/yongo/my-dashboard');
                     }
 
-                } else $signInError = true;
-            } else $signInError = true;
+                } else {
+                    $signInError = true;
+                }
+            } else {
+                $signInError = true;
+            }
         } else if ($request->request->has('create_account')) {
             return new RedirectResponse('/sign-up');
         }
