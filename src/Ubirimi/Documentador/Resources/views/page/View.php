@@ -1,15 +1,14 @@
 <?php
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Entity\EntityComment;
 use Ubirimi\Documentador\Repository\Entity\EntityType;
 use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 
-
-
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
@@ -27,13 +26,18 @@ use Ubirimi\LinkHelper;
     ?>
 
     <div class="doc-left-side">
-        dasdasdas
+        <div>
+            <?php
+                $html = '';
+                echo UbirimiContainer::get()['repository']->get(Entity::class)->renderTreeNavigation($treeStructure, $html, 0, 0);
+            ?>
+        </div>
     </div>
+
 
     <div class="pageContent" style="overflow: hidden; margin-left: 285px">
         <?php if ($page): ?>
-
-
+            <?php var_dump($treeStructure) ?>
             <?php if (Util::checkUserIsLoggedIn()): ?>
                 <?php require_once __DIR__ . '/_buttons.php' ?>
             <?php endif ?>

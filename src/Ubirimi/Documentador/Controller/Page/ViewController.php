@@ -14,7 +14,6 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class ViewController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
@@ -72,6 +71,18 @@ class ViewController extends UbirimiController
 
             if ($space['client_id'] != $session->get('client/id')) {
                 return new RedirectResponse('/general-settings/bad-link-access-denied');
+            }
+
+            $pagesInSpace = $this->getRepository(Entity::class)->getAllBySpaceId($spaceId);
+            $treeStructure = array();
+            while ($pageInSpace = $pagesInSpace->fetch_array(MYSQLI_ASSOC)) {
+                if ($pageInSpace['parent_entity_id'] == null) {
+                    $treeStructure[0][] = array('id' => $pageInSpace['id'],
+                                                'title' => $pageInSpace['name']);
+                } else {
+                    $treeStructure[$pageInSpace['parent_entity_id']][] = array('id' => $pageInSpace['id'],
+                                                                               'title' => $pageInSpace['name']);
+                }
             }
 
             $comments = $this->getRepository(EntityComment::class)->getComments($entityId, 'array');

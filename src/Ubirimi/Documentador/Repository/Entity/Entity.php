@@ -39,14 +39,17 @@ class Entity {
     }
 
     public function getAllBySpaceId($spaceId, $inTrashFlag = null) {
-        $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
+        $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, " .
+                 "documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
+                 "documentator_entity.parent_entity_id, " .
                  "user.id as user_id, user.first_name, user.last_name " .
             "FROM documentator_entity " .
             "left join user on user.id = documentator_entity.user_created_id " .
             "where documentator_entity.documentator_space_id = ? ";
 
-        if (isset($inTrashFlag))
+        if (isset($inTrashFlag)) {
             $query .= " and documentator_entity.in_trash_flag = " . $inTrashFlag;
+        }
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $spaceId);
@@ -274,7 +277,8 @@ class Entity {
     }
 
     public function getChildren($pageId) {
-        $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
+        $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, " .
+            "documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
             "user.id as user_id, user.first_name, user.last_name " .
             "FROM documentator_entity " .
             "left join user on user.id = documentator_entity.user_created_id " .
@@ -626,5 +630,31 @@ class Entity {
             else
                 return null;
         }
+    }
+
+    public function renderTreeNavigation($treeStructure, &$html, $parentPosition, $index) {
+        foreach ($treeStructure as $parent => $childData) {
+            if ($parent == $parentPosition) {
+                foreach ($childData as $indexPosition => $data) {
+                    $html .= '<div>';
+                    for ($i = 0; $i < $index; $i++) {
+                        $html .= '&nbsp;';
+                    }
+                    $html .= '&nbsp;';
+                    if (array_key_exists($data['id'], $treeStructure)) {
+                        $html .= '+ ' . $data['title'];
+                    } else {
+                        $html .= '&bullet; ' . $data['title'];
+                    }
+
+                    $html .= '</div>';
+                    $index++;
+                    UbirimiContainer::get()['repository']->get(Entity::class)->renderTreeNavigation($treeStructure, $html, $data['id'], $index);
+                    $index--;
+                }
+            }
+        }
+
+        return $html;
     }
 }

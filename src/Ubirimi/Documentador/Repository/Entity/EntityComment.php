@@ -94,38 +94,38 @@ class EntityComment {
                     $identationIndex = 0;
 
                 $htmlLayout .= '<table class="table table-hover table-condensed">';
-                $htmlLayout .= '<tr>';
-                for ($j = 0; $j < $identationIndex; $j++) {
-                    $htmlLayout .= '<td width="30"></td>';
-                }
+                    $htmlLayout .= '<tr>';
+                        for ($j = 0; $j < $identationIndex; $j++) {
+                            $htmlLayout .= '<td width="30"></td>';
+                        }
 
-                $htmlLayout .= '<td width="25px" style="vertical-align: top">';
-                $htmlLayout .= '<img src="' . UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getUserAvatarPicture(UbirimiContainer::get()['session']->get('user'), 'small') . '" style="vertical-align: top" />';
-                $htmlLayout .= '</td>';
-                $htmlLayout .= '<td>';
-                $htmlLayout .= LinkHelper::getUserProfileLink($comments[$i]['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $comments[$i]['first_name'], $comments[$i]['last_name']);
-                $htmlLayout .= '<div>' . str_replace("\n", "<br />", $comments[$i]['content']) . '</div>';
+                        $htmlLayout .= '<td width="25px" style="vertical-align: top">';
+                            $htmlLayout .= '<img src="' . UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getUserAvatarPicture(UbirimiContainer::get()['session']->get('user'), 'small') . '" style="vertical-align: top" />';
+                        $htmlLayout .= '</td>';
+                        $htmlLayout .= '<td>';
+                            $htmlLayout .= LinkHelper::getUserProfileLink($comments[$i]['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $comments[$i]['first_name'], $comments[$i]['last_name']);
+                            $htmlLayout .= '<div>' . str_replace("\n", "<br />", $comments[$i]['content']) . '</div>';
 
-                $htmlLayout .= '<div style="margin-top: 4px">';
-                $htmlLayout .= '<a href="#" id="entity_reply_comment_' . $comments[$i]['id'] . '">Reply</a>';
-                $htmlLayout .= '<span> | </span>';
-                $htmlLayout .= '<a href="#" id="entity_delete_comment_' . $comments[$i]['id'] . '">Delete</a>';
-                $htmlLayout .= '</div>';
-                $htmlLayout .= '<div id="innerCommentSection_' . $comments[$i]['id'] . '" style="display: none;">';
-                $htmlLayout .= '<textarea class="inputTextAreaLarge" id="inner_doc_view_page_add_comment_content_' . $comments[$i]['id'] . '" style="width: 100%"></textarea>';
-                $htmlLayout .= '<div style="height: 2px"></div>';
-                $htmlLayout .= '<table width="100%" cellpadding="0" cellspacing="0" border="0">';
-                $htmlLayout .= '<tr>';
-                $htmlLayout .= '<td>';
-                $htmlLayout .= '<div>';
-                $htmlLayout .= '<input type="button" name="add_comment" id="inner_btn_doc_view_page_add_comment_' . $comments[$i]['id'] . '" value="Add Comment" class="btn ubirimi-btn"/>';
-                $htmlLayout .= '</div>';
-                $htmlLayout .= '</td>';
-                $htmlLayout .= '</tr>';
-                $htmlLayout .= '</table>';
-                $htmlLayout .= '</div>';
-                $htmlLayout .= '</td>';
-                $htmlLayout .= '</tr>';
+                            $htmlLayout .= '<div style="margin-top: 4px">';
+                                $htmlLayout .= '<a href="#" id="entity_reply_comment_' . $comments[$i]['id'] . '">Reply</a>';
+                                $htmlLayout .= '<span> | </span>';
+                                $htmlLayout .= '<a href="#" id="entity_delete_comment_' . $comments[$i]['id'] . '">Delete</a>';
+                            $htmlLayout .= '</div>';
+                            $htmlLayout .= '<div id="innerCommentSection_' . $comments[$i]['id'] . '" style="display: none;">';
+                                $htmlLayout .= '<textarea class="inputTextAreaLarge" id="inner_doc_view_page_add_comment_content_' . $comments[$i]['id'] . '" style="width: 100%"></textarea>';
+                                $htmlLayout .= '<div style="height: 2px"></div>';
+                                    $htmlLayout .= '<table width="100%" cellpadding="0" cellspacing="0" border="0">';
+                                        $htmlLayout .= '<tr>';
+                                            $htmlLayout .= '<td>';
+                                                $htmlLayout .= '<div>';
+                                                    $htmlLayout .= '<input type="button" name="add_comment" id="inner_btn_doc_view_page_add_comment_' . $comments[$i]['id'] . '" value="Add Comment" class="btn ubirimi-btn"/>';
+                                                $htmlLayout .= '</div>';
+                                            $htmlLayout .= '</td>';
+                                        $htmlLayout .= '</tr>';
+                                    $htmlLayout .= '</table>';
+                            $htmlLayout .= '</div>';
+                        $htmlLayout .= '</td>';
+                    $htmlLayout .= '</tr>';
                 $htmlLayout .= '</table>';
                 $comments[$i]['printed'] = 1;
 
