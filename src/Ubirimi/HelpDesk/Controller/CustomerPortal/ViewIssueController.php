@@ -4,14 +4,13 @@ namespace Ubirimi\HelpDesk\Controller\CustomerPortal;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 use Ubirimi\Yongo\Repository\Issue\CustomField;
-use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 use Ubirimi\Yongo\Repository\Issue\Issue;
+use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
