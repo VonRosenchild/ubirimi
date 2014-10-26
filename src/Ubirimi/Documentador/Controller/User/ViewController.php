@@ -19,6 +19,7 @@ class ViewController extends UbirimiController
         if (Util::checkUserIsLoggedIn()) {
 
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
+            $clientId = $session->get('client/id');
         } else {
             $httpHOST = Util::getHttpHost();
             $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');

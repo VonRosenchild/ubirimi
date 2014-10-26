@@ -18,7 +18,7 @@ class FavouritesController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         if (Util::checkUserIsLoggedIn()) {
-
+            $clientId = $session->get('client/id');
             $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
         } else {
             $httpHOST = Util::getHttpHost();

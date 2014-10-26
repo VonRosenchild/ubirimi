@@ -1,19 +1,18 @@
 <?php
-    use Ubirimi\LinkHelper;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-
+    <?php
+        $title = $user['first_name'] . ' ' . $user['last_name'] . ' > Activity';
+        Util::renderBreadCrumb($title);
+    ?>
     <div class="pageContent">
-        <?php
-            $title = $user['first_name'] . ' ' . $user['last_name'] . ' > Activity';
-            Util::renderBreadCrumb($title);
-        ?>
         <?php if (Util::checkUserIsLoggedIn()): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
