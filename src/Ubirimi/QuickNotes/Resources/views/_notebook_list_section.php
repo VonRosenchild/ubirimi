@@ -12,7 +12,7 @@ use Ubirimi\QuickNotes\Repository\Note;
             </tr>
         </table>
     </div>
-    <div style="padding-left: 4px;<?php if ($notebookId == -1) echo 'background-color: #CCCCCC;' ?>">
+    <div style="padding-left: 4px;<?php if ($notebookId == -1) echo 'background-color: #eeeeee;' ?>">
         <table width="100%">
             <tr>
                 <td width="80px"><a href="/quick-notes/note/all">All Notes</a></td>
@@ -30,7 +30,7 @@ use Ubirimi\QuickNotes\Repository\Note;
     <?php endif ?>
 </div>
 <div>
-    <div style="padding-left: 4px; border-bottom: 1px solid #DDDDDD; background-color: #DDDDDD">
+    <div style="padding-left: 4px; border-bottom: 2px solid #c6c6c6; background-color: #DDDDDD">
         <table width="100%">
             <tr>
                 <td width="40px">

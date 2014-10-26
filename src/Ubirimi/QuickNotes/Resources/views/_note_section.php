@@ -36,7 +36,7 @@ use Ubirimi\Util;
 
         </tr>
             <tr>
-                <td style="border-bottom: 1px solid #DDDDDD; background-color: #DDDDDD">
+                <td style="border-bottom: 2px solid #c6c6c6; background-color: #DDDDDD">
                     <div style="padding-left: 8px">Created <?php echo Util::getFormattedDate($note['date_created']) ?><?php if (isset($note['date_updated'])) echo ', Modified ' . Util::getFormattedDate($note['date_updated']) ?></div>
 
                 </td>
