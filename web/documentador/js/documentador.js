@@ -185,6 +185,17 @@ $('document').ready(function () {
         });
     });
 
+    $("[id^='tree_show_content_']").click(function (event) {
+
+        var parentId = $(this).attr("id").replace('tree_show_content_', '').split('_')[0];
+        if ($("[id^='tree_" + parentId + "']").css('display') == 'none') {
+
+            $("[id^='tree_" + parentId + "']").css('display','block');
+        } else {
+            $("[id^='tree_" + parentId + "']").css('display','none');
+        }
+    });
+
     $(document).on('click', "[id^='doc_dialog_page_select_']", function (event) {
         $(this).parent().children().each(function () {
             $(this).css('background-color', '');

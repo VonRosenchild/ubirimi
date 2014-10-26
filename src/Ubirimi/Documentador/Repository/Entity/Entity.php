@@ -3,6 +3,7 @@
 namespace Ubirimi\Documentador\Repository\Entity;
 
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\LinkHelper;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
 
@@ -632,24 +633,37 @@ class Entity {
         }
     }
 
-    public function renderTreeNavigation($treeStructure, &$html, $parentPosition, $index) {
+    public function renderTreeNavigation($treeStructure, $parentPosition, $index, $visible) {
+        $html = '';
         foreach ($treeStructure as $parent => $childData) {
             if ($parent == $parentPosition) {
                 foreach ($childData as $indexPosition => $data) {
-                    $html .= '<div id="tree_' . $parentPosition . '_' . $data['id'] . '">';
-                    for ($i = 0; $i < $index; $i++) {
-                        $html .= '&nbsp;';
-                    }
-                    $html .= '&nbsp;';
-                    if (array_key_exists($data['id'], $treeStructure)) {
-                        $html .= '> ' . $data['title'];
+                    if (!$visible) {
+                        $style = 'style="display: none; overflow: visible;"';
                     } else {
-                        $html .= '&bullet; ' . $data['title'];
+                        $style = 'style="display: block; overflow: visible;"';
+                    }
+                    $html .= '<div ' . $style . ' id="tree_' . $parentPosition . '_' . $data['id'] . '">';
+
+                    $smallIndent = '';
+                    $bigIndent = '';
+                    for ($i = 0; $i < $index * 2; $i++) {
+                        $smallIndent .= '&nbsp;';
+                    }
+                    for ($i = 0; $i < $index * 3; $i++) {
+                        $bigIndent .= '&nbsp;';
+                    }
+                    $html .= '';
+                    if (array_key_exists($data['id'], $treeStructure)) {
+                        $html .= $smallIndent . '<a style="margin-top: -8px;" href="#" id="tree_show_content_' . $data['id'] . '_x">';
+                        $html .= '<img style="vertical-align: middle;" src="/documentador/img/arrow_down.png" /></a> ' . LinkHelper::getDocumentatorPageLink($data['id'], $data['title']);
+                    } else {
+                        $html .= $bigIndent . '&bullet; ' . LinkHelper::getDocumentatorPageLink($data['id'], $data['title']);
                     }
 
-                    $html .= '</div>';
                     $index++;
-                    UbirimiContainer::get()['repository']->get(Entity::class)->renderTreeNavigation($treeStructure, $html, $data['id'], $index);
+                    $html .= UbirimiContainer::get()['repository']->get(Entity::class)->renderTreeNavigation($treeStructure, $data['id'], $index, $data['expanded']);
+                    $html .= '</div>';
                     $index--;
                 }
             }

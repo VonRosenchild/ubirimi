@@ -78,10 +78,28 @@ class ViewController extends UbirimiController
             while ($pageInSpace = $pagesInSpace->fetch_array(MYSQLI_ASSOC)) {
                 if ($pageInSpace['parent_entity_id'] == null) {
                     $treeStructure[0][] = array('id' => $pageInSpace['id'],
-                                                'title' => $pageInSpace['name']);
+                                                'title' => $pageInSpace['name'],
+                                                'expanded' => ($entityId == $pageInSpace['id']));
                 } else {
                     $treeStructure[$pageInSpace['parent_entity_id']][] = array('id' => $pageInSpace['id'],
-                                                                               'title' => $pageInSpace['name']);
+                                                                               'title' => $pageInSpace['name'],
+                                                                               'expanded' => ($entityId == $pageInSpace['id']));
+                }
+
+                if ($entityId == $pageInSpace['id']) {
+                    $expandedId = $pageInSpace['parent_entity_id'];
+                }
+            }
+
+            while ($expandedId != 0) {
+                foreach ($treeStructure as $id => $data) {
+                    foreach ($data as $key => $value) {
+                        if ($value['id'] == $expandedId) {
+                            $treeStructure[$id][$key]['expanded'] = true;
+                            $expandedId = $id;
+                            break;
+                        }
+                    }
                 }
             }
 

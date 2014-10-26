@@ -29,7 +29,7 @@ require_once __DIR__ . '/../_header.php';
         <div>
             <?php
                 $html = '';
-                echo UbirimiContainer::get()['repository']->get(Entity::class)->renderTreeNavigation($treeStructure, $html, 0, 0);
+                echo UbirimiContainer::get()['repository']->get(Entity::class)->renderTreeNavigation($treeStructure, 0, 0, true);
             ?>
         </div>
     </div>
@@ -42,6 +42,7 @@ require_once __DIR__ . '/../_header.php';
             <?php endif ?>
             <?php
                 $lastEditedText = ' last edited by ';
+
                 if ($lastRevision) {
                     $date = date("F t, Y", strtotime($lastRevision['date_created']));
                     $lastEditedText .= LinkHelper::getUserProfileLink($lastRevision['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $lastRevision['first_name'], $lastRevision['last_name']) . ' on ' . $date;
