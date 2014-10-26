@@ -27,7 +27,7 @@ require_once __DIR__ . '/_header.php';
                                class="inputText"
                                value="<?php if (isset($to)) echo $to ?>"
                                name="log_filter_to_date" />
-                        <a style="margin-top: -4px;" id="btnFilterLog" href="#" class="btn ubirimi-btn">Filter</a>
+                        <a id="btnFilterLog" href="#" class="btn ubirimi-btn">Filter</a>
                     </td>
                 </tr>
             </table>
