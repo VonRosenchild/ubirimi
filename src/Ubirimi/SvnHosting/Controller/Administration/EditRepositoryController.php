@@ -29,6 +29,7 @@ class EditRepositoryController extends UbirimiController
         $duplicateCode = false;
 
         if ($request->request->has('confirm_edit_svn_repository')) {
+
             $repoId = Util::cleanRegularInputField($request->request->get('repo_id'));
             $code = Util::cleanRegularInputField($request->request->get('code'));
             $description = Util::cleanRegularInputField($request->request->get('description'));
@@ -36,7 +37,7 @@ class EditRepositoryController extends UbirimiController
             if (empty($code)) {
                 $emptyCode = true;
             } else {
-                $svn_repository_exists = $this->getRepository(SvnRepository::class)->getByCode(mb_strtolower($code), $clientId);
+                $svn_repository_exists = $this->getRepository(SvnRepository::class)->getByCode(mb_strtolower($code), $clientId, $repoId);
                 if ($svn_repository_exists) {
                     $duplicateCode = true;
                 }

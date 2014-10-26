@@ -13,18 +13,18 @@ use Ubirimi\Util;
 
 class SvnRepository
 {
-    public function getByCode($code, $clientId) {
+    public function getByCode($code, $clientId, $repositoryId = null) {
 
-        $query = 'select id, name, code from project where client_id = ? and LOWER(code) = LOWER(?) ';
+        $query = 'select id, name, code from svn_repository where client_id = ? and LOWER(code) = LOWER(?) ';
 
-        // todo: error
-        if ($projectId) $query .= 'and id != ?';
+        if ($repositoryId) $query .= 'and id != ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
-        if ($projectId) $stmt->bind_param("isi", $clientId, $code, $projectId);
-        else
+        if ($repositoryId) {
+            $stmt->bind_param("isi", $clientId, $code, $repositoryId);
+        } else {
             $stmt->bind_param("is", $clientId, $code);
-
+        }
         $stmt->execute();
         $result = $stmt->get_result();
 
