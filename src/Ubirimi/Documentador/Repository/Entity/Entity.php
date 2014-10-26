@@ -636,13 +636,13 @@ class Entity {
         foreach ($treeStructure as $parent => $childData) {
             if ($parent == $parentPosition) {
                 foreach ($childData as $indexPosition => $data) {
-                    $html .= '<div>';
+                    $html .= '<div id="tree_' . $parentPosition . '_' . $data['id'] . '">';
                     for ($i = 0; $i < $index; $i++) {
                         $html .= '&nbsp;';
                     }
                     $html .= '&nbsp;';
                     if (array_key_exists($data['id'], $treeStructure)) {
-                        $html .= '+ ' . $data['title'];
+                        $html .= '> ' . $data['title'];
                     } else {
                         $html .= '&bullet; ' . $data['title'];
                     }

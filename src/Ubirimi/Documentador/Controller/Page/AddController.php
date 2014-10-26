@@ -33,9 +33,10 @@ class AddController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $parentEntityId = isset($_GET['entity_id']) ? $_GET['entity_id'] : null;
-        if ($parentEntityId)
+        $parentEntityId =  $request->get('entity_id');
+        if ($parentEntityId) {
             $parentEntityId = str_replace("/", "", $parentEntityId);
+        }
 
         if (empty($parentEntityId)) {
             // set the parent to the home page of the space if it exists

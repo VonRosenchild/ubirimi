@@ -37,7 +37,6 @@ require_once __DIR__ . '/../_header.php';
 
     <div class="pageContent" style="overflow: hidden; margin-left: 285px">
         <?php if ($page): ?>
-            <?php var_dump($treeStructure) ?>
             <?php if (Util::checkUserIsLoggedIn()): ?>
                 <?php require_once __DIR__ . '/_buttons.php' ?>
             <?php endif ?>
