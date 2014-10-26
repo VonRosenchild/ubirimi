@@ -92,7 +92,7 @@ require_once __DIR__ . '/../_header.php';
                         </td>
                         <td>
                             <?php
-                                $screenSchemes = ScreenScheme::getByIssueType($data['issue_type_id'], $clientId);
+                                $screenSchemes = UbirimiContainer::get()['repository']->get(ScreenScheme::class)->getByIssueType($data['issue_type_id'], $clientId);
                                 if ($screenSchemes) {
                                     echo '<ul>';
                                     while ($screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {

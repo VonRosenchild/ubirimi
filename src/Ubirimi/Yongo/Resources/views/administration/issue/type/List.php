@@ -1,4 +1,5 @@
 <?php
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
 
@@ -56,7 +57,7 @@ require_once __DIR__ . '/../../_header.php';
                                 <td width="500px">
                                     <ul>
                                         <?php
-                                            $schemes = IssueType::getSchemesForIssueTypeId($type['id'], 'project');
+                                            $schemes = UbirimiContainer::get()['repository']->get(IssueType::class)->getSchemesForIssueTypeId($type['id'], 'project');
                                             while ($schemes && $scheme = $schemes->fetch_array(MYSQLI_ASSOC)) {
                                                 echo '<li><a href="/yongo/administration/issue-type-scheme/' . $scheme['id'] . '">' . $scheme['name'] . '</a></li>';
                                             }

@@ -2,14 +2,13 @@
 use Ubirimi\Util;
 
 require_once __DIR__ . '/../_header.php';
-    $administrationView = false;
+$administrationView = false;
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb("Projects") ?>
     <div class="pageContent">
-        <?php Util::renderBreadCrumb("Projects") ?>
-
         <?php if ($projects): ?>
             <?php require_once __DIR__ . '/../../../Resources/views/administration/project/_projectInCategory.php' ?>
         <?php else: ?>

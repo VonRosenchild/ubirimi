@@ -28,7 +28,7 @@ class ViewController extends UbirimiController
         }
 
         $permissionScheme = $this->getRepository(PermissionScheme::class)->getMetaDataById($project['permission_scheme_id']);
-        $permissionCategories = Permission::getCategories();
+        $permissionCategories = $this->getRepository(Permission::class)->getCategories();
         $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $session->get('client/id'),
             $session->get('user/id'),

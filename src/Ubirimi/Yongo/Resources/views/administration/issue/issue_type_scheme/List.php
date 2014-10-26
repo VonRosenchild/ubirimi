@@ -46,7 +46,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </td>
                                 <td>
                                     <?php
-                                        $dataIssueTypeScheme = IssueTypeScheme::getDataById($scheme['id']);
+                                        $dataIssueTypeScheme = UbirimiContainer::get()['repository']->get(IssueTypeScheme::class)->getDataById($scheme['id']);
                                         if ($dataIssueTypeScheme) {
                                             while ($data = $dataIssueTypeScheme->fetch_array(MYSQLI_ASSOC)) {
                                                 echo '<div>';

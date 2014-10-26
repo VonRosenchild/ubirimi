@@ -1,4 +1,5 @@
 <?php
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 
 ?>
@@ -15,8 +16,8 @@ use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
                 <tr>
                     <td valign="top" width="330">
                         <?php
-                            $issueTypeScreenScheme = IssueTypeScreenScheme::getMetaDataById($project['issue_type_screen_scheme_id']);
-                            $screenSchemes = IssueTypeScreenScheme::getScreenSchemes($project['issue_type_screen_scheme_id']);
+                            $issueTypeScreenScheme = UbirimiContainer::get()['repository']->get(IssueTypeScreenScheme::class)->getMetaDataById($project['issue_type_screen_scheme_id']);
+                            $screenSchemes = UbirimiContainer::get()['repository']->get(IssueTypeScreenScheme::class)->getScreenSchemes($project['issue_type_screen_scheme_id']);
                         ?>
                         <span><a href="/yongo/administration/project/screens/<?php echo $project['issue_type_screen_scheme_id'] ?>"><?php echo $issueTypeScreenScheme['name'] ?></a></span>
                         <?php while ($screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)): ?>

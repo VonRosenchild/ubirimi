@@ -45,7 +45,7 @@ require_once __DIR__ . '/../_header.php';
                         <th width="20%">Operations</th>
                     </tr>
                 </thead>
-                <?php $permissions = Permission::getByCategory($category['id']); ?>
+                <?php $permissions = UbirimiContainer::get()['repository']->get(Permission::class)->getByCategory($category['id']); ?>
                 <tbody>
                     <?php while ($permission = $permissions->fetch_array(MYSQLI_ASSOC)): ?>
                         <tr>

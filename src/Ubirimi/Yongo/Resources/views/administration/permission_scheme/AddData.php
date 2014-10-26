@@ -4,8 +4,8 @@
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <div class="pageContent">
-        <table width="100%" class="headerPageBackground">
+    <div class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td>
                     <div class="headerPageText">
@@ -24,6 +24,8 @@
                 <td></td>
             </tr>
         </table>
+    </div>
+    <div class="pageContent">
 
         <div>Please select the type of Permission you wish to add to scheme:</div>
         <form name="add_permission_data" action="/yongo/administration/permission-scheme/add-data/<?php echo $permissionSchemeId ?>" method="post">

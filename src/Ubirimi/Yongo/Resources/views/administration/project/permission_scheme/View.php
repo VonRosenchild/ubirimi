@@ -60,7 +60,7 @@ require_once __DIR__ . '/../../_header.php';
                         <th width="40%">Users / Groups / Project Roles</th>
                     </tr>
                 </thead>
-                <?php $permissions = Permission::getByCategory($category['id']); ?>
+                <?php $permissions = UbirimiContainer::get()['repository']->get(Permission::class)->getByCategory($category['id']); ?>
                 <?php while ($permission = $permissions->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr>
                         <td valign="top">

@@ -1,4 +1,5 @@
 <?php
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
 use Ubirimi\Yongo\Repository\Screen\ScreenScheme;
 
@@ -54,14 +55,14 @@ require_once __DIR__ . '/../_header.php';
             </tr>
             <tr>
                 <td valign="top" width="180">
-                    <?php $issueTypes = IssueTypeScreenScheme::getIssueTypesForScreenScheme($project['issue_type_screen_scheme_id'], $screenScheme['id']); ?>
+                    <?php $issueTypes = UbirimiContainer::get()['repository']->get(IssueTypeScreenScheme::class)->getIssueTypesForScreenScheme($project['issue_type_screen_scheme_id'], $screenScheme['id']); ?>
                     <div><b>These <?php echo $issueTypes->num_rows ?> issue types...</b></div>
                     <?php while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                         <div><?php echo $issueType['name'] ?></div>
                     <?php endwhile ?>
                 </td>
                 <td valign="top">
-                    <?php $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenScheme['id']); ?>
+                    <?php $screenSchemeData = UbirimiContainer::get()['repository']->get(ScreenScheme::class)->getDataByScreenSchemeId($screenScheme['id']); ?>
                     <div><b>... use this screen scheme</b></div>
                     <table class="table table-hover table-condensed">
                         <tr>

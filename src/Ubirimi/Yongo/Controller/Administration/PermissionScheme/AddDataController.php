@@ -26,7 +26,7 @@ class AddDataController extends UbirimiController
         $permissionId = $request->get('id');
 
         $permissionScheme = $this->getRepository(PermissionScheme::class)->getMetaDataById($permissionSchemeId);
-        $permissions = Permission::getAll();
+        $permissions = $this->getRepository(Permission::class)->getAll();
 
         $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
         $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
