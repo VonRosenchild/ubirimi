@@ -32,12 +32,14 @@
                 <tr>
                     <td valign="top">
                         <table class="table table-hover table-condensed">
-                            <tr>
-                                <th></th>
-                                <th>Version</th>
-                                <th>Date</th>
-                                <th>Changed By</th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Version</th>
+                                    <th>Date</th>
+                                    <th>Changed By</th>
+                                </tr>
+                            </thead>
                             <tr id="table_row_<?php echo $revision['id'] ?>">
                                 <td width="22">
                                     <input disabled="disabled" type="checkbox" value="1" id="el_check_<?php echo $revision['id'] ?>" />
