@@ -1,6 +1,6 @@
 <?php use Ubirimi\Util; ?>
 
-<div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 1px solid #DDDDDD; height: 29px;">
+<div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 2px solid #c6c6c6; height: 29px;">
     <b><?php if ($notebook) echo $notebook['name']; else echo 'All Notes'; ?></b>
 </div>
 <?php if ($notes): ?>

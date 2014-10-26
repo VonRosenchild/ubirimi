@@ -1,15 +1,15 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
 <?php require_once __DIR__ . '/../_menu.php'; ?>
+<?php
+    $breadCrumb = 'My Notebooks';
+    Util::renderBreadCrumb($breadCrumb);
+?>
 <div class="pageContent">
-    <?php
-        $breadCrumb = 'My Notebooks';
-        Util::renderBreadCrumb($breadCrumb);
-    ?>
 
     <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
         <tr>

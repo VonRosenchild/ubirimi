@@ -1,13 +1,14 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/quick-notes/tag/all">Tags</a> > Edit') ?>
     <div class="pageContent">
         <form name="edit_tag" action="/quick-notes/tag/edit/<?php echo $tagId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/quick-notes/tag/all">Tags</a> > Edit') ?>
+
             <table width="100%">
                 <tr>
                     <td valign="top">Name <span class="error">*</span></td>

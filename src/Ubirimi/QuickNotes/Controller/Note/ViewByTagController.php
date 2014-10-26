@@ -29,14 +29,14 @@ class ViewByTagController extends UbirimiController
         $noteId = $request->get('note_id');
         $tagId = $request->get('tag_id');
 
-        $note = Note::getById($noteId);
+        $note = $this->getRepository(Note::class)->getById($noteId);
         $notebookId = $note['qn_notebook_id'];
-        $notebooks = Notebook::getByUserId($session->get('user/id'), 'array');
-        $notebook = Notebook::getById($notebookId);
-        $notes = Notebook::getNotesByTagId($session->get('user/id'), $tagId, 'array');
+        $notebooks = $this->getRepository(Notebook::class)->getByUserId($session->get('user/id'), 'array');
+        $notebook = $this->getRepository(Notebook::class)->getById($notebookId);
+        $notes = $this->getRepository(Notebook::class)->getNotesByTagId($session->get('user/id'), $tagId, 'array');
 
-        $allTags = Tag::getAll($session->get('user/id'));
-        $tags = Note::getTags($noteId);
+        $allTags = $this->getRepository(Tag::class)->getAll($session->get('user/id'));
+        $tags = $this->getRepository(Note::class)->getTags($noteId);
 
         return $this->render(__DIR__ . '/../../Resources/views/Note/View.php', get_defined_vars());
     }

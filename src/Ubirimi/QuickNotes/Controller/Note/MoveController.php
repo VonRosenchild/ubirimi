@@ -15,7 +15,7 @@ class MoveController extends UbirimiController
         $noteId = $request->request->get('note_id');
         $targetNotebookId = $request->request->get('target_notebook_id');
 
-        Note::move($noteId, $targetNotebookId);
+        $this->getRepository(Note::class)->move($noteId, $targetNotebookId);
 
         return new Response('');
     }

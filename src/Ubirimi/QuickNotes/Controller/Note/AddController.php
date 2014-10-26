@@ -21,11 +21,11 @@ class AddController extends UbirimiController
         $notebookId = $request->request->get('notebook_id');
 
         if (-1 == $notebookId) {
-            $notebookDefault = Notebook::getDefaultByUserId($session->get('user/id'));
+            $notebookDefault = $this->getRepository(Notebook::class)->getDefaultByUserId($session->get('user/id'));
             $notebookId = $notebookDefault['id'];
         }
 
-        $noteId = Notebook::addNote($notebookId, $date);
+        $noteId = $this->getRepository(Notebook::class)->addNote($notebookId, $date);
 
         return new Response($notebookId . '/' . $noteId);
     }

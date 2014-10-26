@@ -18,7 +18,7 @@ class DeleteByNoteController extends UbirimiController
         $tagId = $request->request->get('tag_id');
         $noteId = $request->request->get('note_id');
 
-        Note::deleteTagById($noteId, $tagId);
+        $this->getRepository(Note::class)->deleteTagById($noteId, $tagId);
 
         return new Response('');
     }

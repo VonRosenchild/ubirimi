@@ -21,11 +21,11 @@ class DeleteController extends UbirimiController
         $noteId = $request->request->get('id');
         $notebookSelectedId = $request->request->get('notebook_selected_id');
 
-        $note = Note::getById($noteId);
-        Note::deleteById($noteId);
+        $note = $this->getRepository(Note::class)->getById($noteId);
+        $this->getRepository(Note::class)->deleteById($noteId);
 
-        $notePrevious = Note::getPreviousNoteInNotebook($notebookSelectedId, $noteId);
-        $noteFollowing = Note::getFollowingNoteInNotebook($notebookSelectedId, $noteId);
+        $notePrevious = $this->getRepository(Note::class)->getPreviousNoteInNotebook($notebookSelectedId, $noteId);
+        $noteFollowing = $this->getRepository(Note::class)->getFollowingNoteInNotebook($notebookSelectedId, $noteId);
 
         if ($notePrevious) {
             return new Response($notebookSelectedId . '/' . $notePrevious['id']);

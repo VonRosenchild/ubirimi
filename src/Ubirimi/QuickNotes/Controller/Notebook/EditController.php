@@ -19,7 +19,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notebookId = $request->get('id');
-        $notebook = Notebook::getById($notebookId);
+        $notebook = $this->getRepository(Notebook::class)->getById($notebookId);
 
         if ($notebook['user_id'] != $session->get('user/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +37,7 @@ class EditController extends UbirimiController
 
             // check for duplication
 
-            $notebookDuplicate = Notebook::getByName(
+            $notebookDuplicate = $this->getRepository(Notebook::class)->getByName(
                 $session->get('user/id'),
                 mb_strtolower($name),
                 $notebookId
@@ -49,7 +49,7 @@ class EditController extends UbirimiController
 
             if (!$notebookExists && !$emptyName) {
                 $date = Util::getServerCurrentDateTime();
-                Notebook::updateById($notebookId, $name, $description, $date);
+                $this->getRepository(Notebook::class)->updateById($notebookId, $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

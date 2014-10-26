@@ -15,7 +15,7 @@ class RefreshTagsController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notebookId = $request->request->get('notebook_id');
-        $allTags = Tag::getAll($session->get('user/id'));
+        $allTags = $this->getRepository(Tag::class)->getAll($session->get('user/id'));
 
         return $this->render(__DIR__ . '/../../Resources/views/Note/RefreshTagsController.php', get_defined_vars());
     }

@@ -19,10 +19,10 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $tagId = $request->request->get('id');
-        $tag = Tag::getById($tagId);
+        $tag = $this->getRepository(Tag::class)->getById($tagId);
         $date = Util::getServerCurrentDateTime();
 
-        Tag::deleteById($tagId);
+        $this->getRepository(Tag::class)->deleteById($tagId);
 
         $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),

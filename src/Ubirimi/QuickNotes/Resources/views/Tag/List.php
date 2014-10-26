@@ -1,16 +1,16 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../_header.php';
+require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <div class="pageContent">
-        <?php
-            $breadCrumb = 'Tags';
-            Util::renderBreadCrumb($breadCrumb);
-        ?>
+    <?php
+        $breadCrumb = 'Tags';
+        Util::renderBreadCrumb($breadCrumb);
+    ?>
 
+    <div class="pageContent">
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>
                 <td><a href="#" class="btn ubirimi-btn" id="btnCreateTag"><i class="icon-plus"></i> Create New Tag</a></td>

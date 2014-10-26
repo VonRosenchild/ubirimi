@@ -5,9 +5,10 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/quick-notes/my-notebooks">Notebooks</a> > Edit') ?>
     <div class="pageContent">
         <form name="edit_notebook" action="/quick-notes/notebook/edit/<?php echo $notebookId ?>" method="post">
-            <?php Util::renderBreadCrumb('<a class="linkNoUnderline" href="/quick-notes/my-notebooks">Notebooks</a> > Edit') ?>
+
             <table width="100%">
                 <tr>
                     <td valign="top">Name <span class="error">*</span></td>

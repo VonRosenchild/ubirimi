@@ -23,13 +23,13 @@ class NoteAddController extends UbirimiController
         $noteId = $request->request->get('id');
 
         // check for duplicates in the user space
-        $tagUserExists = Tag::getByNameAndUserId($session->get('user/id'), mb_strtolower($value));
+        $tagUserExists = $this->getRepository(Tag::class)->getByNameAndUserId($session->get('user/id'), mb_strtolower($value));
 
         if ($tagUserExists) {
             // check if it is already added to the note
-            $tagNoteExists = Note::getTagByTagIdAndNoteId($noteId, $tagUserExists['id']);
+            $tagNoteExists = $this->getRepository(Note::class)->getTagByTagIdAndNoteId($noteId, $tagUserExists['id']);
             if (!$tagNoteExists) {
-                Note::addTag($noteId, $tagUserExists['id'], $date);
+                $this->getRepository(Note::class)->addTag($noteId, $tagUserExists['id'], $date);
 
                 return new Response('1');
             }
@@ -37,8 +37,8 @@ class NoteAddController extends UbirimiController
             return new Response('0');
         }
 
-        $tagId = Tag::add($session->get('user/id'), $value, $date);
-        Note::addTag($noteId, $tagId, $date);
+        $tagId = $this->getRepository(Tag::class)->add($session->get('user/id'), $value, $date);
+        $this->getRepository(Note::class)->addTag($noteId, $tagId, $date);
 
         return new Response('1');
     }

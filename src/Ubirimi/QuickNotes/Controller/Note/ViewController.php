@@ -26,17 +26,17 @@ class ViewController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
 
-        $notebooks = Notebook::getByUserId($session->get('user/id'), 'array');
+        $notebooks = $this->getRepository(Notebook::class)->getByUserId($session->get('user/id'), 'array');
         $noteId = $request->get('note_id');
         $notebookId = $request->get('notebook_id');
-        $notebook = Notebook::getById($notebookId);
-        $notes = Notebook::getNotesByNotebookId($notebookId, $session->get('user/id'), null, 'array');
+        $notebook = $this->getRepository(Notebook::class)->getById($notebookId);
+        $notes = $this->getRepository(Notebook::class)->getNotesByNotebookId($notebookId, $session->get('user/id'), null, 'array');
 
-        $allTags = Tag::getAll($session->get('user/id'));
+        $allTags = $this->getRepository(Tag::class)->getAll($session->get('user/id'));
 
         if ($noteId != -1) {
-            $note = Note::getById($noteId);
-            $tags = Note::getTags($noteId);
+            $note = $this->getRepository(Note::class)->getById($noteId);
+            $tags = $this->getRepository(Note::class)->getTags($noteId);
         } else {
             $note = null;
             $tags = null;

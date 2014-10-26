@@ -3,14 +3,14 @@ var availableTags = [];
 CKEDITOR.disableAutoInline = true;
 
 function resizeNoteContent() {
-    if ($('#menu_selected').val() == 'notes') {
+    if ($('#view_qn_entity').val() == 'note_tag') {
         var totalHeight = $(window).height();
         // Remove an extra 20px for good measure
-        totalHeight -= 114;
+        totalHeight -= 133;
 
         $('.pageContent').css('height', totalHeight);
-        $('#contentNotesList').css('height', totalHeight - 64);
-        $('#parentNoteContent').css('height', totalHeight - 174);
+        $('#contentNotesList').css('height', totalHeight - 28);
+        $('#parentNoteContent').css('height', totalHeight - 194);
     }
 }
 

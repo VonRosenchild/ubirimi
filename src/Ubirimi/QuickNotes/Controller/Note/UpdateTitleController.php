@@ -17,7 +17,7 @@ class UpdateTitleController extends UbirimiController
 
         $id = $request->request->get('id');
         $summary = $request->request->get('summary');
-        Note::updateTitleById($id, $summary);
+        $this->getRepository(Note::class)->updateTitleById($id, $summary);
 
         return new Response('');
     }

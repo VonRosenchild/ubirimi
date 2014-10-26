@@ -18,7 +18,7 @@ class EditController extends UbirimiController
 
         $date = Util::getServerCurrentDateTime();
 
-        Note::updateById($noteId, $content, $date);
+        $this->getRepository(Note::class)->updateById($noteId, $content, $date);
 
         return new Response('');
     }

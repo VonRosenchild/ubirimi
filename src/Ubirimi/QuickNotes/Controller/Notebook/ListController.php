@@ -17,7 +17,7 @@ class ListController extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
         $menuSelectedCategory = 'notebooks';
-        $notebooks = Notebook::getByUserId($session->get('user/id'));
+        $notebooks = $this->getRepository(Notebook::class)->getByUserId($session->get('user/id'));
 
         $sectionPageTitle = $session->get('client/settings/title_name')
             . ' / ' . SystemProduct::SYS_PRODUCT_QUICK_NOTES_NAME

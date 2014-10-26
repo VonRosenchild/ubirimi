@@ -1,6 +1,11 @@
-<?php use Ubirimi\QuickNotes\Repository\Note; ?>
+<?php
+
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\QuickNotes\Repository\Note;
+
+?>
 <div>
-    <div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 1px solid #DDDDDD">
+    <div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 2px solid #c6c6c6;">
         <table width="100%">
             <tr>
                 <td width="80px"><b>Notebooks</b></td>
@@ -17,7 +22,7 @@
 
     <?php if (!empty($notebooks)): ?>
     <?php foreach ($notebooks as $notebookInList): ?>
-        <?php $firstNote = Note::getFirstByNotebookId($notebookInList['id']) ?>
+        <?php $firstNote = UbirimiContainer::get()['repository']->get(Note::class)->getFirstByNotebookId($notebookInList['id']) ?>
         <div style="padding-left: 4px;<?php if ($notebookInList['id'] == $notebookId) echo 'background-color: #EEEEEE;' ?>">
             <a href="/quick-notes/note/<?php echo $notebookInList['id'] ?>/<?php if ($firstNote) echo $firstNote['id']; else echo '-1' ?>"><?php echo $notebookInList['name'] ?></a>
         </div>
@@ -34,7 +39,7 @@
             </tr>
         </table>
     </div>
-    <div style="padding-left: 4px;" id="tagContent">
+    <div id="tagContent">
         <?php require_once __DIR__ . '/_tagList.php' ?>
     </div>
 </div>

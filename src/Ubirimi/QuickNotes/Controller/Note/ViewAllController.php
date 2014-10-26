@@ -27,19 +27,19 @@ class ViewAllController extends UbirimiController
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES);
 
         $notebookId = -1;
-        $notebooks = Notebook::getByUserId($session->get('user/id'), 'array');
-        $notes = Note::getAllByUserId($session->get('user/id'));
+        $notebooks = $this->getRepository(Notebook::class)->getByUserId($session->get('user/id'), 'array');
+        $notes = $this->getRepository(Note::class)->getAllByUserId($session->get('user/id'));
 
         $notebook = null;
         if ($notes) {
-            $tags = Note::getTags($notes[0]['id']);
+            $tags = $this->getRepository(Note::class)->getTags($notes[0]['id']);
             $noteId = $notes[0]['id'];
             $note = $notes[0];
         } else {
             $note = null;
         }
 
-        $allTags = Tag::getAll($session->get('user/id'));
+        $allTags = $this->getRepository(Tag::class)->getAll($session->get('user/id'));
 
         return $this->render(__DIR__ . '/../../Resources/views/Note/View.php', get_defined_vars());
     }

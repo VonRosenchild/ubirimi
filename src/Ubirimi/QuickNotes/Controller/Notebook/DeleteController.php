@@ -19,11 +19,11 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $notebookId = $request->request->get('id');
-        $notebook = Notebook::getById($notebookId);
+        $notebook = $this->getRepository(Notebook::class)->getById($notebookId);
 
         $date = Util::getServerCurrentDateTime();
 
-        Notebook::deleteById($notebookId);
+        $this->getRepository(Notebook::class)->deleteById($notebookId);
 
         $this->getRepository(UbirimiLog::class)->add(
             $session->get('client/id'),

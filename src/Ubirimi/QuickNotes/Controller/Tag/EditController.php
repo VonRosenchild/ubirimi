@@ -19,7 +19,7 @@ class EditController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $tagId = $request->get('id');
-        $tag = Tag::getById($tagId);
+        $tag = $this->getRepository(Tag::class)->getById($tagId);
 
         if ($tag['user_id'] != $session->get('user/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -37,7 +37,7 @@ class EditController extends UbirimiController
 
             // check for duplication
 
-            $tagDuplicate = Tag::getByNameAndUserId(
+            $tagDuplicate = $this->getRepository(Tag::class)->getByNameAndUserId(
                 $session->get('user/id'),
                 mb_strtolower($name),
                 $tagId
@@ -49,7 +49,7 @@ class EditController extends UbirimiController
 
             if (!$tagExists && !$emptyName) {
                 $date = Util::getServerCurrentDateTime();
-                Tag::updateById($tagId, $name, $description, $date);
+                $this->getRepository(Tag::class)->updateById($tagId, $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

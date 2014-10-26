@@ -19,27 +19,27 @@
                     <input id="btnCreateNote" class="btn ubirimi-btn" type="button" value="Create Note" />
                 </td>
                 <td>
-<!--                    <div class="btn-group" >-->
-<!--                        <a href="#" class="btn ubirimi-btn dropdown-toggle"-->
-<!--                           data-toggle="dropdown">View Options <span class="caret"></span></a>-->
+                    <div class="btn-group" >
+                        <a href="#" class="btn ubirimi-btn dropdown-toggle"
+                           data-toggle="dropdown">View Options <span class="caret"></span></a>
 
-<!--                        <ul class="dropdown-menu pull-left">-->
-<!--                            <li><a href="/yongo/issue/printable-list">Snippets</a></li>-->
-<!--                            <li><a href="/yongo/issue/printable-list-full-content">List</a></li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
+                        <ul class="dropdown-menu pull-left">
+                            <li><a href="/yongo/issue/printable-list">Snippets</a></li>
+                            <li><a href="/yongo/issue/printable-list-full-content">List</a></li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         </table>
 
         <table id="contentNotesList" width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #DDDDDD;">
             <tr>
-                <td width="10%" valign="top" style="border-right: 1px solid #DDDDDD">
+                <td width="10%" valign="top" style="border-right: 1px solid #c6c6c6;">
                     <div style="height: 100%; overflow: auto">
                         <?php require_once __DIR__ . '/../_notebook_list_section.php' ?>
                     </div>
                 </td>
-                <td width="350px" valign="top" style="border-right: 1px solid #DDDDDD;">
+                <td width="350px" valign="top" style="border-right: 1px solid #c6c6c6;">
                     <div style="height: 100%; overflow: auto">
                         <?php require_once __DIR__ . '/../_note_list_section.php' ?>
                     </div>
@@ -60,5 +60,6 @@
         <?php if (isset($tagId)): ?>
             <input type="hidden" value="<?php echo $tagId ?>" id="tag_id" />
         <?php endif ?>
+        <input type="hidden" id="view_qn_entity" value="note_tag" />
     </div>
 </body>
