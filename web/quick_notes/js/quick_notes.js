@@ -15,6 +15,7 @@ function resizeNoteContent() {
 }
 
 $('document').ready(function () {
+    $('#qn_content_view_note').css('height', $('#contentNotesList').height() - 140 + 'px');
 
     $('#btnEditNotebook').click(function (event) {
         event.preventDefault();
@@ -81,7 +82,6 @@ $('document').ready(function () {
         window.location.href = $('.contentNoteLink', $(this)).val();
     });
 
-
     $("[id^='note_move_to_']").on('click', function (event) {
 
         event.preventDefault();
@@ -102,7 +102,22 @@ $('document').ready(function () {
                 window.location.href = '/quick-notes/note/' + notebookTargetId + '/' + noteId;
             }
         });
+    });
 
+    $(".noteListView").on('click', function (event) {
+
+        var id = $(this).attr('id').replace('table_row_', '');
+
+        $.ajax({
+            type: "POST",
+            data: {
+                id: id
+            },
+            url: '/quick-notes/note/render',
+            success: function (response) {
+                $('#qn_note_list_content').html(response);
+            }
+        });
     });
 
         /* tag functionality */
@@ -160,7 +175,6 @@ $('document').ready(function () {
                 }
             });
         });
-
     });
 
     $('#menuNotebooks').mouseenter(function (event) {

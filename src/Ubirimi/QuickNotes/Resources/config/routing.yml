@@ -23,18 +23,18 @@ qnNoteEdit:
   defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\EditController' }
 
 qnNoteView:
-  path: /quick-notes/note/{notebook_id}/{note_id}
+  path: /quick-notes/note/{view_type}/{notebook_id}/{note_id}
   defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\ViewController' }
   requirements:
     notbook_id:  \d+
     note_id:  \-?\d+
 
 qnNoteViewByTag:
-  path: /quick-notes/tag/{tag_id}/{note_id}
+  path: /quick-notes/tag/{view_type}/{tag_id}/{note_id}
   defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\ViewByTagController' }
   requirements:
     tag_id:  \d+
-    note_id:  \d+
+    note_id:  \d
 
 qnNoteDeleteDialog:
   path: /quick-notes/note/delete/dialog/{id}
@@ -46,8 +46,12 @@ qnNoteDelete:
   path: /quick-notes/note/delete
   defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\DeleteController' }
 
+qnNoteRenderContent:
+  path: //quick-notes/note/render
+  defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\RenderContentController' }
+
 qnNoteAll:
-  path: /quick-notes/note/all
+  path: /quick-notes/note/{view_type}/all
   defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\ViewAllController' }
 
 qnTagAll:

@@ -29,6 +29,9 @@ class ViewByTagController extends UbirimiController
         $noteId = $request->get('note_id');
         $tagId = $request->get('tag_id');
 
+        if (-1 == $tagId) {
+            $tagId = null;
+        }
         $note = $this->getRepository(Note::class)->getById($noteId);
         $notebookId = $note['qn_notebook_id'];
         $notebooks = $this->getRepository(Notebook::class)->getByUserId($session->get('user/id'), 'array');

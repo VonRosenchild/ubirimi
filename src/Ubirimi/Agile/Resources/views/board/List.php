@@ -35,7 +35,9 @@ use Ubirimi\Yongo\Repository\Project\YongoProject;
                 <tbody>
                     <?php while ($board = $boards->fetch_array(MYSQLI_ASSOC)): ?>
                         <tr id="table_row_<?php echo $board['id'] ?>">
-                            <td width="22"><input type="checkbox" value="1" id="el_check_<?php echo $board['id'] ?>"/></td>
+                            <td width="22">
+                                <input type="checkbox" value="1" id="el_check_<?php echo $board['id'] ?>"/>
+                            </td>
                             <td>
                                 <div><a href="/agile/board/plan/<?php echo $board['id'] ?>"><?php echo $board['name'] ?></a></div>
                             </td>

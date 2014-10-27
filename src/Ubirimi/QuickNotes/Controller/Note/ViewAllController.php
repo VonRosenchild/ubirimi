@@ -20,6 +20,8 @@ class ViewAllController extends UbirimiController
 
         $menuSelectedCategory = 'notes';
 
+        $viewType = $request->get('view_type');
+
         $sectionPageTitle = $clientSettings['title_name']
             . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME
             . ' / Quick Notes';
