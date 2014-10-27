@@ -33,21 +33,23 @@ class AddController extends UbirimiController
             $description = Util::cleanRegularInputField($request->request->get('description'));
             $currentDate = Util::getServerCurrentDateTime();
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptySpaceName = true;
+            }
 
-            if (empty($code))
+            if (empty($code)) {
                 $emptySpaceCode = true;
+            }
 
             if (!$emptySpaceName && !$emptySpaceCode) {
                 $doubleSpace = $this->getRepository(Space::class)->getByCodeAndClientId($clientId, $code);
-                if ($doubleSpace)
+                if ($doubleSpace) {
                     $doubleCode = true;
-
+                }
                 $doubleSpace = $this->getRepository(Space::class)->getByNameAndClientId($clientId, $name);
-                if ($doubleSpace)
+                if ($doubleSpace) {
                     $doubleName = true;
-
+                }
                 if (!$doubleCode && !$doubleName) {
 
                     $date = Util::getServerCurrentDateTime();
