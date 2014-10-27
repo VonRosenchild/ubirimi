@@ -3,6 +3,7 @@ var availableTags = [];
 CKEDITOR.disableAutoInline = true;
 
 function resizeNoteContent() {
+
     if ($('#view_qn_entity').val() == 'note_tag') {
         var totalHeight = $(window).height();
         // Remove an extra 20px for good measure
@@ -10,12 +11,17 @@ function resizeNoteContent() {
 
         $('.pageContent').css('height', totalHeight);
         $('#contentNotesList').css('height', totalHeight - 28);
-        $('#parentNoteContent').css('height', totalHeight - 194);
+        if ('snippets' == $('#qn_view_type').val()) {
+            $('#parentNoteContent').css('height', totalHeight - 194);
+        }
     }
+
 }
 
 $('document').ready(function () {
-    $('#qn_content_view_note').css('height', $('#contentNotesList').height() - 140 + 'px');
+    $('#parentNoteContent').height(function(index, height) {
+        return window.innerHeight - $(this).offset().top;
+    });
 
     $('#btnEditNotebook').click(function (event) {
         event.preventDefault();
@@ -29,9 +35,10 @@ $('document').ready(function () {
             document.location.href = '/quick-notes/tag/edit/' + selected_rows[0];
     });
 
-    $(window).on('resize', function(){
-        resizeNoteContent();
-
+    $(window).on('resize', function() {
+        if ('snippets' == $('#qn_view_type').val()) {
+            resizeNoteContent();
+        }
     });
 
     resizeNoteContent();
@@ -74,7 +81,6 @@ $('document').ready(function () {
 
             var config = {};
             var editor = CKEDITOR.replace('note_content', config, $('#note_content').val());
-
         }
     });
 
@@ -105,9 +111,7 @@ $('document').ready(function () {
     });
 
     $(".noteListView").on('click', function (event) {
-
         var id = $(this).attr('id').replace('table_row_', '');
-
         $.ajax({
             type: "POST",
             data: {
@@ -116,6 +120,9 @@ $('document').ready(function () {
             url: '/quick-notes/note/render',
             success: function (response) {
                 $('#qn_note_list_content').html(response);
+
+                alert($(window).height() - $('#qn_list_notes_view').height() - 140);
+                $('#parentNoteContent').css('height', $(window).height() - $('#qn_list_notes_view').height() - 140 + 'px');
             }
         });
     });

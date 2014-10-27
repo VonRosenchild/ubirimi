@@ -37,6 +37,7 @@ class ViewAllController extends UbirimiController
             $tags = $this->getRepository(Note::class)->getTags($notes[0]['id']);
             $noteId = $notes[0]['id'];
             $note = $notes[0];
+            $notes = $this->getRepository(Notebook::class)->getNotesByNotebookId($notebookId, $session->get('user/id'), null, 'array');
         } else {
             $note = null;
         }

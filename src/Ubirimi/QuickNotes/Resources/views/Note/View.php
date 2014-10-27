@@ -77,6 +77,9 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                             </table>
                         </div>
                         <div id="qn_note_list_content" style="border-top: 4px solid #b9b9b9">
+                            <?php require_once __DIR__ . '/../_note_button_bar.php' ?>
+
+                                <?php require_once __DIR__ . '/../_note_section.php' ?>
 
                         </div>
                     </td>
@@ -94,5 +97,6 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
             <input type="hidden" value="<?php echo $tagId ?>" id="tag_id" />
         <?php endif ?>
         <input type="hidden" id="view_qn_entity" value="note_tag" />
+        <input type="hidden" id="qn_view_type" value="<?php echo $viewType ?>" />
     </div>
 </body>
