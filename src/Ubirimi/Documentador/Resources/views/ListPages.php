@@ -1,12 +1,12 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\Documentador\Repository\Space\Space;
 use Ubirimi\LinkHelper;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
-
-    require_once __DIR__ . '/_header.php';
+require_once __DIR__ . '/_header.php';
 ?>
 <body>
 
@@ -21,7 +21,12 @@ use Ubirimi\LinkHelper;
 
 
     <div class="doc-left-side">
-dasdasdas
+        <div>
+            <?php
+                $html = '';
+                echo UbirimiContainer::get()['repository']->get(Entity::class)->renderTreeNavigation($treeStructure, 0, 0, true);
+            ?>
+        </div>
     </div>
     <div class="pageContent" id="content" style="margin-left: 285px;">
         <?php if (Util::checkUserIsLoggedIn() || $spaceHasAnonymousAccess): ?>

@@ -1,4 +1,5 @@
 <?php
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
 use Ubirimi\Documentador\Repository\Space\Space;
@@ -19,6 +20,7 @@ if (!isset($menuSelectedCategory)) {
 }
 
 Util::renderMaintenanceMessage();
+$spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientId($clientId);
 ?>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#003466">
@@ -60,7 +62,7 @@ Util::renderMaintenanceMessage();
     </tr>
 </table>
 
-<table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#6A8EB2" style="padding-left: 12px; padding-right: 12px;">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#6A8EB2" style="padding-left: 12px;">
     <tr>
         <td>
             <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -73,10 +75,6 @@ Util::renderMaintenanceMessage();
                     <td>&nbsp;</td>
                     <td align="right">
                         <?php if (Util::checkUserIsLoggedIn()): ?>
-                            <?php
-
-                                $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientId($clientId);
-                            ?>
                             <?php if ($spaces): ?>
                                 <input type="button" id="btnDocumentatorCreate" value="Create" />
                             <?php endif ?>

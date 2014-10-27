@@ -12,7 +12,6 @@ use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 
-
 class ListPagesController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
@@ -45,6 +44,8 @@ class ListPagesController extends UbirimiController
             $homePage = null;
         }
 
+        $treeStructure = $this->getRepository(Space::class)->generateTreeStructure($pages, $space['home_entity_id']);
+        $pages->data_seek(0);
         return $this->render(__DIR__ . '/../Resources/views/ListPages.php', get_defined_vars());
     }
 }
