@@ -1,6 +1,6 @@
 #tags {
-    float: left;
-    padding-top: 3px;
+    float: right;
+    padding-top: 5px;
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 5px;
@@ -9,7 +9,7 @@
 #tags span.tag {
     cursor: pointer;
     display: block;
-    float: left;
+    float: right;
     color: #fff;
     background: #689;
     padding-left: 6px;

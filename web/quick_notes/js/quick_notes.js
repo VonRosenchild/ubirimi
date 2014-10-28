@@ -3,7 +3,6 @@ var availableTags = [];
 CKEDITOR.disableAutoInline = true;
 
 function resizeNoteContent() {
-
     if ($('#view_qn_entity').val() == 'note_tag') {
         var totalHeight = $(window).height();
         // Remove an extra 20px for good measure
@@ -15,12 +14,12 @@ function resizeNoteContent() {
             $('#parentNoteContent').css('height', totalHeight - 194);
         }
     }
-
 }
 
 $('document').ready(function () {
     $('#parentNoteContent').height(function(index, height) {
-        return window.innerHeight - $(this).offset().top;
+        var heightCalculated = window.innerHeight - (window.innerHeight * 40 / 100) - 238;
+        return heightCalculated;
     });
 
     $('#btnEditNotebook').click(function (event) {
@@ -112,6 +111,7 @@ $('document').ready(function () {
 
     $(".noteListView").on('click', function (event) {
         var id = $(this).attr('id').replace('table_row_', '');
+        var elementParent = $(this);
         $.ajax({
             type: "POST",
             data: {
@@ -120,9 +120,10 @@ $('document').ready(function () {
             url: '/quick-notes/note/render',
             success: function (response) {
                 $('#qn_note_list_content').html(response);
-
-                alert($(window).height() - $('#qn_list_notes_view').height() - 140);
-                $('#parentNoteContent').css('height', $(window).height() - $('#qn_list_notes_view').height() - 140 + 'px');
+                var height = window.innerHeight - (window.innerHeight * 40 / 100) - 238;
+                $('#parentNoteContent').css('height', height + 'px');
+                $('#qn_list_notes_view table tr').removeClass('trSelected');
+                elementParent.addClass('trSelected');
             }
         });
     });

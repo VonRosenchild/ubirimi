@@ -12,9 +12,9 @@
                     <td>
                         <div style="width: 350px; overflow: hidden; height: 20px;">
                             <?php if (isset($tagId)): ?>
-                                <b><a id="qn_note_list_summary_<?php echo $noteInList['id'] ?>" href="/quick-notes/tag/<?php echo $tagId ?>/<?php echo $noteInList['id'] ?>"><?php echo $noteInList['summary'] ?><a/></b>
+                                <b><a id="qn_note_list_summary_<?php echo $noteInList['id'] ?>" href="/quick-notes/tag/<?php echo $viewType ?>/<?php echo $tagId ?>/<?php echo $noteInList['id'] ?>"><?php echo $noteInList['summary'] ?><a/></b>
                             <?php else: ?>
-                                <b><a id="qn_note_list_summary_<?php echo $noteInList['id'] ?>" href="/quick-notes/note/<?php echo $notebookId ?>/<?php echo $noteInList['id'] ?>"><?php echo $noteInList['summary'] ?><a/></b>
+                                <b><a id="qn_note_list_summary_<?php echo $noteInList['id'] ?>" href="/quick-notes/note/<?php echo $viewType ?>/<?php echo $notebookId ?>/<?php echo $noteInList['id'] ?>"><?php echo $noteInList['summary'] ?><a/></b>
                             <?php endif ?>
                         </div>
                     </td>

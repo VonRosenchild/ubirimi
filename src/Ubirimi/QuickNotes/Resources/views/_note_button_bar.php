@@ -20,8 +20,8 @@ use Ubirimi\Util;
                     </div>
                 </div>
             </td>
-            <td valign="top" rowspan="2" style="border-bottom: 1px solid #DDDDDD; background-color: #DDDDDD">
-                <div id="tags">
+            <td align="right" valign="top" style="border-bottom: 1px solid #DDDDDD; background-color: #DDDDDD">
+                <div id="tags" style="width: 100%;">
                     <?php while ($tags && $tag = $tags->fetch_array(MYSQLI_ASSOC)): ?>
                         <span class="tag" data="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></span>
                     <?php endwhile ?>
@@ -31,7 +31,7 @@ use Ubirimi\Util;
 
         </tr>
         <tr>
-            <td style="border-bottom: 2px solid #c6c6c6; background-color: #DDDDDD">
+            <td colspan="2" style="border-bottom: 2px solid #c6c6c6; background-color: #DDDDDD">
                 <div style="padding-left: 8px">Created <?php echo Util::getFormattedDate($note['date_created']) ?><?php if (isset($note['date_updated'])) echo ', Modified ' . Util::getFormattedDate($note['date_updated']) ?></div>
 
             </td>

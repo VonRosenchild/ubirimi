@@ -17,7 +17,7 @@ class ViewByTagController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $clientSettings = $session->get('client/settings');
-
+        $viewType = $request->get('view_type');
         $menuSelectedCategory = 'notebooks';
 
         $sectionPageTitle = $clientSettings['title_name']
@@ -32,6 +32,7 @@ class ViewByTagController extends UbirimiController
         if (-1 == $tagId) {
             $tagId = null;
         }
+
         $note = $this->getRepository(Note::class)->getById($noteId);
         $notebookId = $note['qn_notebook_id'];
         $notebooks = $this->getRepository(Notebook::class)->getByUserId($session->get('user/id'), 'array');

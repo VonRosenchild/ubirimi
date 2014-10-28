@@ -34,7 +34,7 @@ qnNoteViewByTag:
   defaults: { _controller: '\Ubirimi\QuickNotes\Controller\Note\ViewByTagController' }
   requirements:
     tag_id:  \d+
-    note_id:  \d
+    note_id:  \-?\d+
 
 qnNoteDeleteDialog:
   path: /quick-notes/note/delete/dialog/{id}

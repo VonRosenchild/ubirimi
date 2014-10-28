@@ -15,7 +15,7 @@ use Ubirimi\QuickNotes\Repository\Note;
     <div style="padding-left: 4px;<?php if ($notebookId == -1) echo 'background-color: #eeeeee;' ?>">
         <table width="100%">
             <tr>
-                <td width="80px"><a href="/quick-notes/note/all">All Notes</a></td>
+                <td width="80px"><a href="/quick-notes/note/<?php echo $viewType ?>/all">All Notes</a></td>
             </tr>
         </table>
     </div>
@@ -24,7 +24,7 @@ use Ubirimi\QuickNotes\Repository\Note;
     <?php foreach ($notebooks as $notebookInList): ?>
         <?php $firstNote = UbirimiContainer::get()['repository']->get(Note::class)->getFirstByNotebookId($notebookInList['id']) ?>
         <div style="padding-left: 4px;<?php if ($notebookInList['id'] == $notebookId) echo 'background-color: #EEEEEE;' ?>">
-            <a href="/quick-notes/note/<?php echo $notebookInList['id'] ?>/<?php if ($firstNote) echo $firstNote['id']; else echo '-1' ?>"><?php echo $notebookInList['name'] ?></a>
+            <a href="/quick-notes/note/<?php echo $viewType ?>/<?php echo $notebookInList['id'] ?>/<?php if ($firstNote) echo $firstNote['id']; else echo '-1' ?>"><?php echo $notebookInList['name'] ?></a>
         </div>
     <?php endforeach ?>
     <?php endif ?>

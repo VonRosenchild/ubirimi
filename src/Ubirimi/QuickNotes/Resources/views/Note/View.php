@@ -24,8 +24,18 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                            data-toggle="dropdown">View Options <span class="caret"></span></a>
 
                         <ul class="dropdown-menu pull-left">
-                            <li><a href="/yongo/issue/printable-list">Snippets</a></li>
-                            <li><a href="/yongo/issue/printable-list-full-content">List</a></li>
+                            <?php if (isset($tagId)): ?>
+                                <li><a href="/quick-notes/tag/snippets/<?php echo $notebookId ?>/<?php echo $noteId ?>">Snippets</a></li>
+                                <li><a href="/quick-notes/tag/list/<?php echo $notebookId ?>/<?php echo $noteId ?>">List</a></li>
+                            <?php else: ?>
+                                <?php if (-1 != $notebookId): ?>
+                                    <li><a href="/quick-notes/note/snippets/<?php echo $notebookId ?>/<?php echo $noteId ?>">Snippets</a></li>
+                                    <li><a href="/quick-notes/note/list/<?php echo $notebookId ?>/<?php echo $noteId ?>">List</a></li>
+                                <?php else: ?>
+                                    <li><a href="/quick-notes/note/snippets/all">Snippets</a></li>
+                                    <li><a href="/quick-notes/note/list/all">List</a></li>
+                                <?php endif ?>
+                            <?php endif ?>
                         </ul>
                     </div>
                 </td>
@@ -63,24 +73,26 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                             </thead>
                         </table>
                         <div style="height: 40%; overflow: auto" id="qn_list_notes_view">
-                            <table class="table table-hover table-condensed">
-                                <tbody>
-                                <?php foreach ($notes as $currentNote): ?>
-                                    <tr class="noteListView" id="table_row_<?php echo $currentNote['id'] ?>">
-                                        <td width="50%"><?php echo $currentNote['summary'] ?></td>
-                                        <td width="30%"><?php  ?></td>
-                                        <td width="10%"><?php echo substr($currentNote['date_created'], 0, 10); ?></td>
-                                        <td width="10%"><?php echo substr($currentNote['date_updated'], 0, 10) ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                                </tbody>
-                            </table>
+                            <?php if ($notes): ?>
+                                <table class="table table-hover table-condensed">
+                                    <tbody>
+                                        <?php foreach ($notes as $currentNote): ?>
+                                            <tr<?php if ($noteId == $currentNote['id']) echo ' class="trSelected"';?> class="noteListView" id="table_row_<?php echo $currentNote['id'] ?>">
+                                                <td width="50%"><?php echo $currentNote['summary'] ?></td>
+                                                <td width="30%"><?php  ?></td>
+                                                <td width="10%"><?php echo substr($currentNote['date_created'], 0, 10); ?></td>
+                                                <td width="10%"><?php echo substr($currentNote['date_updated'], 0, 10) ?></td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            <?php else: ?>
+                                <div class="infoBox">There are no notes.</div>
+                            <?php endif ?>
                         </div>
                         <div id="qn_note_list_content" style="border-top: 4px solid #b9b9b9">
                             <?php require_once __DIR__ . '/../_note_button_bar.php' ?>
-
-                                <?php require_once __DIR__ . '/../_note_section.php' ?>
-
+                            <?php require_once __DIR__ . '/../_note_section.php' ?>
                         </div>
                     </td>
                 <?php endif ?>

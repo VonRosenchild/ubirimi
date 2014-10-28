@@ -19,7 +19,7 @@ class ViewController extends UbirimiController
         $clientSettings = $session->get('client/settings');
 
         $menuSelectedCategory = 'notes';
-
+        $viewType = $request->get('view_type');
         $sectionPageTitle = $clientSettings['title_name']
             . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME
             . ' / Quick Notes';
