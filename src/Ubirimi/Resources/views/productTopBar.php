@@ -1,9 +1,9 @@
 <?php
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\SystemProduct;
 use Ubirimi\Util;
-
 
 if ($session->has('client/products')) {
     $productsArray = $session->get('client/products');
@@ -58,7 +58,7 @@ if ($session->has('client/products')) {
         <?php if (Util::checkKeyAndValueInArray('sys_product_id', SystemProduct::SYS_PRODUCT_QUICK_NOTES, $productsArray)): ?>
             <?php ($session->get('selected_product_id') == SystemProduct::SYS_PRODUCT_QUICK_NOTES) ? $style = 'background-color: #6A8EB2;' : $style = '' ?>
             <td style="<?php echo $style ?> border-right: 1px #9c9c9c solid;" width="130px" class="product-menu" align="center">
-                <div><a href="/quick-notes/note/all">Quick Notes</a></div>
+                <div><a href="/quick-notes/note/snippets/all">Quick Notes</a></div>
             </td>
         <?php endif ?>
     </tr>
