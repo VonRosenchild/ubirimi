@@ -11,7 +11,7 @@ function resizeNoteContent() {
         $('.pageContent').css('height', totalHeight);
         $('#contentNotesList').css('height', totalHeight - 28);
         if ('snippets' == $('#qn_view_type').val()) {
-            $('#parentNoteContent').css('height', totalHeight - 194);
+            $('#parentNoteContent').css('height', totalHeight - 136);
         }
     }
 }
