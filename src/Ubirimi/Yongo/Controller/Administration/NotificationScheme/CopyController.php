@@ -11,7 +11,6 @@ use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 
-
 class CopyController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)

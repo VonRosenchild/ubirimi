@@ -51,7 +51,7 @@ Util::renderMaintenanceMessage();
                     <td width="8px"></td>
 
                     <td class="menuItemBasic <?php if ($menuSelectedCategory == 'tags') echo 'menuItemSelected'; else echo 'menuItem' ?>" id="menuTags">
-                        <span><a style="<?php if ($menuSelectedCategory == 'tags') echo 'color: black'; else echo 'color: white;' ?>" href="/quick-notes/tag/snippets/all" class="linkNoUnderline">Tags</a></span>
+                        <span><a style="<?php if ($menuSelectedCategory == 'tags') echo 'color: black'; else echo 'color: white;' ?>" href="/quick-notes/tag/all" class="linkNoUnderline">Tags</a></span>
                         &nbsp;
                     </td>
                 </tr>

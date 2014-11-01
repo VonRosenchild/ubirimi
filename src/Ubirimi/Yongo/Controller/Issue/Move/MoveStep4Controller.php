@@ -96,8 +96,7 @@ class MoveStep4Controller extends UbirimiController
             UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
             UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
 
-            header('Location: ' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
-            die();
+            return new RedirectResponse('/' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];

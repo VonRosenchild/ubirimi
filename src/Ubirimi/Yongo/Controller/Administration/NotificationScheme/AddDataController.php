@@ -17,7 +17,6 @@ use Ubirimi\Yongo\Repository\Notification\Notification;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Permission\Role;
 
-
 class AddDataController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
@@ -30,9 +29,7 @@ class AddDataController extends UbirimiController
         $eventId = $request->get('id');
 
         $notificationScheme = $this->getRepository(NotificationScheme::class)->getMetaDataById($notificationSchemeId);
-
         $events = $this->getRepository(IssueEvent::class)->getByClient($session->get('client/id'));
-
         $users = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'));
         $groups = $this->getRepository(UbirimiGroup::class)->getByClientIdAndProductId($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO);
         $roles = $this->getRepository(Role::class)->getByClient($session->get('client/id'));

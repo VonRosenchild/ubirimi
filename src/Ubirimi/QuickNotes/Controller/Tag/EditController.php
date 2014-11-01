@@ -32,11 +32,11 @@ class EditController extends UbirimiController
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $description = Util::cleanRegularInputField($request->request->get('description'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
             // check for duplication
-
             $tagDuplicate = $this->getRepository(Tag::class)->getByNameAndUserId(
                 $session->get('user/id'),
                 mb_strtolower($name),
