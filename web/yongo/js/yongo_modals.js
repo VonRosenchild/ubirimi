@@ -3265,13 +3265,23 @@ $('document').ready(function () {
                             data: {
                                 id: userId,
                                 issues_per_page: $('#user_issues_per_page').val(),
+                                email_address: $('#email_address').val(),
                                 notify_own_changes: $('#user_notify_own_changes').val(),
                                 country_id: $('#user_country').val()
                             },
                             success: function (response) {
-                                $("#modalChangePreferences").dialog('destroy');
-                                $("#modalChangePreferences").empty();
-                                location.reload();
+                                console.log(response);
+                                if (response.email_already_exists) {
+                                    $('#modal_user_preferences_email_error').html('Email address not available');
+                                } else if (response.empty_email) {
+                                    $('#modal_user_preferences_email_error').html('Empty email address');
+                                } else if (response.email_not_valid) {
+                                    $('#modal_user_preferences_email_error').html('Email address not valid');
+                                } else {
+                                    $("#modalChangePreferences").dialog('destroy');
+                                    $("#modalChangePreferences").empty();
+                                    location.reload();
+                                }
                             }
                         });
                     }

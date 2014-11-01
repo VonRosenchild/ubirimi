@@ -55,39 +55,40 @@ class AddController extends UbirimiController
             $passwordAgain = Util::cleanRegularInputField($request->request->get('password_again'));
             $svnRepoId = Util::cleanRegularInputField($request->request->get('fsvn'));
 
-            if (empty($email))
+            if (empty($email)) {
                 $errors['empty_email'] = true;
-            else if (!Util::isValidEmail($email))
+            } else if (!Util::isValidEmail($email)) {
                 $errors['email_not_valid'] = true;
-
-            if (!Util::validateUsername($username))
+            }
+            if (!Util::validateUsername($username)) {
                 $errors['invalid_username'] = true;
-            else {
+            } else {
                 $existingUser = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientId($username, $session->get('client/id'));
 
-                if ($existingUser)
+                if ($existingUser) {
                     $errors['duplicate_username'] = true;
+                }
             }
 
             $emailData = $this->getRepository(UbirimiUser::class)->getUserByClientIdAndEmailAddress($session->get('client/id'), mb_strtolower($email));
-            if ($emailData)
+            if ($emailData) {
                 $errors['email_already_exists'] = true;
-
-            if (empty($firstName))
+            }
+            if (empty($firstName)) {
                 $errors['empty_first_name'] = true;
-
-            if (empty($lastName))
+            }
+            if (empty($lastName)) {
                 $errors['empty_last_name'] = true;
-
-            if (empty($username))
+            }
+            if (empty($username)) {
                 $errors['empty_username'] = true;
-
-            if (empty($password))
+            }
+            if (empty($password)) {
                 $errors['empty_password'] = true;
-
-            if ($password != $passwordAgain)
+            }
+            if ($password != $passwordAgain) {
                 $errors['password_mismatch'] = true;
-
+            }
             if (Util::hasNoErrors($errors)) {
                 $serviceData = array(
                     'clientId' => $session->get('client/id'),

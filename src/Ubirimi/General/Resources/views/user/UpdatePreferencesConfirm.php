@@ -1,5 +1,21 @@
 <table width="100%">
     <tr>
+        <td>Username</td>
+        <td>
+            <input type="text" class="inputText" disabled="disabled" value="<?php echo $settings['username'] ?>" ?>
+        </td>
+    </tr>
+    <tr>
+        <td>Email Address</td>
+        <td>
+            <input id="email_address"
+                   type="text"
+                   class="inputText"
+                   value="<?php echo $settings['email'] ?>" ?>
+            <div class="error" id="modal_user_preferences_email_error"></div>
+        </td>
+    </tr>
+    <tr>
         <td width="280">Issues per page</td>
         <td>
             <input id="user_issues_per_page"

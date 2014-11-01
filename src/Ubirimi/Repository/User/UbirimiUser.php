@@ -506,7 +506,7 @@ class UbirimiUser
     }
 
     public function getYongoSettings($userId) {
-        $query = 'select issues_per_page, notify_own_changes_flag, country_id ' .
+        $query = 'select issues_per_page, notify_own_changes_flag, country_id, username, email ' .
             'from user ' .
             'where id = ? ' .
             'limit 1';
