@@ -1,19 +1,20 @@
 <?php
-    use Ubirimi\Util;
+use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../_header.php';
+require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
+    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php
+            $breadCrumb = '<a href="/documentador/administration/groups" class="linkNoUnderline">Groups</a> > Create Group';
+            Util::renderBreadCrumb($breadCrumb);
+        ?>
+    <?php endif ?>
     <div class="pageContent">
         <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
             <form name="add_user_group" action="/documentador/administration/groups/add" method="post">
-                <?php
-                $breadCrumb = '<a href="/documentador/administration/groups" class="linkNoUnderline">Groups</a> > Create Group';
-                Util::renderBreadCrumb($breadCrumb);
-                ?>
-
                 <table width="100%">
                     <tr>
                         <td width="150" valign="top">Name <span class="error">*</span></td>

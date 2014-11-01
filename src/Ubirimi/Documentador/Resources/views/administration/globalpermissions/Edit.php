@@ -15,7 +15,6 @@ require_once __DIR__ . '/../../_header.php';
 
     <div class="pageContent">
         <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
-            <?php Util::renderBreadCrumb('Global Permissions > Update') ?>
 
             <form name="edit_global_settings" action="/documentador/administration/edit-global-permissions" method="post">
                 <div class="headerPageText">Anonymous Access</div>

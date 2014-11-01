@@ -1,19 +1,19 @@
 <?php
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\LinkHelper;
-    use Ubirimi\Repository\User\UbirimiUser;
-    use Ubirimi\SystemProduct;
-    use Ubirimi\Util;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\SystemProduct;
+use Ubirimi\Util;
 
-    $loggedInUserFirstName = $session->get('user/first_name');
-    $loggedInUserLastName = $session->get('user/last_name');
+$loggedInUserFirstName = $session->get('user/first_name');
+$loggedInUserLastName = $session->get('user/last_name');
 
-    if (!isset($menuSelectedCategory))
-        $menuSelectedCategory = null;
+if (!isset($menuSelectedCategory))
+    $menuSelectedCategory = null;
 
-    $hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
-    $hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
-    Util::renderMaintenanceMessage();
+$hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
+$hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
+Util::renderMaintenanceMessage();
 ?>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#003466">
@@ -44,7 +44,7 @@ use Ubirimi\LinkHelper;
     </tr>
 </table>
 
-<table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#6A8EB2" style="padding-left: 12px; padding-right: 12px;">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#6A8EB2" style="padding-left: 12px; ">
     <tr>
         <td>
             <table cellpadding="0" cellspacing="0" border="0">
