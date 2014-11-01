@@ -45,9 +45,9 @@ class AddController extends UbirimiController
                 mb_strtolower($email)
             );
 
-            if ($emailData)
+            if ($emailData) {
                 $errors['email_already_exists'] = true;
-
+            }
             if (Util::hasNoErrors($errors)) {
                 $password = Util::randomPassword(8);
 
@@ -62,8 +62,8 @@ class AddController extends UbirimiController
                 ));
 
                 if ($organizationId) {
-                    Customer::create($organizationId, $userId);
-                    return new RedirectResponse('/helpdesk/administration/customers/' . $organizationId);
+                    $this->getRepository(Customer::class)->create($organizationId, $userId);
+                    return new RedirectResponse('/helpdesk/administration/customers?id=' . $organizationId);
                 }
 
                 return new RedirectResponse('/helpdesk/administration/customers');
