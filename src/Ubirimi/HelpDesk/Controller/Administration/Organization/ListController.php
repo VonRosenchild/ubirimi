@@ -21,7 +21,7 @@ class ListController extends UbirimiController
             . ' / ' . SystemProduct::SYS_PRODUCT_HELP_DESK_NAME
             . ' / Administration / Organizations';
 
-        $organizations = Organization::getByClientId($session->get('client/id'));
+        $organizations = $this->getRepository(Organization::class)->getByClientId($session->get('client/id'));
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/organization/ListOrganization.php', get_defined_vars());
     }

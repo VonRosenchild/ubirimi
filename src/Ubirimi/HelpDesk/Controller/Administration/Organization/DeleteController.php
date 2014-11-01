@@ -15,7 +15,7 @@ class DeleteController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
         $organizationId = $request->request->get('id');
-        Organization::deleteById($organizationId);
+        $this->getRepository(Organization::class)->deleteById($organizationId);
 
         return new Response('');
     }

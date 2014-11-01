@@ -21,7 +21,7 @@ class EditController extends UbirimiController
         $duplicateOrganization = false;
 
         $organizationId = $request->get('id');
-        $organization = Organization::getById($organizationId);
+        $organization = $this->getRepository(Organization::class)->getById($organizationId);
 
         if ($request->request->has('edit_organization')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));
@@ -31,7 +31,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
             }
 
-            $organizationDuplicate = Organization::getByName(
+            $organizationDuplicate = $this->getRepository(Organization::class)->getByName(
                 $session->get('client/id'), mb_strtolower($name),
                 $organizationId
             );
@@ -42,7 +42,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName && !$organizationDuplicate) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Organization::updateById($organizationId, $name, $description, $currentDate);
+                $this->getRepository(Organization::class)->updateById($organizationId, $name, $description, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

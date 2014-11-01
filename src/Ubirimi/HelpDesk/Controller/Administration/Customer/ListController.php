@@ -19,8 +19,8 @@ class ListController extends UbirimiController
         $organizationId = $request->query->get('id');
 
         if ($organizationId) {
-            $customers = Customer::getByOrganizationId($organizationId);
-            $organization = Organization::getById($organizationId);
+            $customers = $this->getRepository(Customer::class)->getByOrganizationId($organizationId);
+            $organization = $this->getRepository(Organization::class)->getById($organizationId);
             $breadCrumbTitle = 'Customers > ' . $organization['name'];
         } else {
             $customers = $this->getRepository(UbirimiUser::class)->getByClientId($session->get('client/id'), 1);

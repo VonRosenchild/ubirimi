@@ -27,7 +27,7 @@ class AddController extends UbirimiController
             'email_already_exists' => false
         );
 
-        $organizations = Organization::getByClientId($session->get('client/id'));
+        $organizations = $this->getRepository(Organization::class)->getByClientId($session->get('client/id'));
 
         if ($request->request->has('confirm_new_customer')) {
             $email = Util::cleanRegularInputField($request->request->get('email'));

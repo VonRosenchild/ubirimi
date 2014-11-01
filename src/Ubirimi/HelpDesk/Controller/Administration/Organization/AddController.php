@@ -27,14 +27,14 @@ class AddController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $organization = Organization::getByName($session->get('client/id'), mb_strtolower($name));
+            $organization = $this->getRepository(Organization::class)->getByName($session->get('client/id'), mb_strtolower($name));
 
             if ($organization)
                 $statusExists = true;
 
             if (!$emptyName && !$statusExists) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Organization::create($session->get('client/id'), $name, $currentDate);
+                $this->getRepository(Organization::class)->create($session->get('client/id'), $name, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
