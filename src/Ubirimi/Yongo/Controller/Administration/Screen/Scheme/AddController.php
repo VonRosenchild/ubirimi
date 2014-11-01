@@ -38,7 +38,7 @@ class AddController extends UbirimiController
                 $screenSchemeId = $screenScheme->save($currentDate);
                 while ($operation = $allOperations->fetch_array(MYSQLI_ASSOC)) {
                     $operationId = $operation['id'];
-                    ScreenScheme::addData($screenSchemeId, $operationId, $screenId, $currentDate);
+                    $this->getRepository(ScreenScheme::class)->addData($screenSchemeId, $operationId, $screenId, $currentDate);
                 }
 
                 $this->getRepository(UbirimiLog::class)->add(

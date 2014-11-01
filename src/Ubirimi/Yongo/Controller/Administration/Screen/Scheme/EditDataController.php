@@ -18,12 +18,13 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $screenSchemeDataId = $request->get('id');
 
+        $screenSchemeRepository = $this->getRepository(ScreenScheme::class);
         $screens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
-        $screenSchemeData = ScreenScheme::getDataByScreenDataId($screenSchemeDataId);
+        $screenSchemeData = $screenSchemeRepository->getDataByScreenDataId($screenSchemeDataId);
         $screenSchemeId = $screenSchemeData['screen_scheme_id'];
         $operationId = $screenSchemeData['sys_operation_id'];
         $selectedScreenId = $screenSchemeData['screen_id'];
-        $screenSchemeMetaData = ScreenScheme::getMetaDataById($screenSchemeData['screen_scheme_id']);
+        $screenSchemeMetaData = $screenSchemeRepository->getMetaDataById($screenSchemeData['screen_scheme_id']);
 
         if ($screenSchemeMetaData['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -33,7 +34,7 @@ class EditDataController extends UbirimiController
             $screenId = Util::cleanRegularInputField($request->request->get('screen'));
             $operationId = Util::cleanRegularInputField($request->request->get('operation'));
 
-            ScreenScheme::updateDataById($screenSchemeId, $operationId, $screenId);
+            $screenSchemeRepository->updateDataById($screenSchemeId, $operationId, $screenId);
 
             return new RedirectResponse('/yongo/administration/screen/configure-scheme/' . $screenSchemeId);
         }

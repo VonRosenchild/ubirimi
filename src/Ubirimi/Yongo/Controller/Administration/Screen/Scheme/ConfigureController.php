@@ -17,13 +17,13 @@ class ConfigureController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $screenSchemeId = $request->get('id');
-        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+        $screenScheme = $this->getRepository(ScreenScheme::class)->getMetaDataById($screenSchemeId);
 
         if ($screenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
+        $screenSchemeData = $this->getRepository(ScreenScheme::class)->getDataByScreenSchemeId($screenSchemeId);
         $menuSelectedCategory = 'issue';
         $source = $request->get('source');
         $projectId = null;

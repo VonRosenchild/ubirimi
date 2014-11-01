@@ -422,14 +422,14 @@ class UbirimiClient
         UbirimiContainer::get()['repository']->get(NotificationScheme::class)->deleteByClientId($clientId);
         UbirimiContainer::get()['repository']->get(NotificationScheme::class)->deleteByClientId($clientId);
 
-        IssueTypeScheme::deleteByClientId($clientId);
-        IssueTypeScreenScheme::deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(IssueTypeScheme::class)->deleteByClientId($clientId);
+        UbirimiContainer::get()['repository']->get(IssueTypeScreenScheme::class)->deleteByClientId($clientId);
 
         // delete issue security schemes
 
-        $issueSecuritySchemes = IssueSecurityScheme::getByClientId($clientId);
+        $issueSecuritySchemes = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getByClientId($clientId);
         while ($issueSecuritySchemes && $issueSecurityScheme = $issueSecuritySchemes->fetch_array(MYSQLI_ASSOC)) {
-            IssueSecurityScheme::deleteById($issueSecurityScheme['id']);
+            UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->deleteById($issueSecurityScheme['id']);
         }
 
         $users = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getUsers($clientId);

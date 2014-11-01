@@ -58,7 +58,7 @@ require_once __DIR__ . '/../../_header.php';
                                 </td>
                                 <td>
                                     <?php
-                                        $screenSchemes = ScreenScheme::getByScreenId($clientId, $screen['id']);
+                                        $screenSchemes = UbirimiContainer::get()['repository']->get(ScreenScheme::class)->getByScreenId($clientId, $screen['id']);
                                         if ($screenSchemes) {
                                             echo '<ul>';
                                             while ($screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {

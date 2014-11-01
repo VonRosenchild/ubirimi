@@ -213,10 +213,12 @@ class IssueTypeScreenScheme
     }
 
     public function deleteByClientId($clientId) {
-        $issueTypeScreenSchemes = IssueTypeScreenScheme::getByClientId($clientId);
+        $issueTypeScreenSchemeRepository = UbirimiContainer::get()['repository']->get(IssueTypeScreenScheme::class);
+
+        $issueTypeScreenSchemes = $issueTypeScreenSchemeRepository->getByClientId($clientId);
         while ($issueTypeScreenSchemes && $issueTypeScreenScheme = $issueTypeScreenSchemes->fetch_array(MYSQLI_ASSOC)) {
-            IssueTypeScreenScheme::deleteDataByIssueTypeScreenSchemeId($issueTypeScreenScheme['id']);
-            IssueTypeScreenScheme::deleteById($issueTypeScreenScheme['id']);
+            $issueTypeScreenSchemeRepository->deleteDataByIssueTypeScreenSchemeId($issueTypeScreenScheme['id']);
+            $issueTypeScreenSchemeRepository->deleteById($issueTypeScreenScheme['id']);
         }
     }
 

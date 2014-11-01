@@ -19,7 +19,7 @@ class CopyController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $screenSchemeId = $request->get('id');
-        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+        $screenScheme = $this->getRepository(ScreenScheme::class)->getMetaDataById($screenSchemeId);
 
         if ($screenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -34,7 +34,7 @@ class CopyController extends UbirimiController
             if (empty($name))
                 $emptyName = true;
 
-            $duplicateScreen = ScreenScheme::getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            $duplicateScreen = $this->getRepository(ScreenScheme::class)->getMetaDataByNameAndClientId($session->get('client/id'), mb_strtolower($name));
             if ($duplicateScreen)
                 $duplicateName = true;
 
@@ -43,7 +43,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $copiedScreenSchemeId = $copiedScreenScheme->save($currentDate);
 
-                $screenSchemeData = ScreenScheme::getDataByScreenSchemeId($screenSchemeId);
+                $screenSchemeData = $this->getRepository(ScreenScheme::class)->getDataByScreenSchemeId($screenSchemeId);
                 while ($data = $screenSchemeData->fetch_array(MYSQLI_ASSOC)) {
                     $copiedScreenScheme->addData($copiedScreenSchemeId, $data['sys_operation_id'], $data['screen_id'], $currentDate);
                 }

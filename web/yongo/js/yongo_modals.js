@@ -145,7 +145,7 @@ $('document').ready(function () {
                     click: function () {
                         $.ajax({
                             type: "POST",
-                            url: '/yongo/administration/custom-fields/value/delete',
+                            url: '/yongo/administration/custom-field/value/delete',
                             data: {
                                 id: customFieldValueId
                             },

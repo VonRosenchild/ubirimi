@@ -21,7 +21,7 @@ class EditController extends UbirimiController
         $screenSchemeId = $request->get('id');
 
         $emptyName = false;
-        $screenScheme = ScreenScheme::getMetaDataById($screenSchemeId);
+        $screenScheme = $this->getRepository(ScreenScheme::class)->getMetaDataById($screenSchemeId);
 
         if ($screenScheme['client_id'] != $session->get('client/id')) {
             return new RedirectResponse('/general-settings/bad-link-access-denied');
@@ -36,7 +36,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                ScreenScheme::updateMetaDataById($screenSchemeId, $name, $description, $currentDate);
+                $this->getRepository(ScreenScheme::class)->updateMetaDataById($screenSchemeId, $name, $description, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

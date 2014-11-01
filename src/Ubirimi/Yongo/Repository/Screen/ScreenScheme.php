@@ -202,10 +202,13 @@ class ScreenScheme
     }
 
     public function deleteByClientId($clientId) {
-        $screenSchemes = ScreenScheme::getMetaDataByClientId($clientId);
+
+        $screenSchemeRepository = UbirimiContainer::get()['repository']->get(ScreenScheme::class);
+
+        $screenSchemes = $screenSchemeRepository->getMetaDataByClientId($clientId);
         while ($screenSchemes && $screenScheme = $screenSchemes->fetch_array(MYSQLI_ASSOC)) {
-            ScreenScheme::deleteDataByScreenSchemeId($screenScheme['id']);
-            ScreenScheme::deleteById($screenScheme['id']);
+            $screenSchemeRepository->deleteDataByScreenSchemeId($screenScheme['id']);
+            $screenSchemeRepository->deleteById($screenScheme['id']);
         }
     }
 }

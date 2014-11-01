@@ -19,7 +19,7 @@ class EditDataController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $issueTypeScreenSchemeDataId = $request->get('id');
-        $screenSchemes = ScreenScheme::getMetaDataByClientId($session->get('client/id'));
+        $screenSchemes = $this->getRepository(ScreenScheme::class)->getMetaDataByClientId($session->get('client/id'));
         $issueTypeScreenSchemeData = $this->getRepository(IssueTypeScreenScheme::class)->getDataById($issueTypeScreenSchemeDataId);
 
         $screenSchemeId = $issueTypeScreenSchemeData['issue_type_screen_scheme_id'];
@@ -35,7 +35,7 @@ class EditDataController extends UbirimiController
             $screenSchemeId = Util::cleanRegularInputField($request->request->get('screen_scheme'));
             $issueTypeId = Util::cleanRegularInputField($request->request->get('issue_type'));
 
-            IssueTypeScreenScheme::updateDataById($screenSchemeId, $issueTypeId, $issueTypeScreenSchemeMetaData['id']);
+            $this->getRepository(IssueTypeScreenScheme::class)->updateDataById($screenSchemeId, $issueTypeId, $issueTypeScreenSchemeMetaData['id']);
 
             $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),

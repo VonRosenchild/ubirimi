@@ -6,7 +6,7 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 
-class Custom {
+class CustomField {
 
     public function getById($Id) {
         $query = "SELECT * FROM field where id = ? limit 1";

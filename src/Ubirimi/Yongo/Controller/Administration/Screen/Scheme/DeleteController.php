@@ -18,10 +18,11 @@ class DeleteController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
 
         $Id = $request->request->get('id');
-        $screen = ScreenScheme::getMetaDataById($Id);
+        $screenSchemeRepository = $this->getRepository(ScreenScheme::class);
+        $screen = $screenSchemeRepository->getMetaDataById($Id);
 
-        ScreenScheme::deleteDataByScreenSchemeId($Id);
-        ScreenScheme::deleteById($Id);
+        $screenSchemeRepository->deleteDataByScreenSchemeId($Id);
+        $screenSchemeRepository->deleteById($Id);
 
         $currentDate = Util::getServerCurrentDateTime();
 
