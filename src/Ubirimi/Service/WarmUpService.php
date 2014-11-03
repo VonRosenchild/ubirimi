@@ -138,7 +138,5 @@ class WarmUpService extends UbirimiService
                 $session->set("client/settings/smtp/{$key}", $value);
             });
         }
-
-        date_default_timezone_set($session->get('client/settings/timezone'));
     }
 }
