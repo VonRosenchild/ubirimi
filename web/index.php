@@ -27,7 +27,7 @@ $loggedInUserId = $session->has('user/id') ? $session->get('user/id'): null;
 if ($clientId) {
     date_default_timezone_set($session->get('client/settings/timezone'));
 } else {
-    date_default_timezone_set($session->get('Europe/London'));
+    date_default_timezone_set('Europe/London');
 }
 
 try {
