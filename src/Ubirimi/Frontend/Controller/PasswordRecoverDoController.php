@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\FrontendNET\Controller;
+namespace Ubirimi\Frontend\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
