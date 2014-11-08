@@ -95,10 +95,6 @@ class RouteBootstrapService
             $this->context
         );
 
-        /**
-         * for Frontend load routes based on $onDemand flag.
-         * These routes need to be loaded before FrontendCOM because of the larger scope of ForntendCOM's routes
-         */
         $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../Frontend/Resources/config'));
         $this->router->getRouteCollection()->addCollection($routeCollection = $loader->load('routing_download.yml'));
 
