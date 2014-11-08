@@ -688,7 +688,7 @@ class UbirimiUser
             return false;
     }
 
-    public function getDocumentatorActivityStream($userId) {
+    public function getDocumentadorActivityStream($userId) {
         // created pages
         $query = 'select documentator_entity.name, documentator_entity.id, \'created\' as action, documentator_entity.date_created as date ' .
                  'from documentator_entity ' .

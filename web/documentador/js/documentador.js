@@ -105,7 +105,7 @@ $('document').ready(function () {
 
         $('#contentUserHome').hide();
         $('#menu_page_tools').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
 
         if ($('#menu_child_pages').is(':visible')) {
             $('#menu_child_pages').hide();
@@ -123,7 +123,7 @@ $('document').ready(function () {
             $('#menuHome').css('background-color', '#6A8EB2');
 
         $('#menu_top_user').css('background-color', '#003466');
-        $('#menuDocumentator').css('background-color', '#eeeeee');
+        $('#menuDocumentador').css('background-color', '#eeeeee');
     });
 
     $('#btnEditSpace').click(function (event) {
@@ -149,7 +149,7 @@ $('document').ready(function () {
             document.location.href = '/documentador/page/edit/' + selected_rows[0];
     });
 
-    $('#btnEditGroupDocumentator').click(function (event) {
+    $('#btnEditGroupDocumentador').click(function (event) {
         event.preventDefault();
         if (selected_rows.length == 1)
             document.location.href = '/documentador/administration/group/edit/' + selected_rows[0];

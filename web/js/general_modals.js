@@ -61,7 +61,7 @@ $('document').ready(function () {
         });
     });
 
-    $('#btnAssignUserToGroup, #btnAssignUserToGroupDocumentator').click(function (event) {
+    $('#btnAssignUserToGroup, #btnAssignUserToGroupDocumentador').click(function (event) {
         event.preventDefault();
 
         if (selected_rows.length != 1)

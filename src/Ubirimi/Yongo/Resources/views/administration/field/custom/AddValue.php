@@ -5,14 +5,14 @@ require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+    <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
         <?php
             $breadCrumb = '<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > ' . $field['name'] . ' > Create Custom Value';
             Util::renderBreadCrumb($breadCrumb);
         ?>
     <?php endif ?>
     <div class="pageContent">
-        <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
             <form name="add_user_group" action="/yongo/administration/custom-field/value/add/<?php echo $customFieldId ?>" method="post">
 
                 <table width="100%">

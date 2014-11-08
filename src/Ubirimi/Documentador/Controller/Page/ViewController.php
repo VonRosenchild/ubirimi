@@ -35,9 +35,9 @@ class ViewController extends UbirimiController
             $clientId = $this->getRepository(UbirimiClient::class)->getByBaseURL($httpHOST, 'array', 'id');
             $loggedInUserId = null;
 
-            $settingsDocumentator = $this->getRepository(UbirimiClient::class)->getDocumentatorSettings($clientId);
+            $settingsDocumentador = $this->getRepository(UbirimiClient::class)->getDocumentadorSettings($clientId);
 
-            $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
+            $documentatorUseAnonymous = $settingsDocumentador['anonymous_use_flag'];
 
             $page = $this->getRepository(Entity::class)->getById($entityId, $loggedInUserId);
             if ($page) {

@@ -26,7 +26,7 @@ class PermissionController extends UbirimiController
             return new RedirectResponse('/general-settings/bad-link-access-denied');
         }
 
-        $documentatorSettings = $this->getRepository(UbirimiClient::class)->getDocumentatorSettings($clientId);
+        $documentatorSettings = $this->getRepository(UbirimiClient::class)->getDocumentadorSettings($clientId);
         $anonymousAccessSettings = $this->getRepository(Space::class)->getAnonymousAccessSettings($spaceId);
 
         $usersWithPermissionForSpace = $this->getRepository(Space::class)->getUsersWithPermissions($spaceId);

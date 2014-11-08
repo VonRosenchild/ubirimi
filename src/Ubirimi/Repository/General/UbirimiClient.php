@@ -51,7 +51,7 @@ class UbirimiClient
         while ($groups && $group = $groups->fetch_array(MYSQLI_ASSOC)) {
             UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->deleteByIdForYongo($group['id']);
 
-            UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->deleteByIdForDocumentator($group['id']);
+            UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->deleteByIdForDocumentador($group['id']);
         }
     }
 
@@ -1021,7 +1021,7 @@ class UbirimiClient
             return false;
     }
 
-    public function getDocumentatorSettings($clientId) {
+    public function getDocumentadorSettings($clientId) {
         $query = 'select * from client_documentator_settings where client_id = ' . $clientId;
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1320,7 +1320,7 @@ class UbirimiClient
         $fieldConfigurationRepository->addCompleteData($fieldConfigurationId, $field['id'], 1, 0, '');
     }
 
-    public function addDefaultDocumentatorGlobalPermissionData($clientId) {
+    public function addDefaultDocumentadorGlobalPermissionData($clientId) {
         $groupAdministrators = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Documentador Administrators');
         $groupUsers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Documentador Users');
 
@@ -1637,7 +1637,7 @@ class UbirimiClient
         $clientCreatedDate = $clientData['date_created'];
 
         $clientRepository->installYongoProduct($clientId, $userId, $clientCreatedDate);
-        $clientRepository->installDocumentatorProduct($clientId, $userId, $clientCreatedDate);
+        $clientRepository->installDocumentadorProduct($clientId, $userId, $clientCreatedDate);
         $clientRepository->installCalendarProduct($clientId, $userId, $clientCreatedDate);
 
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
@@ -1666,7 +1666,7 @@ class UbirimiClient
         $clientRepository->setInstalledFlag($clientId, 1);
     }
 
-    public function addDefaultDocumentatorUserGroups($clientId, $date) {
+    public function addDefaultDocumentadorUserGroups($clientId, $date) {
         $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1682,7 +1682,7 @@ class UbirimiClient
         $stmt->execute();
     }
 
-    public function addDefaultDocumentatorSettings($clientId) {
+    public function addDefaultDocumentadorSettings($clientId) {
         $query = "INSERT INTO client_documentator_settings(client_id, anonymous_use_flag, anonymous_view_user_profile_flag) VALUES (?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -1792,8 +1792,8 @@ class UbirimiClient
         }
     }
 
-    public function installDocumentatorProduct($clientId, $userId, $clientCreatedDate) {
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addDefaultDocumentatorUserGroups($clientId, $clientCreatedDate);
+    public function installDocumentadorProduct($clientId, $userId, $clientCreatedDate) {
+        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addDefaultDocumentadorUserGroups($clientId, $clientCreatedDate);
 
         $groupAdministrators = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Documentador Administrators');
         $groupUsers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Documentador Users');
@@ -1803,8 +1803,8 @@ class UbirimiClient
 
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addData($groupUsers['id'], array($userId), $clientCreatedDate);
 
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addDefaultDocumentatorSettings($clientId);
-        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addDefaultDocumentatorGlobalPermissionData($clientId);
+        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addDefaultDocumentadorSettings($clientId);
+        UbirimiContainer::get()['repository']->get(UbirimiClient::class)->addDefaultDocumentadorGlobalPermissionData($clientId);
     }
 
     public function installCalendarProduct($clientId, $userId, $clientCreatedDate) {

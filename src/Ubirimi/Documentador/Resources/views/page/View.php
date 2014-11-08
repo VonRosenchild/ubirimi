@@ -18,7 +18,7 @@ require_once __DIR__ . '/../_header.php';
                 '<a class="linkNoUnderline" href="/documentador/pages/' . $spaceId . '">Pages</a> > ';
 
             if ($parentPage)
-                $breadCrumb .= LinkHelper::getDocumentatorPageLink($parentPage['id'], $parentPage['name'], 'linkNoUnderline') . ' > ';
+                $breadCrumb .= LinkHelper::getDocumentadorPageLink($parentPage['id'], $parentPage['name'], 'linkNoUnderline') . ' > ';
 
             $breadCrumb .= $page['name'];
             Util::renderBreadCrumb($breadCrumb);

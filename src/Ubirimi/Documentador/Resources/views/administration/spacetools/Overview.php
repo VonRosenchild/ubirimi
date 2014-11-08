@@ -39,7 +39,7 @@
             </tr>
             <tr>
                 <td>Homepage:</td>
-                <td><?php echo LinkHelper::getDocumentatorPageLink($space['home_entity_id'], $space['home_page_name']) ?></td>
+                <td><?php echo LinkHelper::getDocumentadorPageLink($space['home_entity_id'], $space['home_page_name']) ?></td>
             </tr>
             <tr>
                 <td>Created By:</td>

@@ -48,7 +48,7 @@ class WarmUpService extends UbirimiService
         }
 
         if (true === $warmDocumentadorSettings) {
-            $documentadorSettings = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getDocumentatorSettings($userData['client_id']);
+            $documentadorSettings = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getDocumentadorSettings($userData['client_id']);
 
             array_walk($documentadorSettings, function($value, $key) use ($session) {
                 $session->set("documentador/settings/{$key}", $value);
@@ -79,13 +79,13 @@ class WarmUpService extends UbirimiService
         $session->set('user/yongo/is_global_system_administrator', $hasYongoGlobalSystemAdministrationPermission);
         $session->set('user/yongo/is_global_project_administrator', $hasYongoAdministerProjectsPermission);
 
-        $hasDocumentatorGlobalAdministrationPermission = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR);
-        $hasDocumentatorGlobalSystemAdministrationPermission = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
-        $hasDocumentatorGlobalCreateSpace = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE);
+        $hasDocumentadorGlobalAdministrationPermission = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_ADMINISTRATOR);
+        $hasDocumentadorGlobalSystemAdministrationPermission = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS);
+        $hasDocumentadorGlobalCreateSpace = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->hasGlobalPermission($session->get('client/id'), $session->get('user/id'), GlobalPermission::GLOBAL_PERMISSION_DOCUMENTADOR_CREATE_SPACE);
 
-        $session->set('user/documentator/is_global_administrator', $hasDocumentatorGlobalAdministrationPermission);
-        $session->set('user/documentator/is_global_system_administrator', $hasDocumentatorGlobalSystemAdministrationPermission);
-        $session->set('user/documentator/is_global_create_space', $hasDocumentatorGlobalCreateSpace);
+        $session->set('user/documentator/is_global_administrator', $hasDocumentadorGlobalAdministrationPermission);
+        $session->set('user/documentator/is_global_system_administrator', $hasDocumentadorGlobalSystemAdministrationPermission);
+        $session->set('user/documentator/is_global_create_space', $hasDocumentadorGlobalCreateSpace);
     }
 
     /**

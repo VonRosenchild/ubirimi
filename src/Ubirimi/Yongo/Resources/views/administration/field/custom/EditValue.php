@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
-    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+    <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
         <?php
             $breadCrumb = '<a href="/yongo/administration/custom-fields" class="linkNoUnderline">Custom Fields</a> > ' . $field['name'] . ' > Update Custom Value';
             Util::renderBreadCrumb($breadCrumb);
@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../_header.php';
     <?php endif ?>
 
     <div class="pageContent">
-        <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
             <form name="form_update_custom_field_value" action="/yongo/administration/custom-field/value/edit/<?php echo $valueId ?>" method="post">
 
                 <table width="100%">

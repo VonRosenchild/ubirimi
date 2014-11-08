@@ -52,7 +52,7 @@ $(document).mouseup(function (e) {
     var contentToClose = ['#contentMenuHome', '#contentMenuIssues', '#contentMenuProjects', '#contentMenuAgile',
         '#contentMenuMailGeneral', '#contentMenuUsersGeneral', '#contentUserHomeGeneral', '#menu_add_to_sprint',
         '#contentMenuSVN', '#contentMenuFilters', '#contentMenuAdminProjects', '#contentMenuAdminUsers', '#contentMenuAdminIssues', '#contentMenuAdminSystem',
-        '#contentMenuUserMenu', '#contentMenuIssueSearchOptions', '#menu_child_pages', '#contentMenuDocumentator', '#menu_page_tools',
+        '#contentMenuUserMenu', '#contentMenuIssueSearchOptions', '#menu_child_pages', '#contentMenuDocumentador', '#menu_page_tools',
         '#contentMenuAdminDocSpaces', '#contentMenuAdminDocUsersSecurity', '#contentMenuCalendars', '#contentMenuHelpDesk', '#contentMenuNotebooks',
         '#contentAddIssueWatcher', '#content_chose_display_columns'];
 
@@ -142,7 +142,7 @@ function closeOpenMenus() {
     $('#menu_top_user').css('background-color', '#003466');
     $('#menu_top_userAdmin').css('background-color', '#003466');
     $('#menuUsersGeneral').css('background-color', '#6A8EB2');
-    $('#menuDocumentator').css('background-color', '#eeeeee');
+    $('#menuDocumentador').css('background-color', '#eeeeee');
 
     var menuToClose = ['menu_more_actions', 'menu_workflow', 'contentUserHome', 'contentMenuUserSummaryFilters'];
     for (var i = 0; i < menuToClose.length; i++) {
@@ -284,7 +284,7 @@ $('document').ready(function () {
         $('#btnEditSpace').attr('class', classCSS);
         $('#btnEditSpaceAdministration').attr('class', classCSS);
         $('#btnEditUserGroup').attr('class', classCSS);
-        $('#btnEditGroupDocumentator').attr('class', classCSS);
+        $('#btnEditGroupDocumentador').attr('class', classCSS);
         $('#btnEditLinkType').attr('class', classCSS);
         $('#btnAssignUsers').attr('class', classCSS);
         $('#btnAssignUsersToRole').attr('class', classCSS);
@@ -335,7 +335,7 @@ $('document').ready(function () {
         $('#btnDeleteIssue').attr('class', classCSS + ' ' + classCSSDelete);
         $('#btnDeleteWorkflow').attr('class', classCSS + ' ' + classCSSDelete);
         $('#btnDeleteUserGroup').attr('class', classCSS + ' ' + classCSSDelete);
-        $('#btnDeleteGroupDocumentator').attr('class', classCSS + ' ' + classCSSDelete);
+        $('#btnDeleteGroupDocumentador').attr('class', classCSS + ' ' + classCSSDelete);
         $('#btnDeleteEvent').attr('class', classCSS + ' ' + classCSSDelete);
         $('#btnDeleteStepProperty').attr('class', classCSS + ' ' + classCSSDelete);
         $('#btnDeleteWorkflowStep').attr('class', classCSS + ' ' + classCSSDelete);
@@ -357,7 +357,7 @@ $('document').ready(function () {
         $('#btnEditCustomFieldValue').attr('class', classCSS);
 
         $('#btnEditCustomField').attr('class', classCSS);
-        $('#btnAssignUserToGroup, #btnAssignUserToGroupDocumentator').attr('class', classCSS);
+        $('#btnAssignUserToGroup, #btnAssignUserToGroupDocumentador').attr('class', classCSS);
         $('#btnEditFilter').attr('class', classCSS);
         $('#btnCustomFieldPlaceOnScreens').attr('class', classCSS);
         $('#btnDeleteFilter').attr('class', classCSS + ' ' + classCSSDelete);
@@ -403,7 +403,7 @@ $('document').ready(function () {
         $('#btnCopyIssueTypeScreenScheme').attr('class', classCSS);
         $('#btnDesignWorkflow').attr('class', classCSS);
         $('#btnPermissions').attr('class', classCSS);
-        $('#btnAssignUserInGroupDocumentator').attr('class', classCSS);
+        $('#btnAssignUserInGroupDocumentador').attr('class', classCSS);
         $('#btnDeleteFilterSubscription').attr('class', classCSS);
 
         if ($("[id^='el_check_']:checked").length) {
@@ -709,7 +709,7 @@ $('document').ready(function () {
         } else
             $('#menuCalendars').css('background-color', '#6A8EB2');
 
-        $('#menuDocumentator').css('background-color', '#eeeeee');
+        $('#menuDocumentador').css('background-color', '#eeeeee');
 
         var hasAdminMenu = parseInt($('#has_administration_perm').val());
 

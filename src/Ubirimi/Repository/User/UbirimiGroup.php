@@ -172,7 +172,7 @@ class UbirimiGroup
         UbirimiContainer::get()['db.connection']->query($query);
     }
 
-    public function deleteByIdForDocumentator($groupId) {
+    public function deleteByIdForDocumentador($groupId) {
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 

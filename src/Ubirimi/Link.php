@@ -104,7 +104,7 @@ class LinkHelper {
         return $link;
     }
 
-    public static function getDocumentatorPageLink($pageId, $pageTitle, $class = null) {
+    public static function getDocumentadorPageLink($pageId, $pageTitle, $class = null) {
         $linkClassHTML = '';
         if ($class)
             $linkClassHTML = 'class="' . $class . '"';

@@ -11,7 +11,7 @@ $styleSelectedMenu = 'style="background-color: #EEEEEE;';
 $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_DOCUMENTADOR);
 if (Util::checkUserIsLoggedIn()) {
 
-    $hasAdministrationPermission = Util::userHasDocumentatorAdministrativePermission();
+    $hasAdministrationPermission = Util::userHasDocumentadorAdministrativePermission();
     $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getWithAdminPermissionByUserId($clientId, $loggedInUserId);
 }
 
@@ -67,7 +67,7 @@ $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientI
         <td>
             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                    <td width="120px" class="menuItemBasic <?php if ($menuSelectedCategory == 'documentator') echo 'menuItemSelected'; else echo 'menuItem' ?>" id="menuDocumentator" style="cursor: pointer;">
+                    <td width="120px" class="menuItemBasic <?php if ($menuSelectedCategory == 'documentator') echo 'menuItemSelected'; else echo 'menuItem' ?>" id="menuDocumentador" style="cursor: pointer;">
                         <span>Documentador</span>
                         <span class="<?php if ($menuSelectedCategory == 'documentator') echo 'arrowSelected'; else echo 'arrow' ?>"></span>
                         &nbsp;
@@ -76,7 +76,7 @@ $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientI
                     <td align="right">
                         <?php if (Util::checkUserIsLoggedIn()): ?>
                             <?php if ($spaces): ?>
-                                <input type="button" id="btnDocumentatorCreate" value="Create" />
+                                <input type="button" id="btnDocumentadorCreate" value="Create" />
                             <?php endif ?>
                             <input id="documentator_quick_search" type="text" style="height: 15px; font-style: italic;" value="Quick Search" name="search" />
                         <?php endif ?>
@@ -87,7 +87,7 @@ $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientI
     </tr>
 </table>
 
-<div style="border-left: 1px solid #c0c0c0;" id="contentMenuDocumentator"></div>
+<div style="border-left: 1px solid #c0c0c0;" id="contentMenuDocumentador"></div>
 <input type="hidden" value="<?php echo $menuSelectedCategory ?>" id="menu_selected" />
 
 <?php if ($loggedInUserId): ?>

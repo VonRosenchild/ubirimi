@@ -29,11 +29,11 @@ class Util {
         return ($hasYongoGlobalAdministrationPermission || $hasYongoGlobalSystemAdministrationPermission);
     }
 
-    public static function userHasDocumentatorAdministrativePermission() {
-        $hasDocumentatorGlobalAdministrationPermission = UbirimiContainer::get()['session']->get('user/documentator/is_global_administrator');
-        $hasDocumentatorGlobalSystemAdministrationPermission = UbirimiContainer::get()['session']->get('user/documentator/is_global_system_administrator');
+    public static function userHasDocumentadorAdministrativePermission() {
+        $hasDocumentadorGlobalAdministrationPermission = UbirimiContainer::get()['session']->get('user/documentator/is_global_administrator');
+        $hasDocumentadorGlobalSystemAdministrationPermission = UbirimiContainer::get()['session']->get('user/documentator/is_global_system_administrator');
 
-        return ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission);
+        return ($hasDocumentadorGlobalAdministrationPermission || $hasDocumentadorGlobalSystemAdministrationPermission);
     }
 
     public static function checkUserIsLoggedIn() {

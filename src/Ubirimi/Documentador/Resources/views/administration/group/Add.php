@@ -6,14 +6,14 @@ require_once __DIR__ . '/../../_header.php';
 <body>
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+    <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
         <?php
             $breadCrumb = '<a href="/documentador/administration/groups" class="linkNoUnderline">Groups</a> > Create Group';
             Util::renderBreadCrumb($breadCrumb);
         ?>
     <?php endif ?>
     <div class="pageContent">
-        <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
             <form name="add_user_group" action="/documentador/administration/groups/add" method="post">
                 <table width="100%">
                     <tr>

@@ -25,10 +25,10 @@ class ActivityController extends UbirimiController
             $clientSettings = $this->getRepository(UbirimiClient::class)->getById($clientId);
             $loggedInUserId = null;
 
-            $settingsDocumentator = $this->getRepository(UbirimiClient::class)->getDocumentatorSettings($clientId);
+            $settingsDocumentador = $this->getRepository(UbirimiClient::class)->getDocumentadorSettings($clientId);
 
-            $documentatorUseAnonymous = $settingsDocumentator['anonymous_use_flag'];
-            $documentatorAnonymousViewUserProfiles = $settingsDocumentator['anonymous_view_user_profile_flag'];
+            $documentatorUseAnonymous = $settingsDocumentador['anonymous_use_flag'];
+            $documentatorAnonymousViewUserProfiles = $settingsDocumentador['anonymous_view_user_profile_flag'];
 
             if (!($documentatorUseAnonymous && $documentatorAnonymousViewUserProfiles)) {
                 Util::signOutAndRedirect();
@@ -44,7 +44,7 @@ class ActivityController extends UbirimiController
 
         $menuSelectedCategory = 'documentator';
 
-        $activities = $this->getRepository(UbirimiUser::class)->getDocumentatorActivityStream($userId);
+        $activities = $this->getRepository(UbirimiUser::class)->getDocumentadorActivityStream($userId);
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_DOCUMENTADOR_NAME. ' / ' . $user['first_name'] . ' ' . $user['last_name'] . ' / Activity';
 
         return $this->render(__DIR__ . '/../../Resources/views/user/Activity.php', get_defined_vars());

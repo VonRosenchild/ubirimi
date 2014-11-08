@@ -75,7 +75,7 @@ class EditController extends UbirimiController
 
             return new RedirectResponse('/documentador/administration/global-permissions');
         }
-        $documentatorSettings = $this->getRepository(UbirimiClient::class)->getDocumentatorSettings($clientId);
+        $documentatorSettings = $this->getRepository(UbirimiClient::class)->getDocumentadorSettings($clientId);
         $session->set('documentator/settings', $documentatorSettings);
 
         $users = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);

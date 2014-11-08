@@ -222,7 +222,7 @@ $('document').ready(function () {
         });
     });
 
-    $(document).on('click', "#btnNewDocumentatorPage, #btnDocumentatorCreate", function (event) {
+    $(document).on('click', "#btnNewDocumentadorPage, #btnDocumentadorCreate", function (event) {
 
         event.preventDefault();
 
@@ -329,7 +329,7 @@ $('document').ready(function () {
         });
     });
 
-    $('#btnDeleteGroupDocumentator').on('click', function (event) {
+    $('#btnDeleteGroupDocumentador').on('click', function (event) {
         event.preventDefault();
 
         if (selected_rows.length != 1) {
@@ -621,7 +621,7 @@ $('document').ready(function () {
         });
     });
 
-    $('#btnAssignUserInGroupDocumentator').on('click', function (event) {
+    $('#btnAssignUserInGroupDocumentador').on('click', function (event) {
         event.preventDefault();
 
         if ($(this).hasClass('disabled'))

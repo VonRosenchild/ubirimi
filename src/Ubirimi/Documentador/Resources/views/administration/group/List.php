@@ -5,18 +5,18 @@
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+    <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
         <?php Util::renderBreadCrumb('Groups') ?>
     <?php endif ?>
     <div class="pageContent">
-        <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
 
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
-                    <td><a id="btnNewGroupDocumentator" href="/documentador/administration/groups/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Group</a></td>
-                    <td><a id="btnEditGroupDocumentator" href="#" class="btn ubirimi-btn disabled"><i class="icon-edit"></i> Edit</a></td>
-                    <td><a id="btnDeleteGroupDocumentator" href="#" class="btn ubirimi-btn disabled"><i class="icon-remove"></i> Delete</a></td>
-                    <td><a id="btnAssignUserInGroupDocumentator" href="#" class="btn ubirimi-btn disabled">Assign users</a></td>
+                    <td><a id="btnNewGroupDocumentador" href="/documentador/administration/groups/add" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Group</a></td>
+                    <td><a id="btnEditGroupDocumentador" href="#" class="btn ubirimi-btn disabled"><i class="icon-edit"></i> Edit</a></td>
+                    <td><a id="btnDeleteGroupDocumentador" href="#" class="btn ubirimi-btn disabled"><i class="icon-remove"></i> Delete</a></td>
+                    <td><a id="btnAssignUserInGroupDocumentador" href="#" class="btn ubirimi-btn disabled">Assign users</a></td>
                 </tr>
             </table>
 

@@ -75,7 +75,7 @@ class RouteBootstrapService
             __DIR__ . '/../Agile/Resources/config',
             __DIR__ . '/../HelpDesk/Resources/config',
             __DIR__ . '/../Calendar/Resources/config',
-            __DIR__ . '/../General/Resources/config',
+            __DIR__ . '/../GeneralSettings/Resources/config',
             __DIR__ . '/../QuickNotes/Resources/config',
             __DIR__ . '/../Api/Resources/config'
         );
@@ -96,7 +96,7 @@ class RouteBootstrapService
         );
 
         $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../Frontend/Resources/config'));
-        $this->router->getRouteCollection()->addCollection($routeCollection = $loader->load('routing_download.yml'));
+        $this->router->getRouteCollection()->addCollection($routeCollection = $loader->load('routing.yml'));
 
         foreach ($routingPaths as $routingPath) {
             $loader = new YamlFileLoader(new FileLocator($routingPath));

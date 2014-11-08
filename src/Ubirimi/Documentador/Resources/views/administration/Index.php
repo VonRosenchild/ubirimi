@@ -6,12 +6,12 @@
 <body>
 
     <?php require_once __DIR__ . '/_menu.php'; ?>
-    <?php if (Util::userHasDocumentatorAdministrativePermission() || $spacesWithAdminPermission): ?>
+    <?php if (Util::userHasDocumentadorAdministrativePermission() || $spacesWithAdminPermission): ?>
         <?php Util::renderBreadCrumb('Administration') ?>
     <?php endif ?>
     <div class="pageContent">
-        <?php if (Util::userHasDocumentatorAdministrativePermission() || $spacesWithAdminPermission): ?>
-            <?php if ($spacesWithAdminPermission || $hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission): ?>
+        <?php if (Util::userHasDocumentadorAdministrativePermission() || $spacesWithAdminPermission): ?>
+            <?php if ($spacesWithAdminPermission || $hasDocumentadorGlobalAdministrationPermission || $hasDocumentadorGlobalSystemAdministrationPermission): ?>
                 <table width="100%">
                     <tr>
                         <td colspan="2" class="sectionDetail"><span class="sectionDetailSimple headerPageText">Spaces</span></td>
@@ -23,19 +23,19 @@
                     </tr>
                 </table>
             <?php endif ?>
-            <?php if ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission): ?>
+            <?php if ($hasDocumentadorGlobalAdministrationPermission || $hasDocumentadorGlobalSystemAdministrationPermission): ?>
                 <table width="100%">
                     <tr>
                         <td colspan="2" class="sectionDetail"><span class="sectionDetailSimple headerPageText">Users & Security</span></td>
                     </tr>
                     <tr>
                         <td>
-                            <?php if ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission): ?>
+                            <?php if ($hasDocumentadorGlobalAdministrationPermission || $hasDocumentadorGlobalSystemAdministrationPermission): ?>
                                 <a href="/documentador/administration/users">Users</a>
                                 <b>&middot;</b>
                                 <a href="/documentador/administration/groups">Groups</a>
                             <?php endif ?>
-                            <?php if ($hasDocumentatorGlobalSystemAdministrationPermission): ?>
+                            <?php if ($hasDocumentadorGlobalSystemAdministrationPermission): ?>
                                 <b>&middot;</b>
                                 <a href="/documentador/administration/global-permissions">Global Permissions</a>
                             <?php endif ?>

@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../_header.php';
 
     <?php Util::renderBreadCrumb('Global Permissions') ?>
     <div class="pageContent">
-        <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
             <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                 <tr>
                     <td><a href="/documentador/administration/edit-global-permissions" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit Permissions</a></td>

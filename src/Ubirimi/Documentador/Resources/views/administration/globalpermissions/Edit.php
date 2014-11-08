@@ -9,12 +9,12 @@ require_once __DIR__ . '/../../_header.php';
 
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
-    <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+    <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
         <?php Util::renderBreadCrumb('Global Permissions > Update') ?>
     <?php endif ?>
 
     <div class="pageContent">
-        <?php if (Util::userHasDocumentatorAdministrativePermission()): ?>
+        <?php if (Util::userHasDocumentadorAdministrativePermission()): ?>
 
             <form name="edit_global_settings" action="/documentador/administration/edit-global-permissions" method="post">
                 <div class="headerPageText">Anonymous Access</div>

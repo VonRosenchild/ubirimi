@@ -15,7 +15,7 @@
                     <td align="center">
                         <img src="/documentador/img/tree_child.png" style="margin-top: -24px"/>
                     </td>
-                    <td><?php echo LinkHelper::getDocumentatorPageLink($childPage['id'], $childPage['name']) ?></td>
+                    <td><?php echo LinkHelper::getDocumentadorPageLink($childPage['id'], $childPage['name']) ?></td>
                 </tr>
             <?php endwhile ?>
         <?php else: ?>

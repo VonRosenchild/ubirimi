@@ -16,7 +16,7 @@ netRecoverPassword:
 
 netRecoverPasswordDO:
   path:     /recover-password/do
-    defaults: { _controller: '\Ubirimi\Frontend\Controller\PasswordRecoverDoController' }
+  defaults: { _controller: '\Ubirimi\Frontend\Controller\PasswordRecoverDoController' }
 
 netSetupPayment:
   path:     /setup-payment

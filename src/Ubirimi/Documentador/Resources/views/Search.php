@@ -26,7 +26,7 @@
             <table>
             <?php while ($page = $pages->fetch_array(MYSQLI_ASSOC)): ?>
                 <tr>
-                    <td><?php echo LinkHelper::getDocumentatorPageLink($page['id'], $page['name']) ?></td>
+                    <td><?php echo LinkHelper::getDocumentadorPageLink($page['id'], $page['name']) ?></td>
                 </tr>
             <?php endwhile ?>
             </table>

@@ -11787,8 +11787,8 @@ INSERT INTO `sys_permission_global` (`id`, `sys_product_id`, `name`, `descriptio
 (2, 1, 'Yongo Administrators', 'Ability to perform most administration functions (excluding Import & Export, etc.). '),
 (3, 1, 'Yongo Users', 'Ability to log in to Yongo. They are a ''user''. Any new users created will automatically join these groups.'),
 (4, 1, 'Bulk Change', 'Ability to modify a collection of issues at once. For example, resolve multiple issues in one step.'),
-(5, 4, 'Documentator Administrator', 'Can administer the application but is disallowed from operations that may compromise system security.'),
-(6, 4, 'Documentator System Administrator', 'Has complete control and access to all administrative functions.'),
+(5, 4, 'Documentador Administrator', 'Can administer the application but is disallowed from operations that may compromise system security.'),
+(6, 4, 'Documentador System Administrator', 'Has complete control and access to all administrative functions.'),
 (7, 4, 'Create Space', 'Able to add spaces to the site.');
 
 -- --------------------------------------------------------
@@ -11911,7 +11911,7 @@ INSERT INTO `sys_product` (`id`, `name`, `description`) VALUES
 (1, 'Yongo', 'Issue & Project Tracking Software'),
 (2, 'SVN Hosting', 'SVN Hosting for your projects'),
 (3, 'Cheetah', 'Agile Module'),
-(4, 'Documentator', 'Content Creation, Collaboration & Knowledge Sharing for Teams'),
+(4, 'Documentador', 'Content Creation, Collaboration & Knowledge Sharing for Teams'),
 (5, 'Events', 'Events'),
 (6, 'Helpdesk', '');
 

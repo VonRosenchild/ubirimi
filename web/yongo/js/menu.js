@@ -275,7 +275,7 @@ $('document').ready(function () {
         $('#contentMenuFilters').hide();
         $('#contentMenuHelpDesk').hide();
         $('#contentUserHome').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
         $('#menu_more_actions').hide();
         $('#menu_workflow').hide();
         $('#menuIssueSearchViewOptionsContent').hide();
@@ -354,7 +354,7 @@ $('document').ready(function () {
         $('#contentMenuAgile').hide();
         $('#contentMenuFilters').hide();
         $('#contentUserHome').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
         $('#menu_more_actions').hide();
         $('#menu_workflow').hide();
         $('#menuIssueSearchViewOptionsContent').hide();
@@ -430,7 +430,7 @@ $('document').ready(function () {
         $('#contentMenuFilters').hide();
         $('#contentMenuHome').hide();
         $('#contentUserHome').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
         $('#contentMenuSVN').hide();
         $('#menu_more_actions').hide();
         $('#menu_workflow').hide();
@@ -509,7 +509,7 @@ $('document').ready(function () {
         $('#contentMenuIssues').hide();
         $('#contentMenuHome').hide();
         $('#contentUserHome').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
         $('#contentMenuSVN').hide();
         $('#contentMenuHelpDesk').hide();
         $('#menu_more_actions').hide();
@@ -555,7 +555,7 @@ $('document').ready(function () {
         $('#contentMenuSVN').hide();
         $('#contentMenuFilters').hide();
         $('#contentMenuHelpDesk').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
         $('#menu_more_actions').hide();
         $('#menu_workflow').hide();
         $('#contentMenuAgile').hide();
@@ -629,7 +629,7 @@ $('document').ready(function () {
         $('#contentUserHome').hide();
         $('#contentMenuSVN').hide();
         $('#contentMenuFilters').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
         $('#contentMenuHelpDesk').hide();
         $('#menu_more_actions').hide();
         $('#menu_workflow').hide();
@@ -716,7 +716,7 @@ $('document').ready(function () {
         $('#contentUserHome').hide();
         $('#contentMenuAgile').hide();
         $('#contentMenuFilters').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
 
         var menuSelected = $('#menu_selected').val();
         if (menuSelected == 'issue') {

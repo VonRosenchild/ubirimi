@@ -6,7 +6,7 @@
     <tr>
         <td><a href="/documentador/page/edit/<?php echo $entityId ?>" class="btn ubirimi-btn"><i class="icon-edit"></i> Edit</a></td>
         <td><a href="/documentador/administration/space-tools/overview/<?php echo $spaceId ?>" class="btn ubirimi-btn">Space Tools</a></td>
-        <td><a href="#" id="btnDocumentatorCreate" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Child Page</a></td>
+        <td><a href="#" id="btnDocumentadorCreate" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Child Page</a></td>
         <td><a href="#" id="btnPageChildren" class="btn ubirimi-btn dropdown-toggle<?php if (!$childPages) echo ' disabled' ?>">Child Pages <span class="caret"></a></td>
         <td>
             <div class="btn-group">

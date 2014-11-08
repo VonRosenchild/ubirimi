@@ -11,8 +11,8 @@ $loggedInUserLastName = $session->get('user/last_name');
 if (!isset($menuSelectedCategory))
     $menuSelectedCategory = null;
 
-$hasDocumentatorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
-$hasDocumentatorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
+$hasDocumentadorGlobalAdministrationPermission = $session->get('user/documentator/is_global_administrator');
+$hasDocumentadorGlobalSystemAdministrationPermission = $session->get('user/documentator/is_global_system_administrator');
 Util::renderMaintenanceMessage();
 ?>
 
@@ -68,7 +68,7 @@ Util::renderMaintenanceMessage();
                         <span class="<?php if ($menuSelectedCategory == 'doc_spaces') echo 'arrowSelected'; else echo 'arrow' ?>" id="arrowProjects"></span>
                         &nbsp;
                     </td>
-                    <?php if ($hasDocumentatorGlobalAdministrationPermission || $hasDocumentatorGlobalSystemAdministrationPermission): ?>
+                    <?php if ($hasDocumentadorGlobalAdministrationPermission || $hasDocumentadorGlobalSystemAdministrationPermission): ?>
                         <td width="8px"></td>
                         <td class="menuItemBasic <?php if ($menuSelectedCategory == 'doc_users') echo 'menuItemSelected'; else echo 'menuItem' ?>" id="menuAdminDocUsersSecurity">
                             <span>Users & Security</span>
@@ -127,7 +127,7 @@ Util::renderMaintenanceMessage();
         <tr>
             <td><div><a class="linkSubMenu" href="/documentador/administration/groups">Groups</a></div></td>
         </tr>
-        <?php if ($hasDocumentatorGlobalSystemAdministrationPermission): ?>
+        <?php if ($hasDocumentadorGlobalSystemAdministrationPermission): ?>
             <tr>
                 <td>
                     <span style="border-bottom: 1px solid #BBBBBB; margin-bottom: 4px; padding-bottom: 4px; display: block;"></span>

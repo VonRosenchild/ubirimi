@@ -13,7 +13,7 @@ $('document').ready(function () {
         $('#contentMenuIssues').hide();
         $('#contentMenuProjects').hide();
         $('#contentUserHome').hide();
-        $('#contentMenuDocumentator').hide();
+        $('#contentMenuDocumentador').hide();
         $('#menu_more_actions').hide();
         $('#menu_workflow').hide();
         $('#contentMenuAgile').hide();
@@ -45,9 +45,9 @@ $('document').ready(function () {
             $('#menuAgile').css('background-color', '#6A8EB2');
 
         if (menuSelected == 'documentator') {
-            $('#menuDocumentator').css('background-color', '#eeeeee');
+            $('#menuDocumentador').css('background-color', '#eeeeee');
         } else
-            $('#menuDocumentator').css('background-color', '#6A8EB2');
+            $('#menuDocumentador').css('background-color', '#6A8EB2');
 
         $('#menu_top_user').css('background-color', '#003466');
 

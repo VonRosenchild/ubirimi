@@ -656,9 +656,9 @@ class Entity {
                     $html .= '';
                     if (array_key_exists($data['id'], $treeStructure)) {
                         $html .= $smallIndent . '<a style="margin-top: -8px;" href="#" id="tree_show_content_' . $data['id'] . '_x">';
-                        $html .= '<img style="vertical-align: middle;" src="/documentador/img/arrow_down.png" /></a> ' . LinkHelper::getDocumentatorPageLink($data['id'], $data['title']);
+                        $html .= '<img style="vertical-align: middle;" src="/documentador/img/arrow_down.png" /></a> ' . LinkHelper::getDocumentadorPageLink($data['id'], $data['title']);
                     } else {
-                        $html .= $bigIndent . '&bullet; ' . LinkHelper::getDocumentatorPageLink($data['id'], $data['title']);
+                        $html .= $bigIndent . '&bullet; ' . LinkHelper::getDocumentadorPageLink($data['id'], $data['title']);
                     }
 
                     $index++;

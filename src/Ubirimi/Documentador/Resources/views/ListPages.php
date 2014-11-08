@@ -33,7 +33,7 @@ require_once __DIR__ . '/_header.php';
             <?php if (Util::checkUserIsLoggedIn()): ?>
                 <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
                     <tr>
-                        <td><a id="btnNewDocumentatorPage" href="/documentador/spaces/add-page/<?php echo $spaceId ?><?php if ($space['home_entity_id']) echo '/' . $space['home_entity_id'] ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create New Page</a></td>
+                        <td><a id="btnNewDocumentadorPage" href="/documentador/spaces/add-page/<?php echo $spaceId ?><?php if ($space['home_entity_id']) echo '/' . $space['home_entity_id'] ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create New Page</a></td>
                         <?php if ($homePage): ?>
                             <td><a href="/documentador/page/view/<?php echo $space['home_entity_id'] ?>" class="btn ubirimi-btn">Home Page</a></td>
                         <?php else: ?>
