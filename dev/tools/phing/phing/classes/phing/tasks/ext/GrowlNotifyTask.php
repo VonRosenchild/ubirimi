@@ -210,7 +210,7 @@ class GrowlNotifyTask extends Task
      * The notification name/type
      *
      * @param string $notification Name/type
-     *                             Default: "General Notification"
+     *                             Default: "GeneralSettings Notification"
      *
      * @return void
      * @throws BuildException
@@ -218,7 +218,7 @@ class GrowlNotifyTask extends Task
     public function setNotification($notification = '')
     {
         if ('' == $notification) {
-            $notification = 'General Notification';
+            $notification = 'GeneralSettings Notification';
         }
 
         if (!is_string($notification)) {

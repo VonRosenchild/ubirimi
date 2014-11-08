@@ -5,7 +5,7 @@ namespace Ubirimi\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * General purpose event class
+ * GeneralSettings purpose event class
  */
 class UbirimiEvent extends Event
 {

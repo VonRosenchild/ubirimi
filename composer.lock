@@ -657,7 +657,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.5.5",
+            "version": "v2.5.6",
             "target-dir": "Symfony/Component/Filesystem",
             "source": {
                 "type": "git",
@@ -947,12 +947,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "89d007897e20471d4990d4bd0456272dece03a26"
+                "reference": "00f7613b211a1aab3ab02a30bd14bc488ff72b44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/89d007897e20471d4990d4bd0456272dece03a26",
-                "reference": "89d007897e20471d4990d4bd0456272dece03a26",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/00f7613b211a1aab3ab02a30bd14bc488ff72b44",
+                "reference": "00f7613b211a1aab3ab02a30bd14bc488ff72b44",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +1002,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-09-30 17:01:15"
+            "time": "2014-10-20 20:04:11"
         }
     ],
     "packages-dev": [],

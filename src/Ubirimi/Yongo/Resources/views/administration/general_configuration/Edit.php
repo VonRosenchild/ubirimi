@@ -4,7 +4,7 @@ use Ubirimi\Util;
 require_once __DIR__ . '/../_header.php'; ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <?php Util::renderBreadCrumb('General Configuration > Edit'); ?>
+    <?php Util::renderBreadCrumb('GeneralSettings Configuration > Edit'); ?>
     <div class="pageContent">
         <form name="edit_configuration" method="post" action="/yongo/administration/general-configuration/edit">
             <table width="100%" cellspacing="0">

@@ -149,7 +149,7 @@ class GrowlNotifyTaskErrorTest extends BuildFileTest
                 $e->getMessage() . ' exception has been raised while not expected.'
             );
         }
-        $this->assertInLogs('Notification-Name: General Notification');
+        $this->assertInLogs('Notification-Name: GeneralSettings Notification');
     }
 
     /**

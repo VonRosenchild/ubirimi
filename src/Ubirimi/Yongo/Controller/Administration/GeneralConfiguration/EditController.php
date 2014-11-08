@@ -40,14 +40,14 @@ class EditController extends UbirimiController
                 $session->get('client/id'),
                 SystemProduct::SYS_PRODUCT_YONGO,
                 $session->get('user/id'),
-                'UPDATE Yongo General Settings',
+                'UPDATE Yongo GeneralSettings Settings',
                 $currentDate
             );
 
             return new RedirectResponse('/yongo/administration/general-configuration');
         }
 
-        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update General Configuration';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update GeneralSettings Configuration';
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/general_configuration/Edit.php', get_defined_vars());
     }

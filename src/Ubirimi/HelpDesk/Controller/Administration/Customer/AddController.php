@@ -71,7 +71,7 @@ class AddController extends UbirimiController
         }
         $menuSelectedCategory = 'general_user';
 
-        $sectionPageTitle = $session->get('client/settings/title_name') . ' / General Settings / Create User';
+        $sectionPageTitle = $session->get('client/settings/title_name') . ' / GeneralSettings Settings / Create User';
 
         return $this->render(__DIR__ . '/../../../Resources/views/administration/customer/Add.php', get_defined_vars());
     }

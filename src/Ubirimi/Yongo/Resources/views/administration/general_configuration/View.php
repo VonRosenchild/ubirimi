@@ -5,7 +5,7 @@ require_once __DIR__ . '/../_header.php';
 ?>
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
-    <?php Util::renderBreadCrumb('General Configuration') ?>
+    <?php Util::renderBreadCrumb('GeneralSettings Configuration') ?>
     <div class="pageContent">
         <table cellspacing="0" border="0" cellpadding="0" class="tableButtons">
             <tr>

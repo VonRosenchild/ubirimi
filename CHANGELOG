@@ -1,5 +1,5 @@
 v 2.14
-
+  - major code refactorings to remove static usage
 
 v 2.13
   - include select2 library in svn hosting module

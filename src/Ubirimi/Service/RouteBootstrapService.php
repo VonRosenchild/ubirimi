@@ -96,16 +96,11 @@ class RouteBootstrapService
         );
 
         /**
-         * for FrontendNET load routes based on $onDemand flag.
+         * for Frontend load routes based on $onDemand flag.
          * These routes need to be loaded before FrontendCOM because of the larger scope of ForntendCOM's routes
          */
-        if (true === $onDemand) {
-            $routingPaths[] = __DIR__ . '/../FrontendNET/Resources/config';
-            $routingPaths[] = __DIR__ . '/../FrontendCOM/Resources/config';
-        } else {
-            $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../FrontendNET/Resources/config'));
-            $this->router->getRouteCollection()->addCollection($routeCollection = $loader->load('routing_download.yml'));
-        }
+        $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../Frontend/Resources/config'));
+        $this->router->getRouteCollection()->addCollection($routeCollection = $loader->load('routing_download.yml'));
 
         foreach ($routingPaths as $routingPath) {
             $loader = new YamlFileLoader(new FileLocator($routingPath));

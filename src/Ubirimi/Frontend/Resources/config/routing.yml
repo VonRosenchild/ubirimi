@@ -1,0 +1,23 @@
+netSingin:
+  path:     /
+  defaults: { _controller: '\Ubirimi\Frontend\Controller\SigninController' }
+
+netSingout:
+  path:     /sign-out
+  defaults: { _controller: '\Ubirimi\Frontend\Controller\SignoutController' }
+
+netSignup:
+  path:     /sign-up
+  defaults: { _controller: '\Ubirimi\Frontend\Controller\SignupController' }
+
+netRecoverPassword:
+  path:     /recover-password
+  defaults: { _controller: '\Ubirimi\Frontend\Controller\PasswordRecoverController' }
+
+netRecoverPasswordDO:
+  path:     /recover-password/do
+    defaults: { _controller: '\Ubirimi\Frontend\Controller\PasswordRecoverDoController' }
+
+netSetupPayment:
+  path:     /setup-payment
+  defaults: { _controller: '\Ubirimi\Frontend\Controller\SetupPaymentController' }
