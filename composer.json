@@ -31,7 +31,6 @@
 
         "cogpowered/finediff": "0.0.*",
         "saltybeagle/savant3": "dev-master",
-        "paymill/paymill": "dev-master",
         "sabre/vobject": "3.1.2",
         "swiftmailer/swiftmailer": "v5.0.2",
         "tecnick.com/tcpdf": "dev-master",
