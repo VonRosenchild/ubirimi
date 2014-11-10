@@ -663,9 +663,9 @@ class Util {
                 $htmlOutput .= '<tr></tr>'; // hack ca sa mearga selectul pe prima linie
             }
             $disabledText = '';
-            if (isset($params['checkbox_disabled']) && $params['checkbox_disabled'])
+            if (isset($params['checkbox_disabled']) && $params['checkbox_disabled']) {
                 $disabledText = 'disabled="disabled"';
-
+            }
             while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
                 $atLeastOneIssueRendered = true;
                 $htmlOutput .= '<tr';

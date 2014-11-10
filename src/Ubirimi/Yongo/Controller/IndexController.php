@@ -51,8 +51,7 @@ class IndexController extends UbirimiController
             'assignee' => $userAssignedId,
             'resolution' => array(-2),
             'sort' => 'code',
-            'sort_order' => 'desc',
-            'date_created_after' => date('Y-m-d H:i:s', strtotime("-90 days"))
+            'sort_order' => 'desc'
         );
 
         if (count($projectIdsArray)) {
