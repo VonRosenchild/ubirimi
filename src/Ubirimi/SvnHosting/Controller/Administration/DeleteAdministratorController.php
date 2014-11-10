@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\SVNHosting\Controller\Administration;
+namespace Ubirimi\SvnHosting\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

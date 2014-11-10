@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\SVNHosting\Service;
+namespace Ubirimi\SvnHosting\Service;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;

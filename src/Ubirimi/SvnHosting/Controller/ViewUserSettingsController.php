@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\SVNHosting\Controller;
+namespace Ubirimi\SvnHosting\Controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

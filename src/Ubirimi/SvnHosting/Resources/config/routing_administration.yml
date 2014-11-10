@@ -1,84 +1,84 @@
 changePasswordConfirm:
   path: /svn-hosting/administration/repository/user/change-password-confirm/{id}/{repo_id}
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\ChangePasswordController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\ChangePasswordController' }
   requirements:
     id:  \d+
     repo_id: \d+
 
 changePassword:
   path: /svn-hosting/administration/repository/user/change-password-confirm/{id}/{repo_id}
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\ChangePasswordController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\ChangePasswordController' }
   requirements:
     id:  \d+
     repo_id: \d+
 
 setPermissionConfirm:
   path: /svn-hosting/administration/repository/user/set-permissions-confirm/{id}/{repo_id}
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\ConfirmSetPermissionsController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\ConfirmSetPermissionsController' }
   requirements:
     id:  \d+
     repo_id: \d+
 
 setPermission:
   path: /svn-hosting/administration/repository/user/set-permissions
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\SetPermissionsController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\SetPermissionsController' }
 
 adminList:
   path: /svn-hosting/administration/all-repositories
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\ListController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\ListController' }
 
 adminViewRepository:
   path: /svn-hosting/administration/repository/{id}
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\ViewSummaryController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\ViewSummaryController' }
   requirements:
     id:  \d+
 
 adminViewUser:
   path: /svn-hosting/administration/repository/users/{id}
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\ViewUserController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\ViewUserController' }
   requirements:
     id:  \d+
 
 adminListAdministrators:
   path: /svn-hosting/administration/administrators
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\ListAdministratorController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\ListAdministratorController' }
 
 adminAddRepository:
   path: /svn-hosting/administration/repository/add
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\AddRepositoryController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\AddRepositoryController' }
 
 adminAddAdministrator:
   path: /svn-hosting/administration/add-administrator
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\AddAdministratorController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\AddAdministratorController' }
 
 adminEditRepository:
   path: /svn-hosting/administration/repository/edit/{id}
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\EditRepositoryController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\EditRepositoryController' }
   requirements:
     id:  \d+
 
 adminDeleteRepository:
   path: /svn-hosting/repository/delete
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\DeleteRepositoryController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\DeleteRepositoryController' }
 
 adminDeleteUser:
   path: /svn-hosting/administration/repository/user/delete
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\DeleteUserController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\DeleteUserController' }
 
 adminImportUsersConfirm:
   path: /svn-hosting/administration/repository/user/import-confirm
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\ConfirmImportUsersController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\ConfirmImportUsersController' }
 
 adminImportUsers:
   path: /svn-hosting/administration/repository/user/import
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\ImportUsersController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\ImportUsersController' }
 
 adminDeleteAdministratorConfirm:
   path: /svn-hosting/administration/delete-administrator-confirm/{id}
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\ConfirmDeleteAdministratorController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\ConfirmDeleteAdministratorController' }
   requirements:
     id:  \d+
 
 adminDeleteAdministrator:
   path: /svn-hosting/administration/delete-administrator
-  defaults: { _controller: '\Ubirimi\SVNHosting\Controller\Administration\DeleteAdministratorController' }
+  defaults: { _controller: '\Ubirimi\SvnHosting\Controller\Administration\DeleteAdministratorController' }

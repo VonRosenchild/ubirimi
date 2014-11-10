@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "148ade64fe666de3d44f5443a73f1340",
+    "hash": "273307805d3d505af2a047b85568a458",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -241,12 +241,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/paymill/paymill-php.git",
-                "reference": "487536f1312644b7e0b05af2a5bff42e5e4d9201"
+                "reference": "0352a477fcdc3e9ec57d34e51f6425d5894d6853"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paymill/paymill-php/zipball/487536f1312644b7e0b05af2a5bff42e5e4d9201",
-                "reference": "487536f1312644b7e0b05af2a5bff42e5e4d9201",
+                "url": "https://api.github.com/repos/paymill/paymill-php/zipball/0352a477fcdc3e9ec57d34e51f6425d5894d6853",
+                "reference": "0352a477fcdc3e9ec57d34e51f6425d5894d6853",
                 "shasum": ""
             },
             "type": "library",
@@ -271,7 +271,7 @@
                 "payment",
                 "provider"
             ],
-            "time": "2014-08-25 14:17:25"
+            "time": "2014-11-06 14:24:03"
         },
         {
             "name": "pimple/pimple",
@@ -947,12 +947,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "00f7613b211a1aab3ab02a30bd14bc488ff72b44"
+                "reference": "de89c0d7fdc0e5bcb757a608cba3f9ef802060e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/00f7613b211a1aab3ab02a30bd14bc488ff72b44",
-                "reference": "00f7613b211a1aab3ab02a30bd14bc488ff72b44",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/de89c0d7fdc0e5bcb757a608cba3f9ef802060e7",
+                "reference": "de89c0d7fdc0e5bcb757a608cba3f9ef802060e7",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +1002,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2014-10-20 20:04:11"
+            "time": "2014-11-08 11:12:39"
         }
     ],
     "packages-dev": [],

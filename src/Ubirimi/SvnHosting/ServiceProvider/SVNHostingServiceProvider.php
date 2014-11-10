@@ -1,10 +1,10 @@
 <?php
 
-namespace Ubirimi\SVNHosting\Service;
+namespace Ubirimi\SvnHosting\Service;
 
 use Ubirimi\Container\ServiceProviderInterface;
 
-class SVNHostingServiceProvider implements ServiceProviderInterface
+class SvnHostingServiceProvider implements ServiceProviderInterface
 {
     public function register(\Pimple $pimple)
     {

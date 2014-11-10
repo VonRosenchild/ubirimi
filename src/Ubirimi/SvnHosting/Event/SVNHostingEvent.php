@@ -1,10 +1,10 @@
 <?php
 
-namespace Ubirimi\SVNHosting\Event;
+namespace Ubirimi\SvnHosting\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class SVNHostingEvent extends Event
+class SvnHostingEvent extends Event
 {
     /**
      * Slugged name of SVN repo

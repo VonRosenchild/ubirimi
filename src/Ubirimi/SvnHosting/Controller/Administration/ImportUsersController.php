@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\SVNHosting\Controller\Administration;
+namespace Ubirimi\SvnHosting\Controller\Administration;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,8 +9,8 @@ use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\LogEvent;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\Repository\User\UbirimiUser;
-use Ubirimi\SVNHosting\Event\SVNHostingEvent;
-use Ubirimi\SVNHosting\Event\SVNHostingEvents;
+use Ubirimi\SvnHosting\Event\SvnHostingEvent;
+use Ubirimi\SvnHosting\Event\SvnHostingEvents;
 use Ubirimi\SvnHosting\Repository\SvnRepository;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -33,11 +33,11 @@ class ImportUsersController extends UbirimiController
 
             $this->getRepository(SvnRepository::class)->updateAuthz();
 
-            $svnEvent = new SVNHostingEvent($svnRepo['name'], $userRec);
+            $svnEvent = new SvnHostingEvent($svnRepo['name'], $userRec);
             $svnLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_SVN_HOSTING, sprintf('SVN users imported into SVN Repository [%s]', $svnRepo['name']));
 
             UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $svnLogEvent);
-            UbirimiContainer::get()['dispatcher']->dispatch(SVNHostingEvents::IMPORT_USERS, $svnEvent);
+            UbirimiContainer::get()['dispatcher']->dispatch(SvnHostingEvents::IMPORT_USERS, $svnEvent);
         }
 
         return new Response('');

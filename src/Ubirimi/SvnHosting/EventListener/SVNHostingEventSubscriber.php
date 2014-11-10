@@ -1,16 +1,16 @@
 <?php
 
-namespace Ubirimi\SVNHosting\EventListener;
+namespace Ubirimi\SvnHosting\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Ubirimi\Container\UbirimiContainer;
-use Ubirimi\SVNHosting\Event\SVNHostingEvent;
-use Ubirimi\SVNHosting\Event\SVNHostingEvents;
+use Ubirimi\SvnHosting\Event\SvnHostingEvent;
+use Ubirimi\SvnHosting\Event\SvnHostingEvents;
 
-class SVNHostingEventSubscriber implements EventSubscriberInterface
+class SvnHostingEventSubscriber implements EventSubscriberInterface
 {
 
-    public function onSVN(SVNHostingEvent $event)
+    public function onSVN(SvnHostingEvent $event)
     {
         UbirimiContainer::get()['svn.email']->newUser(
             $event->getName(),
@@ -22,12 +22,12 @@ class SVNHostingEventSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function onPasswordUpdate(SVNHostingEvent $event)
+    public function onPasswordUpdate(SvnHostingEvent $event)
     {
         UbirimiContainer::get()['svn.email']->passwordUpdate($event->getName(), $event->getUser(), $event->getExtra()['password']);
     }
 
-    public function onImportUsers(SVNHostingEvent $event)
+    public function onImportUsers(SvnHostingEvent $event)
     {
         UbirimiContainer::get()['svn.email']->importUsers($event->getName(), $event->getUser());
     }
@@ -35,9 +35,9 @@ class SVNHostingEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            SVNHostingEvents::REPOSITORY => 'onSVN',
-            SVNHostingEvents::PASSWORD_UPDATE => 'onPasswordUpdate',
-            SVNHostingEvents::IMPORT_USERS => 'onImportUsers'
+            SvnHostingEvents::REPOSITORY => 'onSVN',
+            SvnHostingEvents::PASSWORD_UPDATE => 'onPasswordUpdate',
+            SvnHostingEvents::IMPORT_USERS => 'onImportUsers'
         );
     }
 }

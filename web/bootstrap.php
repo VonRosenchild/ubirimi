@@ -5,8 +5,8 @@ use Ubirimi\Component\EventListener\JsonResponseListener;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\EventListener\UbirimiSubscriber;
 use Ubirimi\Service\ConfigService;
-use Ubirimi\SVNHosting\EventListener\SVNHostingEventSubscriber;
-use Ubirimi\SVNHosting\Service\SVNHostingServiceProvider;
+use Ubirimi\SvnHosting\EventListener\SvnHostingEventSubscriber;
+use Ubirimi\SvnHosting\Service\SvnHostingServiceProvider;
 use Ubirimi\Yongo\EventListener\IssueEventSubscriber;
 use Ubirimi\Service\RouteBootstrapService;
 use Ubirimi\ServiceProvider\UbirimiCoreServiceProvider;
@@ -24,13 +24,13 @@ UbirimiContainer::loadConfigs($configs);
 UbirimiContainer::register(new UbirimiCoreServiceProvider());
 UbirimiContainer::register(new YongoServiceProvider());
 UbirimiContainer::register(new CalendarServiceProvider());
-UbirimiContainer::register(new SVNHostingServiceProvider());
+UbirimiContainer::register(new SvnHostingServiceProvider());
 
 UbirimiContainer::get()['dispatcher']->addSubscriber(new JsonResponseListener());
 UbirimiContainer::get()['dispatcher']->addSubscriber(new IssueEventSubscriber());
 UbirimiContainer::get()['dispatcher']->addSubscriber(new UbirimiSubscriber());
 UbirimiContainer::get()['dispatcher']->addSubscriber(new CalendarEventSubscriber());
-UbirimiContainer::get()['dispatcher']->addSubscriber(new SVNHostingEventSubscriber());
+UbirimiContainer::get()['dispatcher']->addSubscriber(new SvnHostingEventSubscriber());
 
 $routeBootstrapper = new RouteBootstrapService();
 $urlMatcher = $routeBootstrapper->bootstrap(UbirimiContainer::get()['app.cache'], UbirimiContainer::get()['deploy.on_demand']);

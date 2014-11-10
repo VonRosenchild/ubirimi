@@ -1,6 +1,6 @@
 <?php
 
-namespace Ubirimi\SVNHosting\Controller;
+namespace Ubirimi\SvnHosting\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
