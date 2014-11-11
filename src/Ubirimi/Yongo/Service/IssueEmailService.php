@@ -35,7 +35,7 @@ class IssueEmailService extends UbirimiService
 
                 Email::$smtpSettings = $smtpSettings;
 
-                UbirimiContainer::get()['repository']->get('ubirimi.email.email')->triggerNewIssueNotification($this->session->get('client/id'), $issue, $project, $this->session->get('user/id'));
+                UbirimiContainer::get()['repository']->get(Email::class)->triggerNewIssueNotification($this->session->get('client/id'), $issue, $project, $this->session->get('user/id'));
             }
         }
     }
@@ -114,7 +114,7 @@ class IssueEmailService extends UbirimiService
 
                 $user = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getById($userIds[$i]);
 
-                UbirimiContainer::get()['repository']->get('ubirimi.email.email')->shareIssue($this->session->get('client/id'), $issue, $userThatShares, $user['email'], $noteContent);
+                UbirimiContainer::get()['repository']->get(Email::class)->shareIssue($this->session->get('client/id'), $issue, $userThatShares, $user['email'], $noteContent);
             }
         }
     }

@@ -95,7 +95,7 @@ class PearLogListener implements BuildListener {
             throw new BuildException("Cannot find PEAR Log class for use by PearLogger.");
         }
         
-        $this->logger = $this->getRepository('ubirimi.general.log')->singleton($type, $name, $ident, $conf, self::$levelMap[$this->msgOutputLevel]);
+        $this->logger = Log::singleton($type, $name, $ident, $conf, self::$levelMap[$this->msgOutputLevel]);
     }        
     
     /**
