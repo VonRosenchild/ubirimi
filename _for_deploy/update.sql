@@ -1,3 +1,4 @@
+ALTER TABLE  `issue_attachment` CHANGE  `size`  `size` BIGINT( 20 ) UNSIGNED NULL ;
 
 
 ====================== rulate pe live===========================

@@ -17,7 +17,7 @@ class GetController extends UbirimiController
         UbirimiContainer::get()['api.auth']->auth($request);
 
         $id = $request->get('id');
-        $issue = UbirimiContainer::getRepository(Issue::class)->getById($id);
+        $issue = $this->getRepository(Issue::class)->getById($id);
 
         if (null === $issue) {
             throw new NotFoundHttpException(sprintf('Issue [%d] not found', $id));

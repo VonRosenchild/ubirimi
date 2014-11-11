@@ -26,7 +26,7 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
         $statusesIds = explode('_', $statuses);
 
         $parameters = array('parent_id' => $issueId);
-        $childrenIssue = UbirimiContainer::getRepository(Issue::class)->getByParameters($parameters);
+        $childrenIssue = $this->getRepository(Issue::class)->getByParameters($parameters);
 
         while ($issue = $childrenIssue->fetch_array(MYSQLI_ASSOC)) {
             if (!in_array($issue['status'], $statusesIds)) {
@@ -35,7 +35,7 @@ class CheckIssueCompletedSubtasksController extends UbirimiController
             }
         }
 
-        $issue = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $session->get('user/id'));
+        $issue = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $session->get('user/id'));
         if (in_array($issue['status'], $statusesIds)) {
             return new Response('no');
         }

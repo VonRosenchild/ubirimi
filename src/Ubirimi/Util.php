@@ -223,12 +223,12 @@ class Util {
 
             for ($i = 0; $i < count($attIdsSession); $i++) {
                 $attachmentId = $attIdsSession[$i];
-                $attachment = UbirimiContainer::getRepository(IssueAttachment::class)->getById($attachmentId);
+                $attachment = UbirimiContainer::get()['repository']->get(IssueAttachment::class)->getById($attachmentId);
 
                 if (!in_array($attachmentId, $attachIdsToBeKept)) {
 
                     // the attachment must be deleted
-                    UbirimiContainer::getRepository(IssueAttachment::class)->deleteById($attachmentId);
+                    UbirimiContainer::get()['repository']->get(IssueAttachment::class)->deleteById($attachmentId);
 
                     if (file_exists(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name'])) {
                         unlink(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $attachment['issue_id'] . '/' . $attachment['id'] . '/' . $attachment['name']);
@@ -269,7 +269,7 @@ class Util {
                         rename(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . 'user_' . $loggedInUserId . '/' . $attachment['id'], Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . $issueId . '/' . $attachment['id']);
 
                         // update the attachment
-                        UbirimiContainer::getRepository(IssueAttachment::class)->updateByIdAndIssueId($attachmentId, $issueId);
+                        UbirimiContainer::get()['repository']->get(IssueAttachment::class)->updateByIdAndIssueId($attachmentId, $issueId);
                     }
                 }
             }

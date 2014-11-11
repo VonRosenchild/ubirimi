@@ -59,7 +59,7 @@ require_once __DIR__ . '/../../_header.php';
                     $issuesWithSecurityLevelSet = false;
                     if ($projectLevels) {
                         while ($projectLevel = $projectLevels->fetch_array(MYSQLI_ASSOC)) {
-                            $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('project' => $projectId, 'security_scheme_level' => $projectLevel['id']));
+                            $issues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters(array('project' => $projectId, 'security_scheme_level' => $projectLevel['id']));
                             if ($issues) {
                                 $issuesWithSecurityLevelSet = true;
                                 echo $header;

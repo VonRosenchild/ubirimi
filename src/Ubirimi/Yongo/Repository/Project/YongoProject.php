@@ -1466,7 +1466,7 @@ class YongoProject
     }
 
     public function deleteIssuesByProjectId($projectId) {
-        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('project' => $projectId));
+        $issues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters(array('project' => $projectId));
 
         if ($issues) {
             while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
@@ -1590,7 +1590,7 @@ class YongoProject
         $issueIdsLevel = array();
         for ($i = 0; $i < count($oldNewLevel); $i++) {
 
-            $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('project' => $projectId, 'security_scheme_level' => $oldNewLevel[$i][0]));
+            $issues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters(array('project' => $projectId, 'security_scheme_level' => $oldNewLevel[$i][0]));
             while ($issues && $issue = $issues->fetch_array(MYSQLI_ASSOC)) {
                 $issueIdsLevel[] = array($issue['id'], $oldNewLevel[$i][1]);
             }
@@ -1811,7 +1811,7 @@ class YongoProject
         UbirimiContainer::get()['repository']->get(Sla::class)->addGoal($slaId, $defaultSLACalendarId, 'priority = Blocker', '', 24);
         UbirimiContainer::get()['repository']->get(Sla::class)->addGoal($slaId, $defaultSLACalendarId, 'priority = Critical', '', 96);
 
-        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('project' => $projectId));
+        $issues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters(array('project' => $projectId));
         if ($issues) {
             while ($issue = $issues->fetch_array(MYSQLI_ASSOC)) {
                 UbirimiContainer::get()['repository']->get(Issue::class)->addPlainSLAData($issue['id'], $projectId);

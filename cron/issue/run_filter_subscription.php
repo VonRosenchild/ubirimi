@@ -54,7 +54,7 @@ if ($filterSubscription['user_id']) {
 }
 
 foreach ($usersToNotify as $user) {
-    $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters($searchParameters, $filterSubscription['user_id'], null, $filterSubscription['user_id']);
+    $issues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters($searchParameters, $filterSubscription['user_id'], null, $filterSubscription['user_id']);
 
     $columns = explode('#', $user['issues_display_columns']);
 

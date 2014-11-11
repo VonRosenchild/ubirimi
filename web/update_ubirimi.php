@@ -195,7 +195,7 @@ function insertUbirimiIssue($bug)
         $userId = getYongoUserFromMovidiusUsers($movidiusUsers, $ubirimiUsers, $comment['who']);
 
         if (null !== $userId) {
-            UbirimiContainer::getRepository(IssueComment::class)->add(
+            UbirimiContainer::get()['repository']->get(IssueComment::class)->add(
                 $issue[0],
                 $userId,
                 $comment['thetext'],

@@ -356,7 +356,7 @@ class Sprint
         $stmt->execute();
 
         // also add the children of these issues to the sprint
-        $issues = UbirimiContainer::getRepository(Issue::class)->getByParameters(array('parent_id' => $issueIdArray), $loggedInUserId);
+        $issues = UbirimiContainer::get()['repository']->get(Issue::class)->getByParameters(array('parent_id' => $issueIdArray), $loggedInUserId);
 
         if ($issues) {
             // get the ids
