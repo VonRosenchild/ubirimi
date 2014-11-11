@@ -13,8 +13,6 @@ require_once __DIR__ . '/../../_header.php';
         <?php if (!$projectsForBrowsing): ?>
             <div class="messageGreen">There are no projects were you have the permission to browse issues.</div>
         <?php else: ?>
-            <table width="100%" class="headerPageBackground" cellpadding="0" cellspacing="0">
-
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                     <td width="10%">
@@ -38,7 +36,7 @@ require_once __DIR__ . '/../../_header.php';
                         <div class="pageContent" style="border-bottom: 0; padding: 0; margin: 0; margin-right: 10px;">
                             <table width="100%" class="table table-hover table-condensed">
                                 <tr>
-                                    <td>
+                                    <td style="border-top: none;">
                                         <a href="/yongo/issue/search?project=<?php echo implode('|', $projectsForBrowsing) ?>&resolution=-2&assignee=<?php echo $loggedInUserId ?>">My Open Issues</a>
                                     </td>
                                 </tr>
