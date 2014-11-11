@@ -2434,8 +2434,8 @@ $('document').ready(function () {
                                 comment: $('#attach_comment').val()
                             },
                             success: function (response) {
-                                $("#modalDeleteCustomField").dialog('destroy');
-                                $("#modalDeleteCustomField").empty();
+                                $("#modalEditIssueAttachFile").dialog('destroy');
+                                $("#modalEditIssueAttachFile").empty();
                                 location.reload();
                             }
                         });
@@ -2444,13 +2444,14 @@ $('document').ready(function () {
                 {
                     text: "Cancel",
                     click: function () {
-                        $(this).dialog("close");
+                        $("#modalEditIssueAttachFile").dialog('destroy');
+                        $("#modalEditIssueAttachFile").empty();
                     }
                 }
             ],
             close: function () {
-                $("#modalDeleteCustomField").dialog('destroy');
-                $("#modalDeleteCustomField").empty();
+                $("#modalEditIssueAttachFile").dialog('destroy');
+                $("#modalEditIssueAttachFile").empty();
             }
         };
 
