@@ -38,7 +38,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <span style=" width: 20px; background-color: <?php echo $calendar['color'] ?>">&nbsp;&nbsp;&nbsp;</span>
+                                    <span style=" width: 24px; background-color: <?php echo $calendar['color'] ?>">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                     <a href="/calendar/view/<?php echo $calendar['id'] ?>/<?php echo $month ?>/<?php echo $year ?>"><?php echo $calendar['name'] ?></a>
                                 </div>
                             </td>
