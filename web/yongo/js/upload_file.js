@@ -4,8 +4,8 @@
  Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
  */
 
-var finishedUpload = [];
 var xhrFileUpload = null;
+var tempCounterFilesUploaded = 0;
 
 // getElementById
 function $id(id) {
@@ -16,12 +16,14 @@ function Output(msg) {
     var m = $id("messages");
     m.innerHTML = msg + m.innerHTML;
 }
+
 // file drag hover
 function FileDragHover(e) {
     e.stopPropagation();
     e.preventDefault();
     e.target.className = (e.type == "dragover" ? "hover" : "");
 }
+
 // file selection
 function FileSelectHandler(e) {
 
@@ -33,10 +35,8 @@ function FileSelectHandler(e) {
 
     // fetch FileList object
     var files = e.target.files || e.dataTransfer.files;
-
     // get the latest index
 
-    var elements = $("[id^='file_name_']");
     var max = 0;
     $("[id^='file_name_']").each(function(i, selected){
         var id_element = $(this).attr("id").replace('file_name_', '');
@@ -47,13 +47,21 @@ function FileSelectHandler(e) {
     max++;
 
     // process all File objects
+    tempCounterFilesUploaded = 0;
     for (var i = 0; i < files.length; i++) {
         ParseFile(files[i], max + i);
-        finishedUpload[i] = 0;
-        UploadFile(files[i], max + i, e.data.issue_id, finishedUpload);
+        UploadFile(files[i], max + i, e.data.issue_id, files.length);
     }
-
 }
+
+function checkUploadFinished(filesToBeUploadedCounter) {
+    tempCounterFilesUploaded++;
+    if (tempCounterFilesUploaded == filesToBeUploadedCounter) {
+        $('.ui-dialog-buttonset button').first().removeClass('disabled');
+        $('.ui-dialog-buttonset button').first().children().removeClass('disabled')
+    }
+}
+
 // output file information
 function ParseFile(file, index) {
 
@@ -76,14 +84,13 @@ function ParseFile(file, index) {
 }
 
 // upload JPEG files
-function UploadFile(file, index, issueId, finishedUpload) {
+function UploadFile(file, index, issueId, filesToBeUploadedCounter) {
 
     // following line is not necessary: prevents running on SitePoint servers
     if (location.host.indexOf("sitepointstatic") >= 0) return;
 
     xhrFileUpload = new XMLHttpRequest();
     if (xhrFileUpload.upload) {
-        uploadFinished = false;
         // create progress bar
         var o = $("#progress");
         o.append('<div id="file_name_' + index + '">' + file.name + '</div>');
@@ -95,29 +102,13 @@ function UploadFile(file, index, issueId, finishedUpload) {
             $('#progress_' + index).css('backgroundPosition', pc + "% 0");
         }, false);
 
-        // file received/failed
-        xhrFileUpload.onreadystatechange = function (e) {
-            if (xhrFileUpload.readyState == 4) {
-                if (xhrFileUpload.status == 200) {
-                    $('#progress_' + index).remove();
-                    var html_filename = $('#file_name_' + index).html();
+        xhrFileUpload.upload.addEventListener("load", function (e) {
+            $('#progress_' + index).remove();
+            var html_filename = $('#file_name_' + index).html();
+            $('#file_name_' + index).html('<input id="attach_' + xhrFileUpload.responseText + '" type="checkbox" value="1" checked="checked" />' + html_filename)
 
-                    $('#file_name_' + index).html('<input id="attach_' + xhrFileUpload.responseText + '" type="checkbox" value="1" checked="checked" />' + html_filename)
-                    finishedUpload[index - 1] = 1;
-
-                    var finished = 1;
-                    for (var i = 0; i < finishedUpload.length; i++) {
-                        if (finishedUpload[i] == 0) {
-                            finished = 0;
-                        }
-                    }
-                    if (finished) {
-                        $('.ui-dialog-buttonset button').first().removeClass('disabled');
-                        $('.ui-dialog-buttonset button').first().children().removeClass('disabled')
-                    }
-                }
-            }
-        };
+            checkUploadFinished(filesToBeUploadedCounter);
+        }, false);
 
         // start upload
         if (!issueId) {
