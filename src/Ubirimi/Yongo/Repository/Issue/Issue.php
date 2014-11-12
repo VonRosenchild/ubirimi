@@ -1324,7 +1324,7 @@ class Issue
         $newIssueData['fix_version'] = array();
         $newIssueData['fix_version_ids'] = array();
 
-        $components = UbirimiContainer::get()['repository']->get(IssueComponent::class)-getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], 'array');
+        $components = UbirimiContainer::get()['repository']->get(IssueComponent::class)->getByIssueIdAndProjectId($issueId, $newIssueData['issue_project_id'], 'array');
         for ($i = 0; $i < count($components); $i++) {
             $newIssueData['component'][] = $components[$i]['name'];
             $newIssueData['component_ids'][] = $components[$i]['id'];
