@@ -3,6 +3,7 @@
 namespace Ubirimi\Yongo\Controller\Issue\Attachment;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -29,5 +30,7 @@ class SaveController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
             $this->getRepository(IssueComment::class)->add($issueId, $session->get('user/id'), $comment, $currentDate);
         }
+
+        return new Response('');
     }
 }

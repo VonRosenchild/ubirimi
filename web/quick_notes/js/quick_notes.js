@@ -150,7 +150,8 @@ $('document').ready(function () {
                         $.ajax({
                             type: "POST",
                             data: {
-                                notebook_id: $('#notebook_id').val()
+                                notebook_id: $('#notebook_id').val(),
+                                view_type: $('#qn_view_type').val()
                             },
                             url: '/quick-notes/tag/refresh',
                             success: function (response) {

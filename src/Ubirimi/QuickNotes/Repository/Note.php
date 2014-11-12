@@ -36,6 +36,12 @@ class Note
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $noteId);
         $stmt->execute();
+
+        $query = 'delete from qn_notebook_note_tag where qn_notebook_note_id = ?';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $noteId);
+        $stmt->execute();
     }
 
     public function getPreviousNoteInNotebook($notebookId, $noteId) {
