@@ -3,6 +3,7 @@
 namespace Ubirimi\Yongo\Controller\Issue\Attachment;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
@@ -35,5 +36,7 @@ class DeleteController extends UbirimiController
         if (2 == count(scandir($pathToAttachment . $attachment['issue_id']))) {
             Util::deleteDir($pathToAttachment . $attachment['issue_id']);
         }
+
+        return new Response('');
     }
 }
