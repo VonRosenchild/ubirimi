@@ -6,6 +6,15 @@ use Ubirimi\Container\UbirimiContainer;
 
 class IssueComment
 {
+
+    public static function deleteById($commentId) {
+        $query = 'delete from issue_comment where id = ? limit 1';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $commentId);
+        $stmt->execute();
+    }
+
     public function deleteByIssueId($issueId) {
         $query = 'DELETE FROM issue_comment WHERE issue_id = ?';
 
