@@ -6,7 +6,7 @@ function resizeNoteContent() {
     if ($('#view_qn_entity').val() == 'note_tag') {
         var totalHeight = $(window).height();
         // Remove an extra 20px for good measure
-        totalHeight -= 133;
+        totalHeight -= 143;
 
         $('.pageContent').css('height', totalHeight);
         $('#contentNotesList').css('height', totalHeight - 28);
@@ -54,7 +54,7 @@ $('document').ready(function () {
                 notebook_id: $('#notebook_id').val()
             },
             success: function (response) {
-                window.location.href = '/quick-notes/note/' + response;
+                window.location.href = '/quick-notes/note/' + $('#qn_view_type').val() + '/' + response;
             }
         });
     });

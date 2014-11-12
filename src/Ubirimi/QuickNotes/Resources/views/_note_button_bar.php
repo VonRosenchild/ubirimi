@@ -2,7 +2,7 @@
 use Ubirimi\Util;
 ?>
 <?php if ($note): ?>
-    <table width="100%" id="qn_note_button_options">
+    <table width="100%" id="qn_note_button_options" cellpadding="0" cellspacing="0">
         <tr>
             <td align="left" style="background-color: #DDDDDD; width: 324px; height: 29px;">
                 <div style="padding-left: 8px">
