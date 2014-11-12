@@ -43,7 +43,7 @@ class MoveStep4Controller extends UbirimiController
 
         $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
 
-        if ($request->request->get('move_issue_step_4')) {
+        if ($request->request->has('move_issue_step_4')) {
             $currentDate = Util::getServerCurrentDateTime();
 
             $oldIssueData = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueId), $loggedInUserId);
@@ -51,18 +51,18 @@ class MoveStep4Controller extends UbirimiController
             if ($oldIssueData['component'] == null) {
                 $oldIssueData['component'] = array();
             }
-            $oldIssueData['affects_version'] = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
+            $oldIssueData['affects_version'] = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG, 'array', 'name');
             if ($oldIssueData['affects_version'] == null) {
                 $oldIssueData['affects_version'] = array();
             }
-            $oldIssueData['fix_version'] = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG, 'array', 'name');
+            $oldIssueData['fix_version'] = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG, 'array', 'name');
             if ($oldIssueData['fix_version'] == null) {
                 $oldIssueData['fix_version'] = array();
             }
 
             $this->getRepository(IssueComponent::class)->deleteByIssueId($issueId);
-            $this->getRepository(IssueVersion::class)->deleteByIssueIdAndFlag($issueId, $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
-            $this->getRepository(IssueVersion::class)->deleteByIssueIdAndFlag($issueId, $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
+            $this->getRepository(IssueVersion::class)->deleteByIssueIdAndFlag($issueId, Issue::ISSUE_FIX_VERSION_FLAG);
+            $this->getRepository(IssueVersion::class)->deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
             if ($session->has('move_issue/new_assignee')) {
                 $this->getRepository(Issue::class)->updateAssigneeRaw($issueId, $session->get('move_issue/new_assignee'));
@@ -73,11 +73,11 @@ class MoveStep4Controller extends UbirimiController
             }
 
             if (count($session->get('move_issue/new_fix_version'))) {
-                $this->getRepository(Issue::class)->addComponentVersion($issueId, $session->get('move_issue/new_fix_version'), 'issue_version', $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
+                $this->getRepository(Issue::class)->addComponentVersion($issueId, $session->get('move_issue/new_fix_version'), 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
             }
 
             if (count($session->get('move_issue/new_affects_version'))) {
-                $this->getRepository(Issue::class)->addComponentVersion($issueId, $session->get('move_issue/new_affects_version'), 'issue_version', $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
+                $this->getRepository(Issue::class)->addComponentVersion($issueId, $session->get('move_issue/new_affects_version'), 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
             }
 
             $newProjectId = $session->get('move_issue/new_project');
@@ -96,7 +96,7 @@ class MoveStep4Controller extends UbirimiController
             UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
             UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
 
-            return new RedirectResponse('/' . LinkHelper::getYongoIssueViewLinkJustHref($issueId));
+            return new RedirectResponse(LinkHelper::getYongoIssueViewLinkJustHref($issueId));
         }
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Move Issue - ' . $issue['project_code'] . '-' . $issue['nr'] . ' ' . $issue['summary'];
@@ -110,8 +110,8 @@ class MoveStep4Controller extends UbirimiController
         $newTypeName = $this->getRepository(IssueSettings::class)->getById($session->get('move_issue/new_type'), 'type', 'name');
 
         $issueComponents = $this->getRepository(IssueComponent::class)->getByIssueIdAndProjectId($issue['id'], $projectId);
-        $issueFixVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
-        $issueAffectedVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
+        $issueFixVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+        $issueAffectedVersions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issue['id'], $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
 
         $newIssueComponents = null;
         $newIssueFixVersions = null;

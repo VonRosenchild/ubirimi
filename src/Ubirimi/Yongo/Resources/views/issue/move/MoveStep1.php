@@ -7,21 +7,20 @@ require_once __DIR__ . '/../../_header.php';
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
 
+    <table width="100%" class="headerPageBackground">
+        <tr>
+            <td>
+                <div class="headerPageText">
+                    <span>Move Issue</span>
+                    <br />
+                    <a class="linkNoUnderline" href="/yongo/project/<?php echo $projectId ?>"><?php echo $issueProject['name'] ?></a> /
+                    <?php echo $issue['project_code'] . '-' . $issue['nr'] ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+
     <div class="pageContent">
-
-        <table width="100%" class="headerPageBackground">
-            <tr>
-                <td>
-                    <div class="headerPageText">
-                        <span>Move Issue</span>
-                        <br />
-                        <a class="linkNoUnderline" href="/yongo/project/<?php echo $projectId ?>"><?php echo $issueProject['name'] ?></a> /
-                        <?php echo $issue['project_code'] . '-' . $issue['nr'] ?>
-                    </div>
-                </td>
-            </tr>
-        </table>
-
         <table width="100%">
             <tr>
                 <td valign="top" width="240px">

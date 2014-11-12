@@ -44,22 +44,22 @@ class DuplicateController extends UbirimiController
             $this->getRepository(Issue::class)->addComponentVersion($issueId, $components_arr, 'issue_component');
         }
 
-        $versions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
+        $versions = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_AFFECTED_VERSION_FLAG);
         if ($versions) {
             $versions_arr = array();
             while ($version = $versions->fetch_array(MYSQLI_ASSOC))
                 $versions_arr[] = $version['project_version_id'];
 
-            $this->getRepository(Issue::class)->addComponentVersion($issueId, $versions_arr, 'issue_version', $this->getRepository(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
+            $this->getRepository(Issue::class)->addComponentVersion($issueId, $versions_arr, 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
-        $targets = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
+        $targets = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($oldIssueData['id'], $oldIssueData['issue_project_id'], Issue::ISSUE_FIX_VERSION_FLAG);
         if ($targets) {
             $targets_arr = array();
             while ($target = $targets->fetch_array(MYSQLI_ASSOC))
                 $targets_arr[] = $target['project_version_id'];
 
-            $this->getRepository(Issue::class)->addComponentVersion($issueId, $targets_arr, 'issue_version', $this->getRepository(Issue::class)->ISSUE_FIX_VERSION_FLAG);
+            $this->getRepository(Issue::class)->addComponentVersion($issueId, $targets_arr, 'issue_version', Issue::ISSUE_FIX_VERSION_FLAG);
         }
 
         return new Response($issueId);

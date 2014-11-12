@@ -1187,7 +1187,7 @@ class Issue
         if (array_key_exists(Field::FIELD_AFFECTS_VERSION_CODE, $data)) {
             UbirimiContainer::get()['repository']->get(IssueVersion::class)->deleteByIssueIdAndFlag($issueId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
             if ($data[Field::FIELD_AFFECTS_VERSION_CODE])
-                UbirimiContainer::get()['repository']->get(Issue::class)->addComponentVersion($issueId, $data['affects_version'], 'issue_version', UbirimiContainer::get()['repository']->get(Issue::class)->ISSUE_AFFECTED_VERSION_FLAG);
+                UbirimiContainer::get()['repository']->get(Issue::class)->addComponentVersion($issueId, $data['affects_version'], 'issue_version', Issue::ISSUE_AFFECTED_VERSION_FLAG);
         }
 
         if (array_key_exists(Field::FIELD_FIX_VERSION_CODE, $data)) {
