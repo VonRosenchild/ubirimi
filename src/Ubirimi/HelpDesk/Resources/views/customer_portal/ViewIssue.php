@@ -11,7 +11,6 @@ require_once __DIR__ . '/_header.php';
     <?php if (!$issueValid): ?>
         <div class="infoBox">This issue does not exist or you do not have the permission to view it.</div>
     <?php else: ?>
-
         <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/issue/_titleSummary.php' ?>
     <?php endif ?>
 

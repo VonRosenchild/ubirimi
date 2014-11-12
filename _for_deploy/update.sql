@@ -1,3 +1,4 @@
+ALTER TABLE  `issue_work_log` CHANGE  `edited_flag`  `edited_flag` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT  '0';
 ALTER TABLE  `issue_attachment` CHANGE  `size`  `size` BIGINT( 20 ) UNSIGNED NULL ;
 
 

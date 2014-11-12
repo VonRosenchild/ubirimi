@@ -7,7 +7,6 @@ require_once __DIR__ . '/../../_header.php';
 
     <?php require_once __DIR__ . '/../../_menu.php'; ?>
 
-
     <table width="100%" class="headerPageBackground">
         <tr>
             <td>

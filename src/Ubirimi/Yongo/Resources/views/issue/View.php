@@ -7,13 +7,16 @@ require_once __DIR__ . '/../_header.php';
 <body>
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
-    <?php require_once __DIR__ . '/_titleSummary.php' ?>
+    <?php if (!$issueValid): ?>
+        <?php Util::renderBreadCrumb("Error") ?>
 
-    <div class="pageContent">
-        <?php if (!$issueValid): ?>
+        <div class="pageContent">
             <div class="infoBox">This issue does not exist or you do not have the permission to view it.</div>
-        <?php else: ?>
-
+        </div>
+    <?php endif ?>
+    <?php if ($issueValid): ?>
+        <div class="pageContent">
+            <?php require_once __DIR__ . '/_titleSummary.php' ?>
             <?php require_once __DIR__ . '/_topButtons.php' ?>
 
             <div class="separationVertical"></div>
@@ -137,8 +140,8 @@ require_once __DIR__ . '/../_header.php';
                     </td>
                 </tr>
             </table>
-        <?php endif ?>
-    </div>
+        </div>
+    <?php endif ?>
 
     <?php if ($issueValid): ?>
         <input type="hidden" value="1" id="issue_view_mode" name="issue_view_mode"/>
