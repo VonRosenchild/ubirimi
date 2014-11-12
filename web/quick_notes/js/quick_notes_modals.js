@@ -121,7 +121,7 @@ $('document').ready(function () {
                                 $("#modalDeleteNote").dialog('destroy');
                                 $("#modalDeleteNote").empty();
 
-                                window.location.href = '/quick-notes/note/' + response;
+                                window.location.href = '/quick-notes/note/' + $('#qn_view_type').val() + '/' + response;
                             }
                         });
                     }
