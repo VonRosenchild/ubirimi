@@ -2438,7 +2438,7 @@ $('document').ready(function () {
                             success: function (response) {
                                 $("#modalEditIssueAttachFile").dialog('destroy');
                                 $("#modalEditIssueAttachFile").empty();
-                                //location.reload();
+                                location.reload();
                             }
                         });
                     }
