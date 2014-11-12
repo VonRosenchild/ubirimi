@@ -4,7 +4,6 @@
  Developed by Craig Buckler (@craigbuckler) of OptimalWorks.net
  */
 
-var xhrFileUpload = null;
 var tempCounterFilesUploaded = 0;
 
 // getElementById
@@ -40,8 +39,9 @@ function FileSelectHandler(e) {
     var max = 0;
     $("[id^='file_name_']").each(function(i, selected){
         var id_element = $(this).attr("id").replace('file_name_', '');
-        if (id_element > max)
+        if (id_element > max) {
             max = id_element
+        }
     });
 
     max++;
@@ -89,8 +89,10 @@ function UploadFile(file, index, issueId, filesToBeUploadedCounter) {
     // following line is not necessary: prevents running on SitePoint servers
     if (location.host.indexOf("sitepointstatic") >= 0) return;
 
-    xhrFileUpload = new XMLHttpRequest();
+    var xhrFileUpload = new XMLHttpRequest();
+
     if (xhrFileUpload.upload) {
+
         // create progress bar
         var o = $("#progress");
         o.append('<div id="file_name_' + index + '">' + file.name + '</div>');
@@ -103,12 +105,21 @@ function UploadFile(file, index, issueId, filesToBeUploadedCounter) {
         }, false);
 
         xhrFileUpload.upload.addEventListener("load", function (e) {
-            $('#progress_' + index).remove();
-            var html_filename = $('#file_name_' + index).html();
-            $('#file_name_' + index).html('<input id="attach_' + xhrFileUpload.responseText + '" type="checkbox" value="1" checked="checked" />' + html_filename)
 
-            checkUploadFinished(filesToBeUploadedCounter);
         }, false);
+
+        xhrFileUpload.onreadystatechange = function (e) {
+            if (xhrFileUpload.readyState == 4) {
+
+                if (xhrFileUpload.status == 200) {
+                    $('#progress_' + index).remove();
+                    var html_filename = $('#file_name_' + index).html();
+
+                    $('#file_name_' + index).html('<input id="attach_' + xhrFileUpload.responseText + '" type="checkbox" value="1" checked="checked" />' + html_filename);
+                    checkUploadFinished(filesToBeUploadedCounter);
+                }
+            }
+        };
 
         // start upload
         if (!issueId) {

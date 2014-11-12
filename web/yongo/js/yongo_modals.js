@@ -2419,12 +2419,14 @@ $('document').ready(function () {
                         for (var i = 0; i < attachments.length; i++) {
                             var check_id = attachments[i].getAttribute('id');
                             var checked = ($('#' + check_id).is(':checked'));
-                            if (checked)
+                            if (checked) {
                                 attach_ids.push(attachments[i].getAttribute('id').replace('attach_', ''));
+                            }
                         }
 
-                        if (!attach_ids.length)
+                        if (!attach_ids.length) {
                             attach_ids = null;
+                        }
                         $.ajax({
                             type: "POST",
                             url: '/yongo/issue/save-attachement',
@@ -2436,7 +2438,7 @@ $('document').ready(function () {
                             success: function (response) {
                                 $("#modalEditIssueAttachFile").dialog('destroy');
                                 $("#modalEditIssueAttachFile").empty();
-                                location.reload();
+                                //location.reload();
                             }
                         });
                     }

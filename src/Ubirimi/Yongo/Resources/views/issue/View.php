@@ -15,8 +15,10 @@ require_once __DIR__ . '/../_header.php';
         </div>
     <?php endif ?>
     <?php if ($issueValid): ?>
+        <?php require_once __DIR__ . '/_titleSummary.php' ?>
+
         <div class="pageContent">
-            <?php require_once __DIR__ . '/_titleSummary.php' ?>
+
             <?php require_once __DIR__ . '/_topButtons.php' ?>
 
             <div class="separationVertical"></div>

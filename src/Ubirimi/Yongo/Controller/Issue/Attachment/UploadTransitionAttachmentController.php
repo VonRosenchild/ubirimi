@@ -3,7 +3,9 @@
 namespace Ubirimi\Yongo\Controller\Issue\Attachment;
 
 use Nyholm\ZebraImage\ZebraImage;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
@@ -83,8 +85,7 @@ class UploadTransitionAttachmentController extends UbirimiController
                 $image->resize(150, 150, ZEBRA_IMAGE_CROP_CENTER);
             }
 
-            echo $attachmentId;
-            exit();
+            return new JsonResponse($attachmentId);
         }
     }
 }
