@@ -26,7 +26,7 @@ Installation
 ------------
 
 - download the source code
-- php composer.phar install
+- `php composer.phar install`
 - import an empty database structure
 - set your Apache virtual host configuration. An example can be found below:
 
