@@ -30,6 +30,7 @@ Installation
 - import an empty database structure
 - set your Apache virtual host configuration. An example can be found below:
 
+```
 <VirtualHost *:80>
   ServerName ubirimi_net.lan
   DocumentRoot "c:/www/ubirimi-web/web"
@@ -47,6 +48,7 @@ Installation
 	Allow from All
   </Directory>
 </VirtualHost>
+```
 
 Documentation
 -------------
