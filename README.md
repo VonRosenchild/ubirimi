@@ -1,7 +1,7 @@
 What is Ubirimi?
 -----------------
 
-Ubirimi is a productivity platform that offers open source tools. It is written with speed and
+Ubirimi is a productivity platform that offers open source tools. It is designed to suite a multitude of scenarios: from personal use to large enterprise deployments. It is written with speed and
 flexibility in mind. A commercial fork can be found at https://www.ubirimi.com. All profit is donated to charity.
 
 Requirements
@@ -11,7 +11,7 @@ Requirements
 - Be warned that PHP versions before 5.3.8 are known to be buggy and might not work for you
 - MySQL 5.0 or above
 - if you go with Apache you must install mod_rewrite module
-
+- needed PHP extensions: mysqli
 Products available
 ------------
 1. Yongo - Track and manage the issues, bugs, tasks, deadlines, code, hours.
