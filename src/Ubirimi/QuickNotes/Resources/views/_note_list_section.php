@@ -1,7 +1,13 @@
 <?php use Ubirimi\Util; ?>
 
-<div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 2px solid #c6c6c6; height: 29px;">
-    <b><?php if ($notebook) echo $notebook['name']; else echo 'All Notes'; ?></b>
+<div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 2px solid #c6c6c6; height: 33px;">
+    <table width="100%">
+        <tr>
+            <td width="80px">
+                <b><?php if ($notebook) echo $notebook['name']; else echo 'All Notes'; ?></b>
+            </td>
+        </tr>
+    </table>
 </div>
 <?php if ($notes): ?>
     <?php foreach ($notes as $noteInList): ?>
