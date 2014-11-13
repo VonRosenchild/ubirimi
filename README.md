@@ -4,18 +4,19 @@ products
 What is Ubirimi?
 -----------------
 
-Ubirimi is productivity platform that offers open source tools. It is written with speed and
-flexibility in mind. 
+Ubirimi is a productivity platform that offers open source tools. It is written with speed and
+flexibility in mind. A commercial fork can be found at https://www.ubirimi.com
+All profit is donated to charity.
 
 Requirements
 ------------
+- Apache or nginx
+- Ubirimi is only supported on PHP 5.5.0 and up.
+- Be warned that PHP versions before 5.3.8 are known to be buggy and might not work for you
+- MySQL 5.0 or above
+- if you go with Apache you must install mod_rewrite module
 
-Ubirimi is only supported on PHP 5.5.0 and up.
-
-Be warned that PHP versions before 5.3.8 are known to be buggy and might not
-work for you
-
-Product available
+Products available
 ------------
 1. Yongo - Track and manage the issues, bugs, tasks, deadlines, code, hours.
 2. Agile - The power of Agile: planning, estimating and visualizing team activity.
@@ -30,12 +31,31 @@ Installation
 
 - download the source code
 - php composer.phar install
-- 
+- import an empty database structure
+- set your Apache virtual host configuration. An example can be found below:
+
+<VirtualHost *:80>
+  ServerName ubirimi_net.lan
+  DocumentRoot "c:/www/ubirimi-web/web"
+  ServerAlias demo.ubirimi_net.lan
+  DirectoryIndex index.php
+
+  <Directory "c:/www/ubirimi-web/web">
+      AllowOverride All
+      Allow from ubirimi_net.lan
+  </Directory>
+
+  Alias /assets c:/www/ubirimi-web/assets
+  <Directory "c:/www/ubirimi-web/assets">
+	AllowOverride All
+	Allow from All
+  </Directory>
+</VirtualHost>
 
 Documentation
 -------------
 
-not much available
+not much available so far
 
 Contributing
 ------------
