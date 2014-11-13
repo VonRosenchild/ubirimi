@@ -50,6 +50,8 @@ Installation
   </Directory>
 </VirtualHost>
 ```
+- in the config.properties file set: daabase credentials, cache and assets folders
+- restart web server
 
 Documentation
 -------------
