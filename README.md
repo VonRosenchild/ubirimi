@@ -12,6 +12,7 @@ Requirements
 - MySQL 5.0 or above
 - if you go with Apache you must install mod_rewrite module
 - needed PHP extensions: mysqli
+
 Products available
 ------------
 1. Yongo - Track and manage the issues, bugs, tasks, deadlines, code, hours.
