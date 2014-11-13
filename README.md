@@ -1,12 +1,8 @@
-products
-===========
-
 What is Ubirimi?
 -----------------
 
 Ubirimi is a productivity platform that offers open source tools. It is written with speed and
-flexibility in mind. A commercial fork can be found at https://www.ubirimi.com
-All profit is donated to charity.
+flexibility in mind. A commercial fork can be found at https://www.ubirimi.com. All profit is donated to charity.
 
 Requirements
 ------------
