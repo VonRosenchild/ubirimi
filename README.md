@@ -57,3 +57,8 @@ Contributing
 ------------
 
 Ubirimi is an open source, community-driven project. If you would like to contribute just send pull requests.
+
+Copyright and license
+---------------------
+
+Ubirimi is distributed under the terms of the GNU General Public License version 2.0
