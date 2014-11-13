@@ -42,7 +42,6 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
             </tr>
         </table>
 
-
         <table id="contentNotesList" width="100%" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="10%" valign="top" style="border-right: 1px solid #c6c6c6; border-top: 1px solid #DDDDDD;">
@@ -90,7 +89,7 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                                 <div class="infoBox">There are no notes.</div>
                             <?php endif ?>
                         </div>
-                        <div id="qn_note_list_content" style="border-top: 4px solid #b9b9b9">
+                        <div id="qn_note_list_content" style="border-top: 4px solid #b9b9b9">aa
                             <?php require_once __DIR__ . '/../_note_button_bar.php' ?>
                             <?php require_once __DIR__ . '/../_note_section.php' ?>
                         </div>

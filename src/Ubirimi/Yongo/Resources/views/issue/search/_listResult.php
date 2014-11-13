@@ -8,7 +8,7 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 
 $arrayIds = array();
 ?>
-    <div class="pageContent" style="border-bottom: 0; margin: 0; border-radius: 0;">
+<div class="pageContent" style="border-bottom: 0; margin: 0; border-radius: 0;">
     <?php if (isset($issuesCount) && $issuesCount > 0): ?>
 
         <?php if ($cliMode == false): ?>

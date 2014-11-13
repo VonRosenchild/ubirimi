@@ -490,9 +490,6 @@ function createIssue(message) {
                             data: {
                             },
                             beforeSend: function() {
-                                if (xhrFileUpload) {
-                                    xhrFileUpload.abort();
-                                }
                                 $("#modalCreateIssue").dialog('destroy');
                                 $("#modalCreateIssue").empty();
                             }

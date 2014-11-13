@@ -68,6 +68,7 @@ class SearchController extends UbirimiController
         } else {
             $getFilter = $request->get('filter');
             $currentSearchPage = $request->get('page');
+            $currentSearchPage = isset($currentSearchPage) ? $currentSearchPage : 1;
 
             $getSearchParameters = $this->getRepository(Issue::class)->prepareDataForSearchFromURL($_GET, $issuesPerPage);
 

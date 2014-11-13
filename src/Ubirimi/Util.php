@@ -95,6 +95,7 @@ class Util {
         if ($upLimit > $issuesCount) {
             $upLimit = $issuesCount;
         }
+
         $htmlOutput = '<table width="100%" cellspacing="0" border="0" cellpadding="0">';
         $htmlOutput .= '<tr>';
         $htmlOutput .= '<td align="left"><b>' . ($issuesPerPage * ($currentSearchPage - 1) + 1) . ' - ' . $upLimit . ' of ' . $issuesCount . '</b></td>';
