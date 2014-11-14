@@ -776,11 +776,11 @@ class Issue
 
     public function deleteById($issueId) {
         UbirimiContainer::get()['repository']->get(IssueComment::class)->deleteByIssueId($issueId);
-        History::deleteByIssueId($issueId);
-        IssueComponent::deleteByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get(IssueHistory::class)->deleteByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get(IssueComponent::class)->deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get(IssueVersion::class)->deleteByIssueId($issueId);
 
-        Watcher::deleteByIssueId($issueId);
+        UbirimiContainer::get()['repository']->get(Watcher::class)->deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get(Issue::class)->deleteSLADataByIssueId($issueId);
         UbirimiContainer::get()['repository']->get(WorkLog::class)->deleteByIssueId($issueId);
         UbirimiContainer::get()['repository']->get(IssueAttachment::class)->deleteByIssueId($issueId);

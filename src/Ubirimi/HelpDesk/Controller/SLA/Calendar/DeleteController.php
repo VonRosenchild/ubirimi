@@ -34,7 +34,7 @@ class DeleteController extends UbirimiController
 
         $calendarId = $request->request->get('id');
 
-        SlaCalendar::deleteById($calendarId);
+        $this->getRepository(SlaCalendar::class)->deleteById($calendarId);
 
         return new Response('');
     }

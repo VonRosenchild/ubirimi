@@ -21,7 +21,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class History
+class IssueHistory
 {
     public function deleteByIssueId($issueId) {
         $query = 'DELETE FROM issue_history WHERE issue_id = ?';

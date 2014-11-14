@@ -55,7 +55,7 @@ class AddController extends UbirimiController
         if ($SLAs) {
             $slaSelected = $SLAs->fetch_array(MYSQLI_ASSOC);
         }
-        $slaCalendars = SlaCalendar::getByProjectId($projectId);
+            $slaCalendars = $this->getRepository(SlaCalendar::class)->getByProjectId($projectId);
 
         $availableStatuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $session->get('client/id'));
 

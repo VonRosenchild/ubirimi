@@ -98,7 +98,7 @@ class SlaCalendar
         $stmt->execute();
         $stmt->close();
 
-        SlaCalendar::deleteDataByCalendarId($Id);
+        UbirimiContainer::get()['repository']->get(SlaCalendar::class)->deleteDataByCalendarId($Id);
     }
 
     public function getData($slaCalendarId) {
@@ -169,7 +169,7 @@ class SlaCalendar
         $calendarId = UbirimiContainer::get()['db.connection']->insert_id;
 
         // add the data
-        SlaCalendar::addData($calendarId, $data);
+        UbirimiContainer::get()['repository']->get(SlaCalendar::class)->addData($calendarId, $data);
 
         return $calendarId;
     }

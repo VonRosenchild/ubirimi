@@ -44,7 +44,7 @@ class ListController extends UbirimiController
         $clientId = $session->get('client/id');
         $projectId = $request->get('id');
         $project = $this->getRepository(YongoProject::class)->getById($projectId);
-        $calendars = SlaCalendar::getByProjectId($projectId);
+        $calendars = $this->getRepository(SlaCalendar::class)->getByProjectId($projectId);
 
         $SLAs = $this->getRepository(Sla::class)->getByProjectId($projectId);
         if ($SLAs) {

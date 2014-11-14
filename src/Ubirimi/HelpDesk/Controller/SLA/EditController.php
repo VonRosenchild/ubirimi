@@ -47,7 +47,7 @@ class EditController extends UbirimiController
         $stopConditions = explode("#", $SLA['stop_condition']);
 
         $slaConditions = array_merge($startConditions, $stopConditions);
-        $slaCalendars = SlaCalendar::getByProjectId($SLA['project_id']);
+        $slaCalendars = $this->getRepository(SlaCalendar::class)->getByProjectId($SLA['project_id']);
         $goals = $this->getRepository(Sla::class)->getGoals($slaId);
         $menuSelectedCategory = 'help_desk';
         $menuProjectCategory = 'sla';

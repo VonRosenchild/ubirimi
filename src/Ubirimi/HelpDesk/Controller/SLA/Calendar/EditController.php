@@ -44,9 +44,9 @@ class EditController extends UbirimiController
         $duplicateName = false;
 
         $calendarId = $request->get('id');
-        $calendar = SlaCalendar::getById($calendarId);
+        $calendar = $this->getRepository(SlaCalendar::class)->getById($calendarId);
         $projectId = $calendar['project_id'];
-        $data = SlaCalendar::getData($calendarId);
+        $data = $this->getRepository(SlaCalendar::class)->getData($calendarId);
 
         if ($request->request->has('confirm_edit_calendar')) {
 
@@ -57,7 +57,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
             }
 
-            $existingCalendar = SlaCalendar::getByName($name, $projectId, $calendarId);
+            $existingCalendar = $this->getRepository(SlaCalendar::class)->getByName($name, $projectId, $calendarId);
             if ($existingCalendar) {
                 $duplicateName = true;
             }
@@ -75,9 +75,9 @@ class EditController extends UbirimiController
 
                     $currentDate = Util::getServerCurrentDateTime();
 
-                    SlaCalendar::deleteDataByCalendarId($calendarId);
-                    SlaCalendar::updateById($calendarId, null, $name, $description, $currentDate);
-                    SlaCalendar::addData($calendarId, $dataCalendar);
+                    $this->getRepository(SlaCalendar::class)->deleteDataByCalendarId($calendarId);
+                    $this->getRepository(SlaCalendar::class)->updateById($calendarId, null, $name, $description, $currentDate);
+                    $this->getRepository(SlaCalendar::class)->addData($calendarId, $dataCalendar);
 
                     return new RedirectResponse('/helpdesk/sla/calendar/' . $projectId);
                 }

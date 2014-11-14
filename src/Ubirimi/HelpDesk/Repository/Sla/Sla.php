@@ -21,7 +21,7 @@ namespace Ubirimi\HelpDesk\Repository\Sla;
 
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Yongo\Repository\Field\Field;
-use Ubirimi\Yongo\Repository\Issue\History;
+use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
@@ -304,7 +304,7 @@ class Sla
                 $userAssigneeId = $issue['assignee'];
 
                 // look also in the history
-                $historyList = History::getByAssigneeNewChangedAfterDate($issue['id'], $userAssigneeId, $currentSLADate);
+                $historyList = UbirimiContainer::get()['repository']->get(IssueHistory::class)->getByAssigneeNewChangedAfterDate($issue['id'], $userAssigneeId, $currentSLADate);
 
                 if ($historyList) {
                     $history = $historyList->fetch_array(MYSQLI_ASSOC);
@@ -382,11 +382,11 @@ class Sla
             return null;
         }
         $goalValue = $goalData['value'];
-        $slaCalendarData = SlaCalendar::getCalendarDataByCalendarId($goalData['goalCalendarId']);
+        $slaCalendarData = UbirimiContainer::get()['repository']->get(SlaCalendar::class)->getCalendarDataByCalendarId($goalData['goalCalendarId']);
 
         $SLA = UbirimiContainer::get()['repository']->get(Sla::class)->getById($SLA['id']);
 
-        $historyData = History::getByIssueIdAndUserId($issueId, null, 'asc', 'array');
+        $historyData = UbirimiContainer::get()['repository']->get(IssueHistory::class)->getByIssueIdAndUserId($issueId, null, 'asc', 'array');
 
         if (!$historyData) {
             $historyData[] = array('date_created' => $issue['date_created']);

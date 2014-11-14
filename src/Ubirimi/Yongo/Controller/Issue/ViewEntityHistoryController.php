@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\History;
+use Ubirimi\Yongo\Repository\Issue\IssueHistory;
 
 class ViewEntityHistoryController extends UbirimiController
 {
@@ -44,7 +44,7 @@ class ViewEntityHistoryController extends UbirimiController
         $issueId = $request->request->get('issue_id');
         $userId = $request->request->get('user_id');
         $projectId = $request->request->get('project_id');
-        $historyList = $this->getRepository(History::class)->getByIssueIdAndUserId($issueId, $userId, $projectId);
+        $historyList = $this->getRepository(IssueHistory::class)->getByIssueIdAndUserId($issueId, $userId, $projectId);
         $color = null;
 
         $hoursPerDay = $yongoSettings['time_tracking_hours_per_day'];

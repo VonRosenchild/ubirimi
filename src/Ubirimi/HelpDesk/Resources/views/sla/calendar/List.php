@@ -51,7 +51,7 @@ require_once __DIR__ . '/../../../../../Yongo/Resources/views/_header.php';
                         <td><?php echo $calendar['description']; ?></td>
                         <td>
                             <?php
-                                $data = SlaCalendar::getCalendarDataByCalendarId($calendar['id']);
+                                $data = UbirimiContainer::get()['repository']->get(SlaCalendar::class)->getCalendarDataByCalendarId($calendar['id']);
                                 $dowMap = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
                             ?>
                             <table style="width: 350px">

@@ -1811,7 +1811,7 @@ class YongoProject
             $dataDefaultCalendar[$i]['to_minute'] = '59';
         }
 
-        $defaultSLACalendarId = SlaCalendar::addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, 1, $currentDate);
+        $defaultSLACalendarId = UbirimiContainer::get()['repository']->get(SlaCalendar::class)->addCalendar($projectId, 'Default 24/7 Calendar', 'Default 24/7 Calendar', $dataDefaultCalendar, 1, $currentDate);
 
         // add the default SLAs
 
@@ -1842,9 +1842,9 @@ class YongoProject
             UbirimiContainer::get()['repository']->get(Sla::class)->deleteById($sla['id']);
         }
 
-        $calendars = SlaCalendar::getByProjectId($projectId);
+        $calendars = UbirimiContainer::get()['repository']->get(SlaCalendar::class)->getByProjectId($projectId);
         while ($calendars && $calendar = $calendars->fetch_array(MYSQLI_ASSOC)) {
-            SlaCalendar::deleteById($calendar['id']);
+            UbirimiContainer::get()['repository']->get(SlaCalendar::class)->deleteById($calendar['id']);
         }
 
         $queues = UbirimiContainer::get()['repository']->get(Queue::class)->getByProjectId($projectId);

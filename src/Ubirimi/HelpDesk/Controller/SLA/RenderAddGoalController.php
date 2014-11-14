@@ -31,7 +31,7 @@ class RenderAddGoalController extends UbirimiController
         $time = time();
 
         $projectId = $request->request->get('project_id');
-        $slaCalendars = SlaCalendar::getByProjectId($projectId);
+        $slaCalendars = $this->getRepository(SlaCalendar::class)->getByProjectId($projectId);
 
         return $this->render(__DIR__ . '/../../Resources/views/sla/RenderAddGoal.php', get_defined_vars());
     }
