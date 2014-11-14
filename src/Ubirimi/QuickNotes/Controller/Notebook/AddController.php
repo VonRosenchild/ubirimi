@@ -52,7 +52,14 @@ class AddController extends UbirimiController
 
         if (!$emptyName && !$duplicateName) {
             $currentDate = Util::getServerCurrentDateTime();
-            $notebookId = $this->getRepository(Notebook::class)->save($session->get('user/id'), $name, $description, $currentDate);
+
+            $defaultFlag = 0;
+            // get the default notebook
+            $defaultNotebook = $this->getRepository(Notebook::class)->getDefaultByUserId($session->get('user/id'));
+            if (!$defaultNotebook) {
+                $defaultFlag = 1;
+            }
+            $notebookId = $this->getRepository(Notebook::class)->save($session->get('user/id'), $name, $description, $defaultFlag, $currentDate);
 
             $this->getRepository(UbirimiLog::class)->add(
                 $session->get('client/id'),

@@ -130,12 +130,12 @@ class Notebook
     }
 
 
-    public function save($userId, $name, $description, $date) {
-        $query = "INSERT INTO qn_notebook(user_id, name, description, date_created) VALUES (?, ?, ?, ?)";
+    public function save($userId, $name, $description, $defaultFlag = 0, $date) {
+        $query = "INSERT INTO qn_notebook(user_id, name, description, default_flag, date_created) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        $stmt->bind_param("isss", $userId, $name, $description, $date);
+        $stmt->bind_param("issis", $userId, $name, $description, $defaultFlag, $date);
         $stmt->execute();
 
         $notebookId = UbirimiContainer::get()['db.connection']->insert_id;
