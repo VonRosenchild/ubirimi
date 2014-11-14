@@ -1658,24 +1658,26 @@ class UbirimiClient
         $clientRepository->installCalendarProduct($clientId, $userId, $clientCreatedDate);
 
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
-        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_CHEETAH, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_AGILE, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_HELP_DESK, $clientCreatedDate);
+        $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_QUICK_NOTES, $clientCreatedDate);
 
         UbirimiContainer::get()['repository']->get(SMTPServer::class)->add(
             $clientId,
             'Ubirimi Mail Server',
             'The default Ubirimi mail server',
-            'notification@ubirimi.com',
+            UbirimiContainer::get()['smtp.from_email_address'],
             'UBR',
             SMTPServer::PROTOCOL_SECURE_SMTP,
-            'smtp.gmail.com',
-            587,
-            10000,
-            1,
-            'notification@ubirimi.com',
-            'cristinasinaomi1',
+            UbirimiContainer::get()['smtp.hostname'],
+            UbirimiContainer::get()['smtp.port'],
+            UbirimiContainer::get()['smtp.timeout'],
+            UbirimiContainer::get()['smtp.tls'],
+            UbirimiContainer::get()['smtp.username'],
+            UbirimiContainer::get()['smtp.password'],
             1,
             $clientCreatedDate
         );
@@ -1782,11 +1784,11 @@ class UbirimiClient
     }
 
     public function deleteCalendars($clientId) {
-        $calendars = UbirimiCalendar::getByClientId($clientId);
+        $calendars = UbirimiContainer::get()['repository']->get(UbirimiCalendar::class)->getByClientId($clientId);
         if ($calendars) {
             while ($calendar = $calendars->fetch_array(MYSQLI_ASSOC)) {
 
-                UbirimiCalendar::deleteById($calendar['id']);
+                UbirimiContainer::get()['repository']->get(UbirimiCalendar::class)->deleteById($calendar['id']);
             }
         }
     }
@@ -1829,10 +1831,10 @@ class UbirimiClient
         // create default calendar for the first user
         $userData = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getById($userId);
 
-        $calendarId = UbirimiCalendar::save($userData['id'], $userData['first_name'] . ' ' . $userData['last_name'], 'My default calendar', '#A1FF9E', $clientCreatedDate, 1);
+        $calendarId = UbirimiContainer::get()['repository']->get(UbirimiCalendar::class)->save($userData['id'], $userData['first_name'] . ' ' . $userData['last_name'], 'My default calendar', '#A1FF9E', $clientCreatedDate, 1);
 
         // add default reminders
-        UbirimiCalendar::addReminder($calendarId, \Ubirimi\Calendar\Repository\Reminder\ReminderType::REMINDER_EMAIL, ReminderPeriod::PERIOD_MINUTE, 30);
+        UbirimiContainer::get()['repository']->get(UbirimiCalendar::class)->addReminder($calendarId, \Ubirimi\Calendar\Repository\Reminder\ReminderType::REMINDER_EMAIL, ReminderPeriod::PERIOD_MINUTE, 30);
     }
 
     public function getCurrentMonthAndDayPayingCustomers() {

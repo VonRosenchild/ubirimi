@@ -56,7 +56,7 @@ require_once __DIR__ . '/_header.php';
                                     case SystemProduct::SYS_PRODUCT_CALENDAR:
                                         echo 'Events';
                                         break;
-                                    case SystemProduct::SYS_PRODUCT_CHEETAH:
+                                    case SystemProduct::SYS_PRODUCT_AGILE:
                                         echo 'Cheetah';
                                         break;
                                     case SystemProduct::SYS_PRODUCT_DOCUMENTADOR:

@@ -22,7 +22,7 @@ require_once __DIR__ . '/_header.php';
                 </tr>
                 <tr>
                     <td width="20">
-                        <input class="app_client" type="checkbox" value="1" name="agile" <?php if (Util::checkKeyAndValueInArray('sys_product_id', SystemProduct::SYS_PRODUCT_CHEETAH, $productsArray)) echo 'checked="checked"' ?> />
+                        <input class="app_client" type="checkbox" value="1" name="agile" <?php if (Util::checkKeyAndValueInArray('sys_product_id', SystemProduct::SYS_PRODUCT_AGILE, $productsArray)) echo 'checked="checked"' ?> />
                     </td>
                     <td>Agile</td>
                 </tr>

@@ -447,14 +447,14 @@ class CalendarEvent
 
     public function deleteById($eventId, $recurringType = null) {
         // delete the shares
-        CalendarEvent::deleteAllEventShares($eventId);
+        UbirimiContainer::get()['repository']->get(CalendarEvent::class)->deleteAllEventShares($eventId);
 
         // delete the reminders
-        CalendarEvent::deleteReminders($eventId);
+        UbirimiContainer::get()['repository']->get(CalendarEvent::class)->deleteReminders($eventId);
 
         switch ($recurringType) {
             case 'all_following':
-                $event = CalendarEvent::getById($eventId, 'array');
+                $event = UbirimiContainer::get()['repository']->get(CalendarEvent::class)->getById($eventId, 'array');
                 // todo: delete shares and reminders also
                 $query = "delete from cal_event where id >= ? and cal_event_link_id = ?";
                 $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -464,7 +464,7 @@ class CalendarEvent
                 break;
 
             case 'all_series':
-                $event = CalendarEvent::getById($eventId, 'array');
+                $event = UbirimiContainer::get()['repository']->get(CalendarEvent::class)->getById($eventId, 'array');
                 // todo: delete shares and reminders also
                 $query = "delete from cal_event where id = ? or cal_event_link_id = ?";
 
@@ -595,7 +595,7 @@ class CalendarEvent
     }
 
     public function deleteEventAndFollowingByLinkId($eventId) {
-        $event = CalendarEvent::getById($eventId, 'array');
+        $event = UbirimiContainer::get()['repository']->get(CalendarEvent::class)->getById($eventId, 'array');
         $linkId = $event['cal_event_link_id'];
 
         $query = "delete from " .

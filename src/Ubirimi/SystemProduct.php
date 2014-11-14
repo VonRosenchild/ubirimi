@@ -24,7 +24,7 @@ class SystemProduct {
 
     const SYS_PRODUCT_YONGO = 1;
     const SYS_PRODUCT_SVN_HOSTING = 2;
-    const SYS_PRODUCT_CHEETAH = 3;
+    const SYS_PRODUCT_AGILE = 3;
     const SYS_PRODUCT_DOCUMENTADOR = 4;
     const SYS_PRODUCT_CALENDAR = 5;
     const SYS_PRODUCT_HELP_DESK = 6;

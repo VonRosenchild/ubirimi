@@ -126,7 +126,7 @@ if ($session->has('client/products')) {
                         <span class="<?php if ($menuSelectedCategory == 'filters') echo 'arrowSelected'; else echo 'arrow' ?>"></span>
                         &nbsp;
                     </td>
-                    <?php if (Util::checkKeyAndValueInArray('sys_product_id', SystemProduct::SYS_PRODUCT_CHEETAH, $clientProducts)): ?>
+                    <?php if (Util::checkKeyAndValueInArray('sys_product_id', SystemProduct::SYS_PRODUCT_AGILE, $clientProducts)): ?>
                         <td width="8px"></td>
                         <td align="center" class="menuItemBasic <?php if ($menuSelectedCategory == 'agile') echo 'menuItemSelected'; else echo 'menuItem' ?>" id="menuAgile">
                             <span>Agile</span>

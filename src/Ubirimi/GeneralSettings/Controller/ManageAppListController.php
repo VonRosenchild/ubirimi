@@ -44,7 +44,7 @@ class ManageAppListController extends UbirimiController
                 $productId = SystemProduct::SYS_PRODUCT_YONGO;
                 break;
             case 'agile':
-                $productId = SystemProduct::SYS_PRODUCT_CHEETAH;
+                $productId = SystemProduct::SYS_PRODUCT_AGILE;
                 break;
             case 'helpdesk':
                 $productId = SystemProduct::SYS_PRODUCT_HELP_DESK;
@@ -66,7 +66,7 @@ class ManageAppListController extends UbirimiController
             $this->getRepository(UbirimiClient::class)->deleteProduct($session->get('client/id'), $productId);
             if ($productId == SystemProduct::SYS_PRODUCT_YONGO) {
                 $this->getRepository(UbirimiClient::class)->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_HELP_DESK);
-                $this->getRepository(UbirimiClient::class)->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_CHEETAH);
+                $this->getRepository(UbirimiClient::class)->deleteProduct($session->get('client/id'), SystemProduct::SYS_PRODUCT_AGILE);
             }
         }
 

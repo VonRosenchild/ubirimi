@@ -77,7 +77,7 @@ class AddController extends UbirimiController
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_CHEETAH,
+                    SystemProduct::SYS_PRODUCT_AGILE,
                     $session->get('user/id'),
                     'ADD Cheetah Agile Board ' . $name,
                     $date

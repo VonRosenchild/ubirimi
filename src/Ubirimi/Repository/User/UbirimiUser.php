@@ -130,7 +130,7 @@ class UbirimiUser
         UbirimiContainer::get()['db.connection']->query($query);
 
         // delete calendar related entities
-        UbirimiCalendar::deleteByUserId($userId);
+        UbirimiContainer::get()['repository']->get(UbirimiCalendar::class)->deleteByUserId($userId);
 
         // todo: delete documentador related entities
 
