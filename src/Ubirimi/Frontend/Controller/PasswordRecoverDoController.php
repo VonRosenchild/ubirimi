@@ -19,6 +19,7 @@
 
 namespace Ubirimi\Frontend\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
@@ -32,34 +33,40 @@ class PasswordRecoverDoController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $errorNotInClientDomain = false;
-        $emailAddressNotExists = false;
 
-        $httpHOST = Util::getHttpHost();
+        if ($request->request->has('retrieve')) {
 
-        $address = Util::cleanRegularInputField($request->request->get('address'));
-        $exists = Util::checkEmailAddressExistence($address);
+            $errorNotInClientDomain = false;
+            $emailAddressNotExists = false;
 
-        if ($exists) {
+            $httpHOST = Util::getHttpHost();
 
-            $baseURL = Util::getHttpHost();
+            $address = Util::cleanRegularInputField($request->request->get('address'));
+            $exists = Util::checkEmailAddressExistence($address);
 
-            $userData = $this->getRepository(UbirimiUser::class)->getByEmailAddressAndBaseURL($address, $baseURL);
+            if ($exists) {
 
-            if ($userData) {
-                $password = Util::updatePasswordForUserId($userData['id']);
+                $baseURL = Util::getHttpHost();
 
-                $event = new UbirimiEvent(array('email' => $address, 'password' => $password));
-                UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::PASSWORD_RECOVER, $event);
+                $userData = $this->getRepository(UbirimiUser::class)->getByEmailAddressAndBaseURL($address, $baseURL);
 
-                $session->set('password_recover', true);
+                if ($userData) {
+                    $password = Util::updatePasswordForUserId($userData['id']);
+
+                    $event = new UbirimiEvent(array('email' => $address, 'password' => $password));
+                    UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::PASSWORD_RECOVER, $event);
+
+                    return new RedirectResponse('/recover-password/response');
+                } else {
+                    $errorNotInClientDomain = true;
+                }
             } else {
-                $errorNotInClientDomain = true;
+                $emailAddressNotExists = true;
             }
-        } else {
-            $emailAddressNotExists = true;
-        }
 
-        return $this->render(__DIR__ . '/../Resources/views/_passwordRecoverForm.php', get_defined_vars());
+            return $this->render(__DIR__ . '/../Resources/views/_passwordRecoverForm.php', get_defined_vars());
+        } else if ($request->request->has('go_back')) {
+            return new RedirectResponse('/');
+        }
     }
 }

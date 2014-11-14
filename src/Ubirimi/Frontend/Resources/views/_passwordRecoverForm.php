@@ -1,8 +1,4 @@
-<form action="/recover-password" name="user-account" method="post" class="standard-form">
-
-    <div class="global-msg confirmation" <?php if (!$session->has('password_recover')): ?>style="display:none;" <?php endif ?>>
-        Your new password was sent to the email address provided.
-    </div>
+<form action="/recover-password/do" name="user-account" method="post" class="standard-form">
 
     <fieldset>
         <label>Your email address</label> <input class="inputText" type="text" name="address" value=""/>
@@ -14,4 +10,9 @@
             <div class="error">The address you provided was not found in our system.</div>
         <?php endif ?>
     </fieldset>
+
+    <button class="button_hp blue" type="submit" name="retrieve">Restore Password</button>
+    <button class="button_hp blue" type="submit" name="go_back">Go back</button>
+    <img id="loader" src="/img/loader.gif" style="display: none;"/>
+
 </form>

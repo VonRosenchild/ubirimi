@@ -12,9 +12,6 @@
                     </p>
                     <div class="align-left">
                         <?php require_once __DIR__ . '/_passwordRecoverForm.php' ?>
-
-                        <button class="button_hp blue" type="button" name="retrieve">Restore Password</button>
-                        <img id="loader" src="/img/loader.gif" style="display: none;"/>
                     </div>
                 </div>
             </td>
