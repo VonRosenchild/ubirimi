@@ -21,7 +21,7 @@ namespace Ubirimi\Yongo\Repository\Issue;
 
 use Ubirimi\Container\UbirimiContainer;
 
-class LinkType
+class IssueLinkType
 {
     public function getByClientId($clientId) {
         $query = 'select * from issue_link_type where client_id = ?';

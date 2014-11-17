@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 
 class DeleteController extends UbirimiController
 {
@@ -37,11 +37,11 @@ class DeleteController extends UbirimiController
         $action = $request->request->get('action');
 
         if ($action == 'swap') {
-            LinkType::updateLinkTypeId($sourceLinkTypeId, $targetLinkTypeId);
-            LinkType::deleteById($sourceLinkTypeId);
+            $this->getRepository(IssueLinkType::class)->updateLinkTypeId($sourceLinkTypeId, $targetLinkTypeId);
+            $this->getRepository(IssueLinkType::class)->deleteById($sourceLinkTypeId);
         } else if ($action == 'remove' || $action == null) {
-            LinkType::deleteLinksByLinkTypeId($sourceLinkTypeId);
-            LinkType::deleteById($sourceLinkTypeId);
+            $this->getRepository(IssueLinkType::class)->deleteLinksByLinkTypeId($sourceLinkTypeId);
+            $this->getRepository(IssueLinkType::class)->deleteById($sourceLinkTypeId);
         }
 
         return new Response('');

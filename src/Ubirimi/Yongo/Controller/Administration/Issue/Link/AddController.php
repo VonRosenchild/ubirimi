@@ -26,7 +26,7 @@ use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 
 
 class AddController extends UbirimiController
@@ -45,17 +45,20 @@ class AddController extends UbirimiController
             $outwardDescription = Util::cleanRegularInputField($request->request->get('outward'));
             $inwardDescription = Util::cleanRegularInputField($request->request->get('inward'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
-            if (empty($outwardDescription))
+            if (empty($outwardDescription)) {
                 $emptyOutwardDescription = true;
+            }
 
-            if (empty($inwardDescription))
+            if (empty($inwardDescription)) {
                 $emptyInwardDescription = true;
+            }
 
             // check for duplication
-            $linkType = LinkType::getByNameAndClientId($session->get('client/id'), mb_strtolower($name));
+            $linkType = $this->getRepository(IssueLinkType::class)->getByNameAndClientId($session->get('client/id'), mb_strtolower($name));
 
             if ($linkType)
                 $linkTypeDuplicateName = true;
@@ -63,7 +66,7 @@ class AddController extends UbirimiController
             if (!$emptyName && !$emptyOutwardDescription && !$emptyInwardDescription && !$linkTypeDuplicateName) {
                 $currentDate = Util::getServerCurrentDateTime();
 
-                $this->getRepository(LinkType::class)->add(
+                $this->getRepository(IssueLinkType::class)->add(
                     $session->get('client/id'),
                     $name,
                     $outwardDescription,

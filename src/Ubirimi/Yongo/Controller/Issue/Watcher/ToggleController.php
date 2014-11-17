@@ -48,5 +48,7 @@ class ToggleController extends UbirimiController
 
         // update the date_updated field
         $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
+        return new Response('');
     }
 }

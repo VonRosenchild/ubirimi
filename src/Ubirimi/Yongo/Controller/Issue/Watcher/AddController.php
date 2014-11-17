@@ -20,6 +20,7 @@
 namespace Ubirimi\Yongo\Controller\Issue\Watcher;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
@@ -43,6 +44,8 @@ class AddController extends UbirimiController
 
             // update the date_updated field
             $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
+            return new Response('');
         }
     }
 }

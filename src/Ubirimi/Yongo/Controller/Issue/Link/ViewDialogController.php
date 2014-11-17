@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\Issue;
-use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 
 class ViewDialogController extends UbirimiController
 {
@@ -40,7 +40,7 @@ class ViewDialogController extends UbirimiController
         $linkPossible = $request->get('link_possible');
 
         if ($linkPossible) {
-            $types = LinkType::getByClientId($clientId);
+            $types = $this->getRepository(IssueLinkType::class)->getByClientId($clientId);
             $issueQueryParameters = array('project' => $projectId);
             $issues = $this::getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
         }

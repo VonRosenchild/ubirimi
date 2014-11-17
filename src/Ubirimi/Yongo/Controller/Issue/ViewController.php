@@ -33,7 +33,7 @@ use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueAttachment;
 use Ubirimi\Yongo\Repository\Issue\IssueComponent;
 use Ubirimi\Yongo\Repository\Issue\IssueVersion;
-use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Issue\Watcher;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
@@ -148,8 +148,8 @@ class ViewController extends UbirimiController
             // get the watchers, if any
             $watchers = $this->getRepository(Watcher::class)->getByIssueId($issueId);
 
-            $linkedIssues = $this->getRepository(LinkType::class)->getLinksByParentId($issueId);
-            $linkIssueTypes = $this->getRepository(LinkType::class)->getByClientId($session->get('client/id'));
+            $linkedIssues = $this->getRepository(IssueLinkType::class)->getLinksByParentId($issueId);
+            $linkIssueTypes = $this->getRepository(IssueLinkType::class)->getByClientId($session->get('client/id'));
             $issueLinkingFlag = $session->get('yongo/settings/issue_linking_flag');
             $hoursPerDay = $session->get('yongo/settings/time_tracking_hours_per_day');
             $daysPerWeek = $session->get('yongo/settings/time_tracking_days_per_week');

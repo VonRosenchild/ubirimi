@@ -41,7 +41,7 @@ use Ubirimi\Yongo\Repository\Issue\IssueSettings;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
 use Ubirimi\Yongo\Repository\Issue\IssueTypeScheme;
 use Ubirimi\Yongo\Repository\Issue\IssueTypeScreenScheme;
-use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
@@ -1584,7 +1584,7 @@ class UbirimiClient
     }
 
     public function createDefaultLinkIssueOptions($clientId, $currentDate) {
-        $linkTypeRepository = UbirimiContainer::get()['repository']->get(LinkType::class);
+        $linkTypeRepository = UbirimiContainer::get()['repository']->get(IssueLinkType::class);
         $linkTypeRepository->add($clientId, 'Relates', 'relates to', 'relates to', $currentDate);
         $linkTypeRepository->add($clientId, 'Duplicate', 'duplicates', 'is duplicated by', $currentDate);
         $linkTypeRepository->add($clientId, 'Blocks', 'blocks', 'is blocked by', $currentDate);

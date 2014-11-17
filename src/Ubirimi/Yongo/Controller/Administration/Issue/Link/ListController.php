@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
-use Ubirimi\Yongo\Repository\Issue\LinkType;
+use Ubirimi\Yongo\Repository\Issue\IssueLinkType;
 
 class ListController extends UbirimiController
 {
@@ -33,7 +33,7 @@ class ListController extends UbirimiController
         Util::checkUserIsLoggedInAndRedirect();
         $menuSelectedCategory = 'system';
 
-        $linkTypes = LinkType::getByClientId($session->get('client/id'));
+        $linkTypes = $this->getRepository(IssueLinkType::class)->getByClientId($session->get('client/id'));
         $issueLinkingFlag = $session->get('yongo/settings/issue_linking_flag');
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Issue Link Types';
