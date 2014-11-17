@@ -24,3 +24,8 @@ apiUserGET:
   path: /api/user/{username}
   defaults: { _controller: '\Ubirimi\Api\Controller\User\GetController' }
   methods:  [GET]
+
+apiInstallClient:
+  path: /api/client/save
+  defaults: { _controller: '\Ubirimi\Api\Controller\Client\SaveController' }
+
