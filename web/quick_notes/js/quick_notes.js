@@ -78,7 +78,10 @@ $('document').ready(function () {
         } else {
             $('#btnEditNote').html('Save Changes');
 
-            var config = {};
+            var config = {
+                height: $('#parentNoteContent').height() - 77 + 'px',
+                removePlugins: 'elementspath'
+            };
             var editor = CKEDITOR.replace('note_content', config, $('#note_content').val());
         }
     });
