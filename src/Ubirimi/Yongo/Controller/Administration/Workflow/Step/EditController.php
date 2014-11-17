@@ -50,8 +50,9 @@ class EditController extends UbirimiController
             $name = Util::cleanRegularInputField($request->request->get('name'));
             $StatusId = Util::cleanRegularInputField($request->request->get('status'));
 
-            if (empty($name))
+            if (empty($name)) {
                 $emptyName = true;
+            }
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();

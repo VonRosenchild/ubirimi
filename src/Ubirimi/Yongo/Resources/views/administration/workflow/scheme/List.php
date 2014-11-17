@@ -54,7 +54,7 @@ require_once __DIR__ . '/../../_header.php';
 
                                 <td width="400px">
                                     <ul>
-                                        <?php $workflows = WorkflowScheme::getDataById($scheme['id']) ?>
+                                        <?php $workflows = UbirimiContainer::get()['repository']->get(WorkflowScheme::class)->getDataById($scheme['id']) ?>
                                         <?php if ($workflows): ?>
                                             <?php while ($workflow = $workflows->fetch_array(MYSQLI_ASSOC)): ?>
                                                 <li>

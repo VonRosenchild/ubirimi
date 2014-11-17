@@ -59,7 +59,7 @@ class ConfigureController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                WorkflowScheme::updateMetaDataById($Id, $name, $description);
+                $this->getRepository(WorkflowScheme::class)->updateMetaDataById($Id, $name, $description);
                 $this->getRepository(WorkflowScheme::class)->deleteDataByWorkflowSchemeId($Id);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 9) == 'workflow_') {

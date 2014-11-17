@@ -160,11 +160,11 @@ class WorkflowScheme {
     }
 
     public function deleteByClientId($clientId) {
-        $schemes = WorkflowScheme::getMetaDataByClientId($clientId);
+        $schemes = UbirimiContainer::get()['repository']->get(WorkflowScheme::class)->getMetaDataByClientId($clientId);
         if ($schemes) {
             while ($scheme = $schemes->fetch_array(MYSQLI_ASSOC)) {
-                WorkflowScheme::deleteDataByWorkflowSchemeId($scheme['id']);
-                WorkflowScheme::deleteById($scheme['id']);
+                UbirimiContainer::get()['repository']->get(WorkflowScheme::class)->deleteDataByWorkflowSchemeId($scheme['id']);
+                UbirimiContainer::get()['repository']->get(WorkflowScheme::class)->deleteById($scheme['id']);
             }
         }
     }

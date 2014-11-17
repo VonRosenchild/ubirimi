@@ -22,12 +22,12 @@ require_once __DIR__ . '/../_header.php';
     <?php if ($notebooks): ?>
         <table class="table table-hover table-condensed">
             <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Primary Notebook</th>
-            </tr>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Primary Notebook</th>
+                </tr>
             </thead>
             <tbody>
             <?php while ($notebook = $notebooks->fetch_array(MYSQLI_ASSOC)): ?>

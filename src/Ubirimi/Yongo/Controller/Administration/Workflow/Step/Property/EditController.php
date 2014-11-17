@@ -55,8 +55,9 @@ class EditController extends UbirimiController
             $keyId = Util::cleanRegularInputField($request->request->get('key'));
             $value = Util::cleanRegularInputField($request->request->get('value'));
 
-            if (empty($value))
+            if (empty($value)) {
                 $emptyValue = true;
+            }
 
             if (!$emptyValue) {
 
