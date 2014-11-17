@@ -1,5 +1,7 @@
 <?php
 use Ubirimi\Util;
+use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\QuickNotes\Repository\Note;
 
 require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
 ?>
@@ -44,8 +46,8 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
 
         <table id="contentNotesList" width="100%" cellpadding="0" cellspacing="0">
             <tr>
-                <td width="10%" valign="top" style="border-right: 1px solid #c6c6c6; border-top: 1px solid #DDDDDD;">
-                    <div style="height: 100%; overflow: auto">
+                <td width="10%" valign="top" style="border-right: 1px solid #c6c6c6; border-top: 1px solid #DDDDDD; height: 33px;">
+                    <div style="overflow: auto;">
                         <?php require_once __DIR__ . '/../_notebook_list_section.php' ?>
                     </div>
                 </td>
@@ -78,7 +80,16 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                                         <?php foreach ($notes as $currentNote): ?>
                                             <tr<?php if ($noteId == $currentNote['id']) echo ' class="trSelected"';?> class="noteListView" id="table_row_<?php echo $currentNote['id'] ?>">
                                                 <td width="50%"><?php echo $currentNote['summary'] ?></td>
-                                                <td width="30%"><?php  ?></td>
+                                                <td width="30%">
+                                                    <?php
+                                                        $noteTags = UbirimiContainer::get()['repository']->get(Note::class)->getTags($noteId);
+                                                        if ($noteTags) {
+                                                            while ($noteTag = $noteTags->fetch_array(MYSQLI_ASSOC)) {
+                                                                echo $noteTag['name'];
+                                                            }
+                                                        }
+                                                    ?>
+                                                </td>
                                                 <td width="10%"><?php echo substr($currentNote['date_created'], 0, 10); ?></td>
                                                 <td width="10%"><?php echo substr($currentNote['date_updated'], 0, 10) ?></td>
                                             </tr>
@@ -89,7 +100,7 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                                 <div class="infoBox">There are no notes.</div>
                             <?php endif ?>
                         </div>
-                        <div id="qn_note_list_content" style="border-top: 4px solid #b9b9b9">aa
+                        <div id="qn_note_list_content" style="border-top: 4px solid #b9b9b9">
                             <?php require_once __DIR__ . '/../_note_button_bar.php' ?>
                             <?php require_once __DIR__ . '/../_note_section.php' ?>
                         </div>

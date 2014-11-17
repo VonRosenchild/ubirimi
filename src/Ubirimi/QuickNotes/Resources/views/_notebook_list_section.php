@@ -5,7 +5,7 @@ use Ubirimi\QuickNotes\Repository\Note;
 
 ?>
 <div>
-    <div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 2px solid #c6c6c6;">
+    <div style="padding-left: 4px; background-color: #DDDDDD; border-bottom: 2px solid #c6c6c6; height: 33px">
         <table width="100%">
             <tr>
                 <td width="80px"><b>Notebooks</b></td>
