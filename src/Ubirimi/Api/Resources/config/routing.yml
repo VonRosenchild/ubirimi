@@ -25,7 +25,12 @@ apiUserGET:
   defaults: { _controller: '\Ubirimi\Api\Controller\User\GetController' }
   methods:  [GET]
 
+apiUserAuthenticate:
+  path: /api/user/authenticate
+  defaults: { _controller: '\Ubirimi\Api\Controller\User\AuthenticateController' }
+  methods:  [POST]
+
 apiInstallClient:
   path: /api/client/save
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\SaveController' }
-
+  methods:  [POST]

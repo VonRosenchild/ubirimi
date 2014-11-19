@@ -42,3 +42,13 @@
     background-color: #DDDDDD;
     cursor: pointer;
 }
+
+.cke_chrome {
+    border: 0 !important;
+}
+
+.cke_top {
+    background: none !important;
+    background-image: none;
+    border-bottom: none !important;
+}

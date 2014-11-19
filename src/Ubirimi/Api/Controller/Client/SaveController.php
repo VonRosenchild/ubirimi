@@ -20,6 +20,7 @@
 namespace Ubirimi\Api\Controller\Client;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\GeneralTaskQueue;
@@ -29,8 +30,10 @@ class SaveController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        UbirimiContainer::get()['api.auth']->auth($request);
+//        UbirimiContainer::get()['api.auth']->auth($request);
 
         $this->getRepository(GeneralTaskQueue::class)->savePendingClientData($request->getContent());
+
+        return new Response('');
     }
 }
