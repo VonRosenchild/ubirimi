@@ -80,7 +80,14 @@ $('document').ready(function () {
 
             var config = {
                 height: $('#parentNoteContent').height() - 77 + 'px',
-                removePlugins: 'elementspath'
+                removePlugins: 'elementspath',
+                toolbarGroups: [
+                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                    { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },			// Group's name will be used to create voice label.
+                    { name: 'links' },
+                    { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] }
+                ]
+
             };
             var editor = CKEDITOR.replace('note_content', config, $('#note_content').val());
         }
