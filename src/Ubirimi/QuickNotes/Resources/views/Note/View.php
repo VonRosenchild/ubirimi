@@ -78,7 +78,7 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                                 <table class="table table-hover table-condensed">
                                     <tbody>
                                         <?php foreach ($notes as $currentNote): ?>
-                                            <tr<?php if ($noteId == $currentNote['id']) echo ' class="trSelected"';?> class="noteListView" id="table_row_<?php echo $currentNote['id'] ?>">
+                                            <tr class="<?php if ($noteId == $currentNote['id']) echo 'trSelected'; ?> noteListView" id="table_row_<?php echo $currentNote['id'] ?>">
                                                 <td width="50%"><?php echo $currentNote['summary'] ?></td>
                                                 <td width="30%">
                                                     <?php
