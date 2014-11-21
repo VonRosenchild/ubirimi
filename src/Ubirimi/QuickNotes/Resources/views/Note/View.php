@@ -82,7 +82,7 @@ require_once __DIR__ . '/../../../../QuickNotes/Resources/views/_header.php';
                                                 <td width="50%"><?php echo $currentNote['summary'] ?></td>
                                                 <td width="30%">
                                                     <?php
-                                                        $noteTags = UbirimiContainer::get()['repository']->get(Note::class)->getTags($noteId);
+                                                        $noteTags = UbirimiContainer::get()['repository']->get(Note::class)->getTags($currentNote['id']);
                                                         if ($noteTags) {
                                                             while ($noteTag = $noteTags->fetch_array(MYSQLI_ASSOC)) {
                                                                 echo $noteTag['name'];
