@@ -82,19 +82,19 @@ class EditDialogController extends UbirimiController
         }
 
         $projectVersions = UbirimiContainer::get()['repository']->get(YongoProject::class)->getVersions($projectId);
-        $issue_versions_affected = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
-        $arr_issue_versions_affected = array();
-        if ($issue_versions_affected) {
-            while ($row = $issue_versions_affected->fetch_array(MYSQLI_ASSOC)) {
-                $arr_issue_versions_affected[] = $row['project_version_id'];
+        $issueVersionsAffected = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_AFFECTED_VERSION_FLAG);
+        $arrayIssueVersionsAffected = array();
+        if ($issueVersionsAffected) {
+            while ($row = $issueVersionsAffected->fetch_array(MYSQLI_ASSOC)) {
+                $arrayIssueVersionsAffected[] = $row['project_version_id'];
             }
         }
 
-        $issue_versions_targeted = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
-        $arr_issue_versions_targeted = array();
-        if ($issue_versions_targeted) {
-            while ($row = $issue_versions_targeted->fetch_array(MYSQLI_ASSOC)) {
-                $arr_issue_versions_targeted[] = $row['project_version_id'];
+        $issueVersionsTargeted = $this->getRepository(IssueVersion::class)->getByIssueIdAndProjectId($issueId, $projectId, Issue::ISSUE_FIX_VERSION_FLAG);
+        $arrayIssueVersionsTargeted = array();
+        if ($issueVersionsTargeted) {
+            while ($row = $issueVersionsTargeted->fetch_array(MYSQLI_ASSOC)) {
+                $arrayIssueVersionsTargeted[] = $row['project_version_id'];
             }
         }
         $allUsers = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getByClientId($clientId);

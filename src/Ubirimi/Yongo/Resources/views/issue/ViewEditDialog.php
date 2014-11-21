@@ -156,7 +156,7 @@ while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                             echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                             while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                 $textSelected = '';
-                                if (in_array($version['id'], $arr_issue_versions_affected))
+                                if (in_array($version['id'], $arrayIssueVersionsAffected))
                                     $textSelected = 'selected="selected"';
                                 echo '<option ' . $textSelected . ' value="' . $version['id'] . '">' . $version['name'] . '</option>';
                             }
@@ -172,7 +172,7 @@ while ($field = $screenData->fetch_array(MYSQLI_ASSOC)) {
                             echo '<select ' . $requiredHTML . ' id="field_type_' . $field['field_code'] . '" name="' . $field['field_code'] . '[]" multiple="multiple" class="select2Input mousetrap" style="width: 100%;">';
                             while ($version = $projectVersions->fetch_array(MYSQLI_ASSOC)) {
                                 $textSelected = '';
-                                if (in_array($version['id'], $arr_issue_versions_targeted))
+                                if (in_array($version['id'], $arrayIssueVersionsTargeted))
                                     $textSelected = 'selected="selected"';
 
                                 echo '<option ' . $textSelected . ' value="' . $version['id'] . '">' . $version['name'] . '</option>';
