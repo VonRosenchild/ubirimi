@@ -38,6 +38,6 @@ class FindPageController extends UbirimiController
 
         $pages = $this->getRepository(Entity::class)->findBySpaceIdAndKeyword($clientId, $spaceId, $pageNameKeyword);
 
-        return $this->render(__DIR__ . '/../../../Resources/views/page/Find.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../Resources/views/page/Find.php', get_defined_vars());
     }
 }

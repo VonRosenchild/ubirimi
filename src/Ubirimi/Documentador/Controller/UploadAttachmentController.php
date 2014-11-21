@@ -107,7 +107,7 @@ class UploadAttachmentController extends UbirimiController
                 $index++;
             }
         }
-die();
-//        return new RedirectResponse('/documentador/page/attachments/' . $entityId);
+
+        return new RedirectResponse('/documentador/page/attachments/' . $entityId);
     }
 }

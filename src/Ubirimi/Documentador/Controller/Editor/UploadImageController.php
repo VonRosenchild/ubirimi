@@ -20,6 +20,7 @@
 namespace Ubirimi\Documentador\Controller\Editor;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Entity\Entity;
@@ -100,11 +101,12 @@ class UploadImageController extends UbirimiController
 
                 $attachmentsPath = UbirimiContainer::get()['asset.documentador_entity_attachments'];
                 $html = '<html><body><script type="text/javascript">window.parent.CKEDITOR.tools.callFunction("' . $CKEditorFuncNum . '", "/assets/' . $attachmentsPath . $spaceId . '/' . $entityId. '/' . $attachmentId . '/' . $revisionNumber . '/' . $fileName . '");</script></body></html>';
-                echo $html;
+
+                return new Response($html);
             }
 
         } else {
-            // invalid file
+            return new Response('');
         }
     }
 }

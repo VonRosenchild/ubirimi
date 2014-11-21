@@ -21,6 +21,7 @@ namespace Ubirimi\Documentador\Controller\Page;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Documentador\Repository\Entity\Entity;
 use Ubirimi\UbirimiController;
@@ -53,6 +54,8 @@ class AddSnapshotController extends UbirimiController
             $activeSnapshots = $this->getRepository(Entity::class)->getOtherActiveSnapshots($entityId, $loggedInUserId, $now, 'array');
 
             return new JsonResponse($activeSnapshots);
+        } else {
+            return new Response('');
         }
     }
 }
