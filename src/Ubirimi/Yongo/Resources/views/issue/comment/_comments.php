@@ -27,7 +27,7 @@ use Ubirimi\Util;
                     <span><?php echo str_replace("\n", "<br />", htmlentities($comment['content'])) ?></span>
                 </td>
                 <?php if ($actionButtonsFlag): ?>
-                    <td style="text-align: right; <?php if ($first) echo 'border-top: none;' ?>" width="150px;">
+                    <td style="text-align: right; <?php if ($first) echo 'border-top: none;' ?>" width="160px;">
                         <?php if ($hasEditAllComments || ($hasEditOwnComments && $loggedInUserId == $comment['user_id'])): ?>
                             <a id="edit_comment_<?php echo $comment['id'] ?>" class="btn ubirimi-btn" href="#"><i class="icon-edit"></i> Edit</a>
                         <?php endif ?>
