@@ -89,7 +89,7 @@ class CustomField {
         // add data if necessary
 
         if ($allIssueTypeFlag) {
-            $issueTypeResult = IssueType::getAll($clientId);
+            $issueTypeResult = $this->getRepository(IssueType::class)->getAll($clientId);
             $issueType = array();
             while ($type = $issueTypeResult->fetch_array(MYSQLI_ASSOC)) {
                 $issueType[] = $type['id'];

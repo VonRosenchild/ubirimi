@@ -794,14 +794,14 @@ class Workflow
         }
 
         // duplicate the position
-        $oldPositions = WorkflowPosition::getByWorkflowId($workflowId);
+        $oldPositions = UbirimiContainer::get()['repository']->get(WorkflowPosition::class)->getByWorkflowId($workflowId);
         while ($oldPosition = $oldPositions->fetch_array(MYSQLI_ASSOC)) {
-            WorkflowPosition::addSinglePositionRecord($newWorkflowId, $stepsLinking[$oldPosition['workflow_step_id']], $oldPosition['top_position'], $oldPosition['left_position']);
+            UbirimiContainer::get()['repository']->get(WorkflowPosition::class)->addSinglePositionRecord($newWorkflowId, $stepsLinking[$oldPosition['workflow_step_id']], $oldPosition['top_position'], $oldPosition['left_position']);
         }
 
         // duplicate the post function data
         foreach ($dataLinking as $oldDataId => $newDataId) {
-            $oldFunctionData = WorkflowFunction::getByWorkflowDataId($oldDataId);
+            $oldFunctionData = UbirimiContainer::get()['repository']->get(WorkflowFunction::class)->getByWorkflowDataId($oldDataId);
             while ($oldFunctionData && $oldFunctionRow = $oldFunctionData->fetch_array(MYSQLI_ASSOC)) {
                 UbirimiContainer::get()['repository']->get(Workflow::class)->addPostFunctionToTransition($newDataId, $oldFunctionRow['function_id'], $oldFunctionRow['definition_data']);
             }
@@ -810,7 +810,7 @@ class Workflow
         // duplicate workflow condition data
         foreach ($dataLinking as $oldDataId => $newDataId) {
 
-            $oldConditionData = WorkflowCondition::getByTransitionId($oldDataId);
+            $oldConditionData = UbirimiContainer::get()['repository']->get(WorkflowCondition::class)->getByTransitionId($oldDataId);
             if ($oldConditionData) {
                 UbirimiContainer::get()['repository']->get(Workflow::class)->addCondition($newDataId, $oldConditionData['definition_data']);
             }

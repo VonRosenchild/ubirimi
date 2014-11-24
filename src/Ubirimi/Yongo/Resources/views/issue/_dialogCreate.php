@@ -273,7 +273,7 @@ $screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->g
                  * if there is a default level set do nothing. if not add it to the warnings
                  */
 
-                $defaultLevel = IssueSecurityScheme::getDefaultLevel($projectData['issue_security_scheme_id']);
+                $defaultLevel = UbirimiContainer::get()['repository']->get(IssueSecurityScheme::class)->getDefaultLevel($projectData['issue_security_scheme_id']);
                 echo '<tr>';
                     echo '<td>';
                     if (!$defaultLevel) {

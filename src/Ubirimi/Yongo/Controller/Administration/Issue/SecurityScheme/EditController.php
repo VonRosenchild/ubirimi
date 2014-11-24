@@ -48,7 +48,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                IssueSecurityScheme::updateMetaDataById($issueSecuritySchemeId, $name, $description);
+                $this->getRepository(IssueSecurityScheme::class)->updateMetaDataById($issueSecuritySchemeId, $name, $description);
 
                 return new RedirectResponse('/yongo/administration/issue-security-schemes');
             }

@@ -41,9 +41,8 @@ class SaveController extends UbirimiController
             $good_positions[] = $values;
         }
 
-        WorkflowPosition::deleteByWorkflowId($Id);
-
-        WorkflowPosition::addPosition($Id, $good_positions);
+        $this->getRepository(WorkflowPosition::class)->deleteByWorkflowId($Id);
+        $this->getRepository(WorkflowPosition::class)->addPosition($Id, $good_positions);
 
         return new Response('');
     }

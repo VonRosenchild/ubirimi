@@ -1,6 +1,7 @@
 <?php
 use Ubirimi\LinkHelper;
 use Ubirimi\Yongo\Repository\Issue\IssueType;
+use Ubirimi\Container\UbirimiContainer;
 
 require_once __DIR__ . '/../../_header.php';
 ?>
@@ -54,7 +55,7 @@ require_once __DIR__ . '/../../_header.php';
                         <hr size="1" />
                         <table width="100%">
                             <?php for ($i = 0; $i < count($oldSubtaskIssueType); $i++): ?>
-                                <?php $subTask = IssueType::getById($oldSubtaskIssueType[$i]); ?>
+                                <?php $subTask = UbirimiContainer::get()['repository']->get(IssueType::class)->getById($oldSubtaskIssueType[$i]); ?>
                                 <tr>
                                     <td width="25%"><b>Current Issue Type</b></td>
                                     <td width="25%"><?php echo $subTask['name'] ?></td>

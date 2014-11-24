@@ -628,9 +628,9 @@ class YongoProject
         UbirimiContainer::get()['db.connection']->query($query);
 
         UbirimiContainer::get()['repository']->get(YongoProject::class)->deleteIssuesByProjectId($Id);
-        ProjectComponent::deleteByProjectId($Id);
+        UbirimiContainer::get()['repository']->get(ProjectComponent::class)->deleteByProjectId($Id);
         UbirimiContainer::get()['repository']->get(ProjectVersion::class)->deleteByProjectId($Id);
-        CustomField::deleteDataByProjectId($Id);
+        UbirimiContainer::get()['repository']->get(CustomField::class)->deleteDataByProjectId($Id);
         UbirimiContainer::get()['repository']->get(Board::class)->deleteByProjectId($Id);
 
         $query = "DELETE IGNORE FROM project_role_data WHERE project_id = " . $Id;
@@ -684,7 +684,7 @@ class YongoProject
         }
     }
 
-    public function getSubTasksIssueTypes($projectId) {
+    public function getSubTasksIssueTypes($projectId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT issue_type.id, issue_type.name, issue_type.description ' .
             'FROM project ' .
             'left join issue_type_scheme on issue_type_scheme.id = project.issue_type_scheme_id ' .
@@ -696,9 +696,22 @@ class YongoProject
         $stmt->bind_param("i", $projectId);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows)
-            return $result;
-        else
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    if ($resultColumn) {
+                        $resultArray[] = $data[$resultColumn];
+                    } else {
+                        $resultArray[] = $data;
+                    }
+                }
+                return $resultArray;
+            } else {
+                return $result;
+            }
+
+        } else
             return null;
     }
 

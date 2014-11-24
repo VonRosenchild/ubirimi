@@ -58,7 +58,7 @@ class EditValueController extends UbirimiController
 
             if (!$duplicateValue && !$emptyValue) {
                 $currentDate = Util::getServerCurrentDateTime();
-                Field::updateDataById($valueId, $value, $currentDate);
+                $this->getRepository(Field::class)->updateDataById($valueId, $value, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

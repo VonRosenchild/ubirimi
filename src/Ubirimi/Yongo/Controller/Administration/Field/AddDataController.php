@@ -50,7 +50,7 @@ class AddDataController extends UbirimiController
             $issueType = $request->request->get('issue_type');
             $project = $request->request->get('project');
 
-            $fieldType = FieldType::getByCode($fieldTypeCode);
+            $fieldType = $this->getRepository(FieldType::class)->getByCode($fieldTypeCode);
             $fieldTypeId = $fieldType['id'];
 
             if (empty($name)) {

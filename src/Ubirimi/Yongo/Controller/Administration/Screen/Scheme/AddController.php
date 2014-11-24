@@ -39,7 +39,7 @@ class AddController extends UbirimiController
         $emptyName = false;
 
         $allScreens = $this->getRepository(Screen::class)->getAll($session->get('client/id'));
-        $allOperations = SystemOperation::getAll();
+        $allOperations = $this->getRepository(SystemOperation::class)->getAll();
 
         if ($request->request->has('new_screen_scheme')) {
             $name = Util::cleanRegularInputField($request->request->get('name'));

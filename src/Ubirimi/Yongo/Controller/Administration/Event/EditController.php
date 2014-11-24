@@ -55,7 +55,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                IssueEvent::updateById($eventId, $name, $description, $currentDate);
+                $this->getRepository(IssueEvent::class)->updateById($eventId, $name, $description, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

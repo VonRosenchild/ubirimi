@@ -52,7 +52,7 @@ class EditLevelController extends UbirimiController
 
             if (!$emptyName) {
                 $date = Util::getServerCurrentDateTime();
-                IssueSecurityScheme::updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
+                $this->getRepository(IssueSecurityScheme::class)->updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

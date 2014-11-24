@@ -516,11 +516,11 @@ class Space {
 
         if ($entities) {
             while ($entity = $entities->fetch_array(MYSQLI_ASSOC)) {
-                EntityComment::deleteCommentsByEntityId($entity['id']);
-                Entity::removeAsFavouriteForUsers($entity['id']);
+                UbirimiContainer::get()['repository']->get(EntityComment::class)->deleteCommentsByEntityId($entity['id']);
+                UbirimiContainer::get()['repository']->get(Entity::class)->removeAsFavouriteForUsers($entity['id']);
                 UbirimiContainer::get()['repository']->get(Entity::class)->deleteRevisionsByEntityId($entity['id']);
                 UbirimiContainer::get()['repository']->get(Entity::class)->deleteFilesByEntityId($entity['id']);
-                EntityAttachment::deleteByEntityId($entity['id'], $spaceId);
+                UbirimiContainer::get()['repository']->get(EntityAttachment::class)->deleteByEntityId($entity['id'], $spaceId);
 
                 UbirimiContainer::get()['repository']->get(Entity::class)->deleteById($entity['id']);
             }

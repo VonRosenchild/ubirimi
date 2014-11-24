@@ -279,7 +279,7 @@ class UbirimiClient
     }
 
     public function createDefaultIssueTypeFieldConfigurationData($clientId, $issueTypeFieldConfigurationId, $fieldConfigurationId, $currentDate) {
-        $issueTypes = IssueType::getAll($clientId);
+        $issueTypes = UbirimiContainer::get()['repository']->get(IssueType::class)->getAll($clientId);
         $query = "INSERT INTO  issue_type_field_configuration_data(issue_type_field_configuration_id, issue_type_id, field_configuration_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
             $query .= "(" . $issueTypeFieldConfigurationId . "," . $issueType['id'] . ", " . $fieldConfigurationId . ", '" . $currentDate . "'), ";
@@ -290,7 +290,7 @@ class UbirimiClient
     }
 
     public function createDefaultIssueTypeSchemeData($clientId, $issueTypeSchemeId, $currentDate) {
-        $issueTypes = IssueType::getAll($clientId);
+        $issueTypes = UbirimiContainer::get()['repository']->get(IssueType::class)->getAll($clientId);
         $query = "INSERT INTO issue_type_scheme_data(issue_type_scheme_id, issue_type_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
             $query .= "(" . $issueTypeSchemeId . "," . $issueType['id'] . ", '" . $currentDate . "'), ";
@@ -753,7 +753,7 @@ class UbirimiClient
     }
 
     public function createDefaultIssueTypeScreenSchemeData($clientId, $issueTypeScreenSchemeId, $screenSchemeId, $currentDate) {
-        $issueTypes = IssueType::getAll($clientId);
+        $issueTypes = UbirimiContainer::get()['repository']->get(IssueType::class)->getAll($clientId);
         $query = "INSERT INTO issue_type_screen_scheme_data(issue_type_screen_scheme_id, issue_type_id, screen_scheme_id, date_created) VALUES ";
         while ($issueType = $issueTypes->fetch_array(MYSQLI_ASSOC)) {
             $query .= "(" . $issueTypeScreenSchemeId . "," . $issueType['id'] . ", " . $screenSchemeId . ", '" . $currentDate . "'), ";

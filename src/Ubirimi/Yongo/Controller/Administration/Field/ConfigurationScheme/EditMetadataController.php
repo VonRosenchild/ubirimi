@@ -53,7 +53,7 @@ class EditMetadataController extends UbirimiController
 
             if (!$emptyName) {
                 $currentDate = Util::getServerCurrentDateTime();
-                FieldConfigurationScheme::updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
+                $this->getRepository(FieldConfigurationScheme::class)->updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

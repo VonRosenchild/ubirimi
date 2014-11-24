@@ -54,7 +54,7 @@ class EditController extends UbirimiController
 
             if (!$emptyName) {
                 $dateUpdated = Util::getServerCurrentDateTime();
-                ProjectCategory::updateById($categoryId, $name, $description, $dateUpdated);
+                $this->getRepository(ProjectCategory::class)->updateById($categoryId, $name, $description, $dateUpdated);
 
                 $this->getRepository(UbirimiLog::class)->add(
                     $session->get('client/id'),

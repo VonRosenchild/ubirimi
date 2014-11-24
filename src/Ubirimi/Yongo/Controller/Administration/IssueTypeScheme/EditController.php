@@ -62,7 +62,7 @@ class EditController extends UbirimiController
                 $emptyName = true;
 
             if (!$emptyName) {
-                IssueTypeScheme::updateMetaDataById($issueTypeSchemeId, $name, $description);
+                $this->getRepository(IssueTypeScheme::class)->updateMetaDataById($issueTypeSchemeId, $name, $description);
                 $this->getRepository(IssueTypeScheme::class)->deleteDataByIssueTypeSchemeId($issueTypeSchemeId);
                 foreach ($request->request as $key => $value) {
                     if (substr($key, 0, 11) == 'issue_type_') {

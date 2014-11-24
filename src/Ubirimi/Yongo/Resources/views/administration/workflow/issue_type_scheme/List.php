@@ -50,7 +50,7 @@ require_once __DIR__ . '/../../_header.php';
                             </td>
                             <td><?php echo $scheme['name']; ?></td>
                             <td width="300px">
-                                <?php $schemeIssueTypes = IssueTypeScheme::getDataById($scheme['id']) ?>
+                                <?php $schemeIssueTypes = UbirimiContainer::get()['repository']->get(IssueTypeScheme::class)->getDataById($scheme['id']) ?>
                                 <ul>
                                     <?php while ($schemeIssueTypes && $issueType = $schemeIssueTypes->fetch_array(MYSQLI_ASSOC)): ?>
                                         <li><?php echo $issueType['name'] ?></li>

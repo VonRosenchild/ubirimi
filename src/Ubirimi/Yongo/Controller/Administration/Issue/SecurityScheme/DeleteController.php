@@ -34,7 +34,7 @@ class DeleteController extends UbirimiController
 
         $issueSecuritySchemeId = $request->request->get('id');
 
-        IssueSecurityScheme::deleteById($issueSecuritySchemeId);
+        $this->getRepository(IssueSecurityScheme::class)->deleteById($issueSecuritySchemeId);
 
         return new Response('');
     }
