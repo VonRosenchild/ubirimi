@@ -53,6 +53,12 @@ Installation
 - in the config.properties file set: daabase credentials, cache and assets folders
 - restart web server
 
+Upgrading
+------------
+- clear the cache
+- `php composer.phar update`
+- `php composer.phar dump-autoload`
+
 Documentation
 -------------
 
