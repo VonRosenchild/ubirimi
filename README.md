@@ -11,7 +11,7 @@ Requirements
 - Be warned that PHP versions before 5.3.8 are known to be buggy and might not work for you
 - MySQL 5.0 or above
 - if you go with Apache you must install mod_rewrite module
-- needed PHP extensions: mysqli
+- needed PHP extensions: mysqli, gd
 
 Products available
 ------------
