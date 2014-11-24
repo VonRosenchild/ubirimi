@@ -60,7 +60,7 @@ class AssignToMeController extends UbirimiController
         $smtpSettings = UbirimiContainer::get()['session']->get('client/settings/smtp');
 
         Email::$smtpSettings = $smtpSettings;
-        Email::triggerAssignIssueNotification(
+        $this->getRepository(Email::class)->triggerAssignIssueNotification(
             $clientId,
             $issueData,
             $oldUserAssignedName,

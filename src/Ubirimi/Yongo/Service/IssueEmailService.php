@@ -63,7 +63,7 @@ class IssueEmailService extends UbirimiService
 
         Email::$smtpSettings = $smtpSettings;
 
-        Email::triggerIssueUpdatedNotification($this->session->get('client/id'), $oldIssueData, $this->session->get('user/id'), $fieldChanges);
+        UbirimiContainer::get()['repository']->get(Email::class)->triggerIssueUpdatedNotification($this->session->get('client/id'), $oldIssueData, $this->session->get('user/id'), $fieldChanges);
 
     }
 
@@ -73,7 +73,7 @@ class IssueEmailService extends UbirimiService
         if ($smtpSettings) {
 
             Email::$smtpSettings = $smtpSettings;
-            Email::triggerDeleteIssueNotification($this->session->get('client/id'), $issue, $project, $extraInformation);
+            UbirimiContainer::get()['repository']->get(Email::class)->triggerDeleteIssueNotification($this->session->get('client/id'), $issue, $project, $extraInformation);
         }
     }
 
