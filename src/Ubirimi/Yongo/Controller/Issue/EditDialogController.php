@@ -57,8 +57,13 @@ class EditDialogController extends UbirimiController
         $issuePriorities = $this->getRepository(IssueSettings::class)->getAllIssueSettings('priority', $clientId);
         $projectIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getIssueTypes($projectId, 0);
 
-        $projectSubTaskIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getSubTasksIssueTypes($projectId);
-
+        // check to see if the issue type is a sub-task issue type. if yes then show only sub task issue types
+        $projectSubTaskIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getSubTasksIssueTypes($projectId, 'array', 'id');
+        if ($projectSubTaskIssueTypes && in_array($issueTypeId, $projectSubTaskIssueTypes)) {
+            $projectIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getSubTasksIssueTypes($projectId);
+        } else {
+            $projectIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getIssueTypes($projectId, 0);
+        }
 
         $assignableUsers = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersWithPermission($projectId, Permission::PERM_ASSIGNABLE_USER);
         $userHasModifyReporterPermission = UbirimiContainer::get()['repository']->get(YongoProject::class)->userHasPermission($projectId, Permission::PERM_MODIFY_REPORTER, $loggedInUserId);
