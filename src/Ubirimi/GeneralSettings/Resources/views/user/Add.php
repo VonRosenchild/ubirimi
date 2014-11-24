@@ -94,7 +94,7 @@ require_once __DIR__ . '/../_header.php';
                     </tr>
                 </table>
                 <?php if (isset($_GET['fsvn'])): ?>
-                    <input type="hidden" name="fsvn" value="<?php echo $_GET['fsvn'] ?>" />
+                    <input type="hidden" name="fsvn" value="<?php if (isset($svnRepoId)) echo $svnRepoId ?>" />
                 <?php endif ?>
             </form>
         <?php else: ?>
