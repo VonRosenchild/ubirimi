@@ -604,7 +604,7 @@ $('document').ready(function () {
                     $(div).prependTo(dropColumnId);
                 },
                 out: function (event, ui) {
-                    $('.temporary_statuses').remove();
+                    $('#' + this.id + ' > .temporary_statuses').remove();
                 }
             });
         }
