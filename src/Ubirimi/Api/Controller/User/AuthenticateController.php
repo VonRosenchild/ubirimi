@@ -47,10 +47,12 @@ class AuthenticateController extends UbirimiController
                 UbirimiContainer::get()['login.time']->clientSaveLoginTime($userData['client_id']);
 
                 $clientData = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getById($userData['client_id']);
+                $clientSettings = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->getSettings($userData['client_id']);
 
                 $response['success'] = 1;
                 $response['user'] = $userData;
                 $response['client'] = $clientData;
+                $response['client_settings'] = $clientSettings;
             }
         }
 
