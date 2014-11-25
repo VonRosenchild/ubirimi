@@ -529,10 +529,6 @@ class Board
         }
     }
 
-    public function renderIssues($issues, $columns, $indexSection, $swimlaneStrategy = null) { ?>
-
-    <?php }
-
     public function updateSwimlaneStrategy($boardId, $strategy) {
         $query = "update agile_board set swimlane_strategy = ? where id = ? limit 1";
 

@@ -43,7 +43,7 @@ if ($allUnassignedIssues) {
             echo '</td>';
         echo '</tr>';
     echo '</table>';
-    echo '<table width="100%" cellpadding="0" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-        UbirimiContainer::get()['repository']->get(Board::class)->renderIssues($allUnassignedIssues, $columns, $index, 'assignee');
-    echo '</table>';
+
+    $strategyIssue = $allUnassignedIssues;
+    require '_strategy_body.php';
 }
