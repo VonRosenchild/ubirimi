@@ -60,7 +60,14 @@ class ViewEditFieldsController extends UbirimiController
 
         $fieldData = UbirimiContainer::get()['repository']->get(YongoProject::class)->getFieldInformation($project['issue_type_field_configuration_id'], $issueTypeId, 'array');
 
-        $projectIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getIssueTypes($projectId, 0);
+        // check to see if the issue type is a sub-task issue type. if yes then show only sub task issue types
+        $projectSubTaskIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getSubTasksIssueTypes($projectId, 'array', 'id');
+        if ($projectSubTaskIssueTypes && in_array($issueTypeId, $projectSubTaskIssueTypes)) {
+            $projectIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getSubTasksIssueTypes($projectId);
+        } else {
+            $projectIssueTypes = UbirimiContainer::get()['repository']->get(YongoProject::class)->getIssueTypes($projectId, 0);
+        }
+
         $issuePriorities = $this->getRepository(IssueSettings::class)->getAllIssueSettings('priority', $clientId);
 
         $projectComponents = UbirimiContainer::get()['repository']->get(YongoProject::class)->getComponents($projectId);

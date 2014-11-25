@@ -710,7 +710,6 @@ class YongoProject
             } else {
                 return $result;
             }
-
         } else
             return null;
     }
