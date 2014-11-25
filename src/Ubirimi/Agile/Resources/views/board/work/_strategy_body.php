@@ -2,11 +2,10 @@
 use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\User\UbirimiUser;
-
-    use Ubirimi\Yongo\Repository\Workflow\Workflow;
-    use Ubirimi\Util;
-    use Ubirimi\Yongo\Repository\Project\YongoProject;
-    use Ubirimi\Yongo\Repository\Field\Field;
+use Ubirimi\Yongo\Repository\Workflow\Workflow;
+use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
+use Ubirimi\Yongo\Repository\Field\Field;
 ?>
 <table width="100%" cellpadding="0px" cellspacing="0px" border="0" class="agile_work_<?php echo $index ?>">
     <?php if ($swimlaneStrategy == 'assignee'): ?>

@@ -1,10 +1,27 @@
 <?php
 
+/*
+ *  Copyright (C) 2012-2014 SC Ubirimi SRL <info-copyright@ubirimi.com>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 
-    require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
+require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
 ?>
 <body>
 
@@ -51,7 +68,7 @@ use Ubirimi\Util;
         <table width="100%" border="0" cellspacing="0" align="center">
             <tr>
                 <td valign="top" width="70%">
-                    <div id="agile_wrapper_work" style="height: 500px; overflow-y: auto; padding-left: 4px; padding-right: 4px;">
+                    <div id="agile_wrapper_work" style="height: 500px; overflow-y: auto;">
                         <table width="100%" cellpadding="0" cellspacing="0px" border="0">
                             <?php require_once __DIR__ . '/work/_header.php' ?>
                         </table>
@@ -79,7 +96,6 @@ use Ubirimi\Util;
 
             <div class="infoBox">There are no active sprints.</div>
         <?php endif ?>
-
     </div>
 
     <?php
@@ -88,8 +104,8 @@ use Ubirimi\Util;
     <div id="agileModalTransitionWithScreen"></div>
     <div id="agileModalUpdateParent"></div>
     <div id="agileCompleteSprint"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddSubTask"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
+    <div class="ubirimiModalDialog" id="modalAddSubTask"></div>
+    <div class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
 
     <input type="hidden" value="<?php echo $boardId ?>" id="board_id"/> <input type="hidden" value="<?php echo $sprintId ?>" id="sprint_id"/> <input type="hidden" value="<?php echo count($columns); ?>" id="count_columns"/>
     <input type="hidden" value="<?php echo $index; ?>" id="max_index_section"/> <input type="hidden" value="<?php echo $swimlaneStrategy; ?>" id="agile_swimlane_strategy"/>

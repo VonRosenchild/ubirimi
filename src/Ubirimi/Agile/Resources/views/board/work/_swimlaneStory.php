@@ -21,12 +21,6 @@ while ($allSprintIssuesWithChildren && $issue = $allSprintIssuesWithChildren->fe
 
         require '_strategy_body.php';
         $index++;
-
-//            echo '<table width="100%" cellpadding="0px" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-//            require '_parent_story_box.php';
-//            AgileBoard::renderIssues($childrenIssue, $columns, $index);
-//            echo '</table>';
-        $index++;
     }
 }
 
@@ -46,7 +40,6 @@ if ($allSprintIssuesWithoutChildren) {
         echo '</table>';
     }
 
-    echo '<table width="100%" cellpadding="0" cellspacing="0px" border="0" class="agile_work_' . $index . '">';
-    UbirimiContainer::get()['repository']->get(Board::class)->renderIssues($allSprintIssuesWithoutChildren, $columns, $index);
-    echo '</table>';
+    $strategyIssue = $allSprintIssuesWithoutChildren;
+    require '_strategy_body.php';
 }
