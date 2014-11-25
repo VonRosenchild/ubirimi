@@ -1225,4 +1225,11 @@ class Util {
     public static function array_equal($a, $b) {
         return (is_array($a) && is_array($b) && array_diff($a, $b) === array_diff($b, $a));
     }
+
+    public static function getSiteURL() {
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $domainName = $_SERVER['HTTP_HOST'];
+
+        return $protocol . $domainName;
+    }
 }
