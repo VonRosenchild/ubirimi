@@ -340,7 +340,7 @@ $('document').ready(function () {
                 drag: function (event, ui) {
 
                     $('.ui-draggable-dragging').css('box-shadow', '3px 3px 5px rgba(0, 0, 0, 0.5)');
-                    $("#temporary_statuses > div").each(function () {
+                    $(".temporary_statuses > div").each(function () {
                         var cursorX = event.pageX;
                         var cursorY = event.pageY;
 
@@ -391,7 +391,7 @@ $('document').ready(function () {
                     });
 
                     $('.ui-draggable-dragging').css('box-shadow', '');
-                    $('#temporary_statuses').remove();
+                    $('.temporary_statuses').remove();
                 }
             });
         }
@@ -404,7 +404,7 @@ $('document').ready(function () {
                 drop: function (event, ui) {
 
                     // we must determine the status the issue was dropped on
-                    $("#temporary_statuses > div").each(function () {
+                    $(".temporary_statuses > div").each(function () {
                         var cursorX = event.pageX;
                         var cursorY = event.pageY;
 
@@ -441,7 +441,7 @@ $('document').ready(function () {
                                 success: function (response) {
                                     var step = jQuery.parseJSON(response);
                                     var stepIdTo = step.id;
-                                    $('#temporary_statuses').remove();
+                                    $('.temporary_statuses').remove();
 
                                     var issueDraggedElement = ui.draggable;
                                     issueDraggedElement.hide();
@@ -516,7 +516,6 @@ $('document').ready(function () {
                     })
                 },
                 over: function (event, ui) {
-
                     if (!outgoingTransitions) {
                         return;
                     }
@@ -555,12 +554,6 @@ $('document').ready(function () {
 
                     $(dropColumnId).find('.status_for_column_' + indexSection + '_' + columnId).each(function () {
                         if (!$('#' + this.id).data('hidden_element')) {
-                            var heightDropColumn = $(dropColumnId).height();
-
-                            if (heightDropColumn > $(window).height()) {
-                                heightDropColumn = $(window).height() - 215;
-                            }
-
                             $('#' + this.id).css('position', 'relative');
                             $('#' + this.id).css('top', $('#agile_wrapper_work').scrollTop());
                             $('#' + this.id).show();
@@ -569,7 +562,7 @@ $('document').ready(function () {
 
                     var htmlForDiv = $('#statuses_for_column_' + columnId + '_' + indexSection).html();
 
-                    var div = $('<div id="temporary_statuses" style="height: 50px;">').html(htmlForDiv);
+                    var div = $('<div class="temporary_statuses" style="height: 50px;">').html(htmlForDiv);
                     var columnElement = $(dropColumnId);
 
                     var leftOffset = 0;
@@ -582,13 +575,14 @@ $('document').ready(function () {
                     jQuery.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
 
                     var widthAdjustment = 0;
-                    if (jQuery.browser.webkit)
+                    if (jQuery.browser.webkit) {
                         leftOffset = 5;
-                    else if ((jQuery.browser.mozilla)) {
+                    } else if (jQuery.browser.mozilla) {
                         leftOffset = 1;
                         widthAdjustment = 1;
-                    } else if ((jQuery.browser.opera))
+                    } else if (jQuery.browser.opera) {
                         leftOffset = 5;
+                    }
 
                     $(div).css('left', columnElement.position().left + leftOffset);
 
@@ -607,12 +601,10 @@ $('document').ready(function () {
                     $(div).children().each(function (i) {
                         $(this).css('height', newChildrenHeight);
                     });
-
                     $(div).prependTo(dropColumnId);
                 },
                 out: function (event, ui) {
-
-                    $('#temporary_statuses').remove();
+                    $('.temporary_statuses').remove();
                 }
             });
         }
