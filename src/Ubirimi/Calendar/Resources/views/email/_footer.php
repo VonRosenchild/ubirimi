@@ -1,5 +1,5 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Container\UbirimiContainer;
 
 ?>
         <br />

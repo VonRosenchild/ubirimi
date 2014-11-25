@@ -1,10 +1,10 @@
 <?php
-    use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Container\UbirimiContainer;
 
-    require '_header.php';
-    $month = date('n');
-    $year = date('Y');
-    $session = UbirimiContainer::get()['session'];
+require '_header.php';
+$month = date('n');
+$year = date('Y');
+$session = UbirimiContainer::get()['session'];
 ?>
 
 <br />
