@@ -1,3 +1,11 @@
+v 1.17
+  - various bug fixes
+  - update jqueryui
+  - remove static usage
+  - fix bug when changing issue type is edit dialog
+  - when editing a sub task show only the sub task issue types
+  - tree content view in documentador page view
+
 v 2.16
   - various bug fixes
 
