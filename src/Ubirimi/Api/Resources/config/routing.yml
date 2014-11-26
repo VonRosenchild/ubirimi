@@ -34,3 +34,17 @@ apiInstallClient:
   path: /api/client/save
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\SaveController' }
   methods:  [POST]
+
+apiGetClient:
+  path: /api/client/{id}
+  defaults: { _controller: '\Ubirimi\Api\Controller\Client\GetController' }
+  methods:  [GET]
+  requirements:
+    id:  \d+
+
+apiGetPaymentAmountByCountUsers:
+  path: /api/payment/{client_id}
+  defaults: { _controller: '\Ubirimi\Api\Controller\Payment\GetController' }
+  methods:  [GET]
+  requirements:
+    client_id:  \d+

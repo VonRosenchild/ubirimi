@@ -31,8 +31,6 @@ class GetController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        UbirimiContainer::get()['api.auth']->auth($request);
-
         $username = $request->get('username');
 
         $user = $this->getRepository(UbirimiUser::class)->getByUsernameAndClientDomain($username, $request->get('api_client_domain'));

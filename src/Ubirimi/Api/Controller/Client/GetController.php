@@ -17,28 +17,26 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-namespace Ubirimi\Api\Controller\Project;
+namespace Ubirimi\Api\Controller\Client;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Ubirimi\Container\UbirimiContainer;
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
-use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class GetController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $code = $request->get('code');
+//        UbirimiContainer::get()['api.auth']->auth($request);
 
-        $project = $this->getRepository(YongoProject::class)->getByCode($code, null, $request->get('api_client_id'));
+        $clientData = $this->getRepository(UbirimiClient::class)->getById($request->get('id'));
+        $users = $this->getRepository(UbirimiClient::class)->getUsers($request->get('id'), null, 'array');
 
-        if (false === $project) {
-            throw new NotFoundHttpException(sprintf('Project [%s] not found', $code));
-        }
-
-        return new JsonResponse($project);
+        return new JsonResponse([
+            'client' => $clientData,
+            'users' => $users
+        ]);
     }
 }

@@ -33,8 +33,6 @@ class MetadataController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        UbirimiContainer::get()['api.auth']->auth($request);
-
         $returnData = array('projects' => array());
 
         $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
