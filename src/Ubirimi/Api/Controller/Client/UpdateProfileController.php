@@ -17,35 +17,30 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-namespace Ubirimi\Api\Controller\Payment;
+namespace Ubirimi\Api\Controller\Client;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\PaymentUtil;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\UbirimiController;
 
-class GetController extends UbirimiController
+class UpdateProfileController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-        $clientId = $request->get('client_id');
-        $clientData = $this->getRepository(UbirimiClient::class)->getById($clientId);
-        $users = $this->getRepository(UbirimiClient::class)->getUsers($clientId, null, 'array');
+        $parameters = json_decode($request->getContent(), true);
 
-        $paymentUtil = new PaymentUtil();
+        $this->getRepository(UbirimiClient::class)->updateById($parameters['id'],
+            $parameters['company_name'],
+            $parameters['address1'],
+            $parameters['address2'],
+            $parameters['city'],
+            $parameters['district'],
+            $parameters['contact_email'],
+            $parameters['country']
+        );
 
-        $numberUsers = count($users);
-        $amount = $paymentUtil->getAmountByUsersCount($numberUsers);
-        $VAT = 0;
-        if (in_array($clientData['sys_country_id'], array_keys(PaymentUtil::$VATValuePerCountry))) {
-            $VAT = $amount * PaymentUtil::$VATValuePerCountry[$clientData['sys_country_id']] / 100;
-        }
-
-        return new JsonResponse([
-            'amount' => $amount,
-            'VAT' => $VAT,
-        ]);
+        return new Response('');
     }
 }

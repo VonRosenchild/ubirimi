@@ -35,6 +35,11 @@ apiInstallClient:
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\SaveController' }
   methods:  [POST]
 
+apiClientUpdateProfile:
+  path: /api/client/update/profile
+  defaults: { _controller: '\Ubirimi\Api\Controller\Client\UpdateProfileController' }
+  methods:  [POST]
+
 apiGetClient:
   path: /api/client/{id}
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\GetController' }

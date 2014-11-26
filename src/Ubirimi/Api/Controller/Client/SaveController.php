@@ -30,8 +30,6 @@ class SaveController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
-//        UbirimiContainer::get()['api.auth']->auth($request);
-
         $this->getRepository(GeneralTaskQueue::class)->savePendingClientData($request->getContent());
 
         return new Response('');
