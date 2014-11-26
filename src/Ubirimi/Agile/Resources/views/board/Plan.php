@@ -33,11 +33,10 @@ require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
     ?>
 
     <div class="pageContent">
-
-        <table cellspacing="0" border="0" cellpadding="0" class="tableButtons" width="100%">
+        <table cellspacing="0" border="0" cellpadding="0" width="100%">
             <tr>
                 <td>
-                    <table border="0" cellpadding="0" cellspacing="0">
+                    <table border="0" cellpadding="0" cellspacing="0" class="tableButtons">
                         <tr>
                             <td>
                                 <input type="text" id="agile_quick_search" value="<?php echo $searchQuery ?>" class="inputText" style="width: 150px; background: url(/img/find.png) right no-repeat;"/>
@@ -181,9 +180,9 @@ require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
     <input type="hidden" value="agile" id="contextList"/> <input type="hidden" value="<?php if ($sprintsNotStarted || $currentStartedSprint)
         echo '1'; else echo '0'; ?>" id="add_to_sprint_possible"/> <input type="hidden" value="<?php echo $boardId ?>" id="board_id"/>
 
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddSprint"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalDeletePlannedSprint"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalSprintStart"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddSubTask"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
+    <div class="ubirimiModalDialog" id="modalAddSprint"></div>
+    <div class="ubirimiModalDialog" id="modalDeletePlannedSprint"></div>
+    <div class="ubirimiModalDialog" id="modalSprintStart"></div>
+    <div class="ubirimiModalDialog" id="modalAddSubTask"></div>
+    <div class="ubirimiModalDialog" id="modalEditIssueAssign"></div>
 </body>

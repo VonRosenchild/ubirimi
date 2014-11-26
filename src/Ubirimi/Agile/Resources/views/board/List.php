@@ -95,6 +95,6 @@ require_once __DIR__ . '/../../../../Yongo/Resources/views/_header.php';
         <?php endif ?>
     </div>
 
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalDeleteBoard"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteBoard"></div>
     <?php require_once __DIR__ . '/../../../../Yongo/Resources/views/_footer.php' ?>
 </body>

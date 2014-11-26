@@ -61,8 +61,8 @@
         <?php endif ?>
     </div>
 
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalDeleteCalendar"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalShareCalendar"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteCalendar"></div>
+    <div class="ubirimiModalDialog" id="modalShareCalendar"></div>
 
     <?php require_once __DIR__ . '/_footer.php' ?>
 </body>

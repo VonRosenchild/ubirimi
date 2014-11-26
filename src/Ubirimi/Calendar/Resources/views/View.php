@@ -212,8 +212,8 @@ require_once __DIR__ . '/_header.php';
             </tr>
         </table>
     </div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalAddEvent"></div>
-    <div class="ubirimiModalDialog" class="ubirimiModalDialog" id="modalDeleteRecurringEvent"></div>
+    <div class="ubirimiModalDialog" id="modalAddEvent"></div>
+    <div class="ubirimiModalDialog" id="modalDeleteRecurringEvent"></div>
     <input type="hidden" value="<?php echo $year ?>" id="cal_current_year" />
     <input type="hidden" value="<?php echo $month ?>" id="cal_current_month" />
     <input type="hidden" id="mouseTracker" />
