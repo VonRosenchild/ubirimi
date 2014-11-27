@@ -71,6 +71,8 @@ class ViewUnresolvedOthersController extends UbirimiController
             $projectIdsNames[] = array($projects[$i]['id'], $projects[$i]['name']);
         }
 
+        $clientSettings = $session->get('client/settings');
+
         return $this->render(__DIR__ . '/../../Resources/views/charts/ViewUnresolvedOthers.php', get_defined_vars());
     }
 }
