@@ -18,6 +18,7 @@
  */
 
 use Ubirimi\Repository\Email\EmailQueue;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Util;
 
@@ -32,18 +33,18 @@ if (file_exists(__DIR__ . '/process_mail_queue.lock')) {
 
 require_once __DIR__ . '/../web/bootstrap_cli.php';
 
-$emails = EmailQueue::getBatch();
+$emails = UbirimiContainer::get()['repository']->get(EmailQueue::class)->getBatch();
 
 while ($emails && $email = $emails->fetch_array(MYSQLI_ASSOC)) {
-    $smtpSettings = SMTPServer::getByClientId($email['client_id']);
+    $smtpSettings = UbirimiContainer::get()['repository']->get(SMTPServer::class)->getByClientId($email['client_id']);
     if (null == $smtpSettings) {
         $smtpSettings = Util::getUbirimiSMTPSettings();
     }
 
     try {
         echo 'Process email Id: ' . $email['id'] . "\n";
-        EmailQueue::send($smtpSettings, $email);
-        EmailQueue::deleteById($email['id']);
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->send($smtpSettings, $email);
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->deleteById($email['id']);
     } catch (Swift_TransportException $e) {
         echo $e->getMessage() . "\n";
     } catch (Swift_IoException $e) {
@@ -53,7 +54,6 @@ while ($emails && $email = $emails->fetch_array(MYSQLI_ASSOC)) {
     } catch (\Exception $e) {
         echo $e->getMessage() . "\n";
     }
-
 }
 
 if (null !== $fp) {

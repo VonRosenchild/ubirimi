@@ -21,7 +21,6 @@ use Ubirimi\Calendar\Repository\Reminder\ReminderPeriod;
 use Ubirimi\Calendar\Repository\Reminder\EventReminder;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\Email\Email;
-
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Util;
 
@@ -40,7 +39,7 @@ $reminders = UbirimiContainer::get()['repository']->get(EventReminder::class)->g
 
 while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
     $currentDate = Util::getServerCurrentDateTime();
-    $smtpSettings = SMTPServer::getByClientId($reminder['client_id']);
+    $smtpSettings = UbirimiContainer::get()['repository']->get(SMTPServer::class)->getByClientId($reminder['client_id']);
 
     if ($smtpSettings) {
 
@@ -86,7 +85,7 @@ while ($reminders && $reminder = $reminders->fetch_array(MYSQLI_ASSOC)) {
                 ->setTo(array($reminder['email']))
                 ->setBody($emailBody, 'text/html');
 
-            @$mailer->send($message);
+            $mailer->send($message);
 
             // update the reminder as fired
 
