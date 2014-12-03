@@ -26,6 +26,7 @@ use Ubirimi\Calendar\Repository\Calendar\UbirimiCalendar;
 use Ubirimi\Calendar\Repository\Reminder\ReminderPeriod;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Documentador\Repository\Space\Space;
+use Ubirimi\QuickNotes\Repository\Notebook;
 use Ubirimi\Repository\SMTPServer;
 use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\Repository\User\UbirimiUser;
@@ -1645,6 +1646,7 @@ class UbirimiClient
     }
 
     public function install($clientId) {
+
         $clientRepository = UbirimiContainer::get()['repository']->get(UbirimiClient::class);
         $clientData = $clientRepository->getById($clientId);
         $userData = $clientRepository->getUsers($clientId);
@@ -1653,10 +1655,6 @@ class UbirimiClient
 
         $clientCreatedDate = $clientData['date_created'];
 
-        $clientRepository->installYongoProduct($clientId, $userId, $clientCreatedDate);
-        $clientRepository->installDocumentadorProduct($clientId, $userId, $clientCreatedDate);
-        $clientRepository->installCalendarProduct($clientId, $userId, $clientCreatedDate);
-
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_YONGO, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_AGILE, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_SVN_HOSTING, $clientCreatedDate);
@@ -1664,6 +1662,11 @@ class UbirimiClient
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_CALENDAR, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_HELP_DESK, $clientCreatedDate);
         $clientRepository->addProduct($clientId, SystemProduct::SYS_PRODUCT_QUICK_NOTES, $clientCreatedDate);
+
+        $clientRepository->installYongoProduct($clientId, $userId, $clientCreatedDate);
+        $clientRepository->installDocumentadorProduct($clientId, $userId, $clientCreatedDate);
+        $clientRepository->installCalendarProduct($clientId, $userId, $clientCreatedDate);
+        $clientRepository->installQuickNotesProduct($clientId, $userId, $clientCreatedDate);
 
         UbirimiContainer::get()['repository']->get(SMTPServer::class)->add(
             $clientId,
@@ -1835,6 +1838,13 @@ class UbirimiClient
 
         // add default reminders
         UbirimiContainer::get()['repository']->get(UbirimiCalendar::class)->addReminder($calendarId, \Ubirimi\Calendar\Repository\Reminder\ReminderType::REMINDER_EMAIL, ReminderPeriod::PERIOD_MINUTE, 30);
+    }
+
+    public function installQuickNotesProduct($clientId, $userId, $clientCreatedDate) {
+
+        // create default notebook for the first user
+        $userData = UbirimiContainer::get()['repository']->get(UbirimiUser::class)->getById($userId);
+        UbirimiContainer::get()['repository']->get(Notebook::class)->save($userData['id'], 'Default Notebook', 'My default notebook', 1, $clientCreatedDate);
     }
 
     public function getCurrentMonthAndDayPayingCustomers() {
