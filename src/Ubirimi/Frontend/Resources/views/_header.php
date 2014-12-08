@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width">
     <meta name="robots" content="noindex">
 
-    <link rel="stylesheet" href="/css/normalize.min.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/general.css">
     <link rel="stylesheet" type="text/css" href="/css/vendor/select2.css?<?php echo UbirimiContainer::get()['app.version'] ?>"/>
