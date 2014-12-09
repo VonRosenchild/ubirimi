@@ -114,7 +114,7 @@ $('document').ready(function () {
                 target_notebook_id: notebookTargetId
             },
             success: function (response) {
-                window.location.href = '/quick-notes/note/' + notebookTargetId + '/' + noteId;
+                window.location.href = '/quick-notes/note/' + $('#qn_view_type').val() + '/' + notebookTargetId + '/' + noteId;
             }
         });
     });
