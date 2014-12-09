@@ -1,15 +1,12 @@
 <?php
 
 use Ubirimi\Container\UbirimiContainer;
-
-use Ubirimi\Repository\Email\Email;
 use Ubirimi\Repository\Email\EmailQueue;
-
+use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Repository\SMTPServer;
+use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\Util;
-
-use Ubirimi\SystemProduct;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
@@ -25,8 +22,8 @@ if (file_exists(__DIR__ . '/run_filter_subscription.lock')) {
 require_once __DIR__ . '/../../web/bootstrap_cli.php';
 
 $filterSubscriptionId = $argv[1];
-$filterSubscription = IssueFilter::getSubscriptionById($filterSubscriptionId);
-$filter = IssueFilter::getById($filterSubscription['filter_id']);
+$filterSubscription = UbirimiContainer::get()['repository']->get(IssueFilter::class)->getSubscriptionById($filterSubscriptionId);
+$filter = UbirimiContainer::get()['repository']->get(IssueFilter::class)->getById($filterSubscription['filter_id']);
 $definition = $filter['definition'];
 $searchParametersInFilter = explode('&', $definition);
 $searchParameters = array();
@@ -35,7 +32,7 @@ foreach ($searchParametersInFilter as $searchParameter) {
     $searchParameters[$data[0]] = $data[1];
 }
 $user = UbirimiContainer::get()['respository']->get(UbirimiUser::class)->getById($filter['user_id']);
-$smtpSettings = SMTPServer::getByClientId($user['client_id']);
+$smtpSettings = UbirimiContainer::get()['repository']->get(SMTPServer::class)->getByClientId($user['client_id']);
 $clientSettings = UbirimiContainer::get()['respository']->get(UbirimiClient::class)->getSettings($user['client_id']);
 
 $client = UbirimiContainer::get()['respository']->get(UbirimiClient::class)->getById($user['client_id']);
@@ -58,7 +55,7 @@ foreach ($usersToNotify as $user) {
 
     $columns = explode('#', $user['issues_display_columns']);
 
-    EmailQueue::add($user['client_id'],
+    UbirimiContainer::get()['repository']->get(EmailQueue::class)->oadd($user['client_id'],
         $smtpSettings['from_address'],
         $user['email'],
         null,
