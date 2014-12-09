@@ -36,12 +36,12 @@ class DeleteConfirmController extends UbirimiController
         $deletePossible = $request->get('possible');
 
         if ($deletePossible) {
-            return new Response('Are you sure you want to delete this report?');
+            return new Response('Are you sure you want to delete this filter?');
         }
 
         $boards = $this->getRepository(Board::class)->getByFilterId($filterId);
 
-        $message = 'This report can not be deleted due to the following reasons:';
+        $message = 'This filter can not be deleted due to the following reasons:';
         $message .= '<br />';
 
         if ($boards) {
