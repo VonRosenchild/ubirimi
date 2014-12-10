@@ -196,30 +196,30 @@ getProjectIssueTypes:
   path: /yongo/project/get-issue-types
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Move\GetProjectIssueTypesController' }
 
-reportDeleteConfirm:
-  path: /yongo/report/delete-dialog/{id}/{possible}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\DeleteConfirmController' }
+filterDeleteConfirm:
+  path: /yongo/filter/delete-dialog/{id}/{possible}
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\DeleteConfirmController' }
   requirements:
     id:  \d+
     possible: \d+
 
-reportDelete:
-  path: /yongo/report/delete
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\DeleteController' }
+filterDelete:
+  path: /yongo/filter/delete
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\DeleteController' }
 
-reportSaveConfirm:
+filterSaveConfirm:
   path: /yongo/issue-search/save-filter-dialog/{filter_id}
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\SaveConfirmController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\SaveConfirmController' }
   requirements:
     filter_id:  \-?\d+
 
-reportSave:
+filterSave:
   path: /yongo/issue-search/save-filter
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\SaveController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\SaveController' }
 
-reportProjectData:
+filterProjectData:
   path: /yongo/project/get-project-data
-  defaults: { _controller: '\Ubirimi\Yongo\Controller\Report\ProjectsDataController' }
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\Issue\Filter\ProjectsDataController' }
 
 viewProjectPredefinedFilters:
   path: /yongo/project/filters/{id}

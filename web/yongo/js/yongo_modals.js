@@ -1810,7 +1810,7 @@ $('document').ready(function () {
                     click: function () {
                         $.ajax({
                             type: "POST",
-                            url: '/yongo/report/delete',
+                            url: '/yongo/filter/delete',
                             data: {
                                 filter_id: filterId
                             },
@@ -1841,7 +1841,7 @@ $('document').ready(function () {
             options.buttons.shift();
         }
 
-        $("#deleteFilterModal").load("/yongo/report/delete-dialog/" + filterId + '/' + delete_possible, [], function () {
+        $("#deleteFilterModal").load("/yongo/filter/delete-dialog/" + filterId + '/' + delete_possible, [], function () {
             $("#deleteFilterModal").dialog(options);
             $("#deleteFilterModal").dialog("open");
         });

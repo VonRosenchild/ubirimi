@@ -17,43 +17,27 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-namespace Ubirimi\Yongo\Controller\Report;
+namespace Ubirimi\Yongo\Controller\Issue\Filter;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Repository\Issue\IssueFilter;
 
-class DeleteConfirmController extends UbirimiController
+class SaveConfirmController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
 
-        $filterId = $request->get('id');
-        $deletePossible = $request->get('possible');
+        $filterId = $request->get('filter_id');
 
-        if ($deletePossible) {
-            return new Response('Are you sure you want to delete this filter?');
+        $filter = null;
+        if ($filterId != -1) {
+            $filter = $this->getRepository(IssueFilter::class)->getById($filterId);
         }
 
-        $boards = $this->getRepository(Board::class)->getByFilterId($filterId);
-
-        $message = 'This filter can not be deleted due to the following reasons:';
-        $message .= '<br />';
-
-        if ($boards) {
-            $message .= 'It is used in the following agile boards: ';
-            $boardsName = array();
-            while ($board = $boards->fetch_array(MYSQLI_ASSOC)) {
-                $boardsName[] = $board['name'];
-            }
-
-            $message .= implode(', ', $boardsName) . '.';
-        }
-
-        return new Response($message);
+        return $this->render(__DIR__ . '/../../Resources/views/filter/SaveConfirm.php', get_defined_vars());
     }
 }
