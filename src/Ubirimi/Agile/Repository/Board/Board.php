@@ -209,10 +209,12 @@ class Board
                 }
 
                 return $resultArray;
-            } else return $result;
-
-        } else
+            } else {
+                return $result;
+            }
+        } else {
             return null;
+        }
     }
 
     public function getColumnStatuses($columnId, $resultType = null, $column = null) {

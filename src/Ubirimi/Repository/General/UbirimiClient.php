@@ -1748,7 +1748,7 @@ class UbirimiClient
             return null;
     }
 
-    public function getAdministrators($clientId, $userId = null) {
+    public function getAdministrators($clientId, $userId = null, $resultType = null) {
         $query = "SELECT user.* " .
             "FROM user " .
             "WHERE client_id = ? and client_administrator_flag = 1";
@@ -1760,10 +1760,19 @@ class UbirimiClient
         $stmt->bind_param("i", $clientId);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows)
-            return $result;
-        else
+        if ($result->num_rows) {
+            if ($resultType == 'array') {
+                $resultArray = array();
+                while ($data = $result->fetch_array(MYSQLI_ASSOC)) {
+                    $resultArray[] = $data;
+                }
+                return $resultArray;
+            } else {
+                return $result;
+            }
+        } else {
             return null;
+        }
     }
 
     public function deleteYongoIssueTypes($clientId) {
