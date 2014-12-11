@@ -40,7 +40,12 @@ apiClientUpdateProfile:
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\UpdateProfileController' }
   methods:  [POST]
 
-apiGetClient:
+apiGetAllClients:
+  path: /api/client/all
+  defaults: { _controller: '\Ubirimi\Api\Controller\Client\GetAllController' }
+  methods:  [GET]
+
+apiGetClientById:
   path: /api/client/{id}
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\GetController' }
   methods:  [GET]
