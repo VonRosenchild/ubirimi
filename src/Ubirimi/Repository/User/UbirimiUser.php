@@ -753,7 +753,7 @@ class UbirimiUser
         $result = $stmt->get_result();
 
         if ($result->num_rows)
-            return $result->num_rows;
+            return $result->fetch_array(MYSQLI_ASSOC);
         else {
             return null;
         }

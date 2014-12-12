@@ -25,6 +25,11 @@ apiUserGET:
   defaults: { _controller: '\Ubirimi\Api\Controller\User\GetController' }
   methods:  [GET]
 
+apiUserGETByFilters:
+  path: /api/user
+  defaults: { _controller: '\Ubirimi\Api\Controller\User\GetByFiltersController' }
+  methods:  [POST]
+
 apiUserAuthenticate:
   path: /api/user/authenticate
   defaults: { _controller: '\Ubirimi\Api\Controller\User\AuthenticateController' }
@@ -51,6 +56,11 @@ apiGetClientById:
   methods:  [GET]
   requirements:
     id:  \d+
+
+apiClientValidateDomain:
+  path: /api/client/validate/domain/{domain}
+  defaults: { _controller: '\Ubirimi\Api\Controller\Client\ValidateDomainController' }
+  methods:  [GET]
 
 apiGetPaymentAmountByCountUsers:
   path: /api/payment/{client_id}
