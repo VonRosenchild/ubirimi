@@ -25,6 +25,11 @@ apiUserGET:
   defaults: { _controller: '\Ubirimi\Api\Controller\User\GetController' }
   methods:  [GET]
 
+apiUserGETByFilters:
+  path: /api/user
+  defaults: { _controller: '\Ubirimi\Api\Controller\User\GetByFiltersController' }
+  methods:  [POST]
+
 apiUserAuthenticate:
   path: /api/user/authenticate
   defaults: { _controller: '\Ubirimi\Api\Controller\User\AuthenticateController' }
@@ -40,12 +45,22 @@ apiClientUpdateProfile:
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\UpdateProfileController' }
   methods:  [POST]
 
-apiGetClient:
+apiGetAllClients:
+  path: /api/client/all
+  defaults: { _controller: '\Ubirimi\Api\Controller\Client\GetAllController' }
+  methods:  [GET]
+
+apiGetClientById:
   path: /api/client/{id}
   defaults: { _controller: '\Ubirimi\Api\Controller\Client\GetController' }
   methods:  [GET]
   requirements:
     id:  \d+
+
+apiClientValidateDomain:
+  path: /api/client/validate/domain/{domain}
+  defaults: { _controller: '\Ubirimi\Api\Controller\Client\ValidateDomainController' }
+  methods:  [GET]
 
 apiGetPaymentAmountByCountUsers:
   path: /api/payment/{client_id}

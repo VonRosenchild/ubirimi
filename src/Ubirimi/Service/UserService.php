@@ -25,6 +25,7 @@ use Ubirimi\Calendar\Repository\Reminder\ReminderType;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Event\UbirimiEvents;
 use Ubirimi\Event\UserEvent;
+use Ubirimi\QuickNotes\Repository\Notebook;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Repository\User\UbirimiGroup;
 use Ubirimi\Repository\User\UbirimiUser as UserRepository;
@@ -71,6 +72,9 @@ class UserService extends UbirimiService
 
         // add default calendar
         $calendarId = UbirimiContainer::get()['repository']->get(UbirimiCalendar::class)->save($userId, $data['firstName'] . ' ' . $data['lastName'], 'My default calendar', '#A1FF9E', $currentDate, 1);
+
+        // add the default notebook
+        UbirimiContainer::get()['repository']->get(Notebook::class)->save($userId, 'Default Notebook', 'My default notebook', 1, $currentDate);
 
         if (!$data['isCustomer']) {
             // add default reminders
