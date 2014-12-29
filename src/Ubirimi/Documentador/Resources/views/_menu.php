@@ -67,7 +67,10 @@ $spaces = UbirimiContainer::get()['repository']->get(Space::class)->getByClientI
         <td>
             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
-                    <td width="120px" class="menuItemBasic <?php if ($menuSelectedCategory == 'documentator') echo 'menuItemSelected'; else echo 'menuItem' ?>" id="menuDocumentador" style="cursor: pointer;">
+                    <td width="104px"
+                        class="menuItemBasic <?php if ($menuSelectedCategory == 'documentator') echo 'menuItemSelected'; else echo 'menuItem' ?>"
+                        id="menuDocumentador"
+                        style="cursor: pointer;">
                         <span>Documentador</span>
                         <span class="<?php if ($menuSelectedCategory == 'documentator') echo 'arrowSelected'; else echo 'arrow' ?>"></span>
                         &nbsp;

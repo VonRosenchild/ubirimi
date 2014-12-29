@@ -112,13 +112,13 @@ class NotificationScheme
         $stmt->execute();
     }
 
-    public function addDataRaw($notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $currentDate) {
+    public function addDataRaw($notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $allWatchers, $userPickerMultipleSelection, $currentDate) {
         $query = "INSERT INTO notification_scheme_data(notification_scheme_id, event_id, permission_role_id, group_id, user_id, current_assignee, reporter, " .
-                    "`current_user`, project_lead, component_lead, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "`current_user`, project_lead, component_lead, all_watchers, user_picker_multiple_selection, date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
-        $stmt->bind_param("iiiiiiiiiis", $notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $currentDate);
+        $stmt->bind_param("iiiiiiiiiiiis", $notificationSchemeId, $eventId, $permissionRoleId, $groupId, $userId, $currentAssignee, $reporter, $currentUser, $projectLead, $componentLead, $allWatchers, $userPickerMultipleSelection, $currentDate);
         $stmt->execute();
 
         return UbirimiContainer::get()['db.connection']->insert_id;

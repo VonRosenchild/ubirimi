@@ -24,11 +24,10 @@
         "symfony/config": "2.4.10",
         "symfony/yaml": "2.4.10",
         "symfony/debug": "2.4.10",
-
+        "symfony/var-dumper": "3.0.*@dev",
         "pimple/pimple": "1.1",
         "guzzle/guzzle": "3.7.*",
         "guzzle/silex-provider": "v1.0.0",
-
         "cogpowered/finediff": "0.0.*",
         "saltybeagle/savant3": "dev-master",
         "sabre/vobject": "3.1.2",

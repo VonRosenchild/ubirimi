@@ -78,6 +78,8 @@ class CopyController extends UbirimiController
                         $data['current_user'],
                         $data['project_lead'],
                         $data['component_lead'],
+                        $data['all_watchers'],
+                        $data['user_picker_multiple_selection'],
                         $currentDate
                     );
                 }
