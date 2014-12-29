@@ -300,8 +300,6 @@ class Util {
             if (file_exists(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . 'user_' . $loggedInUserId)) {
                 Util::deleteDir(Util::getAssetsFolder(SystemProduct::SYS_PRODUCT_YONGO) . 'user_' . $loggedInUserId);
             }
-
-            UbirimiContainer::get()['session']->remove('added_attachments_in_screen');
         }
     }
 

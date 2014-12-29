@@ -74,4 +74,9 @@ class YongoEvents
      * Yongo Issue Add work log
      */
     const YONGO_ISSUE_WORK_LOGGED = 'yongo.issue_work_logged';
+
+    /**
+     * Yongo Issue Add Attachment
+     */
+    const YONGO_ISSUE_ADD_ATTACHMENT = 'yongo.issue_add_attachment';
 }

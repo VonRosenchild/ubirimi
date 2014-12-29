@@ -22,9 +22,15 @@ namespace Ubirimi\Yongo\Controller\Issue\Attachment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\VarDumper\VarDumper;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Event\IssueEvent;
+use Ubirimi\Yongo\Event\YongoEvents;
+use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueComment;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class SaveController extends UbirimiController
 {
@@ -33,6 +39,7 @@ class SaveController extends UbirimiController
     {
         Util::checkUserIsLoggedInAndRedirect();
 
+        $loggedInUserId = $session->get('user/id');
         $issueId = $request->request->get('issue_id');
         $attachIdsToBeKept = $request->request->get('attach_ids');
         $comment = Util::cleanRegularInputField($request->request->get('comment'));
@@ -47,6 +54,20 @@ class SaveController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
             $this->getRepository(IssueComment::class)->add($issueId, $session->get('user/id'), $comment, $currentDate);
         }
+
+        // send email notification
+        $issueQueryParameters = array('issue_id' => $issueId);
+        $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $loggedInUserId);
+        $project = $this->getRepository(YongoProject::class)->getById($issue['issue_project_id']);
+
+        $issueEventData = array('user_id' => $loggedInUserId,
+                                'attachmentIds' => UbirimiContainer::get()['session']->get('added_attachments_in_screen'),
+                                'comment' => $comment);
+        $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $issueEventData);
+
+        UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_ADD_ATTACHMENT, $issueEvent);
+
+        UbirimiContainer::get()['session']->remove('added_attachments_in_screen');
 
         return new Response('');
     }

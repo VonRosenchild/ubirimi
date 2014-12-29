@@ -104,5 +104,7 @@ class UploadTransitionAttachmentController extends UbirimiController
 
             return new JsonResponse($attachmentId);
         }
+
+        return new Response('');
     }
 }

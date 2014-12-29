@@ -114,7 +114,7 @@ class IssueService extends UbirimiService
         }
 
         Util::manageModalAttachments($newIssueId, $loggedInUserId, $attachIdsToBeKept);
-
+        UbirimiContainer::get()['session']->remove('added_attachments_in_screen');
         $issue = UbirimiContainer::get()['repository']->get(Issue::class)->getById($newIssueId);
 
         // add the current logged in user to the list of watchers

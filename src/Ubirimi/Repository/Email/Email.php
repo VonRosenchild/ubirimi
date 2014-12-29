@@ -350,6 +350,27 @@ class Email {
             $date);
     }
 
+    public function sendEmailNotificationAddAttachment($issue, $clientId, $project, $userToNotify, $extraInformation, $user) {
+
+        $subject = Email::$smtpSettings['email_prefix'] . ' ' . "[Issue] - Issue Add Attachment " . $issue['project_code'] . '-' . $issue['nr'];
+
+        $date = Util::getServerCurrentDateTime();
+
+        UbirimiContainer::get()['repository']->get(EmailQueue::class)->add($clientId,
+            Email::$smtpSettings['from_address'],
+            $userToNotify['email'],
+            null,
+            $subject,
+            Util::getTemplate('_addAttachment.php',array(
+                    'clientDomain' => Util::getSubdomain(),
+                    'issue' => $issue,
+                    'project' => $project,
+                    'extraInformation' => $extraInformation,
+                    'user' => $user)
+            ),
+            $date);
+    }
+
     public function sendEmailRetrievePassword($address, $password) {
         $tpl = UbirimiContainer::get()['savant'];
         $tpl->assign(array('password' => $password));
