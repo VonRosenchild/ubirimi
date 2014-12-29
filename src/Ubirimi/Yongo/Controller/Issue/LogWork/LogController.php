@@ -22,10 +22,14 @@ namespace Ubirimi\Yongo\Controller\Issue\LogWork;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Event\IssueEvent;
+use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class LogController extends UbirimiController
 {
@@ -62,6 +66,16 @@ class LogController extends UbirimiController
 
             // update the date_updated field
             $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
+            $project = $this->getRepository(YongoProject::class)->getById($issue['issue_project_id']);
+            $issueEventData = array('user_id' => $loggedInUserId,
+                                    'comment' => $comment,
+                                    'date_started' => $dateStartedString,
+                                    'time_spent' => $timeSpentPost);
+            $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $issueEventData);
+
+            UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_WORK_LOGGED, $issueEvent);
+
         }
 
         return new Response($remainingTime);

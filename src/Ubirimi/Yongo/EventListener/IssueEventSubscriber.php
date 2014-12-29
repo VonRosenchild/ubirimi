@@ -71,6 +71,13 @@ class IssueEventSubscriber implements EventSubscriberInterface
         $container['issue.email']->emailIssueShare($event->getIssue(), $event->getExtra()['userIds'], $event->getExtra()['noteContent']);
     }
 
+    public function onIssueWorkLogged(IssueEvent $event)
+    {
+        $container = UbirimiContainer::get();
+
+        $container['issue.email']->emailIssueWorkLogged($event->getIssue(), $event->getProject(), $event->getExtra());
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
@@ -78,7 +85,8 @@ class IssueEventSubscriber implements EventSubscriberInterface
             YongoEvents::YONGO_ISSUE_EMAIL => 'onIssueEmail',
             YongoEvents::YONGO_ISSUE_COMMENT_EMAIL => 'onIssueCommentEmail',
             YongoEvents::YONGO_ISSUE_LINK_EMAIL => 'onIssueLinkEmail',
-            YongoEvents::YONGO_ISSUE_SHARE_EMAIL => 'onIssueShareEmail'
+            YongoEvents::YONGO_ISSUE_SHARE_EMAIL => 'onIssueShareEmail',
+            YongoEvents::YONGO_ISSUE_WORK_LOGGED => 'onIssueWorkLogged'
         );
     }
 }

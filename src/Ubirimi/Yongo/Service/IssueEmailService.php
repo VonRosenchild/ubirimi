@@ -135,4 +135,24 @@ class IssueEmailService extends UbirimiService
             }
         }
     }
+
+    public function emailIssueWorkLogged($issue, $project, $extraInformation)
+    {
+        $smtpSettings = $this->session->get('client/settings/smtp');
+
+        if ($smtpSettings) {
+            // notify people
+            $eventId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_WORK_LOGGED_ON_ISSUE_CODE, 'id');
+            $users = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
+
+            while ($users && $userToNotify = $users->fetch_array(MYSQLI_ASSOC)) {
+
+                if ($userToNotify['user_id'] == $this->session->get('user/id') && !$userToNotify['notify_own_changes_flag']) {
+                    continue;
+                }
+
+                UbirimiContainer::get()['repository']->get(Email::class)->sendEmailNotificationWorkLogged($issue, $this->session->get('client/id'), $project, $userToNotify, $extraInformation, $this->session->get('user'));
+            }
+        }
+    }
 }

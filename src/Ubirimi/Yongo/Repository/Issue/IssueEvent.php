@@ -36,6 +36,7 @@ class IssueEvent
     const EVENT_ISSUE_WORK_STOPPED_CODE = 11;
     const EVENT_GENERIC_CODE = 12;
     const EVENT_ISSUE_MOVED_CODE = 13;
+    const EVENT_WORK_LOGGED_ON_ISSUE_CODE = 14;
 
     private $name;
     private $description;

@@ -69,4 +69,9 @@ class YongoEvents
      * Yongo Issue Update Assignee Email Event
      */
     const YONGO_ISSUE_UPDATE_ASSIGNEE_EMAIL = 'yongo.issue_update_assignee';
+
+    /**
+     * Yongo Issue Add work log
+     */
+    const YONGO_ISSUE_WORK_LOGGED = 'yongo.issue_work_logged';
 }
