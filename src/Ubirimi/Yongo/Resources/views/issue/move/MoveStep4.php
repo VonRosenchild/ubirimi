@@ -81,9 +81,13 @@ require_once __DIR__ . '/../../_header.php';
                                         <?php endwhile ?>
                                     </td>
                                     <td>
-                                        <?php while ($newIssueComponents && $issueComponent = $newIssueComponents->fetch_array(MYSQLI_ASSOC)): ?>
-                                            <?php echo $issueComponent['name'] ?>
-                                        <?php endwhile ?>
+                                        <?php if ($newIssueComponents): ?>
+                                            <?php while ($issueComponent = $newIssueComponents->fetch_array(MYSQLI_ASSOC)): ?>
+                                                <?php echo $issueComponent['name'] ?>
+                                            <?php endwhile ?>
+                                        <?php else: ?>
+                                            <div>None</div>
+                                        <?php endif ?>
                                     </td>
                                 </tr>
                             <?php endif ?>
@@ -96,9 +100,13 @@ require_once __DIR__ . '/../../_header.php';
                                         <?php endwhile ?>
                                     </td>
                                     <td>
-                                        <?php while ($newIssueFixVersions && $issueVersion = $newIssueFixVersions->fetch_array(MYSQLI_ASSOC)): ?>
-                                            <?php echo $issueVersion['name'] ?>
-                                        <?php endwhile ?>
+                                        <?php if ($newIssueFixVersions): ?>
+                                            <?php while ($issueVersion = $newIssueFixVersions->fetch_array(MYSQLI_ASSOC)): ?>
+                                                <?php echo $issueVersion['name'] ?>
+                                            <?php endwhile ?>
+                                        <?php else: ?>
+                                            <div>None</div>
+                                        <?php endif ?>
                                     </td>
                                 </tr>
                             <?php endif ?>
@@ -111,9 +119,13 @@ require_once __DIR__ . '/../../_header.php';
                                         <?php endwhile ?>
                                     </td>
                                     <td>
-                                        <?php while ($newIssueFixVersions && $issueVersion = $newIssueAffectsVersions->fetch_array(MYSQLI_ASSOC)): ?>
-                                            <?php echo $issueVersion['name'] ?>
-                                        <?php endwhile ?>
+                                        <?php if ($newIssueFixVersions): ?>
+                                            <?php while ($issueVersion = $newIssueAffectsVersions->fetch_array(MYSQLI_ASSOC)): ?>
+                                                <?php echo $issueVersion['name'] ?>
+                                            <?php endwhile ?>
+                                        <?php else: ?>
+                                            <div>None</div>
+                                        <?php endif ?>
                                     </td>
                                 </tr>
                             <?php endif ?>
