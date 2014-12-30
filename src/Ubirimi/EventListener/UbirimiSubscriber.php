@@ -80,15 +80,6 @@ class UbirimiSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onContact(UbirimiEvent $event)
-    {
-        UbirimiContainer::get()['email']->contact(
-            $event->getData()['name'],
-            $event->getData()['category'],
-            $event->getData()['message'],
-            $event->getData()['email']);
-    }
-
     public function onFeedback(UbirimiEvent $event)
     {
         UbirimiContainer::get()['email']->feedback(
@@ -109,7 +100,6 @@ class UbirimiSubscriber implements EventSubscriberInterface
         return array(
             UbirimiEvents::LOG => 'onLog',
             UbirimiEvents::USER => 'onUser',
-            UbirimiEvents::CONTACT => 'onContact',
             UbirimiEvents::FEEDBACK => 'onFeedback',
             UbirimiEvents::PASSWORD_RECOVER => 'onPasswordRecover');
     }

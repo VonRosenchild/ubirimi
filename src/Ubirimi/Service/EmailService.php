@@ -51,17 +51,6 @@ class EmailService extends UbirimiService
         UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendNewCustomerNotificationEmail($clientId, $firstName, $lastName, $email, $password, $clientDomain);
     }
 
-    public function contact($name, $category, $message, $email)
-    {
-        UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendContactMessage(
-            array('domnulnopcea@gmail.com', 'domnuprofesor@gmail.com'),
-            $name,
-            $category,
-            $message,
-            $email
-        );
-    }
-
     public function feedback($userData, $like, $improve, $newFeatures, $experience)
     {
         UbirimiContainer::get()['repository']->get(EmailRepository::class)->sendFeedback($userData, $like, $improve, $newFeatures, $experience);
