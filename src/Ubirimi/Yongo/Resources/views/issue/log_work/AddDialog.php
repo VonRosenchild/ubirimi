@@ -42,8 +42,13 @@
     <tr>
         <td></td>
         <td>
-            <input type="radio" name="log_work_remaining_estimate" value="existing_estimate" id="radio_log_work_remaining_estimate" />
-            <label for="radio_log_work_remaining_estimate"><span>Leave estimate unset</span></label>
+            <?php if ($remainingEstimate != '-1'): ?>
+                <input type="radio" name="log_work_remaining_estimate" value="existing_estimate" id="radio_log_work_remaining_estimate" />
+                <label for="radio_log_work_remaining_estimate"><span>Use existing estimate of <?php echo $remainingEstimate ?></span></label>
+            <?php else: ?>
+                <input type="radio" name="log_work_remaining_estimate" value="estimate_unset" id="radio_log_work_remaining_estimate" />
+                <label for="radio_log_work_remaining_estimate"><span>Leave estimate unset</span></label>
+            <?php endif ?>
         </td>
     </tr>
     <tr>

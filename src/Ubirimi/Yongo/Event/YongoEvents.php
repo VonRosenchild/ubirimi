@@ -76,6 +76,11 @@ class YongoEvents
     const YONGO_ISSUE_WORK_LOGGED = 'yongo.issue_work_logged';
 
     /**
+     * Yongo Issue Work Log Updated
+     */
+    const YONGO_ISSUE_WORK_LOG_UPDATED = 'yongo.issue_work_log_updated';
+
+    /**
      * Yongo Issue Add Attachment
      */
     const YONGO_ISSUE_ADD_ATTACHMENT = 'yongo.issue_add_attachment';

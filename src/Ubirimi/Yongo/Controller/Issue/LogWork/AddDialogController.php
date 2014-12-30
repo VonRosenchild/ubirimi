@@ -33,7 +33,7 @@ class AddDialogController extends UbirimiController
             $remainingEstimate = trim(
                 str_replace(
                     array('w', 'd', 'h', 'm'),
-                    array('w ', 'd ', 'h ', 'm'),
+                    array(' weeks ', ' days ', ' hours ', ' minutes'),
                     $remainingEstimate
                 )
             );

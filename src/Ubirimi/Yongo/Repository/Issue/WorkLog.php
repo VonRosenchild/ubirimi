@@ -105,9 +105,12 @@ class WorkLog
             $timeSpentMinutes = 0;
             $difference = $issueRemainingMinutes - $timeSpentMinutes;
 
-            if ($difference < 0)
+            if ($difference < 0) {
                 $difference = 0;
+            }
             $remainingTime = Util::transformTimeToString($difference, $hoursPerDay, $daysPerWeek);
+        } else if ($remainingTime == 'estimate_unset') {
+            $remainingTime = null;
         } else if ($remainingTime[0] == '=') {
             $remainingTime = str_replace("=", '', $remainingTime);
             $remainingTimeMinutes = Util::transformLogTimeToMinutes($remainingTime, $hoursPerDay, $daysPerWeek);
@@ -135,17 +138,21 @@ class WorkLog
 
         // transform it to string
 
-        $remainingTime = str_replace(array(" ", ','), '', $remainingTime);
-        $remainingTime = str_replace(array('weeks', 'week'), 'w', $remainingTime);
-        $remainingTime = str_replace(array('days', 'day'), 'd', $remainingTime);
-        $remainingTime = str_replace(array('hours', 'hour'), 'h', $remainingTime);
-        $remainingTime = str_replace(array('minutes', 'minutes'), 'm', $remainingTime);
+        if ($remainingTime != null) {
+            $remainingTime = str_replace(array(" ", ','), '', $remainingTime);
+            $remainingTime = str_replace(array('weeks', 'week'), 'w', $remainingTime);
+            $remainingTime = str_replace(array('days', 'day'), 'd', $remainingTime);
+            $remainingTime = str_replace(array('hours', 'hour'), 'h', $remainingTime);
+            $remainingTime = str_replace(array('minutes', 'minutes'), 'm', $remainingTime);
 
-        if ($remainingTime == "") {
-            $remainingTime = 0;
+            if ($remainingTime == "") {
+                $remainingTime = 0;
+            }
+
+            WorkLog::updateRemainingEstimate($issueData['id'], $remainingTime);
+        } else {
+            WorkLog::clearRemainingEstimate($issueData['id']);
         }
-
-        WorkLog::updateRemainingEstimate($issueData['id'], $remainingTime);
 
         return $remainingTime;
     }
@@ -155,6 +162,14 @@ class WorkLog
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $remainingTime, $issueId);
+        $stmt->execute();
+    }
+
+    public function clearRemainingEstimate($issueId) {
+        $query = 'update yongo_issue SET remaining_estimate = NULL where id = ? limit 1';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+        $stmt->bind_param("i", $issueId);
         $stmt->execute();
     }
 }

@@ -22,16 +22,22 @@ namespace Ubirimi\Yongo\Controller\Issue\LogWork;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Event\IssueEvent;
+use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class EditController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+        $loggedInUserId = $session->get('user/id');
+
         $workLogId = $request->request->get('id');
         $issueId = $request->request->get('issue_id');
         $timeSpent = trim(str_replace(" ", '', $request->request->get('time_spent')));
@@ -39,7 +45,6 @@ class EditController extends UbirimiController
         $remainingTimePost = $request->request->get('remaining');
         $comment = $request->request->get('comment');
 
-        $currentDate = Util::getServerCurrentDateTime();
         $dateStarted = \DateTime::createFromFormat('d-m-Y H:i', $dateStartedString);
         $dateStartedString = date_format($dateStarted, 'Y-m-d H:i');
 
@@ -83,6 +88,16 @@ class EditController extends UbirimiController
 
         // update the date_updated field
         $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
+        $project = $this->getRepository(YongoProject::class)->getById($issue['issue_project_id']);
+        $issueEventData = array('user_id' => $loggedInUserId,
+            'comment' => $comment,
+            'date_started' => $dateStartedString,
+            'remaining_time' => $remainingTimePost,
+            'time_spent' => $timeSpent);
+        $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $issueEventData);
+
+        UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_WORK_LOG_UPDATED, $issueEvent);
 
         return new Response($remainingTimePost);
     }

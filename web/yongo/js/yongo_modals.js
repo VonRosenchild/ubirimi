@@ -2122,10 +2122,10 @@ $('document').ready(function () {
         };
 
         var issueRemainingEstimate = $('#issue_remaining_estimate').val();
-
-        if (issueRemainingEstimate == undefined) {
+        if ('' == issueRemainingEstimate) {
             issueRemainingEstimate = -1;
         }
+
         $("#modalLogWorkEdit").load("/yongo/issue/log-work-edit-dialog/" + workLogId + '/' + issueRemainingEstimate, [], function () {
             $("#modalLogWorkEdit").dialog(options);
             $("#modalLogWorkEdit").dialog("open");
@@ -2279,6 +2279,8 @@ $('document').ready(function () {
                                     remaining_estimate = 'automatic';
                                 } else if (estimate_strategy == 'existing_estimate') {
                                     remaining_estimate = 'existing';
+                                } else if (estimate_strategy == 'estimate_unset') {
+                                    remaining_estimate = 'estimate_unset';
                                 } else if (estimate_strategy == 'set_to') {
                                     remaining_estimate = '=' + $('#log_remaining_work_set_to').val();
                                 } else if (estimate_strategy == 'reduce_by') {
@@ -2297,13 +2299,13 @@ $('document').ready(function () {
                                     },
                                     success: function (response) {
                                         $('#issue_remaining_estimate').val(response);
-
                                         $("#modalLogWork").dialog('destroy');
                                         $("#modalLogWork").empty();
-                                        if (idSelectedSubTab == 'is_tab_work_log')
+                                        if (idSelectedSubTab == 'is_tab_work_log') {
                                             loadIssueWorkLog();
-                                        else if (idSelectedSubTab == 'is_tab_history')
+                                        } else if (idSelectedSubTab == 'is_tab_history') {
                                             loadIssueHistory();
+                                        }
                                         $.ajax({
                                             type: "POST",
                                             url: '/yongo/issue/render-time-tracking-status',

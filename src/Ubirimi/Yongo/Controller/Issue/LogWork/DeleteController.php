@@ -46,8 +46,9 @@ class DeleteController extends UbirimiController
         $issue = $this->getRepository(Issue::class)->getByParameters($issueQueryParameters, $session->get('user/id'));
         $previousEstimate = $issue['remaining_estimate'];
 
-        if ($remainingTime == 'automatic')
+        if ($remainingTime == 'automatic') {
             $remainingTime = '+' . $timeSpent;
+        }
 
         $remainingTime = $this->getRepository(WorkLog::class)->adjustRemainingEstimate(
             $issue,
