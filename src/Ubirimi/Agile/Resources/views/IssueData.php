@@ -260,7 +260,7 @@ use Ubirimi\Yongo\Repository\Field\Field;
         <?php else: ?>
             <div>There are no sub-tasks defined.</div>
         <?php endif ?>
-        <?php if (null == $issue['parent_id']): ?>
+        <?php if (null == $issue['parent_id'] && $projectSubTaskIssueTypes): ?>
             <a href="#" id="agile_create_subtask_<?php echo $issueId ?>_<?php echo $projectId ?>" class="btn ubirimi-btn"><i class="icon-plus"></i> Create Sub-Task</a>
         <?php endif ?>
     </div>

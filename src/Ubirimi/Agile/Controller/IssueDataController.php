@@ -48,6 +48,8 @@ class IssueDataController extends UbirimiController
         $projectId = $issue['issue_project_id'];
         $issueProject = $this->getRepository(YongoProject::class)->getById($projectId);
 
+        $projectSubTaskIssueTypes = $this->getRepository(YongoProject::class)->getSubTasksIssueTypes($projectId, 'array', 'id');
+
         $comments = $this->getRepository(IssueComment::class)->getByIssueId($issueId, 'desc');
         $components = $this->getRepository(IssueComponent::class)->getByIssueIdAndProjectId($issueId, $projectId);
 
