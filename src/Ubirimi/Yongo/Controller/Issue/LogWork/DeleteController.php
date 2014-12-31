@@ -22,20 +22,26 @@ namespace Ubirimi\Yongo\Controller\Issue\LogWork;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Yongo\Event\IssueEvent;
+use Ubirimi\Yongo\Event\YongoEvents;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
+use Ubirimi\Yongo\Repository\Project\YongoProject;
 
 class DeleteController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         Util::checkUserIsLoggedInAndRedirect();
+
+        $loggedInUserId = $session->get('user/id');
+
         $workLogId = $request->request->get('id');
         $issueId = $request->request->get('issue_id');
         $remainingTime = $request->request->get('remaining');
-        $comment = Util::cleanRegularInputField($request->request->get('comment'));
 
         $workLog = $this->getRepository(WorkLog::class)->getById($workLogId);
         $timeSpent = $workLog['time_spent'];
@@ -70,6 +76,15 @@ class DeleteController extends UbirimiController
 
         // update the date_updated field
         $this->getRepository(Issue::class)->updateById($issueId, array('date_updated' => $currentDate), $currentDate);
+
+        // send the email notification
+        $project = $this->getRepository(YongoProject::class)->getById($issue['issue_project_id']);
+        $issueEventData = array('user_id' => $loggedInUserId,
+                                'remaining_estimate' => $remainingTime,
+                                'time_spent' => $workLog['time_spent']);
+        $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $issueEventData);
+
+        UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_WORK_LOG_DELETED, $issueEvent);
 
         return new Response($remainingTime);
     }

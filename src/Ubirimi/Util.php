@@ -888,6 +888,10 @@ class Util {
 
     public static function transformLogTimeToMinutes($timeString, $hoursPerDay, $daysPerWeek) {
 
+        if (is_numeric($timeString)) {
+            return $timeString;
+        }
+
         $timeCodes = array('w', 'd', 'h', 'm');
         $amount = '';
         $totalMinutes = 0;
@@ -922,6 +926,10 @@ class Util {
     }
 
     public static function transformTimeToString($minutes, $hoursPerDay, $daysPerWeek, $format = 'long') {
+        if (0 == $minutes) {
+            return $minutes;
+        }
+
         $seconds = $minutes * 60;
 
         $weeks = floor($seconds / 3600 / $hoursPerDay / $daysPerWeek);

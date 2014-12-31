@@ -1008,6 +1008,8 @@ class UbirimiClient
             "(" . $clientId . ",'Work Stopped on Issue', 11, 'This is the \'work stopped on issue\' event.', 1, '" . $currentDate . "'), " .
             "(" . $clientId . ",'Generic Event', 12, 'This is the \'generic event\' event.', 1, '" . $currentDate . "'), " .
             "(" . $clientId . ",'Work Logged On Issue', 14, 'This is the \'work logged on issue\' event.', 1, '" . $currentDate . "'), " .
+            "(" . $clientId . ",'Issue Work Logg Updated', 15, 'This is the \'work logged on issue\' event.', 1, '" . $currentDate . "'), " .
+            "(" . $clientId . ",'Issue Work Logg Deleted', 16, 'This is the \'work logged on issue\' event.', 1, '" . $currentDate . "'), " .
             "(" . $clientId . ",'Issue Moved', 13, 'This is the \'issue moved\' event.', 1, '" . $currentDate . "')";
         UbirimiContainer::get()['db.connection']->query($query);
     }

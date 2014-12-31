@@ -38,6 +38,7 @@ class IssueEvent
     const EVENT_ISSUE_MOVED_CODE = 13;
     const EVENT_WORK_LOGGED_ON_ISSUE_CODE = 14;
     const EVENT_ISSUE_WORKLOG_UPDATED_CODE = 15;
+    const EVENT_ISSUE_WORKLOG_DELETED_CODE = 16;
 
     private $name;
     private $description;

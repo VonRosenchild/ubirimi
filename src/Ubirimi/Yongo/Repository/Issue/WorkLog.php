@@ -97,9 +97,13 @@ class WorkLog
             $timeSpentMinutes = Util::transformLogTimeToMinutes($timeSpent, $hoursPerDay, $daysPerWeek);
             $difference = $issueRemainingMinutes - $timeSpentMinutes;
 
-            if ($difference < 0)
+            if ($difference < 0) {
                 $difference = 0;
+            }
             $remainingTime = Util::transformTimeToString($difference, $hoursPerDay, $daysPerWeek);
+            if ('' == $remainingTime) {
+                $remainingTime = 0;
+            }
 
         } else if ($remainingTime == 'existing') {
             $timeSpentMinutes = 0;
@@ -138,7 +142,7 @@ class WorkLog
 
         // transform it to string
 
-        if ($remainingTime != null) {
+        if ($remainingTime !== null) {
             $remainingTime = str_replace(array(" ", ','), '', $remainingTime);
             $remainingTime = str_replace(array('weeks', 'week'), 'w', $remainingTime);
             $remainingTime = str_replace(array('days', 'day'), 'd', $remainingTime);

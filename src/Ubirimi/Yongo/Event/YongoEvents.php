@@ -84,4 +84,9 @@ class YongoEvents
      * Yongo Issue Add Attachment
      */
     const YONGO_ISSUE_ADD_ATTACHMENT = 'yongo.issue_add_attachment';
+
+    /**
+     * Yongo Issue Work Log Deleted
+     */
+    const YONGO_ISSUE_WORK_LOG_DELETED = 'yongo.issue_work_log_deleted';
 }

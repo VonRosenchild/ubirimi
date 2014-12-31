@@ -8,7 +8,7 @@ $session = UbirimiContainer::get()['session'];
 <?php require __DIR__ . '/_header.php'; ?>
 
     <div style="font: 17px Trebuchet MS, sans-serif;white-space: nowrap;padding-bottom: 5px;padding-top: 5px;text-align: left;padding-left: 2px;">
-        <a style="text-decoration: none;" href="<?php echo $session->get('client/base_url') ?>/yongo/issue/<?php echo $this->issue['id'] ?>"><?php echo $this->issue['summary'] ?></a>
+        <a style="text-decoration: none; " href="<?php echo $session->get('client/base_url') ?>/yongo/issue/<?php echo $this->issue['id'] ?>"><?php echo $this->issue['project_code'] ?>-<?php echo $this->issue['nr'] ?></a> <?php echo $this->issue['summary'] ?>
     </div>
     <div style="height: 10px"></div>
 

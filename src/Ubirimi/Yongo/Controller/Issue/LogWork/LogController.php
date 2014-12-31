@@ -78,6 +78,10 @@ class LogController extends UbirimiController
 
         }
 
+        if (null == $remainingTime || '' == $remainingTime) {
+            $remainingTime = -1;
+        }
+
         return new Response($remainingTime);
     }
 }

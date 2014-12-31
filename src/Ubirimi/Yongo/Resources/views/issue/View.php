@@ -1,4 +1,5 @@
 <?php
+use Symfony\Component\VarDumper\VarDumper;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Field\Field;
 
@@ -152,14 +153,15 @@ require_once __DIR__ . '/../_header.php';
         <input type="hidden" value="<?php echo $projectId ?>" id="project_id" name="project_id"/>
         <input type="hidden" value="<?php echo $workflowMenuEnabled ?>" id="view_issue_workflow_menu_enabled"/>
         <input type="hidden" value="<?php if ($linkIssueTypes) echo "1"; else echo "0" ?>" id="link_possible"/>
-        <?php if ($issue['remaining_estimate']): ?>
+
+        <?php if (isset($issue['remaining_estimate'])): ?>
             <input type="hidden"
                    value="<?php echo str_replace(" ", '', Util::transformTimeToString(Util::transformLogTimeToMinutes($issue['remaining_estimate'], $hoursPerDay, $daysPerWeek), $hoursPerDay, $daysPerWeek, 'short')); ?>"
-                   id="issue_remaining_estimate"/>
+                   id="issue_remaining_estimate" />
         <?php else: ?>
             <input type="hidden"
                    value="-1"
-                   id="issue_remaining_estimate"/>
+                   id="issue_remaining_estimate" />
         <?php endif ?>
         <input type="hidden" value="<?php echo $workflowUsed['id'] ?>" id="workflow_used_id" name="workflow_used_id"/>
         <input type="hidden" value="<?php echo $issue[Field::FIELD_ASSIGNEE_CODE] ?>" id="issue_ua_id" name="issue_ua_id"/>

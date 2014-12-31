@@ -2172,8 +2172,7 @@ $('document').ready(function () {
                             data: {
                                 id: workLogId,
                                 issue_id: issueId,
-                                remaining: remaining_estimate,
-                                comment: $('#log_work_work_description').val()
+                                remaining: remaining_estimate
                             },
                             success: function (response) {
                                 $('#issue_remaining_estimate').val(response);
