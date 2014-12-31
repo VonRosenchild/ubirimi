@@ -1,4 +1,5 @@
 <?php
+
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Util;
 use Ubirimi\Yongo\Repository\Issue\WorkLog;
@@ -13,7 +14,7 @@ while ($worklogs && $worklog = $worklogs->fetch_array(MYSQLI_ASSOC)) {
     $minutesLogged += Util::transformLogTimeToMinutes($worklog['time_spent'], $hoursPerDay, $daysPerWeek);
 }
 
-$percOriginalEstimate = 100;
+$percOriginalEstimate = 0;
 $percRemainingEstimate = 0;
 $percMinuteskLogged = 0;
 
@@ -25,6 +26,7 @@ if ($minutesLogged) {
     $percRemainingEstimate = $remainingEstimate * 100 / $max;
     $percMinuteskLogged = $minutesLogged * 100 / $max;
 }
+
 ?>
 
 <table width="100%" id="contentTimeTracking">
