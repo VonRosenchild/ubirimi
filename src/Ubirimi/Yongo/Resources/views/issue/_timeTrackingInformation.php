@@ -18,14 +18,13 @@ $percOriginalEstimate = 0;
 $percRemainingEstimate = 0;
 $percMinuteskLogged = 0;
 
-if ($minutesLogged) {
-    $max = max(array($originalEstimate, $remainingEstimate, $minutesLogged));
+$max = max(array($originalEstimate, $remainingEstimate, $minutesLogged));
 
-    // find the percentage for each value
-    $percOriginalEstimate = $originalEstimate * 100 / $max;
-    $percRemainingEstimate = $remainingEstimate * 100 / $max;
-    $percMinuteskLogged = $minutesLogged * 100 / $max;
-}
+// find the percentage for each value
+$percOriginalEstimate = $originalEstimate * 100 / $max;
+$percRemainingEstimate = $remainingEstimate * 100 / $max;
+$percMinuteskLogged = $minutesLogged * 100 / $max;
+
 
 ?>
 

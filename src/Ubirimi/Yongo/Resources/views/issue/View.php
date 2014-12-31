@@ -51,7 +51,7 @@ require_once __DIR__ . '/../_header.php';
                             </table>
 
                             <div id="ajax_time_tracking">
-                                <?php if ($workLogs): ?>
+                                <?php if ($workLogs || $issue['original_estimate'] || $issue['remaining_estimate']): ?>
                                     <?php require __DIR__ . '/_timeTrackingInformation.php' ?>
                                 <?php endif ?>
                             </div>
