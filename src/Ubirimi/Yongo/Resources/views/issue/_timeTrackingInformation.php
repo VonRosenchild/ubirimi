@@ -25,7 +25,6 @@ $percOriginalEstimate = $originalEstimate * 100 / $max;
 $percRemainingEstimate = $remainingEstimate * 100 / $max;
 $percMinuteskLogged = $minutesLogged * 100 / $max;
 
-
 ?>
 
 <table width="100%" id="contentTimeTracking">
