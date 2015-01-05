@@ -14,10 +14,7 @@
 
 	// Tasks to execute before the core Rocketeer Tasks
 	'before' => array(
-		'setup'   => array(
-			'cd /var/www/temp',
-			'git clone git@bitbucket.org:ubirimi137/products.git /var/www/temp'
-		),
+		'setup'   => array(),
 		'deploy'  => array(),
 		'cleanup' => array(),
 	),
