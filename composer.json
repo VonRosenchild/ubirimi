@@ -17,13 +17,13 @@
         "classmap": ["src/"]
     },
     "require": {
-        "symfony/event-dispatcher": "2.4.10",
-        "symfony/http-foundation": "2.4.10",
-        "symfony/http-kernel": "2.4.10",
-        "symfony/routing": "2.4.10",
-        "symfony/config": "2.4.10",
-        "symfony/yaml": "2.4.10",
-        "symfony/debug": "2.4.10",
+        "symfony/event-dispatcher": "2.5.*",
+        "symfony/http-foundation": "2.5.*",
+        "symfony/http-kernel": "2.5.*",
+        "symfony/routing": "2.5.*",
+        "symfony/config": "2.5.*",
+        "symfony/yaml": "2.5.*",
+        "symfony/debug": "2.5.*",
         "symfony/var-dumper": "3.0.*@dev",
         "pimple/pimple": "1.1",
         "guzzle/guzzle": "3.7.*",
@@ -34,6 +34,7 @@
         "swiftmailer/swiftmailer": "v5.0.2",
         "tecnick.com/tcpdf": "dev-master",
         "nyholm/zebra-image": "1.0.1",
-        "robmorgan/phinx": "*"
+        "robmorgan/phinx": "*",
+        "anahkiasen/rocketeer": "~2.0"
     }
 }
