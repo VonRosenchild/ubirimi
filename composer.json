@@ -33,6 +33,7 @@
         "sabre/vobject": "3.1.2",
         "swiftmailer/swiftmailer": "v5.0.2",
         "tecnick.com/tcpdf": "dev-master",
-        "nyholm/zebra-image": "1.0.1"
+        "nyholm/zebra-image": "1.0.1",
+        "robmorgan/phinx": "*"
     }
 }
