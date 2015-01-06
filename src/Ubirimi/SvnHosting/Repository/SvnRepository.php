@@ -343,7 +343,6 @@ class SvnRepository
         $escape_path = escapeshellarg($path);
         $message = ConsoleUtils::runCmdCaptureMessage(SVNUtils::svnadminCommand("create $escape_path"), $return);
         if ($return) {
-            die('oooooooooooooo');
             throw new Exception("Can't create subversion repository: " . $message);
         }
     }
