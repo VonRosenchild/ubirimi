@@ -69,6 +69,7 @@ class ConsoleUtils {
      */
     static public function runCmdCaptureMessageUnsafe($command, &$return) {
         ConsoleUtils::prepareLang();
+        echo $command;
         ob_start();
         passthru($command . " 2>&1", $return);
         $msg = ob_get_contents();
