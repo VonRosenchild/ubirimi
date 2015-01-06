@@ -27,7 +27,7 @@
 			'mv configurations/products/config.properties app/config/config.properties',
 			'rm -rf configurations',
 			'rm -rf /home/products/cache',
-			'mkdir -R /home/products/cache',
+			'mkdir -p /home/products/cache',
 			'chown www-data:www-data -R /home/products/cache'
 		),
 		'cleanup' => array(),
