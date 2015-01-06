@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "60d2abe775ea73ec71126446c604fed0",
+    "hash": "e5b7b515f918ebc5ab3581e69d7ccd74",
     "packages": [
         {
             "name": "anahkiasen/rocketeer",
