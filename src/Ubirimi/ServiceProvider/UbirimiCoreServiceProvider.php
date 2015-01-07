@@ -103,7 +103,7 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             return new \Savant3(array(
                     'template_path' => array(
                         __DIR__ . '/../Yongo/Resources/views/email/',
-                        __DIR__ . '/../General/Resources/views/email/',
+                        __DIR__ . '/../GeneralSettings/Resources/views/email/',
                         __DIR__ . '/../Calendar/Resources/views/email/',
                         __DIR__ . '/../SvnHosting/Resources/views/email/',
                         __DIR__ . '/../Resources/views/'
