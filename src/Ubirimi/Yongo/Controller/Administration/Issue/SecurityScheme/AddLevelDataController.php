@@ -90,13 +90,7 @@ class AddLevelDataController extends UbirimiController
                 if (!$duplication) {
                     $this->getRepository(IssueSecurityScheme::class)->addLevelData($levelId, $levelDataType, $user, $group, $role, $currentDate);
 
-                    $this->getRepository(UbirimiLog::class)->add(
-                        $session->get('client/id'),
-                        SystemProduct::SYS_PRODUCT_YONGO,
-                        $session->get('user/id'),
-                        'UPDATE Yongo Issue Security Scheme Level ' . $level['name'],
-                        $currentDate
-                    );
+                    $this->getLogger()->addInfo('UPDATE Yongo Issue Security Scheme Level ' . $level['name'], $this->getLoggerContext());
                 }
             }
 

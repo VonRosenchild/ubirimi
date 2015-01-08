@@ -44,14 +44,7 @@ class AssignUsersController extends UbirimiController
         $currentDate = Util::getServerCurrentDateTime();
         $this->getRepository(UbirimiGroup::class)->addData($groupId, $userArray, $currentDate);
 
-        $date = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'UPDATE Yongo Group Members ' . $group['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('UPDATE Yongo Group Members ' . $group['name'], $this->getLoggerContext());
 
         return new Response('');
     }

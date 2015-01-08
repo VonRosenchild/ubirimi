@@ -41,15 +41,7 @@ class DeleteLevelDataController extends UbirimiController
 
         $this->getRepository(IssueSecurityScheme::class)->deleteLevelDataById($issueSecuritySchemeLevelDataId);
 
-        $date = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'UPDATE Yongo Issue Security Scheme Level ' . $issueSecuritySchemeLevel['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('UPDATE Yongo Issue Security Scheme Level ' . $issueSecuritySchemeLevel['name'], $this->getLoggerContext());
 
         return new Response('');
     }

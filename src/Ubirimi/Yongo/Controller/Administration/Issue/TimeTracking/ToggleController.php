@@ -43,15 +43,7 @@ class ToggleController extends UbirimiController
             $logText = 'Deactivate';
         }
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            $logText . ' Yongo Time Tracking',
-            $currentDate
-        );
+        $this->getLogger()->addInfo($logText . ' Yongo Time Tracking', $this->getLoggerContext());
 
         return new RedirectResponse('/yongo/administration/issue-features/time-tracking');
     }

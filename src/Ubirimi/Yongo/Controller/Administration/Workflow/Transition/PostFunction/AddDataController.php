@@ -55,8 +55,7 @@ class AddDataController extends UbirimiController
 
                 $this->getRepository(WorkflowFunction::class)->addPostFunction($workflowDataId, $postFunctionId, $value);
 
-                $currentDate = Util::getServerCurrentDateTime();
-                $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Post Function', $currentDate);
+                $this->getLogger()->addInfo('ADD Yongo Workflow Post Function', $this->getLoggerContext());
             }
 
             return new RedirectResponse('/yongo/administration/workflow/transition-post-functions/' . $workflowDataId);

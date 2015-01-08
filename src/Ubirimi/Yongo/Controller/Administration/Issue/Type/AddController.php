@@ -50,13 +50,7 @@ class AddController extends UbirimiController
                 $iconName = 'generic.png';
                 $newIssueTypeId = $this->getRepository(IssueSettings::class)->createIssueType($session->get('client/id'), $name, $description, $subTaskFlag, $iconName, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Issue Type ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Issue Type ' . $name, $this->getLoggerContext());
 
                 if ($subTaskFlag) {
                     return new RedirectResponse('/yongo/administration/issue-sub-tasks');

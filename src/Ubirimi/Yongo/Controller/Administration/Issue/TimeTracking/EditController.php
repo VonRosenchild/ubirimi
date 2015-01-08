@@ -65,15 +65,7 @@ class EditController extends UbirimiController
                 $defaultUnit
             );
 
-            $currentDate = Util::getServerCurrentDateTime();
-
-            $this->getRepository(UbirimiLog::class)->add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_YONGO,
-                $session->get('user/id'),
-                'UPDATE Yongo Time Tracking Settings',
-                $currentDate
-            );
+            $this->getLogger()->addInfo('UPDATE Yongo Time Tracking Settings', $this->getLoggerContext());
 
             $session->set('yongo/settings/time_tracking_hours_per_day', $hoursPerDay);
             $session->set('yongo/settings/time_tracking_days_per_week', $daysPerWeek);

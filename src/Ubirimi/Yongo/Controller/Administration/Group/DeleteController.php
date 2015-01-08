@@ -38,15 +38,7 @@ class DeleteController extends UbirimiController
         $group = $this->getRepository(UbirimiGroup::class)->getMetadataById($groupId);
         $this->getRepository(UbirimiGroup::class)->deleteByIdForYongo($groupId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Group ' . $group['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Group ' . $group['name'], $this->getLoggerContext());
 
         return new Response('');
     }

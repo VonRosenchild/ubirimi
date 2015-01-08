@@ -62,8 +62,7 @@ class EditController extends UbirimiController
                     break;
             }
 
-            $currentDate = Util::getServerCurrentDateTime();
-            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Post Function', $currentDate);
+            $this->getLogger()->addInfo('UPDATE Yongo Workflow Post Function', $this->getLoggerContext());
 
             return new RedirectResponse('/yongo/administration/workflow/transition-post-functions/' . $workflowDataId);
         }
@@ -87,6 +86,7 @@ class EditController extends UbirimiController
 
         $sectionPageTitle = $session->get('client/settings/title_name') . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Update Post Function';
         $menuSelectedCategory = 'issue';
+
         return $this->render(__DIR__ . '/../../../../../Resources/views/administration/workflow/transition/post_function/EditData.php', get_defined_vars());
     }
 }

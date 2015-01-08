@@ -59,7 +59,7 @@ class AddDataController extends UbirimiController
                 $definitionData = 'cond_id=' . WorkflowCondition::CONDITION_ONLY_ASSIGNEE;
                 $this->getRepository(WorkflowCondition::class)->addConditionString($workflowDataId, $definitionData);
 
-                $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
+                $this->getLogger()->addInfo('ADD Yongo Workflow Condition' , $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflow/transition-conditions/' . $workflowDataId);
             } else
@@ -69,7 +69,7 @@ class AddDataController extends UbirimiController
 
                     $this->getRepository(WorkflowCondition::class)->addConditionString($workflowDataId, $definitionData);
 
-                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
+                    $this->getLogger()->addInfo('ADD Yongo Workflow Condition' , $this->getLoggerContext());
 
                     return new RedirectResponse('/yongo/administration/workflow/transition-conditions/' . $workflowDataId);
                 }
@@ -87,7 +87,7 @@ class AddDataController extends UbirimiController
 
                 $this->getRepository(WorkflowCondition::class)->addConditionString($workflowDataId, $conditionString);
 
-                $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Condition' , $currentDate);
+                $this->getLogger()->addInfo('ADD Yongo Workflow Condition' , $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflow/transition-conditions/' . $workflowDataId);
             }

@@ -48,15 +48,7 @@ class DeleteController extends UbirimiController
         $issueType = $this->getRepository(IssueType::class)->getById($oldId);
         $this->getRepository(IssueType::class)->deleteById($oldId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Issue Type ' . $issueType['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Issue Type ' . $issueType['name'], $this->getLoggerContext());
 
         return new Response('');
     }

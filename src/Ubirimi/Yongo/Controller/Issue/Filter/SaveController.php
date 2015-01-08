@@ -48,10 +48,10 @@ class SaveController extends UbirimiController
         if ($Id != -1) {
             $this->getRepository(IssueFilter::class)->updateById($Id, $filterName, $filterDescription, $filterData, $date);
             $Id = -1;
-            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo filter' . $filterName, $date);
+            $this->getLogger()->addInfo('UPDATE Yongo filter' . $filterName, $this->getLoggerContext());
         } else {
             $Id = $this->getRepository(IssueFilter::class)->save($loggedInUserId, $filterName, $filterDescription, $filterData, $date);
-            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo filter' . $filterName, $date);
+            $this->getLogger()->addInfo('ADD Yongo filter' . $filterName, $this->getLoggerContext());
         }
 
         return new Response($Id);

@@ -82,13 +82,7 @@ class EditController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(IssueLinkType::class)->update($linkTypeId, $name, $outwardDescription, $inwardDescription, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Issue Link Type ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Issue Link Type ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/issue-features/linking');
             }

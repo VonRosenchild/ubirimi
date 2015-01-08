@@ -46,15 +46,7 @@ class DeleteController extends UbirimiController
 
         $this->getRepository(IssueSettings::class)->deletePriorityById($oldId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Issue Priority ' . $priority['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Issue Priority ' . $priority['name'], $this->getLoggerContext());
 
         return new Response('');
     }

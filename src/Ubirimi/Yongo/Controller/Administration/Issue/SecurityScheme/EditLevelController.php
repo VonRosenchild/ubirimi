@@ -54,13 +54,7 @@ class EditLevelController extends UbirimiController
                 $date = Util::getServerCurrentDateTime();
                 $this->getRepository(IssueSecurityScheme::class)->updateLevelById($issueSecuritySchemeLevelId, $name, $description, $date);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Issue Security Scheme Level ' . $name,
-                    $date
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Issue Security Scheme Level ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/issue-security-scheme-levels/' . $issueSecurityScheme['id']);
             }

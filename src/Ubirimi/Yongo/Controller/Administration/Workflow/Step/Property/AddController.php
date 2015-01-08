@@ -65,7 +65,7 @@ class AddController extends UbirimiController
                     $currentDate = Util::getServerCurrentDateTime();
                     $this->getRepository(Workflow::class)->addStepProperty($stepId, $keyId, $value, $currentDate);
 
-                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'ADD Yongo Workflow Step Property' , $currentDate);
+                    $this->getLogger()->addInfo('ADD Yongo Workflow Step Property' , $this->getLoggerContext());
 
                     return new RedirectResponse('/yongo/administration/workflow/view-step-properties/' . $stepId);
                 }

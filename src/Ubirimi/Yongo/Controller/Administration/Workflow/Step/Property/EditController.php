@@ -68,7 +68,7 @@ class EditController extends UbirimiController
                     $currentDate = Util::getServerCurrentDateTime();
                     $this->getRepository(Workflow::class)->updateStepPropertyById($stepPropertyId, $keyId, $value, $currentDate);
 
-                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_YONGO, $loggedInUserId, 'UPDATE Yongo Workflow Step Property', $currentDate);
+                    $this->getLogger()->addInfo('UPDATE Yongo Workflow Step Property', $this->getLoggerContext());
 
                     return new RedirectResponse('/yongo/administration/workflow/view-step-properties/' . $stepId);
                 }
