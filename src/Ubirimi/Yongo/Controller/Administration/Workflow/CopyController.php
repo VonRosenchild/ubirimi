@@ -61,13 +61,7 @@ class CopyController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(Workflow::class)->copy($session->get('client/id'), $workflowId, $name, $description, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'Copy Yongo Workflow ' . $workflow['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('Copy Yongo Workflow ' . $workflow['name'], $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflows');
             }

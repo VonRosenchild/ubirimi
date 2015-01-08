@@ -58,13 +58,7 @@ class AddController extends UbirimiController
                     $this->getRepository(ScreenScheme::class)->addData($screenSchemeId, $operationId, $screenId, $currentDate);
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('client/id'),
-                    'ADD Yongo Screen Scheme ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Screen Scheme ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/screens/schemes');
             }

@@ -40,15 +40,7 @@ class DeleteController extends UbirimiController
         $this->getRepository(IssueTypeScreenScheme::class)->deleteDataByIssueTypeScreenSchemeId($Id);
         $this->getRepository(IssueTypeScreenScheme::class)->deleteById($Id);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Issue Type Screen Scheme ' . $issueTypeScreenScheme['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Issue Type Screen Scheme ' . $issueTypeScreenScheme['name'], $this->getLoggerContext());
 
         return new Response('');
     }

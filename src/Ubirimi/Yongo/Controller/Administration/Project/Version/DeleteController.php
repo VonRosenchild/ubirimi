@@ -40,14 +40,7 @@ class DeleteController extends UbirimiController
 
         $this->getRepository(IssueVersion::class)->deleteVersionById($releaseId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Project Version ' . $release['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Project Version ' . $release['name'], $this->getLoggerContext());
 
         return new Response('');
     }

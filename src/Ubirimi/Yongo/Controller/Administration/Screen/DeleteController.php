@@ -38,15 +38,7 @@ class DeleteController extends UbirimiController
         $screen = $this->getRepository(Screen::class)->getMetaDataById($Id);
         $this->getRepository(Screen::class)->deleteById($Id);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Screen ' . $screen['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Screen ' . $screen['name'], $this->getLoggerContext());
 
         return new Response('');
     }

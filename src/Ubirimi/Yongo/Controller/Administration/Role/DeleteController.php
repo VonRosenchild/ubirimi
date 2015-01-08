@@ -39,15 +39,7 @@ class DeleteController extends UbirimiController
         $permissionRole = $this->getRepository(Role::class)->getById($permissionRoleId);
         $this->getRepository(Role::class)->deleteById($permissionRoleId);
 
-        $date = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Project Role ' . $permissionRole['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Project Role ' . $permissionRole['name'], $this->getLoggerContext());
 
         return new Response('');
     }

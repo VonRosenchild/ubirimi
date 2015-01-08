@@ -70,13 +70,7 @@ class AddSubcomponentController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(YongoProject::class)->addComponent($projectId, $name, $description, $leader, $postParentComponentId, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Project Sub-Component ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Project Sub-Component ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/project/components/' . $projectId);
             }

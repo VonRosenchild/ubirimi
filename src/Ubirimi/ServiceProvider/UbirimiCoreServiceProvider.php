@@ -77,6 +77,7 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             $webProcessor = new WebProcessor();
 
             $logger->pushHandler(new StreamHandler(getcwd() . '/../logs/ubirimi.log', Logger::DEBUG));
+            $logger->pushHandler(new \DbMonologHandler(), Logger::DEBUG);
             $logger->pushProcessor($IntrospectionProcessor);
             $logger->pushProcessor($webProcessor);
 

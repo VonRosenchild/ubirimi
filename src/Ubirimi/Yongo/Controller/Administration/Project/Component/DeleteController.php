@@ -40,14 +40,7 @@ class DeleteController extends UbirimiController
 
         $this->getRepository(IssueComponent::class)->deleteById($componentId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Project Component ' . $component['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Project Component ' . $component['name'], $this->getLoggerContext());
 
         return new Response('');
     }

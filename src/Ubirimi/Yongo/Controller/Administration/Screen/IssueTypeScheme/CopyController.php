@@ -69,13 +69,7 @@ class CopyController extends UbirimiController
                     $copiedIssueTypeScreenScheme->addDataComplete($copiedIssueTypeScreenSchemeId, $data['issue_type_id'], $data['screen_scheme_id'], $currentDate);
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'Copy Yongo Issue Type Scheme ' . $issueTypeScheme['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('Copy Yongo Issue Type Scheme ' . $issueTypeScreenScheme['name'], $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/screens/issue-types');
             }

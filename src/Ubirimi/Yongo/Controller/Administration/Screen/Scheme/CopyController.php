@@ -65,13 +65,7 @@ class CopyController extends UbirimiController
                     $copiedScreenScheme->addData($copiedScreenSchemeId, $data['sys_operation_id'], $data['screen_id'], $currentDate);
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'Copy Yongo Screen Scheme ' . $screenScheme['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('Copy Yongo Screen Scheme ' . $screenScheme['name'], $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/screens/schemes');
             }

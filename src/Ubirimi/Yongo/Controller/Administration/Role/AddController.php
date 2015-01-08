@@ -52,13 +52,7 @@ class AddController extends UbirimiController
                 $date = Util::getServerCurrentDateTime();
                 $this->getRepository(Role::class)->add($session->get('client/id'), $name, $description, $date);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Project Role ' . $name,
-                    $date
-                );
+                $this->getLogger()->addInfo('ADD Yongo Project Role ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/roles');
             }

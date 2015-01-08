@@ -48,13 +48,7 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $issueTypeScheme->save($currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Workflow Scheme ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Workflow Scheme ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflows/schemes');
             }

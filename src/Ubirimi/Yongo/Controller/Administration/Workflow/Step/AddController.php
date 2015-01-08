@@ -73,13 +73,7 @@ class AddController extends UbirimiController
 
                 $this->getRepository(Workflow::class)->addStep($workflowId, $name, $StatusId, 0, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Workflow Step ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Workflow Step ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflow/view-as-text/' . $workflowId);
             }

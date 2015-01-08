@@ -73,13 +73,7 @@ class CopyController extends UbirimiController
                     $copiedWorkflowScheme->addData($copiedWorkflowSchemeId, $data['workflow_id'], $currentDate);
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'Copy Yongo Workflow Scheme ' . $workflowScheme['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('Copy Yongo Workflow Scheme ' . $workflowScheme['name'], $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflows/schemes');
             }

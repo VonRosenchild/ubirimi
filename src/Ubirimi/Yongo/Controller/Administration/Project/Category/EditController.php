@@ -56,13 +56,7 @@ class EditController extends UbirimiController
                 $dateUpdated = Util::getServerCurrentDateTime();
                 $this->getRepository(ProjectCategory::class)->updateById($categoryId, $name, $description, $dateUpdated);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Project Category ' . $name,
-                    $dateUpdated
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Project Category ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/project/categories');
             }

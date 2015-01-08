@@ -61,13 +61,7 @@ class ConfigureController extends UbirimiController
                 $lastOrder = $this->getRepository(Screen::class)->getLastOrderNumber($screenId);
                 $this->getRepository(Screen::class)->addData($screenId, $fieldId, ($lastOrder + 1), $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Screen Data ' . $screenMetadata['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Screen Data ' . $screenMetadata['name'], $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/screen/configure/' . $screenId);
             }

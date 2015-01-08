@@ -59,13 +59,7 @@ class EditController extends UbirimiController
                 $date = Util::getServerCurrentDateTime();
                 $this->getRepository(Role::class)->updateById($permissionRoleId, $name, $description, $date);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Project Role ' . $name,
-                    $date
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Project Role ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/roles');
             }

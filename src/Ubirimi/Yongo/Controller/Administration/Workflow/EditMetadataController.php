@@ -59,13 +59,7 @@ class EditMetadataController extends UbirimiController
 
                 $this->getRepository(Workflow::class)->updateMetaDataById($workflowId, $name, $description, $workflowIssueTypeSchemeId, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Workflow ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Workflow ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflows');
             }

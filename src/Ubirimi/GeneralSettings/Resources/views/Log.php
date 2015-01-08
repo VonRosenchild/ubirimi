@@ -35,7 +35,6 @@ require_once __DIR__ . '/_header.php';
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th>Product</th>
                     <th>User</th>
                     <th>Message</th>
                     <th>Date</th>
@@ -44,30 +43,6 @@ require_once __DIR__ . '/_header.php';
                 <tbody>
                 <?php while ($log = $logs->fetch_array(MYSQLI_ASSOC)): ?>
                     <tr>
-                        <td>
-                            <?php
-                                switch ($log['sys_product_id']) {
-                                    case SystemProduct::SYS_PRODUCT_YONGO:
-                                        echo 'Yongo';
-                                        break;
-                                    case SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS:
-                                        echo 'General';
-                                        break;
-                                    case SystemProduct::SYS_PRODUCT_CALENDAR:
-                                        echo 'Events';
-                                        break;
-                                    case SystemProduct::SYS_PRODUCT_AGILE:
-                                        echo 'Cheetah';
-                                        break;
-                                    case SystemProduct::SYS_PRODUCT_DOCUMENTADOR:
-                                        echo 'Documentador';
-                                        break;
-                                    case SystemProduct::SYS_PRODUCT_SVN_HOSTING:
-                                        echo 'SVN Hosting';
-                                        break;
-                                }
-                            ?>
-                        </td>
                         <td>
                             <?php echo $log['first_name'] . ' ' . $log['last_name']; ?>
                         </td>

@@ -43,13 +43,7 @@ class AssignDefaultGroupsController extends UbirimiController
         $this->getRepository(Role::class)->deleteDefaultGroupsByPermissionRoleId($permissionRoleId);
         $this->getRepository(Role::class)->addDefaultGroups($permissionRoleId, $groupArrayIds, $currentDate);
 
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'UPDATE Yongo Project Role ' . $permissionRole['name'] . ' Definition',
-            $currentDate
-        );
+        $this->getLogger()->addInfo('UPDATE Yongo Project Role ' . $permissionRole['name'] . ' Definition', $this->getLoggerContext());
 
         return new Response('');
     }

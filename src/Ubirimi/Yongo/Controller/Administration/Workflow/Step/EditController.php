@@ -59,13 +59,7 @@ class EditController extends UbirimiController
 
                 $this->getRepository(Workflow::class)->updateStepById($stepId, $name, $StatusId, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Workflow Step ' . $step['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Workflow Step ' . $step['name'], $this->getLoggerContext());
 
                 if ($source == 'workflow_text') {
                     return new RedirectResponse('/yongo/administration/workflow/view-as-text/' . $workflowId);

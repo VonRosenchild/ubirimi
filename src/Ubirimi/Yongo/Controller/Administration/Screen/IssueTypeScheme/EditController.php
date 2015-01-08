@@ -54,13 +54,7 @@ class EditController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(IssueTypeScreenScheme::class)->updateMetaDataById($issueTypeScreenSchemeId, $name, $description, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Issue Type Screen Scheme ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Issue Type Screen Scheme ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/screens/issue-types');
             }
