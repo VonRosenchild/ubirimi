@@ -61,8 +61,6 @@ class IndexController extends UbirimiController
             'array'
         );
 
-        $this->getLogger()->addInfo('ADD Yongo Workflow Scheme ', $this->getLoggerContext());
-
         $projectIdsArray = array();
         $projectIdsNames = array();
         for ($i = 0; $i < count($projects); $i++) {
