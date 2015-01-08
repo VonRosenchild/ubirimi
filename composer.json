@@ -35,6 +35,7 @@
         "tecnick.com/tcpdf": "dev-master",
         "nyholm/zebra-image": "1.0.1",
         "robmorgan/phinx": "*",
-        "anahkiasen/rocketeer": "~2.0"
+        "anahkiasen/rocketeer": "~2.0",
+        "monolog/monolog": "1.12.*@dev"
     }
 }
