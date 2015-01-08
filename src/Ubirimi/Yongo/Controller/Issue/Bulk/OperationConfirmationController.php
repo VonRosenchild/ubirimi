@@ -55,11 +55,10 @@ class OperationConfirmationController extends UbirimiController
                         $issue = $this->getRepository(Issue::class)->getByParameters(array('issue_id' => $issueIds[$i]), $loggedInUserId);
 
                         $issueEvent = new IssueEvent($issue, null, IssueEvent::STATUS_DELETE);
-                        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr']);
+                        $this->getLogger()->addInfo('DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr'], $this->getLoggerContext());
 
                         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
-                        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
-                    }
+                                            }
 
                     $this->getRepository(Issue::class)->deleteById($issueIds[$i]);
                     $this->getRepository(IssueAttachment::class)->deleteByIssueId($issueIds[$i]);

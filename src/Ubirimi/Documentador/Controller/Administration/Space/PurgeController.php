@@ -51,6 +51,6 @@ class PurgeController extends UbirimiController
         $this->getRepository(Entity::class)->deleteById($entityId);
 
         $date = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador entity ' . $entity['name'], $date);
+        $this->getLogger()->addInfo('DELETE Documentador entity ' . $entity['name'], $this->getLoggerContext());
     }
 }

@@ -74,7 +74,7 @@ class AddController extends UbirimiController
                     $space = new Space($clientId, $loggedInUserId, $name, $code, $description);
                     $spaceId = $space->save($currentDate);
 
-                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador space ' . $name, $date);
+                    $this->getLogger()->addInfo('ADD Documentador space ' . $name, $this->getLoggerContext());
 
                     // set space permission for current user
                     $this->getRepository(Space::class)->addUserAllPermissions($spaceId, $loggedInUserId);

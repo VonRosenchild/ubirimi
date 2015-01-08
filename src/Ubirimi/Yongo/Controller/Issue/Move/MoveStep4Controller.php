@@ -108,10 +108,9 @@ class MoveStep4Controller extends UbirimiController
             $this->getRepository(Issue::class)->updateHistory($issueId, $loggedInUserId, $fieldChanges, $currentDate);
 
             $issueEvent = new IssueEvent(null, null, IssueEvent::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
-            $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);
+            $this->getLogger()->addInfo('MOVE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr'], $this->getLoggerContext());
 
             UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
-            UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
 
             return new RedirectResponse(LinkHelper::getYongoIssueViewLinkJustHref($issueId));
         }

@@ -52,9 +52,7 @@ class AddController extends UbirimiController
         $this->getRepository(IssueComment::class)->add($issueId, $session->get('user/id'), $content, $date);
 
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_UPDATE, $content);
-        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'ADD Yongo issue comment ' . $issue['project_code'] . '-' . $issue['nr']);
-
-        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
+        $this->getLogger()->addInfo('ADD Yongo issue comment ' . $issue['project_code'] . '-' . $issue['nr'], $this->getLoggerContext());
 
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_COMMENT_EMAIL, $issueEvent);
 

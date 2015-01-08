@@ -44,7 +44,7 @@ class DeleteController extends UbirimiController
 
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'DELETE Documentador space ' . $space['name'], $date);
+        $this->getLogger()->addInfo('DELETE Documentador space ' . $space['name'], $this->getLoggerContext());
 
         return new Response('');
     }

@@ -63,7 +63,7 @@ class UploadAttachmentController extends UbirimiController
                     // add the file to the list of files
                     $attachmentId = $this->getRepository(EntityAttachment::class)->add($entityId, $filename, $currentDate);
 
-                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment ' . $filename, $currentDate);
+                    $this->getLogger()->addInfo('ADD Documentador entity attachment ' . $filename, $this->getLoggerContext());
 
                     $revisionNumber = 1;
 
@@ -86,7 +86,7 @@ class UploadAttachmentController extends UbirimiController
                 $this->getRepository(EntityAttachment::class)->addRevision($attachmentId, $loggedInUserId, $currentDate);
 
                 if ($revisionNumber > 1) {
-                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador entity attachment revision to ' . $filename, $currentDate);
+                    $this->getLogger()->addInfo('ADD Documentador entity attachment revision to ' . $filename, $this->getLoggerContext());
                 }
 
                 $baseFileName = pathinfo($filename, PATHINFO_FILENAME);

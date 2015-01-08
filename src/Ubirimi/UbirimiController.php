@@ -23,6 +23,11 @@ use Ubirimi\Container\UbirimiContainer;
 
 class UbirimiController
 {
+
+    public function getLogger() {
+        return UbirimiContainer::get()['logger'];
+    }
+
     public function getRepository($name)
     {
         return UbirimiContainer::get()['repository']->get($name);
@@ -31,5 +36,11 @@ class UbirimiController
     public function render($path, $variables)
     {
         return array($path, $variables);
+    }
+
+    public function getLoggerContext() {
+
+        return array('client_id' => UbirimiContainer::get()['session']->get('client/id'),
+                     'user_id' => UbirimiContainer::get()['session']->get('user/id'));
     }
 }

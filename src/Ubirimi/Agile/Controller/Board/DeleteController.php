@@ -40,13 +40,7 @@ class DeleteController extends UbirimiController
         $this->getRepository(Board::class)->deleteById($boardId);
 
         $date = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_AGILE,
-            $session->get('user/id'),
-            'DELETE Cheetah Agile Board ' . $board['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('DELETE Cheetah Agile Board ' . $board['name'], $this->getLoggerContext());
 
         return new Response('');
     }

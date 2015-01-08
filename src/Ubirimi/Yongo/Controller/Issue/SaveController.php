@@ -115,11 +115,10 @@ class SaveController extends UbirimiController
 
         $issueEvent = new IssueEvent($issue, $project, IssueEvent::STATUS_NEW);
 
-        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'ADD Yongo issue ' . $project['code'] . '-' . $issue['nr']);
+        $this->getLogger()->addInfo('ADD Yongo issue ' . $project['code'] . '-' . $issue['nr'], $this->getLoggerContext());
 
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE, $issueEvent);
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
-        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
 
         // clean the search information
         $session->remove('array_ids');

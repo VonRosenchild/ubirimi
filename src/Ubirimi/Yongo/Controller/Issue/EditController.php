@@ -128,10 +128,9 @@ class EditController extends UbirimiController
         UbirimiContainer::get()['session']->remove('added_attachments_in_screen');
 
         $issueEvent = new IssueEvent(null, null, IssueEvent::STATUS_UPDATE, array('oldIssueData' => $oldIssueData, 'fieldChanges' => $fieldChanges));
-        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'UPDATE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr']);
+        $this->getLogger()->addInfo('UPDATE Yongo issue ' . $oldIssueData['project_code'] . '-' . $oldIssueData['nr'], $this->getLoggerContext());
 
         UbirimiContainer::get()['dispatcher']->dispatch(YongoEvents::YONGO_ISSUE_EMAIL, $issueEvent);
-        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
 
         return new Response('');
     }

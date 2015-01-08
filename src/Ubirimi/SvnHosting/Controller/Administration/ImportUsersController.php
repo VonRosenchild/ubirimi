@@ -51,9 +51,8 @@ class ImportUsersController extends UbirimiController
             $this->getRepository(SvnRepository::class)->updateAuthz();
 
             $svnEvent = new SvnHostingEvent($svnRepo['name'], $userRec);
-            $svnLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_SVN_HOSTING, sprintf('SVN users imported into SVN Repository [%s]', $svnRepo['name']));
+            $this->getLogger()->addInfo(sprintf('SVN users imported into SVN Repository [%s]', $svnRepo['name']), $this->getLoggerContext());
 
-            UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $svnLogEvent);
             UbirimiContainer::get()['dispatcher']->dispatch(SvnHostingEvents::IMPORT_USERS, $svnEvent);
         }
 

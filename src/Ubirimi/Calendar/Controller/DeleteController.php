@@ -42,13 +42,7 @@ class DeleteController extends UbirimiController
 
         $this->getRepository(UbirimiCalendar::class)->deleteById($calendarId);
 
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_CALENDAR,
-            $session->get('user/id'),
-            'DELETE EVENTS calendar ' . $calendar['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('DELETE EVENTS calendar ' . $calendar['name'], $this->getLoggerContext());
 
         if ($calendar['default_flag']) {
             // create the default calendar again

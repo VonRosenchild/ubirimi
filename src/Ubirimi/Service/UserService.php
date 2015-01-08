@@ -109,10 +109,6 @@ class UserService extends UbirimiService
             )
         );
 
-        // todo: fix the commented lines
-//        $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, 'ADD User ' . $data['username']);
-
-//        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
         UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::USER, $userEvent);
 
         return $userId;

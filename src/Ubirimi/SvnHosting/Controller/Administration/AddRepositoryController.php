@@ -102,9 +102,7 @@ class AddRepositoryController extends UbirimiController
 
                 UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::USER, $userEvent);
 
-                $svnLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_SVN_HOSTING, 'ADD SVN Repository ' . Util::slugify($name));
-
-                UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $svnLogEvent);
+                $this->getLogger()->addInfo('ADD SVN Repository ' . Util::slugify($name), $this->getLoggerContext());
 
                 return new RedirectResponse('/svn-hosting/administration/all-repositories');
             }

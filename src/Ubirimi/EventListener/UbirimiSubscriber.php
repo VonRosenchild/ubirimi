@@ -28,11 +28,6 @@ use Ubirimi\Event\UserEvent;
 
 class UbirimiSubscriber implements EventSubscriberInterface
 {
-    public function onLog(LogEvent $event)
-    {
-        UbirimiContainer::get()['log']->log($event->getProductId(), $event->getMessage());
-    }
-
     public function onUserCustomer(UserEvent $event) {
         if (UserEvent::STATUS_NEW == $event->getStatus()) {
 
@@ -98,7 +93,6 @@ class UbirimiSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            UbirimiEvents::LOG => 'onLog',
             UbirimiEvents::USER => 'onUser',
             UbirimiEvents::FEEDBACK => 'onFeedback',
             UbirimiEvents::PASSWORD_RECOVER => 'onPasswordRecover');

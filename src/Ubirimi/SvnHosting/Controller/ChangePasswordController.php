@@ -67,9 +67,8 @@ class ChangePasswordController extends UbirimiController
                 $this->getRepository(SvnRepository::class)->updateAuthz();
 
                 $svnEvent = new SvnHostingEvent($svnRepo['name'], $user, array('password' => $password));
-                $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_SVN_HOSTING, sprintf('SVN Change Password for [%s]', $svnRepo['name']));
+                $this->getLogger()->addInfo(sprintf('SVN Change Password for [%s]', $svnRepo['name']), $this->getLoggerContext());
 
-                UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
                 UbirimiContainer::get()['dispatcher']->dispatch(SvnHostingEvents::PASSWORD_UPDATE, $svnEvent);
 
                 return new Response('1');

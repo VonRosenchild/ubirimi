@@ -19,6 +19,10 @@
 
 namespace Ubirimi\ServiceProvider;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Monolog\Processor\IntrospectionProcessor;
+use Monolog\Processor\WebProcessor;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
@@ -66,8 +70,17 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             return new EventDispatcher();
         });
 
-        $pimple['log'] = $pimple->share(function($pimple) {
-            return new LogService($pimple['session']);
+        $pimple['logger'] = $pimple->share(function() {
+
+            $logger = new Logger('ubirimi.activity');
+            $IntrospectionProcessor = new IntrospectionProcessor();
+            $webProcessor = new WebProcessor();
+
+            $logger->pushHandler(new StreamHandler(getcwd() . '/../logs/ubirimi.log', Logger::DEBUG));
+            $logger->pushProcessor($IntrospectionProcessor);
+            $logger->pushProcessor($webProcessor);
+
+            return $logger;
         });
 
         $pimple['email'] = $pimple->share(function($pimple) {

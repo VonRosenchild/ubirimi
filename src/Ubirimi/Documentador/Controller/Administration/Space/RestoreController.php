@@ -44,7 +44,7 @@ class RestoreController extends UbirimiController
 
         $currentDate = Util::getServerCurrentDateTime();
 
-        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'RESTORE Documentador entity ' . $entity['name'], $currentDate);
+        $this->getLogger()->addInfo('RESTORE Documentador entity ' . $entity['name'], $this->getLoggerContext());
 
         return new Response('');
     }

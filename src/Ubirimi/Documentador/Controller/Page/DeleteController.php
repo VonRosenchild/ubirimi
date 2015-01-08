@@ -45,7 +45,7 @@ class DeleteController extends UbirimiController
         $this->getRepository(Entity::class)->moveToTrash($pageId);
 
         $date = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'MOVE TO TRASH Documentador entity ' . $entity['name'], $date);
+        $this->getLogger()->addInfo('MOVE TO TRASH Documentador entity ' . $entity['name'], $this->getLoggerContext());
 
         return new Response('');
     }

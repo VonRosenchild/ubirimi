@@ -76,7 +76,7 @@ class AddController extends UbirimiController
             $currentDate = Util::getServerCurrentDateTime();
             $pageId = $page->save($currentDate);
 
-            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'ADD Documentador Entity ' . $name, $currentDate);
+            $this->getLogger()->addInfo('ADD Documentador Entity ' . $name, $this->getLoggerContext());
 
             return new RedirectResponse('/documentador/page/view/' . $pageId);
         }

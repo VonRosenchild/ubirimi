@@ -68,7 +68,7 @@ class EditController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(Space::class)->updateById($spaceId, $name, $code, $homepageId, $description, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador space ' . $name, $currentDate);
+                $this->getLogger()->addInfo('UPDATE Documentador space ' . $name, $this->getLoggerContext());
 
                 if ($backLink == 'space_tools') {
                     return new RedirectResponse('/documentador/administration/space-tools/overview/' . $spaceId);

@@ -217,7 +217,7 @@ class EditController extends UbirimiController
                 }
             }
 
-            $this->getRepository(UbirimiLog::class)->add($session->get('client/id'), SystemProduct::SYS_PRODUCT_CALENDAR, $session->get('user/id'),'UPDATE EVENTS event ' . $name, $date);
+            $this->getLogger()->addInfo('UPDATE EVENTS event ' . $name, $this->getLoggerContext());
 
             return new RedirectResponse($sourcePageLink);
         }

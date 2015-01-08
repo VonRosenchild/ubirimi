@@ -86,7 +86,7 @@ class EditController extends UbirimiController
 
             $this->getRepository(Entity::class)->deleteAllSnapshotsByEntityIdAndUserId($entityId, $loggedInUserId);
 
-            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $loggedInUserId, 'UPDATE Documentador entity ' . $name, $date);
+            $this->getLogger()->addInfo('UPDATE Documentador entity ' . $name, $this->getLoggerContext());
 
             return new RedirectResponse('/documentador/page/view/' . $entityId);
         }

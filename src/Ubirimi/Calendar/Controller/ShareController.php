@@ -62,8 +62,7 @@ class ShareController extends UbirimiController
 
             UbirimiContainer::get()['dispatcher']->dispatch(CalendarEvents::CALENDAR_SHARE, $calendarEvent);
 
-            $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Share Calendar ' . $calendar['name']);
-            UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
+            $this->getLogger()->addInfo('Share Calendar ' . $calendar['name'], $this->getLoggerContext());
         }
 
         return new Response('');

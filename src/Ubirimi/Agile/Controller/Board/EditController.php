@@ -63,13 +63,7 @@ class EditController extends UbirimiController
 
                 $this->getRepository(Board::class)->updateMetadata($session->get('client/id'), $boardId, $boardName, $boardDescription, $date);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_AGILE,
-                    $session->get('user/id'),
-                    'UPDATE Cheetah Agile Board ' . $boardName,
-                    $date
-                );
+                $this->getLogger()->addInfo('UPDATE Cheetah Agile Board ' . $boardName, $this->getLoggerContext());
 
                 return new RedirectResponse('/agile/boards');
             }

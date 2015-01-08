@@ -64,13 +64,7 @@ class SettingsController extends UbirimiController
                 }
             }
 
-            $this->getRepository(UbirimiLog::class)->add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_CALENDAR,
-                $session->get('user/id'),
-                'UPDATE Calendar Default Reminders ' . $calendar['name'],
-                $date
-            );
+            $this->getLogger()->addInfo('UPDATE Calendar Default Reminders ' . $calendar['name'], $this->getLoggerContext());
 
             return new RedirectResponse('/calendar/calendars');
         }

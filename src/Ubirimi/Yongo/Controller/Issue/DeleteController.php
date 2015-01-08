@@ -58,8 +58,7 @@ class DeleteController extends UbirimiController
             $this->getRepository(Issue::class)->deleteById($childIssue['id']);
         }
 
-        $issueLogEvent = new LogEvent(SystemProduct::SYS_PRODUCT_YONGO, 'DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr']);
-        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $issueLogEvent);
+        $this->getLogger()->addInfo('DELETE Yongo issue ' . $issue['project_code'] . '-' . $issue['nr'], $this->getLoggerContext());
 
         if ($session->has('last_search_parameters')) {
             return new Response(json_encode(array(

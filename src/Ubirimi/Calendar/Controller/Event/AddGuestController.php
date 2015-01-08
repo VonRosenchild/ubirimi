@@ -49,7 +49,7 @@ class AddGuestController extends UbirimiController
         $event = $this->getRepository(CalendarEvent::class)->getById($eventId, 'array');
         $userThatShares = $this->getRepository(UbirimiUser::class)->getById($session->get('user/id'));
 
-        $logEvent = new LogEvent(SystemProduct::SYS_PRODUCT_CALENDAR, 'Add Guest for Event ' . $event['name']);
+        $this->getLogger()->addInfo('Add Guest for Event ' . $event['name'], $this->getLoggerContext());
         $calendarEvent = new CalEvent(
             null,
             array(
@@ -60,7 +60,6 @@ class AddGuestController extends UbirimiController
             )
         );
 
-        UbirimiContainer::get()['dispatcher']->dispatch(UbirimiEvents::LOG, $logEvent);
         UbirimiContainer::get()['dispatcher']->dispatch(CalendarEvents::CALENDAR_EVENT_GUEST, $calendarEvent);
 
         return new Response('');

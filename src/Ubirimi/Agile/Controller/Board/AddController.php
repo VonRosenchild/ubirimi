@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Ubirimi\Agile\Repository\Board\Board;
+use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\General\UbirimiClient;
 use Ubirimi\Repository\General\UbirimiLog;
 use Ubirimi\SystemProduct;
@@ -75,13 +76,7 @@ class AddController extends UbirimiController
                 $boardId = $board->save($session->get('user/id'), $currentDate);
                 $board->addDefaultColumnData($session->get('client/id'), $boardId);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_AGILE,
-                    $session->get('user/id'),
-                    'ADD Cheetah Agile Board ' . $name,
-                    $date
-                );
+                $this->getLogger()->addInfo('ADD Cheetah Agile Board ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/agile/boards');
             }
