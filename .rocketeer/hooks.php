@@ -24,16 +24,24 @@
 		'setup'   => array(),
 		'deploy'  => array(
 			'git clone git@bitbucket.org:ubirimi137/configurations.git',
+			'echo Setting up configurations\n',
 			'mv configurations/products/config.properties app/config/config.properties',
-			'rm -rf configurations',
+			'mv configurations/products/phinx.yml phinx.yml',
+			'echo Removing cache\n',
 			'rm -rf /home/products/cache',
 			'mkdir -p /home/products/cache',
-			'chown www-data:www-data -R /home/products/cache'
+			'Setting up permissions\n',
+			'chown www-data:www-data -R /home/products/cache',
+			'echo Running migrations\n',
+			'php vender/bin/phinx migrate -e production'
 		),
-		'cleanup' => array(),
+		'cleanup' => array(
+			'echo Cleaning up\n',
+			'rm -rf /home/products/.rocketeer',
+			'rm -rf configurations',
+		),
 	),
 
 	// Custom Tasks to register with Rocketeer
 	'custom' => array(),
-
 );

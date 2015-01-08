@@ -1,8 +1,14 @@
+v 2.19
+  - introduce monolog for logging
+
+
 v 2.18
   - removed a lot of deprecated stuff
   - fix many issues with time tracking
   - introduce 3 new notification events related to work logs
   - fixed issues
+  - introduce rocketeer for deployment
+  - introduce phinx for running migrations
 
 v 2.17
   - various bug fixes
