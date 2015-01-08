@@ -61,13 +61,7 @@ class EditController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(Organization::class)->updateById($organizationId, $name, $description, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_HELP_DESK,
-                    $session->get('user/id'),
-                    'UPDATE Organization ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Organization ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/helpdesk/administration/organizations');
             }

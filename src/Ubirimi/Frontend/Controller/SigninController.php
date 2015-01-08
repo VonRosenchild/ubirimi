@@ -68,7 +68,7 @@ class SigninController extends UbirimiController
                     UbirimiContainer::get()['login.time']->userSaveLoginTime($userData['id']);
 
                     $date = Util::getServerCurrentDateTime();
-                    $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $userData['id'], 'LOG IN', $date);
+                    $this->getLogger()->addInfo('LOG IN', $this->getLoggerContext());
 
                     if ($context) {
                         return new RedirectResponse($httpHOST . $context);

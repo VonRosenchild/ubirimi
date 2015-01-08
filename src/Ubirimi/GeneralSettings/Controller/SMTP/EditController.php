@@ -75,13 +75,7 @@ class EditController extends UbirimiController
                 $date
             );
 
-            $this->getRepository(UbirimiLog::class)->add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
-                $session->get('user/id'),
-                'UPDATE SMTP Server ' . $name,
-                $date
-            );
+            $this->getLogger()->addInfo('UPDATE SMTP Server ' . $name, $this->getLoggerContext());
 
             $session->set('client/settings/smtp', $this->getRepository(SMTPServer::class)->getById($smtpServerId));
 

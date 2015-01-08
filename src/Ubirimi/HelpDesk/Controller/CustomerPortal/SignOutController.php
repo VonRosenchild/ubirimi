@@ -34,13 +34,7 @@ class SignOutController extends UbirimiController
     {
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->has('client/id'),
-            SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
-            $session->get('user/id'),
-            'LOG OUT',
-            $date
-        );
+        $this->getLogger()->addInfo('LOG OUT', $this->getLoggerContext());
 
         // Unset all of the session variables.
         $session->invalidate();

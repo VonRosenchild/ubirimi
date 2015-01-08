@@ -53,13 +53,7 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(Organization::class)->create($session->get('client/id'), $name, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_HELP_DESK,
-                    $session->has('user/id'),
-                    'ADD Organization ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Organization ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/helpdesk/administration/organizations');
             }

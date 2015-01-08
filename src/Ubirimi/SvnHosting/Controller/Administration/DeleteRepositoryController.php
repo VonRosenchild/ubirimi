@@ -55,13 +55,7 @@ class DeleteRepositoryController extends UbirimiController
         /* refresh apache config */
         $this->getRepository(SvnRepository::class)->refreshApacheConfig();
 
-        $this->getRepository(UbirimiLog::class)->add(
-            $clientId,
-            SystemProduct::SYS_PRODUCT_SVN_HOSTING,
-            $loggedInUserId,
-            'DELETE SVN Repository ' . $repo['name'],
-            Util::getServerCurrentDateTime()
-        );
+        $this->getLogger()->addInfo('DELETE SVN Repository ' . $repo['name'], $this->getLoggerContext());
 
         return new Response('');
     }

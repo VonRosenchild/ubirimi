@@ -68,13 +68,7 @@ class EditController extends UbirimiController
                 $date = Util::getServerCurrentDateTime();
                 $this->getRepository(Tag::class)->updateById($tagId, $name, $description, $date);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_QUICK_NOTES,
-                    $session->get('user/id'),
-                    'UPDATE NOTEBOOK tag ' . $name,
-                    $date
-                );
+                $this->getLogger()->addInfo('UPDATE NOTEBOOK tag ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/quick-notes/tag/all');
             }

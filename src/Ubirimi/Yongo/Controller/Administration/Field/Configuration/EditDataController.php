@@ -46,15 +46,7 @@ class EditDataController extends UbirimiController
 
         $this->getRepository(FieldConfiguration::class)->updateData($fieldConfigurationId, $fieldId, $visibleFlag, $requiredFlag);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'UPDATE Yongo Field Configuration ' . $fieldConfiguration['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('UPDATE Yongo Field Configuration ' . $fieldConfiguration['name'], $this->getLoggerContext());
 
         return new RedirectResponse('/yongo/administration/field-configuration/edit/' . $fieldConfigurationId);
     }

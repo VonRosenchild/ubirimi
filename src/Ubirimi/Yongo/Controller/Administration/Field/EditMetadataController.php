@@ -59,13 +59,7 @@ class EditMetadataController extends UbirimiController
 
                 $this->getRepository(CustomField::class)->updateMetaDataById($Id, $name, $description, $date);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Custom Field ' . $name,
-                    $date
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Custom Field ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/custom-fields');
             }

@@ -147,13 +147,7 @@ class EditController extends UbirimiController
 
                 $userUpdated = $this->getRepository(UbirimiUser::class)->getById($userId);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
-                    $session->get('user/id'),
-                    'UPDATE User ' . $userUpdated['username'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE User ' . $userUpdated['username'], $this->getLoggerContext());
 
                 if ($location == 'user_list') {
                     return new RedirectResponse('/general-settings/users');

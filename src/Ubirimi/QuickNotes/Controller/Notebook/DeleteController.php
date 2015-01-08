@@ -42,13 +42,7 @@ class DeleteController extends UbirimiController
 
         $this->getRepository(Notebook::class)->deleteById($notebookId);
 
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_QUICK_NOTES,
-            $session->get('user/id'),
-            'DELETE QUICK NOTES notebook ' . $notebook['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('DELETE QUICK NOTES notebook ' . $notebook['name'], $this->getLoggerContext());
 
         return new Response('');
     }

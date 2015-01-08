@@ -54,13 +54,7 @@ class AddController extends UbirimiController
                     $this->getRepository(FieldConfigurationScheme::class)->addData($fieldConfigurationSchemeId, null, $issueType['id'], $currentDate);
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Field Configuration Scheme ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Field Configuration Scheme ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/field-configurations/schemes');
             }

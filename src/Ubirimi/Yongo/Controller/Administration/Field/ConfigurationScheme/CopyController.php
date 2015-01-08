@@ -85,13 +85,7 @@ class CopyController extends UbirimiController
                     );
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'Copy Yongo Field Configuration Scheme ' . $fieldConfigurationScheme['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('Copy Yongo Field Configuration Scheme ' . $fieldConfigurationScheme['name'], $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/field-configurations/schemes');
             }

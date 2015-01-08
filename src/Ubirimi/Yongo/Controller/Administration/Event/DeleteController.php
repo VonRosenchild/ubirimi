@@ -37,18 +37,9 @@ class DeleteController extends UbirimiController
         $eventId = $request->request->get('id');
 
         $event = $this->getRepository(IssueEvent::class)->getById($eventId);
-
         $this->getRepository(IssueEvent::class)->deleteById($eventId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Event ' . $event['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Event ' . $event['name'], $this->getLoggerContext());
 
         return new Response('');
     }

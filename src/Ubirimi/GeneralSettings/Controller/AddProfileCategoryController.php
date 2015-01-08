@@ -27,7 +27,7 @@ Util::checkUserIsLoggedInAndRedirect();
             $date = Util::getServerCurrentDateTime();
             UserProfileCategory::add($clientId, $name, $description, $date);
 
-            $this->getRepository(UbirimiLog::class)->add($clientId, SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS, $loggedInUserId, 'ADD Profile Category ' . $name, $date);
+            $this->getLogger()->addInfo('ADD Profile Category ' . $name, $this->ge);
 
             return new RedirectResponse('/general-settings/users/profile-manager');
         }

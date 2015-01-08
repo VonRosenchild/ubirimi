@@ -41,13 +41,7 @@ class DeleteController extends UbirimiController
 
         $this->getRepository(Tag::class)->deleteById($tagId);
 
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_QUICK_NOTES,
-            $session->get('user/id'),
-            'DELETE QUICK NOTES tag  ' . $tag['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('DELETE QUICK NOTES tag  ' . $tag['name'], $this->getLoggerContext());
 
         return new Response('');
     }

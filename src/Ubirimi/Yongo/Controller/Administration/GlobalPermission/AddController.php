@@ -57,13 +57,7 @@ class AddController extends UbirimiController
             if (!$permissionData) {
                 $this->getRepository(GlobalPermission::class)->addDataForGroupId($session->get('client/id'), $permissionId, $groupId, $date);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Global Permission ' . $permission['name'] . ' to group ' . $group['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Global Permission ' . $permission['name'] . ' to group ' . $group['name'], $this->getLoggerContext());
             }
 
             return new RedirectResponse('/yongo/administration/global-permissions');

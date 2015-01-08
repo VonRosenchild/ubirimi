@@ -55,13 +55,7 @@ class EditMetadataController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(FieldConfigurationScheme::class)->updateMetaDataById($fieldConfigurationSchemeId, $name, $description, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Field Configuration Scheme ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Field Configuration Scheme ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/field-configurations/schemes');
             }

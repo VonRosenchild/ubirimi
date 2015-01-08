@@ -52,13 +52,7 @@ class AddController extends UbirimiController
                 $event = new IssueEvent($session->get('client/id'), $name, $description);
                 $event->save($currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Event ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Event ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/events');
             }

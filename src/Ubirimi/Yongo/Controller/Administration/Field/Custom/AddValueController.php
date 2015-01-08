@@ -56,13 +56,7 @@ class AddValueController extends UbirimiController
 
                 $this->getRepository(Field::class)->addData($customFieldId, $value, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Field Custom Value ' . $value,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Field Custom Value ' . $value, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/custom-fields/define/' . $customFieldId);
             }

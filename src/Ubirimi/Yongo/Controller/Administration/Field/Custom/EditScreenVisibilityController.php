@@ -69,13 +69,7 @@ class EditScreenVisibilityController extends UbirimiController
                 $this->getRepository(FieldConfiguration::class)->addCompleteData($fieldConfiguration['id'], $fieldId, 1, 0, '');
             }
 
-            $this->getRepository(UbirimiLog::class)->add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_YONGO,
-                $session->get('user/id'),
-                'UPDATE Yongo Custom Field ' . $field['name'],
-                $currentDate
-            );
+            $this->getLogger()->addInfo('UPDATE Yongo Custom Field ' . $field['name'], $this->getLoggerContext());
 
             if ($field['sys_field_type_id'] == Field::CUSTOM_FIELD_TYPE_SELECT_LIST_SINGLE_CODE_ID) {
                 return new RedirectResponse('/yongo/administration/custom-fields/define/' . $fieldId);

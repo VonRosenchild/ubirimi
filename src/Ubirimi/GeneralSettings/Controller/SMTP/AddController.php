@@ -74,13 +74,7 @@ class AddController extends UbirimiController
                 $date
             );
 
-            $this->getRepository(UbirimiLog::class)->add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
-                $session->get('user/id'),
-                'ADD SMTP Server ' . $name,
-                $date
-            );
+            $this->getLogger()->addInfo('ADD SMTP Server ' . $name, $this->getLoggerContext());
 
             return new RedirectResponse('/general-settings/smtp-settings');
         }

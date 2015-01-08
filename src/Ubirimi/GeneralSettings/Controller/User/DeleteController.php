@@ -42,13 +42,7 @@ class DeleteController extends UbirimiController
         // todo: delete the avatar, if any
 
         $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
-            $session->get('user/id'),
-            'DELETE User ' . $user['username'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE User ' . $user['username'], $this->getLoggerContext());
 
         return new Response('');
     }

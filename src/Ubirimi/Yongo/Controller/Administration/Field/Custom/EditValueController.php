@@ -60,13 +60,7 @@ class EditValueController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $this->getRepository(Field::class)->updateDataById($valueId, $value, $currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'UPDATE Yongo Custom Field Value ' . $value,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('UPDATE Yongo Custom Field Value ' . $value, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/custom-fields/define/' . $customFieldId);
             }

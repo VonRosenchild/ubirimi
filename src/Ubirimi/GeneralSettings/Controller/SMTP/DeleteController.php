@@ -40,13 +40,7 @@ class DeleteController extends UbirimiController
         $smtpServer = $this->getRepository(SMTPServer::class)->getById($smtpServerId);
         $date = Util::getServerCurrentDateTime();
 
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_GENERAL_SETTINGS,
-            $session->get('user/id'),
-            'DELETE SMTP Server ' . $smtpServer['name'],
-            $date
-        );
+        $this->getLogger()->addInfo('DELETE SMTP Server ' . $smtpServer['name'], $this->getLoggerContext());
 
         $this->getRepository(SMTPServer::class)->deleteById($smtpServerId);
         $session->remove('client/settings/smtp');

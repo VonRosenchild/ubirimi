@@ -61,13 +61,7 @@ class AddController extends UbirimiController
             }
             $notebookId = $this->getRepository(Notebook::class)->save($session->get('user/id'), $name, $description, $defaultFlag, $currentDate);
 
-            $this->getRepository(UbirimiLog::class)->add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_CALENDAR,
-                $session->get('user/id'),
-                'ADD QUICK NOTES notebook ' . $name,
-                $currentDate
-            );
+            $this->getLogger()->addInfo('ADD QUICK NOTES notebook ' . $name, $this->getLoggerContext());
         }
 
         return new Response('');

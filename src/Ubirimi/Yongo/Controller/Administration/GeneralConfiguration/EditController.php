@@ -51,15 +51,7 @@ class EditController extends UbirimiController
 
             $this->getRepository(UbirimiClient::class)->updateProductSettings($session->get('client/id'), SystemProduct::SYS_PRODUCT_YONGO, $parameters);
 
-            $currentDate = Util::getServerCurrentDateTime();
-
-            $this->getRepository(UbirimiLog::class)->add(
-                $session->get('client/id'),
-                SystemProduct::SYS_PRODUCT_YONGO,
-                $session->get('user/id'),
-                'UPDATE Yongo GeneralSettings Settings',
-                $currentDate
-            );
+            $this->getLogger()->addInfo('UPDATE Yongo GeneralSettings Settings', $this->getLoggerContext());
 
             return new RedirectResponse('/yongo/administration/general-configuration');
         }
