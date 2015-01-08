@@ -54,13 +54,7 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $projectCategory->save($currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Project Category ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Project Category ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/project/categories');
             }

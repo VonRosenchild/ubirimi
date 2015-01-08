@@ -49,13 +49,7 @@ class AddController extends UbirimiController
                 $currentDate = Util::getServerCurrentDateTime();
                 $permissionSchemeId = $permissionScheme->save($currentDate);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Permission Scheme ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Permission Scheme ' . $name, $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/permission-schemes');
             }

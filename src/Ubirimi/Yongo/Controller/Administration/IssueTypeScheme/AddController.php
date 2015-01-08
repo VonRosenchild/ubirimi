@@ -68,13 +68,7 @@ class AddController extends UbirimiController
                     }
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Issue Type Scheme ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Issue Type Scheme ' . $name, $this->getLoggerContext());
 
                 if ($type == 'project') {
                     return new RedirectResponse('/yongo/administration/issue-type-schemes');

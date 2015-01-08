@@ -44,15 +44,7 @@ class DeleteController extends UbirimiController
             $session->set('selected_project_id', null);
         }
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Project ' . $projectDeleted['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Project ' . $projectDeleted['name'], $this->getLoggerContext());
 
         return new Response('');
     }

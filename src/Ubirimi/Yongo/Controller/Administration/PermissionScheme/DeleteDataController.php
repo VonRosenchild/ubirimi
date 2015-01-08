@@ -37,15 +37,7 @@ class DeleteDataController extends UbirimiController
         $permissionSchemeDataId = $request->request->get('permission_scheme_data_id');
         $this->getRepository(PermissionScheme::class)->deleteDataById($permissionSchemeDataId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Permission Scheme Data',
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Permission Scheme Data', $this->getLoggerContext());
 
         return new Response('');
     }

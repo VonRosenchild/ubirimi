@@ -100,13 +100,7 @@ class AddController extends UbirimiController
                     'event=' . $eventId
                 );
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Workflow Transition' ,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Workflow Transition', $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/workflow/view-as-text/' . $workflowId);
             }

@@ -38,14 +38,7 @@ class DeleteController extends UbirimiController
         $projectCategory = $this->getRepository(ProjectCategory::class)->getById($projectCategoryId);
         $this->getRepository(ProjectCategory::class)->deleteById($session->get('client/id'), $projectCategoryId);
 
-        $currentDate = Util::getServerCurrentDateTime();
-        $this->getRepository(UbirimiLog::class)->add(
-            $session->get('client/id'),
-            SystemProduct::SYS_PRODUCT_YONGO,
-            $session->get('user/id'),
-            'DELETE Yongo Project Category ' . $projectCategory['name'],
-            $currentDate
-        );
+        $this->getLogger()->addInfo('DELETE Yongo Project Category ' . $projectCategory['name'], $this->getLoggerContext());
 
         return new Response('');
     }

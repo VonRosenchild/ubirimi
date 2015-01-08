@@ -80,13 +80,7 @@ class CopyController extends UbirimiController
                     );
                 }
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'Copy Yongo Permission Scheme ' . $permissionScheme['name'],
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('Copy Yongo Permission Scheme ' . $permissionScheme['name'], $this->getLoggerContext());
 
                 return new RedirectResponse('/yongo/administration/permission-schemes');
             }

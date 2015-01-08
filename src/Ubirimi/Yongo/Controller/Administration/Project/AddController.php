@@ -119,13 +119,7 @@ class AddController extends UbirimiController
 
                 $session->set('selected_project_id', $projectId);
 
-                $this->getRepository(UbirimiLog::class)->add(
-                    $session->get('client/id'),
-                    SystemProduct::SYS_PRODUCT_YONGO,
-                    $session->get('user/id'),
-                    'ADD Yongo Project ' . $name,
-                    $currentDate
-                );
+                $this->getLogger()->addInfo('ADD Yongo Project ' . $name, $this->getLoggerContext());
 
                 if ($forHelpDesk) {
                     return new RedirectResponse('/helpdesk/all');
