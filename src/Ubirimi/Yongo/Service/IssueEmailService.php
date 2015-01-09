@@ -141,6 +141,8 @@ class IssueEmailService extends UbirimiService
         $smtpSettings = $this->session->get('client/settings/smtp');
 
         if ($smtpSettings) {
+
+            Email::$smtpSettings = $smtpSettings;
             // notify people
             $eventId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_WORK_LOGGED_ON_ISSUE_CODE, 'id');
             $users = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
@@ -161,6 +163,8 @@ class IssueEmailService extends UbirimiService
         $smtpSettings = $this->session->get('client/settings/smtp');
 
         if ($smtpSettings) {
+
+            Email::$smtpSettings = $smtpSettings;
             // notify people
             $eventId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_ISSUE_UPDATED_CODE, 'id');
             $users = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
@@ -181,6 +185,8 @@ class IssueEmailService extends UbirimiService
         $smtpSettings = $this->session->get('client/settings/smtp');
 
         if ($smtpSettings) {
+
+            Email::$smtpSettings = $smtpSettings;
             // notify people
             $eventId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_ISSUE_WORKLOG_UPDATED_CODE, 'id');
             $users = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
@@ -201,6 +207,8 @@ class IssueEmailService extends UbirimiService
         $smtpSettings = $this->session->get('client/settings/smtp');
 
         if ($smtpSettings) {
+
+            Email::$smtpSettings = $smtpSettings;
             // notify people
             $eventId = UbirimiContainer::get()['repository']->get(IssueEvent::class)->getByClientIdAndCode($this->session->get('client/id'), IssueEvent::EVENT_ISSUE_WORKLOG_DELETED_CODE, 'id');
             $users = UbirimiContainer::get()['repository']->get(YongoProject::class)->getUsersForNotification($issue['issue_project_id'], $eventId, $issue, $this->session->get('user/id'));
