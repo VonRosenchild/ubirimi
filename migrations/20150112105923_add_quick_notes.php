@@ -27,8 +27,8 @@ class AddQuickNotes extends AbstractMigration
         $date = Util::getServerCurrentDateTime();
         $rows = $this->fetchAll('SELECT * FROM client');
         foreach ($rows as $row) {
-            $query = sprintf('insert into client_product(client_id, sys_product_id, date_created) values (%s, %s, %s)', $row['client_id'], SystemProduct::SYS_PRODUCT_QUICK_NOTES, $date);
-            $count = $this->execute($query);
+            $query = sprintf("insert into client_product(client_id, sys_product_id, date_created) values (%s, %s, '%s')", $row['id'], SystemProduct::SYS_PRODUCT_QUICK_NOTES, $date);
+            $this->execute($query);
         }
     }
 
