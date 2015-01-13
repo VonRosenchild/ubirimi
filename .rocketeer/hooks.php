@@ -33,7 +33,7 @@
 			'Setting up permissions\n',
 			'chown www-data:www-data -R /home/products/cache',
 			'echo Running migrations\n',
-			'php vender/bin/phinx migrate -e production'
+			'php vendor/bin/phinx migrate -e production'
 		),
 		'cleanup' => array(
 			'echo Cleaning up\n',
