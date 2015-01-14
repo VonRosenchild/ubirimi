@@ -150,11 +150,11 @@ class CustomField
             $queryWhere = ' and issue_custom_field_data.field_id = ' . $fieldId;
         }
 
-        $query = 'SELECT user.id, user.first_name, user.last_name, field.name, sys_field_type.code, issue_custom_field_data.field_id ' .
+        $query = 'select general_user.id, general_user.first_name, general_user.last_name, field.name, sys_field_type.code, issue_custom_field_data.field_id ' .
             'FROM issue_custom_field_data ' .
             'LEFT JOIN field on field.id = issue_custom_field_data.field_id ' .
             'left join sys_field_type on sys_field_type.id = field.sys_field_type_id ' .
-            'left join user on user.id = issue_custom_field_data.value ' .
+            'left join general_user on general_user.id = issue_custom_field_data.value ' .
             'WHERE issue_id = ? and ' .
             'sys_field_type.id IN (7) ' . $queryWhere . ' ' .
             'order by field.name';

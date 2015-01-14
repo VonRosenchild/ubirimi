@@ -131,12 +131,12 @@ class Role
     }
 
     public function getDefaultUsers($permissionRoleId) {
-        $query = 'select user.id as user_id, user.first_name, user.last_name ' .
+        $query = 'select general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'from permission_role_data ' .
-            'left join user on user.id = permission_role_data.default_user_id ' .
+            'left join general_user on general_user.id = permission_role_data.default_user_id ' .
             'where permission_role_data.permission_role_id = ? and ' .
             'permission_role_data.default_user_id is not null ' .
-            'order by user.first_name, user.last_name';
+            'order by general_user.first_name, general_user.last_name';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $permissionRoleId);

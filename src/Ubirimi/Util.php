@@ -321,7 +321,7 @@ class Util {
             $queryWherePart = ' and yongo_issue.helpdesk_flag = 1 ';
         }
         if ($userId) {
-            $queryWherePart .= ' and user.id = ' . $userId . ' ';
+            $queryWherePart .= ' and general_user.id = ' . $userId . ' ';
         }
 
         if ($startDate) {
@@ -336,14 +336,14 @@ class Util {
             'yongo_issue.date_created as date_created, ' .
             'null as field, ' .
             'null as new_value, ' .
-            'user.id as user_id, user.first_name, user.last_name, ' .
+            'general_user.id as user_id, general_user.first_name, general_user.last_name, ' .
             'yongo_issue.nr as nr, ' .
             'project.code as code, ' .
             'yongo_issue.id as issue_id, ' .
             'null as comment_content, ' .
-            'user.avatar_picture ' .
+            'general_user.avatar_picture ' .
             'from yongo_issue ' .
-            'left join user on user.id = yongo_issue.user_reported_id ' .
+            'left join general_user on general_user.id = yongo_issue.user_reported_id ' .
             'left join project on project.id = yongo_issue.project_id ' .
             'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
@@ -359,15 +359,15 @@ class Util {
             'issue_comment.date_created as date_created, ' .
             'null as field, ' .
             'null as new_value, ' .
-            'user.id as user_id, user.first_name, user.last_name, ' .
+            'general_user.id as user_id, general_user.first_name, general_user.last_name, ' .
             'yongo_issue.nr as nr, ' .
             'project.code as code, ' .
             'yongo_issue.id as issue_id, ' .
             'issue_comment.content as comment_content, ' .
-            'user.avatar_picture ' .
+            'general_user.avatar_picture ' .
             'from yongo_issue ' .
             'left join issue_comment on yongo_issue.id = issue_comment.issue_id ' .
-            'left join user on user.id = issue_comment.user_id ' .
+            'left join general_user on general_user.id = issue_comment.user_id ' .
             'left join project on project.id = yongo_issue.project_id ' .
             'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
@@ -384,15 +384,15 @@ class Util {
             'issue_history.date_created as date_created, ' .
             'issue_history.field as field, ' .
             'issue_history.new_value, ' .
-            'user.id as user_id, user.first_name as first_name, user.last_name as last_name, ' .
+            'general_user.id as user_id, general_user.first_name as first_name, general_user.last_name as last_name, ' .
             'yongo_issue.nr as nr, ' .
             'project.code as code, ' .
             'yongo_issue.id as issue_id, ' .
             'null as comment_content, ' .
-            'user.avatar_picture ' .
+            'general_user.avatar_picture ' .
             'from yongo_issue ' .
             'left join issue_history on issue_history.issue_id = yongo_issue.id ' .
-            'left join user on user.id = issue_history.by_user_id ' .
+            'left join general_user on general_user.id = issue_history.by_user_id ' .
             'left join project on project.id = yongo_issue.project_id ' .
             'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
@@ -504,7 +504,7 @@ class Util {
     }
 
     public static function checkEmailAddressExistenceWithinClient($address, $userId, $clientId) {
-        $query = 'select id, email from user where LOWER(email) = LOWER(?) and id != ? and client_id = ?';
+        $query = 'select id, email from general_user where LOWER(email) = LOWER(?) and id != ? and client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("sii", $address, $userId, $clientId);
@@ -518,7 +518,7 @@ class Util {
     }
 
     public static function checkEmailAddressExistence($address, $userId = null, $clientId = null) {
-        $query = 'select id, email from user where LOWER(email) = LOWER(?)';
+        $query = 'select id, email from general_user where LOWER(email) = LOWER(?)';
         if ($userId) $query .= ' and id != ?';
 
         if ($clientId) $query .= ' and client_id != ' . $clientId;

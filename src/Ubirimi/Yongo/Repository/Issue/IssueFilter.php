@@ -73,8 +73,8 @@ class IssueFilter
     public function getAllByClientId($clientId) {
         $query = 'SELECT filter.id, user_id, filter.name, description, definition, filter.date_created ' .
                  'from filter ' .
-                 'left join user on user.id = filter.user_id ' .
-                 'where user.client_id = ?';
+                 'left join general_user on general_user.id = filter.user_id ' .
+                 'WHERE general_user.client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $clientId);
@@ -144,12 +144,12 @@ class IssueFilter
 
     public function getSubscriptions($filterId) {
         $query = "SELECT filter_subscription.id, filter_subscription.period, " .
-            "user.id as user_id, user.first_name, user.last_name, " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name, " .
             "user_created.id as user_created_id, user_created.first_name as created_first_name, user_created.last_name as created_last_name, " .
             "`group`.id as group_id, `group`.name as group_name " .
             "FROM filter_subscription " .
-            "left join user on user.id = filter_subscription.user_id " .
-            "left join user as user_created on user_created.id = filter_subscription.user_created_id " .
+            "left join general_user on general_user.id = filter_subscription.user_id " .
+            "left join general_user as user_created on user_created.id = filter_subscription.user_created_id " .
             "left join `group` on `group`.id = filter_subscription.group_id " .
             "where " .
             "filter_subscription.filter_id = ?";

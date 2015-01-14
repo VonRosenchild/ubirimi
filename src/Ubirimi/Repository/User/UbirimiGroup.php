@@ -158,12 +158,12 @@ class UbirimiGroup
     }
 
     public function getDataByGroupId($groupId) {
-        $query = 'select group_data.id, group_data.user_id, user.first_name, user.last_name, ' .
-                 'user.issues_display_columns ' .
+        $query = 'select group_data.id, group_data.user_id, general_user.first_name, general_user.last_name, ' .
+                 'general_user.issues_display_columns ' .
             'from group_data ' .
-            'left join user on user.id = group_data.user_id ' .
+            'left join general_user on general_user.id = group_data.user_id ' .
             'where group_data.group_id = ? ' .
-            'order by user.first_name, user.last_name';
+            'order by general_user.first_name, general_user.last_name';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $groupId);

@@ -28,7 +28,7 @@ class UbirimiCalendar
         $query = "select cal_calendar.id, cal_calendar.name, cal_calendar.description, cal_calendar.date_created, cal_calendar.default_flag, " .
                  "cal_calendar.color " .
             "from cal_calendar " .
-            "left join user on user.id = cal_calendar.user_id " .
+            "left join general_user on general_user.id = cal_calendar.user_id " .
             "where cal_calendar.user_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -83,9 +83,9 @@ class UbirimiCalendar
     }
 
     public function getSharedUsers($calendarId, $resultType = null) {
-        $query = "select user.id, user.first_name, user.last_name " .
+        $query = "select general_user.id, general_user.first_name, general_user.last_name " .
             "from cal_calendar_share " .
-            "left join user on user.id = cal_calendar_share.user_id " .
+            "left join general_user on general_user.id = cal_calendar_share.user_id " .
             "where cal_calendar_share.cal_calendar_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -122,9 +122,9 @@ class UbirimiCalendar
     public function getById($calendarId) {
         $query = "select cal_calendar.id, cal_calendar.user_id, cal_calendar.name, cal_calendar.description, " .
                  "cal_calendar.default_flag, cal_calendar.date_created, cal_calendar.date_updated, cal_calendar.color, " .
-                 "user.client_id " .
+                 "general_user.client_id " .
             "from cal_calendar " .
-            "left join user on user.id = cal_calendar.user_id " .
+            "left join general_user on general_user.id = cal_calendar.user_id " .
             "where cal_calendar.id = ? " .
             "limit 1";
 
@@ -264,8 +264,8 @@ class UbirimiCalendar
     public function getAll() {
         $query = "select cal_calendar.name, cal_calendar.description, cal_calendar.date_created, client.company_domain, cal_calendar.id " .
             "from cal_calendar " .
-            "left join user on user.id = cal_calendar.user_id " .
-            "left join client on client.id = user.client_id " .
+            "left join general_user on general_user.id = cal_calendar.user_id " .
+            "left join client on client.id = general_user.client_id " .
             "order by cal_calendar.id desc";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -280,8 +280,8 @@ class UbirimiCalendar
     public function getByClientId($clientId) {
         $query = "select cal_calendar.* " .
             "from cal_calendar " .
-            "left join user on cal_calendar.user_id = user.id " .
-            "where user.client_id = ? " .
+            "left join general_user on cal_calendar.user_id = general_user.id " .
+            "WHERE general_user.client_id = ? " .
             "limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

@@ -24,9 +24,9 @@ use Ubirimi\Container\UbirimiContainer;
 class Customer
 {
     public function getByOrganizationId($organizationId) {
-        $query = 'SELECT user.id, user.first_name, user.last_name, user.email ' .
+        $query = 'select general_user.id, general_user.first_name, general_user.last_name, general_user.email ' .
                  'from help_customer ' .
-                 'left join user on user.id = help_customer.user_id ' .
+                 'left join general_user on general_user.id = help_customer.user_id ' .
                  'where help_organization_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

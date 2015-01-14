@@ -344,10 +344,10 @@ class CalendarEvent
         $query = "SELECT cal_event.id, cal_event.user_created_id, cal_event.date_from, cal_event.date_to, cal_event.name, cal_event.description, cal_event.color, cal_event.location, " .
             "cal_event.cal_event_link_id, cal_event.cal_event_repeat_id, " .
             "cal_calendar.name as calendar_name, cal_calendar.id as calendar_id, " .
-            "user.client_id " .
+            "general_user.client_id " .
             "FROM cal_event " .
             "left join cal_calendar on cal_calendar.id = cal_event.cal_calendar_id " .
-            "left join user on user.id = cal_calendar.user_id " .
+            "left join general_user on general_user.id = cal_calendar.user_id " .
             "WHERE " .
                 "cal_event.id = ? " .
             "limit 1";
@@ -485,9 +485,9 @@ class CalendarEvent
     }
 
     public function getGuests($eventId) {
-        $query = "select user.* " .
+        $query = "select general_user.* " .
             "from cal_event_share " .
-            "left join user on user.id = cal_event_share.user_id " .
+            "left join general_user on general_user.id = cal_event_share.user_id " .
             "where cal_event_share.cal_event_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

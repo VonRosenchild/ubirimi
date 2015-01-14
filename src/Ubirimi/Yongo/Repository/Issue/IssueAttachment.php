@@ -54,9 +54,9 @@ class IssueAttachment
 
     public function getByIssueId($issueId, $fetchAll = false) {
         $query = 'SELECT issue_attachment.id, issue_id, name, size, issue_attachment.date_created,' .
-            'user.id as user_id, user.first_name, user.last_name ' .
+            'general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'FROM issue_attachment ' .
-            'LEFT JOIN user on issue_attachment.user_id = user.id ' .
+            'LEFT join general_user on issue_attachment.user_id = general_user.id ' .
             'WHERE issue_id = ? ' .
             'ORDER BY issue_attachment.date_created ASC';
 

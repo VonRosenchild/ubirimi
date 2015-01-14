@@ -78,12 +78,12 @@ class IssueHistory
             'issue_history.old_value_id as old_value_id, ' .
             'issue_history.new_value_id as new_value_id, ' .
             'null as content, ' .
-            'user.id as user_id, user.first_name, user.last_name, ' .
+            'general_user.id as user_id, general_user.first_name, general_user.last_name, ' .
             'yongo_issue.nr as nr, ' .
             'project.code as code, ' .
             'yongo_issue.id as issue_id ' .
             'from issue_history ' .
-            'left join user on user.id = issue_history.by_user_id ' .
+            'left join general_user on general_user.id = issue_history.by_user_id ' .
             'left join yongo_issue on yongo_issue.id = issue_history.issue_id ' .
             'left join project on project.id = yongo_issue.project_id ' .
             'where ';
@@ -105,13 +105,13 @@ class IssueHistory
         'null as old_value_id, ' .
         'null as new_value_id, ' .
         'null as content, ' .
-        'user.id as user_id, user.first_name, user.last_name, ' .
+        'general_user.id as user_id, general_user.first_name, general_user.last_name, ' .
         'yongo_issue.nr as nr, ' .
         'project.code as code, ' .
         'yongo_issue.id as issue_id ' .
         'from yongo_issue ' .
         'left join issue_comment on yongo_issue.id = issue_comment.issue_id ' .
-        'left join user on user.id = issue_comment.user_id ' .
+        'left join general_user on general_user.id = issue_comment.user_id ' .
         'left join project on project.id = yongo_issue.project_id ' .
         'where yongo_issue.id = ' . $issueId . ' ' .
         'and issue_comment.issue_id is not null ' .

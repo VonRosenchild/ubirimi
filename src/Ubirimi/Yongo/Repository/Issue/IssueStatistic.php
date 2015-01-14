@@ -49,7 +49,7 @@ class IssueStatistic
             $query .= 'issue_' . $setting . '.name, yongo_issue.' . $setting . '_id as setting_id ';
         }
         else
-            $query .= 'CONCAT(user.first_name, " ", user.last_name) as name, yongo_issue.user_assigned_id ';
+            $query .= 'CONCAT(user.first_name, " ", general_user.last_name) as name, yongo_issue.user_assigned_id ';
 
         $query .= 'from yongo_issue ' .
             'left join issue_' . $type . ' on yongo_issue.id = issue_' . $type . '.issue_id ';
@@ -69,7 +69,7 @@ class IssueStatistic
                 $group_by = 'group by yongo_issue.status_id';
                 break;
             case 'assignee':
-                $query .= 'left join user on yongo_issue.user_assigned_id = user.id ';
+                $query .= 'left join general_user on yongo_issue.user_assigned_id = general_user.id ';
                 $group_by = 'group by yongo_issue.user_assigned_id';
                 break;
         }

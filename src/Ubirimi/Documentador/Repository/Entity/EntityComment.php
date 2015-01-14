@@ -79,10 +79,10 @@ class EntityComment {
 
     public function getComments($pageId, $resultType = null) {
         $query = "SELECT documentator_entity_comment.id, documentator_entity_comment.user_id, documentator_entity_comment.content, documentator_entity_comment.documentator_entity_id, " .
-            "documentator_entity_comment.date_created, user.first_name, user.last_name, " .
+            "documentator_entity_comment.date_created, general_user.first_name, general_user.last_name, " .
             "documentator_entity_comment.parent_comment_id, 0 as printed " .
             "FROM documentator_entity_comment " .
-            "left join user on user.id = documentator_entity_comment.user_id " .
+            "left join general_user on general_user.id = documentator_entity_comment.user_id " .
             "where documentator_entity_comment.documentator_entity_id = ? " .
             "order by documentator_entity_comment.date_created asc";
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {

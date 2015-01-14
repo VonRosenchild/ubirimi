@@ -134,19 +134,19 @@ class UbirimiUser
 
         // todo: delete documentador related entities
 
-        $query = 'delete from user where id = ' . $userId . ' LIMIT 1';
+        $query = 'delete from general_user where id = ' . $userId . ' LIMIT 1';
         UbirimiContainer::get()['db.connection']->query($query);
 
         // todo: delete svn related entities
     }
 
     public function getById($Id) {
-        $query = "SELECT user.id, user.client_id, password, first_name, last_name, email, username, user.date_created, user.avatar_picture, " .
+        $query = "select general_user.id, general_user.client_id, password, first_name, last_name, email, username, general_user.date_created, general_user.avatar_picture, " .
                  "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, " .
                  "sys_country.name as country_name, issues_display_columns " .
-            "FROM user " .
-            "left join sys_country on sys_country.id = user.country_id " .
-            "WHERE user.id = ? " .
+            "from general_user " .
+            "left join sys_country on sys_country.id = general_user.country_id " .
+            "WHERE general_user.id = ? " .
             "limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -160,11 +160,11 @@ class UbirimiUser
     }
 
     public function getByIds($Ids, $resultType = null) {
-        $query = "SELECT user.id, user.client_id, password, first_name, last_name, email, username, user.date_created, user.avatar_picture, " .
+        $query = "select general_user.id, general_user.client_id, password, first_name, last_name, email, username, general_user.date_created, general_user.avatar_picture, " .
                  "issues_per_page, notify_own_changes_flag, client_administrator_flag, customer_service_desk_flag, sys_country.name as country_name " .
-            "FROM user " .
-            "left join sys_country on sys_country.id = user.country_id " .
-            "WHERE user.id IN (" . implode(', ', $Ids) . ")";
+            "from general_user " .
+            "left join sys_country on sys_country.id = general_user.country_id " .
+            "WHERE general_user.id IN (" . implode(', ', $Ids) . ")";
 
         $finalResult = null;
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -265,13 +265,13 @@ class UbirimiUser
     }
 
     public function getByClientId($clientId, $helpDeskFlag = 0) {
-        $query = "SELECT user.*, help_organization.name as organization_name " .
-            "FROM user " .
-            'left join help_organization_user on help_organization_user.user_id = user.id ' .
+        $query = "select general_user.*, help_organization.name as organization_name " .
+            "from general_user " .
+            'left join help_organization_user on help_organization_user.user_id = general_user.id ' .
             'left join help_organization on help_organization.id = help_organization_user.help_organization_id ' .
-            "WHERE user.client_id = ? " .
+            "WHERE general_user.client_id = ? " .
             'and customer_service_desk_flag = ' . $helpDeskFlag . ' ' .
-            "order by user.first_name, user.last_name asc";
+            "order by general_user.first_name, general_user.last_name asc";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $clientId);
@@ -284,24 +284,24 @@ class UbirimiUser
     }
 
     public function hasGlobalPermission($clientId, $userId, $globalPermissionId) {
-        $query = 'SELECT user.id as user_id, user.first_name, user.last_name ' .
+        $query = 'select general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'from sys_permission_global_data ' .
             'left join `group_data` on `group_data`.group_id = sys_permission_global_data.group_id ' .
-            'left join user on user.id = group_data.user_id ' .
+            'left join general_user on general_user.id = group_data.user_id ' .
             'where sys_permission_global_data.client_id = ? and ' .
             'sys_permission_global_data.sys_permission_global_id = ? and ' .
             'group_data.user_id = ? and ' .
-            'user.id is not null ' .
+            'general_user.id is not null ' .
 
             ' UNION ' .
 
-            'SELECT user.id as user_id, user.first_name, user.last_name ' .
+            'select general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'from sys_permission_global_data ' .
-            'left join user on user.id = sys_permission_global_data.user_id ' .
+            'left join general_user on general_user.id = sys_permission_global_data.user_id ' .
             'where sys_permission_global_data.client_id = ? and ' .
             'sys_permission_global_data.sys_permission_global_id = ? and ' .
             'sys_permission_global_data.user_id = ? and ' .
-            'user.id is not null ';
+            'general_user.id is not null ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("iiiiii", $clientId, $globalPermissionId, $userId, $clientId, $globalPermissionId, $userId);
@@ -342,10 +342,10 @@ class UbirimiUser
     }
 
     public function getByUsernameAndBaseURL($username, $baseURL) {
-        $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
+        $query = 'SELECT username, general_user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, client.company_domain, svn_administrator_flag, client_administrator_flag ' .
-            'FROM user ' .
-            'left join client on client.id = user.client_id ' .
+            'from general_user ' .
+            'left join client on client.id = general_user.client_id ' .
             "WHERE username = ? " .
             "and client.base_url = ? " .
             "LIMIT 1";
@@ -362,10 +362,10 @@ class UbirimiUser
     }
 
     public function getByUsernameAndClientDomain($username, $domain) {
-        $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
+        $query = 'SELECT username, general_user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, client.company_domain, svn_administrator_flag, client_administrator_flag ' .
-            'FROM user ' .
-            'left join client on client.id = user.client_id ' .
+            'from general_user ' .
+            'left join client on client.id = general_user.client_id ' .
             "WHERE username = ? " .
             "and client.company_domain = ? " .
             "LIMIT 1";
@@ -382,14 +382,14 @@ class UbirimiUser
     }
 
     public function getByUsernameAndClientId($username, $clientId, $resultColumn = null, $userId = null) {
-        $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password,
+        $query = 'SELECT username, general_user.id, email, first_name, last_name, client_id, issues_per_page, password,
                          super_user_flag, svn_administrator_flag, client_administrator_flag, avatar_picture, issues_display_columns ' .
-                 'FROM user ' .
+                 'from general_user ' .
                  "WHERE LOWER(username) = ? " .
                  "and client_id = ? and customer_service_desk_flag = 0 ";
 
         if ($userId) {
-            $query .= 'and user.id != ? ';
+            $query .= 'and general_user.id != ? ';
         }
 
         $query .= "LIMIT 1";
@@ -418,8 +418,8 @@ class UbirimiUser
     }
 
     public function getCustomerByEmailAddressAndClientId($username, $clientId) {
-        $query = 'SELECT user.id, email, first_name, last_name, client_id, password, avatar_picture, issues_display_columns ' .
-                 'FROM user ' .
+        $query = 'select general_user.id, email, first_name, last_name, client_id, password, avatar_picture, issues_display_columns ' .
+                 'from general_user ' .
                  "WHERE email = ? and customer_service_desk_flag = 1 and client_id = ? " .
                  "LIMIT 1";
 
@@ -439,7 +439,7 @@ class UbirimiUser
     public function getByEmailAddress($clientId, $emailAddress) {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password,
                     super_user_flag, svn_administrator_flag, client_administrator_flag ' .
-                 'FROM user ' .
+                 'from general_user ' .
                  "WHERE client_id = ? and email = ? " .
                  "LIMIT 1";
 
@@ -457,7 +457,7 @@ class UbirimiUser
 
     public function getByUsernameAndAdministrator($username) {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password, super_user_flag, svn_administrator_flag ' .
-            'FROM user ' .
+            'from general_user ' .
             "WHERE username = ? and client_administrator_flag = 1 and customer_service_desk_flag = 0 " .
             "LIMIT 1";
 
@@ -475,7 +475,7 @@ class UbirimiUser
     public function getByUsernameAndPassword($username, $password)
     {
         $query = 'SELECT username, id, email, first_name, last_name, client_id, issues_per_page, password, super_user_flag, svn_administrator_flag ' .
-            'FROM user ' .
+            'from general_user ' .
             "WHERE username = ? and password = ? " .
             "LIMIT 1";
 
@@ -491,10 +491,10 @@ class UbirimiUser
     }
 
     public function getAll($filters = array()) {
-        $query = 'select user.id, user.first_name, user.last_name, user.username, user.date_created, user.email, client_administrator_flag, ' .
+        $query = 'select general_user.id, general_user.first_name, general_user.last_name, general_user.username, general_user.date_created, general_user.email, client_administrator_flag, ' .
                  'client.company_name as client_company_name ' .
-                 'from user ' .
-                 'left join client on client.id = user.client_id ' .
+                 'from general_user ' .
+                 'left join client on client.id = general_user.client_id ' .
                  'where 1 = 1';
 
         if (!empty($filters['today'])) {
@@ -524,7 +524,7 @@ class UbirimiUser
 
     public function getYongoSettings($userId) {
         $query = 'select issues_per_page, notify_own_changes_flag, country_id, username, email ' .
-            'from user ' .
+            'from general_user ' .
             'where id = ? ' .
             'limit 1';
 
@@ -570,7 +570,7 @@ class UbirimiUser
     }
 
     public function getNotSVNAdministrators($clientId) {
-        $query = 'SELECT user.* FROM user WHERE client_id = ? and svn_administrator_flag = 0 and customer_service_desk_flag = 0';
+        $query = 'select general_user.* from general_user WHERE client_id = ? and svn_administrator_flag = 0 and customer_service_desk_flag = 0';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -584,10 +584,10 @@ class UbirimiUser
     }
 
     public function getByEmailAddressAndBaseURL($address, $baseURL) {
-        $query = 'SELECT username, user.id, email, first_name, last_name, client_id, issues_per_page, password, ' .
+        $query = 'SELECT username, general_user.id, email, first_name, last_name, client_id, issues_per_page, password, ' .
                   'super_user_flag, client.company_domain, svn_administrator_flag ' .
-            'FROM user ' .
-            'left join client on client.id = user.client_id ' .
+            'from general_user ' .
+            'left join client on client.id = general_user.client_id ' .
             "WHERE email = ? " .
             "and client.base_url = ? " .
             "LIMIT 1";
@@ -604,12 +604,12 @@ class UbirimiUser
     }
 
     public function getCustomerByEmailAddressAndBaseURL($address, $baseURL) {
-        $query = 'SELECT user.id, email, first_name, last_name, client_id, password, ' .
+        $query = 'select general_user.id, email, first_name, last_name, client_id, password, ' .
                   'client.company_domain ' .
-            'FROM user ' .
-            'left join client on client.id = user.client_id ' .
+            'from general_user ' .
+            'left join client on client.id = general_user.client_id ' .
             "WHERE email = ? " .
-                "and user.customer_service_desk_flag = 1 " .
+                "and general_user.customer_service_desk_flag = 1 " .
                 "and client.base_url = ? " .
             "LIMIT 1";
 
@@ -641,7 +641,7 @@ class UbirimiUser
                 'from issue_security_scheme_level_data ' .
                 'left join `group` on group.id = issue_security_scheme_level_data.group_id ' .
                 'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join user on user.id = group_data.user_id ' .
+                'left join general_user on general_user.id = group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.user_id = ? ' .
                 // 3. permission role in security scheme level data - user
@@ -649,7 +649,7 @@ class UbirimiUser
                 'SELECT issue_security_scheme_level_data.id ' .
                 'from issue_security_scheme_level_data ' .
                 'left join project_role_data on project_role_data.permission_role_id = issue_security_scheme_level_data.permission_role_id ' .
-                'left join user on user.id = project_role_data.user_id ' .
+                'left join general_user on general_user.id = project_role_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.user_id = ? ' .
                 // 4. permission role in security scheme level data - group
@@ -659,7 +659,7 @@ class UbirimiUser
                 'left join project_role_data on project_role_data.permission_role_id = issue_security_scheme_level_data.permission_role_id ' .
                 'left join `group` on group.id = project_role_data.group_id ' .
                 'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join user on user.id = group_data.user_id ' .
+                'left join general_user on general_user.id = group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.user_id = ? ' .
                 // 5. current_assignee in security scheme level data
@@ -667,32 +667,32 @@ class UbirimiUser
                 'SELECT issue_security_scheme_level_data.id ' .
                 'from issue_security_scheme_level_data ' .
                 'left join yongo_issue on yongo_issue.id = ? ' .
-                'left join user on user.id = yongo_issue.user_assigned_id ' .
+                'left join general_user on general_user.id = yongo_issue.user_assigned_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.current_assignee is not null and ' .
                 'yongo_issue.user_assigned_id is not null and ' .
-                'user.id = ? ' .
+                'general_user.id = ? ' .
                 // 6. reporter in security scheme level data
                 'UNION DISTINCT ' .
                 'SELECT issue_security_scheme_level_data.id ' .
                 'from issue_security_scheme_level_data ' .
                 'left join yongo_issue on yongo_issue.id = ? ' .
-                'left join user on user.id = yongo_issue.user_reported_id ' .
+                'left join general_user on general_user.id = yongo_issue.user_reported_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.reporter is not null and ' .
                 'yongo_issue.user_reported_id is not null and ' .
-                'user.id = ? ' .
+                'general_user.id = ? ' .
                 // 7. project_lead in security scheme level data
 
                 'UNION DISTINCT ' .
                 'SELECT issue_security_scheme_level_data.id ' .
                 'from issue_security_scheme_level_data ' .
                 'left join project on project.id = ? ' .
-                'left join user on user.id = project.lead_id ' .
+                'left join general_user on general_user.id = project.lead_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.project_lead is not null and ' .
                 'project.lead_id is not null and ' .
-                'user.id = ?';
+                'general_user.id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("iiiiiiiiiiiiiiiii", $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $securityLevelId, $loggedInUserId, $issueId, $securityLevelId, $loggedInUserId, $issueId, $securityLevelId, $loggedInUserId, $projectId, $securityLevelId, $loggedInUserId);
@@ -745,7 +745,7 @@ class UbirimiUser
     }
 
     public function getByEmailAddressAndIsClientAdministrator($emailAddress) {
-        $query = 'select email, id from user where client_administrator_flag = 1 and LOWER(email) = ? limit 1';
+        $query = 'select email, id from general_user where client_administrator_flag = 1 and LOWER(email) = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("s", $emailAddress);
@@ -760,7 +760,7 @@ class UbirimiUser
     }
 
     public function getByUsernameAndIsClientAdministrator($username) {
-        $query = 'select username, id from user where client_administrator_flag = 1 and LOWER(username) = ? limit 1';
+        $query = 'select username, id from general_user where client_administrator_flag = 1 and LOWER(username) = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("s", $username);
@@ -775,7 +775,7 @@ class UbirimiUser
     }
 
     public function getUserByClientIdAndEmailAddress($clientId, $email) {
-        $query = 'select email, id from user where client_id = ? and LOWER(email) = ? limit 1';
+        $query = 'select email, id from general_user where client_id = ? and LOWER(email) = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("is", $clientId, $email);
@@ -831,7 +831,7 @@ class UbirimiUser
     }
 
     public function getByClientIdAndFullName($clientId, $fullName) {
-        $query = 'select * from user where client_id = ? and CONCAT(first_name, " ", last_name) = ?';
+        $query = 'select * from general_user where client_id = ? and CONCAT(first_name, " ", last_name) = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("is", $clientId, $fullName);

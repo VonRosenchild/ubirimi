@@ -60,9 +60,9 @@ class Entity {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, " .
                  "documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
                  "documentator_entity.parent_entity_id, " .
-                 "user.id as user_id, user.first_name, user.last_name " .
+                 "general_user.id as user_id, general_user.first_name, general_user.last_name " .
             "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "where documentator_entity.documentator_space_id = ? ";
 
         if (isset($inTrashFlag)) {
@@ -84,14 +84,14 @@ class Entity {
         $query = "SELECT documentator_entity.name, documentator_entity.documentator_entity_type_id, documentator_entity.id, " .
                  "documentator_entity.date_created, documentator_entity.content, in_trash_flag, documentator_entity.parent_entity_id, " .
                  "documentator_entity.documentator_space_id as space_id, " .
-                 "user.id as user_id, user.first_name, user.last_name, " .
+                 "general_user.id as user_id, general_user.first_name, general_user.last_name, " .
                  "documentator_space.name as space_name ";
 
         if ($userId)
             $query .= ", documentator_user_entity_favourite.id as fav_id ";
 
         $query .= "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "left join documentator_space on documentator_space.id = documentator_entity.documentator_space_id ";
 
         if ($userId)
@@ -129,9 +129,9 @@ class Entity {
 
     public function getFavouritePagesByClientIdAndUserId($clientId, $userId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
-            "user.id as user_id, user.first_name, user.last_name " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name " .
             "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "left join documentator_space on documentator_space.id = documentator_entity.documentator_space_id " .
             "left join documentator_user_entity_favourite on (documentator_user_entity_favourite.entity_id = documentator_entity.id) " .
             "where documentator_user_entity_favourite.user_id = ? and " .
@@ -218,9 +218,9 @@ class Entity {
 
     public function getRevisionsByPageId($pageId) {
         $query = "SELECT documentator_entity_revision.id, documentator_entity_revision.content, documentator_entity_revision.user_id, documentator_entity_revision.date_created, " .
-            "user.first_name, user.last_name, user.id as user_id " .
+            "general_user.first_name, general_user.last_name, general_user.id as user_id " .
             "FROM documentator_entity_revision " .
-            "left join user on user.id = documentator_entity_revision.user_id " .
+            "left join general_user on general_user.id = documentator_entity_revision.user_id " .
             "where documentator_entity_revision.entity_id = ? " .
             "order by documentator_entity_revision.id desc";
 
@@ -237,9 +237,9 @@ class Entity {
 
     public function getRevisionsByAttachmentId($attachmentId) {
         $query = "SELECT documentator_entity_attachment_revision.id, documentator_entity_attachment_revision.date_created, " .
-            'user.id as user_id, user.first_name, user.last_name ' .
+            'general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'from documentator_entity_attachment_revision ' .
-            'left join user on documentator_entity_attachment_revision.user_created_id = user.id ' .
+            'left join general_user on documentator_entity_attachment_revision.user_created_id = general_user.id ' .
             'where documentator_entity_attachment_revision.documentator_entity_attachment_id = ? ' .
             'order by id desc';
 
@@ -256,9 +256,9 @@ class Entity {
 
     public function getLastRevisionByPageId($pageId) {
         $query = "SELECT documentator_entity_revision.id, documentator_entity_revision.content, documentator_entity_revision.user_id, documentator_entity_revision.date_created, " .
-            "user.first_name, user.last_name, user.id as user_id " .
+            "general_user.first_name, general_user.last_name, general_user.id as user_id " .
             "FROM documentator_entity_revision " .
-            "left join user on user.id = documentator_entity_revision.user_id " .
+            "left join general_user on general_user.id = documentator_entity_revision.user_id " .
             "where documentator_entity_revision.entity_id = ? " .
             "order by documentator_entity_revision.id desc " .
             "limit 1";
@@ -276,9 +276,9 @@ class Entity {
 
     public function getRevisionsByPageIdAndRevisionId($pageId, $revisionId) {
         $query = "SELECT documentator_entity_revision.id, documentator_entity_revision.content, documentator_entity_revision.user_id, documentator_entity_revision.date_created, " .
-            "user.first_name, user.last_name, user.id as user_id " .
+            "general_user.first_name, general_user.last_name, general_user.id as user_id " .
             "FROM documentator_entity_revision " .
-            "left join user on user.id = documentator_entity_revision.user_id " .
+            "left join general_user on general_user.id = documentator_entity_revision.user_id " .
             "where documentator_entity_revision.entity_id = ? and " .
             "documentator_entity_revision.id = ? " .
             "order by documentator_entity_revision.id desc";
@@ -297,9 +297,9 @@ class Entity {
     public function getChildren($pageId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, " .
             "documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
-            "user.id as user_id, user.first_name, user.last_name " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name " .
             "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "where documentator_entity.parent_entity_id = ?";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
@@ -333,11 +333,11 @@ class Entity {
 
     public function findBySpaceIdAndKeyword($clientId, $spaceId, $pageNameKeyword) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
-            "user.id as user_id, user.first_name, user.last_name, " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name, " .
             "documentator_space.name as space_name " .
             "FROM documentator_entity " .
             "left join documentator_space on documentator_space.id = documentator_entity.documentator_space_id " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "where ";
 
         if ($spaceId == -1) {
@@ -439,9 +439,9 @@ class Entity {
 
     public function getRevisionsByFileId($fileId) {
         $query = "SELECT documentator_entity_file_revision.id, documentator_entity_file_revision.date_created, " .
-                    'user.id as user_id, user.first_name, user.last_name ' .
+                    'general_user.id as user_id, general_user.first_name, general_user.last_name ' .
                     'from documentator_entity_file_revision ' .
-                    'left join user on documentator_entity_file_revision.user_created_id = user.id ' .
+                    'left join general_user on documentator_entity_file_revision.user_created_id = general_user.id ' .
                     'where documentator_entity_file_id = ? ' .
                     'order by id desc';
 
@@ -553,9 +553,9 @@ class Entity {
 
     public function getOtherActiveSnapshots($entityId, $userId, $currentTime, $resultType = null) {
         $query = "select user_id, TIMESTAMPDIFF(MINUTE, documentator_entity_snapshot.date_created, '" . $currentTime . "') as last_edit_offset, " .
-                 "user.first_name, user.last_name " .
+                 "general_user.first_name, general_user.last_name " .
                  "FROM documentator_entity_snapshot " .
-                 "left join user on user.id = documentator_entity_snapshot.user_id " .
+                 "left join general_user on general_user.id = documentator_entity_snapshot.user_id " .
                  "where documentator_entity_id = ? and " .
                  "user_id != ? " .
                  "order by last_edit_offset";

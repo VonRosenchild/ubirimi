@@ -26,7 +26,7 @@ class Notebook
     public function getByUserId($userId, $resultType = null) {
         $query = "select qn_notebook.id, qn_notebook.default_flag, qn_notebook.name, qn_notebook.description, qn_notebook.date_created " .
             "from qn_notebook " .
-            "left join user on user.id = qn_notebook.user_id " .
+            "left join general_user on general_user.id = qn_notebook.user_id " .
             "where qn_notebook.user_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -146,9 +146,9 @@ class Notebook
     public function getById($notebookId) {
         $query = "select qn_notebook.id, qn_notebook.user_id, qn_notebook.name, qn_notebook.description, " .
             "qn_notebook.date_created, qn_notebook.date_updated, " .
-            "user.client_id " .
+            "general_user.client_id " .
             "from qn_notebook " .
-            "left join user on user.id = qn_notebook.user_id " .
+            "left join general_user on general_user.id = qn_notebook.user_id " .
             "where qn_notebook.id = ? " .
             "limit 1";
 

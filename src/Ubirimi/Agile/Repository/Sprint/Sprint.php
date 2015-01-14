@@ -125,14 +125,14 @@ class Sprint
             'project.code as project_code, project.name as project_name, yongo_issue.project_id as issue_project_id, ' .
             'issue_type.description as issue_type_description, issue_type.icon_name as issue_type_icon_name, ' .
             'issue_priority.description as issue_priority_description, issue_priority.icon_name as issue_priority_icon_name, issue_priority.color as priority_color, ' .
-            'user.id as assignee, user.avatar_picture as assignee_avatar_picture, user.first_name as ua_first_name, user.last_name as ua_last_name ' .
+            'general_user.id as assignee, general_user.avatar_picture as assignee_avatar_picture, general_user.first_name as ua_first_name, general_user.last_name as ua_last_name ' .
             "from agile_board_sprint_issue " .
             "left join yongo_issue on yongo_issue.id = agile_board_sprint_issue.issue_id " .
             'LEFT JOIN issue_priority on yongo_issue.priority_id = issue_priority.id ' .
             'LEFT JOIN issue_type on yongo_issue.type_id = issue_type.id ' .
             'LEFT JOIN issue_status on yongo_issue.status_id = issue_status.id ' .
             'LEFT JOIN project on yongo_issue.project_id = project.id ' .
-            'left join user on user.id = yongo_issue.user_assigned_id ' .
+            'left join general_user on general_user.id = yongo_issue.user_assigned_id ' .
             "where agile_board_sprint_issue.agile_board_sprint_id = ? and yongo_issue.parent_id is null ";
         if (count($parentChildrenIssueIds))
             $query .= "and yongo_issue.id not in (" . implode(', ', $parentChildrenIssueIds) . ') ';
@@ -435,12 +435,12 @@ class Sprint
     }
 
     public function getAssigneesBySprintId($sprintId) {
-        $query = "select user.id, user.first_name, user.last_name " .
+        $query = "select general_user.id, general_user.first_name, general_user.last_name " .
             "from agile_board_sprint_issue " .
             "left join yongo_issue on yongo_issue.id = agile_board_sprint_issue.issue_id " .
-            "left join user on user.id = yongo_issue.user_assigned_id " .
-            "where agile_board_sprint_issue.agile_board_sprint_id = ? and user.id is not null " .
-            "group by user.id";
+            "left join general_user on general_user.id = yongo_issue.user_assigned_id " .
+            "where agile_board_sprint_issue.agile_board_sprint_id = ? and general_user.id is not null " .
+            "group by general_user.id";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $sprintId);

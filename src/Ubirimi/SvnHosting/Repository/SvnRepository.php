@@ -53,9 +53,9 @@ class SvnRepository
 
     public function getById($repoId) {
         $query = 'SELECT svn_repository.*,
-                         user.first_name, user.last_name
+                         user.first_name, general_user.last_name
                     FROM svn_repository
-                    LEFT JOIN user ON user.id = svn_repository.user_created_id
+                    LEFT join general_user on general_user.id = svn_repository.user_created_id
                     WHERE svn_repository.id = ? ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -71,10 +71,10 @@ class SvnRepository
 
     public function getUserById($repoUserId) {
         $query = 'SELECT svn_repository_user.*,
-                         user.first_name, user.last_name, user.email, user.username
+                         user.first_name, general_user.last_name, general_user.email, general_user.username
                     FROM svn_repository_user
-                    LEFT JOIN user ON user.id = svn_repository_user.user_id
-                    WHERE user.id = ? ';
+                    LEFT join general_user on general_user.id = svn_repository_user.user_id
+                    WHERE general_user.id = ? ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -89,9 +89,9 @@ class SvnRepository
 
     public function getUserByRepoIdAndUserId($repoId, $userId) {
         $query = 'SELECT svn_repository_user.*,
-                         user.first_name, user.last_name, user.email, user.username
+                         user.first_name, general_user.last_name, general_user.email, general_user.username
                     FROM svn_repository_user
-                    LEFT JOIN user ON user.id = svn_repository_user.user_id
+                    LEFT join general_user on general_user.id = svn_repository_user.user_id
                     WHERE svn_repository_user.svn_repository_id = ? and svn_repository_user.user_id = ?
                     limit 1';
 
@@ -134,9 +134,9 @@ class SvnRepository
 
     public function getAllByClientId($clientId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT svn_repository.id, svn_repository.client_id, user_created_id, name, description, code,
-                            svn_repository.date_created, user.first_name, user.last_name ' .
+                            svn_repository.date_created, general_user.first_name, general_user.last_name ' .
                     'FROM svn_repository ' .
-                    'LEFT JOIN user ON svn_repository.user_created_id = user.id ' .
+                    'LEFT join general_user ON svn_repository.user_created_id = general_user.id ' .
                     'WHERE svn_repository.client_id = ? ' .
                     'ORDER BY svn_repository.id';
 
@@ -164,10 +164,10 @@ class SvnRepository
 
     public function getAll($filters = array()) {
         $query = 'SELECT svn_repository.id, svn_repository.client_id, user_created_id, name, description, code,
-                            svn_repository.date_created, user.first_name, user.last_name,
+                            svn_repository.date_created, general_user.first_name, general_user.last_name,
                             client.company_domain ' .
                     'FROM svn_repository ' .
-                    'LEFT JOIN user ON svn_repository.user_created_id = user.id ' .
+                    'LEFT join general_user ON svn_repository.user_created_id = general_user.id ' .
                     'LEFT JOIN client ON client.id = svn_repository.client_id ' .
                     'WHERE 1 = 1 ';
 
@@ -195,9 +195,9 @@ class SvnRepository
 
     public function getRepositoriesByUserId($clientId, $userId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT svn_repository.id, svn_repository.client_id, user_created_id, name, description, code,
-                            svn_repository.date_created, user.first_name, user.last_name ' .
+                            svn_repository.date_created, general_user.first_name, general_user.last_name ' .
                     'FROM svn_repository ' .
-                    'LEFT JOIN user ON svn_repository.user_created_id = user.id ' .
+                    'LEFT join general_user ON svn_repository.user_created_id = general_user.id ' .
                     'LEFT JOIN svn_repository_user ON svn_repository_user.svn_repository_id = svn_repository.id ' .
                     'WHERE svn_repository.client_id = ? ' .
                     'and svn_repository_user.user_id = ? ' .
@@ -227,9 +227,9 @@ class SvnRepository
 
     public function getUserList($repoId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT svn_repository_user.*,
-                         user.first_name, user.last_name, user.email, user.username
+                         user.first_name, general_user.last_name, general_user.email, general_user.username
                     FROM svn_repository_user
-                    LEFT JOIN user ON user.id = svn_repository_user.user_id
+                    LEFT join general_user on general_user.id = svn_repository_user.user_id
                     WHERE svn_repository_user.svn_repository_id = ? ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -352,9 +352,9 @@ class SvnRepository
 
         $repository = UbirimiContainer::get()['repository']->get(SvnRepository::class)->getById($repoId);
 
-        $query = "SELECT user.username, svn_repository_user.password
+        $query = "select general_user.username, svn_repository_user.password
                     FROM svn_repository_user
-                    LEFT JOIN user on user.id = svn_repository_user.user_id
+                    LEFT join general_user on general_user.id = svn_repository_user.user_id
                     WHERE svn_repository_user.svn_repository_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -396,7 +396,7 @@ class SvnRepository
 
             $query2 = "SELECT *
                             FROM svn_repository_user
-                            LEFT JOIN user on user.id = svn_repository_user.user_id
+                            LEFT join general_user on general_user.id = svn_repository_user.user_id
                             WHERE svn_repository_id = ?";
 
             $stmt2 = UbirimiContainer::get()['db.connection']->prepare($query2);
@@ -472,7 +472,7 @@ class SvnRepository
     }
 
     public function getAdministratorsByClientId($clientId) {
-        $query = 'SELECT user.* FROM user WHERE client_id = ? and svn_administrator_flag = 1';
+        $query = 'select general_user.* from general_user WHERE client_id = ? and svn_administrator_flag = 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 

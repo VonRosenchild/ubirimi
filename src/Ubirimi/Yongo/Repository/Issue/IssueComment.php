@@ -42,9 +42,9 @@ class IssueComment
 
     public function getById($commentId) {
         $query = 'select issue_comment.id, issue_comment.content, issue_comment.date_created, ' .
-                 'user.first_name, user.last_name, user.id as user_id ' .
+                 'general_user.first_name, general_user.last_name, general_user.id as user_id ' .
                  'from issue_comment ' .
-                 'left join user on user.id = issue_comment.user_id ' .
+                 'left join general_user on general_user.id = issue_comment.user_id ' .
                  'where issue_comment.id = ? ' .
                  'limit 1';
 
@@ -60,9 +60,9 @@ class IssueComment
 
     public function getByIssueId($issueId, $order = false) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created, ' .
-            'user.id as user_id, user.first_name, user.last_name, user.avatar_picture, user.email ' .
+            'general_user.id as user_id, general_user.first_name, general_user.last_name, general_user.avatar_picture, general_user.email ' .
             'FROM issue_comment ' .
-            'LEFT JOIN user on issue_comment.user_id = user.id ' .
+            'LEFT join general_user on issue_comment.user_id = general_user.id ' .
             'WHERE issue_id = ? ';
 
         if ($order) {
@@ -84,9 +84,9 @@ class IssueComment
 
     public function getByIssueIdAndUserId($issueId, $userId) {
         $query = 'SELECT issue_comment.id, user_id, content, issue_comment.date_created, ' .
-            'user.id as user_id, user.first_name, user.last_name, user.avatar_picture ' .
+            'general_user.id as user_id, general_user.first_name, general_user.last_name, general_user.avatar_picture ' .
             'FROM issue_comment ' .
-            'LEFT JOIN user on issue_comment.user_id = user.id ' .
+            'LEFT join general_user on issue_comment.user_id = general_user.id ' .
             'WHERE issue_id = ? ' .
             'and user_id = ? ' .
             'order by issue_comment.id asc';

@@ -32,9 +32,9 @@ class Watcher
     }
 
     public function getByIssueId($issueId) {
-        $query = "SELECT user.id, user.first_name, user.last_name, user.email " .
+        $query = "select general_user.id, general_user.first_name, general_user.last_name, general_user.email " .
             "FROM yongo_issue_watch " .
-            "left join user on user.id = yongo_issue_watch.user_id " .
+            "left join general_user on general_user.id = yongo_issue_watch.user_id " .
             "where yongo_issue_watch.yongo_issue_id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

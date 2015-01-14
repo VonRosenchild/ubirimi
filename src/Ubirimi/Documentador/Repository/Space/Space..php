@@ -156,9 +156,9 @@ class Space {
     public function getByClientId($clientId, $favouriteFlag = null) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                  "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, " .
-                 "user.id as user_id, user.first_name, user.last_name " .
+                 "general_user.id as user_id, general_user.first_name, general_user.last_name " .
                  "FROM documentator_space " .
-                 "left join user on user.id = documentator_space.user_created_id ";
+                 "left join general_user on general_user.id = documentator_space.user_created_id ";
         if ($favouriteFlag)
             $query .= 'left join documentator_user_space_favourite on documentator_user_space_favourite.space_id = documentator_space.id ';
 
@@ -181,9 +181,9 @@ class Space {
     public function getByClientIdAndAnonymous($clientId) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                  "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, " .
-                 "user.id as user_id, user.first_name, user.last_name " .
+                 "general_user.id as user_id, general_user.first_name, general_user.last_name " .
                  "FROM documentator_space " .
-                 "left join user on user.id = documentator_space.user_created_id " .
+                 "left join general_user on general_user.id = documentator_space.user_created_id " .
                  "left join documentator_space_permission_anonymous on documentator_space_permission_anonymous.documentator_space_id = documentator_space.id " .
                  "where documentator_space.client_id = ? and " .
                  "documentator_space_permission_anonymous.all_view_flag = 1";
@@ -202,10 +202,10 @@ class Space {
     public function getById($Id) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                  "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, documentator_entity.name as home_page_name, " .
-                 "user.id as user_id, user.first_name, user.last_name, documentator_space.client_id, " .
+                 "general_user.id as user_id, general_user.first_name, general_user.last_name, documentator_space.client_id, " .
                  "documentator_entity.in_trash_flag " .
                  "FROM documentator_space " .
-                 "left join user on user.id = documentator_space.user_created_id " .
+                 "left join general_user on general_user.id = documentator_space.user_created_id " .
                  "left join documentator_entity on documentator_entity.id = documentator_space.home_entity_id " .
                  "where documentator_space.id = ? " .
                  "limit 1";
@@ -305,9 +305,9 @@ class Space {
     public function getChildrenPagesBySpaceIdAndPageId($spaceId, $pageId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, " .
             "documentator_entity.date_created, documentator_entity.content, page_child.id as child_id, documentator_entity.parent_entity_id, " .
-            "user.id as user_id, user.first_name, user.last_name " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name " .
             "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "left join documentator_entity page_child on page_child.parent_entity_id = documentator_entity.id " .
             "where documentator_entity.documentator_space_id = ? and " .
             "documentator_entity.in_trash_flag = 0 and " .
@@ -329,9 +329,9 @@ class Space {
     public function getAllBySpaceIdNoExistingParent($spaceId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, " .
             "documentator_entity.date_created, documentator_entity.content, documentator_entity.parent_entity_id, " .
-            "user.id as user_id, user.first_name, user.last_name " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name " .
             "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "left join documentator_entity parent_page on parent_page.id = documentator_entity.parent_entity_id " .
             "where documentator_entity.documentator_space_id = ? and " .
             "documentator_entity.in_trash_flag = 0 and " .
@@ -494,9 +494,9 @@ class Space {
 
     public function getDeletedPages($spaceId) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
-            "user.id as user_id, user.first_name, user.last_name " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name " .
             "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "where documentator_entity.documentator_space_id = ? and " .
             "documentator_entity.in_trash_flag = 1";
 
@@ -567,11 +567,11 @@ class Space {
 
     public function searchForPages($clientId, $searchQuery) {
         $query = "SELECT documentator_entity.documentator_space_id as space_id, documentator_entity.name, documentator_entity.id, documentator_entity.date_created, documentator_entity.content, " .
-            "user.id as user_id, user.first_name, user.last_name " .
+            "general_user.id as user_id, general_user.first_name, general_user.last_name " .
             "FROM documentator_entity " .
-            "left join user on user.id = documentator_entity.user_created_id " .
+            "left join general_user on general_user.id = documentator_entity.user_created_id " .
             "where (documentator_entity.name like '%" . $searchQuery . "%' OR documentator_entity.content like '%" . $searchQuery . "%') " .
-            "AND user.client_id = ?";
+            "and general_user.client_id = ?";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $clientId);
@@ -613,12 +613,12 @@ class Space {
     }
 
     public function getUsersWithPermissions($spaceId) {
-        $query = "SELECT user.id as user_id, user.first_name, user.last_name, " .
+        $query = "select general_user.id as user_id, general_user.first_name, general_user.last_name, " .
                  "documentator_space_permission.id, documentator_space_permission.all_view_flag, documentator_space_permission.space_admin_flag " .
                  "from documentator_space_permission " .
-                 "left join user on user.id = documentator_space_permission.user_id " .
+                 "left join general_user on general_user.id = documentator_space_permission.user_id " .
                  "where space_id = ? and " .
-                 "user.id is not null";
+                 "general_user.id is not null";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $spaceId);
@@ -731,10 +731,10 @@ class Space {
     public function getWithAdminPermissionByUserId($clientId, $userId) {
         $query = "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                         "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, " .
-                        "user.id as user_id, user.first_name, user.last_name " .
+                        "general_user.id as user_id, general_user.first_name, general_user.last_name " .
                  "from documentator_space_permission " .
                  "left join documentator_space on documentator_space.id = documentator_space_permission.space_id " .
-                 "left join user on user.id = documentator_space_permission.user_id " .
+                 "left join general_user on general_user.id = documentator_space_permission.user_id " .
                  "where documentator_space.client_id = ? and " .
                  "documentator_space_permission.user_id = ? and " .
                  "space_admin_flag = 1 " .
@@ -743,14 +743,14 @@ class Space {
 
                  "SELECT documentator_space.id as space_id, documentator_space.name, documentator_space.code, documentator_space.description, " .
                          "documentator_space.date_created, documentator_space.user_created_id, documentator_space.home_entity_id, " .
-                         "user.id as user_id, user.first_name, user.last_name " .
+                         "general_user.id as user_id, general_user.first_name, general_user.last_name " .
                  "from documentator_space_permission " .
                  "left join documentator_space on documentator_space.id = documentator_space_permission.space_id " .
                  "left join `group` on `group`.id = documentator_space_permission.group_id " .
                  "left join `group_data` on `group_data`.group_id = `group`.id " .
-                 "left join user on user.id = group_data.user_id " .
+                 "left join general_user on general_user.id = group_data.user_id " .
                  "where documentator_space.client_id = ? and " .
-                 "user.id = ? and " .
+                 "general_user.id = ? and " .
                  "space_admin_flag = 1 ";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {

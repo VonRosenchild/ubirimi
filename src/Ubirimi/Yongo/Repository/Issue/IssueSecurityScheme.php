@@ -151,9 +151,9 @@ class IssueSecurityScheme
         $query = "select issue_security_scheme_level_data.id, issue_security_scheme_level_data.issue_security_scheme_level_id, " .
                  "issue_security_scheme_level_data.permission_role_id, issue_security_scheme_level_data.group_id, issue_security_scheme_level_data.user_id, " .
                  "issue_security_scheme_level_data.current_assignee, issue_security_scheme_level_data.reporter, issue_security_scheme_level_data.project_lead, issue_security_scheme_level_data.date_created, " .
-                 "user.first_name, user.last_name, user.id as user_id, group.id as group_id, group.name as group_name, permission_role.name as role_name " .
+                 "general_user.first_name, general_user.last_name, general_user.id as user_id, group.id as group_id, group.name as group_name, permission_role.name as role_name " .
                  "from issue_security_scheme_level_data " .
-                 "left join user on user.id = issue_security_scheme_level_data.user_id " .
+                 "left join general_user on general_user.id = issue_security_scheme_level_data.user_id " .
                  "left join `group` on `group`.id = issue_security_scheme_level_data.group_id " .
                  "left join permission_role on permission_role.id = issue_security_scheme_level_data.permission_role_id " .
                  "where issue_security_scheme_level_id = ?";

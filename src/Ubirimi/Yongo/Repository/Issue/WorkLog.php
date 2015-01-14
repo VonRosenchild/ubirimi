@@ -25,9 +25,9 @@ use Ubirimi\Util;
 class WorkLog
 {
     public function getByIssueId($issueId) {
-        $query = 'select issue_work_log.id, issue_work_log.time_spent, issue_work_log.date_started, issue_work_log.comment, user.id as user_id, user.first_name, user.last_name, edited_flag
+        $query = 'select issue_work_log.id, issue_work_log.time_spent, issue_work_log.date_started, issue_work_log.comment, general_user.id as user_id, general_user.first_name, general_user.last_name, edited_flag
                   from issue_work_log
-                  left join user on issue_work_log.user_id = user.id
+                  left join general_user on issue_work_log.user_id = general_user.id
                   where issue_work_log.issue_id = ?
                   order by issue_work_log.date_created desc';
 

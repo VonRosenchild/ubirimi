@@ -73,9 +73,9 @@ class Issue
             // 1. user in security scheme level data
             $query .= '(SELECT max(issue_security_scheme_level_data.id)
                       from issue_security_scheme_level_data
-                      left join user on user.id = issue_security_scheme_level_data.user_id
+                      left join general_user on general_user.id = issue_security_scheme_level_data.user_id
                       where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id
-                      and user.id = ?) as security_check1, ';
+                      and general_user.id = ?) as security_check1, ';
 
             $parameterType .= 'i';
             $parameterArray[] = $securitySchemeUserId;
@@ -85,9 +85,9 @@ class Issue
                 'from issue_security_scheme_level_data ' .
                 'left join `group` on group.id = issue_security_scheme_level_data.group_id ' .
                 'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join user on user.id = group_data.user_id ' .
+                'left join general_user on general_user.id = group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
-                'user.id = ?) as security_check2, ';
+                'general_user.id = ?) as security_check2, ';
 
             $parameterType .= 'i';
             $parameterArray[] = $securitySchemeUserId;
@@ -96,9 +96,9 @@ class Issue
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
                 'from issue_security_scheme_level_data ' .
                 'left join project_role_data on project_role_data.permission_role_id = issue_security_scheme_level_data.permission_role_id ' .
-                'left join user on user.id = project_role_data.user_id ' .
+                'left join general_user on general_user.id = project_role_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
-                'user.id = ?) as security_check3, ';
+                'general_user.id = ?) as security_check3, ';
 
             $parameterType .= 'i';
             $parameterArray[] = $securitySchemeUserId;
@@ -109,33 +109,33 @@ class Issue
                 'left join project_role_data on project_role_data.permission_role_id = issue_security_scheme_level_data.permission_role_id ' .
                 'left join `group` on group.id = project_role_data.group_id ' .
                 'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join user on user.id = group_data.user_id ' .
+                'left join general_user on general_user.id = group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
-                'user.id = ?) as security_check4, ';
+                'general_user.id = ?) as security_check4, ';
 
             $parameterType .= 'i';
             $parameterArray[] = $securitySchemeUserId;
 
             // 5. current_assignee in security scheme level data
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
-                'from issue_security_scheme_level_data, user ' .
+                'from issue_security_scheme_level_data, general_user ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
                 'issue_security_scheme_level_data.current_assignee is not null and ' .
                 'issue_main_table.user_assigned_id is not null and ' .
-                'issue_main_table.user_assigned_id = user.id and ' .
-                'user.id = ?) as security_check5, ';
+                'issue_main_table.user_assigned_id = general_user.id and ' .
+                'general_user.id = ?) as security_check5, ';
 
             $parameterType .= 'i';
             $parameterArray[] = $securitySchemeUserId;
 
             // 6. reporter in security scheme level data
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
-                'from issue_security_scheme_level_data, user ' .
+                'from issue_security_scheme_level_data, general_user ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
                 'issue_security_scheme_level_data.reporter is not null and ' .
                 'issue_main_table.user_reported_id is not null and ' .
-                'issue_main_table.user_reported_id = user.id and ' .
-                'user.id = ?) as security_check6, ';
+                'issue_main_table.user_reported_id = general_user.id and ' .
+                'general_user.id = ?) as security_check6, ';
 
             $parameterType .= 'i';
             $parameterArray[] = $securitySchemeUserId;
@@ -143,13 +143,13 @@ class Issue
             // 7. project_lead in security scheme level data
 
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
-                'from issue_security_scheme_level_data, project, user ' .
+                'from issue_security_scheme_level_data, project, general_user ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
                 'project.id = issue_main_table.project_id and ' .
-                'project.lead_id = user.id and ' .
+                'project.lead_id = general_user.id and ' .
                 'issue_security_scheme_level_data.project_lead is not null and ' .
                 'project.lead_id is not null and ' .
-                'user.id = ?) as security_check7, ';
+                'general_user.id = ?) as security_check7, ';
 
             $parameterType .= 'i';
             $parameterArray[] = $securitySchemeUserId;
@@ -166,8 +166,8 @@ class Issue
             'LEFT JOIN issue_version ON issue_main_table.id = issue_version.issue_id ' .
             'LEFT JOIN project ON issue_main_table.project_id = project.id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = project.permission_scheme_id ' .
-            'LEFT JOIN user AS user_reported ON issue_main_table.user_reported_id = user_reported.id ' .
-            'LEFT JOIN user AS user_assigned ON issue_main_table.user_assigned_id = user_assigned.id ' .
+            'LEFT join general_user AS user_reported ON issue_main_table.user_reported_id = user_reported.id ' .
+            'LEFT join general_user AS user_assigned ON issue_main_table.user_assigned_id = user_assigned.id ' .
             'LEFT JOIN issue_security_scheme_level ON issue_security_scheme_level.id = issue_main_table.security_scheme_level_id ' .
             'LEFT JOIN yongo_issue_sla ON yongo_issue_sla.yongo_issue_id = issue_main_table.id ';
 
@@ -689,15 +689,15 @@ class Issue
     }
 
     public function get2DimensionalFilter($projectId, $resultType = 'array') {
-        $query = 'SELECT user.id, user.first_name, user.last_name, yongo_issue.status_id, COUNT(yongo_issue.status_id) AS count
+        $query = 'select general_user.id, general_user.first_name, general_user.last_name, yongo_issue.status_id, COUNT(yongo_issue.status_id) AS count
                     FROM yongo_issue
-                    LEFT JOIN user on user.id = yongo_issue.user_assigned_id';
+                    LEFT join general_user on general_user.id = yongo_issue.user_assigned_id';
 
         if (-1 != $projectId) {
             $query .= ' WHERE yongo_issue.project_id = ?';
         }
 
-        $query .= ' GROUP BY user.id, yongo_issue.status_id';
+        $query .= ' GROUP BY general_user.id, yongo_issue.status_id';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -2062,13 +2062,13 @@ class Issue
     }
 
     public function getIssuesWithDueDateReminder() {
-        $query = "select yongo_issue.id, yongo_issue.summary, user.id as user_id, user.first_name, user.last_name, " .
-                 "user.client_id " .
-                 "from user " .
-                 "left join (yongo_issue.user_assigned_id = on user.id and datediff(yongo_issue.date_due, NOW()) >= user.remind_days_before_due_date) " .
+        $query = "select yongo_issue.id, yongo_issue.summary, general_user.id as user_id, general_user.first_name, general_user.last_name, " .
+                 "general_user.client_id " .
+                 "from general_user " .
+                 "left join (yongo_issue.user_assigned_id = on general_user.id and datediff(yongo_issue.date_due, NOW()) >= user.remind_days_before_due_date) " .
                  "where yongo_issue.date_due > NOW() " .
-                 "and user.yongo_issue.user_assigned_id is not null " .
-                 "order by user.id";
+                 "and general_user.yongo_issue.user_assigned_id is not null " .
+                 "order by general_user.id";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();
