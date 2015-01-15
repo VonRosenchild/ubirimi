@@ -36,6 +36,7 @@
         "nyholm/zebra-image": "1.0.1",
         "robmorgan/phinx": "*",
         "anahkiasen/rocketeer": "~2.0",
-        "monolog/monolog": "1.12.*@dev"
+        "monolog/monolog": "1.12.*@dev",
+        "phploc/phploc": "*"
     }
 }
