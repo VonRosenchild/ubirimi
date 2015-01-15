@@ -210,7 +210,7 @@ class NotificationScheme
     }
 
     public function getDataByNotificationSchemeIdAndEventId($notificationSchemeId, $eventId) {
-        $query = "select notification_scheme_data.id, general_user.first_name, general_user.last_name, general_user.id as user_id, group.id as group_id, group.name as group_name, notification_scheme_data.current_assignee, notification_scheme_data.reporter,  " .
+        $query = "select notification_scheme_data.id, general_user.first_name, general_user.last_name, general_user.id as user_id, general_group.id as group_id, general_group.name as group_name, notification_scheme_data.current_assignee, notification_scheme_data.reporter,  " .
             "notification_scheme_data.all_watchers, field.name as custom_field_name, field.id as custom_field_id, " .
             "notification_scheme_data.current_user, notification_scheme_data.permission_role_id, notification_scheme_data.project_lead, notification_scheme_data.component_lead, " .
             "permission_role.name as role_name, " .
@@ -218,7 +218,7 @@ class NotificationScheme
             "from notification_scheme_data " .
             "left join event on event.id = notification_scheme_data.event_id " .
             "left join general_user on general_user.id = notification_scheme_data.user_id " .
-            "left join `group` on `group`.id = notification_scheme_data.group_id " .
+            "left join `general_group` on  `general_group`.id = notification_scheme_data.group_id " .
             "left join permission_role on permission_role.id = notification_scheme_data.permission_role_id " .
             "left join field on field.id = notification_scheme_data.user_picker_multiple_selection " .
             "where notification_scheme_data.notification_scheme_id = ? and " .

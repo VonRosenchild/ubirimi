@@ -170,7 +170,7 @@ class Sla
         $stmt->close();
 
         // remove also from the columns of users for displaying issues
-        $query = "update user set issues_display_columns = REPLACE(issues_display_columns, '#sla_" . $Id . "', '')";
+        $query = "update general_user set issues_display_columns = REPLACE(issues_display_columns, '#sla_" . $Id . "', '')";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();

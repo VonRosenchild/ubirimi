@@ -83,9 +83,9 @@ class Issue
             // 2. user in group security scheme level data
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
                 'from issue_security_scheme_level_data ' .
-                'left join `group` on group.id = issue_security_scheme_level_data.group_id ' .
-                'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join general_user on general_user.id = group_data.user_id ' .
+                'left join `general_group` on general_group.id = issue_security_scheme_level_data.group_id ' .
+                'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+                'left join general_user on general_user.id = general_group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
                 'general_user.id = ?) as security_check2, ';
 
@@ -107,9 +107,9 @@ class Issue
             $query .= '(SELECT max(issue_security_scheme_level_data.id) ' .
                 'from issue_security_scheme_level_data ' .
                 'left join project_role_data on project_role_data.permission_role_id = issue_security_scheme_level_data.permission_role_id ' .
-                'left join `group` on group.id = project_role_data.group_id ' .
-                'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join general_user on general_user.id = group_data.user_id ' .
+                'left join `general_group` on general_group.id = project_role_data.group_id ' .
+                'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+                'left join general_user on general_user.id = general_group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = issue_main_table.security_scheme_level_id and ' .
                 'general_user.id = ?) as security_check4, ';
 

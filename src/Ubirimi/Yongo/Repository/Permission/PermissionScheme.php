@@ -85,12 +85,12 @@ class PermissionScheme
 
     public function getDataByPermissionId($permissionSchemeId, $permissionId) {
         $query = "select permission_scheme_data.id, general_user.id as user_id, general_user.first_name, general_user.last_name, permission_scheme_data.reporter, " .
-                    "permission_scheme_data.group_id as group_id, group.name as group_name, " .
+                    "permission_scheme_data.group_id as group_id, general_group.name as group_name, " .
                     "permission_role.id as permission_role_id, permission_role.name as permission_role_name, " .
                     "permission_scheme_data.current_assignee, permission_scheme_data.reporter, permission_scheme_data.project_lead " .
             "from permission_scheme_data " .
             "left join permission_role on permission_role.id = permission_scheme_data.permission_role_id " .
-            "left join `group` on group.id = permission_scheme_data.group_id " .
+            "left join `general_group` on general_group.id = permission_scheme_data.group_id " .
             "left join general_user on general_user.id = permission_scheme_data.user_id " .
             "where permission_scheme_data.permission_scheme_id = ? " .
             "and permission_scheme_data.sys_permission_id = ?";
@@ -240,9 +240,9 @@ class PermissionScheme
     }
 
     public function getGroupsForPermissionId($permissionSchemeId, $permissionId) {
-        $query = "select group.id as group_id, group.name as group_name " .
+        $query = "SELECT general_group.id as group_id, general_group.name as group_name " .
             "from permission_scheme_data " .
-            "left join `group` on group.id = permission_scheme_data.group_id " .
+            "left join `general_group` on general_group.id = permission_scheme_data.group_id " .
             "where permission_scheme_data.permission_scheme_id = ? and permission_scheme_data.sys_permission_id = ? and group_id is not null";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);

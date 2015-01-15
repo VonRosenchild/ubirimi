@@ -464,7 +464,7 @@ class UbirimiClient
             }
             $users_ids_string = implode($userIdsArray, ', ');
 
-            $query = 'delete from group_data where user_id IN (' . $users_ids_string . ')';
+            $query = 'delete from general_group_data where user_id IN (' . $users_ids_string . ')';
             UbirimiContainer::get()['db.connection']->query($query);
 
             $query = 'delete from permission_role_data where default_user_id IN (' . $users_ids_string . ')';
@@ -603,7 +603,7 @@ class UbirimiClient
     public function getUsers($clientId, $filterGroupId = null, $resultType = null, $includeHelpdeskCustomerUsers = 1) {
         $query = 'select general_user.* ' .
                  'from general_user ' .
-                 'left join group_data on group_data.user_id = general_user.id ' .
+                 'left join general_group_data on general_group_data.user_id = general_user.id ' .
                  'WHERE general_user.client_id = ? ';
 
         if (!$includeHelpdeskCustomerUsers) {
@@ -615,7 +615,7 @@ class UbirimiClient
         $paramValueRef = array();
         $paramValue[] = $clientId;
         if ($filterGroupId) {
-            $query .= ' and group_data.group_id = ?';
+            $query .= ' and general_group_data.group_id = ?';
             $paramType .= 'i';
             $paramValue[] = $filterGroupId;
         }
@@ -1124,9 +1124,9 @@ class UbirimiClient
         'from permission_scheme ' .
         'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
         'left join project on project.permission_scheme_id = permission_scheme.id ' .
-        'left join `group` on group.id = permission_scheme_data.group_id ' .
-        'left join `group_data` on group_data.group_id = `group`.id ' .
-        'left join general_user on general_user.id = group_data.user_id ' .
+        'left join `general_group` on general_group.id = permission_scheme_data.group_id ' .
+        'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+        'left join general_user on general_user.id = general_group_data.user_id ' .
         'LEFT join general_user user_lead ON project.lead_id = user_lead.id ' .
         'left join project_category on project_category.id = project.project_category_id ' .
         'where permission_scheme.client_id = ? and ' .
@@ -1185,9 +1185,9 @@ class UbirimiClient
         'left join project on project.permission_scheme_id = permission_scheme.id ' .
         'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
         'left join project_role_data on project_role_data.permission_role_id = permission_scheme_data.permission_role_id ' .
-        'left join `group` on group.id = project_role_data.group_id ' .
-        'left join `group_data` on group_data.group_id = `group`.id ' .
-        'left join general_user on general_user.id = group_data.user_id ' .
+        'left join `general_group` on general_group.id = project_role_data.group_id ' .
+        'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+        'left join general_user on general_user.id = general_group_data.user_id ' .
         'LEFT join general_user user_lead ON project.lead_id = user_lead.id ' .
         'left join project_category on project_category.id = project.project_category_id ' .
         'where permission_scheme.client_id = ? and ' .
@@ -1901,13 +1901,13 @@ class UbirimiClient
     public function getUsersByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
         $query = 'select general_user.* ' .
             'from general_user ' .
-            'left join group_data on group_data.user_id = general_user.id ' .
-            'left join `group` on `group`.id = group_data.group_id ' .
+            'left join general_group_data on general_group_data.user_id = general_user.id ' .
+            'left join `general_group` on  `general_group`.id = general_group_data.group_id ' .
             'WHERE general_user.client_id = ? ' .
             'and group.sys_product_id = ' . $productId . ' ';
 
         if (array_key_exists('group', $filters) && $filters['group'] != -1) {
-            $query .= ' AND group_data.group_id = ' . $filters['group'];
+            $query .= ' AND general_group_data.group_id = ' . $filters['group'];
         }
 
         if (array_key_exists('username', $filters) && !empty($filters['username'])) {
@@ -1931,17 +1931,17 @@ class UbirimiClient
     }
 
     public function getGroupsByClientIdAndProductIdAndFilters($clientId, $productId, $filters) {
-        $query = 'SELECT `group`.* ' .
-            'FROM `group` ' .
-            'left join group_data on group_data.group_id = `group`.id ' .
-            'WHERE `group`.client_id = ? ' .
-            'and `group`.sys_product_id = ' . $productId . ' ';
+        $query = 'SELECT `general_group`.* ' .
+            'FROM `general_group` ' .
+            'left join general_group_data on general_group_data.group_id = `general_group`.id ' .
+            'WHERE `general_group`.client_id = ? ' .
+            'and `general_group`.sys_product_id = ' . $productId . ' ';
 
         if (array_key_exists('name', $filters) && !empty($filters['name'])) {
-            $query .= " AND `group`.name like '%" . $filters['name'] . "%'";
+            $query .= " AND `general_group`.name like '%" . $filters['name'] . "%'";
         }
 
-        $query .= ' group by `group`.id';
+        $query .= ' group by `general_group`.id';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $clientId);

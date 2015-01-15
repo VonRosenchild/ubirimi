@@ -25,7 +25,7 @@ use Ubirimi\SystemProduct;
 class UbirimiGroup
 {
     public function getByName($clientId, $name) {
-        $query = 'select * from `group` where client_id = ? and name = ? limit 1';
+        $query = 'select * FROM `general_group` where client_id = ? and name = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("is", $clientId, $name);
@@ -56,7 +56,7 @@ class UbirimiGroup
     }
 
     public function getByNameAndProductId($clientId, $productId, $name, $groupId = null) {
-        $query = 'select id, name from `group` where client_id = ? and sys_product_id = ? and lower(name) = ?';
+        $query = 'select id, name FROM `general_group` where client_id = ? and sys_product_id = ? and lower(name) = ?';
         if ($groupId)
             $query .= ' and id != ' . $groupId;
 
@@ -72,12 +72,12 @@ class UbirimiGroup
     }
 
     public function getByUserIdAndProductId($userId, $productId) {
-        $query = 'select group.name, group.id ' .
-            'from group_data ' .
-            'left join `group` on group.id = group_data.group_id ' .
-            'where group_data.user_id = ? and ' .
-            '`group`.sys_product_id = ? ' .
-            'order by `group`.name';
+        $query = 'SELECT general_group.name, general_group.id ' .
+            'from general_group_data ' .
+            'left join `general_group` on general_group.id = general_group_data.group_id ' .
+            'where general_group_data.user_id = ? and ' .
+            '`general_group`.sys_product_id = ? ' .
+            'order by `general_group`.name';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("ii", $userId, $productId);
@@ -90,7 +90,7 @@ class UbirimiGroup
     }
 
     public function getByClientIdAndProductId($clientId, $productId) {
-        $query = 'SELECT * FROM `group` where client_id = ? and sys_product_id = ? order by `group`.name';
+        $query = 'SELECT * FROM `general_group` where client_id = ? and sys_product_id = ? order by `general_group`.name';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("ii", $clientId, $productId);
@@ -103,7 +103,7 @@ class UbirimiGroup
     }
 
     public function getByClientId($clientId) {
-        $query = 'SELECT * FROM `group` where client_id = ?';
+        $query = 'SELECT * FROM `general_group` where client_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $clientId);
@@ -136,7 +136,7 @@ class UbirimiGroup
     public function getMetadataById($Id) {
         $query = 'SELECT ' .
             'id, name, description, client_id ' .
-            'FROM `group` ' .
+            'FROM `general_group` ' .
             'where id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -158,11 +158,11 @@ class UbirimiGroup
     }
 
     public function getDataByGroupId($groupId) {
-        $query = 'select group_data.id, group_data.user_id, general_user.first_name, general_user.last_name, ' .
+        $query = 'select general_group_data.id, general_group_data.user_id, general_user.first_name, general_user.last_name, ' .
                  'general_user.issues_display_columns ' .
-            'from group_data ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
-            'where group_data.group_id = ? ' .
+            'from general_group_data ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
+            'where general_group_data.group_id = ? ' .
             'order by general_user.first_name, general_user.last_name';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
@@ -179,7 +179,7 @@ class UbirimiGroup
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
-        $query = 'DELETE from group_data where group_id = ?';
+        $query = 'DELETE from general_group_data where group_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $groupId);
@@ -193,12 +193,12 @@ class UbirimiGroup
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
-        $query = 'delete from group_data where group_id = ?';
+        $query = 'delete from general_group_data where group_id = ?';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $groupId);
         $stmt->execute();
 
-        $query = 'delete from `group` where id = ?';
+        $query = 'delete FROM `general_group` where id = ?';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $groupId);
         $stmt->execute();
@@ -211,12 +211,12 @@ class UbirimiGroup
         $query = "SET FOREIGN_KEY_CHECKS = 0;";
         UbirimiContainer::get()['db.connection']->query($query);
 
-        $query = 'delete from group_data where group_id = ?';
+        $query = 'delete from general_group_data where group_id = ?';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $groupId);
         $stmt->execute();
 
-        $query = 'delete from `group` where id = ?';
+        $query = 'delete FROM `general_group` where id = ?';
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $groupId);
         $stmt->execute();

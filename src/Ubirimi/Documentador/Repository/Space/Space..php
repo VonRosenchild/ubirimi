@@ -632,10 +632,10 @@ class Space {
     }
 
     public function getGroupsWithPermissions($spaceId) {
-        $query = "SELECT group.id as group_id, group.name, " .
+        $query = "SELECT general_group.id as group_id, general_group.name, " .
                  "documentator_space_permission.id, documentator_space_permission.all_view_flag, documentator_space_permission.space_admin_flag " .
                  "from documentator_space_permission " .
-                 "left join `group` on `group`.id = documentator_space_permission.group_id " .
+                 "left join `general_group` on  `general_group`.id = documentator_space_permission.group_id " .
                  "where space_id = ? and " .
                  "group.id is not null";
 
@@ -746,9 +746,9 @@ class Space {
                          "general_user.id as user_id, general_user.first_name, general_user.last_name " .
                  "from documentator_space_permission " .
                  "left join documentator_space on documentator_space.id = documentator_space_permission.space_id " .
-                 "left join `group` on `group`.id = documentator_space_permission.group_id " .
-                 "left join `group_data` on `group_data`.group_id = `group`.id " .
-                 "left join general_user on general_user.id = group_data.user_id " .
+                 "left join `general_group` on  `general_group`.id = documentator_space_permission.group_id " .
+                 "left join `general_group_data` on `general_group_data`.group_id = `general_group`.id " .
+                 "left join general_user on general_user.id = general_group_data.user_id " .
                  "where documentator_space.client_id = ? and " .
                  "general_user.id = ? and " .
                  "space_admin_flag = 1 ";

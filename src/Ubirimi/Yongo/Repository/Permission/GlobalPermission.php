@@ -58,9 +58,9 @@ class GlobalPermission
     }
 
     public function getDataByPermissionIdAndUserId($clientId, $globalPermissionId, $userId) {
-        $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
+        $query = 'select `general_group`.name, `general_group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
             'from sys_permission_global_data ' .
-            'left join `group` on group.id = sys_permission_global_data.group_id ' .
+            'left join `general_group` on general_group.id = sys_permission_global_data.group_id ' .
             'where sys_permission_global_data.sys_permission_global_id = ? and ' .
             'sys_permission_global_data.client_id = ? and ' .
             'sys_permission_global_data.user_id = ?';
@@ -76,9 +76,9 @@ class GlobalPermission
     }
 
     public function getDataByPermissionIdAndGroupId($clientId, $globalPermissionId, $groupId) {
-        $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
+        $query = 'select `general_group`.name, `general_group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
             'from sys_permission_global_data ' .
-            'left join `group` on group.id = sys_permission_global_data.group_id ' .
+            'left join `general_group` on general_group.id = sys_permission_global_data.group_id ' .
             'where sys_permission_global_data.sys_permission_global_id = ? and ' .
             'sys_permission_global_data.client_id = ? and ' .
             'sys_permission_global_data.group_id = ?';
@@ -94,9 +94,9 @@ class GlobalPermission
     }
 
     public function getDataByPermissionId($clientId, $globalPermissionId, $resultType = null, $resultColumn = null) {
-        $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
+        $query = 'select `general_group`.name, `general_group`.id, sys_permission_global_data.id as sys_permission_global_data_id ' .
             'from sys_permission_global_data ' .
-            'left join `group` on group.id = sys_permission_global_data.group_id ' .
+            'left join `general_group` on general_group.id = sys_permission_global_data.group_id ' .
             'where sys_permission_global_data.sys_permission_global_id = ? and ' .
             'sys_permission_global_data.client_id = ?';
 
@@ -167,11 +167,11 @@ class GlobalPermission
     }
 
     public function getDataById($Id) {
-        $query = 'select `group`.name, `group`.id, sys_permission_global_data.id as sys_permission_global_data_id, ' .
+        $query = 'select `general_group`.name, `general_group`.id, sys_permission_global_data.id as sys_permission_global_data_id, ' .
             'sys_permission_global.name as permission_name ' .
             'from sys_permission_global_data ' .
             'left join sys_permission_global on sys_permission_global.id = sys_permission_global_data.sys_permission_global_id ' .
-            'left join `group` on group.id = sys_permission_global_data.group_id ' .
+            'left join `general_group` on general_group.id = sys_permission_global_data.group_id ' .
             'where sys_permission_global_data.id = ? ' .
             'limit 1';
 

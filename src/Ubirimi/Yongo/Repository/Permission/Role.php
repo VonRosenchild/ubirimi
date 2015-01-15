@@ -149,9 +149,9 @@ class Role
     }
 
     public function getDefaultGroups($permissionRoleId) {
-        $query = 'select group.id as group_id, group.name as group_name ' .
+        $query = 'SELECT general_group.id as group_id, general_group.name as group_name ' .
             'from permission_role_data ' .
-            'left join `group` on group.id = permission_role_data.default_group_id ' .
+            'left join `general_group` on general_group.id = permission_role_data.default_group_id ' .
             'where permission_role_data.permission_role_id = ? and ' .
             'permission_role_data.default_group_id is not null';
 

@@ -467,7 +467,7 @@ class Util {
     }
 
     public static function updatePasswordForUserId($userId) {
-        $query = 'update user set password = ? where id = ? limit 1';
+        $query = 'update general_user set password = ? where id = ? limit 1';
 
         $pass = Util::randomPassword(8);
 
@@ -490,7 +490,7 @@ class Util {
     }
 
     public static function updatePasswordForClientAdministrator($userId) {
-        $query = 'update user set password = ? where id = ? and client_administrator_flag = 1 limit 1';
+        $query = 'update general_user set password = ? where id = ? and client_administrator_flag = 1 limit 1';
 
         $pass = Util::randomPassword(8);
 

@@ -486,14 +486,14 @@ class SvnRepository
     }
 
     public function addAdministrator($users) {
-        $query = "UPDATE user SET svn_administrator_flag = 1 where id IN (" . implode(', ', $users) . ")";
+        $query = "update general_user set svn_administrator_flag = 1 where id IN (" . implode(', ', $users) . ")";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->execute();
     }
 
     public function deleteAdministratorById($clientId, $Id) {
-        $query = "UPDATE user SET svn_administrator_flag = 0 where client_id = ? and id = ? limit 1";
+        $query = "update general_user set svn_administrator_flag = 0 where client_id = ? and id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("ii", $clientId, $Id);

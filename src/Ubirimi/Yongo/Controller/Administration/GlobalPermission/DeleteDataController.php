@@ -38,7 +38,7 @@ class DeleteDataController extends UbirimiController
         $permissionData = $this->getRepository(GlobalPermission::class)->getDataById($id);
         $this->getRepository(GlobalPermission::class)->deleteById($id);
 
-        $this->getLogger()->addInfo('DELETE Yongo Global Permission ' . $permissionData['permission_name'] . ' from group ' . $permissionData['name'], $this->getLoggerContext());
+        $this->getLogger()->addInfo('DELETE Yongo Global Permission ' . $permissionData['permission_name'] . ' from general_group ' . $permissionData['name'], $this->getLoggerContext());
 
         return new RedirectResponse('/yongo/administration/global-permissions');
     }

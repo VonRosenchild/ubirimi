@@ -146,11 +146,11 @@ class IssueFilter
         $query = "SELECT filter_subscription.id, filter_subscription.period, " .
             "general_user.id as user_id, general_user.first_name, general_user.last_name, " .
             "user_created.id as user_created_id, user_created.first_name as created_first_name, user_created.last_name as created_last_name, " .
-            "`group`.id as group_id, `group`.name as group_name " .
+            "`general_group`.id as group_id, `general_group`.name as group_name " .
             "FROM filter_subscription " .
             "left join general_user on general_user.id = filter_subscription.user_id " .
             "left join general_user as user_created on user_created.id = filter_subscription.user_created_id " .
-            "left join `group` on `group`.id = filter_subscription.group_id " .
+            "left join `general_group` on  `general_group`.id = filter_subscription.group_id " .
             "where " .
             "filter_subscription.filter_id = ?";
 

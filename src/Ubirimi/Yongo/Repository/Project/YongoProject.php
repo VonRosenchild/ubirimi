@@ -790,9 +790,9 @@ class YongoProject
 
                 'select general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'FROM project_role_data ' .
-            'left join `group` on group.id = project_role_data.group_id ' .
-            'left join `group_data` on group_data.group_id = `group`.id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group` on general_group.id = project_role_data.group_id ' .
+            'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where project_role_data.project_id = ? and ' .
             'project_role_data.permission_role_id = ? and ' .
             'project_role_data.group_id is not null';
@@ -808,9 +808,9 @@ class YongoProject
     }
 
     public function getGroupsInRole($projectId, $roleId) {
-        $query = 'SELECT group.id as group_id, group.name as group_name ' .
+        $query = 'SELECT general_group.id as group_id, general_group.name as group_name ' .
             'FROM project_role_data ' .
-            'left join `group` on group.id = project_role_data.group_id ' .
+            'left join `general_group` on general_group.id = project_role_data.group_id ' .
             'where project_role_data.project_id = ? and ' .
                 'project_role_data.permission_role_id = ? and ' .
                 'project_role_data.group_id is not null';
@@ -890,9 +890,9 @@ class YongoProject
             'from project ' .
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
-            'left join `group` on group.id = permission_scheme_data.group_id ' .
-            'left join `group_data` on group_data.group_id = `group`.id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group` on general_group.id = permission_scheme_data.group_id ' .
+            'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
                 'permission_scheme_data.group_id is not null and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
@@ -921,9 +921,9 @@ class YongoProject
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
             'left join project_role_data on project_role_data.permission_role_id = permission_scheme_data.permission_role_id ' .
-            'left join `group` on group.id = project_role_data.group_id ' .
-            'left join `group_data` on group_data.group_id = `group`.id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group` on general_group.id = project_role_data.group_id ' .
+            'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
                 'project_role_data.group_id is not null and ' .
                 'project_role_data.project_id IN ' . $projectsSQL . ' and ' .
@@ -979,9 +979,9 @@ class YongoProject
             'from project ' .
             'left join notification_scheme on notification_scheme.id = project.notification_scheme_id ' .
             'left join notification_scheme_data on notification_scheme_data.notification_scheme_id = notification_scheme.id ' .
-            'left join `group` on group.id = notification_scheme_data.group_id ' .
-            'left join `group_data` on group_data.group_id = `group`.id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group` on general_group.id = notification_scheme_data.group_id ' .
+            'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
                 'notification_scheme_data.group_id is not null and ' .
                 'notification_scheme_data.event_id = ? and ' .
@@ -1009,9 +1009,9 @@ class YongoProject
             'left join notification_scheme on notification_scheme.id = project.notification_scheme_id ' .
             'left join notification_scheme_data on notification_scheme_data.notification_scheme_id = notification_scheme.id ' .
             'left join project_role_data on project_role_data.permission_role_id = notification_scheme_data.permission_role_id ' .
-            'left join `group` on group.id = project_role_data.group_id ' .
-            'left join `group_data` on group_data.group_id = `group`.id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group` on general_group.id = project_role_data.group_id ' .
+            'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
                 'project_role_data.group_id is not null and ' .
                 'notification_scheme_data.event_id = ? and ' .
@@ -1191,9 +1191,9 @@ class YongoProject
             'from project ' .
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
-            'left join `group` on group.id = permission_scheme_data.group_id ' .
-            'left join `group_data` on group_data.group_id = `group`.id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group` on general_group.id = permission_scheme_data.group_id ' .
+            'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
                 'permission_scheme_data.group_id is not null and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .
@@ -1223,9 +1223,9 @@ class YongoProject
             'left join permission_scheme on permission_scheme.id = project.permission_scheme_id ' .
             'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
             'left join project_role_data on project_role_data.permission_role_id = permission_scheme_data.permission_role_id ' .
-            'left join `group` on group.id = project_role_data.group_id ' .
-            'left join `group_data` on group_data.group_id = `group`.id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group` on general_group.id = project_role_data.group_id ' .
+            'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where project.id  IN ' . $projectsSQL . ' and ' .
                 'project_role_data.group_id is not null and ' .
                 'permission_scheme_data.sys_permission_id = ? and ' .

@@ -50,7 +50,7 @@ class UbirimiUser
     }
 
     public function getGroupsByUserId($userId, $resultType = null, $field = null) {
-        $query = 'select distinct group_id from group_data where user_id = ?';
+        $query = 'select distinct group_id from general_group_data where user_id = ?';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $userId);
@@ -120,7 +120,7 @@ class UbirimiUser
         $query = 'update project_component set leader_id = NULL where leader_id = ' . $userId;
         UbirimiContainer::get()['db.connection']->query($query);
 
-        $query = 'delete from group_data where user_id = ' . $userId;
+        $query = 'delete from general_group_data where user_id = ' . $userId;
         UbirimiContainer::get()['db.connection']->query($query);
 
         $query = 'delete from project_role_data where user_id = ' . $userId;
@@ -186,7 +186,7 @@ class UbirimiUser
     }
 
     public function updateById($userId, $firstName, $lastName, $email, $username, $issuesPerPage = null, $clientAdministratorFlag = 0, $customerServiceDeskFlag, $date) {
-        $query = 'UPDATE user SET ' .
+        $query = 'update general_user set ' .
                  'first_name = ?, last_name = ?, email = ?, username = ?, client_administrator_flag = ?, customer_service_desk_flag = ?, date_updated = ? ';
 
         if ($issuesPerPage)
@@ -227,9 +227,9 @@ class UbirimiUser
             $queryCondition = " OR group_id IN (" . implode(', ', $groupIds) . ')';
         }
 
-        $query = "SELECT project_role_data.id, project_role_data.user_id, group.id as group_id, group.name as group_name " .
+        $query = "SELECT project_role_data.id, project_role_data.user_id, general_group.id as group_id, general_group.name as group_name " .
             "FROM project_role_data " .
-            "left join `group` on `group`.id = project_role_data.group_id " .
+            "left join `general_group` on  `general_group`.id = project_role_data.group_id " .
             "WHERE permission_role_id = ? " .
             "AND project_id = ? " .
             "AND (user_id = ? " . $queryCondition . ') ' .
@@ -246,9 +246,9 @@ class UbirimiUser
     }
 
     public function checkProjectRole($userId, $projectId, $roleId, $groupIds) {
-        $query = "SELECT project_role_data.id, project_role_data.user_id, group.id as group_id, group.name as group_name " .
+        $query = "SELECT project_role_data.id, project_role_data.user_id, general_group.id as group_id, general_group.name as group_name " .
                     "FROM project_role_data " .
-                    "left join `group` on `group`.id = project_role_data.group_id " .
+                    "left join `general_group` on  `general_group`.id = project_role_data.group_id " .
                     "WHERE permission_role_id = ? " .
                         "AND project_id = ? " .
                         "AND (user_id = ? OR group_id IN (" . implode(', ', $groupIds) . ')) ' .
@@ -286,11 +286,11 @@ class UbirimiUser
     public function hasGlobalPermission($clientId, $userId, $globalPermissionId) {
         $query = 'select general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'from sys_permission_global_data ' .
-            'left join `group_data` on `group_data`.group_id = sys_permission_global_data.group_id ' .
-            'left join general_user on general_user.id = group_data.user_id ' .
+            'left join `general_group_data` on `general_group_data`.group_id = sys_permission_global_data.group_id ' .
+            'left join general_user on general_user.id = general_group_data.user_id ' .
             'where sys_permission_global_data.client_id = ? and ' .
             'sys_permission_global_data.sys_permission_global_id = ? and ' .
-            'group_data.user_id = ? and ' .
+            'general_group_data.user_id = ? and ' .
             'general_user.id is not null ' .
 
             ' UNION ' .
@@ -315,7 +315,7 @@ class UbirimiUser
     }
 
     public function deleteGroupsByUserId($userId) {
-        $query = 'delete from group_data where user_id = ? ';
+        $query = 'delete from general_group_data where user_id = ? ';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("i", $userId);
@@ -334,7 +334,7 @@ class UbirimiUser
     }
 
     public function updatePassword($userId, $hash) {
-        $query = 'UPDATE user SET password = ? where id = ? limit 1';
+        $query = 'update general_user set password = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $hash, $userId);
@@ -540,7 +540,7 @@ class UbirimiUser
     }
 
     public function updatePreferences($userId, $parameters) {
-        $query = 'UPDATE user SET ';
+        $query = 'update general_user set ';
 
         $values = array();
         $values_ref = array();
@@ -639,9 +639,9 @@ class UbirimiUser
                 'UNION DISTINCT ' .
                 'SELECT issue_security_scheme_level_data.id ' .
                 'from issue_security_scheme_level_data ' .
-                'left join `group` on group.id = issue_security_scheme_level_data.group_id ' .
-                'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join general_user on general_user.id = group_data.user_id ' .
+                'left join `general_group` on general_group.id = issue_security_scheme_level_data.group_id ' .
+                'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+                'left join general_user on general_user.id = general_group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.user_id = ? ' .
                 // 3. permission role in security scheme level data - user
@@ -657,9 +657,9 @@ class UbirimiUser
                 'SELECT issue_security_scheme_level_data.id ' .
                 'from issue_security_scheme_level_data ' .
                 'left join project_role_data on project_role_data.permission_role_id = issue_security_scheme_level_data.permission_role_id ' .
-                'left join `group` on group.id = project_role_data.group_id ' .
-                'left join `group_data` on group_data.group_id = `group`.id ' .
-                'left join general_user on general_user.id = group_data.user_id ' .
+                'left join `general_group` on general_group.id = project_role_data.group_id ' .
+                'left join `general_group_data` on general_group_data.group_id = `general_group`.id ' .
+                'left join general_user on general_user.id = general_group_data.user_id ' .
                 'where issue_security_scheme_level_data.issue_security_scheme_level_id = ? and ' .
                 'issue_security_scheme_level_data.user_id = ? ' .
                 // 5. current_assignee in security scheme level data
@@ -790,7 +790,7 @@ class UbirimiUser
     }
 
     public function updateAvatar($avatar, $userId) {
-        $query = 'UPDATE user SET avatar_picture = ? where id = ? limit 1';
+        $query = 'update general_user set avatar_picture = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $avatar, $userId);
@@ -814,7 +814,7 @@ class UbirimiUser
     }
 
     public function updateDisplayColumns($userId, $data) {
-        $query = 'UPDATE user SET issues_display_columns = ? where id = ? limit 1';
+        $query = 'update general_user set issues_display_columns = ? where id = ? limit 1';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $data, $userId);
@@ -823,7 +823,7 @@ class UbirimiUser
 
     public function updateLoginTime($userId, $datetime)
     {
-        $query = "UPDATE user SET last_login = ? WHERE id = ? limit 1";
+        $query = "update general_user set last_login = ? WHERE id = ? limit 1";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("si", $datetime, $userId);
