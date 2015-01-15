@@ -637,7 +637,7 @@ class Space {
                  "from documentator_space_permission " .
                  "left join `general_group` on  `general_group`.id = documentator_space_permission.group_id " .
                  "where space_id = ? and " .
-                 "group.id is not null";
+                 "general_group.id is not null";
 
         if ($stmt = UbirimiContainer::get()['db.connection']->prepare($query)) {
             $stmt->bind_param("i", $spaceId);
