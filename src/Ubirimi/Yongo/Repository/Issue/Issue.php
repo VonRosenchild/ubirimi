@@ -19,7 +19,6 @@
 
 namespace Ubirimi\Yongo\Repository\Issue;
 
-
 use Ubirimi\Agile\Repository\Board\Board;
 use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\HelpDesk\Repository\Sla\Sla;

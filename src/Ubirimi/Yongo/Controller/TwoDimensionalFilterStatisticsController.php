@@ -19,40 +19,37 @@
 
 namespace Ubirimi\Yongo\Controller;
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Monolog\Processor\IntrospectionProcessor;
-use Monolog\Processor\WebProcessor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Ubirimi\Container\UbirimiContainer;
 use Ubirimi\Repository\General\UbirimiClient;
-use Ubirimi\Repository\User\UbirimiUser;
 use Ubirimi\SystemProduct;
 use Ubirimi\UbirimiController;
 use Ubirimi\Util;
+use Ubirimi\Repository\User\UbirimiUser;
+use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Issue\Issue;
 use Ubirimi\Yongo\Repository\Issue\IssueSettings;
-use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
-use Ubirimi\Yongo\Repository\Permission\Permission;
 
-class IndexController extends UbirimiController
+class TwoDimensionalFilterStatisticsController extends UbirimiController
 {
     public function indexAction(Request $request, SessionInterface $session)
     {
         if (Util::checkUserIsLoggedIn()) {
             $clientId = $session->get('client/id');
             $issuesPerPage = $session->get('user/issues_per_page');
-            $clientSettings = $session->get('client/settings');
+            $clientSettings = $session->get('client/settings');;
         } else {
             $clientId = $this->getRepository(UbirimiClient::class)->getClientIdAnonymous();
             $issuesPerPage = 25;
             $clientSettings = $this->getRepository(UbirimiClient::class)->getSettings($clientId);
         }
-        $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Dashboard';
+        $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / 2 Dimensional Filter Statistics';
 
-        $userAssignedId = $session->get('user/id');
+        $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
         $allProjects = $this->getRepository(UbirimiClient::class)->getProjects($clientId);
+        $menuSelectedCategory = 'home';
+        $section = '2-dimensional-filter-statistics';
 
         $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $clientId,
@@ -68,52 +65,6 @@ class IndexController extends UbirimiController
             $projectIdsNames[] = array($projects[$i]['id'], $projects[$i]['name']);
         }
 
-        $issueQueryParameters = array(
-            'issues_per_page' => $issuesPerPage,
-            'assignee' => $userAssignedId,
-            'resolution' => array(-2),
-            'sort' => 'code',
-            'sort_order' => 'desc'
-        );
-
-        if (count($projectIdsArray)) {
-            $issueQueryParameters['project'] = $projectIdsArray;
-        } else {
-            $issueQueryParameters['project'] = array(-1);
-        }
-
-        $issues = $this->getRepository(Issue::class)->getByParameters(
-            $issueQueryParameters,
-            $session->get('user/id'),
-            null,
-            $session->get('user/id')
-        );
-
-        $issueQueryParameters = array(
-            'issues_per_page' => $issuesPerPage,
-            'resolution' => array(-2),
-            'sort' => 'code',
-            'sort_order' => 'desc',
-            'date_created_after' => date('Y-m-d H:i:s', strtotime("-90 days"))
-        );
-
-        if (count($projectIdsArray)) {
-            $issueQueryParameters['project'] = $projectIdsArray;
-        }
-
-        if ($session->get('user/id')) {
-            $issueQueryParameters['not_assignee'] = $userAssignedId;
-        }
-
-        $issuesUnresolvedOthers = $this->getRepository(Issue::class)->getByParameters(
-            $issueQueryParameters,
-            $session->get('user/id'),
-            null,
-            $session->get('user/id')
-        );
-
-        $menuSelectedCategory = 'home';
-
         $hasGlobalAdministrationPermission = $this->getRepository(UbirimiUser::class)->hasGlobalPermission(
             $clientId,
             $session->get('user/id'),
@@ -126,8 +77,13 @@ class IndexController extends UbirimiController
             GlobalPermission::GLOBAL_PERMISSION_YONGO_SYSTEM_ADMINISTRATORS
         );
 
-        $session->set('selected_product_id', SystemProduct::SYS_PRODUCT_YONGO);
+        $twoDimensionalData = null;
+        if (count($projectIdsArray))
+            $twoDimensionalData = $this->getRepository(Issue::class)->get2DimensionalFilter(-1, 'array');
 
-        return $this->render(__DIR__ . '/../Resources/views/Index.php', get_defined_vars());
+        $issueStatuses = $this->getRepository(IssueSettings::class)->getAllIssueSettings('status', $clientId, 'array');
+        $usersAsAssignee = $this->getRepository(UbirimiUser::class)->getByClientId($clientId);
+
+        return $this->render(__DIR__ . '/../Resources/views/TwoDimensionalFilterStatistics.php', get_defined_vars());
     }
 }

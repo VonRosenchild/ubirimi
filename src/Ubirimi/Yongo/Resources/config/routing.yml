@@ -6,6 +6,10 @@ ActivitySteam:
   path: /yongo/activity-stream
   defaults: { _controller: '\Ubirimi\Yongo\Controller\ActivityStreamController' }
 
+TwoDimensionalFilterStatistics:
+  path: /yongo/2-dimensional-filter-statistics
+  defaults: { _controller: '\Ubirimi\Yongo\Controller\TwoDimensionalFilterStatisticsController' }
+
 listProject:
   path: /yongo/project/all
   defaults: { _controller: '\Ubirimi\Yongo\Controller\Project\ListController' }
