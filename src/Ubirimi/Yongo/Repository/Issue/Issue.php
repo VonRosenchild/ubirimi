@@ -550,72 +550,79 @@ class Issue
             $queryWherePart = substr($queryWherePart, 0, strlen($queryWherePart) - 4);
         }
 
-        $sortColumn = null;
+        $sortColumns = array();
         if (isset($parameters['sort'])) {
             switch ($parameters['sort']) {
                 case 'code':
-                    $sortColumn = 'issue_main_table.id';
+                    $sortColumns[] = 'issue_main_table.id';
                     break;
                 case 'type':
-                    $sortColumn = 'type';
+                    $sortColumns[] = 'type';
                     break;
                 case 'priority':
-                    $sortColumn = 'priority';
+                    $sortColumns[] = 'priority';
                     break;
                 case 'status':
-                    $sortColumn = 'status';
+                    $sortColumns[] = 'status';
+                    break;
+                case 'reporter':
+                    $sortColumns[] = 'ur_first_name';
+                    $sortColumns[] = 'ur_last_name';
                     break;
                 case 'summary':
-                    $sortColumn = 'issue_main_table.summary';
+                    $sortColumns[] = 'issue_main_table.summary';
                     break;
                 case 'reported_by':
-                    $sortColumn = 'user_reported.id';
+                    $sortColumns[] = 'user_reported.id';
                     break;
                 case 'assignee':
-                    $sortColumn = 'user_assigned.id';
+                    $sortColumns[] = 'ua_first_name';
+                    $sortColumns[] = 'ua_last_name';
                     break;
                 case 'created':
-                    $sortColumn = 'issue_main_table.date_created';
+                    $sortColumns[] = 'issue_main_table.date_created';
                     break;
                 case 'updated':
-                    $sortColumn = 'issue_main_table.date_updated';
+                    $sortColumns[] = 'issue_main_table.date_updated';
                     break;
                 case 'parent':
-                    $sortColumn = 'issue_main_table.parent_id';
+                    $sortColumns[] = 'issue_main_table.parent_id';
                     break;
                 case 'sprint':
-                    $sortColumn = 'sort_sprint';
+                    $sortColumns[] = 'sort_sprint';
                     break;
             }
         } else {
-            $sortColumn = 'issue_main_table.date_created';
+            $sortColumns[] = 'issue_main_table.date_created';
         }
         if ($queryWherePart) {
             $queryWhere .= $queryWherePart;
         }
 
-        if ($queryWhere != '')
+        if ($queryWhere != '') {
             $query .= ' WHERE ' . $queryWhere;
-
-
+        }
+        
         $query .= ' GROUP BY issue_main_table.id ';
 
         if ($securitySchemeUserId)
             $query .= ' HAVING ((security_check1 > 0 or security_check2 > 0 or security_check3 > 0 or security_check4 > 0 or security_check5 > 0 or security_check6 > 0 or security_check7 > 0) ' .
                         ' OR (issue_main_table.security_scheme_level_id is null and security_check1 is null and security_check2 is null and security_check3 is null and security_check4 is null and security_check5 is null and security_check6 is null and security_check7 is null)) ';
-        if ($sortColumn) {
-            $query .= 'ORDER BY ' . $sortColumn;
+
+        if (isset($parameters['sort']) && isset($parameters['sort_order']) && $sortColumns) {
+            for ($i = 0; $i < count($sortColumns); $i++) {
+                $sortColumns[$i] = $sortColumns[$i] . ' ' . $parameters['sort_order'];
+            }
         }
 
-        if (isset($parameters['sort']) && isset($parameters['sort_order']) && $sortColumn) {
-            $query .= ' ' . $parameters['sort_order'];
-        } else {
-            $query .= ' DESC';
+        if (count($sortColumns)) {
+            $query .= 'ORDER BY ' . implode(', ', $sortColumns);
         }
 
-        if (isset($parameters['page']))
+        if (isset($parameters['page'])) {
             $query .= ' LIMIT ' . (($parameters['page'] - 1) * $parameters['issues_per_page']) . ', ' . ($parameters['issues_per_page']);
-
+        }
+        
 //        echo $query;
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
