@@ -197,8 +197,17 @@ class Issue
                 $parameterArray[] = "%" . $parameters['search_query'] . "%";
             }
 
-            if ($query_where_part_arr)
+            // also search in assignee and reporter
+            $query_where_part_arr[] = " CONCAT(user_assigned.first_name, user_assigned.last_name) LIKE ? ";
+            $parameterType .= 's';
+            $parameterArray[] = "%" . $parameters['search_query'] . "%";
+            $query_where_part_arr[] = " CONCAT(user_reported.first_name, user_reported.last_name) LIKE ? ";
+            $parameterType .= 's';
+            $parameterArray[] = "%" . $parameters['search_query'] . "%";
+
+            if ($query_where_part_arr) {
                 $queryWhere .= '(' . implode(' OR ', $query_where_part_arr) . ') AND ';
+            }
         }
 
         if (isset($parameters['project'])) {
