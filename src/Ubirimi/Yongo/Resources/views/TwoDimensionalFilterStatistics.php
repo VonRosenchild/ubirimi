@@ -23,7 +23,7 @@ require_once __DIR__ . '/_header.php';
             <ul class="nav nav-tabs" style="padding: 0px;">
                 <li class="active"><a href="#" title="2 Dimensional Filter Statistics">2 Dimensional Filter Statistics</a></li>
             </ul>
-            <div style="max-height: 500px; overflow: auto;">
+            <div>
                 <div style="border: 1px solid #d6d6d6; border-top: none;">
                     <?php if (count($projectIdsNames)): ?>
                         <div style="padding: 4px">
