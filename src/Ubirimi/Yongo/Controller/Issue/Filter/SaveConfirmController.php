@@ -38,6 +38,6 @@ class SaveConfirmController extends UbirimiController
             $filter = $this->getRepository(IssueFilter::class)->getById($filterId);
         }
 
-        return $this->render(__DIR__ . '/../../Resources/views/filter/SaveConfirm.php', get_defined_vars());
+        return $this->render(__DIR__ . '/../../../Resources/views/filter/SaveConfirm.php', get_defined_vars());
     }
 }
