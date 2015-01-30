@@ -35,11 +35,11 @@ use Ubirimi\LoginTimeService\LoginTimeService;
 use Ubirimi\Service\ClientService;
 use Ubirimi\Service\DatabaseConnectorService;
 use Ubirimi\Service\EmailService;
-use Ubirimi\Service\LogService;
 use Ubirimi\Service\PasswordService;
 use Ubirimi\Service\RepositoryService;
 use Ubirimi\Service\UserService;
 use Ubirimi\Service\WarmUpService;
+use Ubirimi\Container\UbirimiContainer;
 
 class UbirimiCoreServiceProvider implements ServiceProviderInterface
 {
@@ -76,7 +76,7 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
             $IntrospectionProcessor = new IntrospectionProcessor();
             $webProcessor = new WebProcessor();
 
-            $logger->pushHandler(new StreamHandler(getcwd() . '/../logs/ubirimi.log', Logger::DEBUG));
+            $logger->pushHandler(new StreamHandler(UbirimiContainer::get()['log.path'], Logger::DEBUG));
             $logger->pushHandler(new \DbMonologHandler(), Logger::DEBUG);
             $logger->pushProcessor($IntrospectionProcessor);
             $logger->pushProcessor($webProcessor);
