@@ -577,7 +577,7 @@ class UbirimiClient
                  'left join project_category on project_category.id = project.project_category_id ' .
                  'WHERE project.client_id = ? ' .
                  $partQuery .
-                 'ORDER BY project.id';
+                 'ORDER BY project.name ASC';
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
@@ -1097,9 +1097,10 @@ class UbirimiClient
     }
 
     public function getProjectsByPermission($clientId, $userId, $permissionId, $resultType = null) {
+
         // 1. user in permission scheme
 
-        $queryLoggedInUser = 'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
+        $queryLoggedInUser = '(SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
              'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
              'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
         'from permission_scheme ' .
@@ -1112,13 +1113,13 @@ class UbirimiClient
             'permission_scheme_data.user_id = ? and ' .
             'permission_scheme_data.sys_permission_id = ? and ' .
             'project.id is not null and ' .
-            'general_user.id is not null ' .
+            'general_user.id is not null) ' .
 
         // 2. group in permission scheme
 
         'UNION DISTINCT ' .
 
-        'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
+        '(SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
              'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
              'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
         'from permission_scheme ' .
@@ -1134,29 +1135,29 @@ class UbirimiClient
             'permission_scheme_data.sys_permission_id = ? and ' .
             'general_user.id = ? and ' .
             'project.id is not null and ' .
-            'general_user.id is not null ' .
+            'general_user.id is not null) ' .
 
-        // 2.1 group Anyone
+            // 2.1 group Anyone
 
         'UNION ' .
 
-        'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, null as first_name, null as last_name, null as user_id, ' .
+        '(SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, null as first_name, null as last_name, null as user_id, ' .
             'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
             'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
-            'from permission_scheme ' .
-            'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
-            'left join project on project.permission_scheme_id = permission_scheme.id ' .
-            'left join project_category on project_category.id = project.project_category_id ' .
-            'LEFT join general_user user_lead ON project.lead_id = user_lead.id ' .
-            'where permission_scheme.client_id = ? and ' .
+        'from permission_scheme ' .
+        'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
+        'left join project on project.permission_scheme_id = permission_scheme.id ' .
+        'left join project_category on project_category.id = project.project_category_id ' .
+        'LEFT join general_user user_lead ON project.lead_id = user_lead.id ' .
+        'where permission_scheme.client_id = ? and ' .
             'permission_scheme_data.sys_permission_id = ? and ' .
-            'permission_scheme_data.group_id = 0 ' .
+            'permission_scheme_data.group_id = 0) ' .
 
-        // 3. permission role in permission scheme - user
+            // 3. permission role in permission scheme - user
 
         'UNION DISTINCT ' .
 
-        'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
+        '(SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
             'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
             'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
         'from permission_scheme ' .
@@ -1172,13 +1173,13 @@ class UbirimiClient
             'general_user.id = ? and ' .
             'general_user.id is not null and ' .
             'project.id is not null and ' .
-            'project_role_data.project_id = project.id ' .
+            'project_role_data.project_id = project.id) ' .
 
-        // 4. permission role in permission scheme - group
+            // 4. permission role in permission scheme - group
 
         'UNION DISTINCT ' .
 
-        'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
+        '(SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
             'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
             'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
         'from permission_scheme ' .
@@ -1195,15 +1196,15 @@ class UbirimiClient
             'permission_scheme_data.sys_permission_id = ? and ' .
             'general_user.id = ? and ' .
             'project.id is not null and ' .
-            'general_user.id is not null ' .
+            'general_user.id is not null) ' .
 
-        // 5. reporter
+            // 5. reporter
 
         'UNION DISTINCT ' .
 
-        'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
-        'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
-        'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
+        '(SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
+            'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
+            'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
         'from permission_scheme ' .
         'left join project on project.permission_scheme_id = permission_scheme.id ' .
         'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
@@ -1212,19 +1213,19 @@ class UbirimiClient
         'LEFT join general_user user_lead ON project.lead_id = user_lead.id ' .
         'left join project_category on project_category.id = project.project_category_id ' .
         'where permission_scheme.client_id = ? and ' .
-        'permission_scheme_data.sys_permission_id = ? and ' .
-        'permission_scheme_data.reporter = 1 and ' .
-        'general_user.id = ? and ' .
-        'project.id is not null and ' .
-        'general_user.id is not null ' .
+            'permission_scheme_data.sys_permission_id = ? and ' .
+            'permission_scheme_data.reporter = 1 and ' .
+            'general_user.id = ? and ' .
+            'project.id is not null and ' .
+            'general_user.id is not null) ' .
 
-        // 6. current assignee
+            // 6. current assignee
 
         'UNION DISTINCT ' .
 
-        'SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
-        'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
-        'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
+        '(SELECT DISTINCT project.id, project.code, project.name, issue_type_screen_scheme_id, project.description, general_user.first_name, general_user.last_name, general_user.id as user_id, ' .
+            'project.issue_type_field_configuration_id, project.lead_id, project.issue_security_scheme_id, project_category.name as category_name, project_category.id as category_id, ' .
+            'user_lead.first_name as lead_first_name, user_lead.last_name as lead_last_name ' .
         'from permission_scheme ' .
         'left join project on project.permission_scheme_id = permission_scheme.id ' .
         'left join permission_scheme_data on permission_scheme_data.permission_scheme_id = permission_scheme.id ' .
@@ -1233,11 +1234,13 @@ class UbirimiClient
         'LEFT join general_user user_lead ON project.lead_id = user_lead.id ' .
         'left join project_category on project_category.id = project.project_category_id ' .
         'where permission_scheme.client_id = ? and ' .
-        'permission_scheme_data.sys_permission_id = ? and ' .
-        'permission_scheme_data.current_assignee = 1 and ' .
-        'general_user.id = ? and ' .
-        'project.id is not null and ' .
-        'general_user.id is not null';
+            'permission_scheme_data.sys_permission_id = ? and ' .
+            'permission_scheme_data.current_assignee = 1 and ' .
+            'general_user.id = ? and ' .
+            'project.id is not null and ' .
+            'general_user.id is not null) ' .
+
+        'order by name';
 
         // check to see if group 'Anyone' is in the permission. This is for the case of Anonymous access
         if (!$userId) {
@@ -1249,10 +1252,11 @@ class UbirimiClient
                 'left join project on project.permission_scheme_id = permission_scheme.id ' .
                 'left join project_category on project_category.id = project.project_category_id ' .
                 'where permission_scheme.client_id = ? and ' .
-                'permission_scheme_data.sys_permission_id = ? and ' .
-                'permission_scheme_data.group_id = 0';
+                    'permission_scheme_data.sys_permission_id = ? and ' .
+                    'permission_scheme_data.group_id = 0 ' .
+                'order by project.name';
 
-            $stmt = UbirimiContainer::get()['db.connection']->prepare($queryAnonymousUser);
+                $stmt = UbirimiContainer::get()['db.connection']->prepare($queryAnonymousUser);
             $stmt->bind_param("ii", $clientId, $permissionId);
             $stmt->execute();
             $result = $stmt->get_result();

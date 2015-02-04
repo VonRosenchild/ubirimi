@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8672b6ff225e1e3f005fc6d9b6677e82",
+    "hash": "25b6b0a7bd124950a347e80ad3c8c5c6",
     "packages": [
         {
             "name": "anahkiasen/rocketeer",
@@ -62,7 +62,7 @@
                     "Rocketeer\\": "src/Rocketeer"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -111,7 +111,7 @@
                     "cogpowered\\FineDiff": "src/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -166,7 +166,7 @@
                     "Boris": "lib"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "time": "2014-01-17 12:21:18"
         },
         {
@@ -233,7 +233,7 @@
                     "Guzzle": "src/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -260,51 +260,6 @@
                 "web service"
             ],
             "time": "2013-10-02 20:47:00"
-        },
-        {
-            "name": "guzzle/silex-provider",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/guzzle-silex-extension.git",
-                "reference": "c2e962e86ed3083422fb13b22c913bdcabe95246"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle-silex-extension/zipball/c2e962e86ed3083422fb13b22c913bdcabe95246",
-                "reference": "c2e962e86ed3083422fb13b22c913bdcabe95246",
-                "shasum": ""
-            },
-            "require": {
-                "guzzle/guzzle": ">=2.0.0",
-                "php": ">=5.3.2"
-            },
-            "type": "silex-provider",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "GuzzleServiceProvider.php"
-                ]
-            },
-            "notification-url": "http://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "Guzzle silex provider",
-            "keywords": [
-                "Guzzle",
-                "silex"
-            ],
-            "abandoned": true,
-            "time": "2013-02-13 19:07:41"
         },
         {
             "name": "illuminate/config",
@@ -337,7 +292,7 @@
                     "Illuminate\\Config": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -379,7 +334,7 @@
                     "Illuminate\\Console": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -420,7 +375,7 @@
                     "Illuminate\\Container": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -463,7 +418,7 @@
                     "Illuminate\\Events": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -506,7 +461,7 @@
                     "Illuminate\\Filesystem": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -552,7 +507,7 @@
                     "Illuminate\\Log": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -599,7 +554,7 @@
                     "Illuminate\\Remote": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -647,7 +602,7 @@
                     "Illuminate/Support/helpers.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -682,7 +637,7 @@
                     "": "src/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -701,12 +656,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "ba31b79fa540d68da0e9e3269c0f85c1756ff10a"
+                "reference": "7583a2b96b9fda7ece90e34a23cd46e4858b3352"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/ba31b79fa540d68da0e9e3269c0f85c1756ff10a",
-                "reference": "ba31b79fa540d68da0e9e3269c0f85c1756ff10a",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/7583a2b96b9fda7ece90e34a23cd46e4858b3352",
+                "reference": "7583a2b96b9fda7ece90e34a23cd46e4858b3352",
                 "shasum": ""
             },
             "require": {
@@ -747,7 +702,7 @@
                     "Monolog\\": "src/Monolog"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -765,7 +720,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-01-20 10:31:44"
+            "time": "2015-01-29 16:05:08"
         },
         {
             "name": "nyholm/zebra-image",
@@ -790,7 +745,7 @@
                     "Nyholm\\ZebraImage": "src"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL"
             ],
@@ -811,16 +766,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tchwork/utf8.git",
-                "reference": "9639d28f1aa24add93ca7a0cf2a5cc3169ddb7d5"
+                "reference": "01f0ed1628db7794e2d4e336f55a09daef4248a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tchwork/utf8/zipball/9639d28f1aa24add93ca7a0cf2a5cc3169ddb7d5",
-                "reference": "9639d28f1aa24add93ca7a0cf2a5cc3169ddb7d5",
+                "url": "https://api.github.com/repos/tchwork/utf8/zipball/01f0ed1628db7794e2d4e336f55a09daef4248a5",
+                "reference": "01f0ed1628db7794e2d4e336f55a09daef4248a5",
                 "shasum": ""
             },
             "require": {
@@ -845,7 +800,7 @@
                     "Normalizer": "class/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "(Apache-2.0 or GPL-2.0)"
             ],
@@ -864,7 +819,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2015-01-12 20:01:53"
+            "time": "2015-01-29 08:36:50"
         },
         {
             "name": "phploc/phploc",
@@ -901,7 +856,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -962,7 +917,7 @@
                     "phpseclib/Crypt/Random.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 "phpseclib/"
             ],
@@ -1042,7 +997,7 @@
                     "Pimple": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1080,7 +1035,7 @@
                     "Psr\\Log\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1132,7 +1087,7 @@
                     "Phinx": "src/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1187,7 +1142,7 @@
                     "Sabre\\VObject": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -1230,7 +1185,7 @@
                     "Savant3/resources"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL"
             ],
@@ -1267,7 +1222,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -1310,7 +1265,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -1348,7 +1303,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -1391,7 +1346,7 @@
                     "lib/swift_required.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1416,7 +1371,7 @@
         },
         {
             "name": "symfony/class-loader",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/ClassLoader",
             "source": {
                 "type": "git",
@@ -1446,7 +1401,7 @@
                     "Symfony\\Component\\ClassLoader\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1466,7 +1421,7 @@
         },
         {
             "name": "symfony/config",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/Config",
             "source": {
                 "type": "git",
@@ -1494,7 +1449,7 @@
                     "Symfony\\Component\\Config\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1514,17 +1469,17 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "754f4b6de7b4a1d442f9b6a728bfb7adef54592c"
+                "reference": "f41807e67f00244f013bb96a66ac02f778a31209"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/754f4b6de7b4a1d442f9b6a728bfb7adef54592c",
-                "reference": "754f4b6de7b4a1d442f9b6a728bfb7adef54592c",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/f41807e67f00244f013bb96a66ac02f778a31209",
+                "reference": "f41807e67f00244f013bb96a66ac02f778a31209",
                 "shasum": ""
             },
             "require": {
@@ -1549,7 +1504,7 @@
                     "Symfony\\Component\\Console\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1565,25 +1520,28 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-06 17:40:45"
+            "time": "2015-01-25 04:37:39"
         },
         {
             "name": "symfony/debug",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/Debug",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "672a71e72310099540dfb03da2da553896e88483"
+                "reference": "ed3019589cdadf32c521d1e181f9d72955645c67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/672a71e72310099540dfb03da2da553896e88483",
-                "reference": "672a71e72310099540dfb03da2da553896e88483",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/ed3019589cdadf32c521d1e181f9d72955645c67",
+                "reference": "ed3019589cdadf32c521d1e181f9d72955645c67",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "conflict": {
+                "symfony/http-kernel": ">=2.3,<2.3.24|~2.4.0|>=2.5,<2.5.9|>=2.6,<2.6.2"
             },
             "require-dev": {
                 "symfony/class-loader": "~2.2",
@@ -1605,7 +1563,7 @@
                     "Symfony\\Component\\Debug\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1621,21 +1579,21 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-03 21:12:45"
+            "time": "2015-01-16 14:51:58"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "3694afc8bcddabc37e1f1ab76e6fd93e0f187415"
+                "reference": "af6eb6a9a1a3b411facfd8e7e3f82a6be7919c04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/3694afc8bcddabc37e1f1ab76e6fd93e0f187415",
-                "reference": "3694afc8bcddabc37e1f1ab76e6fd93e0f187415",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/af6eb6a9a1a3b411facfd8e7e3f82a6be7919c04",
+                "reference": "af6eb6a9a1a3b411facfd8e7e3f82a6be7919c04",
                 "shasum": ""
             },
             "require": {
@@ -1662,7 +1620,7 @@
                     "Symfony\\Component\\EventDispatcher\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1678,7 +1636,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-05 08:51:41"
+            "time": "2015-01-29 18:20:43"
         },
         {
             "name": "symfony/filesystem",
@@ -1709,7 +1667,7 @@
                     "Symfony\\Component\\Filesystem\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1729,7 +1687,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
@@ -1756,7 +1714,7 @@
                     "Symfony\\Component\\Finder\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1776,17 +1734,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "154d6c9ae8f7c27799a6119688dbd6026234441a"
+                "reference": "89c650efaca9540101004852d232c96672bbb91c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/154d6c9ae8f7c27799a6119688dbd6026234441a",
-                "reference": "154d6c9ae8f7c27799a6119688dbd6026234441a",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/89c650efaca9540101004852d232c96672bbb91c",
+                "reference": "89c650efaca9540101004852d232c96672bbb91c",
                 "shasum": ""
             },
             "require": {
@@ -1809,7 +1767,7 @@
                     "Symfony/Component/HttpFoundation/Resources/stubs"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1825,21 +1783,21 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-03 11:12:44"
+            "time": "2015-02-01 09:36:16"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/HttpKernel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "a218b9ba87b24c440e4e9cd171c880e83796a5bb"
+                "reference": "a28ec28c98e8f1db9b499fc449a5d33ec281ea2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/a218b9ba87b24c440e4e9cd171c880e83796a5bb",
-                "reference": "a218b9ba87b24c440e4e9cd171c880e83796a5bb",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/a28ec28c98e8f1db9b499fc449a5d33ec281ea2e",
+                "reference": "a28ec28c98e8f1db9b499fc449a5d33ec281ea2e",
                 "shasum": ""
             },
             "require": {
@@ -1883,7 +1841,7 @@
                     "Symfony\\Component\\HttpKernel\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1899,21 +1857,21 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-07 12:32:08"
+            "time": "2015-02-02 09:26:53"
         },
         {
             "name": "symfony/routing",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/Routing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "47e350dadadabdf64c8dbab499a1132c567f9411"
+                "reference": "3a9c35ca312d8cb6a308b751f9a1cd92cd5d9277"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/47e350dadadabdf64c8dbab499a1132c567f9411",
-                "reference": "47e350dadadabdf64c8dbab499a1132c567f9411",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/3a9c35ca312d8cb6a308b751f9a1cd92cd5d9277",
+                "reference": "3a9c35ca312d8cb6a308b751f9a1cd92cd5d9277",
                 "shasum": ""
             },
             "require": {
@@ -1945,7 +1903,7 @@
                     "Symfony\\Component\\Routing\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1967,21 +1925,78 @@
                 "uri",
                 "url"
             ],
-            "time": "2015-01-05 08:51:41"
+            "time": "2015-01-13 14:58:43"
+        },
+        {
+            "name": "symfony/var-dumper",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/VarDumper",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-dumper.git",
+                "reference": "1dcd876d05e64a0759962e6e79ec3af4a4ef7dcb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/1dcd876d05e64a0759962e6e79ec3af4a4ef7dcb",
+                "reference": "1dcd876d05e64a0759962e6e79ec3af4a4ef7dcb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "suggest": {
+                "ext-symfony_debug": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Resources/functions/dump.php"
+                ],
+                "psr-0": {
+                    "Symfony\\Component\\VarDumper\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                }
+            ],
+            "description": "Symfony mechanism for exploring and dumping PHP variables",
+            "homepage": "http://symfony.com",
+            "keywords": [
+                "debug",
+                "dump"
+            ],
+            "time": "2015-01-25 04:42:01"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.5.9",
+            "version": "v2.5.10",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "522b6c2f45504521fd411a6b1632958bfee20845"
+                "reference": "6eb40abc613d80828d55a40811c7a3ca491bc926"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/522b6c2f45504521fd411a6b1632958bfee20845",
-                "reference": "522b6c2f45504521fd411a6b1632958bfee20845",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/6eb40abc613d80828d55a40811c7a3ca491bc926",
+                "reference": "6eb40abc613d80828d55a40811c7a3ca491bc926",
                 "shasum": ""
             },
             "require": {
@@ -1998,7 +2013,7 @@
                     "Symfony\\Component\\Yaml\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2014,7 +2029,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-03 14:48:25"
+            "time": "2015-01-25 04:37:39"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -2022,12 +2037,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "da2fe9359426ca334417549248307f33cd042ace"
+                "reference": "a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/da2fe9359426ca334417549248307f33cd042ace",
-                "reference": "da2fe9359426ca334417549248307f33cd042ace",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb",
+                "reference": "a2e8f5b505a7a14a4ed960313c4baf699fd1f4bb",
                 "shasum": ""
             },
             "require": {
@@ -2055,7 +2070,7 @@
                     "include/barcodes/qrcode.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPLv3"
             ],
@@ -2077,7 +2092,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2015-01-24 09:41:10"
+            "time": "2015-01-28 18:51:40"
         },
         {
             "name": "theseer/fdomdocument",
@@ -2104,7 +2119,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -2124,6 +2139,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "symfony/var-dumper": 20,
         "saltybeagle/savant3": 20,
         "tecnick.com/tcpdf": 20,
         "monolog/monolog": 20
