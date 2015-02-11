@@ -38,8 +38,7 @@ class CalendarEvent
 
             if (RepeatCycle::REPEAT_DAILY == $repeatType) {
 
-                // $repeatData format
-                // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date
+                // $repeatData format: repeatType#repeat_every#n|#a3|#o2013-08-08#start_date
 
                 $repeatEvery = $repeatDataArray[1];
                 $endData = $repeatDataArray[2];
@@ -83,8 +82,7 @@ class CalendarEvent
                 }
 
             } else if (RepeatCycle::REPEAT_WEEKLY == $repeatType) {
-                // $repeatData format
-                // repeatType#repeat_every#n|#a3|#o2013-08-08#start_date#0#1#1#1#1#1#0
+                // $repeatData format: repeatType#repeat_every#n|#a3|#o2013-08-08#start_date#0#1#1#1#1#1#0
 
                 $repeatEvery = $repeatDataArray[1];
                 $endData = $repeatDataArray[2];
@@ -154,6 +152,8 @@ class CalendarEvent
                             $pos++;
                         }
                     }
+
+                    // if more than 30 years in the future
                     if (substr(end($repeatDates)[1], 0, 4) - substr($repeatDates[0][0], 0, 4) >= 30) {
                         break;
                     }
