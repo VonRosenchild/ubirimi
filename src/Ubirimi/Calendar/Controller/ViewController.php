@@ -19,6 +19,7 @@
 
 namespace Ubirimi\Calendar\Controller;
 
+use Sabre\VObject\Property\ICalendar\DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -54,6 +55,13 @@ class ViewController extends UbirimiController
         $month = $request->get('month');
         $year = $request->get('year');
 
+        if ($month < 9) {
+            $dateInMonthSelected = $year . '-' . '0' . $month . '-15';
+        } else {
+            $dateInMonthSelected = $year . '-' . $month . '-15';
+        }
+
+
         $menuSelectedCategory = 'calendars';
         $defaultCalendarSelected = false;
         $calendarDefault = $this->getRepository(UbirimiCalendar::class)->getDefaultCalendar($session->get('user/id'));
@@ -74,8 +82,13 @@ class ViewController extends UbirimiController
         $calendar = $this->getRepository(UbirimiCalendar::class)->getByIds(implode(', ', $calendarIds));
 
         $clientSettings = $session->get('client/settings');
-        $filterStartDate = new \DateTime("first day of last month", new \DateTimeZone($clientSettings['timezone']));
-        $filterEndDate = new \DateTime("last day of next month", new \DateTimeZone($clientSettings['timezone']));
+
+        $dateInMonthSelected = new \DateTime($dateInMonthSelected, new \DateTimeZone($clientSettings['timezone']));
+
+        date_sub($dateInMonthSelected, date_interval_create_from_date_string("1 months"));
+        $filterStartDate = new \DateTime("first day of " . date_format($dateInMonthSelected, "F") . " " . $year, new \DateTimeZone($clientSettings['timezone']));
+        date_add($dateInMonthSelected, date_interval_create_from_date_string("2 months"));
+        $filterEndDate = new \DateTime("last day of " . date_format($dateInMonthSelected, "F") . " " . $year, new \DateTimeZone($clientSettings['timezone']));
 
         $filterStartDate = $filterStartDate->format('Y-m-d');
         $filterEndDate = $filterEndDate->format('Y-m-d');
@@ -88,6 +101,7 @@ class ViewController extends UbirimiController
             $session->get('user/id'),
             'array'
         );
+
 
         $calendars = $this->getRepository(UbirimiCalendar::class)->getByUserId($session->get('user/id'), 'array');
 
