@@ -67,7 +67,7 @@ class IssueAttachment
         $result = $stmt->get_result();
 
         if ($fetchAll) {
-            return $result->fetch_all(MYSQL_ASSOC);
+            return $result->fetch_all(MYSQLI_ASSOC);
         } else {
             if ($result->num_rows)
                 return $result;

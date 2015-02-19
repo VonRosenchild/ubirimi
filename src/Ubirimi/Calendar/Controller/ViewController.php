@@ -102,10 +102,7 @@ class ViewController extends UbirimiController
             'array'
         );
 
-
         $calendars = $this->getRepository(UbirimiCalendar::class)->getByUserId($session->get('user/id'), 'array');
-
-
         $calendarsSharedWithMe = $this->getRepository(UbirimiCalendar::class)->getSharedWithUserId($session->get('user/id'), 'array');
 
         $currentMonthName = date("F", mktime(0, 0, 0, $month, 1, $year));
@@ -126,6 +123,7 @@ class ViewController extends UbirimiController
         $headings = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
         $runningDay = date('w', mktime(0, 0, 0, $month, 1, $year));
         $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
+
         $daysInThisWeek = 1;
         $dayCounter = 0;
         $maxLevel = 0;
@@ -146,7 +144,9 @@ class ViewController extends UbirimiController
             $dates[] = $dayCell;
         }
 
-        if (count($dates) > 35) {
+        if (count($dates) == 28) {
+            $maximumDays = 28;
+        } else if (count($dates) > 35) {
             $maximumDays = 42;
         } else {
             $maximumDays = 35;

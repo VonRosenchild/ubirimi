@@ -73,7 +73,7 @@ $screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->g
                         case Field::FIELD_REPORTER_CODE:
                             echo IssueHelper::renderUserSelect(
                                 Field::FIELD_REPORTER_CODE,
-                                $reporterUsers->fetch_all(MYSQL_ASSOC),
+                                $reporterUsers->fetch_all(MYSQLI_ASSOC),
                                 $loggedInUserId,
                                 null === $userHasModifyReporterPermission
                             );
@@ -82,7 +82,7 @@ $screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->g
                         case Field::FIELD_ASSIGNEE_CODE:
                             echo IssueHelper::renderUserSelect(
                                 Field::FIELD_ASSIGNEE_CODE,
-                                $assignableUsers->fetch_all(MYSQL_ASSOC),
+                                $assignableUsers->fetch_all(MYSQLI_ASSOC),
                                 $projectData['lead_id'],
                                 null === $userHasAssignIssuePermission,
                                 $arrayData['required_flag'],
@@ -111,7 +111,7 @@ $screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->g
                         case Field::FIELD_PRIORITY_CODE:
                             echo IssueHelper::renderSelect(
                                 Field::FIELD_PRIORITY_CODE,
-                                $issuePriorities->fetch_all(MYSQL_ASSOC),
+                                $issuePriorities->fetch_all(MYSQLI_ASSOC),
                                 $arrayData['required_flag']
                             );
                             break;
@@ -119,7 +119,7 @@ $screenData = UbirimiContainer::get()['repository']->get(YongoProject::class)->g
                         case Field::FIELD_RESOLUTION_CODE:
                             echo IssueHelper::renderSelect(
                                 Field::FIELD_RESOLUTION_CODE,
-                                $issueResolutions->fetch_all(MYSQL_ASSOC),
+                                $issueResolutions->fetch_all(MYSQLI_ASSOC),
                                 $arrayData['required_flag']
                             );
                             break;

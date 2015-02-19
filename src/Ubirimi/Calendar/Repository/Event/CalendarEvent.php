@@ -98,10 +98,19 @@ class CalendarEvent
                 $repeatDay[5] = $repeatDataArray[9];
                 $repeatDay[6] = $repeatDataArray[10];
 
+                $lastDayInWeek = null;
+                for ($i = 6; $i >= 0; $i--) {
+                    if ($repeatDay[$i] == 1) {
+                        $lastDayInWeek = $i;
+                        break;
+                    }
+                }
+
                 if (($repeatDay[0] + $repeatDay[1] + $repeatDay[2] + $repeatDay[3] + $repeatDay[4] + $repeatDay[5] + $repeatDay[6]) == 0) {
                     $dateTemporary = date_create($repeatStartDate);
                     $repeatDay[date("w", $dateTemporary->getTimestamp()) - 1] = 1;
                 }
+                $daysInWeekPresent = $repeatDay[0] + $repeatDay[1] + $repeatDay[2] + $repeatDay[3] + $repeatDay[4] + $repeatDay[5] + $repeatDay[6];
 
                 if ('n' == $endData[0]) {
                     $endAfterOccurrences = 10000;
@@ -115,50 +124,41 @@ class CalendarEvent
                     $endAfterOccurrences = 10000;
                 }
 
-                $pos = 1;
                 $repeatEndDate = $repeatStartDate;
                 $repeatDates[] = array($start . ':00', $end . ':00');
 
                 $repeatEveryDays = $repeatEvery * 7;
 
-                while ($pos < intval($endAfterOccurrences)) {
+                $yearsDiff = substr(end($repeatDates)[1], 0, 4) - substr($repeatDates[0][0], 0, 4);
+                $maxLimitExceeded = ($repeatEndOnDate && date_format($repeatEndDate, 'Y-m-d H:i:s') > $repeatEndOnDate);
+
+                while ($yearsDiff < 30 && !$maxLimitExceeded) {
+
                     $repeatEndDate = new \DateTime($repeatEndDate, new \DateTimeZone($clientSettings['timezone']));
+                    $repeatEndDateClone = clone $repeatEndDate;
 
                     date_add($repeatEndDate, date_interval_create_from_date_string('1 days'));
 
-                    $lastDate = new \DateTime(end($repeatDates)[0], new \DateTimeZone($clientSettings['timezone']));
+                    if ($repeatDay[date_format($repeatEndDate, "w")] === "1") {
 
-                    $repeatEndDateClone = clone $repeatEndDate;
-
-                    $sameWeek = (date_format($repeatEndDate, "W") === date_format($lastDate, "W"));
-
-                    $found = false;
-                    date_sub($repeatEndDateClone, date_interval_create_from_date_string($repeatEveryDays . ' days'));
-                    for ($i = count($repeatDates) - 1; $i >= 0; $i--) {
-                        if ($repeatEndDateClone->format('Y-m-d H:i:s') == $repeatDates[$i][0]) {
-                            $found = true;
-                            break;
-                        }
+                        $endDateTemporary = new \DateTime(date_format($repeatEndDate, 'Y-m-d H:i:s'), new \DateTimeZone($clientSettings['timezone']));
+                        date_add($endDateTemporary, date_interval_create_from_date_string($daysBetween . ' days'));
+                        $repeatDates[] = array(date_format($repeatEndDate, 'Y-m-d H:i:s'), date_format($endDateTemporary, 'Y-m-d H:i:s'));
                     }
 
-                    if ($sameWeek || $found) {
-                        if ($repeatDay[date_format($repeatEndDate, "w")]) {
-                            if ($repeatEndOnDate && date_format($repeatEndDate, 'Y-m-d H:i:s') > $repeatEndOnDate) {
-                                break;
-                            }
-                            $endDateTemporary = new \DateTime(date_format($repeatEndDate, 'Y-m-d H:i:s'), new \DateTimeZone($clientSettings['timezone']));
-                            date_add($endDateTemporary, date_interval_create_from_date_string($daysBetween . ' days'));
-                            $repeatDates[] = array(date_format($repeatEndDate, 'Y-m-d H:i:s'), date_format($endDateTemporary, 'Y-m-d H:i:s'));
-                            $pos++;
-                        }
-                    }
+                    $yearsDiff = substr(end($repeatDates)[1], 0, 4) - substr($repeatDates[0][0], 0, 4);
+                    $maxLimitExceeded = ($repeatEndOnDate && date_format($repeatEndDate, 'Y-m-d H:i:s') > $repeatEndOnDate);
 
-                    // if more than 30 years in the future
-                    if (substr(end($repeatDates)[1], 0, 4) - substr($repeatDates[0][0], 0, 4) >= 30) {
-                        break;
+                    if ($lastDayInWeek == date_format($repeatEndDate, "w")) {
+                        $repeatEndDateClone = $repeatDates[count($repeatDates) - $daysInWeekPresent][0];
+                        $repeatEndDateClone = new \DateTime($repeatEndDateClone, new \DateTimeZone($clientSettings['timezone']));
+                        date_add($repeatEndDateClone, date_interval_create_from_date_string(($repeatEveryDays - 1) . ' days'));
+                    } else {
+                        date_add($repeatEndDateClone, date_interval_create_from_date_string('1 days'));
                     }
-                    $repeatEndDate = date_format($repeatEndDate, 'Y-m-d');
+                    $repeatEndDate = date_format($repeatEndDateClone, 'Y-m-d');
                 }
+
                 $repeatDates[0] = null;
             }
 
