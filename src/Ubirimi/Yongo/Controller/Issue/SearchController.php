@@ -92,7 +92,7 @@ class SearchController extends UbirimiController
             // check to see if the project Ids are all belonging to the client
             $getProjectIds = isset($_GET['project']) ? explode('|', $_GET['project']) : null;
 
-            if ($getProjectIds) {
+            if ($getProjectIds && !(count($getProjectIds) == 1 && $getProjectIds[0] == -1)) {
                 if (!$this->getRepository(YongoProject::class)->checkProjectsBelongToClient($clientId, $getProjectIds)) {
                     return new RedirectResponse('/general-settings/bad-link-access-denied');
                 }

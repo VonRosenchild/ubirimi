@@ -4,7 +4,7 @@ use Ubirimi\Util;
 
 Util::checkUserIsLoggedInAndRedirect();
 
-    $projectId = $request->get('id');
+$projectId = $request->get('id');
 
 ?>
 <table cellpadding="8px">
