@@ -47,6 +47,7 @@ use Ubirimi\Yongo\Repository\Issue\SystemOperation;
 use Ubirimi\Yongo\Repository\Notification\NotificationScheme;
 use Ubirimi\Yongo\Repository\Permission\GlobalPermission;
 use Ubirimi\Yongo\Repository\Permission\Permission;
+use Ubirimi\Yongo\Repository\Permission\PermissionScheme;
 use Ubirimi\Yongo\Repository\Permission\Role;
 use Ubirimi\Yongo\Repository\Project\YongoProject;
 use Ubirimi\Yongo\Repository\Screen\Screen;
@@ -1536,25 +1537,25 @@ class UbirimiClient
         $clientRepository->createDefaultScreenData($clientId, $clientCreatedDate);
 
         // create default permission roles
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultPermissionRoles($clientId, $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get(Role::class)->addDefaultPermissionRoles($clientId, $clientCreatedDate);
 
         // create default group names
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addDefaultYongoGroups($clientId, $clientCreatedDate);
 
-        $roleAdministrators = UbirimiContainer::get()['repository']->getRepository(Role::class)->getByName($clientId, 'Administrators');
+        $roleAdministrators = UbirimiContainer::get()['repository']->get(Role::class)->getByName($clientId, 'Administrators');
 
-        $roleDevelopers = UbirimiContainer::get()['repository']->getRepository(Role::class)->getByName($clientId, 'Developers');
-        $roleUsers = UbirimiContainer::get()['repository']->getRepository(Role::class)->getByName($clientId, 'Users');
+        $roleDevelopers = UbirimiContainer::get()['repository']->get(Role::class)->getByName($clientId, 'Developers');
+        $roleUsers = UbirimiContainer::get()['repository']->get(Role::class)->getByName($clientId, 'Users');
 
         $groupAdministrators = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Administrators');
 
         $groupDevelopers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Developers');
         $groupUsers = UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->getByName($clientId, 'Users');
 
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get(Role::class)->addDefaultGroups($roleAdministrators['id'], array($groupAdministrators['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get(Role::class)->addDefaultGroups($roleDevelopers['id'], array($groupDevelopers['id']), $clientCreatedDate);
 
-        UbirimiContainer::get()['repository']->getRepository(Role::class)->addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get(Role::class)->addDefaultGroups($roleUsers['id'], array($groupUsers['id']), $clientCreatedDate);
 
         // add in Administrators group the current user
         UbirimiContainer::get()['repository']->get(UbirimiGroup::class)->addData($groupAdministrators['id'], array($userId), $clientCreatedDate);
@@ -1565,7 +1566,7 @@ class UbirimiClient
         // create default permission scheme
         $permissionSchemeId = $clientRepository->createDefaultPermissionScheme($clientId, $clientCreatedDate);
 
-        UbirimiContainer::get()['repository']->get(NotificationScheme::class)->addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
+        UbirimiContainer::get()['repository']->get(PermissionScheme::class)->addDefaultPermissions($permissionSchemeId, $roleAdministrators['id'], $roleDevelopers['id'], $roleUsers['id'], $clientCreatedDate);
 
         // create default notification scheme
         $notificationSchemeId = $clientRepository->createDefaultNotificationScheme($clientId, $clientCreatedDate);
@@ -1696,7 +1697,7 @@ class UbirimiClient
     }
 
     public function addDefaultDocumentadorUserGroups($clientId, $date) {
-        $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO `general_group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $group_name_1 = 'Documentador Administrators';
@@ -1908,7 +1909,7 @@ class UbirimiClient
             'left join general_group_data on general_group_data.user_id = general_user.id ' .
             'left join `general_group` on  `general_group`.id = general_group_data.group_id ' .
             'WHERE general_user.client_id = ? ' .
-            'and group.sys_product_id = ' . $productId . ' ';
+            'and general_group.sys_product_id = ' . $productId . ' ';
 
         if (array_key_exists('group', $filters) && $filters['group'] != -1) {
             $query .= ' AND general_group_data.group_id = ' . $filters['group'];

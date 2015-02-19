@@ -39,7 +39,7 @@ class UbirimiGroup
     }
 
     public function addDefaultYongoGroups($clientId, $date) {
-        $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO `general_group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $group_name_1 = 'Administrators';
@@ -116,7 +116,7 @@ class UbirimiGroup
     }
 
     public function addData($groupId, $userArray, $currentDate) {
-        $query = 'insert into group_data(group_id, user_id, date_created) values ';
+        $query = 'insert into general_group_data(group_id, user_id, date_created) values ';
 
         for ($i = 0; $i < count($userArray); $i++)
             $query .= '(' . $groupId . ' ,' . $userArray[$i] . ",'" . $currentDate . "'), ";
@@ -126,7 +126,7 @@ class UbirimiGroup
     }
 
     public function add($clientId, $productId, $name, $description, $currentDate) {
-        $query = "INSERT INTO `group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO `general_group`(client_id, sys_product_id, name, description, date_created) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("iisss", $clientId, $productId, $name, $description, $currentDate);
@@ -150,7 +150,7 @@ class UbirimiGroup
     }
 
     public function updateById($Id, $name, $description, $date) {
-        $query = "update `group` set name = ?, description = ?, date_updated = ? where id = ?";
+        $query = "update `general_group` set name = ?, description = ?, date_updated = ? where id = ?";
 
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
         $stmt->bind_param("sssi", $name, $description, $date, $Id);

@@ -43,42 +43,44 @@ class ActivityStreamController extends UbirimiController
         $sectionPageTitle = $clientSettings['title_name'] . ' / ' . SystemProduct::SYS_PRODUCT_YONGO_NAME . ' / Activity Stream';
 
         $client = $this->getRepository(UbirimiClient::class)->getById($clientId);
-        $projectsMenu = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
+        $projects = $this->getRepository(UbirimiClient::class)->getProjectsByPermission(
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,
             'array'
         );
 
-        $menuSelectedCategory = 'home';
-
-        $projectIds = Util::array_column($projectsMenu, 'id');
-
-        $endDate = Util::getServerCurrentDateTime();
-        $startDate = date_sub(new \DateTime($endDate, new \DateTimeZone($clientSettings['timezone'])), date_interval_create_from_date_string('2 days'));
-
-        $historyList = null;
-        do {
-            $historyList = Util::getProjectHistory($projectIds, 0, null, date_format($startDate, 'Y-m-d'), $endDate);
-            if (null == $historyList && date_format($startDate, 'Y-m-d H:i:s') == $client['date_created']) {
-                break;
-            }
-            $startDate = date_sub($startDate, date_interval_create_from_date_string('2 days'));
-            $startDate->setTime(0, 0, 0);
-            if (date_format($startDate, 'Y-m-d') < $client['date_created']) {
-                $startDate = new \DateTime($client['date_created'], new \DateTimeZone($clientSettings['timezone']));
-                break;
-            }
-        } while ($historyList == null);
-
         $historyData = array();
         $userData = array();
+        $historyList = null;
+        $menuSelectedCategory = 'home';
 
-        while ($historyList && $history = $historyList->fetch_array(MYSQLI_ASSOC)) {
-            $historyData[substr($history['date_created'], 0, 10)][$history['user_id']][$history['date_created']][] = $history;
-            $userData[$history['user_id']] = array('picture' => $history['avatar_picture'],
-                                                   'first_name' => $history['first_name'],
-                                                   'last_name' => $history['last_name']);
+        if ($projects) {
+
+            $projectIds = Util::array_column($projects, 'id');
+
+            $endDate = Util::getServerCurrentDateTime();
+            $startDate = date_sub(new \DateTime($endDate, new \DateTimeZone($clientSettings['timezone'])), date_interval_create_from_date_string('2 days'));
+
+            do {
+                $historyList = Util::getProjectHistory($projectIds, 0, null, date_format($startDate, 'Y-m-d'), $endDate);
+                if (null == $historyList && date_format($startDate, 'Y-m-d H:i:s') == $client['date_created']) {
+                    break;
+                }
+                $startDate = date_sub($startDate, date_interval_create_from_date_string('2 days'));
+                $startDate->setTime(0, 0, 0);
+                if (date_format($startDate, 'Y-m-d') < $client['date_created']) {
+                    $startDate = new \DateTime($client['date_created'], new \DateTimeZone($clientSettings['timezone']));
+                    break;
+                }
+            } while ($historyList == null);
+
+            while ($historyList && $history = $historyList->fetch_array(MYSQLI_ASSOC)) {
+                $historyData[substr($history['date_created'], 0, 10)][$history['user_id']][$history['date_created']][] = $history;
+                $userData[$history['user_id']] = array('picture' => $history['avatar_picture'],
+                    'first_name' => $history['first_name'],
+                    'last_name' => $history['last_name']);
+            }
         }
 
         $index = 0;

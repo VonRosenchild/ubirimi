@@ -77,7 +77,7 @@ class UbirimiUser
     public function createAdministratorUser($admin_first_name, $admin_last_name, $admin_username, $password, $admin_email, $clientId, $issuesPerPage, $svnAdministratorFlag, $clientAdministratorFlag, $currentDate) {
         $hash = UbirimiContainer::get()['password']->hash($password);
 
-        $query = "INSERT INTO user(first_name, last_name, username, password, email, " .
+        $query = "INSERT INTO general_user(first_name, last_name, username, password, email, " .
                                   "client_id, issues_per_page, svn_administrator_flag, client_administrator_flag, date_created) " .
                         "VALUES ('" . $admin_first_name . "', '" . $admin_last_name . "', '" . $admin_username . "', '" . $hash . "', '" . $admin_email .
                                  "', " . $clientId . ", " . $issuesPerPage . ", " . $svnAdministratorFlag . ", " . $clientAdministratorFlag . ", '" . $currentDate . "')";
@@ -87,7 +87,7 @@ class UbirimiUser
     }
 
     public function add($clientId, $firstName, $lastName, $email, $username, $password, $issuesPerPage, $customerServiceDeskFlag, $countryId, $currentDate) {
-        $query = "INSERT INTO user(client_id, country_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
+        $query = "INSERT INTO general_user(client_id, country_id, first_name, last_name, email, username, password, issues_per_page, customer_service_desk_flag, date_created) " .
                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $hash = UbirimiContainer::get()['password']->hash($password);
@@ -323,7 +323,7 @@ class UbirimiUser
     }
 
     public function addGroups($userId, $assigned_user_groups) {
-        $query = 'insert into group_data(group_id, user_id) values ';
+        $query = 'insert into general_group_data(group_id, user_id) values ';
 
         for ($i = 0; $i < count($assigned_user_groups); $i++)
             $query .= '(' . $assigned_user_groups[$i] . ' ,' . $userId . '), ';

@@ -42,7 +42,7 @@ class ClientService
                 $data['country'],
                 null,
                 null,
-                UbirimiContainer::get()['repository']->get(UbirimiClient::class)->INSTANCE_TYPE_ON_DEMAND,
+                UbirimiClient::INSTANCE_TYPE_ON_DEMAND,
                 Util::getServerCurrentDateTime()
             );
 
