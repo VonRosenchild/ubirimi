@@ -40,8 +40,8 @@ class ClientService
                 $data['baseURL'],
                 $data['adminEmail'],
                 $data['country'],
-                $data['vatNumber'],
-                $data['paymillId'],
+                null,
+                null,
                 UbirimiContainer::get()['repository']->get(UbirimiClient::class)->INSTANCE_TYPE_ON_DEMAND,
                 Util::getServerCurrentDateTime()
             );
