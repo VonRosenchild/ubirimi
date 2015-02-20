@@ -35,11 +35,11 @@ class ClientService
             $data = json_decode($pendingClientData['data'], true);
 
             $clientId = UbirimiContainer::get()['repository']->get(UbirimiClient::class)->create(
-                $data['companyName'],
+                null,
                 $data['companyDomain'],
                 $data['baseURL'],
                 $data['adminEmail'],
-                $data['country'],
+                null,
                 null,
                 null,
                 UbirimiClient::INSTANCE_TYPE_ON_DEMAND,
