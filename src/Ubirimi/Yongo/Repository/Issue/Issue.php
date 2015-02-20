@@ -2080,7 +2080,7 @@ class Issue
         $query = "select yongo_issue.id, yongo_issue.summary, general_user.id as user_id, general_user.first_name, general_user.last_name, " .
                  "general_user.client_id " .
                  "from general_user " .
-                 "left join (yongo_issue.user_assigned_id = on general_user.id and datediff(yongo_issue.date_due, NOW()) >= user.remind_days_before_due_date) " .
+                 "left join (yongo_issue.user_assigned_id = on general_user.id and datediff(yongo_issue.date_due, NOW()) >= general_user.remind_days_before_due_date) " .
                  "where yongo_issue.date_due > NOW() " .
                  "and general_user.yongo_issue.user_assigned_id is not null " .
                  "order by general_user.id";

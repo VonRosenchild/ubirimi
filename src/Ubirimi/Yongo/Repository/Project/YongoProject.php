@@ -1143,7 +1143,7 @@ class YongoProject
         else
             $projectsSQL = '(' . $projectIdArray . ')';
 
-        $query = 'SELECT DISTINCT user.id as user_id, general_user.first_name, general_user.last_name ' .
+        $query = 'SELECT DISTINCT general_user.id as user_id, general_user.first_name, general_user.last_name ' .
             'from project_role_data ' .
             'left join general_user on general_user.id = project_role_data.user_id ' .
             'where project_role_data.project_id IN ' . $projectsSQL;

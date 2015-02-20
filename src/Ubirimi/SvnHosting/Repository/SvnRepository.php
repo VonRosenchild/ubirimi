@@ -53,7 +53,7 @@ class SvnRepository
 
     public function getById($repoId) {
         $query = 'SELECT svn_repository.*,
-                         user.first_name, general_user.last_name
+                         general_user.first_name, general_user.last_name
                     FROM svn_repository
                     LEFT join general_user on general_user.id = svn_repository.user_created_id
                     WHERE svn_repository.id = ? ';
@@ -71,7 +71,7 @@ class SvnRepository
 
     public function getUserById($repoUserId) {
         $query = 'SELECT svn_repository_user.*,
-                         user.first_name, general_user.last_name, general_user.email, general_user.username
+                         general_user.first_name, general_user.last_name, general_user.email, general_user.username
                     FROM svn_repository_user
                     LEFT join general_user on general_user.id = svn_repository_user.user_id
                     WHERE general_user.id = ? ';
@@ -89,7 +89,7 @@ class SvnRepository
 
     public function getUserByRepoIdAndUserId($repoId, $userId) {
         $query = 'SELECT svn_repository_user.*,
-                         user.first_name, general_user.last_name, general_user.email, general_user.username
+                         general_user.first_name, general_user.last_name, general_user.email, general_user.username
                     FROM svn_repository_user
                     LEFT join general_user on general_user.id = svn_repository_user.user_id
                     WHERE svn_repository_user.svn_repository_id = ? and svn_repository_user.user_id = ?
@@ -227,7 +227,7 @@ class SvnRepository
 
     public function getUserList($repoId, $resultType = null, $resultColumn = null) {
         $query = 'SELECT svn_repository_user.*,
-                         user.first_name, general_user.last_name, general_user.email, general_user.username
+                         general_user.first_name, general_user.last_name, general_user.email, general_user.username
                     FROM svn_repository_user
                     LEFT join general_user on general_user.id = svn_repository_user.user_id
                     WHERE svn_repository_user.svn_repository_id = ? ';
