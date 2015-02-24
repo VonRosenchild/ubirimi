@@ -120,7 +120,7 @@ class UbirimiCoreServiceProvider implements ServiceProviderInterface
                         __DIR__ . '/../GeneralSettings/Resources/views/email/',
                         __DIR__ . '/../Calendar/Resources/views/email/',
                         __DIR__ . '/../SvnHosting/Resources/views/email/',
-                        __DIR__ . '/../Resources/views/'
+                        __DIR__ . '/../Resources/views/email'
                     ))
             );
         });
