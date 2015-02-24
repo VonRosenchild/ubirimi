@@ -44,10 +44,10 @@ require_once __DIR__ . '/../_header.php';
                 $lastEditedText = ' last edited by ';
 
                 if ($lastRevision) {
-                    $date = date("F t, Y", strtotime($lastRevision['date_created']));
+                    $date = date("F j, Y", strtotime($lastRevision['date_created']));
                     $lastEditedText .= LinkHelper::getUserProfileLink($lastRevision['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $lastRevision['first_name'], $lastRevision['last_name']) . ' on ' . $date;
                 } else {
-                    $date = date("F t, Y", strtotime($page['date_created']));
+                    $date = date("F j, Y", strtotime($page['date_created']));
                     $lastEditedText .= LinkHelper::getUserProfileLink($page['user_id'], SystemProduct::SYS_PRODUCT_DOCUMENTADOR, $page['first_name'], $page['last_name']) . ' on ' . $date;
                 }
 
