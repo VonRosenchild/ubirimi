@@ -47,8 +47,7 @@ class ActivityStreamController extends UbirimiController
             $session->get('client/id'),
             $session->get('user/id'),
             Permission::PERM_BROWSE_PROJECTS,
-            'array'
-        );
+            'array');
 
         $historyData = array();
         $userData = array();

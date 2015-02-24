@@ -328,8 +328,8 @@ class Util {
             $queryWherePartDateIssueCreated = " and yongo_issue.date_created >= '" . $startDate . "' and yongo_issue.date_created <= '" . $endDate . "' ";
             $queryWherePartDateIssueCommented = " and issue_comment.date_created >= '" . $startDate . "' and issue_comment.date_created <= '" . $endDate . "' ";
             $queryWherePartDateIssueHistory = " and issue_history.date_created >= '" . $startDate . "' and issue_history.date_created <= '" . $endDate . "' ";
-
         }
+
         // issue created events
         $query = '(select ' .
             "'event_created' as event, " .
@@ -348,7 +348,6 @@ class Util {
             'where project.id IN (' . implode(', ', $projectIds) . ') ' .
             $queryWherePart .
             $queryWherePartDateIssueCreated .
-            'and yongo_issue.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
             'order by date_created desc) ';
 
         // issue commented events
@@ -373,7 +372,6 @@ class Util {
             $queryWherePart .
             $queryWherePartDateIssueCommented .
             'and issue_comment.issue_id is not null ' .
-            'and issue_comment.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
             'order by date_created desc, user_id) ';
 
         // issue history events
@@ -398,7 +396,6 @@ class Util {
             $queryWherePart .
             $queryWherePartDateIssueHistory .
             'and issue_history.issue_id is not null ' .
-            'and issue_history.date_created BETWEEN (CURRENT_TIMESTAMP() - INTERVAL 1 MONTH) AND CURRENT_TIMESTAMP() ' .
             'order by date_created desc, user_id) ' .
             'order by date_created desc';
 
