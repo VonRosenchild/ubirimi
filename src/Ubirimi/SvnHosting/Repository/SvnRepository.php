@@ -51,6 +51,27 @@ class SvnRepository
             return false;
     }
 
+    public function getLastMinute() {
+
+        $query = 'SELECT svn_repository.id
+                    FROM svn_repository
+                    WHERE date_created BETWEEN (DATE_SUB(NOW(), INTERVAL 5 MINUTE)) AND NOW()';
+
+        $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows) {
+            $resultArray = array();
+            while ($record = $result->fetch_array(MYSQLI_ASSOC)) {
+                $resultArray[] = $record;
+            }
+
+            return $resultArray;
+        } else
+            return null;
+    }
+
     public function getById($repoId) {
         $query = 'SELECT svn_repository.*,
                          general_user.first_name, general_user.last_name
@@ -448,7 +469,6 @@ class SvnRepository
 
     public function apacheConfig($clientDomain, $repositoryName) {
         file_put_contents(UbirimiContainer::get()['subversion.apache_config'], "Use SubversionRepo $clientDomain $repositoryName\n", FILE_APPEND | LOCK_EX);
-        system("/etc/init.d/apache2 reload");
     }
 
     public function refreshApacheConfig() {
@@ -468,7 +488,6 @@ class SvnRepository
         }
 
         file_put_contents(UbirimiContainer::get()['subversion.apache_config'], $text, LOCK_EX);
-        system("/etc/init.d/apache2 reload");
     }
 
     public function getAdministratorsByClientId($clientId) {
