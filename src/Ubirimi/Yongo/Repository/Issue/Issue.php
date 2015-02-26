@@ -225,18 +225,12 @@ class Issue
                     while ($permissions && $permission = $permissions->fetch_array(MYSQLI_ASSOC)) {
 
                         if ($permission['reporter'] == 1) {
-                            $queryProjectPartReporter[] = '(issue_main_table.user_reported_id = ? and issue_main_table.project_id = ?)';
-                            $parameterType .= 'ii';
-                            $parameterArray[] = $loggedInUserId;
-                            $parameterArray[] = $parameters['project'][$i];
-
+                            $queryProjectPartReporter[] = '(issue_main_table.user_reported_id = ' . $loggedInUserId . ' and issue_main_table.project_id = ' . $parameters['project'][$i] . ')';
                             $projectWithAssigneeReporterBrowsePermission[] = $parameters['project'][$i];
                         }
+
                         if ($permission['current_assignee'] == 1) {
-                            $queryProjectPartAssignee[] = '(issue_main_table.user_assigned_id = ? and issue_main_table.project_id = ?)';
-                            $parameterType .= 'ii';
-                            $parameterArray[] = $loggedInUserId;
-                            $parameterArray[] = $parameters['project'][$i];
+                            $queryProjectPartAssignee[] = '(issue_main_table.user_assigned_id = ' . $loggedInUserId . ' and issue_main_table.project_id =  ' . $parameters['project'][$i] . ')';
                             $projectWithAssigneeReporterBrowsePermission[] = $parameters['project'][$i];
                         }
                     }
@@ -631,8 +625,13 @@ class Issue
         if (isset($parameters['page'])) {
             $query .= ' LIMIT ' . (($parameters['page'] - 1) * $parameters['issues_per_page']) . ', ' . ($parameters['issues_per_page']);
         }
-        
-//        echo $query;
+
+//        $queryTest = $query;
+//        for ($p = 0; $p < count($parameterArray); $p++) {
+//            $queryTest = preg_replace('/\?/', $parameterArray[$p], $queryTest, 1);
+//        }
+//        echo $querytest;
+
         $stmt = UbirimiContainer::get()['db.connection']->prepare($query);
 
         if ($queryWhere != '') {

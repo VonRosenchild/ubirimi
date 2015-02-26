@@ -9,7 +9,7 @@ require_once __DIR__ . '/../_header.php';
     <?php require_once __DIR__ . '/../_menu.php'; ?>
 
     <div class="headerPageBackground">
-        <table width="100%" class="headerPageBackground">
+        <table width="100%">
             <tr>
                 <td width="48px">
                     <img class="projectIcon" id="project_icon" src="/img/project.png" height="48px"/>
