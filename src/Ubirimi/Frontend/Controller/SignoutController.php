@@ -32,7 +32,6 @@ class SignoutController extends UbirimiController
     public function indexAction(Request $request, SessionInterface $session)
     {
         $clientBaseURL = $session->get('client/base_url');
-        $date = Util::getServerCurrentDateTime();
 
         $this->getLogger()->addInfo('LOG OUT', $this->getLoggerContext());
 
