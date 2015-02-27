@@ -73,7 +73,7 @@
                         <select name="user" class="select2InputMedium" id="perm_choose_user">
                             <option value>Choose a user</option>
                             <?php while ($user = $users->fetch_array(MYSQLI_ASSOC)): ?>
-                                <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] ?></option>
+                                <option value="<?php echo $user['id'] ?>"><?php echo $user['first_name'] . ' ' . $user['last_name'] . ' (' . $user['username'] . ')' ?></option>
                             <?php endwhile ?>
                         </select>
                     </td>
