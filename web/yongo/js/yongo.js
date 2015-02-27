@@ -2018,27 +2018,27 @@ $('document').ready(function () {
         $('#content_chose_display_columns').hide();
     });
 
-    $(document).on('click', '#perm_choose_user', function (event) {
+    $(document).on('change', '#perm_choose_user', function (event) {
         $('#label_user_permission').prop('checked', true);
     });
-    $(document).on('click', '#not_choose_user', function (event) {
+    $(document).on('change', '#not_choose_user', function (event) {
         $('#label_user_notification').prop('checked', true);
     });
 
-    $(document).on('click', '#perm_choose_group', function (event) {
+    $(document).on('change', '#perm_choose_group', function (event) {
         $('#label_group_permission').prop('checked', true);
     });
-    $(document).on('click', '#not_choose_group', function (event) {
+    $(document).on('change', '#not_choose_group', function (event) {
         $('#label_group_notification').prop('checked', true);
     });
 
-    $(document).on('click', '#perm_choose_project_role', function (event) {
+    $(document).on('change', '#perm_choose_project_role', function (event) {
         $('#label_project_role_permission').prop('checked', true);
     });
-    $(document).on('click', '#not_choose_project_role', function (event) {
+    $(document).on('change', '#not_choose_project_role', function (event) {
         $('#label_project_role_notification').prop('checked', true);
     });
-    $(document).on('click', '#not_select_user_picker_multiple_selection', function (event) {
+    $(document).on('change', '#not_select_user_picker_multiple_selection', function (event) {
         $('#label_user_picker_multiple_selection').prop('checked', true);
     });
 
