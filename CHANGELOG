@@ -3,6 +3,8 @@ v 2.19
   - allow to see filters when there is no project
   - make ubirimi suite completelly free
   - fix calendar creation of events with repeat weekly cycle
+  - show username in add notification/permission scheme data to avoid confusion
+  - fixed query for projects that had current assignee/reported in the permission definition
 
 v 2.18
   - removed a lot of deprecated stuff
