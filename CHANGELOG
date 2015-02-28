@@ -1,3 +1,6 @@
+v 2.20
+
+
 v 2.19
   - introduce monolog for logging
   - allow to see filters when there is no project
